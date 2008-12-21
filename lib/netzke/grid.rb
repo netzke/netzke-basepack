@@ -10,7 +10,11 @@ module Netzke
   #
   class Grid < Base
     # define connection points between client side and server side of Grid. See implementation of equally named methods below.
-    interface :get_data, :post_data, :delete_data
+    interface :get_data, :post_data, :delete_data, :resize_column, :move_column
+
+    def initial_config
+      {:ext_config => {:properties => true}}
+    end
 
     def property_widgets
       [{
@@ -120,6 +124,21 @@ module Netzke
       {:success => success, :flash => @flash}
     end
 
+    def resize_column(params)
+      raise "Called interface_resize_column while not configured to do so" unless config[:column_resize]
+      l_item = layout_manager_class.by_widget(id_name).layout_items[params[:index].to_i]
+      l_item.width = params[:size]
+      l_item.save!
+      {}
+    end
+    
+    def move_column(params)
+      raise "Called interface_move_column while not configured to do so" unless config[:column_move]
+      layout_manager_class.by_widget(id_name).move_item(params[:old_index].to_i, params[:new_index].to_i)
+      {}
+    end
+
+
     ## Data for properties grid
     def properties__columns__get_data(params = {})
       columns_widget = aggregatee_instance(:properties__columns)
@@ -140,6 +159,14 @@ module Netzke
       res.merge!(:data_class_name => config[:data_class_name])
       res
     end
+
+    def js_listeners
+      super.merge({
+        :columnresize => (config[:column_resize] ? {:fn => "this.onColumnResize".l, :scope => this} : nil),
+        :columnmove => (config[:column_move] ? {:fn => "this.onColumnMove".l, :scope => this} : nil)
+      })
+    end
+
 
     protected
     
@@ -377,6 +404,32 @@ module Netzke
             if (this.fireEvent('refresh', this) !== false) this.loadWithFeedback();
           }
         JS
+        
+        :on_column_resize => <<-JS.l,
+          function(index, size){
+            // var column = this.getColumnModel().getDataIndex(index);
+            Ext.Ajax.request({
+              url:this.initialConfig.interface.resizeColumn,
+              params:{
+                index:index,
+                size:size
+              }
+            })
+          }
+        JS
+        
+        :on_column_move => <<-JS.l
+          function(oldIndex, newIndex){
+            Ext.Ajax.request({
+              url:this.initialConfig.interface.moveColumn,
+              params:{
+                old_index:oldIndex,
+                new_index:newIndex
+              }
+            })
+          }
+        JS
+        
       }
     end
     

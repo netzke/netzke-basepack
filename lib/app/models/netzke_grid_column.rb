@@ -4,7 +4,7 @@ class NetzkeGridColumn < ActiveRecord::Base
   acts_as_list :scope => :layout
 
   def self.create_with_defaults(column_config, klass)
-    create(klass.default_column_config(column_config).values_to_s)
+    create(klass.default_column_config(column_config).stringify_values!)
   end
   
   def self.create_layout_for_widget(widget)
@@ -28,7 +28,7 @@ class NetzkeGridColumn < ActiveRecord::Base
     end
     
     for c in columns_for_create
-      config_for_create = data_class.default_column_config(c).merge(:layout_id => layout.id).values_to_s
+      config_for_create = data_class.default_column_config(c).merge(:layout_id => layout.id).stringify_values!
       create(config_for_create) # finally reverse-merge them with the defaults and create the column in the database
     end
     

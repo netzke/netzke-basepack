@@ -15,14 +15,14 @@ module Netzke
     def initial_aggregatees_with_properties
       res = initial_aggregatees_without_properties
       # Add the accordion as aggregatee, with in its turn aggregates widgets from the property_widgets method
-      res.merge!(:properties => {:widget_class_name => 'Accordion', :items => property_widgets, :ext_config => {:title => false}, :no_caching => true, :late_aggregation => true}) unless config[:ext_config][:properties] == false
+      res.merge!(:properties => {:widget_class_name => 'Accordion', :items => property_widgets, :ext_config => {:title => false}, :no_caching => true, :late_aggregation => true}) if config[:ext_config][:properties]
       res
     end
 
     def tools_with_properties
       tools = tools_without_properties
       # Add the toolbutton
-      tools << {:id => 'gear', :on => {:click => "showConfig"}} unless config[:ext_config] && config[:ext_config][:properties] == false
+      tools << {:id => 'gear', :on => {:click => "showConfig"}} if config[:ext_config][:properties]
       tools
     end
   
