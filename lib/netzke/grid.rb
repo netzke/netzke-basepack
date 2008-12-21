@@ -302,7 +302,7 @@ module Netzke
         :delete => <<-JS.l,
           function() {
             if (this.getSelectionModel().hasSelection()){
-              Ext.Msg.confirm('Deleting row(s)', 'Are you sure?', function(btn){
+              Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
                 if (btn == 'yes') {
                   var records = []
                   this.getSelectionModel().each(function(r){
