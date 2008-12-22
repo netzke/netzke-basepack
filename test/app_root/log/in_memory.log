@@ -1,0 +1,1868 @@
+# Logfile created on Sun Dec 21 21:10:03 -0600 2008  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.0ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.2ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.8ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.9ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.8ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mNetzkePreference Load (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: netzke_preferences: SELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+  [4;36;1mNetzkePreference Load (0.0ms)[0m   [0;1mSQLite3::SQLException: no such table: netzke_preferences: SELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.3ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.0ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.9ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.3ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.0ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.8ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.2ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.7ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.7ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.3ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.9ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.3ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Load (0.2ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Load (0.2ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:15:13', 'Lord of the Rings', '2008-12-21 22:15:13')[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.8ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (3.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.8ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (1.0ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:17:09', 'Lord of the Rings', '2008-12-21 22:17:09')[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:17:51', 'Lord of the Rings', '2008-12-21 22:17:51')[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.8ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:19:14', 'Lord of the Rings', '2008-12-21 22:19:14')[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.9ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.3ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:19:55', NULL, '2008-12-21 22:19:55')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:20:09', NULL, '2008-12-21 22:20:09')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 22:20:09' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:21:30', NULL, '2008-12-21 22:21:30')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 22:21:30' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 22:21:30' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.8ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.3ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:26:38', NULL, '2008-12-21 22:26:38')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 22:26:38' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 22:26:38' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:26:38', NULL, '2008-12-21 22:26:38')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 22:26:38' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.3ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.3ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:26:59', NULL, '2008-12-21 22:26:59')[0m
+  [4;35;1mBook Update (0.7ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 22:26:59' WHERE "id" = 1[0m
+  [4;36;1mBook Load (1.0ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.9ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.6ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 22:26:59' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "created_at") VALUES(NULL, '2008-12-21 22:26:59', NULL, '2008-12-21 22:26:59')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 22:26:59' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.8ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.8ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.7ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.9ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.6ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.7ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.6ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.8ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.9ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (3.0ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.8ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.1ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.3ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.9ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.8ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.7ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.9ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mSQL (0.7ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (1.9ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:36:36', NULL, NULL, '2008-12-21 23:36:36')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:36:36' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.6ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:36:36' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:36:36', NULL, NULL, '2008-12-21 23:36:36')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:36:36' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:36:53', NULL, NULL, '2008-12-21 23:36:53')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:36:53' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:36:53' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:36:53', NULL, NULL, '2008-12-21 23:36:53')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:36:53' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:37:38', NULL, NULL, '2008-12-21 23:37:38')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:37:38' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.3ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:37:38' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:37:38', NULL, NULL, '2008-12-21 23:37:38')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:37:38' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.8ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.8ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:37:58', NULL, NULL, '2008-12-21 23:37:58')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:37:58' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.6ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:37:58' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:37:58', NULL, NULL, '2008-12-21 23:37:58')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:37:58' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.8ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.7ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:38:24', NULL, NULL, '2008-12-21 23:38:24')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:38:24' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:38:24' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:38:24', NULL, NULL, '2008-12-21 23:38:24')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:38:24' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:40:03', NULL, NULL, '2008-12-21 23:40:03')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:40:03' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:40:03' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:40:03', NULL, NULL, '2008-12-21 23:40:03')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:40:03' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.9ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.8ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.3ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:40:26', NULL, NULL, '2008-12-21 23:40:26')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:40:26' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:40:26' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:40:26', NULL, NULL, '2008-12-21 23:40:26')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:40:26' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL AND "netzke_preferences"."custom_field" = 'grid') LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:41:00', NULL, NULL, '2008-12-21 23:41:00')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:41:00' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.6ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.7ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:41:00' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:41:00', NULL, NULL, '2008-12-21 23:41:00')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:41:00' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.7ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:42:44', NULL, NULL, '2008-12-21 23:42:44')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:42:44' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.6ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:42:45' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:42:45', NULL, NULL, '2008-12-21 23:42:45')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:42:45' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (1.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.6ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.3ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:43:22', NULL, NULL, '2008-12-21 23:43:22')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:43:22' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:43:22' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:43:22', NULL, NULL, '2008-12-21 23:43:22')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:43:22' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (2.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:43:33', NULL, NULL, '2008-12-21 23:43:33')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-21 23:43:33' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-21 23:43:33' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-21 23:43:33', NULL, NULL, '2008-12-21 23:43:33')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-21 23:43:33' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.4ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.9ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.9ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.4ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.3ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-22 15:24:30', NULL, NULL, '2008-12-22 15:24:30')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-22 15:24:30' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-22 15:24:30' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-22 15:24:30', NULL, NULL, '2008-12-22 15:24:30')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-22 15:24:30' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.9ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.5ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.2ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.6ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.5ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.5ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.3ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-22 15:29:10', NULL, NULL, '2008-12-22 15:29:10')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-22 15:29:10' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-22 15:29:10' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-22 15:29:10', NULL, NULL, '2008-12-22 15:29:10')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-22 15:29:10' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mBook Delete all (54.2ms)[0m   [0;1mDELETE FROM "books" WHERE ("id" IN (1,2)) [0m
+  [4;35;1mBook Load (0.2ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.3ms)[0m   [0mselect sqlite_version(*)[0m
+  [4;36;1mSQL (0.2ms)[0m   [0;1mCREATE TABLE "schema_migrations" ("version" varchar(255) NOT NULL) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mCREATE UNIQUE INDEX "unique_schema_migrations" ON "schema_migrations" ("version")[0m
+  [4;36;1mSQL (0.3ms)[0m   [0;1m SELECT name
+ FROM sqlite_master
+ WHERE type = 'table' AND NOT name = 'sqlite_sequence'
+[0m
+  [4;35;1mSQL (0.1ms)[0m   [0mSELECT version FROM schema_migrations[0m
+Migrating to CreateBooks (20081222033343)
+  [4;36;1mSQL (0.7ms)[0m   [0;1mCREATE TABLE "books" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "title" varchar(255), "amount" integer, "genre_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.2ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033343')[0m
+Migrating to CreateGenres (20081222033440)
+  [4;36;1mSQL (0.3ms)[0m   [0;1mCREATE TABLE "genres" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "category_id" integer, "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.4ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222033440')[0m
+Migrating to CreateNetzkePreferences (20081222035855)
+  [4;36;1mSQL (0.4ms)[0m   [0;1mCREATE TABLE "netzke_preferences" ("id" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, "name" varchar(255), "pref_type" varchar(255), "value" varchar(255), "user_id" integer, "role_id" integer, "custom_field" varchar(255), "created_at" datetime, "updated_at" datetime) [0m
+  [4;35;1mSQL (0.3ms)[0m   [0mINSERT INTO schema_migrations (version) VALUES ('20081222035855')[0m
+  [4;36;1mNetzkePreference Load (0.3ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.read' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.update' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mNetzkePreference Load (0.2ms)[0m   [0;1mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.create' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;35;1mNetzkePreference Load (0.2ms)[0m   [0mSELECT * FROM "netzke_preferences" WHERE ("netzke_preferences"."custom_field" = 'grid' AND "netzke_preferences"."name" = 'permissions.delete' AND "netzke_preferences"."user_id" IS NULL) LIMIT 1[0m
+  [4;36;1mBook Create (0.2ms)[0m   [0;1mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-22 15:30:16', NULL, NULL, '2008-12-22 15:30:16')[0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lord of the Rings', "updated_at" = '2008-12-22 15:30:16' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Load (0.5ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" WHERE ("books"."id" = 1) [0m
+  [4;35;1mBook Update (0.2ms)[0m   [0mUPDATE "books" SET "title" = 'Lolita', "updated_at" = '2008-12-22 15:30:16' WHERE "id" = 1[0m
+  [4;36;1mBook Load (0.5ms)[0m   [0;1mSELECT * FROM "books" LIMIT 1[0m
+  [4;35;1mBook Create (0.2ms)[0m   [0mINSERT INTO "books" ("genre_id", "updated_at", "title", "amount", "created_at") VALUES(NULL, '2008-12-22 15:30:16', NULL, NULL, '2008-12-22 15:30:16')[0m
+  [4;36;1mBook Update (0.2ms)[0m   [0;1mUPDATE "books" SET "title" = 'Upanishad', "updated_at" = '2008-12-22 15:30:16' WHERE "id" = 2[0m
+  [4;35;1mBook Load (0.7ms)[0m   [0mSELECT * FROM "books" [0m
+  [4;36;1mBook Delete all (1.0ms)[0m   [0;1mDELETE FROM "books" WHERE ("id" IN (1,2)) [0m
+  [4;35;1mBook Load (0.3ms)[0m   [0mSELECT * FROM "books" LIMIT 1[0m

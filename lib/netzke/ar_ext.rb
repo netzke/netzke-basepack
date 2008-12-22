@@ -4,6 +4,53 @@ module Netzke
       base.extend ActiveRecordClassMethods
     end
     
+    # allow nested association acces (assocs separated by "." or "__"), e.g.: proxy_service.send('asset__gui_folder__name')
+    # Example:
+    # b = Book.first
+    # b.genre__name = 'Fantasy' => b.genre = Genre.find_by_name('Fantasy')
+    # NOT IMPLEMENTED: ANY USE? b.genre__catalog__name = 'Best sellers' => b.genre_id = b.genre.find_by_catalog_id(Catalog.find_by_name('Best sellers')).id
+    #
+    
+    def method_missing(method, *args, &block)
+      # if refering to a column, just pass it to the originar method_missing
+      return super if self.class.column_names.include?(method.to_s)
+      
+      split = method.to_s.split(/\.|__/)
+      if split.size > 1
+        if split.last =~ /=$/ 
+          if split.size == 2
+            # search for association and assign it to self
+            assoc = self.class.reflect_on_association(split.first.to_sym)
+            assoc_method = split.last.chop
+            if assoc
+              assoc_instance = assoc.klass.send("find_by_#{assoc_method}", *args)
+              raise ArgumentError, "Couldn't find association #{split.first} by #{assoc_method} '#{args.first}'" unless assoc_instance
+              self.send("#{split.first}=", assoc_instance)
+            else
+              super
+            end
+          else
+            super
+          end
+        else
+          res = self
+          split.each do |m|
+            if res.respond_to?(m)
+              res = res.send(m) unless res.nil?
+            else
+              res.nil? ? nil : super
+            end
+          end
+          res
+        end
+      else
+        super
+      end
+    end
+    
+    
+    
+    
     module ActiveRecordClassMethods
       # which columns are to be picked up by grids and forms
       def expose_columns(columns, *args)
@@ -85,4 +132,8 @@ module Netzke
       
     end
   end
+end
+
+ActiveRecord::Base.class_eval do
+  include Netzke::ActiveRecordExtensions
 end

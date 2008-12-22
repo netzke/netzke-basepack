@@ -13,7 +13,10 @@ module Netzke
     interface :get_data, :post_data, :delete_data, :resize_column, :move_column
 
     def initial_config
-      {:ext_config => {:properties => true}}
+      {
+        :ext_config => {:properties => true},
+        :layout_manager => "NetzkeLayout"
+      }
     end
 
     def property_widgets
@@ -50,51 +53,20 @@ module Netzke
     
     # get columns from layout manager
     def get_columns
-      return nil if config[:layout_manager] == false # TODO: also return nil if we don't have the Layout or GridColumn class
-
-      layout = layout_manager_class.by_widget(id_name)
-      
-      layout ||= column_manager_class.create_layout_for_widget(self)
-      
-      layout.items_hash
+      if layout_manager_class
+        layout = layout_manager_class.by_widget(id_name)
+        layout ||= column_manager_class.create_layout_for_widget(self)
+        layout.items_hash  # TODO: bad name!
+      else
+        Netzke::Column.default_columns_for_widget(self)
+      end
     end
     
     ## API
-    def post_data(params = {})
-      data = JSON.parse(params.delete(:updated_records))
-      if !data.empty?
-        if @permissions[:update]
-          # log.info { "!!! data: #{data.inspect}" }
-          klass = config[:data_class_name].constantize
-          updated_records = 0
-          data.each do |record|
-            if existing_record = klass.find_by_id(record['id'])
-              updated_records += 1 if existing_record.update_attributes(record)
-            else
-            end
-          end
-          flash :notice => "Updated #{updated_records} records"
-        else
-          flash :error => "You don't have permissions to update data"
-        end
-      end
-      
-      data = JSON.parse(params.delete(:new_records))
-      if !data.empty?
-        if @permissions[:create]
-          # log.info { "!!! data: #{data.inspect}" }
-          klass = config[:data_class_name].constantize
-          updated_records = 0
-          data.each do |record|
-            if existing_record = klass.create(record)
-              updated_records += 1 # if existing_record.update_attributes(record)
-            else
-            end
-          end
-          flash :notice => "Created #{updated_records} records"
-        else
-          flash :error => "You don't have permissions to add new data"
-        end
+    def post_data(params)
+      [:create, :update].each do |operation|
+        data = JSON.parse(params.delete("#{operation}d_records".to_sym)) if params["#{operation}d_records".to_sym]
+        process_data(data, operation) if !data.nil?
       end
       {:success => true, :flash => @flash}
     end
@@ -102,7 +74,6 @@ module Netzke
     def get_data(params = {})
       if @permissions[:read]
         records = get_records(params[:filters])
-        # records.to_json
         {:data => records, :total => records.size}
       else
         flash :error => "You don't have permissions to read data"
@@ -170,14 +141,8 @@ module Netzke
 
     protected
     
-    def layout_manager_class_name
-      "NetzkeLayout"
-    end
-    
     def layout_manager_class
-      layout_manager_class_name.constantize
-    rescue NameError
-      nil
+      config[:layout_manager] && config[:layout_manager].constantize
     end
     
     def column_manager_class_name
@@ -376,7 +341,7 @@ module Netzke
           			url:this.initialConfig.interface.postData,
           			params: {
           			  updated_records: Ext.encode(updatedRecords), 
-          			  new_records: Ext.encode(newRecords),
+          			  created_records: Ext.encode(newRecords),
           			  filters: this.store.baseParams.filters
           			},
           			success:function(response){
@@ -448,6 +413,48 @@ module Netzke
         :text => 'Apply', :handler => 'submit', :disabled => @pref['permissions.update'] == false && @pref['permissions.create'] == false
       }]
     end
+
+    protected
+    #
+    # operation => :update || :create
+    #
+    def process_data(data, operation)
+      if @permissions[operation]
+        klass = config[:data_class_name].constantize
+        modified_records = 0
+        data.each do |record_hash|
+          record = operation == :create ? klass.create : klass.find(record_hash.delete('id'))
+          logger.debug { "!!! record: #{record.inspect}" }
+          success = true
+          exception = nil
+          
+          # process all attirubutes for the same record (OPTIMIZE: we can use update_attributes separately for regular attributes to speed things up)
+          record_hash.each_pair do |k,v|
+            begin
+              record.send("#{k}=",v)
+            rescue ArgumentError => exc
+              flash :error => exc.message
+              success = false
+              break
+            end
+          end
+          
+          # try to save
+          modified_records += 1 if success && record.save
+
+          # flash eventual errors
+          record.errors.each_full do |msg|
+            flash :error => msg
+          end
+          
+          flash :notice => "#{operation.to_s.capitalize}d #{modified_records} records"
+        end
+      else
+        flash :error => "You don't have permissions to #{operation} data"
+      end
+    end
+    
+    
 
     # Uncomment to enable a menu duplicating the actions
     # def js_menus

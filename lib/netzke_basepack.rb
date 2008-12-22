@@ -1,9 +1,9 @@
 # NetzkeBasepack
 require 'netzke/ar_ext'
-require 'netzke/grid'
-require 'netzke/container'
-require 'netzke/accordion'
-require 'netzke/properties_tool'
+# require 'netzke/properties_tool'
+# require 'netzke/container'
+# require 'netzke/accordion'
+# require 'netzke/grid'
 
 %w{ models }.each do |dir|
   path = File.join(File.dirname(__FILE__), 'app', dir)
@@ -12,6 +12,6 @@ require 'netzke/properties_tool'
   ActiveSupport::Dependencies.load_once_paths.delete(path)
 end
 
-ActiveRecord::Base.class_eval do
-  include Netzke::ActiveRecordExtensions
-end
+# ActiveRecord::Base.class_eval do
+#   include Netzke::ActiveRecordExtensions
+# end
