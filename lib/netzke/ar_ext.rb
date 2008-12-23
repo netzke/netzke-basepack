@@ -3,8 +3,9 @@ module Netzke
     def self.included(base)
       base.extend ActiveRecordClassMethods
     end
-    
-    # allow nested association acces (assocs separated by "." or "__"), e.g.: proxy_service.send('asset__gui_folder__name')
+
+    #
+    # Allow nested association acces (assocs separated by "." or "__"), e.g.: proxy_service.send('asset__gui_folder__name')
     # Example:
     # b = Book.first
     # b.genre__name = 'Fantasy' => b.genre = Genre.find_by_name('Fantasy')
@@ -49,9 +50,32 @@ module Netzke
     end
     
     
-    
-    
     module ActiveRecordClassMethods
+      def choices_for(column, query = nil)
+        if respond_to?("#{column}_choices", query)
+          # AR class provides the choices itself
+          send("#{column}_choices")
+        else
+          if (assoc_name, *assoc_method = column.split('__')).size > 1
+            # column is an association column
+            assoc_method = assoc_method.join('__') # in case we get something like country__continent__name
+            association = reflect_on_association(assoc_name.to_sym) || raise(NameError, "Association #{assoc_name} not known for class #{name}")
+            association.klass.choices_for(assoc_method, query)
+          else
+            column = assoc_name
+            if self.column_names.include?(column)
+              # it's just a column
+              records = query.nil? ? find_by_sql("select distinct #{column} from #{table_name}") : find_by_sql("select distinct #{column} from #{table_name} where #{column} like '#{query}%'")
+              records.map{|r| r.send(column)}
+            else
+              # it's a "virtual" column - the least effective search
+              records = self.find(:all).map{|r| r.send(column)}.uniq
+              query.nil? ? records : records.select{|r| r.send(column).index(/^#{query}/)}
+            end
+          end
+        end
+      end
+      
       # which columns are to be picked up by grids and forms
       def expose_columns(columns, *args)
         if columns == :all

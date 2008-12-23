@@ -10,7 +10,7 @@ module Netzke
   #
   class Grid < Base
     # define connection points between client side and server side of Grid. See implementation of equally named methods below.
-    interface :get_data, :post_data, :delete_data, :resize_column, :move_column
+    interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
 
     def initial_config
       {
@@ -61,8 +61,10 @@ module Netzke
         Netzke::Column.default_columns_for_widget(self)
       end
     end
-    
-    ## API
+
+    #
+    # Interface section
+    #
     def post_data(params)
       [:create, :update].each do |operation|
         data = JSON.parse(params.delete("#{operation}d_records".to_sym)) if params["#{operation}d_records".to_sym]
@@ -109,6 +111,15 @@ module Netzke
       {}
     end
 
+    # Return the choices for the column
+    def get_cb_choices(params)
+      column = params[:column]
+      query = params[:query]
+      
+      {:data => config[:data_class_name].constantize.choices_for(column, query).map{|s| [s]}}
+    end
+    
+    
 
     ## Data for properties grid
     def properties__columns__get_data(params = {})
@@ -189,9 +200,9 @@ module Netzke
       this.recordConfig = [];
 
     	if (!config.columns) {
-    	  this.feedback('No columns defined for grid #{id_name}');
+    	  this.feedback('No columns defined for grid '+config.id);
   	  }
-
+      
       Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name})}, this);
       this.Row = Ext.data.Record.create(this.recordConfig);
       var ds = new Ext.data.Store({
@@ -201,7 +212,8 @@ module Netzke
 
       this.cmConfig = [];
       Ext.each(config.columns, function(c){
-        var editor = c.readOnly ? null : new Ext.form.TextField({selectOnFocus:true})
+        var editor = c.readOnly ? null : Ext.netzke.editors[c.showsAs](c, config);
+
         this.cmConfig.push({
           header: c.label || c.name,
           dataIndex: c.name,
@@ -231,7 +243,6 @@ module Netzke
         :load_with_feedback => <<-JS.l,
           function(){
         	  var exceptionHandler = function(proxy, options, response, error){
-              // console.info(error);
               if (response.status == 200 && (responseObject = Ext.decode(response.responseText)) && responseObject.flash){
                 this.feedback(responseObject.flash)
               } else {

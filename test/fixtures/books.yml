@@ -1,9 +1,9 @@
 # Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
 
 one:
-  title: MyString
+  title: Separate Reality
   genre_id: 1
 
 two:
-  title: MyString
+  title: The Journey to Ixtlan
   genre_id: 1

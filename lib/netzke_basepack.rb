@@ -12,6 +12,4 @@ require 'netzke/ar_ext'
   ActiveSupport::Dependencies.load_once_paths.delete(path)
 end
 
-# ActiveRecord::Base.class_eval do
-#   include Netzke::ActiveRecordExtensions
-# end
+Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/basepack.js"
