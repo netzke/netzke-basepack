@@ -1,0 +1,21 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  name: Cordoba
+  population: 323_600
+  country_id: 1
+
+two:
+  name: Buenos Aires
+  population: 10000000
+  country_id: 2
+
+three:
+  name: Cordoba
+  population: 1_315_500
+  country_id: 2
+
+four:
+  name: Concordia
+  population: 148_000
+  country_id: 2
