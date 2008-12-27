@@ -55,9 +55,8 @@ module Netzke::GridInterface
   
   
   protected
-  #
+
   # operation => :update || :create
-  #
   def process_data(data, operation)
     if @permissions[operation]
       klass = config[:data_class_name].constantize
@@ -108,7 +107,7 @@ module Netzke::GridInterface
       output_array << r_array
     end
 
-    # add total_entries method to the result
+    # add total_entries accessor to the result
     class << output_array
       attr :total_records, true
     end

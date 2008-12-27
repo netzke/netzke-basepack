@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'netzke_core'
+require 'netzke-core'
 
 require 'netzke/properties_tool'
 require 'netzke/container'
