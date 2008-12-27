@@ -1,3 +1,4 @@
 *.log
 pkg
 doc
+test/app_root/vendor/plugins/netzke-core

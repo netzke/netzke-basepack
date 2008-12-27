@@ -17,8 +17,10 @@ lib/netzke/grid_js_builder.rb
 lib/netzke/preference_grid.rb
 lib/netzke/properties_tool.rb
 lib/netzke/property_grid.rb
+lib/netzke-basepack.rb
 LICENSE
 Manifest
+netzke-basepack.gemspec
 Rakefile
 README.mdown
 tasks/netzke_basepack_tasks.rake
