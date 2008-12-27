@@ -21,7 +21,6 @@ lib/netzke_basepack.rb
 LICENSE
 Manifest
 netzke_basepack.gemspec
-netzke_core.gemspec
 Rakefile
 README.mdown
 tasks/netzke_basepack_tasks.rake
