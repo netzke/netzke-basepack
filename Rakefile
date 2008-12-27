@@ -1,6 +1,6 @@
 require 'echoe'
 
-Echoe.new("netzke_core") do |p|
+Echoe.new("netzke_basepack") do |p|
   p.author = "Sergei Kozlov"
   p.email = "sergei@writelesscode.com"
   p.summary = "Base Netzke widgets - grid, form, tree, and more"
