@@ -19,6 +19,8 @@ lib/netzke/properties_tool.rb
 lib/netzke/property_grid.rb
 lib/netzke_basepack.rb
 LICENSE
+Manifest
+netzke_core.gemspec
 Rakefile
 README.mdown
 tasks/netzke_basepack_tasks.rake
@@ -46,7 +48,6 @@ test/app_root/db/migrate/20081223025635_create_countries.rb
 test/app_root/db/migrate/20081223025653_create_continents.rb
 test/app_root/db/migrate/20081223025732_create_cities.rb
 test/app_root/script/console
-test/app_root/vendor/plugins/netzke_core
 test/ar_ext_test.rb
 test/column_test.rb
 test/console_with_fixtures.rb
@@ -61,4 +62,3 @@ test/netzke_basepack_test.rb
 test/schema.rb
 test/test_helper.rb
 uninstall.rb
-Manifest
