@@ -1,18 +1,18 @@
-NetzkeBasepack
+netzke-basepack
 ==============
 
-Introduction goes here.
+A pack of basic Rails/ExtJS widgets, as a part of Netzke framework.
 
 
 Example
 =======
 
-Example goes here.
+See http://writelesscode.com
 
 
 Credentials
 ===========
 
-Testing with the help of http://github.com/pluginaweek/plugin_test_helper
+Testing with the help of http://github.com/pluginaweek/plugin\_test\_helper
 
 Copyright (c) 2008 Sergei Kozlov, released under the MIT license
