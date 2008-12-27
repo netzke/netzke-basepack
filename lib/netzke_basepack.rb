@@ -1,9 +1,8 @@
-# NetzkeBasepack
+# External dependencies
+require 'netzke_core'
+require 'searchlogic'
+
 require 'netzke/ar_ext'
-# require 'netzke/properties_tool'
-# require 'netzke/container'
-# require 'netzke/accordion'
-# require 'netzke/grid'
 
 %w{ models }.each do |dir|
   path = File.join(File.dirname(__FILE__), 'app', dir)

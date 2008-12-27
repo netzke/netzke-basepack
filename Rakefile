@@ -1,23 +1,11 @@
-require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
+require 'echoe'
 
-desc 'Default: run unit tests.'
-task :default => :test
-
-desc 'Test the netzke_basepack plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.libs << 'test'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
-end
-
-desc 'Generate documentation for the netzke_basepack plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'NetzkeBasepack'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+Echoe.new("netzke_core") do |p|
+  p.author = "Sergei Kozlov"
+  p.email = "sergei@writelesscode.com"
+  p.summary = "Base Netzke widgets - grid, form, tree, and more"
+  p.url = "http://writelesscode.com"
+  p.runtime_dependencies = ["searchlogic >=1.6.2", "netzke_core >= 0.1.0"]
+  p.development_dependencies = []
+  p.test_pattern = 'test/**/*_test.rb'
 end

@@ -1,8 +1,12 @@
 require 'test_helper'
+require 'netzke_core'
 
 require 'netzke/properties_tool'
 require 'netzke/container'
 require 'netzke/accordion'
+
+require 'netzke/grid_interface'
+require 'netzke/grid_js_builder'
 require 'netzke/grid'
 
 require 'netzke/ar_ext'
