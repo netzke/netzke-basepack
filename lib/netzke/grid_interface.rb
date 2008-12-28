@@ -95,9 +95,9 @@ module Netzke::GridInterface
   
   # get records
   def get_records(params)
-    conditions = normalize_params(params)
+    search_params = normalize_params(params)
     raise ArgumentError, "No data_class_name specified for widget '#{config[:name]}'" if !config[:data_class_name]
-    records = config[:data_class_name].constantize.all(conditions)
+    records = config[:data_class_name].constantize.all(search_params.clone) # clone needed as searchlogic removes :conditions key from the hash
     output_array = []
     records.each do |r|
       r_array = []
@@ -111,14 +111,39 @@ module Netzke::GridInterface
     class << output_array
       attr :total_records, true
     end
-    total_records_count = config[:data_class_name].constantize.count(conditions)
+    total_records_count = config[:data_class_name].constantize.count(search_params)
     output_array.total_records = total_records_count
 
     output_array
   end
   
+  def convert_filters(column_filter)
+    res = {}
+    column_filter.each_pair do |k,v|
+      field = v["field"]
+      case v["data"]["type"]
+      when "string"
+        field << "_contains"
+      when "numeric"
+        field << "_#{v["data"]["comparison"]}"
+      end
+      value = v["data"]["value"]
+      res.merge!({field => value})
+    end
+    res
+  end
+  
   # make params understandable to searchlogic
   def normalize_params(params)
+    # filters
+    conditions = params[:filter] && convert_filters(params[:filter])
+    
+    normalized_conditions = {}
+    conditions && conditions.each_pair do |k, v|
+      assoc, method = k.split('__')
+      normalized_conditions.merge!(method.nil? ? {assoc => v} : {assoc => {method => v}})
+    end
+    
     # sorting
     order_by = if params[:sort]
       assoc, method = params[:sort].split('__')
@@ -126,6 +151,6 @@ module Netzke::GridInterface
     end
     
     page = params[:start].to_i/params[:limit].to_i + 1 if params[:limit]
-    {:per_page => params[:limit], :page => page, :order_by => order_by, :order_as => params[:dir]}
+    {:per_page => params[:limit], :page => page, :order_by => order_by, :order_as => params[:dir], :conditions => normalized_conditions}
   end
 end

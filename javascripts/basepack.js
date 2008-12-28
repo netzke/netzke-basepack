@@ -33,9 +33,20 @@ Ext.netzke.editors = {
 		})
 	},
 	
+	// TODO: it's simply a text field for now
 	datetime: function(c, config){
 		return new Ext.form.TextField({
 			selectOnFocus:true
 		})
 	}
+};
+
+// Mapping of showsAs field to grid filters
+Ext.netzke.filterMap = {
+	number_field:'Numeric',
+	text_field:'String',
+	datetime:'String',
+	checkbox:'Boolean',
+	combo_box:'String',
+	date:'Date'
 }

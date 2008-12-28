@@ -23,6 +23,7 @@ module Netzke::GridJsBuilder
       :track_mouse_over => true,
       # :bbar => "config.actions".l,
       :bbar => js_bbar,
+      :plugins => "plugins".l,
       
       #custom configs
       :auto_load_data => true
@@ -31,16 +32,12 @@ module Netzke::GridJsBuilder
   
   def js_before_constructor
     <<-JS
+    var plugins = [];
+  	if (!config.columns) this.feedback('No columns defined for grid '+config.id);
     this.recordConfig = [];
-
-  	if (!config.columns) {
-  	  this.feedback('No columns defined for grid '+config.id);
-	  }
-    
     Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name})}, this);
-    
     this.Row = Ext.data.Record.create(this.recordConfig);
-    
+
     var ds = new Ext.data.Store({
         proxy: this.proxy = new Ext.data.HttpProxy({url:config.interface.getData}),
         reader: new Ext.data.ArrayReader({root: "data", totalProperty: "total", successProperty: "succes", id:0}, this.Row),
@@ -51,11 +48,6 @@ module Netzke::GridJsBuilder
         }}
     });
     
-    // pagination
-    if (config.rowsPerPage) {
-      // ds.baseParams = {start:0, limit:config.rowsPerPage}
-    }
-
     this.cmConfig = [];
     Ext.each(config.columns, function(c){
       var editor = c.readOnly ? null : Ext.netzke.editors[c.showsAs](c, config);
@@ -73,7 +65,17 @@ module Netzke::GridJsBuilder
     var cm = new Ext.grid.ColumnModel(this.cmConfig);
     
     this.addEvents("refresh");
-  	
+    
+    // Filters
+    if (config.columnFilters) {
+      var filters = []
+      Ext.each(config.columns, function(c){
+        filters.push({type:Ext.netzke.filterMap[c.showsAs], dataIndex:c.name})
+      })
+    	var gridFilters = new Ext.grid.GridFilters({filters:filters});
+      plugins.push(gridFilters);
+    }
+    
     JS
   end
   

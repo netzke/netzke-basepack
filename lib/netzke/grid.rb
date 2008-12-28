@@ -18,7 +18,7 @@ module Netzke
 
     def initial_config
       {
-        :ext_config => {:properties => true},
+        :ext_config => {:properties => true, :column_filters => true},
         :layout_manager => "NetzkeLayout",
         :column_resize => true,
         :column_move => true
