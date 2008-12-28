@@ -1,5 +1,6 @@
 v0.1.1
 Cleaner exception handling while loading data to grid
+Column resize & move functionality enabled by default
 
 v0.1.0.1 Meta work: replacing underscore with dash in the name
 

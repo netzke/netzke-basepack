@@ -19,7 +19,9 @@ module Netzke
     def initial_config
       {
         :ext_config => {:properties => true},
-        :layout_manager => "NetzkeLayout"
+        :layout_manager => "NetzkeLayout",
+        :column_resize => true,
+        :column_move => true
       }
     end
 
@@ -54,20 +56,6 @@ module Netzke
       w.interface_load_source(params)
     end
     
-    # we pass column config at the time of instantiating the JS class
-    def js_config
-      res = super
-      res.merge!(:columns => get_columns || config[:columns]) # first try to get columns from DB, then from config
-      res.merge!(:data_class_name => config[:data_class_name])
-      res
-    end
-
-    def js_listeners
-      super.merge({
-        :columnresize => (config[:column_resize] ? {:fn => "this.onColumnResize".l, :scope => this} : nil),
-        :columnmove => (config[:column_move] ? {:fn => "this.onColumnMove".l, :scope => this} : nil)
-      })
-    end
 
 
     protected

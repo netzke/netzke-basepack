@@ -77,6 +77,22 @@ module Netzke::GridJsBuilder
     JS
   end
   
+  def js_config
+    res = super
+    # we pass column config at the time of instantiating the JS class
+    res.merge!(:columns => get_columns || config[:columns]) # first try to get columns from DB, then from config
+    res.merge!(:data_class_name => config[:data_class_name])
+    res
+  end
+
+  def js_listeners
+    super.merge({
+      :columnresize => (config[:column_resize] ? {:fn => "this.onColumnResize".l, :scope => this} : nil),
+      :columnmove => (config[:column_move] ? {:fn => "this.onColumnMove".l, :scope => this} : nil)
+    })
+  end
+  
+  
   def js_extend_properties
     {
       :on_widget_load => <<-JS.l,
