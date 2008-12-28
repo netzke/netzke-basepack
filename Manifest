@@ -6,6 +6,7 @@ generators/netzke_basepack/USAGE
 init.rb
 install.rb
 javascripts/basepack.js
+javascripts/filters.js
 lib/app/models/netzke_grid_column.rb
 lib/netzke/accordion.rb
 lib/netzke/ar_ext.rb
