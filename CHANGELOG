@@ -1,3 +1,6 @@
+v0.1.1.1
+Meta: github gem naming convention
+
 v0.1.1
 Cleaner exception handling while loading data to grid
 Column resize & move functionality enabled by default
