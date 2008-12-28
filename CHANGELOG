@@ -1,3 +1,6 @@
+v0.1.1
+Cleaner exception handling while loading data to grid
+
 v0.1.0.1 Meta work: replacing underscore with dash in the name
 
 v0.1.0 Initial release

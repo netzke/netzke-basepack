@@ -12,3 +12,6 @@ require 'netzke/ar_ext'
 end
 
 Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/basepack.js"
+
+# Make this plugin reloadable for easier development
+ActiveSupport::Dependencies.load_once_paths.delete(File.join(File.dirname(__FILE__)))

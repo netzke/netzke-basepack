@@ -38,12 +38,23 @@ module Netzke::GridJsBuilder
 	  }
     
     Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name})}, this);
+    
     this.Row = Ext.data.Record.create(this.recordConfig);
+    
     var ds = new Ext.data.Store({
         proxy: this.proxy = new Ext.data.HttpProxy({url:config.interface.getData}),
         reader: new Ext.data.ArrayReader({root: "data", totalProperty: "total", successProperty: "succes", id:0}, this.Row),
-        remoteSort: true
+        remoteSort: true,
+        listeners:{'loadexception':{
+          fn:this.loadExceptionHandler,
+          scope:this
+        }}
     });
+    
+    // pagination
+    if (config.rowsPerPage) {
+      // ds.baseParams = {start:0, limit:config.rowsPerPage}
+    }
 
     this.cmConfig = [];
     Ext.each(config.columns, function(c){
@@ -70,33 +81,28 @@ module Netzke::GridJsBuilder
     {
       :on_widget_load => <<-JS.l,
         function(){
+          // auto-load
           if (this.initialConfig.autoLoadData) {
-            this.loadWithFeedback({start:0, limit: this.initialConfig.rowsPerPage})
+            // if we have a paging toolbar, load the first page, otherwise
+            if (this.getBottomToolbar().changePage) this.getBottomToolbar().changePage(0); else this.store.load();
           }
         }
       JS
-    
-      :load_with_feedback => <<-JS.l,
-        function(params){
-          if (!params) params = {};
-      	  var exceptionHandler = function(proxy, options, response, error){
-            if (response.status == 200 && (responseObject = Ext.decode(response.responseText)) && responseObject.flash){
-              this.feedback(responseObject.flash)
-            } else {
-              if (error){
-                this.feedback(error.message);
-              } else {
-                this.feedback(response.statusText)
-              }  
-            }
-          }.createDelegate(this);
-      	  this.store.proxy.on('loadexception', exceptionHandler);
-      		this.store.load({callback:function(r, options, success){
-      			this.store.proxy.un('loadexception', exceptionHandler);
-      		}, params: params, scope:this});
-      	}
-      JS
       
+      :load_exception_handler => <<-JS.l,
+      function(proxy, options, response, error){
+        if (response.status == 200 && (responseObject = Ext.decode(response.responseText)) && responseObject.flash){
+          this.feedback(responseObject.flash)
+        } else {
+          if (error){
+            this.feedback(error.message);
+          } else {
+            this.feedback(response.statusText)
+          }  
+        }
+      }        
+      JS
+    
       :add => <<-JS.l,
         function(){
           var rowConfig = {};
@@ -153,7 +159,8 @@ module Netzke::GridJsBuilder
             			params: {records: Ext.encode(records)},
             			success:function(r){ 
             				var m = Ext.decode(r.responseText);
-            				this.loadWithFeedback();
+            				this.store.reload();
+                    // this.loadWithFeedback();
             				this.feedback(m.flash);
             			},
             			scope:this
@@ -195,7 +202,8 @@ module Netzke::GridJsBuilder
         			success:function(response){
         				var m = Ext.decode(response.responseText);
         				if (m.success) {
-        					this.loadWithFeedback();
+        					this.store.reload();
+                  // this.loadWithFeedback();
         					this.store.commitChanges();
         					this.feedback(m.flash);
         				} else {
@@ -215,7 +223,8 @@ module Netzke::GridJsBuilder
       :refresh_click => <<-JS.l,
         function() {
           // console.info(this);
-          if (this.fireEvent('refresh', this) !== false) this.loadWithFeedback();
+          // if (this.fireEvent('refresh', this) !== false) this.loadWithFeedback();
+          if (this.fireEvent('refresh', this) !== false) this.store.reload();
         }
       JS
       
