@@ -5,14 +5,14 @@ module Netzke
   # * data operations - get, post, delete, create
   # * column resize and move
   # * permissions
-  # * sorting - TODO
+  # * sorting
   # * pagination
-  # * validation - TODO
   # * properties and column configuration
   #
   class Grid < Base
     include GridJsBuilder
     include GridInterface
+
     # define connection points between client side and server side of Grid. See implementation of equally named methods in the GridInterface module.
     interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
 
