@@ -21,7 +21,6 @@ lib/netzke/property_grid.rb
 lib/netzke-basepack.rb
 LICENSE
 Manifest
-netzke-basepack.gemspec
 Rakefile
 README.mdown
 tasks/netzke_basepack_tasks.rake

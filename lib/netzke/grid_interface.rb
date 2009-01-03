@@ -62,12 +62,14 @@ module Netzke::GridInterface
       klass = config[:data_class_name].constantize
       modified_records = 0
       data.each do |record_hash|
-        record = operation == :create ? klass.create : klass.find(record_hash.delete('id'))
+        id = record_hash.delete('id')
+        record = operation == :create ? klass.create : klass.find(id)
         logger.debug { "!!! record: #{record.inspect}" }
         success = true
         exception = nil
         
         # process all attirubutes for the same record (OPTIMIZE: we can use update_attributes separately for regular attributes to speed things up)
+        logger.debug { "!!! record_hash: #{record_hash.inspect}" }
         record_hash.each_pair do |k,v|
           begin
             record.send("#{k}=",v)

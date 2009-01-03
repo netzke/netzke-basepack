@@ -3,12 +3,15 @@ A pack of basic Rails/ExtJS widgets, as a part of Netzke framework.
 
 # Prerequisites
 1. Rails >= 2.2
-2. ExtJS >= 2.0: its root *must* be accessible as RAILS_ROOT/public/extjs (you may symlink your ExtJS library here)
+2. ExtJS >= 2.0: its root *must* be accessible as RAILS_ROOT/public/extjs. You may symlink your ExtJS library to here, like this (from your app folder): `cd public && ln -s ~/Developer/extjs/ext-2.2 extjs`
+3. `acts_as_list` plugin must be installed: `./script/plugin install git://github.com/rails/acts_as_list.git`
 
 # Installation
-gem install skozlov-netzke-basepack --source http://gems.github.com
+Install the gem:
+`gem install netzke-basepack`
 
-
+Include it into environment.rb:
+`config.gem "netzke-basepack"`
 
 # Usage
 First, run the generators to have the necessary migrations (if not done so already):
@@ -35,9 +38,14 @@ end`
 After a widget is declared in the controller, it can be accessed in 3 different ways: 1) loaded by means of an automatically created controller action which will produce a basic HTML-page with the widget (handy for testing), 2) embedded directly into a view (by means of helpers), 3) dynamically loaded by other widgets (usually by the widget of class 'Application', if you want a desktop-like, AJAX-driven web-app).
 
 ## Using automatically created controller action
-Without writing any more code, you can access the widget by `http://yourhost/welcome/book_test`. That is to say, you append `_test` to your widget's name (as declared in the controller) to get the action name.
+Without writing any more code, you can access the widget by `http://yourhost/welcome/books_test`. That is to say, you simply append `_test` to your widget's name (as declared in the controller) and use it as the action of the controller.
 
 ## Embedding a widget into a view
+netzke-core plugin provides the following 2 helpers to put inside your head-tag (use it in your layout)
+
+1. `netzke_js_include` - to include extjs and netzke javascript files
+2. `netzke_css_include` - to include the css. This one can take a parameter to specify a color schema you wish for ExtJS, e.g.: `netzke_css_include(:gray)`
+
 Declaring a widget in the controller provides you with a couple of helpers that can be used in the view:
 
 1. `books_class_definition` will contain the javascript code defining the code for the JS class.
@@ -63,10 +71,11 @@ Ext.onReady(function(){
 	books.render("books");
 })
 <% end %>
+<!-- some HTML... -->
 <div id="books">the widget will be rendered in this div</div>`
 
 ## Dynamic loading of widgets
-TODO: will be covered later
+TODO: this part will be covered later
 
 # Credentials
 Testing done with the help of `http://github.com/pluginaweek/plugin_test_helper`

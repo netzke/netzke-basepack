@@ -45,10 +45,13 @@ module Netzke
 
     ## Data for properties grid
     def properties__columns__get_data(params = {})
-      columns_widget = aggregatee_instance(:properties__columns)
-
+      # add extra filter to show only the columns for the current grid (filtered by layout_id)
       layout_id = layout_manager_class.by_widget(id_name).id
-      columns_widget.interface_get_data(params.merge(:filters => {:layout_id => layout_id}))
+      params[:filter] ||= {}
+      params[:filter].merge!(:extra_conditions => {:field => 'layout_id', :data => {:type => 'numeric', :value => layout_id}})
+      
+      columns_widget = aggregatee_instance(:properties__columns)
+      columns_widget.interface_get_data(params)
     end
     
     def properties__general__load_source(params = {})
@@ -82,7 +85,8 @@ module Netzke
 
     # get columns from layout manager
     def get_columns
-      if layout_manager_class
+      @columns ||=
+      if layout_manager_class && column_manager_class
         layout = layout_manager_class.by_widget(id_name)
         layout ||= column_manager_class.create_layout_for_widget(self)
         layout.items_hash  # TODO: bad name!

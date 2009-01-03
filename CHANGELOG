@@ -1,3 +1,21 @@
+v0.1.4.1
+Meta: updated netzke-core version (dependency)
+
+v0.1.4
+Grid#get_columns provides default columns even if none of layout_manager_class & column_manager_class are available
+
+v0.1.3.1
+Meta: updated netzke-core version (dependency)
+
+v0.1.3
+Path to javascript for grid filters corrected
+Bug with creating new records in the grid fixed
+Optimized away redundant sql queries when calling Grid#get_columns (sort of memoization)
+README updated
+
+v0.1.2.1
+Meta: trying to succeed publishing on RubyForge
+
 v0.1.2
 Updated README with an example of stand-alone widget usage
 Meta: updated netzke-core version (dependency)
