@@ -3,7 +3,7 @@ A pack of basic Rails/ExtJS widgets, as a part of Netzke framework.
 
 # Prerequisites
 1. Rails >= 2.2
-2. ExtJS >= 2.0: its root *must* be accessible as RAILS_ROOT/public/extjs. You may symlink your ExtJS library to here, like this (from your app folder): `cd public && ln -s ~/Developer/extjs/ext-2.2 extjs`
+2. ExtJS >= 2.0: its root *must* be accessible as `RAILS_ROOT/public/extjs`. You may symlink your ExtJS library to here, like this (from your app folder): `cd public && ln -s ~/Developer/extjs/ext-2.2 extjs`
 3. `acts_as_list` plugin must be installed: `./script/plugin install git://github.com/rails/acts_as_list.git`
 
 # Installation
@@ -79,8 +79,5 @@ TODO: this part will be covered later
 
 # Credentials
 Testing done with the help of `http://github.com/pluginaweek/plugin_test_helper`
-
-# TODO
-Rename Grid into GridPanel.
 
 Copyright (c) 2008 Sergei Kozlov, released under the MIT license
