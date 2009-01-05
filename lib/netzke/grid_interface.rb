@@ -32,7 +32,7 @@ module Netzke::GridInterface
   end
 
   def resize_column(params)
-    raise "Called interface_resize_column while not configured to do so" unless config[:column_resize]
+    raise "Called interface_resize_column while not configured to do so" unless config[:ext_config][:enable_column_resize]
     l_item = layout_manager_class.by_widget(id_name).layout_items[params[:index].to_i]
     l_item.width = params[:size]
     l_item.save!
@@ -40,7 +40,7 @@ module Netzke::GridInterface
   end
   
   def move_column(params)
-    raise "Called interface_move_column while not configured to do so" unless config[:column_move]
+    raise "Called interface_move_column while not configured to do so" unless config[:ext_config][:enable_column_move]
     layout_manager_class.by_widget(id_name).move_item(params[:old_index].to_i, params[:new_index].to_i)
     {}
   end

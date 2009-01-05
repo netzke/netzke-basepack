@@ -4,9 +4,11 @@ module Netzke
   # Functionality:
   # * data operations - get, post, delete, create
   # * column resize and move
+  # * column hide - TODO
   # * permissions
   # * sorting
   # * pagination
+  # * filtering
   # * properties and column configuration
   #
   class Grid < Base
@@ -16,30 +18,32 @@ module Netzke
     # define connection points between client side and server side of Grid. See implementation of equally named methods in the GridInterface module.
     interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
 
+    # default grid configuration
     def initial_config
       {
-        :ext_config => {:properties => true, :column_filters => true},
-        :layout_manager => "NetzkeLayout",
-        :column_resize => true,
-        :column_move => true
+        :ext_config => {
+          :properties => true, 
+          :enable_column_filters => true, 
+          :enable_column_move => true, 
+          :enable_column_resize => true
+        },
+        :layout_manager => "NetzkeLayout"
       }
     end
 
     def property_widgets
       [{
-        :columns => {
-          :widget_class_name => "Grid", 
-          :data_class_name => column_manager_class_name, 
-          :ext_config => {:title => false, :properties => false},
-          :active => true
-        }
+        :name => 'columns',
+        :widget_class_name => "Grid", 
+        :data_class_name => column_manager_class_name, 
+        :ext_config => {:title => false, :properties => false},
+        :active => true
       },{
-        :general => {
-          :widget_class_name => "PreferenceGrid", 
-          :host_widget_name => @id_name, 
-          :default_properties => available_permissions.map{ |k| {:name => "permissions.#{k}", :value => @permissions[k.to_sym]}},
-          :ext_config => {:title => false}
-        }
+        :name => 'general',
+        :widget_class_name => "PreferenceGrid", 
+        :host_widget_name => @id_name, 
+        :default_properties => available_permissions.map{ |k| {:name => "permissions.#{k}", :value => @permissions[k.to_sym]}},
+        :ext_config => {:title => false}
       }]
     end
 

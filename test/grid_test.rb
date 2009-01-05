@@ -3,7 +3,7 @@ require 'netzke-core'
 
 require 'netzke/properties_tool'
 require 'netzke/container'
-require 'netzke/accordion'
+require 'netzke/accordion_panel'
 
 require 'netzke/grid_interface'
 require 'netzke/grid_js_builder'

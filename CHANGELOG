@@ -1,3 +1,10 @@
+v0.2.0
+Some re-factoring and redesign along with netzke-core
+Panel widget added
+BorderLayoutPanel added
+AccordionPanel added
+Fixed bugs with Grid column operations configuration
+
 v0.1.4.1
 Meta: updated netzke-core version (dependency)
 

@@ -20,7 +20,7 @@ module Netzke
       dep
     end
 
-    def js_before_constructor
+    def self.js_before_constructor
       js_widget_items
     end
     
@@ -32,7 +32,7 @@ module Netzke
       config[:items] || []
     end
     
-    def js_widget_items
+    def self.js_widget_items
       res = ""
       item_aggregatees.each_pair do |k,v|
         next if v[:late_aggregation]
@@ -43,7 +43,7 @@ module Netzke
       res
     end
 
-    def js_items
+    def self.js_items
       items.inject([]) do |a,i|
         a << {
           :title => i.to_s.humanize,
@@ -61,7 +61,7 @@ module Netzke
       end
     end
     
-    def js_extend_properties
+    def self.js_extend_properties
       {
         # loads widget into the panel if it's not loaded yet
         :load_item_widget => <<-JS.l,
@@ -74,7 +74,7 @@ module Netzke
     end
 
     protected
-    def item_aggregatees
+    def self.item_aggregatees
       aggregatees.delete_if{|k,v| !@items.include?(k)}
     end
   end

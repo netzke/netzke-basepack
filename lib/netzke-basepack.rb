@@ -24,5 +24,7 @@ Netzke::Base.config[:javascripts] << "#{extjs_dir}/examples/grid-filtering/grid/
 end
 Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/filters.js"
 
+Netzke::Base.config[:css] << "#{File.dirname(__FILE__)}/../css/basepack.css"
+
 # Make this plugin reloadable for easier development
 ActiveSupport::Dependencies.load_once_paths.delete(File.join(File.dirname(__FILE__)))

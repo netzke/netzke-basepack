@@ -10,7 +10,7 @@ module Netzke
       @config = {:ext_config => {}}.merge(@config)
     end
 
-    def js_base_class
+    def self.js_base_class
       "Ext.grid.PropertyGrid"
     end
 
@@ -20,13 +20,13 @@ module Netzke
       }]
     end
 
-    def js_default_config
+    def self.js_default_config
       super.merge({
         :bbar => "config.actions".l
       })
     end
     
-    def js_extend_properties
+    def self.js_extend_properties
       {
         :submit => <<-JS.l,
         function() {

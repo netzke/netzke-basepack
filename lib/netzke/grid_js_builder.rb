@@ -1,84 +1,8 @@
 module Netzke::GridJsBuilder
-  def js_base_class 
-    'Ext.grid.EditorGridPanel'
+  def self.included(base)
+    base.extend ClassMethods
   end
 
-  def js_bbar
-    <<-JS.l
-    (config.rowsPerPage) ? new Ext.PagingToolbar({
-      pageSize:config.rowsPerPage, 
-      items:config.actions, 
-      store:ds, 
-      emptyMsg:'Empty'}) : config.actions
-    JS
-  end
-
-  def js_default_config
-    super.merge({
-      :store => "ds".l,
-      :cm => "cm".l,
-      :sel_model => "new Ext.grid.RowSelectionModel()".l,
-      :auto_scroll => true,
-      :click_to_edit => 2,
-      :track_mouse_over => true,
-      # :bbar => "config.actions".l,
-      :bbar => js_bbar,
-      :plugins => "plugins".l,
-      
-      #custom configs
-      :auto_load_data => true
-    })
-  end
-  
-  def js_before_constructor
-    <<-JS
-    var plugins = [];
-  	if (!config.columns) this.feedback('No columns defined for grid '+config.id);
-    this.recordConfig = [];
-    Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name})}, this);
-    this.Row = Ext.data.Record.create(this.recordConfig);
-
-    var ds = new Ext.data.Store({
-        proxy: this.proxy = new Ext.data.HttpProxy({url:config.interface.getData}),
-        reader: new Ext.data.ArrayReader({root: "data", totalProperty: "total", successProperty: "succes", id:0}, this.Row),
-        remoteSort: true,
-        listeners:{'loadexception':{
-          fn:this.loadExceptionHandler,
-          scope:this
-        }}
-    });
-    
-    this.cmConfig = [];
-    Ext.each(config.columns, function(c){
-      var editor = c.readOnly ? null : Ext.netzke.editors[c.showsAs](c, config);
-
-      this.cmConfig.push({
-        header: c.label || c.name,
-        dataIndex: c.name,
-        hidden: c.hidden,
-        width: c.width,
-        editor: editor,
-        sortable: true
-      })
-    }, this);
-
-    var cm = new Ext.grid.ColumnModel(this.cmConfig);
-    
-    this.addEvents("refresh");
-    
-    // Filters
-    if (config.columnFilters) {
-      var filters = []
-      Ext.each(config.columns, function(c){
-        filters.push({type:Ext.netzke.filterMap[c.showsAs], dataIndex:c.name})
-      })
-    	var gridFilters = new Ext.grid.GridFilters({filters:filters});
-      plugins.push(gridFilters);
-    }
-    
-    JS
-  end
-  
   def js_config
     res = super
     # we pass column config at the time of instantiating the JS class
@@ -86,191 +10,273 @@ module Netzke::GridJsBuilder
     res.merge!(:data_class_name => config[:data_class_name])
     res
   end
+  
+  module ClassMethods
 
-  def js_listeners
-    super.merge({
-      :columnresize => (config[:column_resize] ? {:fn => "this.onColumnResize".l, :scope => this} : nil),
-      :columnmove => (config[:column_move] ? {:fn => "this.onColumnMove".l, :scope => this} : nil)
-    })
-  end
-  
-  
-  def js_extend_properties
-    {
-      :on_widget_load => <<-JS.l,
-        function(){
-          // auto-load
-          if (this.initialConfig.autoLoadData) {
-            // if we have a paging toolbar, load the first page, otherwise
-            if (this.getBottomToolbar().changePage) this.getBottomToolbar().changePage(0); else this.store.load();
-          }
-        }
+    def js_base_class 
+      'Ext.grid.EditorGridPanel'
+    end
+
+    def js_bbar
+      <<-JS.l
+      (config.rowsPerPage) ? new Ext.PagingToolbar({
+        pageSize:config.rowsPerPage, 
+        items:config.actions, 
+        store:ds, 
+        emptyMsg:'Empty'}) : config.actions
       JS
+    end
+
+    def js_default_config
+      super.merge({
+        :store => "ds".l,
+        :cm => "cm".l,
+        :sel_model => "new Ext.grid.RowSelectionModel()".l,
+        :auto_scroll => true,
+        :click_to_edit => 2,
+        :track_mouse_over => true,
+        # :bbar => "config.actions".l,
+        :bbar => js_bbar,
+        :plugins => "plugins".l,
       
-      :load_exception_handler => <<-JS.l,
-      function(proxy, options, response, error){
-        if (response.status == 200 && (responseObject = Ext.decode(response.responseText)) && responseObject.flash){
-          this.feedback(responseObject.flash)
-        } else {
-          if (error){
-            this.feedback(error.message);
+        #custom configs
+        :auto_load_data => true
+      })
+    end
+  
+    def js_before_constructor
+      <<-JS
+      var plugins = [];
+    	if (!config.columns) this.feedback('No columns defined for grid '+config.id);
+      this.recordConfig = [];
+      Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name})}, this);
+      this.Row = Ext.data.Record.create(this.recordConfig);
+
+      var ds = new Ext.data.Store({
+          proxy: this.proxy = new Ext.data.HttpProxy({url:config.interface.getData}),
+          reader: new Ext.data.ArrayReader({root: "data", totalProperty: "total", successProperty: "succes", id:0}, this.Row),
+          remoteSort: true,
+          listeners:{'loadexception':{
+            fn:this.loadExceptionHandler,
+            scope:this
+          }}
+      });
+    
+      this.cmConfig = [];
+      Ext.each(config.columns, function(c){
+        var editor = c.readOnly ? null : Ext.netzke.editors[c.showsAs](c, config);
+
+        this.cmConfig.push({
+          header: c.label || c.name,
+          dataIndex: c.name,
+          hidden: c.hidden,
+          width: c.width,
+          editor: editor,
+          sortable: true
+        })
+      }, this);
+
+      var cm = new Ext.grid.ColumnModel(this.cmConfig);
+    
+      this.addEvents("refresh");
+    
+      // Filters
+      if (config.enableColumnFilters) {
+        var filters = []
+        Ext.each(config.columns, function(c){
+          filters.push({type:Ext.netzke.filterMap[c.showsAs], dataIndex:c.name})
+        })
+      	var gridFilters = new Ext.grid.GridFilters({filters:filters});
+        plugins.push(gridFilters);
+      }
+    
+      JS
+    end
+  
+    def js_listeners
+      super.merge({
+        :columnresize => {:fn => "this.onColumnResize".l, :scope => this},
+        :columnmove => {:fn => "this.onColumnMove".l, :scope => this}
+      })
+    end
+  
+    def js_extend_properties
+      {
+        :on_widget_load => <<-JS.l,
+          function(){
+            // auto-load
+            if (this.initialConfig.autoLoadData) {
+              // if we have a paging toolbar, load the first page, otherwise
+              if (this.getBottomToolbar().changePage) this.getBottomToolbar().changePage(0); else this.store.load();
+            }
+          }
+        JS
+      
+        :load_exception_handler => <<-JS.l,
+        function(proxy, options, response, error){
+          if (response.status == 200 && (responseObject = Ext.decode(response.responseText)) && responseObject.flash){
+            this.feedback(responseObject.flash)
           } else {
-            this.feedback(response.statusText)
-          }  
-        }
-      }        
-      JS
-    
-      :add => <<-JS.l,
-        function(){
-          var rowConfig = {};
-          Ext.each(this.initialConfig.columns, function(c){
-            rowConfig[c.name] = c.defaultValue || ''; // FIXME: if the user is happy with all the defaults, the record won't be 'dirty'
-          }, this);
-          
-          var r = new this.Row(rowConfig); // TODO: add default values
-          r.set('id', -r.id); // to distinguish new records by negative values
-          this.stopEditing();
-      		this.store.add(r);
-      		this.store.newRecords = this.store.newRecords || []
-      		this.store.newRecords.push(r);
-          // console.info(this.store.newRecords);
-          this.tryStartEditing(this.store.indexOf(r));
-      	}
-      JS
-    
-      :edit => <<-JS.l,
-        function(){
-          var row = this.getSelectionModel().getSelected();
-          if (row){
-            this.tryStartEditing(this.store.indexOf(row))
+            if (error){
+              this.feedback(error.message);
+            } else {
+              this.feedback(response.statusText)
+            }  
           }
-        }
-      JS
+        }        
+        JS
     
-      # try editing the first editable (not hidden, not read-only) sell
-      :try_start_editing => <<-JS.l,
-      	function(row){
-      	  if (row == null) return;
-      		var editableColumns = this.getColumnModel().getColumnsBy(function(columnConfig, index){
-      			return !columnConfig.hidden && !!columnConfig.editor;
-      		});
-      		// console.info(editableColumns);
-      		var firstEditableColumn = editableColumns[0];
-      		if (firstEditableColumn){
-      			this.startEditing(row, firstEditableColumn.id);
-      		}
-      	}
-      JS
-
-      :delete => <<-JS.l,
-        function() {
-          if (this.getSelectionModel().hasSelection()){
-            Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
-              if (btn == 'yes') {
-                var records = []
-                this.getSelectionModel().each(function(r){
-          		    records.push(r.get('id'));
-                }, this);
-        		    Ext.Ajax.request({
-            			url: this.initialConfig.interface.deleteData,
-            			params: {records: Ext.encode(records)},
-            			success:function(r){ 
-            				var m = Ext.decode(r.responseText);
-            				this.store.reload();
-                    // this.loadWithFeedback();
-            				this.feedback(m.flash);
-            			},
-            			scope:this
-            		});
-              }
+        :add => <<-JS.l,
+          function(){
+            var rowConfig = {};
+            Ext.each(this.initialConfig.columns, function(c){
+              rowConfig[c.name] = c.defaultValue || ''; // FIXME: if the user is happy with all the defaults, the record won't be 'dirty'
             }, this);
-          }
-        }
-      JS
-      :submit => <<-JS.l,
-        function(){
-
-          var newRecords = [];
-          if (this.store.newRecords){
-        		Ext.each(this.store.newRecords, function(r){
-        		  newRecords.push(r.getChanges())
-        		  r.commit() // commit the changes, so that they are not picked up by getModifiedRecords() further down
-        		}, this);
-        		delete this.store.newRecords;
+          
+            var r = new this.Row(rowConfig); // TODO: add default values
+            r.set('id', -r.id); // to distinguish new records by negative values
+            this.stopEditing();
+        		this.store.add(r);
+        		this.store.newRecords = this.store.newRecords || []
+        		this.store.newRecords.push(r);
+            // console.info(this.store.newRecords);
+            this.tryStartEditing(this.store.indexOf(r));
         	}
-      		
-        	var updatedRecords = [];
-      		Ext.each(this.store.getModifiedRecords(),
-      			function(record) {
-      				var completeRecordData = {};
-      				Ext.apply(completeRecordData, Ext.apply(record.getChanges(), {id:record.get('id')}));
-      				updatedRecords.push(completeRecordData);
-      			}, 
-      		this);
-          
-          if (newRecords.length > 0 || updatedRecords.length > 0) {
-        		Ext.Ajax.request({
-        			url:this.initialConfig.interface.postData,
-        			params: {
-        			  updated_records: Ext.encode(updatedRecords), 
-        			  created_records: Ext.encode(newRecords),
-        			  filters: this.store.baseParams.filters
-        			},
-        			success:function(response){
-        				var m = Ext.decode(response.responseText);
-        				if (m.success) {
-        					this.store.reload();
-                  // this.loadWithFeedback();
-        					this.store.commitChanges();
-        					this.feedback(m.flash);
-        				} else {
-        					this.feedback(m.flash);
-        				}
-        			},
-        			failure:function(response){
-        				this.feedback('Bad response from server');
-        			},
-        			scope:this
-        		});
+        JS
+    
+        :edit => <<-JS.l,
+          function(){
+            var row = this.getSelectionModel().getSelected();
+            if (row){
+              this.tryStartEditing(this.store.indexOf(row))
+            }
           }
+        JS
+    
+        # try editing the first editable (not hidden, not read-only) sell
+        :try_start_editing => <<-JS.l,
+        	function(row){
+        	  if (row == null) return;
+        		var editableColumns = this.getColumnModel().getColumnsBy(function(columnConfig, index){
+        			return !columnConfig.hidden && !!columnConfig.editor;
+        		});
+        		// console.info(editableColumns);
+        		var firstEditableColumn = editableColumns[0];
+        		if (firstEditableColumn){
+        			this.startEditing(row, firstEditableColumn.id);
+        		}
+        	}
+        JS
+
+        :delete => <<-JS.l,
+          function() {
+            if (this.getSelectionModel().hasSelection()){
+              Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
+                if (btn == 'yes') {
+                  var records = []
+                  this.getSelectionModel().each(function(r){
+            		    records.push(r.get('id'));
+                  }, this);
+          		    Ext.Ajax.request({
+              			url: this.initialConfig.interface.deleteData,
+              			params: {records: Ext.encode(records)},
+              			success:function(r){ 
+              				var m = Ext.decode(r.responseText);
+              				this.store.reload();
+                      // this.loadWithFeedback();
+              				this.feedback(m.flash);
+              			},
+              			scope:this
+              		});
+                }
+              }, this);
+            }
+          }
+        JS
+        :submit => <<-JS.l,
+          function(){
+
+            var newRecords = [];
+            if (this.store.newRecords){
+          		Ext.each(this.store.newRecords, function(r){
+          		  newRecords.push(r.getChanges())
+          		  r.commit() // commit the changes, so that they are not picked up by getModifiedRecords() further down
+          		}, this);
+          		delete this.store.newRecords;
+          	}
+      		
+          	var updatedRecords = [];
+        		Ext.each(this.store.getModifiedRecords(),
+        			function(record) {
+        				var completeRecordData = {};
+        				Ext.apply(completeRecordData, Ext.apply(record.getChanges(), {id:record.get('id')}));
+        				updatedRecords.push(completeRecordData);
+        			}, 
+        		this);
           
-        }
-      JS
+            if (newRecords.length > 0 || updatedRecords.length > 0) {
+          		Ext.Ajax.request({
+          			url:this.initialConfig.interface.postData,
+          			params: {
+          			  updated_records: Ext.encode(updatedRecords), 
+          			  created_records: Ext.encode(newRecords),
+          			  filters: this.store.baseParams.filters
+          			},
+          			success:function(response){
+          				var m = Ext.decode(response.responseText);
+          				if (m.success) {
+          					this.store.reload();
+                    // this.loadWithFeedback();
+          					this.store.commitChanges();
+          					this.feedback(m.flash);
+          				} else {
+          					this.feedback(m.flash);
+          				}
+          			},
+          			failure:function(response){
+          				this.feedback('Bad response from server');
+          			},
+          			scope:this
+          		});
+            }
+          
+          }
+        JS
    
-      :refresh_click => <<-JS.l,
-        function() {
-          // console.info(this);
-          // if (this.fireEvent('refresh', this) !== false) this.loadWithFeedback();
-          if (this.fireEvent('refresh', this) !== false) this.store.reload();
-        }
-      JS
+        :refresh_click => <<-JS.l,
+          function() {
+            // console.info(this);
+            // if (this.fireEvent('refresh', this) !== false) this.loadWithFeedback();
+            if (this.fireEvent('refresh', this) !== false) this.store.reload();
+          }
+        JS
       
-      :on_column_resize => <<-JS.l,
-        function(index, size){
-          // var column = this.getColumnModel().getDataIndex(index);
-          Ext.Ajax.request({
-            url:this.initialConfig.interface.resizeColumn,
-            params:{
-              index:index,
-              size:size
-            }
-          })
-        }
-      JS
+        :on_column_resize => <<-JS.l,
+          function(index, size){
+            Ext.Ajax.request({
+              url:this.initialConfig.interface.resizeColumn,
+              params:{
+                index:index,
+                size:size
+              }
+            })
+          }
+        JS
       
-      :on_column_move => <<-JS.l
-        function(oldIndex, newIndex){
-          Ext.Ajax.request({
-            url:this.initialConfig.interface.moveColumn,
-            params:{
-              old_index:oldIndex,
-              new_index:newIndex
-            }
-          })
-        }
-      JS
+        :on_column_move => <<-JS.l
+          function(oldIndex, newIndex){
+            Ext.Ajax.request({
+              url:this.initialConfig.interface.moveColumn,
+              params:{
+                old_index:oldIndex,
+                new_index:newIndex
+              }
+            })
+          }
+        JS
       
-    }
+      }
+    end
+
   end
 end
