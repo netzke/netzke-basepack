@@ -5,11 +5,11 @@ module Netzke
     end
 
     #
-    # Allow nested association acces (assocs separated by "." or "__"), e.g.: proxy_service.send('asset__gui_folder__name')
+    # Allow nested association access (assocs separated by "." or "__"), e.g.: proxy_service.asset__gui_folder__name
     # Example:
     # b = Book.first
     # b.genre__name = 'Fantasy' => b.genre = Genre.find_by_name('Fantasy')
-    # NOT IMPLEMENTED: ANY USE? b.genre__catalog__name = 'Best sellers' => b.genre_id = b.genre.find_by_catalog_id(Catalog.find_by_name('Best sellers')).id
+    # NOT IMPLEMENTED (any real use?): b.genre__catalog__name = 'Best sellers' => b.genre_id = b.genre.find_by_catalog_id(Catalog.find_by_name('Best sellers')).id
     #
     
     def method_missing(method, *args, &block)
@@ -49,8 +49,8 @@ module Netzke
       end
     end
     
-    
     module ActiveRecordClassMethods
+      # Returns all unique values for a column, filtered by the query
       def choices_for(column, query = nil)
         if respond_to?("#{column}_choices", query)
           # AR class provides the choices itself
@@ -108,40 +108,50 @@ module Netzke
       end
       
       #
-      # Used by Netzke::Grid
+      # Used by Netzke::GridPanel
       #
       
       DEFAULT_COLUMN_WIDTH = 100
       
+      # Returns default column config understood by Netzke::GridPanel
+      # Argument: column name (as Symbol) or column config
       def default_column_config(config)
-        config = {:name => config} if config.is_a?(Symbol) # optionally we may get only a column name (as Symbol)
+        config = {:name => config} if config.is_a?(Symbol) # if got a column name
+
+        # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
         type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
 
-        # general config
         res = {
           :name => config[:name].to_s || "unnamed",
           :label => config[:label] || config[:name].to_s.humanize,
           :read_only => config[:name] == :id, # make "id" column read-only by default
           :hidden => config[:name] == :id, # hide "id" column by default
           :width => DEFAULT_COLUMN_WIDTH,
-          :shows_as => :text_field
+          :editor => ext_editor(type)
         }
 
-        case type
-          when :integer
-            res[:shows_as] = :number_field
-          when :boolean
-            res[:shows_as] = :checkbox
-            res[:width] = 50
-          when :date
-            res[:shows_as] = :date_field
-          when :datetime
-            res[:shows_as] = :datetime
-          when :string
-            res[:shows_as] = :text_field
+        # detect :assoc__method
+        if config[:name].to_s.index('__')
+          assoc_name, method = config[:name].to_s.split('__').map(&:to_sym)
+          if assoc = reflect_on_association(assoc_name)
+            assoc_column = assoc.klass.columns_hash[method.to_s]
+            assoc_method_type = assoc_column && assoc_column.type
+            if assoc_method_type
+              res[:editor] = ext_editor(assoc_method_type) == :checkbox ? :checkbox : :combo_box
+            end
+          end
         end
-
-        res.merge(config) # merge with custom confg (it has the priority)
+        
+        # detect association column (e.g. :category_id)
+        if assoc = reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == config[:name]}
+          res[:editor] = :combo_box
+          assoc_method = %w{name title label}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
+          res[:name] = "#{assoc.name}__#{assoc_method}"
+        end
+        
+        # merge with the given confg, which has the priority
+        config.delete(:name) # because we might have changed the name
+        res.merge(config)
       end
       
       #
@@ -152,6 +162,20 @@ module Netzke
       DEFAULT_FIELD_HEIGHT = 50
       def default_field_config(config)
         # TODO
+      end
+      
+      private
+      # identify Ext editor for the data type
+      TYPE_EDITOR_MAP = {
+        :integer => :number_field,
+        :boolean => :checkbox,
+        :date => :date_field,
+        :datetime => :datetime,
+        :string => :text_field
+      }
+      
+      def ext_editor(type)
+        TYPE_EDITOR_MAP[type] || :text_field # fall back to :text_field
       end
       
     end

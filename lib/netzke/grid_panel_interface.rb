@@ -1,4 +1,4 @@
-module Netzke::GridInterface
+module Netzke::GridPanelInterface
   def post_data(params)
     [:create, :update].each do |operation|
       data = JSON.parse(params.delete("#{operation}d_records".to_sym)) if params["#{operation}d_records".to_sym]

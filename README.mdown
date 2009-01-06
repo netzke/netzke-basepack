@@ -32,7 +32,7 @@ The following example will provide you with a grid-based scaffold for ActiveReco
 In the controller declare the widget:
 
 `class WelcomeController < ApplicationController
-  netzke_widget :books, :widget_class_name => 'Grid', :data_class_name => 'Book'
+  netzke_widget :books, :widget_class_name => 'GridPanel', :data_class_name => 'Book'
 end`
 
 After a widget is declared in the controller, it can be accessed in 3 different ways: 1) loaded by means of an automatically created controller action which will produce a basic HTML-page with the widget (handy for testing), 2) embedded directly into a view (by means of helpers), 3) dynamically loaded by other widgets (usually by the widget of class 'Application', if you want a desktop-like, AJAX-driven web-app).

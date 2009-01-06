@@ -9,12 +9,19 @@ class ArExtTest < ActiveSupport::TestCase
     cc = Book.default_column_config(:title)
     
     assert_equal("Title", cc[:label])
-    assert_equal(:text_field, cc[:shows_as])
+    assert_equal(:text_field, cc[:editor])
 
     cc = Book.default_column_config({:name => :amount, :label => 'AMOUNT'})
     
     assert_equal("AMOUNT", cc[:label])
-    assert_equal(:number_field, cc[:shows_as])
+    assert_equal(:number_field, cc[:editor])
+    
+    cc = Book.default_column_config(:genre_id)
+    assert_equal("genre__name", cc[:name])
+    assert_equal(:combo_box, cc[:editor])
+
+    cc = Book.default_column_config(:genre__popular)
+    assert_equal(:checkbox, cc[:editor])
   end
   
   test "choices for column" do
@@ -35,5 +42,6 @@ class ArExtTest < ActiveSupport::TestCase
     assert_equal(2, cities.size)
     assert(cities.include?('Cordoba') && cities.include?('Concordia'))
   end
+  
 end
 

@@ -1,4 +1,4 @@
-module Netzke::GridJsBuilder
+module Netzke::GridPanelJsBuilder
   def self.included(base)
     base.extend ClassMethods
   end
@@ -64,7 +64,7 @@ module Netzke::GridJsBuilder
     
       this.cmConfig = [];
       Ext.each(config.columns, function(c){
-        var editor = c.readOnly ? null : Ext.netzke.editors[c.showsAs](c, config);
+        var editor = c.readOnly ? null : Ext.netzke.editors[c.editor](c, config);
 
         this.cmConfig.push({
           header: c.label || c.name,
@@ -84,7 +84,7 @@ module Netzke::GridJsBuilder
       if (config.enableColumnFilters) {
         var filters = []
         Ext.each(config.columns, function(c){
-          filters.push({type:Ext.netzke.filterMap[c.showsAs], dataIndex:c.name})
+          filters.push({type:Ext.netzke.filterMap[c.editor], dataIndex:c.name})
         })
       	var gridFilters = new Ext.grid.GridFilters({filters:filters});
         plugins.push(gridFilters);

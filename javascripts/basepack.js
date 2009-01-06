@@ -41,7 +41,7 @@ Ext.netzke.editors = {
 	}
 };
 
-// Mapping of showsAs field to grid filters
+// Mapping of editor field to grid filters
 Ext.netzke.filterMap = {
 	number_field:'Numeric',
 	text_field:'String',

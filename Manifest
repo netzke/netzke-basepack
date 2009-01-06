@@ -1,14 +1,14 @@
 CHANGELOG
 css/basepack.css
 generators/netzke_basepack/netzke_basepack_generator.rb
-generators/netzke_basepack/netzke_grid_generator.rb
-generators/netzke_basepack/templates/create_netzke_grid_columns.rb
+generators/netzke_basepack/netzke_grid_panel_generator.rb
+generators/netzke_basepack/templates/create_netzke_grid_panel_columns.rb
 generators/netzke_basepack/USAGE
 init.rb
 install.rb
 javascripts/basepack.js
 javascripts/filters.js
-lib/app/models/netzke_grid_column.rb
+lib/app/models/netzke_grid_panel_column.rb
 lib/netzke/accordion_panel.rb
 lib/netzke/ar_ext.rb
 lib/netzke/border_layout_panel.rb

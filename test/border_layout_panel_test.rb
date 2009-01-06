@@ -14,14 +14,14 @@ require 'netzke/grid'
 
 class BorderLayoutPanelTest < ActiveSupport::TestCase
   test "dependencies" do
-    widget = Netzke::BorderLayoutPanel.new(:name => 'Bla', :regions => {:center => {:widget_class_name => 'Panel'}, :east => {:widget_class_name => 'Grid'}})
+    widget = Netzke::BorderLayoutPanel.new(:name => 'Bla', :regions => {:center => {:widget_class_name => 'Panel'}, :east => {:widget_class_name => 'GridPanel'}})
     
-    assert(%w{BorderLayoutPanel Panel Grid}.all?{|k| widget.dependencies.include?(k)})
+    assert(%w{BorderLayoutPanel Panel GridPanel}.all?{|k| widget.dependencies.include?(k)})
     
     assert(widget.js_missing_code.index("Ext.componentCache['BorderLayoutPanel']"))
     assert(widget.js_missing_code.index("Ext.componentCache['Panel']"))
-    assert(!widget.js_missing_code(%w{Grid Panel}).index("Ext.componentCache['Grid']"))
-    assert(!widget.js_missing_code(%w{Grid Panel}).index("Ext.componentCache['Panel']"))
+    assert(!widget.js_missing_code(%w{GridPanel Panel}).index("Ext.componentCache['GridPanel']"))
+    assert(!widget.js_missing_code(%w{GridPanel Panel}).index("Ext.componentCache['Panel']"))
     assert(!widget.js_missing_code(%w{BorderLayoutPanel}).index("Ext.componentCache['BorderLayoutPanel']"))
     
   end

@@ -1,4 +1,4 @@
-class NetzkeGridColumn < ActiveRecord::Base
+class NetzkeGridPanelColumn < ActiveRecord::Base
   belongs_to :layout, :class_name => "NetzkeLayout"
   
   acts_as_list :scope => :layout

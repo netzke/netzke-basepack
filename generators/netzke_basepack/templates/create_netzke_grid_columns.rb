@@ -1,13 +1,13 @@
-class CreateNetzkeGridColumns < ActiveRecord::Migration
+class CreateNetzkeGridPanelColumns < ActiveRecord::Migration
   def self.up
-    create_table :netzke_grid_columns do |t|
+    create_table :netzke_grid_panel_columns do |t|
       t.string    :name
       t.string    :label
       t.boolean   :read_only
       t.integer   :position
       t.boolean   :hidden
       t.integer   :width
-      t.string    :shows_as, :limit => 32
+      t.string    :editor, :limit => 32
 
       t.integer   :layout_id
       
@@ -16,6 +16,6 @@ class CreateNetzkeGridColumns < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :netzke_grid_columns
+    drop_table :netzke_grid_panel_columns
   end
 end

@@ -3,7 +3,8 @@ Some re-factoring and redesign along with netzke-core
 Panel widget added
 BorderLayoutPanel added
 AccordionPanel added
-Fixed bugs with Grid column operations configuration
+Fixed the bug with Grid column operations configuration
+Renamed Grid into GridPanel
 
 v0.1.4.1
 Meta: updated netzke-core version (dependency)

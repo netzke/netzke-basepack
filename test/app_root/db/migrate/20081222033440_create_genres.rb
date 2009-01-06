@@ -3,6 +3,7 @@ class CreateGenres < ActiveRecord::Migration
     create_table :genres do |t|
       t.string :name
       t.integer :category_id
+      t.boolean :popular
 
       t.timestamps
     end

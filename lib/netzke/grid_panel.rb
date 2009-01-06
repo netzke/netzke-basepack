@@ -11,11 +11,11 @@ module Netzke
   # * filtering
   # * properties and column configuration
   #
-  class Grid < Base
-    include GridJsBuilder
-    include GridInterface
+  class GridPanel < Base
+    include GridPanelJsBuilder
+    include GridPanelInterface
 
-    # define connection points between client side and server side of Grid. See implementation of equally named methods in the GridInterface module.
+    # define connection points between client side and server side of GridPanel. See implementation of equally named methods in the GridPanelInterface module.
     interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
 
     # default grid configuration
@@ -23,7 +23,7 @@ module Netzke
       {
         :ext_config => {
           :properties => true, 
-          :enable_column_filters => true, 
+          :enable_column_filters => Netzke::Base.config[:grid_panel][:filters], 
           :enable_column_move => true, 
           :enable_column_resize => true
         },
@@ -34,13 +34,13 @@ module Netzke
     def property_widgets
       [{
         :name => 'columns',
-        :widget_class_name => "Grid", 
+        :widget_class_name => "GridPanel", 
         :data_class_name => column_manager_class_name, 
         :ext_config => {:title => false, :properties => false},
         :active => true
       },{
         :name => 'general',
-        :widget_class_name => "PreferenceGrid", 
+        :widget_class_name => "PreferenceGridPanel", 
         :host_widget_name => @id_name, 
         :default_properties => available_permissions.map{ |k| {:name => "permissions.#{k}", :value => @permissions[k.to_sym]}},
         :ext_config => {:title => false}
@@ -72,7 +72,7 @@ module Netzke
     end
     
     def column_manager_class_name
-      "NetzkeGridColumn"
+      "NetzkeGridPanelColumn"
     end
     
     def column_manager_class

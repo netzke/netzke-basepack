@@ -12,10 +12,10 @@ require 'netzke/grid'
 require 'netzke/ar_ext'
 require 'netzke/column'
 
-class GridTest < ActiveSupport::TestCase
+class GridPanelTest < ActiveSupport::TestCase
   
   test "interface" do
-    grid = Netzke::Grid.new(:name => 'grid', :data_class_name => 'Book', :layout_manager => false, :columns => [:id, :title, :recent])
+    grid = Netzke::GridPanel.new(:name => 'grid', :data_class_name => 'Book', :layout_manager => false, :columns => [:id, :title, :recent])
 
     # post
     grid.post_data(:created_records => [{:title => 'Lord of the Rings'}].to_json)
@@ -38,6 +38,7 @@ class GridTest < ActiveSupport::TestCase
     
   end
 
-  # TODO: add tests with association columns
+  
+  # TODO: add tests with association column
   
 end
