@@ -22,10 +22,11 @@ module Netzke
     def initial_config
       {
         :ext_config => {
-          :properties => true, 
+          :properties => false, 
           :enable_column_filters => Netzke::Base.config[:grid_panel][:filters], 
           :enable_column_move => true, 
-          :enable_column_resize => true
+          :enable_column_resize => true,
+          :border => true
         },
         :layout_manager => "NetzkeLayout"
       }

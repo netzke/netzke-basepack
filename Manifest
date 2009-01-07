@@ -14,13 +14,14 @@ lib/netzke/ar_ext.rb
 lib/netzke/border_layout_panel.rb
 lib/netzke/column.rb
 lib/netzke/container.rb
-lib/netzke/grid.rb
-lib/netzke/grid_interface.rb
-lib/netzke/grid_js_builder.rb
+lib/netzke/grid_panel.rb
+lib/netzke/grid_panel_interface.rb
+lib/netzke/grid_panel_js_builder.rb
 lib/netzke/panel.rb
 lib/netzke/preference_grid.rb
 lib/netzke/properties_tool.rb
 lib/netzke/property_grid.rb
+lib/netzke/wrapper.rb
 lib/netzke-basepack.rb
 LICENSE
 Manifest
@@ -61,7 +62,7 @@ test/fixtures/cities.yml
 test/fixtures/continents.yml
 test/fixtures/countries.yml
 test/fixtures/genres.yml
-test/grid_test.rb
+test/grid_panel_test.rb
 test/netzke_basepack_test.rb
 test/schema.rb
 test/test_helper.rb
