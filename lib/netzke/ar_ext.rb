@@ -123,7 +123,7 @@ module Netzke
 
         res = {
           :name => config[:name].to_s || "unnamed",
-          :label => config[:label] || config[:name].to_s.humanize,
+          :label => config[:label] || config[:name].to_s.gsub('__', '_').humanize,
           :read_only => config[:name] == :id, # make "id" column read-only by default
           :hidden => config[:name] == :id, # hide "id" column by default
           :width => DEFAULT_COLUMN_WIDTH,

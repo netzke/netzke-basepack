@@ -33,15 +33,19 @@ module Netzke::GridPanelInterface
 
   def resize_column(params)
     raise "Called interface_resize_column while not configured to do so" unless config[:ext_config][:enable_column_resize]
-    l_item = layout_manager_class.by_widget(id_name).layout_items[params[:index].to_i]
-    l_item.width = params[:size]
-    l_item.save!
+    if layout_manager_class
+      l_item = layout_manager_class.by_widget(id_name).layout_items[params[:index].to_i]
+      l_item.width = params[:size]
+      l_item.save!
+    end
     {}
   end
   
   def move_column(params)
     raise "Called interface_move_column while not configured to do so" unless config[:ext_config][:enable_column_move]
-    layout_manager_class.by_widget(id_name).move_item(params[:old_index].to_i, params[:new_index].to_i)
+    if layout_manager_class
+      layout_manager_class.by_widget(id_name).move_item(params[:old_index].to_i, params[:new_index].to_i)
+    end
     {}
   end
 
