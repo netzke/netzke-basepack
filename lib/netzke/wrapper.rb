@@ -11,8 +11,9 @@ module Netzke
     end
 
     def initial_aggregatees
-      item_name = config[:item][:name] ||= 'item'
-      {item_name.to_sym => config[:item]}
+      # item_name = config[:item][:name] ||= 'item'
+      # {item_name.to_sym => config[:item]}
+      {:item => config[:item]}
     end
   end
   
