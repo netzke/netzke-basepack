@@ -22,7 +22,7 @@ module Netzke
     def initial_config
       {
         :ext_config => {
-          :properties => false, 
+          :config_tool => false, 
           :enable_column_filters => Netzke::Base.config[:grid_panel][:filters], 
           :enable_column_move => true, 
           :enable_column_resize => true,
@@ -37,11 +37,11 @@ module Netzke
         :name => 'columns',
         :widget_class_name => "GridPanel", 
         :data_class_name => column_manager_class_name, 
-        :ext_config => {:title => false, :properties => false},
+        :ext_config => {:title => false, :config_tool => false},
         :active => true
       },{
         :name => 'general',
-        :widget_class_name => "PreferenceGridPanel", 
+        :widget_class_name => "PreferenceGrid", 
         :host_widget_name => @id_name, 
         :default_properties => available_permissions.map{ |k| {:name => "permissions.#{k}", :value => @permissions[k.to_sym]}},
         :ext_config => {:title => false}
@@ -106,13 +106,13 @@ module Netzke
 
     def actions
       [{
-        :text => 'Add', :handler => 'add', :disabled => @pref['permissions.create'] == false
+        :text => 'Add', :handler => 'add', :disabled => !@permissions[:create]
       },{
-        :text => 'Edit', :handler => 'edit', :disabled => @pref['permissions.update'] == false
+        :text => 'Edit', :handler => 'edit', :disabled => !@permissions[:update]
       },{
-        :text => 'Delete', :handler => 'delete', :disabled => @pref['permissions.delete'] == false
+        :text => 'Delete', :handler => 'delete', :disabled => !@permissions[:delete]
       },{
-        :text => 'Apply', :handler => 'submit', :disabled => @pref['permissions.update'] == false && @pref['permissions.create'] == false
+        :text => 'Apply', :handler => 'submit', :disabled => !@permissions[:update] && !@permissions[:create]
       }]
     end
 

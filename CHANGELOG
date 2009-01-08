@@ -1,3 +1,6 @@
+v0.2.0.1
+Meta: updated netzke-core version (dependency)
+
 v0.2.0
 Some re-factoring and redesign along with netzke-core
 Panel widget added
@@ -6,6 +9,7 @@ AccordionPanel added
 Bug fix: column operations configuration misbehaving
 Renamed Grid into GridPanel
 Bug fix: exception was thrown at a column operation when no layout_manager was present
+Reworked permission handling in GridPanel.
 
 v0.1.4.1
 Meta: updated netzke-core version (dependency)

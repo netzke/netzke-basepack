@@ -77,16 +77,16 @@ module Netzke
       end
       
       # which columns are to be picked up by grids and forms
-      def expose_columns(column_configs)
-        if column_configs == :all
-          write_inheritable_array(:exposed_columns, self.column_names.map(&:to_sym))
+      def expose_columns(*column_configs)
+        if column_configs.first == :all
+          write_inheritable_attribute(:exposed_columns, self.column_names.map(&:to_sym))
         else
-          write_inheritable_array(:exposed_columns, column_configs)
+          write_inheritable_attribute(:exposed_columns, column_configs)
         end
       end
       
       def exposed_columns
-        read_inheritable_attribute(:exposed_columns) || write_inheritable_array(:exposed_columns, expose_columns(:all) + virtual_columns)
+        read_inheritable_attribute(:exposed_columns) || write_inheritable_attribute(:exposed_columns, expose_columns(:all) + virtual_columns)
       end
       
       # virtual "columns" that simply correspond to instance methods of an ActiveRecord class
@@ -96,7 +96,7 @@ module Netzke
         else
           config = {:name => config.keys.first}.merge(config.values.first)
         end
-        write_inheritable_array(:virtual_columns, (read_inheritable_attribute(:virtual_columns) || []) << config)
+        write_inheritable_attribute(:virtual_columns, (read_inheritable_attribute(:virtual_columns) || []) << config)
       end
       
       def virtual_columns

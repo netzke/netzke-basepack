@@ -64,7 +64,7 @@ module Netzke::GridPanelJsBuilder
     
       this.cmConfig = [];
       Ext.each(config.columns, function(c){
-        var editor = c.readOnly ? null : Ext.netzke.editors[c.editor](c, config);
+        var editor = (c.readOnly || !config.permissions.update) ? null : Ext.netzke.editors[c.editor](c, config);
 
         this.cmConfig.push({
           header: c.label || c.name,
