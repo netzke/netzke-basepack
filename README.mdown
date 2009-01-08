@@ -13,6 +13,9 @@ Install the gem:
 Include it into environment.rb:
 `config.gem "netzke-basepack"`
 
+Include mapping for Netzke controller providing *.js and *.css (in routes.rb):
+`map.netzke`
+
 # Usage
 First, run the generators to have the necessary migrations:
 
