@@ -1,5 +1,5 @@
 # netzke-basepack
-A pack of basic Rails/Ext JS widgets, as a part of Netzke framework.
+A pack of basic Rails/Ext JS widgets, as a part of Netzke framework. Live demo/tutorials on <http://blog.writelesscode.com>
 
 # Prerequisites
 1. Rails >= 2.2
