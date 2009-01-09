@@ -116,9 +116,7 @@ module Netzke
       # Returns default column config understood by Netzke::GridPanel
       # Argument: column name (as Symbol) or column config
       def default_column_config(config)
-        config = config.dup
-        # config = config.dup # to not touch the original config
-        config = {:name => config} if config.is_a?(Symbol) # if got a column name
+        config = config.is_a?(Symbol) ? {:name => config} : config.dup
 
         # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
         type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual

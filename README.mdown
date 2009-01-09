@@ -1,6 +1,8 @@
 # netzke-basepack
 A pack of basic Rails/Ext JS widgets, as a part of Netzke framework. Live demo/tutorials on <http://blog.writelesscode.com>
 
+Note that if you would like to modify this code or experiment with it, you may be better off cloning this project into your app's vendor/plugin directory - it will then behave as a Rails plugin.
+
 # Prerequisites
 1. Rails >= 2.2
 2. Ext JS >= 2.0: its root *must* be accessible as `RAILS_ROOT/public/extjs`. You may symlink your Ext JS library here like this (from your app folder): `cd public && ln -s ~/Developer/extjs/ext-2.2 extjs`
