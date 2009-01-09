@@ -59,6 +59,14 @@ module Netzke
     end
     
     module ActiveRecordClassMethods
+      # next and previous to id records
+      def next(id)
+        find(:first, :conditions => ["#{primary_key} > ?", id])
+      end
+      def previous(id)
+        find(:first, :conditions => ["#{primary_key} < ?", id], :order => "#{primary_key} DESC")
+      end
+      
       # Returns all unique values for a column, filtered by the query
       def choices_for(column, query = nil)
         if respond_to?("#{column}_choices", query)
