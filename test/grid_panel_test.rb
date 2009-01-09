@@ -5,9 +5,9 @@ require 'netzke/properties_tool'
 require 'netzke/container'
 require 'netzke/accordion_panel'
 
-require 'netzke/grid_interface'
-require 'netzke/grid_js_builder'
-require 'netzke/grid'
+require 'netzke/grid_panel_interface'
+require 'netzke/grid_panel_js_builder'
+require 'netzke/grid_panel'
 
 require 'netzke/ar_ext'
 require 'netzke/column'

@@ -26,9 +26,11 @@ module Netzke
           :enable_column_filters => Netzke::Base.config[:grid_panel][:filters], 
           :enable_column_move => true, 
           :enable_column_resize => true,
-          :border => true
+          :border => true,
+          :load_mask => true
         },
-        :layout_manager => "NetzkeLayout"
+        :layout_manager => "NetzkeLayout",
+        :column_manager => "NetzkeGridPanelColumn"
       }
     end
 
@@ -36,7 +38,7 @@ module Netzke
       [{
         :name => 'columns',
         :widget_class_name => "GridPanel", 
-        :data_class_name => column_manager_class_name, 
+        :data_class_name => column_manager_class.name, 
         :ext_config => {:title => false, :config_tool => false},
         :active => true
       },{
@@ -69,15 +71,13 @@ module Netzke
     protected
     
     def layout_manager_class
-      config[:layout_manager] && config[:layout_manager].constantize
-    end
-    
-    def column_manager_class_name
-      "NetzkeGridPanelColumn"
+      config[:layout_manager].constantize
+    rescue NameError
+      nil
     end
     
     def column_manager_class
-      column_manager_class_name.constantize
+      config[:column_manager].constantize
     rescue NameError
       nil
     end

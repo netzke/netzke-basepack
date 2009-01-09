@@ -1,6 +1,7 @@
 module Netzke
+  # TODO: rename this class, or better even, make a module out of it
   class Column
-    def self.default_columns_for_widget(widget)
+    def self.default_dbfields_for_widget(widget, mode = :grid)
       raise ArgumentError, "No data_class_name specified for widget #{widget.config[:name]}" if widget.config[:data_class_name].nil?
 
       # layout = NetzkeLayout.create(:widget_name => widget.id_name, :items_class => self.name, :user_id => NetzkeLayout.user_id)
@@ -26,10 +27,18 @@ module Netzke
       res = []
       for c in columns_for_create
         # finally reverse-merge them with the defaults from the data_class
-        res << data_class.default_column_config(c)
+        res << (mode == :grid ? data_class.default_column_config(c) : data_class.default_field_config(c))
       end
       
       res
+    end
+
+    def self.default_columns_for_widget(widget)
+      default_dbfields_for_widget(widget, :grid)
+    end
+    
+    def self.default_fields_for_widget(widget)
+      default_dbfields_for_widget(widget, :form)
     end
     
     protected
