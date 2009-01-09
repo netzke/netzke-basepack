@@ -5,11 +5,12 @@ require 'netzke/ar_ext'
 class ArExtTest < ActiveSupport::TestCase
   fixtures :cities, :countries, :continents
 
-  test "default column config" do
+  test "default column and field configs" do
     cc = Book.default_column_config(:title)
     
     assert_equal("Title", cc[:label])
     assert_equal(:text_field, cc[:editor])
+    assert(!cc[:height])
 
     cc = Book.default_column_config({:name => :amount, :label => 'AMOUNT'})
     
@@ -22,6 +23,11 @@ class ArExtTest < ActiveSupport::TestCase
 
     cc = Book.default_column_config(:genre__popular)
     assert_equal(:checkbox, cc[:editor])
+    
+    cc = Book.default_column_config(:title)
+    
+    # cc = Book.default_field_config(:title)
+    # assert(cc[:height])
   end
   
   test "choices for column" do
@@ -41,6 +47,12 @@ class ArExtTest < ActiveSupport::TestCase
     cities = City.choices_for("name", "Co")
     assert_equal(2, cities.size)
     assert(cities.include?('Cordoba') && cities.include?('Concordia'))
+  end
+
+  test "to array" do
+    b = Book.create({:title => 'Rayuela', :genre_id => 200, :amount => 1000})
+    columns = [:recent, {:name => :title}, {:name => :amount}, :genre_id]
+    assert_equal(['Yes', 'Rayuela', 1000, 200], b.to_array(columns))
   end
   
 end

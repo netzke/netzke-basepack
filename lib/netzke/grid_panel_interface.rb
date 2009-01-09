@@ -104,14 +104,18 @@ module Netzke::GridPanelInterface
     search_params = normalize_params(params)
     raise ArgumentError, "No data_class_name specified for widget '#{config[:name]}'" if !config[:data_class_name]
     records = config[:data_class_name].constantize.all(search_params.clone) # clone needed as searchlogic removes :conditions key from the hash
-    output_array = []
-    records.each do |r|
-      r_array = []
-      self.get_columns.each do |column|
-        r_array << r.send(column[:name])
-      end
-      output_array << r_array
-    end
+    # output_array = []
+    columns = get_columns
+    output_array = records.map{|r| r.to_array(columns)}
+    
+    # records.each do |r|
+    #   r_array = []
+    #   self.get_columns.each do |column|
+    #     r_array << r.send(column[:name])
+    #   end
+    #   output_array << r_array
+    #   output_array << r.to_array(columns)
+    # end
 
     # add total_entries accessor to the result
     class << output_array

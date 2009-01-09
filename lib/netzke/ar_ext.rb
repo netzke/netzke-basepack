@@ -49,7 +49,24 @@ module Netzke
       end
     end
     
+    def to_array(columns)
+      res = []
+      for c in columns
+        method = c.is_a?(Symbol) ? c : c[:name]
+        res << send(method)
+      end
+      res
+    end
+    
     module ActiveRecordClassMethods
+      # next and previous to id records
+      def next(id)
+        find(:first, :conditions => ["#{primary_key} > ?", id])
+      end
+      def previous(id)
+        find(:first, :conditions => ["#{primary_key} < ?", id], :order => "#{primary_key} DESC")
+      end
+      
       # Returns all unique values for a column, filtered by the query
       def choices_for(column, query = nil)
         if respond_to?("#{column}_choices", query)
@@ -107,15 +124,7 @@ module Netzke
         read_inheritable_attribute(:virtual_columns).keys.include?(column)
       end
       
-      #
-      # Used by Netzke::GridPanel
-      #
-      
-      DEFAULT_COLUMN_WIDTH = 100
-      
-      # Returns default column config understood by Netzke::GridPanel
-      # Argument: column name (as Symbol) or column config
-      def default_column_config(config)
+      def default_dbfield_config(config, mode = :grid)
         config = config.is_a?(Symbol) ? {:name => config} : config.dup
 
         # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
@@ -126,9 +135,12 @@ module Netzke
           :label => config[:label] || config[:name].to_s.gsub('__', '_').humanize,
           :read_only => config[:name] == :id, # make "id" column read-only by default
           :hidden => config[:name] == :id, # hide "id" column by default
-          :width => DEFAULT_COLUMN_WIDTH,
+          :width => mode == :grid ? DEFAULT_COLUMN_WIDTH : DEFAULT_FIELD_WIDTH,
           :editor => ext_editor(type)
         }
+        
+        # for forms fields also set up the height
+        res.merge!(:height => DEFAULT_FIELD_HEIGHT) if mode == :form
 
         # detect :assoc__method
         if config[:name].to_s.index('__')
@@ -155,13 +167,38 @@ module Netzke
       end
       
       #
-      # Used by Netzke::Form
+      # Used by Netzke::GridPanel
+      #
+      
+      DEFAULT_COLUMN_WIDTH = 100
+      
+      # Returns default column config understood by Netzke::GridPanel
+      # Argument: column name (as Symbol) or column config
+      def default_column_config(config)
+        default_dbfield_config(config, :grid)
+      end
+      
+      #
+      # Used by Netzke::FormPanel
       #
       
       DEFAULT_FIELD_WIDTH = 100
-      DEFAULT_FIELD_HEIGHT = 50
+      DEFAULT_FIELD_HEIGHT = nil
       def default_field_config(config)
-        # TODO
+        # default_dbfield_config(config, :form)
+        config = config.is_a?(Symbol) ? {:name => config} : config.dup
+
+        # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
+        type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
+
+        res = {
+          :name => config[:name].to_s || "unnamed",
+          :field_label => config[:field_label] || config[:name].to_s.gsub('__', '_').humanize,
+          :disabled => config[:name] == :id, # make "id" column disabled by default
+          # :hidden => config[:name] == :id, # hide "id" column by default
+          :xtype => XTYPE_MAP[type]
+        }
+        
       end
       
       private
@@ -172,6 +209,14 @@ module Netzke
         :date => :date_field,
         :datetime => :datetime,
         :string => :text_field
+      }
+      
+      XTYPE_MAP = {
+        :integer => :numberfield,
+        :boolean => :textfield,
+        :date => :datefield,
+        :datetime => :datefield,
+        :string => :textfield
       }
       
       def ext_editor(type)
