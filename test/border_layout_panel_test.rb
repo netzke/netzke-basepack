@@ -8,9 +8,9 @@ require 'netzke-core'
 require 'netzke/border_layout_panel'
 require 'netzke/panel'
 require 'netzke/properties_tool'
-require 'netzke/grid_js_builder'
-require 'netzke/grid_interface'
-require 'netzke/grid'
+require 'netzke/grid_panel_js_builder'
+require 'netzke/grid_panel_interface'
+require 'netzke/grid_panel'
 
 class BorderLayoutPanelTest < ActiveSupport::TestCase
   test "dependencies" do
