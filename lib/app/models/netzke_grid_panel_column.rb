@@ -3,11 +3,6 @@ class NetzkeGridPanelColumn < ActiveRecord::Base
   
   acts_as_list :scope => :layout
 
-  # old?
-  # def self.create_with_defaults(column_config, klass)
-  #   create(klass.default_column_config(column_config).stringify_values!)
-  # end
-  
   def self.create_layout_for_widget(widget)
     layout = NetzkeLayout.create(:widget_name => widget.id_name, :items_class => self.name, :user_id => NetzkeLayout.user_id)
 
