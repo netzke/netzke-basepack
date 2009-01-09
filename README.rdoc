@@ -24,7 +24,7 @@ Include mapping for Netzke controller providing *.js and *.css (in routes.rb):
 = Usage
 First, run the generators to have the necessary migrations:
     ./script/generate netzke_core
-    ./script/generate netzke_grid
+    ./script/generate netzke_grid_panel
 
 Do the migrations:
     rake db:migrate

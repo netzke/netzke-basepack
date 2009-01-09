@@ -20,7 +20,7 @@ module Netzke
           Ext.each(['center', 'west', 'east', 'south', 'north'], function(r){
             var configName = r+'Config';
             if (config[configName]){
-              var regionConfig = config[configName].regionConfig || {};
+              var regionConfig = config.regions[r] || {};
               regionConfig.layout = 'fit';
               regionConfig.region = r;
               regionConfig.items = [new Ext.componentCache[config[configName].widgetClassName](config[configName])]
@@ -75,35 +75,23 @@ module Netzke
       config[:regions] || {}
     end
     
-    # def items
-    #   res = []
-    #   config[:regions].each_pair do |k,v|
-    #     width = v.delete(:width)
-    #     height = v.delete(:height)
-    #     split = v[:split].nil? ? true : v.delete(:split) # split is by default true
-    #     region_config = {
-    #       :region => k, 
-    #       :width => @pref["#{k}_width"] || width || 100, 
-    #       :height => @pref["#{k}_height"] || height || 100, 
-    #       :split => split,
-    #       :layout => v.delete(:layout) || 'fit',
-    #       :id => @id_name + "_#{k}_region"
-    #     }
-    #     region_widget_instance = "Netzke::#{v[:widget_class_name]}".constantize.new(v.merge(:name => "#{id_name}__#{k}"))
-    #     region_config.merge!(v)
-    #     region_config[:items] = ["new Ext.componentCache['#{v[:widget_class_name]}'](#{region_widget_instance.js_config.to_js})".l]
-    #     res << region_config
-    #   end
-    #   res
-    # end
-    
     def region_aggregatees
       aggregatees.reject{ |k,v| !REGIONS.include?(k) }
     end
     
-    # def js_config
-    #   super.merge(:regional_config => items)
-    # end
+    def js_config
+      regions = {}
+      REGIONS.each do |r|
+        if region_aggr = aggregatees[r]
+          regions.merge!(r => region_aggr[:region_config] || {})
+          height = @pref["#{r}_height"] ||= regions[r][:height] if regions[r][:height]
+          width = @pref["#{r}_width"] ||= regions[r][:width] if regions[r][:width]
+          regions[r].merge!(:height => height)
+          regions[r].merge!(:width => width)
+        end
+      end
+      super.merge(:regions => regions)
+    end
   
     def interface_resize_region(params)
       @pref["#{params[:region_name]}_width"] = params[:new_width].to_i if params[:new_width]
