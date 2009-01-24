@@ -4,8 +4,7 @@ class NetzkeGridPanelColumn < ActiveRecord::Base
   acts_as_list :scope => :layout
 
   def self.create_layout_for_widget(widget)
-    layout = NetzkeLayout.create(:widget_name => widget.id_name, :items_class => self.name, :user_id => NetzkeLayout.user_id)
-
+    layout = NetzkeLayout.create_with_user(:widget_name => widget.id_name, :items_class => self.name)
     columns = Netzke::Column.default_columns_for_widget(widget)
 
     for c in columns

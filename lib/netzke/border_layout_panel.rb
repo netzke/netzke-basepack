@@ -84,8 +84,8 @@ module Netzke
       REGIONS.each do |r|
         if region_aggr = aggregatees[r]
           regions.merge!(r => region_aggr[:region_config] || {})
-          height = @pref["#{r}_height"] ||= regions[r][:height] if regions[r][:height]
-          width = @pref["#{r}_width"] ||= regions[r][:width] if regions[r][:width]
+          height = persistent_config["#{r}_height"] ||= regions[r][:height] if regions[r][:height]
+          width = persistent_config["#{r}_width"] ||= regions[r][:width] if regions[r][:width]
           regions[r].merge!(:height => height)
           regions[r].merge!(:width => width)
         end
@@ -93,9 +93,10 @@ module Netzke
       super.merge(:regions => regions)
     end
   
-    def interface_resize_region(params)
-      @pref["#{params[:region_name]}_width"] = params[:new_width].to_i if params[:new_width]
-      @pref["#{params[:region_name]}_height"] = params[:new_height].to_i if params[:new_height]
+    def resize_region(params)
+      persistent_config["#{params[:region_name]}_width"] = params[:new_width].to_i if params[:new_width]
+      persistent_config["#{params[:region_name]}_height"] = params[:new_height].to_i if params[:new_height]
+      {}
     end
     
     protected

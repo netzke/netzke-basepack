@@ -18,6 +18,31 @@ module Netzke
     # define connection points between client side and server side of GridPanel. See implementation of equally named methods in the GridPanelInterface module.
     interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
 
+    module ClassMethods
+
+      # Global GridPanel configuration
+      def config
+        set_default_config({
+            :column_manager => "NetzkeGridPanelColumn"
+        })
+      end
+
+      def column_manager_class
+        config[:column_manager].constantize
+      rescue
+        nil
+      end
+    end
+    extend ClassMethods
+
+    def layout_manager_class
+      self.class.layout_manager_class
+    end
+
+    def column_manager_class
+      self.class.column_manager_class
+    end
+
     # default grid configuration
     def initial_config
       {
@@ -29,8 +54,8 @@ module Netzke
           :border => true,
           :load_mask => true
         },
-        :layout_manager => "NetzkeLayout",
-        :column_manager => "NetzkeGridPanelColumn"
+        :persistent_layout => true,
+        :persistent_config => true
       }
     end
 
@@ -65,22 +90,8 @@ module Netzke
       w = aggregatee_instance(:properties__general)
       w.interface_load_source(params)
     end
-    
-
 
     protected
-    
-    def layout_manager_class
-      config[:layout_manager].constantize
-    rescue NameError
-      nil
-    end
-    
-    def column_manager_class
-      config[:column_manager].constantize
-    rescue NameError
-      nil
-    end
     
     def available_permissions
       %w(read update create delete)
@@ -91,7 +102,7 @@ module Netzke
     # get columns from layout manager
     def get_columns
       @columns ||=
-      if layout_manager_class && column_manager_class
+      if config[:persistent_layout] && layout_manager_class && column_manager_class
         layout = layout_manager_class.by_widget(id_name)
         layout ||= column_manager_class.create_layout_for_widget(self)
         layout.items_hash  # TODO: bad name!

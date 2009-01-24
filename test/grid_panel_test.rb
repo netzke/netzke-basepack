@@ -14,6 +14,11 @@ require 'netzke/column'
 
 class GridPanelTest < ActiveSupport::TestCase
   
+  test "class configuration" do
+    assert_equal(NetzkeGridPanelColumn, Netzke::GridPanel.column_manager_class)
+    assert_equal(NetzkeLayout, Netzke::GridPanel.layout_manager_class)
+  end
+  
   test "interface" do
     grid = Netzke::GridPanel.new(:name => 'grid', :data_class_name => 'Book', :layout_manager => false, :columns => [:id, :title, :recent])
 
