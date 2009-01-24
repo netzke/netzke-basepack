@@ -50,7 +50,7 @@ module Netzke
                   });
                   panel.oldSize.width = w;
                 }
-            		return true;
+                return true;
               }, this);
               else if (item.region == 'south' || item.region == 'north') item.on('resize', function(panel, w, h){
                 if (panel.oldSize.height != h) {
@@ -60,7 +60,7 @@ module Netzke
                   });
                   panel.oldSize.height = h;
                 }
-            		return true;
+                return true;
               }, this);
             }, this);
             this.un('afterlayout', this.setResizeEvents, this); // to avoid redefinition of resize events

@@ -46,16 +46,16 @@ module Netzke
     def self.js_items
       items.inject([]) do |a,i|
         a << {
-          :title => i.to_s.humanize,
-          :layout => 'fit',
-          :id => i.to_s,
-          # :id => "#{config[:name]}_#{i.to_s}",
-          :items => ([i.to_s.to_js.l] if !aggregatees[i][:late_aggregation]),
+          :title      => i.to_s.humanize,
+          :layout     => 'fit',
+          :id         => i.to_s,
+          # :id       => "#{config[:name]}_#{i.to_s}",
+          :items      => ([i.to_s.to_js.l] if !aggregatees[i][:late_aggregation]),
           # these listeners will be different for tab_panel and accordion
-          :collapsed => !aggregatees[i][:active],
-          :listeners => {
-            # :activate => {:fn => "function(p){this.feedback(p.id)}".l, :scope => this},
-            :expand => {:fn => "this.loadItemWidget".l, :scope => this}
+          :collapsed  => !aggregatees[i][:active],
+          :listeners  => {
+          # :activate => {:fn => "function(p){this.feedback(p.id)}".l, :scope => this},
+          :expand     => {:fn => "this.loadItemWidget".l, :scope => this}
           }
         }
       end

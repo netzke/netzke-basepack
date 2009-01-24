@@ -47,12 +47,12 @@ module Netzke
     def initial_config
       {
         :ext_config => {
-          :config_tool => false, 
-          :enable_column_filters => Netzke::Base.config[:grid_panel][:filters], 
-          :enable_column_move => true, 
-          :enable_column_resize => true,
-          :border => true,
-          :load_mask => true
+          :config_tool           => false,
+          :enable_column_filters => Netzke::Base.config[:grid_panel][:filters],
+          :enable_column_move    => true,
+          :enable_column_resize  => true,
+          :border                => true,
+          :load_mask             => true
         },
         :persistent_layout => true,
         :persistent_config => true
@@ -61,17 +61,17 @@ module Netzke
 
     def property_widgets
       [{
-        :name => 'columns',
-        :widget_class_name => "GridPanel", 
-        :data_class_name => column_manager_class.name, 
-        :ext_config => {:title => false, :config_tool => false},
-        :active => true
+        :name              => 'columns',
+        :widget_class_name => "GridPanel",
+        :data_class_name   => column_manager_class.name,
+        :ext_config        => {:title => false, :config_tool => false},
+        :active            => true
       },{
-        :name => 'general',
-        :widget_class_name => "PreferenceGrid", 
-        :host_widget_name => @id_name, 
+        :name               => 'general',
+        :widget_class_name  => "PreferenceGrid",
+        :host_widget_name   => @id_name,
         :default_properties => available_permissions.map{ |k| {:name => "permissions.#{k}", :value => @permissions[k.to_sym]}},
-        :ext_config => {:title => false}
+        :ext_config         => {:title => false}
       }]
     end
 

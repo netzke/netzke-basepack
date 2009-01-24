@@ -21,14 +21,14 @@ module Netzke
       
       def js_default_config
         super.merge({
-          :auto_scroll => true,
-          :bbar => "config.actions".l,
-          # :plugins => "plugins".l,
-          :items => "fields".l,
-          :default_type => 'textfield',
-          :body_style => 'padding:5px 5px 0',
-          :label_width => 150,
-          :listeners => {:afterlayout => {:fn => "this.afterlayoutHandler".l, :scope => this}},
+          :auto_scroll    => true,
+          :bbar           => "config.actions".l,
+          # :plugins      => "plugins".l,
+          :items          => "fields".l,
+          :default_type   => 'textfield',
+          :body_style     => 'padding:5px 5px 0',
+          :label_width    => 150,
+          :listeners      => {:afterlayout => {:fn => "this.afterlayoutHandler".l, :scope => this}},
 
           #custom configs
           :auto_load_data => true,
@@ -152,12 +152,9 @@ module Netzke
       logger.debug { "!!! params: #{params.inspect}" }
       klass = config[:data_class_name].constantize
       case params[:neighbour]
-      when "previous"
-        book = klass.previous(params[:id])
-      when "next"
-        book = klass.next(params[:id])
-      else
-        book = klass.find(params[:id])
+      when "previous" then book = klass.previous(params[:id])
+      when "next"     then book = klass.next(params[:id])
+      else                 book = klass.find(params[:id])
       end
       [book && book.to_array(get_fields)].to_json
     end
