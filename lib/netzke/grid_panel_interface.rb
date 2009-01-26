@@ -73,7 +73,6 @@ module Netzke::GridPanelInterface
         exception = nil
         
         # process all attirubutes for the same record (OPTIMIZE: we can use update_attributes separately for regular attributes to speed things up)
-        logger.debug { "!!! record_hash: #{record_hash.inspect}" }
         record_hash.each_pair do |k,v|
           begin
             record.send("#{k}=",v)
@@ -92,7 +91,7 @@ module Netzke::GridPanelInterface
           flash :error => msg
         end
         
-        flash :notice => "#{operation.to_s.capitalize}d #{modified_records} records"
+        flash :notice => "#{operation.to_s.capitalize}d #{modified_records} record(s)"
       end
     else
       flash :error => "You don't have permissions to #{operation} data"
