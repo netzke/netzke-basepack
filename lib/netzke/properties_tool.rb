@@ -28,31 +28,31 @@ module Netzke
               var w = new Ext.Window({
                 title:'Config',
                 layout:'fit',
-        				modal:true,
+                modal:true,
                 width:window.innerWidth*.9,
                 height:window.innerHeight*.9,
-        	      closeAction:'destroy',
-        	      buttons:[{
-        	        text:'Submit',
-        	        handler:function(){this.ownerCt.closeRes = 'OK'; this.ownerCt.destroy()}
-        	      }]
+                closeAction:'destroy',
+                buttons:[{
+                  text:'Submit',
+                  handler:function(){this.ownerCt.closeRes = 'OK'; this.ownerCt.destroy()}
+                }]
 
-        			});
+              });
 
-        			w.show(null, function(){
+              w.show(null, function(){
                 w.loadWidget(this.initialConfig.id+"__properties__get_widget");
-        			}, this);
+              }, this);
 
-        			w.on('destroy', function(){
-        			  if (w.closeRes == 'OK'){
+              w.on('destroy', function(){
+                if (w.closeRes == 'OK'){
                   widget = this;
-        			    if (widget.ownerCt) {
+                  if (widget.ownerCt) {
                     widget.ownerCt.loadWidget(widget.initialConfig.interface.getWidget);
                   } else {
                     this.feedback('Reload current window') // no aggregation
                   }
-        			  }
-        			}, this)
+                }
+              }, this)
             }
           JS
         })

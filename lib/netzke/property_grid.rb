@@ -47,7 +47,7 @@ module Netzke
             url:this.initialConfig.interface.loadSource,
             success:function(r){
               var m = Ext.decode(r.responseText);
-      				this.setSource(m.source);
+              this.setSource(m.source);
               // this.feedback(m.flash);
             },
             scope:this

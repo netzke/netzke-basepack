@@ -4,9 +4,9 @@ module Netzke
       # make us an invisible 'fit'-layout panel
       super.merge({
         :layout => 'fit',
-        :title => false,
+        :title  => false,
         :border => false,
-        :items => ["new Ext.componentCache[config.itemConfig.widgetClassName](config.itemConfig)".l]
+        :items  => ["new Ext.componentCache[config.itemConfig.widgetClassName](config.itemConfig)".l]
       })
     end
 

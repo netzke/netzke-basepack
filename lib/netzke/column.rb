@@ -6,10 +6,8 @@ module Netzke
 
       # layout = NetzkeLayout.create(:widget_name => widget.id_name, :items_class => self.name, :user_id => NetzkeLayout.user_id)
 
-      data_class = widget.config[:data_class_name].constantize
-
-      exposed_columns = normalize_columns(data_class.exposed_columns) # columns exposed from the data class
-
+      data_class          = widget.config[:data_class_name].constantize
+      exposed_columns     = normalize_columns(data_class.exposed_columns) # columns exposed from the data class
       columns_from_config = widget.config[:columns] && normalize_columns(widget.config[:columns]) # columns specified in widget's config
 
       if columns_from_config

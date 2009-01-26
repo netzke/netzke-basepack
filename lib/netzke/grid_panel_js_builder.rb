@@ -29,25 +29,25 @@ module Netzke::GridPanelJsBuilder
 
     def js_default_config
       super.merge({
-        :store => "ds".l,
-        :cm => "cm".l,
-        :sel_model => "new Ext.grid.RowSelectionModel()".l,
-        :auto_scroll => true,
-        :click_to_edit => 2,
+        :store            => "ds".l,
+        :cm               => "cm".l,
+        :sel_model        => "new Ext.grid.RowSelectionModel()".l,
+        :auto_scroll      => true,
+        :click_to_edit    => 2,
         :track_mouse_over => true,
-        # :bbar => "config.actions".l,
-        :bbar => js_bbar,
-        :plugins => "plugins".l,
+        # :bbar           => "config.actions".l,
+        :bbar             => js_bbar,
+        :plugins          => "plugins".l,
       
         #custom configs
-        :auto_load_data => true
+        :auto_load_data   => true
       })
     end
   
     def js_before_constructor
       <<-JS
       var plugins = [];
-    	if (!config.columns) this.feedback('No columns defined for grid '+config.id);
+      if (!config.columns) this.feedback('No columns defined for grid '+config.id);
       this.recordConfig = [];
       Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name})}, this);
       this.Row = Ext.data.Record.create(this.recordConfig);
@@ -86,7 +86,7 @@ module Netzke::GridPanelJsBuilder
         Ext.each(config.columns, function(c){
           filters.push({type:Ext.netzke.filterMap[c.editor], dataIndex:c.name})
         })
-      	var gridFilters = new Ext.grid.GridFilters({filters:filters});
+        var gridFilters = new Ext.grid.GridFilters({filters:filters});
         plugins.push(gridFilters);
       }
     
@@ -96,7 +96,7 @@ module Netzke::GridPanelJsBuilder
     def js_listeners
       super.merge({
         :columnresize => {:fn => "this.onColumnResize".l, :scope => this},
-        :columnmove => {:fn => "this.onColumnMove".l, :scope => this}
+        :columnmove   => {:fn => "this.onColumnMove".l, :scope => this}
       })
     end
   
@@ -136,12 +136,12 @@ module Netzke::GridPanelJsBuilder
             var r = new this.Row(rowConfig); // TODO: add default values
             r.set('id', -r.id); // to distinguish new records by negative values
             this.stopEditing();
-        		this.store.add(r);
-        		this.store.newRecords = this.store.newRecords || []
-        		this.store.newRecords.push(r);
+            this.store.add(r);
+            this.store.newRecords = this.store.newRecords || []
+            this.store.newRecords.push(r);
             // console.info(this.store.newRecords);
             this.tryStartEditing(this.store.indexOf(r));
-        	}
+          }
         JS
     
         :edit => <<-JS.l,
@@ -155,17 +155,17 @@ module Netzke::GridPanelJsBuilder
     
         # try editing the first editable (not hidden, not read-only) sell
         :try_start_editing => <<-JS.l,
-        	function(row){
-        	  if (row == null) return;
-        		var editableColumns = this.getColumnModel().getColumnsBy(function(columnConfig, index){
-        			return !columnConfig.hidden && !!columnConfig.editor;
-        		});
-        		// console.info(editableColumns);
-        		var firstEditableColumn = editableColumns[0];
-        		if (firstEditableColumn){
-        			this.startEditing(row, firstEditableColumn.id);
-        		}
-        	}
+          function(row){
+            if (row == null) return;
+            var editableColumns = this.getColumnModel().getColumnsBy(function(columnConfig, index){
+              return !columnConfig.hidden && !!columnConfig.editor;
+            });
+            // console.info(editableColumns);
+            var firstEditableColumn = editableColumns[0];
+            if (firstEditableColumn){
+              this.startEditing(row, firstEditableColumn.id);
+            }
+          }
         JS
 
         :delete => <<-JS.l,
@@ -175,19 +175,19 @@ module Netzke::GridPanelJsBuilder
                 if (btn == 'yes') {
                   var records = []
                   this.getSelectionModel().each(function(r){
-            		    records.push(r.get('id'));
+                    records.push(r.get('id'));
                   }, this);
-          		    Ext.Ajax.request({
-              			url: this.initialConfig.interface.deleteData,
-              			params: {records: Ext.encode(records)},
-              			success:function(r){ 
-              				var m = Ext.decode(r.responseText);
-              				this.store.reload();
+                  Ext.Ajax.request({
+                    url: this.initialConfig.interface.deleteData,
+                    params: {records: Ext.encode(records)},
+                    success:function(r){ 
+                      var m = Ext.decode(r.responseText);
+                      this.store.reload();
                       // this.loadWithFeedback();
-              				this.feedback(m.flash);
-              			},
-              			scope:this
-              		});
+                      this.feedback(m.flash);
+                    },
+                    scope:this
+                  });
                 }
               }, this);
             }
@@ -198,46 +198,46 @@ module Netzke::GridPanelJsBuilder
 
             var newRecords = [];
             if (this.store.newRecords){
-          		Ext.each(this.store.newRecords, function(r){
-          		  newRecords.push(r.getChanges())
-          		  r.commit() // commit the changes, so that they are not picked up by getModifiedRecords() further down
-          		}, this);
-          		delete this.store.newRecords;
-          	}
-      		
-          	var updatedRecords = [];
-        		Ext.each(this.store.getModifiedRecords(),
-        			function(record) {
-        				var completeRecordData = {};
-        				Ext.apply(completeRecordData, Ext.apply(record.getChanges(), {id:record.get('id')}));
-        				updatedRecords.push(completeRecordData);
-        			}, 
-        		this);
+              Ext.each(this.store.newRecords, function(r){
+                newRecords.push(r.getChanges())
+                r.commit() // commit the changes, so that they are not picked up by getModifiedRecords() further down
+              }, this);
+              delete this.store.newRecords;
+            }
+          
+            var updatedRecords = [];
+            Ext.each(this.store.getModifiedRecords(),
+              function(record) {
+                var completeRecordData = {};
+                Ext.apply(completeRecordData, Ext.apply(record.getChanges(), {id:record.get('id')}));
+                updatedRecords.push(completeRecordData);
+              }, 
+            this);
           
             if (newRecords.length > 0 || updatedRecords.length > 0) {
-          		Ext.Ajax.request({
-          			url:this.initialConfig.interface.postData,
-          			params: {
-          			  updated_records: Ext.encode(updatedRecords), 
-          			  created_records: Ext.encode(newRecords),
-          			  filters: this.store.baseParams.filters
-          			},
-          			success:function(response){
-          				var m = Ext.decode(response.responseText);
-          				if (m.success) {
-          					this.store.reload();
+              Ext.Ajax.request({
+                url:this.initialConfig.interface.postData,
+                params: {
+                  updated_records: Ext.encode(updatedRecords), 
+                  created_records: Ext.encode(newRecords),
+                  filters: this.store.baseParams.filters
+                },
+                success:function(response){
+                  var m = Ext.decode(response.responseText);
+                  if (m.success) {
+                    this.store.reload();
                     // this.loadWithFeedback();
-          					this.store.commitChanges();
-          					this.feedback(m.flash);
-          				} else {
-          					this.feedback(m.flash);
-          				}
-          			},
-          			failure:function(response){
-          				this.feedback('Bad response from server');
-          			},
-          			scope:this
-          		});
+                    this.store.commitChanges();
+                    this.feedback(m.flash);
+                  } else {
+                    this.feedback(m.flash);
+                  }
+                },
+                failure:function(response){
+                  this.feedback('Bad response from server');
+                },
+                scope:this
+              });
             }
           
           }
