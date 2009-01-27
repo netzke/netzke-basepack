@@ -59,33 +59,26 @@ module Netzke
       }
     end
 
+    def initial_dependencies
+      ["FieldsConfigurator"] # TODO: make this happen automatically
+    end
+
     def property_widgets
       [{
         :name              => 'columns',
-        :widget_class_name => "GridPanel",
-        :data_class_name   => column_manager_class.name,
-        :ext_config        => {:title => false, :config_tool => false},
-        :active            => true
+        :widget_class_name => "FieldsConfigurator",
+        :ext_config        => {:title => false},
+        :active            => true,
+        :layout            => NetzkeLayout.by_widget(id_name)
       },{
         :name               => 'general',
         :widget_class_name  => "PreferenceGrid",
-        :host_widget_name   => @id_name,
+        :host_widget_name   => id_name,
         :default_properties => available_permissions.map{ |k| {:name => "permissions.#{k}", :value => @permissions[k.to_sym]}},
         :ext_config         => {:title => false}
       }]
     end
 
-    ## Data for properties grid
-    def properties__columns__get_data(params = {})
-      # add extra filter to show only the columns for the current grid (filtered by layout_id)
-      layout_id = layout_manager_class.by_widget(id_name).id
-      params[:filter] ||= {}
-      params[:filter].merge!(:extra_conditions => {:field => 'layout_id', :data => {:type => 'numeric', :value => layout_id}})
-      
-      columns_widget = aggregatee_instance(:properties__columns)
-      columns_widget.interface_get_data(params)
-    end
-    
     def properties__general__load_source(params = {})
       w = aggregatee_instance(:properties__general)
       w.interface_load_source(params)
@@ -134,7 +127,6 @@ module Netzke
     #   [{:text => "config.dataClassName".l, :menu => "config.actions".l}]
     # end
     
-    # include ColumnOperations
     include PropertiesTool # it will load aggregation with name :properties into a modal window
   end
 end

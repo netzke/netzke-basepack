@@ -100,7 +100,9 @@ module Netzke::GridPanelInterface
   
   # get records
   def get_records(params)
-    search_params = normalize_params(params)
+    search_params = normalize_params(params)  # make params coming from the browser understandable by searchlogic
+    search_params[:conditions].recursive_merge!(config[:conditions] || {})  # merge with conditions coming from the config
+    
     raise ArgumentError, "No data_class_name specified for widget '#{config[:name]}'" if !config[:data_class_name]
     records = config[:data_class_name].constantize.all(search_params.clone) # clone needed as searchlogic removes :conditions key from the hash
     # output_array = []

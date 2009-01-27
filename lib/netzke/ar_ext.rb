@@ -160,6 +160,8 @@ module Netzke
           assoc_method = %w{name title label}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
           res[:name] = "#{assoc.name}__#{assoc_method}"
         end
+
+        res[:width] = 50 if res[:editor] == :checkbox # more narrow column for checkboxes
         
         # merge with the given confg, which has the priority
         config.delete(:name) # because we might have changed the name

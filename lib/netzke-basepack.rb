@@ -18,6 +18,7 @@ end
 
 # Include the javascript
 Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/basepack.js"
+Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/check_column.js"
 
 # TODO: implement configurable loading of JS, to spare the traffic at the initial loading
 extjs_dir = "#{RAILS_ROOT}/public/extjs"
