@@ -1,7 +1,8 @@
 v0.3.1
-Added :conditions configuration to GridPanel to limit the search
-Added FieldsConfigurator for improved on-the-fly columns/fields configuration
-Added Checkbox column type
+Added the "conditions" configuration option to GridPanel to limit the search
+Basic column editor for grids has been replaced with FieldsConfigurator, which can do a bit more
+Added Checkbox column/form-field type for boolean fields
+"renderer" configuration option added for grid columns - any Ext.util.Format renderer can be specified there (thanks to Josh Holt for the initial idea)
 
 v0.3.0
 Added BasicApp widget - the base for a Ext.Viewport based ("application") widget with support for dynamic widget loading, browser history, authentification, and more. See the demo an http://netzke-demo.writelesscode.com

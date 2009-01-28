@@ -7,7 +7,15 @@ module Netzke
 
       # process config[:layout]
       config[:conditions] = {:layout_id => (config[:layout] && config[:layout].id)}
-      config[:columns] = [:id, :label, {:name => :read_only, :label => "R/O"}, :hidden, {:name => :width, :width => 50}, {:name => :editor, :editor => :combo_box}]
+      config[:columns] = [
+        :id, 
+        :label, 
+        {:name => :read_only, :label => "R/O"}, 
+        :hidden, 
+        {:name => :width, :width => 50}, 
+        {:name => :editor, :editor => :combo_box},
+        {:name => :renderer, :editor => :combo_box}
+      ]
       
     end
 

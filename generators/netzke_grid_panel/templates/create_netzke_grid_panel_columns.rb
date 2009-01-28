@@ -8,6 +8,7 @@ class CreateNetzkeGridPanelColumns < ActiveRecord::Migration
       t.boolean   :hidden
       t.integer   :width
       t.string    :editor, :limit => 32
+      t.string    :renderer, :limit => 32
 
       t.integer   :layout_id
       

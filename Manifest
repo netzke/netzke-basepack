@@ -9,6 +9,7 @@ generators/netzke_grid_panel/templates/create_netzke_grid_panel_columns.rb
 init.rb
 install.rb
 javascripts/basepack.js
+javascripts/check_column.js
 javascripts/filters.js
 lib/app/models/netzke_form_panel_field.rb
 lib/app/models/netzke_grid_panel_column.rb
@@ -18,6 +19,7 @@ lib/netzke/basic_app.rb
 lib/netzke/border_layout_panel.rb
 lib/netzke/column.rb
 lib/netzke/container.rb
+lib/netzke/fields_configurator.rb
 lib/netzke/form_panel.rb
 lib/netzke/grid_panel.rb
 lib/netzke/grid_panel_interface.rb

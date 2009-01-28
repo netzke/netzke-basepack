@@ -65,6 +65,7 @@ module Netzke::GridPanelJsBuilder
       this.cmConfig = [];
       Ext.each(config.columns, function(c){
         var editor = (c.readOnly || !config.permissions.update) ? null : Ext.netzke.editors[c.editor](c, config);
+        var renderer = Ext.netzke.renderer(c.renderer);
         
         if (c.editor == 'checkbox') {
           var plugin = new Ext.grid.CheckColumn({
@@ -84,6 +85,7 @@ module Netzke::GridPanelJsBuilder
             hidden: c.hidden,
             width: c.width,
             editor: editor,
+            renderer: renderer,
             sortable: true
           })
         }

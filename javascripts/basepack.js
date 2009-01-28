@@ -3,16 +3,29 @@ Ext.netzke.editors = {
   combo_box: function(c, config){
     var row = Ext.data.Record.create([{name:'id'}])
     var store = new Ext.data.Store({
-      proxy: new Ext.data.HttpProxy({url:config.interface.getCbChoices, jsonData:{column:c.name}}),
-      reader: new Ext.data.ArrayReader({root:'data', id:0}, row)
+      proxy         : new Ext.data.HttpProxy({url:config.interface.getCbChoices, jsonData:{column:c.name}}),
+      reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
     })
-    return new Ext.form.ComboBox({
-      mode: 'remote',
-      displayField:'id',
-      valueField:'id',
-      triggerAction:'all',
-      store: store
+    
+    var comboBox = new Ext.form.ComboBox({
+      mode          : 'remote',
+      displayField  : 'id',
+      valueField    : 'id',
+      triggerAction : 'all',
+      typeAhead     : true,
+      selectOnFocus : true,
+      store         : store
     })
+    
+    // let user enter values that are not in the store
+    comboBox.on('blur', function(cb){
+      cb.setValue(cb.getRawValue());
+    });
+    comboBox.on('specialkey', function(cb, event){
+      if (event.getKey() == 9 || event.getKey() == 13) {cb.setValue(cb.getRawValue());}
+    });
+    
+    return comboBox;
   },
 
   text_field: function(c, config){
@@ -40,6 +53,23 @@ Ext.netzke.editors = {
     })
   }
 };
+
+Ext.netzke.renderer = function(renderer, c, config){
+  res = Ext.emptyFn;
+  switch (renderer) {
+
+    // custom renderers can be later added like this:
+    case 'my_renderer':
+      res = function(value){ return "Not implemented" };
+    break
+
+    // falls back to Ext.util.Format renderers
+    default:
+      res = Ext.util.Format[renderer]
+    break
+  }
+  return res
+}
 
 // Mapping of editor field to grid filters
 Ext.netzke.filterMap = {
