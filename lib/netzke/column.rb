@@ -1,6 +1,11 @@
 module Netzke
   # TODO: rename this class, or better even, make a module out of it
   class Column
+    # Rails' logger
+    def self.logger
+      Rails.logger
+    end
+    
     def self.default_dbfields_for_widget(widget, mode = :grid)
       raise ArgumentError, "No data_class_name specified for widget #{widget.config[:name]}" if widget.config[:data_class_name].nil?
 

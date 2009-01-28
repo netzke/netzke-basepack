@@ -196,7 +196,7 @@ module Netzke
         res = {
           :name => config[:name].to_s || "unnamed",
           :field_label => config[:field_label] || config[:name].to_s.gsub('__', '_').humanize,
-          :disabled => config[:name] == :id, # make "id" column disabled by default
+          # :disabled => config[:name] == :id, # make "id" column disabled by default
           # :hidden => config[:name] == :id, # hide "id" column by default
           :xtype => XTYPE_MAP[type]
         }

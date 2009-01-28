@@ -1,3 +1,7 @@
+v0.3.2
+Minor code restructuring.
+Working on FormPanel cont'd.
+
 v0.3.1
 Added the "conditions" configuration option to GridPanel to limit the search
 Basic column editor for grids has been replaced with FieldsConfigurator, which can do a bit more

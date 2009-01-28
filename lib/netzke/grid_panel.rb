@@ -12,8 +12,9 @@ module Netzke
   # * properties and column configuration
   #
   class GridPanel < Base
-    include GridPanelJsBuilder
-    include GridPanelInterface
+    # include GridPanelExtras::JsBuilder
+    # include GridPanelExtras::Interface
+    include_extras
 
     # define connection points between client side and server side of GridPanel. See implementation of equally named methods in the GridPanelInterface module.
     interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
@@ -51,7 +52,6 @@ module Netzke
           :enable_column_filters => Netzke::Base.config[:grid_panel][:filters],
           :enable_column_move    => true,
           :enable_column_resize  => true,
-          :border                => true,
           :load_mask             => true
         },
         :persistent_layout => true,
