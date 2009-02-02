@@ -6,7 +6,7 @@ module Netzke
         :layout => 'fit',
         :title  => false,
         :border => false,
-        :items  => ["new Ext.componentCache[config.itemConfig.widgetClassName](config.itemConfig)".l]
+        :items  => ["new Ext.netzke.cache[config.itemConfig.widgetClassName](config.itemConfig)".l]
       })
     end
 

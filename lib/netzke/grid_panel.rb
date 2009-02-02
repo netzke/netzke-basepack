@@ -12,14 +12,17 @@ module Netzke
   # * properties and column configuration
   #
   class GridPanel < Base
-    # include GridPanelExtras::JsBuilder
-    # include GridPanelExtras::Interface
-    include_extras
+    include_extras(__FILE__)
 
     # define connection points between client side and server side of GridPanel. See implementation of equally named methods in the GridPanelInterface module.
     interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
 
+    include Netzke::DbFields
+
     module ClassMethods
+      def widget_type
+        :grid
+      end
 
       # Global GridPanel configuration
       def config
@@ -100,7 +103,7 @@ module Netzke
         layout ||= column_manager_class.create_layout_for_widget(self)
         layout.items_hash  # TODO: bad name!
       else
-        Netzke::Column.default_columns_for_widget(self)
+        default_db_fields
       end
     end
     

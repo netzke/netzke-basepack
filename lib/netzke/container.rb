@@ -37,7 +37,7 @@ module Netzke
       item_aggregatees.each_pair do |k,v|
         next if v[:late_aggregation]
         res << <<-JS
-        var #{k.to_js} = new Ext.componentCache['#{v[:widget_class_name]}'](config.#{k.to_js}Config);
+        var #{k.to_js} = new Ext.netzke.cache['#{v[:widget_class_name]}'](config.#{k.to_js}Config);
         JS
       end
       res
@@ -49,13 +49,10 @@ module Netzke
           :title      => i.to_s.humanize,
           :layout     => 'fit',
           :id         => i.to_s,
-          # :id       => "#{config[:name]}_#{i.to_s}",
           :items      => ([i.to_s.to_js.l] if !aggregatees[i][:late_aggregation]),
-          # these listeners will be different for tab_panel and accordion
           :collapsed  => !aggregatees[i][:active],
           :listeners  => {
-          # :activate => {:fn => "function(p){this.feedback(p.id)}".l, :scope => this},
-          :expand     => {:fn => "this.loadItemWidget".l, :scope => this}
+            :expand     => {:fn => "this.loadItemWidget".l, :scope => this}
           }
         }
       end
@@ -67,7 +64,6 @@ module Netzke
         :load_item_widget => <<-JS.l,
           function(panel) {
             if (!panel.getWidget()) panel.loadWidget(this.id + "__" + panel.id + "__get_widget");
-            // if (!this.getWidgetByPanel(panel)) this.loadWidget(panel, this.initialConfig[panel.id+'Config'].interface.getWidget);
           }
         JS
       }

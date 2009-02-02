@@ -1,3 +1,5 @@
+Ext.apply(Ext.History, new Ext.util.Observable());
+
 // Editors for grid cells and form fields
 Ext.netzke.editors = {
   combo_box: function(c, config){

@@ -96,8 +96,6 @@ module Netzke
             // Initialize menus (upcoming support for dynamically loaded menus)
             this.menus = {};
             
-            // Initialize history
-            Ext.History.init();
             Ext.History.on('change', this.processHistory, this);
 
             // If we are given a token, load the corresponding widget, otherwise load the last loaded widget
@@ -169,7 +167,9 @@ module Netzke
     # Besides instantiating ourselves, also instantiate the FeedbackGhost
     def js_widget_instance
       super << %Q{
-        new Ext.componentCache['FeedbackGhost']({id:'feedback_ghost'})
+        new Ext.netzke.cache['FeedbackGhost']({id:'feedback_ghost'})
+        // Initialize history (can't say why it's not working well inside the appLoaded handler)
+        Ext.History.init();
       }
     end
     

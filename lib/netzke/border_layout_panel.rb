@@ -7,7 +7,7 @@ module Netzke
     #
     # JS-class generation
     #
-    class << self
+    module ClassMethods
       def js_listeners
         {
           :afterlayout => {:fn => "this.setResizeEvents".l, :scope => this}
@@ -23,7 +23,8 @@ module Netzke
               var regionConfig = config.regions[r] || {};
               regionConfig.layout = 'fit';
               regionConfig.region = r;
-              regionConfig.items = [new Ext.componentCache[config[configName].widgetClassName](config[configName])]
+              this[r+'Widget'] = new Ext.netzke.cache[config[configName].widgetClassName](config[configName])
+              regionConfig.items = [this[r+'Widget']]
               items.push(regionConfig);
             };
           }, this)
@@ -68,8 +69,8 @@ module Netzke
         JS
       }
       end
-      
     end
+    extend ClassMethods
     
     def initial_aggregatees
       config[:regions] || {}

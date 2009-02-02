@@ -1,18 +1,25 @@
 module Netzke
   class FormPanel < Base
-    include_extras
+    include_extras(__FILE__)
     interface :submit, :load
+
+    include Netzke::DbFields
+    
+    def self.widget_type
+      :form
+    end
     
     # default configuration
     def initial_config
       {
         :ext_config => {
-          :config_tool => true, 
-          :border => true
+          :config_tool => true
         },
         :layout_manager => "NetzkeLayout",
-        # :field_manager => "NetzkeFormPanelField"
-        :field_manager => false
+        :field_manager => "NetzkeFormPanelField",
+
+        :persistent_layout => false,
+        :persistent_config => true
       }
     end
 
@@ -22,10 +29,10 @@ module Netzke
     
     def actions
       [{
-        :text => 'Previous', :handler => 'previous'
-      },{
-        :text => 'Next', :handler => 'next'
-      },{
+      #   :text => 'Previous', :handler => 'previous'
+      # },{
+      #   :text => 'Next', :handler => 'next'
+      # },{
         :text => 'Apply', :handler => 'submit', :disabled => !@permissions[:update] && !@permissions[:create]
       }]
     end
@@ -33,15 +40,25 @@ module Netzke
     # get fields from layout manager
     def get_fields
       @fields ||=
-      if layout_manager_class && field_manager_class
+      if config[:persistent_layout] && layout_manager_class && field_manager_class
         layout = layout_manager_class.by_widget(id_name)
         layout ||= field_manager_class.create_layout_for_widget(self)
         layout.items_hash  # TODO: bad name!
       else
-        Netzke::Column.default_fields_for_widget(self)
+        default_db_fields
       end
     end
-    
+
+    # parameters used to instantiate the JS object
+    def js_config
+      res = super
+      # we pass column config at the time of instantiating the JS class
+      res.merge!(:fields => get_fields || config[:fields]) # first try to get columns from DB, then from config
+      res.merge!(:data_class_name => config[:data_class_name])
+      res.merge!(:record_data => config[:record].to_array(get_fields)) if config[:record]
+      res
+    end
+ 
     protected
     
     def layout_manager_class

@@ -1,3 +1,9 @@
+v0.3.3
+Bug fix: application not loading the widget specified in the URL (Ext.History-related)
+Some code refactoring and readability improvements
+Ext.componentCache renamed into Ext.netzke.cache
+FormPanel cont'd
+
 v0.3.2
 Minor code restructuring.
 Working on FormPanel cont'd.

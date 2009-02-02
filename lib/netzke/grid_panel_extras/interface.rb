@@ -70,9 +70,7 @@ module Netzke
           data.each do |record_hash|
             id = record_hash.delete('id')
             record = operation == :create ? klass.create : klass.find(id)
-            logger.debug { "!!! record: #{record.inspect}" }
             success = true
-            exception = nil
         
             # process all attirubutes for the same record (OPTIMIZE: we can use update_attributes separately for regular attributes to speed things up)
             record_hash.each_pair do |k,v|

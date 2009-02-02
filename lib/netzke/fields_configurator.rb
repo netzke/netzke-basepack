@@ -5,11 +5,11 @@ module Netzke
     def initialize(*args)
       super
 
-      # process config[:layout]
       config[:conditions] = {:layout_id => (config[:layout] && config[:layout].id)}
       config[:columns] = [
         :id, 
-        :label, 
+        :name,
+        :label,
         {:name => :read_only, :label => "R/O"}, 
         :hidden, 
         {:name => :width, :width => 50}, 

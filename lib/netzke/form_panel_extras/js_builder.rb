@@ -4,6 +4,7 @@ module Netzke
       def self.included(base)
         base.extend ClassMethods
       end
+
       module ClassMethods
         def js_base_class
           "Ext.FormPanel"
@@ -14,9 +15,12 @@ module Netzke
           var fields = config.fields; // TODO: remove hidden fields
           var recordFields = [];
           var index = 0;
-          Ext.each(config.fields, function(field){recordFields.push({name:field.name, mapping:index++})});
+          Ext.each(config.fields, function(field){recordFields.push({
+            name:field.name, 
+            mapping:index++
+          })});
           var Record = Ext.data.Record.create(recordFields);
-          this.reader = new Ext.data.RecordArrayReader({}, Record);
+          this.reader = new Ext.data.RecordArrayReader({root:"data"}, Record);
           JS
         end
 
@@ -29,10 +33,25 @@ module Netzke
             :default_type   => 'textfield',
             :body_style     => 'padding:5px 5px 0',
             :label_width    => 150,
-            :listeners      => {:afterlayout => {:fn => "this.afterlayoutHandler".l, :scope => this}},
-
-            #custom configs
-            :auto_load_data => true,
+            :listeners      => {
+      				:afterlayout => {
+      				  :fn => "this.afterlayoutHandler".l,
+      				  :scope => this
+  				    }
+				    },
+            :defaults       => {
+              :anchor      => '100%',
+              :listeners      => {
+        				:specialkey => {
+        				  :fn => <<-JS.l,
+          				  function(field, event){
+            					if (event.getKey() == 13) this.submit();
+            				}
+        				  JS
+        				  :scope => this
+      				  }
+              }
+            }
           })
         end
         
@@ -59,7 +78,8 @@ module Netzke
             JS
             :refresh_click => <<-JS.l,
               function() {
-                this.loadRecord(3)
+                this.feedback('implement me');
+                // this.loadRecord(3)
               }
             JS
             :previous => <<-JS.l,
@@ -77,7 +97,15 @@ module Netzke
             :submit => <<-JS.l,
               function() {
                 this.form.submit({
-                  url:this.initialConfig.interface.submit
+                  url:this.initialConfig.interface.submit,
+                  success :function(form, action){
+                    if (action.result.flash) this.feedback(action.result.flash);
+                    this.form.loadRecord(this.reader.readRecord(action.result.data[0]));
+                  },
+                  failure :function(form, action){
+                    this.feedback(action.result.flash)
+                  },
+                  scope :this
                 })
               }
             JS
@@ -86,15 +114,6 @@ module Netzke
         
       end
       
-      def js_config
-        res = super
-        # we pass column config at the time of instantiating the JS class
-        res.merge!(:fields => get_fields || config[:fields]) # first try to get columns from DB, then from config
-        res.merge!(:data_class_name => config[:data_class_name])
-        res.merge!(:record_data => config[:record].to_array(get_fields))
-        res
-      end
-
     end
   end
 end

@@ -1,15 +1,11 @@
-require 'rubygems'
-require 'active_support'
-require 'active_support/test_case'
-require 'test/unit/testcase'
-require 'test/unit/autorunner'
+# require 'rubygems'
+require 'test_helper'
 
 require 'netzke-core'
 require 'netzke/border_layout_panel'
 require 'netzke/panel'
 require 'netzke/properties_tool'
-require 'netzke/grid_panel_js_builder'
-require 'netzke/grid_panel_interface'
+require 'netzke/db_fields'
 require 'netzke/grid_panel'
 
 class BorderLayoutPanelTest < ActiveSupport::TestCase
@@ -18,11 +14,11 @@ class BorderLayoutPanelTest < ActiveSupport::TestCase
     
     assert(%w{BorderLayoutPanel Panel GridPanel}.all?{|k| widget.dependencies.include?(k)})
     
-    assert(widget.js_missing_code.index("Ext.componentCache['BorderLayoutPanel']"))
-    assert(widget.js_missing_code.index("Ext.componentCache['Panel']"))
-    assert(!widget.js_missing_code(%w{GridPanel Panel}).index("Ext.componentCache['GridPanel']"))
-    assert(!widget.js_missing_code(%w{GridPanel Panel}).index("Ext.componentCache['Panel']"))
-    assert(!widget.js_missing_code(%w{BorderLayoutPanel}).index("Ext.componentCache['BorderLayoutPanel']"))
+    assert(widget.js_missing_code.index("Ext.netzke.cache['BorderLayoutPanel']"))
+    # assert(widget.js_missing_code.index("Ext.netzke.cache['Panel']"))
+    assert(!widget.js_missing_code(%w{GridPanel Panel}).index("Ext.netzke.cache['GridPanel']"))
+    # assert(!widget.js_missing_code(%w{GridPanel Panel}).index("Ext.netzke.cache['Panel']"))
+    # assert(!widget.js_missing_code(%w{BorderLayoutPanel}).index("Ext.netzke.cache['BorderLayoutPanel']"))
     
   end
 end
