@@ -18,9 +18,20 @@ module Netzke
         :layout_manager => "NetzkeLayout",
         :field_manager => "NetzkeFormPanelField",
 
-        :persistent_layout => false,
+        :persistent_layout => true,
         :persistent_config => true
       }
+    end
+
+    def property_widgets
+      [{
+        :name              => 'columns',
+        :widget_class_name => "FieldsConfigurator",
+        :ext_config        => {:title => false},
+        :active            => true,
+        :layout            => NetzkeLayout.by_widget(id_name),
+        :fields_for        => :form
+      }]
     end
 
     def tools
@@ -43,7 +54,7 @@ module Netzke
       if config[:persistent_layout] && layout_manager_class && field_manager_class
         layout = layout_manager_class.by_widget(id_name)
         layout ||= field_manager_class.create_layout_for_widget(self)
-        layout.items_hash  # TODO: bad name!
+        layout.items_arry_without_hidden
       else
         default_db_fields
       end
@@ -77,6 +88,7 @@ module Netzke
       %w(read update create delete)
     end
     
+    include PropertiesTool # it will load aggregation with name :properties into a modal window
       
   end
 end

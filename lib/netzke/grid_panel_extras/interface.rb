@@ -36,7 +36,7 @@ module Netzke
       def resize_column(params)
         raise "Called interface_resize_column while not configured to do so" unless config[:ext_config][:enable_column_resize]
         if layout_manager_class
-          l_item = layout_manager_class.by_widget(id_name).layout_items[params[:index].to_i]
+          l_item = layout_manager_class.by_widget(id_name).items[params[:index].to_i]
           l_item.width = params[:size]
           l_item.save!
         end

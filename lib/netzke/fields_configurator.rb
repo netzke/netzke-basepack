@@ -5,28 +5,16 @@ module Netzke
     def initialize(*args)
       super
 
-      config[:conditions] = {:layout_id => (config[:layout] && config[:layout].id)}
-      config[:columns] = [
-        :id, 
-        :name,
-        :label,
-        {:name => :read_only, :label => "R/O"}, 
-        :hidden, 
-        {:name => :width, :width => 50}, 
-        {:name => :editor, :editor => :combo_box},
-        {:name => :renderer, :editor => :combo_box}
-      ]
-      
+      config[:conditions]         = {:layout_id => config[:layout].id}
+      config[:data_class_name]    = config[:layout].items_class
+      config[:persistent_layout]  = false
     end
 
     def initial_config
       super.recursive_merge({
         :name              => 'columns',
         :widget_class_name => "GridPanel",
-        :data_class_name   => "NetzkeGridPanelColumn",
-        :ext_config        => {:title => false},
-        # :conditions        => {:layout_id => config[:layout].id},
-        :active            => true
+        :ext_config        => {:title => false}
       })
     end
     
@@ -58,7 +46,7 @@ module Netzke
     
     def load_defaults(params)
       NetzkeLayout.destroy(config[:layout].id)
-      NetzkeGridPanelColumn.create_layout_for_widget(parent.parent)
+      config[:data_class_name].constantize.create_layout_for_widget(parent.parent)
       {}
     end
     

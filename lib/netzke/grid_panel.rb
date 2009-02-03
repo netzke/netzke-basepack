@@ -101,7 +101,7 @@ module Netzke
       if config[:persistent_layout] && layout_manager_class && column_manager_class
         layout = layout_manager_class.by_widget(id_name)
         layout ||= column_manager_class.create_layout_for_widget(self)
-        layout.items_hash  # TODO: bad name!
+        layout.items_arry
       else
         default_db_fields
       end

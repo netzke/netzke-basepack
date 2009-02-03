@@ -40,7 +40,7 @@ module Netzke
   				    }
 				    },
             :defaults       => {
-              :anchor      => '100%',
+              :anchor       => '-20', # to leave some space for the scrollbar
               :listeners      => {
         				:specialkey => {
         				  :fn => <<-JS.l,

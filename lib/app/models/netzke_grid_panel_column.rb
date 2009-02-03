@@ -3,6 +3,17 @@ class NetzkeGridPanelColumn < ActiveRecord::Base
   
   acts_as_list :scope => :layout
 
+  expose_columns :id, 
+    :name,
+    :label,
+    {:name => :read_only, :label => "R/O"}, 
+    :hidden, 
+    {:name => :width, :width => 50}, 
+    {:name => :editor, :editor => :combo_box},
+    {:name => :renderer, :editor => :combo_box}
+  
+
+
   def self.create_layout_for_widget(widget)
     layout = NetzkeLayout.create_with_user(:widget_name => widget.id_name, :items_class => self.name)
     columns = widget.default_db_fields

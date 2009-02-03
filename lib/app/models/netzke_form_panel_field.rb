@@ -3,6 +3,14 @@ class NetzkeFormPanelField < ActiveRecord::Base
   
   acts_as_list :scope => :layout
 
+  expose_columns :id, 
+    :name,
+    :field_label,
+    :hidden, 
+    {:name => :width, :width => 50}, 
+    {:name => :height, :width => 50}
+
+
   def self.create_layout_for_widget(widget)
     layout = NetzkeLayout.create(:widget_name => widget.id_name, :items_class => self.name, :user_id => NetzkeLayout.user_id)
 

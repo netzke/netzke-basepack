@@ -23,9 +23,15 @@ module Netzke
               var regionConfig = config.regions[r] || {};
               regionConfig.layout = 'fit';
               regionConfig.region = r;
-              this[r+'Widget'] = new Ext.netzke.cache[config[configName].widgetClassName](config[configName])
-              regionConfig.items = [this[r+'Widget']]
+              regionConfig.items = [new Ext.netzke.cache[config[configName].widgetClassName](config[configName])]
               items.push(regionConfig);
+              
+              // A function to access a region widget (even if the widget gets reloaded, the function will work).
+              // E.g.: getEastWidget()
+              // I love JavaScript
+              this['get'+r.capitalize()+'Widget'] = function(){
+                return this.find('region', r)[0].getWidget()
+              }.createDelegate(this)
             };
           }, this)
         JS
