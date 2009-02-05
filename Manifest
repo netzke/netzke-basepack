@@ -68,7 +68,6 @@ test/app_root/vendor/plugins/acts_as_list/lib/active_record/acts/list.rb
 test/app_root/vendor/plugins/acts_as_list/README
 test/ar_ext_test.rb
 test/border_layout_panel_test.rb
-test/column_test.rb
 test/console_with_fixtures.rb
 test/fixtures/books.yml
 test/fixtures/categories.yml
