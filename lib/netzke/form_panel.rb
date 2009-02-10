@@ -24,14 +24,16 @@ module Netzke
     end
 
     def property_widgets
-      [{
-        :name              => 'columns',
+      res = []
+      res << {
+        :name              => 'fields',
         :widget_class_name => "FieldsConfigurator",
         :ext_config        => {:title => false},
         :active            => true,
         :layout            => NetzkeLayout.by_widget(id_name),
         :fields_for        => :form
-      }]
+      } if config[:persistent_layout]
+      res
     end
 
     def tools
@@ -44,7 +46,7 @@ module Netzke
       # },{
       #   :text => 'Next', :handler => 'next'
       # },{
-        :text => 'Apply', :handler => 'submit', :disabled => !@permissions[:update] && !@permissions[:create]
+        :text => 'Apply', :handler_name => 'submit', :disabled => !@permissions[:update] && !@permissions[:create], :id => 'apply'
       }]
     end
     

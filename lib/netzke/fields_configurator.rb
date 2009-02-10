@@ -1,13 +1,17 @@
 module Netzke
   class FieldsConfigurator < GridPanel
     interface :load_defaults
+
+    def self.js_base_class
+      GridPanel
+    end
     
     def initialize(*args)
       super
 
       config[:conditions]         = {:layout_id => config[:layout].id}
       config[:data_class_name]    = config[:layout].items_class
-      config[:persistent_layout]  = false
+      # config[:persistent_layout]  = false
     end
 
     def initial_config
@@ -20,7 +24,7 @@ module Netzke
     
     def actions
       super + [{
-        :text => 'Restore defaults', :handler => 'loadDefaults'
+        :text => 'Restore defaults', :handler_name => 'loadDefaults', :id => 'defaults'
       }]
     end
     

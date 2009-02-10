@@ -30,6 +30,7 @@ lib/netzke/panel.rb
 lib/netzke/preference_grid.rb
 lib/netzke/properties_tool.rb
 lib/netzke/property_grid.rb
+lib/netzke/table_editor.rb
 lib/netzke/wrapper.rb
 lib/netzke-basepack.rb
 LICENSE

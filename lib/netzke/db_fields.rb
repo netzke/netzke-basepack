@@ -2,7 +2,6 @@ module Netzke
   module DbFields
     def default_db_fields
       config[:data_class_name].nil? && raise(ArgumentError, "No data_class_name specified for widget #{config[:name]}")
-      # config[:widget_class_name].nil? && raise(ArgumentError, "No widget_class_name specified for widget #{config[:name]}")
       
       data_class          = config[:data_class_name].constantize
       exposed_columns     = normalize_columns(data_class.exposed_columns) # columns exposed from the data class

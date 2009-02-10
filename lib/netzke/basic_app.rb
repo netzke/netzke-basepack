@@ -166,11 +166,11 @@ module Netzke
 
     # Besides instantiating ourselves, also instantiate the FeedbackGhost
     def js_widget_instance
-      super << %Q{
+      %Q{
         new Ext.netzke.cache['FeedbackGhost']({id:'feedback_ghost'})
         // Initialize history (can't say why it's not working well inside the appLoaded handler)
         Ext.History.init();
-      }
+      } << super
     end
     
     # Interface implementation

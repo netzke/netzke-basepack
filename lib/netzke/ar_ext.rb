@@ -193,13 +193,21 @@ module Netzke
         # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
         type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
 
-        res = {
-          :name => config[:name].to_s || "unnamed",
-          :field_label => config[:field_label] || config[:name].to_s.gsub('__', '_').humanize,
-          # :disabled => config[:name] == :id, # make "id" column disabled by default
-          # :hidden => config[:name] == :id, # hide "id" column by default
-          :xtype => XTYPE_MAP[type]
+        defaults = {
+          :field_label => config[:name].to_s.gsub('__', '_').humanize,
+          :xtype       => XTYPE_MAP[type],
+          :hidden      => config[:name] == :id
         }
+
+        res = defaults.merge(config)
+        
+        # res = {
+        #   :name => config[:name].to_s || "unnamed",
+        #   :field_label => config[:field_label] || config[:name].to_s.gsub('__', '_').humanize,
+        #   # :disabled => config[:name] == :id, # make "id" column disabled by default
+        #   # :hidden => config[:name] == :id, # hide "id" column by default
+        #   :xtype => XTYPE_MAP[type]
+        # }
         
       end
       

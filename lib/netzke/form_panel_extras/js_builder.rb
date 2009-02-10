@@ -12,13 +12,25 @@ module Netzke
 
         def js_before_constructor
           <<-JS
-          var fields = config.fields; // TODO: remove hidden fields
+          var fields = config.fields;
           var recordFields = [];
           var index = 0;
-          Ext.each(config.fields, function(field){recordFields.push({
-            name:field.name, 
-            mapping:index++
-          })});
+          Ext.each(fields, function(field){
+            recordFields.push({
+              name:field.name, 
+              mapping:index++
+            });
+            field.hideLabel = field.hidden; // completely hide the field marked "hidden"
+            var extConfig;
+            try{
+              extConfig = Ext.decode(field.extConfig)
+            }
+            catch(err){
+              extConfig = {}
+            }
+            delete(field.extConfig);
+            Ext.apply(field, extConfig);
+          });
           var Record = Ext.data.Record.create(recordFields);
           this.reader = new Ext.data.RecordArrayReader({root:"data"}, Record);
           JS
@@ -78,7 +90,7 @@ module Netzke
             JS
             :refresh_click => <<-JS.l,
               function() {
-                this.feedback('implement me');
+                this.feedback('Implement me!');
                 // this.loadRecord(3)
               }
             JS

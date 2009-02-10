@@ -32,6 +32,8 @@ module Netzke
               this['get'+r.capitalize()+'Widget'] = function(){
                 return this.find('region', r)[0].getWidget()
               }.createDelegate(this)
+              
+              
             };
           }, this)
         JS
@@ -45,7 +47,13 @@ module Netzke
       end
 
       def js_extend_properties
-        {:set_resize_events => <<-JS.l,
+        {
+          :get_region_widget => <<-JS.l,
+            function(region){
+              return this.find('region', region)[0].getWidget()
+            }
+          JS
+          :set_resize_events => <<-JS.l,
           function(){
             this.items.each(function(item, index, length){
               if (!item.oldSize) item.oldSize = item.getSize();

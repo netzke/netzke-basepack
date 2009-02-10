@@ -24,8 +24,6 @@ module Netzke
           end
         end
     
-        # process all attirubutes for the same record (OPTIMIZE: we can use update_attributes separately for regular attributes to speed things up)
-        
         if success && record.save
           {:data => [record.to_array(get_fields)], :success => true}
         else

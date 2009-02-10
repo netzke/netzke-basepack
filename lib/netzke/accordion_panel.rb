@@ -46,7 +46,7 @@ module Netzke
               // immediately instantiate the active panel
               var activePanel = this.findById(this.id + "_active");
               var activeItemConfig = this.initialConfig[this.initialConfig.expandedItem+"Config"];
-              activePanel.add(new Ext.netzke.cache[activeItemConfig.widgetClassName](activeItemConfig));
+              if (activeItemConfig) activePanel.add(new Ext.netzke.cache[activeItemConfig.widgetClassName](activeItemConfig));
             }
           JS
         }
@@ -73,9 +73,10 @@ module Netzke
     end
 
     def js_config
+      expanded_widget_config = config[:items].select{|i| i[:active]}.first
       super.merge({
         :items => items,
-        :expanded_item => config[:items].select{|i| i[:active]}.first[:name]
+        :expanded_item => expanded_widget_config && expanded_widget_config[:name]
       })
     end
 

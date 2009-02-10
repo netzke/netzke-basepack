@@ -66,30 +66,40 @@ module Netzke
     
           this.cmConfig = [];
           Ext.each(config.columns, function(c){
-            var editor = (c.readOnly || !config.permissions.update) ? null : Ext.netzke.editors[c.editor](c, config);
-            var renderer = Ext.netzke.renderer(c.renderer);
+            var extConfig;
+            try{
+              extConfig = Ext.decode(c.extConfig);
+            }
+            catch(err){
+              extConfig = {}
+            }
+            delete(c.extConfig);
         
             if (c.editor == 'checkbox') {
-              var plugin = new Ext.grid.CheckColumn({
-          			header:     c.label || c.name,
-          			dataIndex:  c.name,
-          			disabled:   c.readOnly,
-          			hidden:     c.hidden,
-          			width:      c.width
-              });
+              var plugin = new Ext.grid.CheckColumn(Ext.apply({
+          			header    : c.label || c.name,
+          			dataIndex : c.name,
+          			disabled  : c.readOnly,
+          			hidden    : c.hidden,
+          			width     : c.width
+              }, extConfig));
+
               plugins.push(plugin);
               this.cmConfig.push(plugin);
           
             } else {
-              this.cmConfig.push({
-                header: c.label || c.name,
-                dataIndex: c.name,
-                hidden: c.hidden,
-                width: c.width,
-                editor: editor,
-                renderer: renderer,
-                sortable: true
-              })
+              var editor = (c.readOnly || !config.permissions.update) ? null : Ext.netzke.editors[c.editor](c, config);
+              var renderer = Ext.netzke.renderer(c.renderer);
+
+              this.cmConfig.push(Ext.apply({
+                header    : c.label || c.name,
+                dataIndex : c.name,
+                hidden    : c.hidden,
+                width     : c.width,
+                editor    : editor,
+                renderer  : renderer,
+                sortable  : true
+              }, extConfig))
             }
 
           }, this);
@@ -152,12 +162,12 @@ module Netzke
                 }, this);
           
                 var r = new this.Row(rowConfig); // TODO: add default values
-                r.set('id', -r.id); // to distinguish new records by negative values
+                r.new = true; // to distinguish new records
+                r.set('id', r.id); // otherwise later r.get('id') returns empty string
                 this.stopEditing();
                 this.store.add(r);
-                this.store.newRecords = this.store.newRecords || []
-                this.store.newRecords.push(r);
-                // console.info(this.store.newRecords);
+                // this.store.newRecords = this.store.newRecords || []
+                // this.store.newRecords.push(r);
                 this.tryStartEditing(this.store.indexOf(r));
               }
             JS
@@ -201,7 +211,6 @@ module Netzke
                         success:function(r){ 
                           var m = Ext.decode(r.responseText);
                           this.store.reload();
-                          // this.loadWithFeedback();
                           this.feedback(m.flash);
                         },
                         scope:this
@@ -215,20 +224,22 @@ module Netzke
               function(){
 
                 var newRecords = [];
-                if (this.store.newRecords){
-                  Ext.each(this.store.newRecords, function(r){
-                    newRecords.push(r.getChanges())
-                    r.commit() // commit the changes, so that they are not picked up by getModifiedRecords() further down
-                  }, this);
-                  delete this.store.newRecords;
-                }
+                // if (this.store.newRecords){
+                //   Ext.each(this.store.newRecords, function(r){
+                //     newRecords.push(r.getChanges())
+                //   }, this);
+                //   // delete this.store.newRecords;
+                // }
           
                 var updatedRecords = [];
+
                 Ext.each(this.store.getModifiedRecords(),
-                  function(record) {
-                    var completeRecordData = {};
-                    Ext.apply(completeRecordData, Ext.apply(record.getChanges(), {id:record.get('id')}));
-                    updatedRecords.push(completeRecordData);
+                  function(r) {
+                    if (r.new) {
+                      newRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
+                    } else {
+                      updatedRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
+                    }
                   }, 
                 this);
           
@@ -243,9 +254,19 @@ module Netzke
                     success:function(response){
                       var m = Ext.decode(response.responseText);
                       if (m.success) {
-                        this.store.reload();
-                        // this.loadWithFeedback();
-                        this.store.commitChanges();
+                        // commit those rows that have successfully been updated/created
+                        var modRecords = [].concat(this.store.getModifiedRecords()) // there must be a better way to clone an array...
+                        Ext.each(modRecords, function(r){
+                          var idsToSearch = r.new ? m.modRecordIds.create : m.modRecordIds.update
+                          if (idsToSearch.indexOf(r.id) >= 0) r.commit();
+                        })
+
+                        // reload the grid only when there were no errors
+                        // (we need to reload because of filtering, sorting, etc)
+                        if (this.store.getModifiedRecords().length == 0){
+                          this.store.reload();
+                        }
+
                         this.feedback(m.flash);
                       } else {
                         this.feedback(m.flash);

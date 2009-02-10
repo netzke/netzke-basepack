@@ -1,8 +1,20 @@
 v0.3.3
-Bug fix: application not loading the widget specified in the URL (Ext.History-related)
-Some code refactoring and readability improvements
-Ext.componentCache renamed into Ext.netzke.cache
-FormPanel cont'd
+Bug fix: application not loading the widget specified in the URL (Ext.History-related).
+Some code refactoring and readability improvements.
+Ext.componentCache renamed into Ext.netzke.cache.
+New widget: TableEditor (a compound widget containing a grid and a form for editing table data).
+BorderLayoutPanel: a function getRegionWidget(region) added to access a widget in the specified region.
+Bug fix: BasicApp: FeedbackGhost now gets instantiated before BasicApp.
+Clearer handling of requests to non-existing aggregatees.
+Bug fix: now Ext 2.2.1 compatible.
+Column operations are now handled properly when :persistent_layout is set to false.
+Grid/Form fields configuration is extended with "ext_config" field which stores (in JSON-format) all the extra configuration, which gives extra flexibility to individual column/field configuration.
+:persistent_layout set to false now makes a widget ignore what's in the DB.
+Bug fix: AccordionPanel doesn't crash when no active item is specified.
+Bug fix: redundant flash messages for GridPanel.
+FeedbackGhost won't be showing anything if given an empty array.
+Cleaner handling of validations in GridPanel.
+FormPanel ready for the demo.
 
 v0.3.2
 Minor code restructuring.

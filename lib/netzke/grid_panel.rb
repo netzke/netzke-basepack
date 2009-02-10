@@ -67,19 +67,24 @@ module Netzke
     end
 
     def property_widgets
-      [{
+      res = []
+      res << {
         :name              => 'columns',
         :widget_class_name => "FieldsConfigurator",
         :ext_config        => {:title => false},
         :active            => true,
         :layout            => NetzkeLayout.by_widget(id_name)
-      },{
+      } if config[:persistent_layout]
+
+      res << {
         :name               => 'general',
         :widget_class_name  => "PreferenceGrid",
         :host_widget_name   => id_name,
         :default_properties => available_permissions.map{ |k| {:name => "permissions.#{k}", :value => @permissions[k.to_sym]}},
         :ext_config         => {:title => false}
-      }]
+      }
+      
+      res
     end
 
     def properties__general__load_source(params = {})
@@ -113,13 +118,13 @@ module Netzke
 
     def actions
       [{
-        :text => 'Add', :handler => 'add', :disabled => !@permissions[:create]
+        :text => 'Add', :handler_name => 'add', :disabled => !@permissions[:create], :id => 'add'
       },{
-        :text => 'Edit', :handler => 'edit', :disabled => !@permissions[:update]
+        :text => 'Edit', :handler_name => 'edit', :disabled => !@permissions[:update], :id => 'edit'
       },{
-        :text => 'Delete', :handler => 'delete', :disabled => !@permissions[:delete]
+        :text => 'Delete', :handler_name => 'delete', :disabled => !@permissions[:delete], :id => 'delete'
       },{
-        :text => 'Apply', :handler => 'submit', :disabled => !@permissions[:update] && !@permissions[:create]
+        :text => 'Apply', :handler_name => 'submit', :disabled => !@permissions[:update] && !@permissions[:create], :id => 'apply'
       }]
     end
 

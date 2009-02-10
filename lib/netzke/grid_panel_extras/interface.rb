@@ -2,11 +2,16 @@ module Netzke
   module GridPanelExtras
     module Interface
       def post_data(params)
+        success = true
+        mod_record_ids = {}
         [:create, :update].each do |operation|
           data = JSON.parse(params.delete("#{operation}d_records".to_sym)) if params["#{operation}d_records".to_sym]
-          process_data(data, operation) if !data.nil?
+          if !data.nil? && !data.empty? # data may be nil for one of the operations
+            mod_record_ids[operation] = process_data(data, operation)
+          end
+          break if !success
         end
-        {:success => true, :flash => @flash}
+        {:success => success, :flash => @flash, :mod_record_ids => mod_record_ids}
       end
   
       def get_data(params = {})
@@ -35,7 +40,7 @@ module Netzke
 
       def resize_column(params)
         raise "Called interface_resize_column while not configured to do so" unless config[:ext_config][:enable_column_resize]
-        if layout_manager_class
+        if config[:persistent_layout] && layout_manager_class
           l_item = layout_manager_class.by_widget(id_name).items[params[:index].to_i]
           l_item.width = params[:size]
           l_item.save!
@@ -45,7 +50,7 @@ module Netzke
   
       def move_column(params)
         raise "Called interface_move_column while not configured to do so" unless config[:ext_config][:enable_column_move]
-        if layout_manager_class
+        if config[:persistent_layout] && layout_manager_class
           layout_manager_class.by_widget(id_name).move_item(params[:old_index].to_i, params[:new_index].to_i)
         end
         {}
@@ -64,12 +69,14 @@ module Netzke
 
       # operation => :update || :create
       def process_data(data, operation)
+        success = true
+        mod_record_ids = []
         if @permissions[operation]
           klass = config[:data_class_name].constantize
           modified_records = 0
           data.each do |record_hash|
             id = record_hash.delete('id')
-            record = operation == :create ? klass.create : klass.find(id)
+            record = operation == :create ? klass.new : klass.find(id)
             success = true
         
             # process all attirubutes for the same record (OPTIMIZE: we can use update_attributes separately for regular attributes to speed things up)
@@ -84,18 +91,23 @@ module Netzke
             end
         
             # try to save
-            modified_records += 1 if success && record.save
+            # modified_records += 1 if success && record.save
+            mod_record_ids << id if success && record.save
 
             # flash eventual errors
-            record.errors.each_full do |msg|
-              flash :error => msg
+            if !record.errors.empty?
+              success = false
+              record.errors.each_full do |msg|
+                flash :error => msg
+              end
             end
-        
-            flash :notice => "#{operation.to_s.capitalize}d #{modified_records} record(s)"
           end
+          # flash :notice => "#{operation.to_s.capitalize}d #{modified_records} record(s)"
         else
+          success = false
           flash :error => "You don't have permissions to #{operation} data"
         end
+        mod_record_ids
       end
   
       # get records
