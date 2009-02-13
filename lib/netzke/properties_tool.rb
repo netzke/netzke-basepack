@@ -34,7 +34,10 @@ module Netzke
                 closeAction:'destroy',
                 buttons:[{
                   text:'Submit',
-                  handler:function(){this.ownerCt.closeRes = 'OK'; this.ownerCt.destroy()}
+                  handler:function(){
+                    this.ownerCt.closeRes = 'OK'; 
+                    this.ownerCt.close();
+                  }
                 }]
 
               });
@@ -43,13 +46,13 @@ module Netzke
                 w.loadWidget(this.initialConfig.id+"__properties__get_widget");
               }, this);
 
-              w.on('destroy', function(){
+              w.on('close', function(){
                 if (w.closeRes == 'OK'){
                   widget = this;
                   if (widget.ownerCt) {
                     widget.ownerCt.loadWidget(widget.initialConfig.interface.getWidget);
                   } else {
-                    this.feedback('Reload current window') // no aggregation
+                    this.feedback('Reload current window') // we are embedded directly in HTML
                   }
                 }
               }, this)
@@ -69,7 +72,11 @@ module Netzke
     def tools_with_properties
       tools = tools_without_properties
       # Add the toolbutton
-      tools << {:id => 'gear', :on => {:click => "showConfig"}} if config[:ext_config][:config_tool]
+      tools << {
+        :id => 'gear',
+        :qtip => 'Configure',
+        :on => {:click => "showConfig"}
+      } if config[:ext_config][:config_tool]
       tools
     end
   

@@ -13,6 +13,12 @@ module Netzke
         res
       end
   
+      def js_ext_config
+        super.merge({
+          :rows_per_page => persistent_config["rows_per_page"] ||= 5
+        })
+      end
+  
       module ClassMethods
 
         def js_base_class 
@@ -162,7 +168,7 @@ module Netzke
                 }, this);
           
                 var r = new this.Row(rowConfig); // TODO: add default values
-                r.new = true; // to distinguish new records
+                r.is_new = true; // to distinguish new records
                 r.set('id', r.id); // otherwise later r.get('id') returns empty string
                 this.stopEditing();
                 this.store.add(r);
@@ -235,7 +241,7 @@ module Netzke
 
                 Ext.each(this.store.getModifiedRecords(),
                   function(r) {
-                    if (r.new) {
+                    if (r.is_new) {
                       newRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
                     } else {
                       updatedRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
@@ -257,7 +263,7 @@ module Netzke
                         // commit those rows that have successfully been updated/created
                         var modRecords = [].concat(this.store.getModifiedRecords()) // there must be a better way to clone an array...
                         Ext.each(modRecords, function(r){
-                          var idsToSearch = r.new ? m.modRecordIds.create : m.modRecordIds.update
+                          var idsToSearch = r.is_new ? m.modRecordIds.create : m.modRecordIds.update
                           if (idsToSearch.indexOf(r.id) >= 0) r.commit();
                         })
 
@@ -284,8 +290,6 @@ module Netzke
    
             :refresh_click => <<-JS.l,
               function() {
-                // console.info(this);
-                // if (this.fireEvent('refresh', this) !== false) this.loadWithFeedback();
                 if (this.fireEvent('refresh', this) !== false) this.store.reload();
               }
             JS

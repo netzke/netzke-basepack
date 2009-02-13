@@ -113,7 +113,7 @@ module Netzke
     end
     
     def tools
-      [{:id => 'refresh', :on => {:click => 'refreshClick'}}]
+      [{:id => 'refresh', :on => {:click => 'refreshClick'}, :qtip => 'Refresh'}]
     end
 
     def actions

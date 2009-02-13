@@ -1,3 +1,10 @@
+v0.3.4
+Quick tips added to the "tools"
+Regression: the "General" configuration panel for GridPanel works again
+
+v0.3.3.1
+Obviously using "new" as a property name in JavaScript isn't liked by Safari. Fixed.
+
 v0.3.3
 Bug fix: application not loading the widget specified in the URL (Ext.History-related).
 Some code refactoring and readability improvements.

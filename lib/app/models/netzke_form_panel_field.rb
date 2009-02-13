@@ -10,6 +10,7 @@ class NetzkeFormPanelField < ActiveRecord::Base
     :field_label,
     :hidden,
     {:name => :disabled, :renderer => "checkbox"},
+    :xtype,
     :ext_config
 
 

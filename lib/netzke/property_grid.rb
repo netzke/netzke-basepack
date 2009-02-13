@@ -16,7 +16,7 @@ module Netzke
 
     def actions
       [{
-        :text => 'Apply', :handler => 'submit'
+        :text => 'Apply', :handler_name => 'submit', :id => 'apply'
       }]
     end
 
