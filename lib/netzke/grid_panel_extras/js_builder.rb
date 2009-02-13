@@ -15,7 +15,7 @@ module Netzke
   
       def js_ext_config
         super.merge({
-          :rows_per_page => persistent_config["rows_per_page"] ||= 5
+          :rows_per_page => persistent_config["rows_per_page"] ||= config[:ext_config][:rows_per_page]
         })
       end
   
