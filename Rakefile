@@ -5,7 +5,7 @@ Echoe.new("netzke-basepack") do |p|
   p.email = "sergei@writelesscode.com"
   p.summary = "Base Netzke widgets - grid, form, tree, and more"
   p.url = "http://writelesscode.com"
-  p.runtime_dependencies = ["searchlogic >=1.6.2", "netzke-core >= 0.2.7"]
+  p.runtime_dependencies = ["searchlogic >=1.6.2", "netzke-core >= 0.2.8"]
   p.development_dependencies = []
   p.test_pattern = 'test/**/*_test.rb'
 

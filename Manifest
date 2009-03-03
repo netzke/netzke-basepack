@@ -9,8 +9,6 @@ generators/netzke_grid_panel/templates/create_netzke_grid_panel_columns.rb
 init.rb
 install.rb
 javascripts/basepack.js
-javascripts/check_column.js
-javascripts/filters.js
 lib/app/models/netzke_form_panel_field.rb
 lib/app/models/netzke_grid_panel_column.rb
 lib/netzke/accordion_panel.rb
@@ -22,14 +20,18 @@ lib/netzke/db_fields.rb
 lib/netzke/fields_configurator.rb
 lib/netzke/form_panel.rb
 lib/netzke/form_panel_extras/interface.rb
+lib/netzke/form_panel_extras/javascripts/xdatetime.js
 lib/netzke/form_panel_extras/js_builder.rb
 lib/netzke/grid_panel.rb
 lib/netzke/grid_panel_extras/interface.rb
+lib/netzke/grid_panel_extras/javascripts/check_column.js
+lib/netzke/grid_panel_extras/javascripts/filters.js
 lib/netzke/grid_panel_extras/js_builder.rb
 lib/netzke/panel.rb
 lib/netzke/preference_grid.rb
 lib/netzke/properties_tool.rb
 lib/netzke/property_grid.rb
+lib/netzke/tab_panel.rb
 lib/netzke/table_editor.rb
 lib/netzke/wrapper.rb
 lib/netzke-basepack.rb

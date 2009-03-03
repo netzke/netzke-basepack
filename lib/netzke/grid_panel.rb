@@ -12,11 +12,26 @@ module Netzke
   # * properties and column configuration
   #
   class GridPanel < Base
-    include_extras(__FILE__)
+    # so that some inherited methods would know our real location
+    self.widget_file = __FILE__
+    
+    # include javascripts from Ext examples
+    ext_js_include  "examples/grid-filtering/menu/EditableItem.js", 
+                    "examples/grid-filtering/menu/RangeMenu.js",
+                    "examples/grid-filtering/grid/GridFilters.js"
+    
+    %w{Boolean Date List Numeric String}.unshift("").each do |f|
+      ext_js_include "examples/grid-filtering/grid/filter/#{f}Filter.js"
+    end
 
-    # define connection points between client side and server side of GridPanel. See implementation of equally named methods in the GridPanelInterface module.
+    # include ruby code in grid_panel_extras
+    include_extras
+
+    # define connection points between client side and server side of GridPanel. 
+    # See implementation of equally named methods in the GridPanelExtras::Interface module.
     interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
 
+    # database field operations
     include Netzke::DbFields
 
     module ClassMethods
@@ -27,7 +42,7 @@ module Netzke
       # Global GridPanel configuration
       def config
         set_default_config({
-            :column_manager => "NetzkeGridPanelColumn"
+          :column_manager => "NetzkeGridPanelColumn"
         })
       end
 
@@ -36,6 +51,7 @@ module Netzke
       rescue
         nil
       end
+      
     end
     extend ClassMethods
 

@@ -1,6 +1,10 @@
 module Netzke
   class FormPanel < Base
-    include_extras(__FILE__)
+    # so that some inherited methods would know our real location
+    self.widget_file = __FILE__
+
+    include_extras
+
     interface :submit, :load
 
     include Netzke::DbFields

@@ -174,6 +174,15 @@ module Netzke
       
       DEFAULT_COLUMN_WIDTH = 100
       
+      # identify Ext editor for the data type
+      TYPE_EDITOR_MAP = {
+        :integer => :number_field,
+        :boolean => :checkbox,
+        :date => :date_field,
+        :datetime => :datetime,
+        :string => :text_field
+      }
+      
       # Returns default column config understood by Netzke::GridPanel
       # Argument: column name (as Symbol) or column config
       def default_column_config(config)
@@ -184,8 +193,28 @@ module Netzke
       # Used by Netzke::FormPanel
       #
       
-      DEFAULT_FIELD_WIDTH = 100
-      DEFAULT_FIELD_HEIGHT = nil
+      # default configuration as a function of ActivRecord's column type
+      DEFAULTS_FOR_FIELD = {
+        :integer => {
+          :xtype => :numberfield
+        },
+        :boolean => {
+          :xtype => :numberfield
+        },
+        :date => {
+          :xtype => :datefield
+        },
+        :datetime => {
+          :xtype => :xdatetime
+          # :date_format => "Y-m-d",
+          # :time_format => "H:i",
+          # :time_width => 60
+        },
+        :string => {
+          :xtype => :textfield
+        }
+      }
+
       def default_field_config(config)
         # default_dbfield_config(config, :form)
         config = config.is_a?(Symbol) ? {:name => config} : config.dup
@@ -193,42 +222,17 @@ module Netzke
         # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
         type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
 
-        defaults = {
+        common = {
           :field_label => config[:name].to_s.gsub('__', '_').humanize,
-          :xtype       => XTYPE_MAP[type],
           :hidden      => config[:name] == :id
         }
 
-        res = defaults.merge(config)
-        
-        # res = {
-        #   :name => config[:name].to_s || "unnamed",
-        #   :field_label => config[:field_label] || config[:name].to_s.gsub('__', '_').humanize,
-        #   # :disabled => config[:name] == :id, # make "id" column disabled by default
-        #   # :hidden => config[:name] == :id, # hide "id" column by default
-        #   :xtype => XTYPE_MAP[type]
-        # }
-        
+        default = DEFAULTS_FOR_FIELD[type] || DEFAULTS_FOR_FIELD[:string] # fallback to plain textfield
+
+        res = default.merge(common).merge(config)
       end
       
       private
-      # identify Ext editor for the data type
-      TYPE_EDITOR_MAP = {
-        :integer => :number_field,
-        :boolean => :checkbox,
-        :date => :date_field,
-        :datetime => :datetime,
-        :string => :text_field
-      }
-      
-      XTYPE_MAP = {
-        :integer => :numberfield,
-        :boolean => :textfield,
-        :date => :datefield,
-        :datetime => :datefield,
-        :string => :textfield
-      }
-      
       def ext_editor(type)
         TYPE_EDITOR_MAP[type] || :text_field # fall back to :text_field
       end

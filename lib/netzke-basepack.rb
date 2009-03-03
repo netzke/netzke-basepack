@@ -16,25 +16,11 @@ Netzke::Base.config.merge!({
   ActiveSupport::Dependencies.load_once_paths.delete(path)
 end
 
-# Include the javascript
-Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/basepack.js"
-Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/check_column.js"
-
-extjs_dir = "#{RAILS_ROOT}/public/extjs"
-
-# Filters in GridPanel
-if Netzke::Base.config[:grid_panel][:filters]
-  Netzke::Base.config[:javascripts] << "#{extjs_dir}/examples/grid-filtering/menu/EditableItem.js"
-  Netzke::Base.config[:javascripts] << "#{extjs_dir}/examples/grid-filtering/menu/RangeMenu.js"
-  Netzke::Base.config[:javascripts] << "#{extjs_dir}/examples/grid-filtering/grid/GridFilters.js"
-  %w{Boolean Date List Numeric String}.unshift("").each do |f|
-    Netzke::Base.config[:javascripts] << "#{extjs_dir}/examples/grid-filtering/grid/filter/#{f}Filter.js"
-  end
-  Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/filters.js"
-end
-
 # Make this plugin reloadable for easier development
 ActiveSupport::Dependencies.load_once_paths.delete(File.join(File.dirname(__FILE__)))
+
+# Include the javascript
+Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/basepack.js"
 
 # Include CSS
 Netzke::Base.config[:css] << "#{File.dirname(__FILE__)}/../css/basepack.css"
