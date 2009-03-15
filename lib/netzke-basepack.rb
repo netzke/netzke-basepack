@@ -4,11 +4,6 @@ require 'searchlogic'
 
 require 'netzke/ar_ext'
 
-# Default boot config
-# Netzke::Base.config.merge!({
-#   :grid_panel => {:filters => true}
-# }.recursive_merge(Object.const_defined?(:NETZKE_BOOT_CONFIG) ? Object.const_get(:NETZKE_BOOT_CONFIG) : {}))
-
 %w{ models }.each do |dir|
   path = File.join(File.dirname(__FILE__), 'app', dir)
   $LOAD_PATH << path

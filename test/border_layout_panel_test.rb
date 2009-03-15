@@ -1,12 +1,12 @@
 # require 'rubygems'
-require 'test_helper'
-
-require 'netzke-core'
-require 'netzke/border_layout_panel'
-require 'netzke/panel'
-require 'netzke/properties_tool'
-require 'netzke/db_fields'
-require 'netzke/grid_panel'
+# require 'test_helper'
+# 
+# require 'netzke-core'
+# require 'netzke/border_layout_panel'
+# require 'netzke/panel'
+# require 'netzke/properties_tool'
+# require 'netzke/db_fields'
+# require 'netzke/grid_panel'
 
 class BorderLayoutPanelTest < ActiveSupport::TestCase
   # TODO: rethink the test

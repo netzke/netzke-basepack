@@ -1,12 +1,15 @@
 require 'test_helper'
 require 'netzke-core'
 
-require 'netzke/properties_tool'
-require 'netzke/container'
+module Netzke::GridPanelExtras; end
+
+require 'netzke/configuration_tool'
+# require 'netzke/container'
 require 'netzke/accordion_panel'
 
-# require 'netzke/grid_panel_interface'
-# require 'netzke/grid_panel_js_builder'
+require 'netzke/db_fields'
+require 'netzke/grid_panel_extras/interface'
+require 'netzke/grid_panel_extras/js_builder'
 require 'netzke/grid_panel'
 
 require 'netzke/ar_ext'

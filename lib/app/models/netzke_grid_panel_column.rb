@@ -1,3 +1,5 @@
+require 'netzke/ar_ext'
+
 class NetzkeGridPanelColumn < ActiveRecord::Base
   belongs_to :layout, :class_name => "NetzkeLayout"
   

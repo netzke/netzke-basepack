@@ -1,4 +1,6 @@
 require 'searchlogic'
+require "app/models/netzke_grid_panel_column"
+
 module Netzke
   #
   # GridPanel
@@ -22,8 +24,8 @@ module Netzke
       })
     end
 
-    include GridPanelExtras::JsBuilder
-    include GridPanelExtras::Interface
+    include Netzke::GridPanelExtras::JsBuilder
+    include Netzke::GridPanelExtras::Interface
     include Netzke::DbFields # database field operations
 
     # javascripts for grid-filtering (from Ext examples)

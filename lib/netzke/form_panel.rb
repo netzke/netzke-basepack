@@ -7,8 +7,8 @@ module Netzke
       })
     end
 
-    include FormPanelExtras::JsBuilder
-    include FormPanelExtras::Interface
+    include Netzke::FormPanelExtras::JsBuilder
+    include Netzke::FormPanelExtras::Interface
     include Netzke::DbFields # database field operations
     
     # extra javascripts
