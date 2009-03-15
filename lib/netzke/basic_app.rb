@@ -76,20 +76,6 @@ module Netzke
       def js_extend_properties
         super.merge({
 
-          :logout => <<-JS.l,
-            function(){
-              window.location = "#{config[:logout_url]}"
-            }
-          JS
-
-          # Work around to fire "appLoaded" event only once
-          :on_after_layout => <<-JS.l,
-            function(){
-              this.un('afterlayout', this.onAfterLayout, this); // avoid multiple calls
-              this.appLoaded();
-            }
-          JS
-
           # Initialize
           :app_loaded => <<-JS.l,
           function(){
@@ -106,9 +92,51 @@ module Netzke
               var lastLoaded = this.initialConfig.widgetToLoad; // passed from the server
               if (lastLoaded) Ext.History.add(lastLoaded);
             }
+            
+            if (this.initialConfig.menu) {this.addMenu(this.initialConfig.menu, this);}
           }
           JS
           
+          :host_menu => <<-JS.l,
+            function(menu, owner){
+              var toolbar = this.getComponent('main-toolbar');
+              if (!this.menus[owner.id]) this.menus[owner.id] = [];
+              Ext.each(menu, function(item) {
+            	  var newMenu = new Ext.Toolbar.Button(item);
+            	  var position = toolbar.items.getCount() - 2;
+            	  position = position < 0 ? 0 : position;
+            	  toolbar.insertButton(position, newMenu);
+            	  this.menus[owner.id].push(newMenu);
+            	}, this);
+          	}
+          JS
+
+          :unhost_menu => <<-JS.l,
+            function(owner){
+              var toolbar = this.getComponent('main-toolbar');
+              if (this.menus[owner.id]) {
+                Ext.each(this.menus[owner.id], function(menu){
+                  toolbar.items.remove(menu); // remove the item from the toolbar
+                  menu.destroy(); // ... and destroy it
+                });
+              }
+            }
+          JS
+
+          :logout => <<-JS.l,
+            function(){
+              window.location = "#{config[:logout_url]}"
+            }
+          JS
+
+          # Work around to fire "appLoaded" event only once
+          :on_after_layout => <<-JS.l,
+            function(){
+              this.un('afterlayout', this.onAfterLayout, this); // avoid multiple calls
+              this.appLoaded();
+            }
+          JS
+
           # Event handler for history change
           :process_history => <<-JS.l,
             function(token){

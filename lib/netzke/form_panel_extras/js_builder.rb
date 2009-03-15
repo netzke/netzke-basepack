@@ -20,7 +20,7 @@ module Netzke
               name:field.name, 
               mapping:index++
             });
-            field.hideLabel = field.hidden; // completely hide the field marked "hidden"
+            field.hideLabel = field.hidden; // completely hide fields marked "hidden"
             var extConfig;
             try{
               extConfig = Ext.decode(field.extConfig)
@@ -53,11 +53,11 @@ module Netzke
 				    },
             :defaults       => {
               :anchor       => '-20', # to leave some space for the scrollbar
-              :listeners      => {
+              :listeners    => {
         				:specialkey => {
         				  :fn => <<-JS.l,
           				  function(field, event){
-            					if (event.getKey() == 13) this.submit();
+            					if (event.getKey() == 13) this.applyHandler();
             				}
         				  JS
         				  :scope => this
@@ -88,10 +88,9 @@ module Netzke
                 }
               }
             JS
-            :refresh_click => <<-JS.l,
+            :refresh_handler => <<-JS.l,
               function() {
                 this.feedback('Implement me!');
-                // this.loadRecord(3)
               }
             JS
             :previous => <<-JS.l,
@@ -106,8 +105,10 @@ module Netzke
                 this.loadRecord(currentId, 'next');
               }
             JS
-            :submit => <<-JS.l,
+            :apply_handler => <<-JS.l,
               function() {
+                if (!this.initialConfig.permissions.update) {return false;}
+                
                 this.form.submit({
                   url:this.initialConfig.interface.submit,
                   success :function(form, action){

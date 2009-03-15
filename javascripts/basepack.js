@@ -57,19 +57,23 @@ Ext.netzke.editors = {
 };
 
 Ext.netzke.renderer = function(renderer, c, config){
-  res = Ext.emptyFn;
-  switch (renderer) {
+  res = null; // null-renderer means "no renderer"
+  
+  if (renderer){
+    switch (renderer) {
 
-    // custom renderers can be later added like this:
-    case 'my_renderer':
-      res = function(value){ return "Not implemented" };
-    break
+      // more renderers can be later added like this:
+      case 'my_renderer':
+        res = function(value){ return "My renderer: " + value };
+      break
 
-    // falls back to Ext.util.Format renderers
-    default:
-      res = Ext.util.Format[renderer]
-    break
+      // falls back to Ext.util.Format renderers
+      default:
+        res = Ext.util.Format[renderer] ? Ext.util.Format[renderer] : function(value){return "Unknown renderer"}
+      break
+    }
   }
+
   return res
 }
 

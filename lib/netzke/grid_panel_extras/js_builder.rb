@@ -18,7 +18,7 @@ module Netzke
           :rows_per_page => persistent_config["rows_per_page"] ||= config[:ext_config][:rows_per_page]
         })
       end
-  
+      
       module ClassMethods
 
         def js_base_class 
@@ -29,9 +29,9 @@ module Netzke
           <<-JS.l
           (config.rowsPerPage) ? new Ext.PagingToolbar({
             pageSize:config.rowsPerPage, 
-            items:config.actions, 
+            items:config.bbar, 
             store:ds, 
-            emptyMsg:'Empty'}) : config.actions
+            emptyMsg:'Empty'}) : config.bbar
           JS
         end
 
@@ -43,9 +43,9 @@ module Netzke
             :auto_scroll      => true,
             :click_to_edit    => 2,
             :track_mouse_over => true,
-            # :bbar           => "config.actions".l,
             :bbar             => js_bbar,
             :plugins          => "plugins".l,
+            :load_mask        => true,
       
             #custom configs
             :auto_load_data   => true
@@ -112,7 +112,7 @@ module Netzke
 
           var cm = new Ext.grid.ColumnModel(this.cmConfig);
     
-          this.addEvents("refresh");
+          // this.addEvents("refresh");
     
           // Filters
           if (config.enableColumnFilters) {
@@ -140,7 +140,7 @@ module Netzke
               function(){
                 // auto-load
                 if (this.initialConfig.autoLoadData) {
-                  // if we have a paging toolbar, load the first page, otherwise
+                  // if we have a paging toolbar, load the first page
                   if (this.getBottomToolbar().changePage) this.getBottomToolbar().changePage(0); else this.store.load();
                 }
               }
@@ -160,7 +160,7 @@ module Netzke
             }        
             JS
     
-            :add => <<-JS.l,
+            :add_handler => <<-JS.l,
               function(){
                 var rowConfig = {};
                 Ext.each(this.initialConfig.columns, function(c){
@@ -178,7 +178,7 @@ module Netzke
               }
             JS
     
-            :edit => <<-JS.l,
+            :edit_handler => <<-JS.l,
               function(){
                 var row = this.getSelectionModel().getSelected();
                 if (row){
@@ -202,7 +202,7 @@ module Netzke
               }
             JS
 
-            :delete => <<-JS.l,
+            :delete_handler => <<-JS.l,
               function() {
                 if (this.getSelectionModel().hasSelection()){
                   Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
@@ -226,7 +226,7 @@ module Netzke
                 }
               }
             JS
-            :submit => <<-JS.l,
+            :apply_handler => <<-JS.l,
               function(){
 
                 var newRecords = [];
@@ -288,7 +288,7 @@ module Netzke
               }
             JS
    
-            :refresh_click => <<-JS.l,
+            :refresh_handler => <<-JS.l,
               function() {
                 if (this.fireEvent('refresh', this) !== false) this.store.reload();
               }

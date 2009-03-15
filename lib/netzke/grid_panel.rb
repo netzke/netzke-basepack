@@ -1,6 +1,8 @@
 require 'searchlogic'
 module Netzke
   #
+  # GridPanel
+  #
   # Functionality:
   # * data operations - get, post, delete, create
   # * column resize and move
@@ -12,66 +14,58 @@ module Netzke
   # * properties and column configuration
   #
   class GridPanel < Base
-    # so that some inherited methods would know our real location
-    self.widget_file = __FILE__
-    
-    # include javascripts from Ext examples
-    ext_js_include  "examples/grid-filtering/menu/EditableItem.js", 
-                    "examples/grid-filtering/menu/RangeMenu.js",
-                    "examples/grid-filtering/grid/GridFilters.js"
-    
-    %w{Boolean Date List Numeric String}.unshift("").each do |f|
-      ext_js_include "examples/grid-filtering/grid/filter/#{f}Filter.js"
+    # Class-level configuration with defaults
+    def self.config
+      set_default_config({
+        :column_manager => "NetzkeGridPanelColumn",
+        :enable_filters => true
+      })
     end
 
-    # include ruby code in grid_panel_extras
-    include_extras
+    include GridPanelExtras::JsBuilder
+    include GridPanelExtras::Interface
+    include Netzke::DbFields # database field operations
+
+    # javascripts for grid-filtering (from Ext examples)
+    if Netzke::GridPanel.config[:enable_filters]
+      js_include :ext_examples => %w{grid-filtering/menu/EditableItem.js grid-filtering/menu/RangeMenu.js grid-filtering/grid/GridFilters.js}
+    
+      js_include :ext_examples => %w{Boolean Date List Numeric String}.unshift("").map{|f| "grid-filtering/grid/filter/#{f}Filter.js" }
+      
+      js_include "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/filters.js"
+    end
+    
+    # extra javascripts
+    js_include "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/check-column.js"
 
     # define connection points between client side and server side of GridPanel. 
     # See implementation of equally named methods in the GridPanelExtras::Interface module.
     interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
 
-    # database field operations
-    include Netzke::DbFields
-
-    module ClassMethods
-      def widget_type
-        :grid
-      end
-
-      # Global GridPanel configuration
-      def config
-        set_default_config({
-          :column_manager => "NetzkeGridPanelColumn"
-        })
-      end
-
-      def column_manager_class
-        config[:column_manager].constantize
-      rescue
-        nil
-      end
-      
+    # widget type for DbFields
+    # TODO: ugly, rethink
+    def self.widget_type
+      :grid
     end
-    extend ClassMethods
 
-    def layout_manager_class
-      self.class.layout_manager_class
+    def self.column_manager_class
+      config[:column_manager].constantize
+    rescue
+      nil
     end
 
     def column_manager_class
       self.class.column_manager_class
     end
 
-    # default grid configuration
+    # default instance-level configuration
     def initial_config
       {
         :ext_config => {
-          :config_tool           => false,
-          :enable_column_filters => Netzke::Base.config[:grid_panel][:filters],
+          :config_tool           => true,
+          :enable_column_filters => Netzke::GridPanel.config[:enable_filters],
           :enable_column_move    => true,
-          :enable_column_resize  => true,
-          :load_mask             => true
+          :enable_column_resize  => true
         },
         :persistent_layout => true,
         :persistent_config => true
@@ -82,7 +76,7 @@ module Netzke
       ["FieldsConfigurator"] # TODO: make this happen automatically
     end
 
-    def property_widgets
+    def configuration_widgets
       res = []
       res << {
         :name              => 'columns',
@@ -94,27 +88,13 @@ module Netzke
 
       res << {
         :name               => 'general',
-        :widget_class_name  => "PreferenceGrid",
-        :host_widget_name   => id_name,
-        :default_properties => available_permissions.map{ |k| {:name => "permissions.#{k}", :value => @permissions[k.to_sym]}},
+        :widget_class_name  => "PropertyEditor",
+        :widget_name   => id_name,
         :ext_config         => {:title => false}
       }
       
       res
     end
-
-    def properties__general__load_source(params = {})
-      w = aggregatee_instance(:properties__general)
-      w.interface_load_source(params)
-    end
-
-    protected
-    
-    def available_permissions
-      %w(read update create delete)
-    end
-
-    public
 
     # get columns from layout manager
     def get_columns
@@ -129,28 +109,28 @@ module Netzke
     end
     
     def tools
-      [{:id => 'refresh', :on => {:click => 'refreshClick'}, :qtip => 'Refresh'}]
+      %w{ refresh }
     end
 
     def actions
-      [{
-        :text => 'Add', :handler_name => 'add', :disabled => !@permissions[:create], :id => 'add'
-      },{
-        :text => 'Edit', :handler_name => 'edit', :disabled => !@permissions[:update], :id => 'edit'
-      },{
-        :text => 'Delete', :handler_name => 'delete', :disabled => !@permissions[:delete], :id => 'delete'
-      },{
-        :text => 'Apply', :handler_name => 'submit', :disabled => !@permissions[:update] && !@permissions[:create], :id => 'apply'
-      }]
+      { :add    => {:text => 'Add', :disabled => !@permissions[:create]},
+        :edit   => {:text => 'Edit', :disabled => !@permissions[:update]},
+        :delete => {:text => 'Delete', :disabled => !@permissions[:delete]},
+        :apply  => {:text => 'Apply', :disabled => !@permissions[:update] && !@permissions[:create]}
+      }
     end
 
+    def bbar
+      persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ add edit apply delete }
+    end
     
-
-    # Uncomment to enable a menu duplicating the actions
-    # def js_menus
-    #   [{:text => "config.dataClassName".l, :menu => "config.actions".l}]
-    # end
+    include ConfigurationTool # it will load aggregation with name :properties into a modal window
     
-    include PropertiesTool # it will load aggregation with name :properties into a modal window
+    protected
+    
+    def available_permissions
+      %w(read update create delete)
+    end
+    
   end
 end

@@ -7,7 +7,7 @@ module Netzke
   # * Gets loaded along with the widget that is to be put into the active (expanded) panel (saves us a server request)
   #
   # TODO:
-  # * Stores the last active panel in the persistent_configuration
+  # * Stores the last active panel in persistent_config
   # 
   class AccordionPanel < Base
     #

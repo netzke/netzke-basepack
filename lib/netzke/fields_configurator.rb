@@ -23,14 +23,18 @@ module Netzke
     end
     
     def actions
-      super + [{
-        :text => 'Restore defaults', :handler_name => 'loadDefaults', :id => 'defaults'
-      }]
+      super.merge(
+        :defaults => {:text => 'Restore defaults'}
+      )
+    end
+    
+    def bbar
+      super << "-" << "defaults"
     end
     
     def self.js_extend_properties
       super.merge({
-        :load_defaults => <<-JS.l,
+        :defaults_handler => <<-JS.l,
           function(){
             Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
               if (btn == 'yes') {

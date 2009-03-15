@@ -1,33 +1,38 @@
 module Netzke
   class FormPanel < Base
-    # so that some inherited methods would know our real location
-    self.widget_file = __FILE__
+    # Class-level configuration with defaults
+    def self.config
+      set_default_config({
+        :field_manager => "NetzkeFormPanelField",
+      })
+    end
 
-    include_extras
-
+    include FormPanelExtras::JsBuilder
+    include FormPanelExtras::Interface
+    include Netzke::DbFields # database field operations
+    
+    # extra javascripts
+    js_include %w{ xcheckbox xdatetime }.map{|js| "#{File.dirname(__FILE__)}/form_panel_extras/javascripts/#{js}.js"}
+    
     interface :submit, :load
 
-    include Netzke::DbFields
-    
     def self.widget_type
       :form
     end
     
-    # default configuration
+    # default instance-level configuration
     def initial_config
       {
         :ext_config => {
           :config_tool => true
         },
-        :layout_manager => "NetzkeLayout",
-        :field_manager => "NetzkeFormPanelField",
 
         :persistent_layout => true,
         :persistent_config => true
       }
     end
 
-    def property_widgets
+    def configuration_widgets
       res = []
       res << {
         :name              => 'fields',
@@ -37,21 +42,29 @@ module Netzke
         :layout            => NetzkeLayout.by_widget(id_name),
         :fields_for        => :form
       } if config[:persistent_layout]
+
+      res << {
+        :name               => 'general',
+        :widget_class_name  => "PropertyEditor",
+        :widget_name   => id_name,
+        :ext_config         => {:title => false}
+      }
+      
       res
     end
 
     def tools
-      [{:id => 'refresh', :on => {:click => 'refreshClick'}}]
+      %w{ refresh }
     end
     
     def actions
-      [{
-      #   :text => 'Previous', :handler => 'previous'
-      # },{
-      #   :text => 'Next', :handler => 'next'
-      # },{
-        :text => 'Apply', :handler_name => 'submit', :disabled => !@permissions[:update] && !@permissions[:create], :id => 'apply'
-      }]
+      {
+        :apply => {:text => 'Apply', :disabled => !@permissions[:update]}
+      }
+    end
+    
+    def bbar
+      persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ apply }
     end
     
     # get fields from layout manager
@@ -78,23 +91,17 @@ module Netzke
  
     protected
     
-    def layout_manager_class
-      config[:layout_manager].constantize
-    rescue NameError
-      nil
-    end
-    
     def field_manager_class
-      config[:field_manager].constantize
+      self.class.config[:field_manager].constantize
     rescue NameError
       nil
     end
     
     def available_permissions
-      %w(read update create delete)
+      %w{ read update }
     end
     
-    include PropertiesTool # it will load aggregation with name :properties into a modal window
+    include ConfigurationTool # it will load aggregation with name :properties into a modal window
       
   end
 end

@@ -1,4 +1,7 @@
 module Netzke
+  #
+  # Very experimental
+  #
   class TabPanel < Base
     def self.js_base_class
       "Ext.TabPanel"
