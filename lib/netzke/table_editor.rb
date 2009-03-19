@@ -51,26 +51,30 @@ module Netzke
 
     def self.js_after_constructor
       super << <<-JS
-        this.getCenterWidget().on('addclick', function(){
-          this.getFormWidget().getForm().reset();
+        var setCentralWidgetEvents = function(){
+          this.getCenterWidget().on('addclick', function(){
+            this.getFormWidget().getForm().reset();
           
-          var firstEditableField = null;
-          this.getFormWidget().getForm().items.each(function(f){
-            if (!f.hidden && !f.disabled){
-              firstEditableField = f;
-              return false; // break the loop
-            }
-          })
-          if (firstEditableField) firstEditableField.focus();
+            var firstEditableField = null;
+            this.getFormWidget().getForm().items.each(function(f){
+              if (!f.hidden && !f.disabled){
+                firstEditableField = f;
+                return false; // break the loop
+              }
+            })
+            if (firstEditableField) firstEditableField.focus();
 
-          this.getFormWidget().ownerCt.expand();
+            this.getFormWidget().ownerCt.expand();
 
-          this.getCenterWidget().getSelectionModel().clearSelections();
-          this.lastSelectedRow = null;
-          return false;
-        }, this)
+            this.getCenterWidget().getSelectionModel().clearSelections();
+            this.lastSelectedRow = null;
+            return false;
+          }, this)
         
-        this.getCenterWidget().on('rowclick', this.onRowClick, this);
+          this.getCenterWidget().on('rowclick', this.onRowClick, this);
+        };
+        this.getCenterWidget().ownerCt.on('add', setCentralWidgetEvents, this);
+        setCentralWidgetEvents.call(this);
       JS
     end
 

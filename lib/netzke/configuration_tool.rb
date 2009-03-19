@@ -23,14 +23,14 @@ module Netzke
     module ClassMethods
       def js_extend_properties_with_properties
         js_extend_properties_without_properties.merge({
-          :gear_handler => <<-JS.l
+          :gear => <<-JS.l
             function(){
               var w = new Ext.Window({
                 title:'Config',
                 layout:'fit',
                 modal:true,
-                width:window.innerWidth*.9,
-                height:window.innerHeight*.9,
+                width: Ext.lib.Dom.getViewWidth() *0.9,
+                height: Ext.lib.Dom.getViewHeight() *0.9,
                 closeAction:'destroy',
                 buttons:[{
                   text:'Submit',
@@ -52,10 +52,10 @@ module Netzke
                   if (widget.ownerCt) {
                     widget.ownerCt.loadWidget(widget.initialConfig.interface.getWidget);
                   } else {
-                    this.feedback('Reload current window') // we are embedded directly in HTML
+                    this.feedback('Reload current window'); // we are embedded directly in HTML
                   }
                 }
-              }, this)
+              }, this);
             }
           JS
         })

@@ -69,6 +69,17 @@ module Netzke
             JS
   			    :scope => this
           }
+        else
+          res << "->" <<
+          {
+            :text => "Login",
+            :handler => <<-JS.l,
+              function(){
+                window.location = "/login"
+              }
+            JS
+  			    :scope => this
+          }
         end
         res
       end
@@ -148,24 +159,19 @@ module Netzke
             }
           JS
           
-          #
-          # Set this function as the event handler for your menus, e.g.:
-          #
-          #     :menu => {
-          #      :items => [{
-          #        :text => "Books",
-          #        :handler => "this.appLoadWidget".l,
-          #        :widget => 'books', # specify here the name of the widget to be loaded
-          #        :scope => this
-          #      }]
-          #     }
-          #
-          :app_load_widget => <<-JS.l
-          function(menuItem){
-            Ext.History.add(menuItem.widget)
-          }
+          # Loads widget by name
+          :app_load_widget => <<-JS.l,
+            function(name){
+              Ext.History.add(name)
+            }
           JS
 
+          # Loads widget by action
+          :load_widget_by_action => <<-JS.l
+            function(action){
+              this.appLoadWidget(action.widget || action.name)
+            }
+          JS
         })
       end
     end
@@ -203,7 +209,7 @@ module Netzke
     
     # Interface implementation
     def interface_app_get_widget(params)
-      widget = params.delete(:widget)
+      widget = params.delete(:widget).underscore
       persistent_config['last_loaded_widget'] = widget # store the last loaded widget in the persistent storage
       send("#{widget}__get_widget", params)
     end

@@ -20,7 +20,7 @@ module Netzke
     def self.config
       set_default_config({
         :column_manager => "NetzkeGridPanelColumn",
-        :enable_filters => true
+        :enable_filters => false
       })
     end
 

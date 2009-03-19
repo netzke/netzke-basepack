@@ -4,6 +4,8 @@ Cleaner handling of custom renderers in GridPanel.
 New FormPanel-based PropertyEditor replaces PropertyGrid.
 Xcheckbox and check-column introduced.
 TODO file added.
+Bug fix: in TableEditor, the grid now responses on events also after being reconfigured.
+Bug fix: a couple of IE-related bugs.
 Significant code clean-up.
 
 v0.3.5

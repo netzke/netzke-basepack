@@ -6,8 +6,7 @@ module Netzke
       end
   
       def self.exposed_columns
-        # preferences = NetzkePreference.all
-        preferences = NetzkePreference.find_all_by_widget_name(@@widget_name)
+        preferences = NetzkePreference.find_all_by_widget_name_and_user_id(@@widget_name, Netzke::Base.user && Netzke::Base.user.id)
         preferences.map{|p| {
           :name => p.name,
           :field_label => p.name.gsub('__', "/").humanize,
@@ -42,7 +41,7 @@ module Netzke
         res = default.merge(common).merge(config)
       end
   
-      def self.find_by_id(args)
+      def self.find_by_id(*args)
         self.new
       end
   
@@ -58,7 +57,6 @@ module Netzke
       end
   
       def to_array(columns)
-        Rails.logger.debug "!!! columns: #{columns.inspect}"
         res = []
         for c in columns
           method = c.is_a?(Symbol) ? c : c[:name]
@@ -77,11 +75,23 @@ module Netzke
           current_value = NetzkePreference[method_name_without_equal_sign]
           new_value = args.first
       
-          # JSON-parse if we expect an Array on Hash
-          new_value = JSON.parse(new_value) if current_value.is_a?(Array) || current_value.is_a?(Hash) # TODO: validate JSON
-      
-          # convert to true/false if expecting a Boolean
-          new_value = {"false" => false, "true" => true}[new_value] if current_value.is_a?(TrueClass) || current_value.is_a?(FalseClass)
+          if new_value.blank?
+            new_value = nil
+          else
+            if current_value.is_a?(Array) || current_value.is_a?(Hash)
+              begin
+                # JSON-parse if we expect an Array on Hash
+                new_value = JSON.parse(new_value)
+              rescue JSON::ParserError
+                new_value = current_value # TODO: provide nice feedback about JSON parsing failed
+              end
+            elsif current_value.is_a?(TrueClass) || current_value.is_a?(FalseClass)
+              # convert to true/false if expecting a Boolean
+              new_value = {"false" => false, "true" => true}[new_value] 
+            else
+              new_value = new_value.send(NetzkePreference::ELEMENTARY_CONVERTION_METHODS[current_value.class.name])
+            end
+          end
 
           NetzkePreference[method_name_without_equal_sign] = new_value
         else

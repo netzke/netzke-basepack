@@ -140,6 +140,7 @@ module Netzke
         output_array
       end
   
+      # TODO: document me!
       def convert_filters(column_filter)
         res = {}
         column_filter.each_pair do |k,v|

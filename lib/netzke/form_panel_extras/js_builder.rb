@@ -52,12 +52,13 @@ module Netzke
   				    }
 				    },
             :defaults       => {
-              :anchor       => '-20', # to leave some space for the scrollbar
+              # :anchor       => '-20', # to leave some space for the scrollbar
+              :width => 180,
               :listeners    => {
         				:specialkey => {
         				  :fn => <<-JS.l,
           				  function(field, event){
-            					if (event.getKey() == 13) this.applyHandler();
+            					if (event.getKey() == 13) this.apply();
             				}
         				  JS
         				  :scope => this
@@ -88,7 +89,7 @@ module Netzke
                 }
               }
             JS
-            :refresh_handler => <<-JS.l,
+            :refresh=> <<-JS.l,
               function() {
                 this.feedback('Implement me!');
               }
@@ -105,10 +106,8 @@ module Netzke
                 this.loadRecord(currentId, 'next');
               }
             JS
-            :apply_handler => <<-JS.l,
+            :apply => <<-JS.l,
               function() {
-                if (!this.initialConfig.permissions.update) {return false;}
-                
                 this.form.submit({
                   url:this.initialConfig.interface.submit,
                   success :function(form, action){

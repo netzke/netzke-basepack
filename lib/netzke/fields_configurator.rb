@@ -34,7 +34,7 @@ module Netzke
     
     def self.js_extend_properties
       super.merge({
-        :defaults_handler => <<-JS.l,
+        :defaults => <<-JS.l,
           function(){
             Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
               if (btn == 'yes') {

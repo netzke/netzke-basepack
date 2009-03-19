@@ -59,7 +59,7 @@ module Netzke
     
     def actions
       {
-        :apply => {:text => 'Apply', :disabled => !@permissions[:update]}
+        :apply => {:text => 'Apply'}
       }
     end
     
@@ -97,9 +97,9 @@ module Netzke
       nil
     end
     
-    def available_permissions
-      %w{ read update }
-    end
+    # def available_permissions
+    #   %w{ read update }
+    # end
     
     include ConfigurationTool # it will load aggregation with name :properties into a modal window
       

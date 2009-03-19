@@ -28,7 +28,6 @@ module Netzke
               
               // A function to access a region widget (even if the widget gets reloaded, the function will work).
               // E.g.: getEastWidget()
-              // I love JavaScript
               this['get'+r.capitalize()+'Widget'] = function(){
                 return this.find('region', r)[0].getWidget()
               }.createDelegate(this)
@@ -86,6 +85,13 @@ module Netzke
     end
     extend ClassMethods
     
+    # default instance-level configuration
+    def initial_config
+      {
+        :persistent_config => true
+      }
+    end
+    
     def initial_aggregatees
       config[:regions] || {}
     end
@@ -109,8 +115,8 @@ module Netzke
     end
   
     def resize_region(params)
-      persistent_config["#{params[:region_name]}_width"] = params[:new_width].to_i if params[:new_width]
-      persistent_config["#{params[:region_name]}_height"] = params[:new_height].to_i if params[:new_height]
+      persistent_config["#{params["region_name"]}_width"] = params["new_width"].to_i if params["new_width"]
+      persistent_config["#{params["region_name"]}_height"] = params["new_height"].to_i if params["new_height"]
       {}
     end
     

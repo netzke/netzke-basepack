@@ -25,16 +25,6 @@ module Netzke
           'Ext.grid.EditorGridPanel'
         end
 
-        def js_bbar
-          <<-JS.l
-          (config.rowsPerPage) ? new Ext.PagingToolbar({
-            pageSize:config.rowsPerPage, 
-            items:config.bbar, 
-            store:ds, 
-            emptyMsg:'Empty'}) : config.bbar
-          JS
-        end
-
         def js_default_config
           super.merge({
             :store            => "ds".l,
@@ -43,7 +33,6 @@ module Netzke
             :auto_scroll      => true,
             :click_to_edit    => 2,
             :track_mouse_over => true,
-            :bbar             => js_bbar,
             :plugins          => "plugins".l,
             :load_mask        => true,
       
@@ -55,9 +44,9 @@ module Netzke
         def js_before_constructor
           <<-JS
           var plugins = [];
-          if (!config.columns) this.feedback('No columns defined for grid '+config.id);
+          if (!config.columns) {this.feedback('No columns defined for grid '+config.id);}
           this.recordConfig = [];
-          Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name})}, this);
+          Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name});}, this);
           this.Row = Ext.data.Record.create(this.recordConfig);
 
           var ds = new Ext.data.Store({
@@ -77,7 +66,7 @@ module Netzke
               extConfig = Ext.decode(c.extConfig);
             }
             catch(err){
-              extConfig = {}
+              extConfig = {};
             }
             delete(c.extConfig);
         
@@ -105,7 +94,7 @@ module Netzke
                 editor    : editor,
                 renderer  : renderer,
                 sortable  : true
-              }, extConfig))
+              }, extConfig));
             }
 
           }, this);
@@ -116,13 +105,19 @@ module Netzke
     
           // Filters
           if (config.enableColumnFilters) {
-            var filters = []
+            var filters = [];
             Ext.each(config.columns, function(c){
-              filters.push({type:Ext.netzke.filterMap[c.editor], dataIndex:c.name})
-            })
+              filters.push({type:Ext.netzke.filterMap[c.editor], dataIndex:c.name});
+            });
             var gridFilters = new Ext.grid.GridFilters({filters:filters});
             plugins.push(gridFilters);
           }
+          
+          config.bbar = (config.rowsPerPage) ? new Ext.PagingToolbar({
+            pageSize:config.rowsPerPage, 
+            items:["-", config.bbar], 
+            store:ds, 
+            emptyMsg:'Empty'}) : config.bbar
     
           JS
         end
@@ -141,7 +136,7 @@ module Netzke
                 // auto-load
                 if (this.initialConfig.autoLoadData) {
                   // if we have a paging toolbar, load the first page
-                  if (this.getBottomToolbar().changePage) this.getBottomToolbar().changePage(0); else this.store.load();
+                  if (this.getBottomToolbar().changePage) {this.getBottomToolbar().changePage(0);} else {this.store.load();}
                 }
               }
             JS
@@ -149,18 +144,18 @@ module Netzke
             :load_exception_handler => <<-JS.l,
             function(proxy, options, response, error){
               if (response.status == 200 && (responseObject = Ext.decode(response.responseText)) && responseObject.flash){
-                this.feedback(responseObject.flash)
+                this.feedback(responseObject.flash);
               } else {
                 if (error){
                   this.feedback(error.message);
                 } else {
-                  this.feedback(response.statusText)
+                  this.feedback(response.statusText);
                 }  
               }
             }        
             JS
     
-            :add_handler => <<-JS.l,
+            :add => <<-JS.l,
               function(){
                 var rowConfig = {};
                 Ext.each(this.initialConfig.columns, function(c){
@@ -178,11 +173,11 @@ module Netzke
               }
             JS
     
-            :edit_handler => <<-JS.l,
+            :edit => <<-JS.l,
               function(){
                 var row = this.getSelectionModel().getSelected();
                 if (row){
-                  this.tryStartEditing(this.store.indexOf(row))
+                  this.tryStartEditing(this.store.indexOf(row));
                 }
               }
             JS
@@ -190,7 +185,7 @@ module Netzke
             # try editing the first editable (not hidden, not read-only) sell
             :try_start_editing => <<-JS.l,
               function(row){
-                if (row == null) return;
+                if (row === null) {return;}
                 var editableColumns = this.getColumnModel().getColumnsBy(function(columnConfig, index){
                   return !columnConfig.hidden && !!columnConfig.editor;
                 });
@@ -202,12 +197,12 @@ module Netzke
               }
             JS
 
-            :delete_handler => <<-JS.l,
+            :delete => <<-JS.l,
               function() {
                 if (this.getSelectionModel().hasSelection()){
                   Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
                     if (btn == 'yes') {
-                      var records = []
+                      var records = [];
                       this.getSelectionModel().each(function(r){
                         records.push(r.get('id'));
                       }, this);
@@ -226,7 +221,7 @@ module Netzke
                 }
               }
             JS
-            :apply_handler => <<-JS.l,
+            :apply => <<-JS.l,
               function(){
 
                 var newRecords = [];
@@ -261,15 +256,15 @@ module Netzke
                       var m = Ext.decode(response.responseText);
                       if (m.success) {
                         // commit those rows that have successfully been updated/created
-                        var modRecords = [].concat(this.store.getModifiedRecords()) // there must be a better way to clone an array...
+                        var modRecords = [].concat(this.store.getModifiedRecords()); // there must be a better way to clone an array...
                         Ext.each(modRecords, function(r){
-                          var idsToSearch = r.is_new ? m.modRecordIds.create : m.modRecordIds.update
-                          if (idsToSearch.indexOf(r.id) >= 0) r.commit();
-                        })
+                          var idsToSearch = r.is_new ? m.modRecordIds.create : m.modRecordIds.update;
+                          if (idsToSearch.indexOf(r.id) >= 0) {r.commit();}
+                        });
 
                         // reload the grid only when there were no errors
                         // (we need to reload because of filtering, sorting, etc)
-                        if (this.store.getModifiedRecords().length == 0){
+                        if (this.store.getModifiedRecords().length === 0){
                           this.store.reload();
                         }
 
@@ -288,9 +283,9 @@ module Netzke
               }
             JS
    
-            :refresh_handler => <<-JS.l,
+            :refresh => <<-JS.l,
               function() {
-                if (this.fireEvent('refresh', this) !== false) this.store.reload();
+                if (this.fireEvent('refresh', this) !== false) {this.store.reload();}
               }
             JS
       
@@ -302,7 +297,7 @@ module Netzke
                     index:index,
                     size:size
                   }
-                })
+                });
               }
             JS
       
@@ -314,7 +309,7 @@ module Netzke
                     old_index:oldIndex,
                     new_index:newIndex
                   }
-                })
+                });
               }
             JS
       
