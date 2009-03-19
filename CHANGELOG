@@ -1,5 +1,5 @@
 v0.3.6
-Netzke-core v0.3.0 compatibility
+Netzke-core v0.2.9 compatibility
 Cleaner handling of custom renderers in GridPanel.
 New FormPanel-based PropertyEditor replaces PropertyGrid.
 Xcheckbox and check-column introduced.
