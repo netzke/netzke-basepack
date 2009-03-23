@@ -4,7 +4,6 @@ ENV['RAILS_ENV'] ||= 'in_memory'
 # Load the Rails environment and testing framework
 require "#{File.dirname(__FILE__)}/app_root/config/environment"
 require 'test_help'
-require 'action_view/test_case' # Load additional test classes not done automatically by < Rails 2.2.2
 
 # Undo changes to RAILS_ENV
 silence_warnings {RAILS_ENV = ENV['RAILS_ENV']}
@@ -13,16 +12,8 @@ silence_warnings {RAILS_ENV = ENV['RAILS_ENV']}
 ActiveRecord::Migrator.migrate("#{Rails.root}/db/migrate")
 
 # Set default fixture loading properties
-Test::Unit::TestCase.class_eval do
+ActiveSupport::TestCase.class_eval do
   self.use_transactional_fixtures = true
   self.use_instantiated_fixtures = false
   self.fixture_path = "#{File.dirname(__FILE__)}/fixtures"
 end
-
-# Load models and controllers from lib/app
-# %w{ models controllers }.each do |dir|
-#   path = File.join(File.dirname(__FILE__), 'app', dir)
-#   $LOAD_PATH << path
-#   ActiveSupport::Dependencies.load_paths << path
-#   ActiveSupport::Dependencies.load_once_paths.delete(path)
-# end

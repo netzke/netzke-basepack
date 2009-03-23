@@ -47,7 +47,7 @@ class NetzkeGridPanelColumn < ActiveRecord::Base
   
   def valid_ext_config
     begin
-      JSON.parse(ext_config)
+      ActiveSupport::JSON.decode(ext_config)
     rescue
       errors.add(:ext_config, "is not valid JSON")
     end

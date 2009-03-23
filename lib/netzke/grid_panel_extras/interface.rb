@@ -5,7 +5,7 @@ module Netzke
         success = true
         mod_record_ids = {}
         [:create, :update].each do |operation|
-          data = JSON.parse(params.delete("#{operation}d_records".to_sym)) if params["#{operation}d_records".to_sym]
+          data = ActiveSupport::JSON.decode(params.delete("#{operation}d_records".to_sym)) if params["#{operation}d_records".to_sym]
           if !data.nil? && !data.empty? # data may be nil for one of the operations
             mod_record_ids[operation] = process_data(data, operation)
           end
@@ -26,7 +26,7 @@ module Netzke
 
       def delete_data(params = {})
         if @permissions[:delete]
-          record_ids = JSON.parse(params.delete(:records))
+          record_ids = ActiveSupport::JSON.decode(params.delete(:records))
           klass = config[:data_class_name].constantize
           klass.delete(record_ids)
           flash :notice => "Deleted #{record_ids.size} record(s)"

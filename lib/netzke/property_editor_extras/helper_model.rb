@@ -81,7 +81,7 @@ module Netzke
             if current_value.is_a?(Array) || current_value.is_a?(Hash)
               begin
                 # JSON-parse if we expect an Array on Hash
-                new_value = JSON.parse(new_value)
+                new_value = ActiveSupport::JSON.decode(new_value)
               rescue JSON::ParserError
                 new_value = current_value # TODO: provide nice feedback about JSON parsing failed
               end
