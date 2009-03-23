@@ -1,3 +1,6 @@
+v0.3.7
+Netzke-core v0.2.10 compatibility
+
 v0.3.6
 Netzke-core v0.2.9 compatibility
 Cleaner handling of custom renderers in GridPanel.
