@@ -1,8 +1,9 @@
 v0.3.7
-Netzke-core v0.2.10 compatibility
+Netzke-core version sync.
+Rails 2.3.2 compatibility.
 
 v0.3.6
-Netzke-core v0.2.9 compatibility
+Netzke-core v0.2.9 compatibility.
 Cleaner handling of custom renderers in GridPanel.
 New FormPanel-based PropertyEditor replaces PropertyGrid.
 Xcheckbox and check-column introduced.
