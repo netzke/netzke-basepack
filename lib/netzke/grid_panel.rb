@@ -35,6 +35,9 @@ module Netzke
       js_include :ext_examples => %w{Boolean Date List Numeric String}.unshift("").map{|f| "grid-filtering/grid/filter/#{f}Filter.js" }
       
       js_include "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/filters.js"
+
+      # fixing Ext's EditableItem render problem
+      js_include "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/editable-item-fix.js"
     end
     
     # extra javascripts
