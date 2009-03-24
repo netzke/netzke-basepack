@@ -1,3 +1,6 @@
+v0.3.8
+Fixing Ext's EditableItem render problem.
+
 v0.3.7
 Netzke-core version sync.
 Rails 2.3.2 compatibility.
@@ -13,12 +16,12 @@ Bug fix: a couple of IE-related bugs.
 Significant code clean-up.
 
 v0.3.5
-Netzke-core v0.2.8 compatibility
+Netzke-core v0.2.8 compatibility.
 
 v0.3.4
-Quick tips added to the "tools"
-Regression: the "General" configuration panel for GridPanel works again
-GridPanel: rows_per_page configuration is now read from General config panel
+Quick tips added to the "tools".
+Regression: the "General" configuration panel for GridPanel works again.
+GridPanel: rows_per_page configuration is now read from General config panel.
 
 v0.3.3.1
 Obviously using "new" as a property name in JavaScript isn't liked by Safari. Fixed.

@@ -1,3 +1,22 @@
+/* Fix for Ext's EditableItem render problem (from http://www.extjs.com/forum/showthread.php?p=290267#post290267) */
+.x-menu div.x-menu-item .x-menu-item-icon {
+left: 0px;
+margin-top: 0px !important;
+position:relative;
+background-position:center center;
+}
+.ext-ie .x-menu-item-icon {
+left: -24px;
+}
+.ext-strict .x-menu-item-icon {
+left: 3px;
+}
+.ext-ie6 .x-menu-item-icon {
+left: -24px;
+}
+/* */
+
+
 /* write accordion header in bold */
 .x-accordion-hd {
 	font-weight:bold;
