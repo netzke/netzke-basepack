@@ -38,6 +38,7 @@ lib/netzke/wrapper.rb
 lib/netzke-basepack.rb
 LICENSE
 Manifest
+netzke-basepack.gemspec
 Rakefile
 README.rdoc
 stylesheets/basepack.css

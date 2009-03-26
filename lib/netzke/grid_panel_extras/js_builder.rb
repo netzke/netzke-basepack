@@ -223,15 +223,7 @@ module Netzke
             JS
             :apply => <<-JS.l,
               function(){
-
                 var newRecords = [];
-                // if (this.store.newRecords){
-                //   Ext.each(this.store.newRecords, function(r){
-                //     newRecords.push(r.getChanges())
-                //   }, this);
-                //   // delete this.store.newRecords;
-                // }
-          
                 var updatedRecords = [];
 
                 Ext.each(this.store.getModifiedRecords(),
@@ -245,13 +237,23 @@ module Netzke
                 this);
           
                 if (newRecords.length > 0 || updatedRecords.length > 0) {
+                  var params = {};
+
+                  if (newRecords.length > 0) {
+                    params.created_records = Ext.encode(newRecords);
+                  }
+                  
+                  if (updatedRecords.length > 0) {
+                    params.updated_records = Ext.encode(updatedRecords);
+                  }
+                  
+                  if (this.store.baseParams !== {}) {
+                    params.base_params = Ext.encode(this.store.baseParams);
+                  }
+                  
                   Ext.Ajax.request({
                     url:this.initialConfig.interface.postData,
-                    params: {
-                      updated_records: Ext.encode(updatedRecords), 
-                      created_records: Ext.encode(newRecords),
-                      filters: this.store.baseParams.filters
-                    },
+                    params: params,
                     success:function(response){
                       var m = Ext.decode(response.responseText);
                       if (m.success) {

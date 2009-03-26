@@ -140,7 +140,27 @@ module Netzke
         output_array
       end
   
-      # TODO: document me!
+      #
+      # Converts Ext.grid.GridFilters filters to searchlogic conditions, e.g.
+      # {"0" => {
+      #   "data" => {
+      #     "type" => "numeric", 
+      #     "comparison" => "gt", 
+      #     "value" => 10 }, 
+      #   "field" => "id"
+      # }, 
+      # "1" => {
+      #   "data" => {
+      #     "type" => "string",
+      #     "value" => "pizza"
+      #   },
+      #   "field" => "food_name"
+      # }}
+      #
+      #  => 
+      #
+      # {"id_gt" => 100, "food_name_contains" => "pizza"}
+      #
       def convert_filters(column_filter)
         res = {}
         column_filter.each_pair do |k,v|

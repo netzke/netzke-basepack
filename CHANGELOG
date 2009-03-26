@@ -1,5 +1,7 @@
 v0.3.8
 Fixing Ext's EditableItem render problem.
+Filters by default enabled again in GridPanel.
+GridPanel enhancement: base_params get sent along with post_data.
 
 v0.3.7
 Netzke-core version sync.
