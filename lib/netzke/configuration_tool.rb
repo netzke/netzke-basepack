@@ -65,7 +65,7 @@ module Netzke
     def initial_aggregatees_with_properties
       res = initial_aggregatees_without_properties
       # Add the accordion as aggregatee, which in its turn aggregates widgets from the configuration_widgets method
-      res.merge!(:properties => {:widget_class_name => 'AccordionPanel', :items => configuration_widgets, :ext_config => {:title => false}, :no_caching => true, :late_aggregation => true}) if config[:ext_config][:config_tool]
+      res.merge!(:properties => {:widget_class_name => 'TabPanel', :items => configuration_widgets, :ext_config => {:title => false}, :late_aggregation => true}) if config[:ext_config][:config_tool]
       res
     end
 

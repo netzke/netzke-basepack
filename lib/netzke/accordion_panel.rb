@@ -37,7 +37,7 @@ module Netzke
           # loads widget into the panel if it wasn't loaded yet
           :load_item_widget => <<-JS.l,
             function(panel) {
-              if (!panel.getWidget()) panel.loadWidget(this.id + "__" + panel.containerFor + "__get_widget");
+              if (!panel.getWidget()) panel.loadWidget(this.id + "__" + panel.widget + "__get_widget");
             }
           JS
           
@@ -100,7 +100,7 @@ module Netzke
         res << {
           :id => item[:active] && id_name + '_active', # to mark the fit-panel which will contain the active widget
           :title => item[:title] || (item[:name] && item[:name].humanize),
-          :container_for => item[:name], # to know which fit panel will load which widget
+          :widget => item[:name], # to know which fit panel will load which widget
           :collapsed => !(item[:active] || false)
         }
       end
