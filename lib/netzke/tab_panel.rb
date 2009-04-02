@@ -1,7 +1,14 @@
 module Netzke
   #
-  # Very experimental
+  # TabPanel
+  # 
+  # Features:
+  # * Dynamically loads widgets for the tabs that get activated for the first time
+  # * Is loaded along with the active widget - saves a request to the server
   #
+  # TODO:
+  # * Stores the last active tab in persistent_config
+  # 
   class TabPanel < Base
     def self.js_base_class
       "Ext.TabPanel"
@@ -10,42 +17,44 @@ module Netzke
     def self.js_extend_properties
       {
         # loads widget into the panel if it wasn't loaded yet
-        :load_item_widget => <<-JS.l,
+        :load_item_widget => <<-JS.l
           function(panel) {
-            if (!panel.getWidget()) panel.loadWidget(this.id + "__" + panel.containerFor + "__get_widget");
-          }
-        JS
-        
-        :on_widget_load => <<-JS.l
-          function(){
-            // immediately instantiate the active panel
-            var activePanel = this.findById(this.id + "_active");
-            var activeItemConfig = this.initialConfig[this.initialConfig.expandedItem+"Config"];
-            if (activeItemConfig) activePanel.add(new Ext.netzke.cache[activeItemConfig.widgetClassName](activeItemConfig));
+            if (!panel.getWidget()) {
+              if (panel.id === this.id+"_active"){
+                // active widget only needs to be instantiated, as its class has been loaded already
+                var activeItemConfig = this.initialConfig[panel.widget+"Config"];
+                panel.add(new Ext.netzke.cache[activeItemConfig.widgetClassName](activeItemConfig));
+                panel.doLayout(); // always needed after adding a component
+              } else {
+                // load the widget from the server
+                panel.loadWidget(this.id + "__" + panel.widget + "__get_widget");
+              }
+            }
           }
         JS
       }
     end
     
     def js_config
-      active_item_config = config[:items].select{|i| i[:active]}.first
+      active_item_config = config[:items].detect{|i| i[:active]}
       super.merge({
-        :active_item => active_item_config && active_item_config[:name],
-        :items => items
+        :items => fit_panels,
+        :active_tab => active_item_config && id_name + '_active'
       })
     end
 
     # some configuration normalization
     def initialize(*args)
       super
-
+      
+      # to remove duplicated active panels
       seen_active = false
 
       config[:items].each_with_index do |item, i|
-        # if some items are provided without names, give them generated names
+        # if the item is provided without a name, give it a generated name
         item[:name] ||= "item#{i}"
 
-        # remove duplucated :active configuration
+        # remove duplicated "active" configuration
         if item[:active]
           item[:active] = nil if seen_active
           seen_active = true
@@ -53,7 +62,7 @@ module Netzke
       end
     end
     
-    # the items are late aggregatees, besides the ones that are marked "active"
+    # the items are late aggregatees, besides the one that is configured active
     def initial_aggregatees
       res = {}
       config[:items].each_with_index do |item, i|
@@ -62,34 +71,31 @@ module Netzke
       end
       res
     end
-    
 
     def self.js_default_config
       super.merge({
-        :active_tab => 0,
-        :id_delimiter => "___", # otherwise it conflicts with Netzke
-        :defaults => {:layout => 'fit'}, # all items will be of type Panel with layout 'fit'
+        :id_delimiter => "___", # the default is "__", and it conflicts with Netzke
+        :defaults => {:layout => 'fit'}, # all tabs will be Ext.Panel-s with layout 'fit' ("fit-panels")
         :listeners => {
-          # every item gets an expand event set, which dynamically loads a widget into this item 
+          # when tab is activated, its content gets loaded from the server
           :tabchange => {
             :fn => <<-JS.l
-            function(self, tab){
-              this.loadItemWidget(tab);
-              // comp.on('expand', this.loadItemWidget, self)
-            }
+              function(self, tab){
+                this.loadItemWidget(tab);
+              }
             JS
           }
         }
       })
     end
     
-    def items
+    def fit_panels
       res = []
       config[:items].each_with_index do |item, i|
         item_config = {
-          # :id => item[:active] && id_name + '_active',
+          :id => item[:active] && id_name + '_active',
           :title => item[:title] || (item[:name] && item[:name].humanize),
-          :container_for => item[:name] # to know which fit panel will load which widget
+          :widget => item[:name] # to know which fit-panel will load which widget
         }
         res << item_config
       end

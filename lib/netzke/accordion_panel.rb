@@ -4,7 +4,7 @@ module Netzke
   # 
   # Features:
   # * Dynamically loads widgets for the panels that get expanded for the first time
-  # * Gets loaded along with the widget that is to be put into the active (expanded) panel (saves us a server request)
+  # * Is loaded along with the active widget - saves a request to the server
   #
   # TODO:
   # * Stores the last active panel in persistent_config
@@ -18,7 +18,7 @@ module Netzke
       def js_default_config
         super.merge({
           :layout => 'accordion',
-          :defaults => {:layout => 'fit'}, # all items will be of type Panel with layout 'fit'
+          :defaults => {:layout => 'fit'}, # Container's items will be of type Panel with layout 'fit' ("fit-panels")
           :listeners => {
             # every item gets an expand event set, which dynamically loads a widget into this item 
             :add => {
@@ -45,8 +45,11 @@ module Netzke
             function(){
               // immediately instantiate the active panel
               var activePanel = this.findById(this.id + "_active");
+              
               var activeItemConfig = this.initialConfig[this.initialConfig.expandedItem+"Config"];
-              if (activeItemConfig) activePanel.add(new Ext.netzke.cache[activeItemConfig.widgetClassName](activeItemConfig));
+              if (activeItemConfig) {
+                activePanel.add(new Ext.netzke.cache[activeItemConfig.widgetClassName](activeItemConfig));
+              }
             }
           JS
         }
@@ -73,9 +76,9 @@ module Netzke
     end
 
     def js_config
-      expanded_widget_config = config[:items].select{|i| i[:active]}.first
+      expanded_widget_config = config[:items].detect{|i| i[:active]}
       super.merge({
-        :items => items,
+        :items => fit_panels,
         :expanded_item => expanded_widget_config && expanded_widget_config[:name]
       })
     end
@@ -90,17 +93,16 @@ module Netzke
       res
     end
 
-    # configuration for items (fit-panels)
-    def items
+    # fit-panels - panels of layout 'fit' that will contain the widgets (items)
+    def fit_panels
       res = []
       config[:items].each_with_index do |item, i|
-        item_config = {
-          :id => item[:active] && id_name + '_active',
+        res << {
+          :id => item[:active] && id_name + '_active', # to mark the fit-panel which will contain the active widget
           :title => item[:title] || (item[:name] && item[:name].humanize),
           :container_for => item[:name], # to know which fit panel will load which widget
           :collapsed => !(item[:active] || false)
         }
-        res << item_config
       end
       res
     end
