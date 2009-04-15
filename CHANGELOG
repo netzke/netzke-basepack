@@ -1,3 +1,10 @@
+v0.3.9
+AccordionPanel tests added
+TabPanel works now
+AccordionPanel replaced with more intuitive TabPanel in the configuration window
+Code clean-up by using "single" option to call appLoaded() on "afterlayout"
+Table editor bug fix
+
 v0.3.8
 Fixing Ext's EditableItem render problem.
 Filters by default enabled again in GridPanel.
