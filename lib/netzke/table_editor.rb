@@ -93,7 +93,7 @@ module Netzke
         
         split_region => {
           :widget_class_name    => "FormPanel", 
-          :data_class_name      => "User", 
+          :data_class_name      => config[:data_class_name], 
           :region_config        => {
             :width  => split_size, 
             :height => split_size, 

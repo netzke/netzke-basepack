@@ -38,11 +38,11 @@ lib/netzke/wrapper.rb
 lib/netzke-basepack.rb
 LICENSE
 Manifest
-netzke-basepack.gemspec
 Rakefile
 README.rdoc
 stylesheets/basepack.css
 tasks/netzke_basepack_tasks.rake
+test/accordion_panel_test.rb
 test/app_root/app/controllers/application.rb
 test/app_root/app/models/book.rb
 test/app_root/app/models/category.rb
@@ -84,6 +84,7 @@ test/fixtures/genres.yml
 test/grid_panel_test.rb
 test/netzke_basepack_test.rb
 test/schema.rb
+test/tab_panel_test.rb
 test/test_helper.rb
 TODO
 uninstall.rb
