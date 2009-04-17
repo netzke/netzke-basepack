@@ -22,7 +22,7 @@ module Netzke
       # Global BasicApp configuration
       def config
         set_default_config({
-            :logout_url => "/logout" # logout url assumed by default
+          :logout_url => "/logout" # logout url assumed by default
         })
       end
       
@@ -112,7 +112,7 @@ module Netzke
           
           :host_menu => <<-JS.l,
             function(menu, owner){
-              var toolbar = this.getComponent('main-toolbar');
+              var toolbar = this.findById('main-toolbar');
               if (!this.menus[owner.id]) this.menus[owner.id] = [];
               Ext.each(menu, function(item) {
             	  var newMenu = new Ext.Toolbar.Button(item);
