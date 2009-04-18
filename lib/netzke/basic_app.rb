@@ -4,11 +4,11 @@ module Netzke
   #
   # Features:
   # * dynamic loading of widgets
-  # * restoring of the last loaded widget (FIXME: not working for now)
+  # * restoring of the last loaded widget (not working for now)
   # * authentification support
   # * browser history support (press the "Back"-button to go to the previously loaded widget)
   # * FeedbackGhost-powered feedback
-  # * hosting widget's own menus
+  # * aggregation of widget's own menus
   #
   class BasicApp < Base
     interface :app_get_widget # to dynamically load the widgets that are defined in initial_late_aggregatees
@@ -50,7 +50,6 @@ module Netzke
         JS
       end
 
-      # Call appLoaded after the application is completely visible (e.g. load the initial widget, etc)
       def js_after_constructor
         <<-JS.l
           // add initial menus to the tool-bar
@@ -149,6 +148,14 @@ module Netzke
           :logout => <<-JS.l,
             function(){
               window.location = "#{config[:logout_url]}"
+            }
+          JS
+
+          # Work around to fire "appLoaded" event only once
+          :on_after_layout => <<-JS.l,
+            function(){
+              this.un('afterlayout', this.onAfterLayout, this); // avoid multiple calls
+              this.appLoaded();
             }
           JS
 
