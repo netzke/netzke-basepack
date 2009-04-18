@@ -38,16 +38,26 @@ module Netzke
       			:id => 'main-toolbar',
       			:xtype => 'toolbar',
             :region => 'north',
-            :height => 25,
-      			:items => js_initial_menus
+            :height => 25
           }]
         })
+      end
+
+      def js_before_constructor
+        <<-JS.l
+          // call appLoaded() once after the application is fully rendered
+          this.on("afterlayout", function(){this.appLoaded();}, this, {single:true});
+        JS
       end
 
       # Call appLoaded after the application is completely visible (e.g. load the initial widget, etc)
       def js_after_constructor
         <<-JS.l
-          this.on("afterlayout", function(){this.appLoaded();}, this, {single:true});
+          // add initial menus to the tool-bar
+          var toolbar = this.findById('main-toolbar');
+          Ext.each(#{js_initial_menus.to_js}, function(menu){
+            toolbar.add(menu);
+          });
         JS
       end
       
@@ -126,7 +136,7 @@ module Netzke
 
           :unhost_menu => <<-JS.l,
             function(owner){
-              var toolbar = this.getComponent('main-toolbar');
+              var toolbar = this.findById('main-toolbar');
               if (this.menus[owner.id]) {
                 Ext.each(this.menus[owner.id], function(menu){
                   toolbar.items.remove(menu); // remove the item from the toolbar
@@ -146,9 +156,9 @@ module Netzke
           :process_history => <<-JS.l,
             function(token){
               if (token){
-                Ext.getCmp('main-panel').loadWidget(this.initialConfig.interface.appGetWidget, {widget:token})
+                this.findById('main-panel').loadWidget(this.initialConfig.interface.appGetWidget, {widget:token})
               } else {
-                Ext.getCmp('main-panel').loadWidget(null)
+                this.findById('main-panel').loadWidget(null)
               }
             }
           JS
