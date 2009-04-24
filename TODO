@@ -1,1 +1,3 @@
 * GridPanel. Reordering of grid columns may lead to unpredictable results when data from an "outdated" table (e.g. open in another browser) gets submitted. A mechanism is needed to submit updated data along with the field names - as hash (as done is FormPanel), *not* as array.
+
+* Add status bar to BasicApp
