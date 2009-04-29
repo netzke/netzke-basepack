@@ -7,8 +7,7 @@ module Netzke
 
       def js_config
         res = super
-        # we pass column config at the time of instantiating the JS class
-        res.merge!(:columns => get_columns || config[:columns]) # first try to get columns from DB, then from config
+        res.merge!(:columns => columns)
         res.merge!(:data_class_name => config[:data_class_name])
         res
       end
@@ -101,8 +100,6 @@ module Netzke
 
           var cm = new Ext.grid.ColumnModel(this.cmConfig);
     
-          // this.addEvents("refresh");
-    
           // Filters
           if (config.enableColumnFilters) {
             var filters = [];
@@ -167,8 +164,6 @@ module Netzke
                 r.set('id', r.id); // otherwise later r.get('id') returns empty string
                 this.stopEditing();
                 this.store.add(r);
-                // this.store.newRecords = this.store.newRecords || []
-                // this.store.newRecords.push(r);
                 this.tryStartEditing(this.store.indexOf(r));
               }
             JS
@@ -189,7 +184,6 @@ module Netzke
                 var editableColumns = this.getColumnModel().getColumnsBy(function(columnConfig, index){
                   return !columnConfig.hidden && !!columnConfig.editor;
                 });
-                // console.info(editableColumns);
                 var firstEditableColumn = editableColumns[0];
                 if (firstEditableColumn){
                   this.startEditing(row, firstEditableColumn.id);

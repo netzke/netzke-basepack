@@ -13,7 +13,7 @@ module Netzke
     #
     
     def method_missing(method, *args, &block)
-      # if refering to a column, just pass it to the originar method_missing
+      # if refering to a column, just pass it to the original method_missing
       return super if self.class.column_names.include?(method.to_s)
       
       split = method.to_s.split(/\.|__/)

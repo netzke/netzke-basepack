@@ -1,5 +1,9 @@
 module Netzke
   module DbFields
+    #
+    # Default fields for a widget of class GridPanel or FormPanel
+    # It is a synthesis of 1) columns declared in the model, 2) columns provided in the configuration for the widget
+    #
     def default_db_fields
       config[:data_class_name].nil? && raise(ArgumentError, "No data_class_name specified for widget #{config[:name]}")
       

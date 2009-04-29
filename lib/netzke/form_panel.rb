@@ -37,16 +37,14 @@ module Netzke
       res << {
         :name              => 'fields',
         :widget_class_name => "FieldsConfigurator",
-        :ext_config        => {:title => false},
         :active            => true,
-        :layout            => NetzkeLayout.by_widget(id_name),
-        :fields_for        => :form
+        :widget            => self
       } if config[:persistent_layout]
 
       res << {
         :name               => 'general',
         :widget_class_name  => "PropertyEditor",
-        :widget_name   => id_name,
+        :widget_name        => id_name,
         :ext_config         => {:title => false}
       }
       
@@ -67,23 +65,32 @@ module Netzke
       persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ apply }
     end
     
-    # get fields from layout manager
     def get_fields
-      @fields ||=
-      if config[:persistent_layout] && layout_manager_class && field_manager_class
-        layout = layout_manager_class.by_widget(id_name)
-        layout ||= field_manager_class.create_layout_for_widget(self)
-        layout.items_arry_without_hidden
+      if config[:persistent_layout]
+        NetzkeLayoutItem.widget = id_name
+        NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
+        NetzkeLayoutItem.all
       else
         default_db_fields
       end
     end
+      
+    # def get_fields_old
+    #   @fields ||=
+    #   if config[:persistent_layout] && layout_manager_class && field_manager_class
+    #     layout = layout_manager_class.by_widget(id_name)
+    #     layout ||= field_manager_class.create_layout_for_widget(self)
+    #     layout.items_arry_without_hidden
+    #   else
+    #     default_db_fields
+    #   end
+    # end
 
     # parameters used to instantiate the JS object
     def js_config
       res = super
       # we pass column config at the time of instantiating the JS class
-      res.merge!(:fields => get_fields || config[:fields]) # first try to get columns from DB, then from config
+      res.merge!(:fields => get_fields) # first try to get columns from DB, then from config
       res.merge!(:data_class_name => config[:data_class_name])
       res.merge!(:record_data => config[:record].to_array(get_fields)) if config[:record]
       res

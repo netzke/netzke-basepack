@@ -83,33 +83,20 @@ module Netzke
       res << {
         :name              => 'columns',
         :widget_class_name => "FieldsConfigurator",
-        :ext_config        => {:title => false},
         :active            => true,
-        :layout            => NetzkeLayout.by_widget(id_name)
+        :widget            => self
       } if config[:persistent_layout]
 
       res << {
         :name               => 'general',
         :widget_class_name  => "PropertyEditor",
-        :widget_name   => id_name,
+        :widget_name        => id_name,
         :ext_config         => {:title => false}
       }
       
       res
     end
 
-    # get columns from layout manager
-    def get_columns
-      @columns ||=
-      if config[:persistent_layout] && layout_manager_class && column_manager_class
-        layout = layout_manager_class.by_widget(id_name)
-        layout ||= column_manager_class.create_layout_for_widget(self)
-        layout.items_arry
-      else
-        default_db_fields
-      end
-    end
-    
     def tools
       %w{ refresh }
     end
@@ -125,6 +112,10 @@ module Netzke
     def bbar
       persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ add edit apply delete }
     end
+
+    def columns
+      @@columns ||= get_columns
+    end
     
     include ConfigurationTool # it will load aggregation with name :properties into a modal window
     
@@ -132,6 +123,16 @@ module Netzke
     
     def available_permissions
       %w(read update create delete)
+    end
+
+    def get_columns
+      if config[:persistent_layout]
+        NetzkeLayoutItem.widget = id_name
+        NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
+        NetzkeLayoutItem.all
+      else
+        default_db_fields
+      end
     end
     
   end

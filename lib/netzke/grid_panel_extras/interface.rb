@@ -40,18 +40,31 @@ module Netzke
 
       def resize_column(params)
         raise "Called interface_resize_column while not configured to do so" unless config[:ext_config][:enable_column_resize]
-        if config[:persistent_layout] && layout_manager_class
-          l_item = layout_manager_class.by_widget(id_name).items[params[:index].to_i]
-          l_item.width = params[:size]
-          l_item.save!
+        if config[:persistent_layout]
+          NetzkeLayoutItem.widget = id_name
+          column = NetzkeLayoutItem.find(params[:index].to_i + 1)
+          column.width = params[:size].to_i
+          column.save
+          # l_item = layout_manager_class.by_widget(id_name).items[params[:index].to_i]
+          # l_item.width = params[:size]
+          # l_item.save!
         end
         {}
       end
   
-      def move_column(params)
+      def move_column_old(params)
         raise "Called interface_move_column while not configured to do so" unless config[:ext_config][:enable_column_move]
         if config[:persistent_layout] && layout_manager_class
           layout_manager_class.by_widget(id_name).move_item(params[:old_index].to_i, params[:new_index].to_i)
+        end
+        {}
+      end
+
+      def move_column(params)
+        raise "Called interface_move_column while not configured to do so" unless config[:ext_config][:enable_column_move]
+        if config[:persistent_layout]
+          NetzkeLayoutItem.widget = id_name
+          NetzkeLayoutItem.move_item(params[:old_index].to_i, params[:new_index].to_i)
         end
         {}
       end
@@ -118,18 +131,8 @@ module Netzke
         raise ArgumentError, "No data_class_name specified for widget '#{config[:name]}'" if !config[:data_class_name]
         records = config[:data_class_name].constantize.all(search_params.clone) # clone needed as searchlogic removes :conditions key from the hash
         # output_array = []
-        columns = get_columns
         output_array = records.map{|r| r.to_array(columns)}
     
-        # records.each do |r|
-        #   r_array = []
-        #   self.get_columns.each do |column|
-        #     r_array << r.send(column[:name])
-        #   end
-        #   output_array << r_array
-        #   output_array << r.to_array(columns)
-        # end
-
         # add total_entries accessor to the result
         class << output_array
           attr :total_records, true
