@@ -39,6 +39,7 @@ module Netzke
         :widget_class_name => "FieldsConfigurator",
         :active            => true,
         :widget            => self
+        # :persistent_layout => false
       } if config[:persistent_layout]
 
       res << {
@@ -65,16 +66,6 @@ module Netzke
       persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ apply }
     end
     
-    def get_fields
-      if config[:persistent_layout]
-        NetzkeLayoutItem.widget = id_name
-        NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
-        NetzkeLayoutItem.all
-      else
-        default_db_fields
-      end
-    end
-      
     # def get_fields_old
     #   @fields ||=
     #   if config[:persistent_layout] && layout_manager_class && field_manager_class
@@ -85,14 +76,17 @@ module Netzke
     #     default_db_fields
     #   end
     # end
+    
+    def fields
+      @@fields ||= get_fields
+    end
 
     # parameters used to instantiate the JS object
     def js_config
       res = super
-      # we pass column config at the time of instantiating the JS class
-      res.merge!(:fields => get_fields) # first try to get columns from DB, then from config
+      res.merge!(:fields => fields)
       res.merge!(:data_class_name => config[:data_class_name])
-      res.merge!(:record_data => config[:record].to_array(get_fields)) if config[:record]
+      res.merge!(:record_data => config[:record].to_array(fields)) if config[:record]
       res
     end
  
@@ -103,6 +97,17 @@ module Netzke
     rescue NameError
       nil
     end
+    
+    def get_fields
+      if config[:persistent_layout]
+        NetzkeLayoutItem.widget = id_name
+        NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
+        NetzkeLayoutItem.all
+      else
+        default_db_fields
+      end.map{ |r| r.reject{ |k,v| k == :id } }
+    end
+      
     
     # def available_permissions
     #   %w{ read update }

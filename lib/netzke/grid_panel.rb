@@ -84,7 +84,8 @@ module Netzke
         :name              => 'columns',
         :widget_class_name => "FieldsConfigurator",
         :active            => true,
-        :widget            => self
+        :widget            => self,
+        :persistent_layout => true
       } if config[:persistent_layout]
 
       res << {
@@ -102,10 +103,10 @@ module Netzke
     end
 
     def actions
-      { :add    => {:text => 'Add', :disabled => !@permissions[:create]},
-        :edit   => {:text => 'Edit', :disabled => !@permissions[:update]},
-        :delete => {:text => 'Delete', :disabled => !@permissions[:delete]},
-        :apply  => {:text => 'Apply', :disabled => !@permissions[:update] && !@permissions[:create]}
+      { :add    => {:text => 'Add',     :disabled => !@permissions[:create]},
+        :edit   => {:text => 'Edit',    :disabled => !@permissions[:update]},
+        :delete => {:text => 'Delete',  :disabled => !@permissions[:delete]},
+        :apply  => {:text => 'Apply',   :disabled => !@permissions[:update] && !@permissions[:create]}
       }
     end
 

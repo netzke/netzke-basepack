@@ -19,6 +19,10 @@ class NetzkeHashRecord < Hash
     save
   end
   
+  def self.raw_data=(data)
+    persistent_config.for_widget(widget) {|p| p[:layout__columns] = data}
+  end
+  
   def self.columns_hash
     @@columns_hash ||= build_columns_hash
   end

@@ -131,6 +131,7 @@ module Netzke
         raise ArgumentError, "No data_class_name specified for widget '#{config[:name]}'" if !config[:data_class_name]
         records = config[:data_class_name].constantize.all(search_params.clone) # clone needed as searchlogic removes :conditions key from the hash
         # output_array = []
+        logger.debug "!!! columns: #{columns.inspect}"
         output_array = records.map{|r| r.to_array(columns)}
     
         # add total_entries accessor to the result

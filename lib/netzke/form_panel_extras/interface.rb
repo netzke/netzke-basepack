@@ -25,7 +25,7 @@ module Netzke
         end
     
         if success && record.save
-          {:data => [record.to_array(get_fields)], :success => true}
+          {:data => [record.to_array(fields)], :success => true}
         else
           # flash eventual errors
           record.errors.each_full do |msg|
@@ -42,7 +42,7 @@ module Netzke
         when "next"     then record = klass.next(params[:id])
         else                 record = klass.find(params[:id])
         end
-        {:data => [record && record.to_array(get_fields)]}
+        {:data => [record && record.to_array(fields)]}
       end
     end
   end
