@@ -49,30 +49,4 @@ class NetzkeHashRecordTest < ActiveSupport::TestCase
     
     assert_equal("New name", ahr.first.name)
   end
-  
-  test "moving records" do
-    ahr = NetzkeHashRecord
-    ahr.widget = "my_widget"
-    ahr.delete_all
-    
-    ahr.new({:name => "One"}).save
-    ahr.new({:name => "Two"}).save
-    ahr.new({:name => "Three"}).save
-    
-    ahr.move_item(0,1)
-    assert_equal(%w{ Two One Three }, ahr.all.map(&:name))
-    
-    ahr.move_item(2,1)
-    assert_equal(%w{ Two Three One }, ahr.all.map(&:name))
-    
-    ahr.move_item(0,2)
-    assert_equal(%w{ Three One Two }, ahr.all.map(&:name))
-    
-    ahr.move_item(2,0)
-    assert_equal(%w{ Two Three One }, ahr.all.map(&:name))
-    
-    ahr.save
-    ahr.reload
-    assert_equal(%w{ Two Three One }, ahr.all.map(&:name))
-  end
 end
