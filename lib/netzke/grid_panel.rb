@@ -16,11 +16,17 @@ module Netzke
   # * properties and column configuration
   #
   class GridPanel < Base
-    # Class-level configuration with defaults
+    # Class-level configuration and its defaults
     def self.config
       set_default_config({
         :column_manager => "NetzkeGridPanelColumn",
-        :enable_filters => true
+        :enable_filters                       => true,
+        :config_tool_enabled_by_default       => false,
+        :column_move_enabled_by_default       => true,
+        :column_hide_enabled_by_default       => true,
+        :column_resize_enabled_by_default     => true,
+        :persistent_layout_enabled_by_default => true,
+        :persistent_config_enabled_by_default => true
       })
     end
 
@@ -42,7 +48,7 @@ module Netzke
 
     # define connection points between client side and server side of GridPanel. 
     # See implementation of equally named methods in the GridPanelExtras::Interface module.
-    interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :get_cb_choices
+    interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :hide_column, :get_cb_choices
 
     # widget type for DbFields
     # TODO: ugly, rethink
@@ -64,13 +70,14 @@ module Netzke
     def initial_config
       {
         :ext_config => {
-          :config_tool           => true,
-          :enable_column_filters => Netzke::GridPanel.config[:enable_filters],
-          :enable_column_move    => true,
-          :enable_column_resize  => true
+          :config_tool           => self.class.config[:config_tool_enabled_by_default],
+          :enable_column_filters => self.class.config[:enable_filters],
+          :enable_column_move    => self.class.config[:column_move_enabled_by_default],
+          :enable_column_hide    => self.class.config[:column_hide_enabled_by_default],
+          :enable_column_resize  => self.class.config[:column_resize_enabled_by_default]
         },
-        :persistent_layout => true,
-        :persistent_config => true
+        :persistent_layout => self.class.config[:persistent_layout_enabled_by_default],
+        :persistent_config => self.class.config[:persistent_config_enabled_by_default]
       }
     end
 

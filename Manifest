@@ -1,3 +1,4 @@
+autotest/discover.rb
 CHANGELOG
 generators/netzke_basepack/netzke_basepack_generator.rb
 generators/netzke_basepack/USAGE
@@ -10,6 +11,8 @@ install.rb
 javascripts/basepack.js
 lib/app/models/netzke_form_panel_field.rb
 lib/app/models/netzke_grid_panel_column.rb
+lib/app/models/netzke_hash_record.rb
+lib/app/models/netzke_layout_item.rb
 lib/netzke/accordion_panel.rb
 lib/netzke/ar_ext.rb
 lib/netzke/basic_app.rb
@@ -17,7 +20,9 @@ lib/netzke/border_layout_panel.rb
 lib/netzke/configuration_tool.rb
 lib/netzke/container.rb
 lib/netzke/db_fields.rb
+lib/netzke/field_model.rb
 lib/netzke/fields_configurator.rb
+lib/netzke/fields_configurator_old.rb
 lib/netzke/form_panel.rb
 lib/netzke/form_panel_extras/interface.rb
 lib/netzke/form_panel_extras/javascripts/xcheckbox.js
@@ -42,7 +47,6 @@ Rakefile
 README.rdoc
 stylesheets/basepack.css
 tasks/netzke_basepack_tasks.rake
-test/accordion_panel_test.rb
 test/app_root/app/controllers/application.rb
 test/app_root/app/models/book.rb
 test/app_root/app/models/category.rb
@@ -72,8 +76,6 @@ test/app_root/script/console
 test/app_root/vendor/plugins/acts_as_list/init.rb
 test/app_root/vendor/plugins/acts_as_list/lib/active_record/acts/list.rb
 test/app_root/vendor/plugins/acts_as_list/README
-test/ar_ext_test.rb
-test/border_layout_panel_test.rb
 test/console_with_fixtures.rb
 test/fixtures/books.yml
 test/fixtures/categories.yml
@@ -81,10 +83,13 @@ test/fixtures/cities.yml
 test/fixtures/continents.yml
 test/fixtures/countries.yml
 test/fixtures/genres.yml
-test/grid_panel_test.rb
-test/netzke_basepack_test.rb
 test/schema.rb
-test/tab_panel_test.rb
 test/test_helper.rb
+test/unit/accordion_panel_test.rb
+test/unit/ar_ext_test.rb
+test/unit/grid_panel_test.rb
+test/unit/netzke_basepack_test.rb
+test/unit/netzke_hash_record_test.rb
+test/unit/tab_panel_test.rb
 TODO
 uninstall.rb

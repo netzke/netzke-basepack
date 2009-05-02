@@ -99,6 +99,7 @@ module Netzke
           }, this);
 
           var cm = new Ext.grid.ColumnModel(this.cmConfig);
+          cm.on('hiddenchange', this.onColumnHiddenChange, this);
     
           // Filters
           if (config.enableColumnFilters) {
@@ -292,6 +293,18 @@ module Netzke
                   params:{
                     index:index,
                     size:size
+                  }
+                });
+              }
+            JS
+      
+            :on_column_hidden_change => <<-JS.l,
+              function(cm, index, hidden){
+                Ext.Ajax.request({
+                  url:this.initialConfig.interface.hideColumn,
+                  params:{
+                    index:index,
+                    hidden:hidden
                   }
                 });
               }

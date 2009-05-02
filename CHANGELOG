@@ -1,5 +1,5 @@
 v0.4.0
-
+New: dynamic hiding of columns from column menu in GridPanel
 
 v0.3.10
 BasicApp-based widgets can now introduce arbitrary layout, following the convention of defining "main-panel" and "main-toolbar" panels with layout 'fit'.
