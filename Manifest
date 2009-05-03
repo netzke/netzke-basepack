@@ -26,7 +26,6 @@ lib/netzke/fields_configurator_old.rb
 lib/netzke/form_panel.rb
 lib/netzke/form_panel_extras/interface.rb
 lib/netzke/form_panel_extras/javascripts/xcheckbox.js
-lib/netzke/form_panel_extras/javascripts/xdatetime.js
 lib/netzke/form_panel_extras/js_builder.rb
 lib/netzke/grid_panel.rb
 lib/netzke/grid_panel_extras/interface.rb
@@ -90,6 +89,7 @@ test/unit/ar_ext_test.rb
 test/unit/grid_panel_test.rb
 test/unit/netzke_basepack_test.rb
 test/unit/netzke_hash_record_test.rb
+test/unit/netzke_layout_item_test.rb
 test/unit/tab_panel_test.rb
 TODO
 uninstall.rb

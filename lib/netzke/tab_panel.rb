@@ -16,18 +16,12 @@ module Netzke
 
     def self.js_extend_properties
       {
-        :on_widget_load => <<-JS.l,
-          function(){
-            // this.loadItemWidget(this.items.get(1));
-          }
-        JS
-        
         # loads widget into the panel if it wasn't loaded yet
         :load_item_widget => <<-JS.l
           function(panel) {
             if (!panel.getWidget()) {
               if (preloadedItemConfig = this.initialConfig[panel.widget+"Config"]){
-                // preloaded widget only needs to be instantiated, as its class and configuration has been loaded already
+                // preloaded widget only needs to be instantiated, as its class and configuration have already been loaded
                 panel.add(new Ext.netzke.cache[preloadedItemConfig.widgetClassName](preloadedItemConfig));
                 panel.doLayout(); // always needed after adding a component
               } else {

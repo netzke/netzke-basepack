@@ -87,7 +87,7 @@ module Netzke
             else
               # it's a "virtual" column - the least effective search
               records = self.find(:all).map{|r| r.send(column)}.uniq
-              query.nil? ? records : records.select{|r| r.send(column).index(/^#{query}/)}
+              query.nil? ? records : records.select{|r| r.index(/^#{query}/)}
             end
           end
         end

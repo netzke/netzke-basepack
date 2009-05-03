@@ -4,6 +4,8 @@ New: dynamic hiding of columns from column menu in GridPanel.
 New: FormPanel now supports combo boxes.
 Fix: config[:bbar] set to 'false' now works in grids with pagination
 New: you can specify :preloaded => true in a tab config in TabPanel to preload the widget in that tab along with the TabPanel itself
+New: hideBusy added to Ext.StatusBar
+Fix: assigning association (a Boss to a Clerk) by virtual column (like boss__name) works now
 
 v0.3.10
 BasicApp-based widgets can now introduce arbitrary layout, following the convention of defining "main-panel" and "main-toolbar" panels with layout 'fit'.
