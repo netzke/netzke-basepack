@@ -35,8 +35,12 @@ module Netzke
       }
     end
     
+    def items
+      @items ||= config[:items]
+    end
+
     def js_config
-      active_item_config = config[:items].detect{|i| i[:active]}
+      active_item_config = items.detect{|i| i[:active]}
       super.merge({
         :items => fit_panels,
         :active_tab => active_item_config && id_name + '_active'
@@ -50,7 +54,7 @@ module Netzke
       # to remove duplicated active panels
       seen_active = false
 
-      config[:items].each_with_index do |item, i|
+      items.each_with_index do |item, i|
         # if the item is provided without a name, give it a generated name
         item[:name] ||= "item#{i}"
 
@@ -65,7 +69,7 @@ module Netzke
     # the items are late aggregatees, besides the one that is configured active
     def initial_aggregatees
       res = {}
-      config[:items].each_with_index do |item, i|
+      items.each_with_index do |item, i|
         item[:late_aggregation] = !item[:active]
         res.merge!(item[:name].to_sym => item)
       end
@@ -74,7 +78,7 @@ module Netzke
 
     def self.js_default_config
       super.merge({
-        :id_delimiter => "___", # the default is "__", and it conflicts with Netzke
+        :id_delimiter => "___", # the default is "__", which conflicts with Netzke
         :defaults => {:layout => 'fit'}, # all tabs will be Ext.Panel-s with layout 'fit' ("fit-panels")
         :listeners => {
           # when tab is activated, its content gets loaded from the server
@@ -91,7 +95,7 @@ module Netzke
     
     def fit_panels
       res = []
-      config[:items].each_with_index do |item, i|
+      items.each_with_index do |item, i|
         item_config = {
           :id => item[:active] && id_name + '_active',
           :title => item[:title] || (item[:name] && item[:name].humanize),

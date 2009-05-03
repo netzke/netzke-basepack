@@ -119,9 +119,9 @@ module Netzke
           }
           
           config.bbar = (config.rowsPerPage) ? new Ext.PagingToolbar({
-            pageSize:config.rowsPerPage, 
-            items:["-", config.bbar], 
-            store:ds, 
+            pageSize : config.rowsPerPage, 
+            items : config.bbar ? ["-", config.bbar] : [], 
+            store : ds, 
             emptyMsg:'Empty'}) : config.bbar
     
           JS
@@ -141,7 +141,7 @@ module Netzke
                 // auto-load
                 if (this.initialConfig.autoLoadData) {
                   // if we have a paging toolbar, load the first page
-                  if (this.getBottomToolbar().changePage) {this.getBottomToolbar().changePage(0);} else {this.store.load();}
+                  if (this.getBottomToolbar() && this.getBottomToolbar().changePage) {this.getBottomToolbar().changePage(0);} else {this.store.load();}
                 }
               }
             JS
