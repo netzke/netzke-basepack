@@ -122,7 +122,7 @@ module Netzke
     end
 
     def columns
-      @@columns ||= get_columns
+      @columns ||= get_columns
     end
     
     include ConfigurationTool # it will load aggregation with name :properties into a modal window
