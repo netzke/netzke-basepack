@@ -82,7 +82,14 @@ module Netzke
               this.cmConfig.push(plugin);
           
             } else {
-              var editor = (c.readOnly || !config.permissions.update) ? null : Ext.netzke.editors[c.editor](c, config);
+              // editor is created by xtype stored in c.editor
+              var editor = (c.readOnly || !config.permissions.update) ? null : Ext.ComponentMgr.create({
+                xtype:c.editor, 
+                parentConfig:config, 
+                fieldConfig:c, 
+                selectOnFocus:true
+              });
+              
               var renderer = Ext.netzke.renderer(c.renderer);
 
               this.cmConfig.push(Ext.apply({

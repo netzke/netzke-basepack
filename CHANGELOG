@@ -1,5 +1,7 @@
 v0.4.0
-New: dynamic hiding of columns from column menu in GridPanel
+Refactoring: got rid of NetzkeFormPanelField and NetzkeGridPanelColumn classes along with their tables. The layout is now stored in netzke_preferences.
+New: dynamic hiding of columns from column menu in GridPanel.
+New: FormPanel now supports combo boxes.
 
 v0.3.10
 BasicApp-based widgets can now introduce arbitrary layout, following the convention of defining "main-panel" and "main-toolbar" panels with layout 'fit'.

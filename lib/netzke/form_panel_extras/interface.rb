@@ -10,17 +10,15 @@ module Netzke
         record = klass.find_by_id(params[:id])
         success = true
 
-        if record.nil?
-          record = klass.create(params)
-        else
-          params.each_pair do |k,v|
-            begin
-              record.send("#{k}=",v)
-            rescue ArgumentError => exc
-              flash :error => exc.message
-              success = false
-              break
-            end
+        record = klass.new if record.nil?
+
+        params.each_pair do |k,v|
+          begin
+            record.send("#{k}=",v)
+          rescue StandardError => exc
+            flash :error => exc.message
+            success = false
+            break
           end
         end
     
@@ -44,6 +42,15 @@ module Netzke
         end
         {:data => [record && record.to_array(fields)]}
       end
+      
+      # Return the choices for the column
+      def get_cb_choices(params)
+        column = params[:column]
+        query = params[:query]
+    
+        {:data => config[:data_class_name].constantize.choices_for(column, query).map{|s| [s]}}
+      end
+        
     end
   end
 end

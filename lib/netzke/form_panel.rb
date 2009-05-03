@@ -12,9 +12,9 @@ module Netzke
     include Netzke::DbFields # database field operations
     
     # extra javascripts
-    js_include %w{ xcheckbox xdatetime }.map{|js| "#{File.dirname(__FILE__)}/form_panel_extras/javascripts/#{js}.js"}
+    js_include %w{ xcheckbox }.map{|js| "#{File.dirname(__FILE__)}/form_panel_extras/javascripts/#{js}.js"}
     
-    interface :submit, :load
+    interface :submit, :load, :get_cb_choices
 
     def self.widget_type
       :form

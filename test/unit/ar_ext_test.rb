@@ -9,29 +9,23 @@ class ArExtTest < ActiveSupport::TestCase
     cc = Book.default_column_config(:title)
     
     assert_equal("Title", cc[:label])
-    assert_equal(:text_field, cc[:editor])
+    assert_equal(:textfield, cc[:editor])
     assert(!cc[:height])
 
     cc = Book.default_column_config({:name => :amount, :label => 'AMOUNT'})
     
     assert_equal("AMOUNT", cc[:label])
-    assert_equal(:number_field, cc[:editor])
+    assert_equal(:numberfield, cc[:editor])
     
     cc = Book.default_column_config(:genre_id)
     assert_equal("genre__name", cc[:name])
-    assert_equal(:combo_box, cc[:editor])
+    assert_equal(:combobox, cc[:editor])
 
     cc = Book.default_column_config(:genre__popular)
     assert_equal(:checkbox, cc[:editor])
-    
-    cc = Book.default_column_config(:title)
-    
-    # cc = Book.default_field_config(:title)
-    # assert(cc[:height])
   end
   
   test "choices for column" do
-    # TODO: test virtual columns, too
     cities = City.choices_for("name")
     assert_equal(3, cities.size)
     assert(cities.include?('Cordoba') && cities.include?('Buenos Aires'))

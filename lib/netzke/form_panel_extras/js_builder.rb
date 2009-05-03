@@ -30,7 +30,10 @@ module Netzke
             }
             delete(field.extConfig);
             Ext.apply(field, extConfig);
-          });
+
+            field.parentConfig = config;
+            field.fieldConfig = field;
+          }, this);
           var Record = Ext.data.Record.create(recordFields);
           this.reader = new Ext.data.RecordArrayReader({root:"data"}, Record);
           JS

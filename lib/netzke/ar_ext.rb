@@ -147,16 +147,16 @@ module Netzke
           assoc_name, method = config[:name].to_s.split('__').map(&:to_sym)
           if assoc = reflect_on_association(assoc_name)
             assoc_column = assoc.klass.columns_hash[method.to_s]
-            assoc_method_type = assoc_column && assoc_column.type
+            assoc_method_type = assoc_column.try(:type)
             if assoc_method_type
-              res[:editor] = ext_editor(assoc_method_type) == :checkbox ? :checkbox : :combo_box
+              res[:editor] = ext_editor(assoc_method_type) == :checkbox ? :checkbox : :combobox
             end
           end
         end
         
         # detect association column (e.g. :category_id)
         if assoc = reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == config[:name]}
-          res[:editor] = :combo_box
+          res[:editor] = :combobox
           assoc_method = %w{name title label}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
           res[:name] = "#{assoc.name}__#{assoc_method}"
         end
@@ -174,15 +174,15 @@ module Netzke
       
       DEFAULT_COLUMN_WIDTH = 100
       
-      # identify Ext editor for the data type
+      # identify Ext editor (xtype) for the data type
       TYPE_EDITOR_MAP = {
-        :integer => :number_field,
+        :integer => :numberfield,
         :boolean => :checkbox,
-        :date => :date_field,
-        :datetime => :datetime,
-        :string => :text_field
+        :date => :datefield,
+        :datetime => :xdatetime,
+        :string => :textfield
       }
-      
+
       # Returns default column config understood by Netzke::GridPanel
       # Argument: column name (as Symbol) or column config
       def default_column_config(config)
@@ -194,25 +194,33 @@ module Netzke
       #
       
       # default configuration as a function of ActivRecord's column type
-      DEFAULTS_FOR_FIELD = {
-        :integer => {
-          :xtype => :numberfield
-        },
-        :boolean => {
-          :xtype => :numberfield
-        },
-        :date => {
-          :xtype => :datefield
-        },
-        :datetime => {
-          :xtype => :xdatetime
-          # :date_format => "Y-m-d",
-          # :time_format => "H:i",
-          # :time_width => 60
-        },
-        :string => {
-          :xtype => :textfield
-        }
+      # DEFAULTS_FOR_FIELD = {
+      #   :integer => {
+      #     :xtype => :numberfield
+      #   },
+      #   :boolean => {
+      #     :xtype => :numberfield
+      #   },
+      #   :date => {
+      #     :xtype => :datefield
+      #   },
+      #   :datetime => {
+      #     :xtype => :xdatetime
+      #     # :date_format => "Y-m-d",
+      #     # :time_format => "H:i",
+      #     # :time_width => 60
+      #   },
+      #   :string => {
+      #     :xtype => :textfield
+      #   }
+      # }
+
+      XTYPE_MAP = {
+        :integer => :numberfield,
+        :boolean => :xcheckbox,
+        :date => :datefield,
+        :datetime => :xdatetime,
+        :string => :textfield
       }
 
       def default_field_config(config)
@@ -224,17 +232,32 @@ module Netzke
 
         common = {
           :field_label => config[:name].to_s.gsub('__', '_').humanize,
-          :hidden      => config[:name] == :id
+          :hidden      => config[:name] == :id,
+          :xtype       => XTYPE_MAP[type] || XTYPE_MAP[:string]
         }
 
-        default = DEFAULTS_FOR_FIELD[type] || DEFAULTS_FOR_FIELD[:string] # fallback to plain textfield
+        # detect :assoc__method
+        if config[:name].to_s.index('__')
+          assoc_name, method = config[:name].to_s.split('__').map(&:to_sym)
+          if assoc = reflect_on_association(assoc_name)
+            assoc_column = assoc.klass.columns_hash[method.to_s]
+            assoc_method_type = assoc_column.try(:type)
+            if assoc_method_type
+              common[:xtype] = ext_editor(assoc_method_type) == :checkbox ? :checkbox : :combobox
+            end
+          end
+        end
+        
+        common.merge(config)
 
-        res = default.merge(common).merge(config)
+        # default = DEFAULTS_FOR_FIELD[type] || DEFAULTS_FOR_FIELD[:string] # fallback to plain textfield
+
+        # res = default.merge(common).merge(config)
       end
       
       private
       def ext_editor(type)
-        TYPE_EDITOR_MAP[type] || :text_field # fall back to :text_field
+        TYPE_EDITOR_MAP[type] || :textfield # fall back to :text_field
       end
       
     end
