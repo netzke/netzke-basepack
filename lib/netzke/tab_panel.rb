@@ -16,14 +16,19 @@ module Netzke
 
     def self.js_extend_properties
       {
+        :on_widget_load => <<-JS.l,
+          function(){
+            // this.loadItemWidget(this.items.get(1));
+          }
+        JS
+        
         # loads widget into the panel if it wasn't loaded yet
         :load_item_widget => <<-JS.l
           function(panel) {
             if (!panel.getWidget()) {
-              if (panel.id === this.id+"_active"){
-                // active widget only needs to be instantiated, as its class has been loaded already
-                var activeItemConfig = this.initialConfig[panel.widget+"Config"];
-                panel.add(new Ext.netzke.cache[activeItemConfig.widgetClassName](activeItemConfig));
+              if (preloadedItemConfig = this.initialConfig[panel.widget+"Config"]){
+                // preloaded widget only needs to be instantiated, as its class and configuration has been loaded already
+                panel.add(new Ext.netzke.cache[preloadedItemConfig.widgetClassName](preloadedItemConfig));
                 panel.doLayout(); // always needed after adding a component
               } else {
                 // load the widget from the server
@@ -40,10 +45,11 @@ module Netzke
     end
 
     def js_config
-      active_item_config = items.detect{|i| i[:active]}
+      # active_item_config = items.detect{|i| i[:active]}
       super.merge({
         :items => fit_panels,
-        :active_tab => active_item_config && id_name + '_active'
+        :active_tab => id_name + '_active'
+        # :active_tab => active_item_config && id_name + '_active'
       })
     end
 
@@ -70,7 +76,7 @@ module Netzke
     def initial_aggregatees
       res = {}
       items.each_with_index do |item, i|
-        item[:late_aggregation] = !item[:active]
+        item[:late_aggregation] = !item[:active] && !item[:preloaded]
         res.merge!(item[:name].to_sym => item)
       end
       res
