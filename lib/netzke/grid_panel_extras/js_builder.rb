@@ -324,7 +324,22 @@ module Netzke
                   params:{
                     old_index:oldIndex,
                     new_index:newIndex
-                  }
+                  },
+                  success : function(response){
+                    // we need to reconfigure ArrayReader's recordType in order to correctly interprete
+                    // the new order of data fields coming from the server
+
+                    // we receive new record order from the server, which is less error-prone than trying to
+                    // blindly track the column order on the client side
+                    columns = Ext.decode(response.responseText).columns;
+                    columnsInNewOrder = [];
+                    Ext.each(columns, function(c){
+                      columnsInNewOrder.push({name:c});
+                    });
+                    newRecordType = Ext.data.Record.create(columnsInNewOrder);
+                    this.store.reader.recordType = newRecordType; // yes, recordType is a protected property, but that's the only way we can do it, and it seems to work
+                  },
+                  scope : this
                 });
               }
             JS

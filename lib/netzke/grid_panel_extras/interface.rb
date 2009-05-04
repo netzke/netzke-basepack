@@ -66,7 +66,9 @@ module Netzke
           NetzkeLayoutItem.widget = id_name
           NetzkeLayoutItem.move_item(params[:old_index].to_i, params[:new_index].to_i)
         end
-        {}
+
+        # provide the client side with the new columns order
+        {:columns => columns.map(&:name)}
       end
 
       # Return the choices for the column
@@ -130,8 +132,6 @@ module Netzke
     
         raise ArgumentError, "No data_class_name specified for widget '#{config[:name]}'" if !config[:data_class_name]
         records = config[:data_class_name].constantize.all(search_params.clone) # clone needed as searchlogic removes :conditions key from the hash
-        # output_array = []
-        logger.debug "!!! columns: #{columns.inspect}"
         output_array = records.map{|r| r.to_array(columns)}
     
         # add total_entries accessor to the result
