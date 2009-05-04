@@ -1,5 +1,4 @@
 require 'searchlogic'
-require "app/models/netzke_grid_panel_column"
 
 module Netzke
   #
@@ -19,7 +18,6 @@ module Netzke
     # Class-level configuration and its defaults
     def self.config
       set_default_config({
-        :column_manager => "NetzkeGridPanelColumn",
         :enable_filters                       => true,
         :config_tool_enabled_by_default       => false,
         :column_move_enabled_by_default       => true,
@@ -54,16 +52,6 @@ module Netzke
     # TODO: ugly, rethink
     def self.widget_type
       :grid
-    end
-
-    def self.column_manager_class
-      config[:column_manager].constantize
-    rescue
-      nil
-    end
-
-    def column_manager_class
-      self.class.column_manager_class
     end
 
     # default instance-level configuration

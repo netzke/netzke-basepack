@@ -1,8 +1,0 @@
-Description:
-    Explain the generator
-
-Example:
-    ./script/generate netzke-basepack Thing
-
-    This will create:
-        what/will/it/create

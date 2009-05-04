@@ -3,7 +3,6 @@ module Netzke
     # Class-level configuration with defaults
     def self.config
       set_default_config({
-        :field_manager => "NetzkeFormPanelField",
       })
     end
 
@@ -34,12 +33,12 @@ module Netzke
 
     def configuration_widgets
       res = []
+      
       res << {
         :name              => 'fields',
         :widget_class_name => "FieldsConfigurator",
         :active            => true,
         :widget            => self
-        # :persistent_layout => false
       } if config[:persistent_layout]
 
       res << {
@@ -66,17 +65,6 @@ module Netzke
       persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ apply }
     end
     
-    # def get_fields_old
-    #   @fields ||=
-    #   if config[:persistent_layout] && layout_manager_class && field_manager_class
-    #     layout = layout_manager_class.by_widget(id_name)
-    #     layout ||= field_manager_class.create_layout_for_widget(self)
-    #     layout.items_arry_without_hidden
-    #   else
-    #     default_db_fields
-    #   end
-    # end
-    
     def fields
       @@fields ||= get_fields
     end
@@ -91,12 +79,6 @@ module Netzke
     end
  
     protected
-    
-    def field_manager_class
-      self.class.config[:field_manager].constantize
-    rescue NameError
-      nil
-    end
     
     def get_fields
       if config[:persistent_layout]
