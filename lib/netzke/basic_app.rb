@@ -43,15 +43,11 @@ module Netzke
         })
       end
 
-      def js_before_constructor
+      def js_after_constructor
         <<-JS.l
           // call appLoaded() once after the application is fully rendered
           this.on("afterlayout", function(){this.appLoaded();}, this, {single:true});
-        JS
-      end
 
-      def js_after_constructor
-        <<-JS.l
           // add initial menus to the tool-bar
           var toolbar = this.findById('main-toolbar');
           Ext.each(#{js_initial_menus.to_js}, function(menu){
