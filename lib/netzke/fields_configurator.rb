@@ -16,8 +16,8 @@ module Netzke
     def initial_config
       super.recursive_merge({
         :name              => 'columns',
-        :widget_class_name => "GridPanel"
-        # :ext_config        => {:title => false}
+        :widget_class_name => "GridPanel",
+        :ext_config        => {:title => false}
       })
     end
     
@@ -66,17 +66,5 @@ module Netzke
     
     alias_method_chain :default_db_fields, :widget_change
     
-    # def get_columns
-    #   if config[:persistent_layout]
-    #     db_fields = default_db_fields
-    #     NetzkeLayoutItem.widget = id_name
-    #     NetzkeLayoutItem.data = db_fields if NetzkeLayoutItem.all.empty?
-    #     NetzkeLayoutItem.widget = config[:widget]
-    #     NetzkeLayoutItem.all
-    #   else
-    #     default_db_fields
-    #   end
-    # end
-        
   end
 end
