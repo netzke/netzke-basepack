@@ -1,5 +1,6 @@
 v0.4.0
-Rework: got rid of NetzkeFormPanelField and NetzkeGridPanelColumn classes along with their tables. The layout is now stored in netzke_preferences.
+2009-05-07
+Refactor: got rid of NetzkeFormPanelField and NetzkeGridPanelColumn classes along with their tables. The layout is now stored in netzke_preferences.
 New: dynamic hiding of columns from column menu in GridPanel.
 New: FormPanel now supports combo boxes.
 Fix: config[:bbar] set to 'false' now works in grids with pagination
