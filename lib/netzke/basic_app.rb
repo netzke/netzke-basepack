@@ -46,7 +46,23 @@ module Netzke
       def js_after_constructor
         <<-JS.l
           // call appLoaded() once after the application is fully rendered
-          this.on("afterlayout", function(){this.appLoaded();}, this, {single:true});
+          // this.on("resize", function(){alert('show');this.appLoaded();}, this, {single:true});
+
+          // Initialize menus (upcoming support for dynamically loaded menus)
+          this.menus = {};
+          
+          Ext.History.on('change', this.processHistory, this);
+
+          // If we are given a token, load the corresponding widget, otherwise load the last loaded widget
+          var currentToken = Ext.History.getToken();
+          if (currentToken != "") {
+            this.processHistory(currentToken)
+          } else {
+            var lastLoaded = this.initialConfig.widgetToLoad; // passed from the server
+            if (lastLoaded) Ext.History.add(lastLoaded);
+          }
+          
+          if (this.initialConfig.menu) {this.addMenu(this.initialConfig.menu, this);}
 
           // add initial menus to the tool-bar
           var toolbar = this.findById('main-toolbar');
@@ -94,27 +110,6 @@ module Netzke
       def js_extend_properties
         super.merge({
 
-          # Initialize
-          :app_loaded => <<-JS.l,
-          function(){
-            // Initialize menus (upcoming support for dynamically loaded menus)
-            this.menus = {};
-            
-            Ext.History.on('change', this.processHistory, this);
-
-            // If we are given a token, load the corresponding widget, otherwise load the last loaded widget
-            var currentToken = Ext.History.getToken();
-            if (currentToken != "") {
-              this.processHistory(currentToken)
-            } else {
-              var lastLoaded = this.initialConfig.widgetToLoad; // passed from the server
-              if (lastLoaded) Ext.History.add(lastLoaded);
-            }
-            
-            if (this.initialConfig.menu) {this.addMenu(this.initialConfig.menu, this);}
-          }
-          JS
-          
           :host_menu => <<-JS.l,
             function(menu, owner){
               var toolbar = this.findById('main-toolbar');
@@ -144,14 +139,6 @@ module Netzke
           :logout => <<-JS.l,
             function(){
               window.location = "#{config[:logout_url]}"
-            }
-          JS
-
-          # Work around to fire "appLoaded" event only once
-          :on_after_layout => <<-JS.l,
-            function(){
-              this.un('afterlayout', this.onAfterLayout, this); // avoid multiple calls
-              this.appLoaded();
             }
           JS
 

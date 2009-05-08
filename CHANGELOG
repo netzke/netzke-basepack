@@ -1,3 +1,7 @@
+v0.4.2
+2009-05-07
+Fix: afterlayout event bind removed completely because of some tricky inconsistent behavior of Ext. BasicApp initializing code put directly into js_after_constructor.
+
 v0.4.1
 2009-05-07
 Fix: afterlayout call moved to js_after_constructor in BasicApp
