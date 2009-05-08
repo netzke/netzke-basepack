@@ -69,7 +69,7 @@ module Netzke
     end
     
     def fields
-      @@fields ||= get_fields
+      @fields ||= get_fields
     end
 
     # parameters used to instantiate the JS object

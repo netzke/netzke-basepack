@@ -1,7 +1,9 @@
 v0.4.1
 Fix: afterlayout call moved to js_after_constructor in BasicApp
 Fix: cleaner persistent_config handling
-New: some class-level configuration enabled for FormPanel
+New: default's configuration enabled for FormPanel on class-level
+Fix: differently configured forms on the same page were showing the same columns
+Fix: TableEditor was showing config-tool by default (must be hidden)
 
 v0.4.0
 2009-05-07

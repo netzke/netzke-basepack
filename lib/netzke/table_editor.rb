@@ -86,8 +86,7 @@ module Netzke
           :widget_class_name    => "GridPanel", 
           :data_class_name      => config[:data_class_name], 
           :ext_config           => {
-            :title        => config[:grid_title] || config[:data_class_name].pluralize,
-            :config_tool  => true
+            :title        => config[:grid_title] || config[:data_class_name].pluralize
           }
         }.recursive_merge(config[:grid_config] || {}),
         
