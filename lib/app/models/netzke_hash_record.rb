@@ -119,7 +119,7 @@ class NetzkeHashRecord < Hash
   private
   
   def self.persistent_config
-    @@persistent_config ||= Netzke::Base.config[:persistent_config_manager].constantize
+    @@persistent_config ||= Netzke::Base.persistent_config
   end
 
   def self.records
