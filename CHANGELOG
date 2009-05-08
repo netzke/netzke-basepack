@@ -1,4 +1,5 @@
 v0.4.1
+2009-05-07
 Fix: afterlayout call moved to js_after_constructor in BasicApp
 Fix: cleaner persistent_config handling
 New: default's configuration enabled for FormPanel on class-level
