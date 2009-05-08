@@ -3,6 +3,9 @@ module Netzke
     # Class-level configuration with defaults
     def self.config
       set_default_config({
+        :config_tool_enabled_by_default       => false,
+        :persistent_layout_enabled_by_default => true,
+        :persistent_config_enabled_by_default => true
       })
     end
 
@@ -23,11 +26,11 @@ module Netzke
     def initial_config
       {
         :ext_config => {
-          :config_tool => true
+          :config_tool => self.class.config[:config_tool_enabled_by_default],
         },
 
-        :persistent_layout => true,
-        :persistent_config => true
+        :persistent_layout => self.class.config[:persistent_layout_enabled_by_default],
+        :persistent_config => self.class.config[:persistent_config_enabled_by_default]
       }
     end
 

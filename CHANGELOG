@@ -1,3 +1,8 @@
+v0.4.1
+Fix: afterlayout call moved to js_after_constructor in BasicApp
+Fix: cleaner persistent_config handling
+New: some class-level configuration enabled for FormPanel
+
 v0.4.0
 2009-05-07
 Refactor: got rid of NetzkeFormPanelField and NetzkeGridPanelColumn classes along with their tables. The layout is now stored in netzke_preferences.
