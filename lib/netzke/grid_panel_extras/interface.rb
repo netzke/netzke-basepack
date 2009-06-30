@@ -17,7 +17,9 @@ module Netzke
       def get_data(params = {})
         if @permissions[:read]
           records = get_records(params)
-          {:data => records, :total => records.total_records}
+          
+          # {:data => records, :total => records.total_records}
+          [{:load_store_data => {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}}]
         else
           flash :error => "You don't have permissions to read data"
           {:success => false, :flash => @flash}
@@ -127,21 +129,27 @@ module Netzke
   
       # get records
       def get_records(params)
+        raise ArgumentError, "No data_class_name specified for widget '#{config[:name]}'" if !config[:data_class_name]
+
         search_params = normalize_params(params)  # make params coming from the browser understandable by searchlogic
         search_params[:conditions].recursive_merge!(config[:conditions] || {})  # merge with conditions coming from the config
-    
-        raise ArgumentError, "No data_class_name specified for widget '#{config[:name]}'" if !config[:data_class_name]
-        records = config[:data_class_name].constantize.all(search_params.clone) # clone needed as searchlogic removes :conditions key from the hash
-        output_array = records.map{|r| r.to_array(columns)}
-    
-        # add total_entries accessor to the result
-        class << output_array
-          attr :total_records, true
-        end
-        total_records_count = config[:data_class_name].constantize.count(search_params)
-        output_array.total_records = total_records_count
 
-        output_array
+        # sorting
+        # order_by = if params[:sort]
+        #   assoc, method = params[:sort].split('__')
+        #   method.nil? ? assoc : {assoc => method}
+        # end
+    
+    
+        if config[:ext_config][:rows_per_page]
+          per_page = config[:ext_config][:rows_per_page]
+          page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
+        end
+        # , :order_by => order_by, :order_as => params[:dir], 
+    
+        search = config[:data_class_name].constantize.search(search_params)
+        
+        search.paginate(:per_page => per_page, :page => page)
       end
   
       #
@@ -192,14 +200,7 @@ module Netzke
           normalized_conditions.merge!(method.nil? ? {assoc => v} : {assoc => {method => v}})
         end
     
-        # sorting
-        order_by = if params[:sort]
-          assoc, method = params[:sort].split('__')
-          method.nil? ? assoc : {assoc => method}
-        end
-    
-        page = params[:start].to_i/params[:limit].to_i + 1 if params[:limit]
-        {:per_page => params[:limit], :page => page, :order_by => order_by, :order_as => params[:dir], :conditions => normalized_conditions}
+        {:conditions => normalized_conditions}
       end
     end
   end

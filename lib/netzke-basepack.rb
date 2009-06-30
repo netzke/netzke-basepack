@@ -1,6 +1,7 @@
 # External dependencies
 require 'netzke-core'
 require 'searchlogic'
+require 'will_paginate'
 
 require 'netzke/ar_ext'
 
