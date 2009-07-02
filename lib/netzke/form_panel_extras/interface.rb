@@ -7,14 +7,14 @@ module Netzke
         params.delete(:action)
 
         klass = config[:data_class_name].constantize
-        record = klass.find_by_id(params[:id])
+        @record = klass.find_by_id(params[:id])
         success = true
 
-        record = klass.new if record.nil?
+        @record = klass.new if @record.nil?
 
         params.each_pair do |k,v|
           begin
-            record.send("#{k}=",v)
+            @record.send("#{k}=",v)
           rescue StandardError => exc
             flash :error => exc.message
             success = false
@@ -22,11 +22,11 @@ module Netzke
           end
         end
     
-        if success && record.save
-          {:data => [record.to_array(fields)], :success => true}
+        if success && @record.save
+          {:data => [@record.to_array(fields)], :success => true}
         else
           # flash eventual errors
-          record.errors.each_full do |msg|
+          @record.errors.each_full do |msg|
             flash :error => msg
           end
           {:success => false, :flash => @flash}
@@ -36,11 +36,15 @@ module Netzke
       def load(params)
         klass = config[:data_class_name].constantize
         case params[:neighbour]
-        when "previous" then record = klass.previous(params[:id])
-        when "next"     then record = klass.next(params[:id])
-        else                 record = klass.find(params[:id])
+          when "previous" then @record = klass.previous(params[:id])
+          when "next"     then @record = klass.next(params[:id])
+          else                 @record = klass.find(params[:id])
         end
-        {:data => [record && record.to_array(fields)]}
+        {:data => [array_of_values]}
+      end
+      
+      def array_of_values
+        @record && @record.to_array(fields)
       end
       
       # Return the choices for the column

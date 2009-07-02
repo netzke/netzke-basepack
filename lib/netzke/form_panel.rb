@@ -22,6 +22,11 @@ module Netzke
       :form
     end
     
+    def initialize(*args)
+      super
+      @record = config[:record]
+    end
+    
     # default instance-level configuration
     def initial_config
       {
@@ -77,7 +82,7 @@ module Netzke
       res = super
       res.merge!(:fields => fields)
       res.merge!(:data_class_name => config[:data_class_name])
-      res.merge!(:record_data => config[:record].to_array(fields)) if config[:record]
+      res.merge!(:record_data => @record.to_array(fields)) if @record
       res
     end
  

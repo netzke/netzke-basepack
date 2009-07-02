@@ -19,7 +19,8 @@ module Netzke
           records = get_records(params)
           
           # {:data => records, :total => records.total_records}
-          [{:load_store_data => {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}}]
+          {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}
+          # [{:load_store_data => {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}}]
         else
           flash :error => "You don't have permissions to read data"
           {:success => false, :flash => @flash}

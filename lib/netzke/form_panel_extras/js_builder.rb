@@ -73,6 +73,11 @@ module Netzke
         
         def js_extend_properties
           {
+            :set_form_values => <<-JS.l,
+              function(values){
+                this.form.loadRecord(this.reader.readRecords({data:[values]}).records[0]);
+              }
+            JS
             :load_record => <<-JS.l,
               function(id, neighbour){
                 var proxy = new Ext.data.HttpProxy({url:this.initialConfig.interface.load});

@@ -12,6 +12,7 @@ module Netzke
   #
   class BasicApp < Base
     interface :app_get_widget # to dynamically load the widgets that are defined in initial_late_aggregatees
+    interface :load_widget
     
     module ClassMethods
 
@@ -146,24 +147,31 @@ module Netzke
           :process_history => <<-JS.l,
             function(token){
               if (token){
-                this.findById('main-panel').loadWidget(this.initialConfig.interface.appGetWidget, {widget:token})
+                // this.findById('main-panel').loadWidget(this.initialConfig.interface.appGetWidget, {widget:token})
+                this.loadWidget({widget:token});
               } else {
-                this.findById('main-panel').loadWidget(null)
+                // this.findById('main-panel').loadWidget(null)
               }
+            }
+          JS
+          
+          :instantiate_aggregatee => <<-JS.l,
+            function(config){
+              this.findById('main-panel').instantiateChild(config);
             }
           JS
           
           # Loads widget by name
           :app_load_widget => <<-JS.l,
             function(name){
-              Ext.History.add(name)
+              Ext.History.add(name);
             }
           JS
 
           # Loads widget by action
           :load_widget_by_action => <<-JS.l
             function(action){
-              this.appLoadWidget(action.widget || action.name)
+              this.appLoadWidget(action.widget || action.name);
             }
           JS
         })
@@ -206,6 +214,11 @@ module Netzke
       widget = params.delete(:widget).underscore
       persistent_config['last_loaded_widget'] = widget # store the last loaded widget in the persistent storage
       send("#{widget}__get_widget", params)
+    end
+   
+    def load_widget(params)
+      widget = aggregatee_instance(params[:widget])
+      {:this => [{:eval_js => widget.js_missing_code, :eval_css => css_missing_code}, {:instantiate_aggregatee => widget.js_config}]}
     end
     
   end

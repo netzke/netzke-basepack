@@ -49,7 +49,7 @@ module Netzke
           this.Row = Ext.data.Record.create(this.recordConfig);
 
           var ds = new Ext.data.Store({
-              proxy: this.proxy = new Ext.data.HttpProxy({url:config.interface.getData}),
+              proxy: this.proxy = new Ext.data.HttpProxy({url:config.id+"__get_data"}),
               reader: new Ext.data.ArrayReader({root: "data", totalProperty: "total", successProperty: "succes", id:0}, this.Row),
               remoteSort: true,
               listeners:{'loadexception':{
@@ -297,9 +297,8 @@ module Netzke
             :refresh => <<-JS.l,
               function() {
                 if (this.fireEvent('refresh', this) !== false) {
-                  // this.store.reload();
-                  this.getData();
-                  // this.store.loadData([[1, "admin", "administrator", "b58460c3239a25858b88d2a746ab0ed95157fb7d7d7bf1b102cc39d230c6820879009552352556042ab2eb9289dc241b58a3a5ccf4c7730ffe5771fbaf17ba3d", "PE7dlrsCx2VT-cJOJ2Xe", "b01ad059b53808d9d348060578ab7a9e64bdf33255a37b549a23836582a8b26b9916434d43613b7943dae42820171d3332909a4d7decf5afd949e1344c05eea0", "2kseBdpArY-Yzcq_Z074", "eeuFJ2gnjhujFYhkhNTh", 3, "2009-05-12 22:12:12", "2009-05-07 20:26:09", "2009-05-1102:20:20", "127.0.0.1", "127.0.0.1", "2009-05-07 19:16:36", "2009-05-12 22:12:12", null, null], [2,"blah", "administrator", "d5fd2420f52b75ac9872894024a3f94789c66238b24703b3440c48f72f9b259ec69038e697257719775a3864daa65745bf93b39738c8a721f6ffe3d8661d102b", "asB7XjpiULN2qcbb09Pe", "9f9cba74dbb14a5158680943bca7d6ffcb51d1a8e06f7320f61b6ff4ee1787c794f277ed16a610184af310c9cafab068906faa6b796be700059ee82f531794ce", "i24HSmou7xWZcMmOSrW4", "mYQ8DNUwgKUYLTUyuhS4", 1, "2009-05-12 22:18:25", null, "2009-05-12 22:12:54", null, "127.0.0.1", "2009-05-12 22:12:54", "2009-05-12 22:18:25", null, null], [3, "blahh", "administrator", "3651da3204bc8863115d7731046eaf1e3daccb68de1c88f6bb423603fc70e15580f7c5e8e1c0707e3ac4a5681cc0112cbf38514411daacb62d32436a18673baa", "j-HxMWnrLHqUjaVfBYuP", "41fbe8c1d90475a8fbd9069d7f357fd477879320b330b5d6e02c71512668a5f9ef6d275b688c9aa3b89e25c268f20b9600a8cc6a3c5f5cf7e12f78e311b03838", "fiK9uWM7M6DgKIULjosH", "WnwqeRsAl6W5bTmK9tYq", 0, null, null, null, null, null, "2009-05-12 22:13:07", "2009-05-12 22:13:07", null, null], [4, "ufff", "administrator", "98fb076060712e1b47a0e284ff22624bed0274c93c437c2fa9f726ec27ea4fdae5037233bce478b069782e77371da6320048a8a857acc70d57fd8ccef2fac773", "hqBuUXbbu3REunXSx51T", "3abddb61d0fe2a1e6d609fd0ef3c23df3e8187a07054687f8d2da2b8843aae14964bb3af91dac2661a5db4c40c9983cb24ad14d7ec17f009cffc24f8b114c7bb", "ndrIDKn7R-F1P7R5C-Oi", "hUPIhTSG_1-bH8EMy0cD", 1, "2009-05-12 22:19:41", null, "2009-05-12 22:18:38", null, "127.0.0.1", "2009-05-12 22:18:38", "2009-05-12 22:19:41", null, null], [5, "wow", "administrator", "3c6b497e860cdcd34765f18fbae725b3162219d73d90f67d9b38d72d27971d9d89e486a0a45448699fbfd37128b00735b7b3886183beebbf50184c105ea9ccf5", "wtkyXmPbTC5lwLzct2MF", "9146603b10f88af9ded8f4b4e1a87db3a7b1f2963bee8c827b5e6d703a8abfd91301668b57a20bac844d6b2643ef6525e210924651b525168fdeb12ce912f65f", "Q4GGNnJNoBUDOxIPjLYh", "iYLzXhu9mDeRnYeuXEBs", 1, "2009-05-12 22:20:15", null, "2009-05-12 22:19:51", null, "127.0.0.1", "2009-05-12 22:19:51", "2009-05-12 22:20:15", null, null]]);
+                  this.store.reload();
+                  // this.getData();
                 }
               }
             JS
