@@ -67,7 +67,7 @@ module Netzke
 
           // add initial menus to the tool-bar
           var toolbar = this.findById('main-toolbar');
-          Ext.each(#{js_initial_menus.to_js}, function(menu){
+          Ext.each(#{js_initial_menus.to_nifty_json}, function(menu){
             toolbar.add(menu);
           });
         JS

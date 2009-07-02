@@ -37,7 +37,7 @@ module Netzke
       item_aggregatees.each_pair do |k,v|
         next if v[:late_aggregation]
         res << <<-JS
-        var #{k.to_js} = new Ext.netzke.cache['#{v[:widget_class_name]}'](config.#{k.to_js}Config);
+        var #{k.jsonify} = new Ext.netzke.cache['#{v[:widget_class_name]}'](config.#{k.jsonify}Config);
         JS
       end
       res
@@ -49,7 +49,7 @@ module Netzke
           :title      => i.to_s.humanize,
           :layout     => 'fit',
           :id         => i.to_s,
-          :items      => ([i.to_s.to_js.l] if !aggregatees[i][:late_aggregation]),
+          :items      => ([i.to_s.jsonify.l] if !aggregatees[i][:late_aggregation]),
           :collapsed  => !aggregatees[i][:active],
           :listeners  => {
             :expand     => {:fn => "this.loadItemWidget".l, :scope => this}
