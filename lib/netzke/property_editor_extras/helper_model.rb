@@ -5,7 +5,7 @@ module Netzke
         @@widget_name = name
       end
   
-      def self.exposed_columns
+      def self.netzke_exposed_attributes
         # preferences = NetzkePreference.find_all_by_widget_name_and_user_id(@@widget_name, Netzke::Base.user && Netzke::Base.user.id)
         preferences = NetzkePreference.find_all_for_widget(@@widget_name)
         preferences.map{|p| {

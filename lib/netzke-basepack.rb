@@ -12,7 +12,7 @@ require 'netzke/ar_ext'
   ActiveSupport::Dependencies.load_once_paths.delete(path)
 end
 
-# Make this plugin reloadable for easier development
+# Make this plugin reloadable at app restart for easier development
 ActiveSupport::Dependencies.load_once_paths.delete(File.join(File.dirname(__FILE__)))
 
 # Include javascript & styles required by all basepack widgets. 

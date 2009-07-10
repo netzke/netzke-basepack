@@ -1,7 +1,6 @@
 require 'searchlogic'
 
 module Netzke
-  #
   # GridPanel
   #
   # Functionality:
@@ -14,6 +13,9 @@ module Netzke
   # * filtering
   # * properties and column configuration
   #
+  # == Configuration
+  # * <tt>:ext_config[:config_tool]</tt> - enable configuration tool
+  
   class GridPanel < Base
     # Class-level configuration and its defaults
     def self.config
@@ -65,7 +67,8 @@ module Netzke
           :enable_column_resize  => self.class.config[:column_resize_enabled_by_default]
         },
         :persistent_layout => self.class.config[:persistent_layout_enabled_by_default],
-        :persistent_config => self.class.config[:persistent_config_enabled_by_default]
+        :persistent_config => self.class.config[:persistent_config_enabled_by_default],
+        :load_inline_data => true
       }
     end
 

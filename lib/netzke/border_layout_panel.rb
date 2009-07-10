@@ -58,20 +58,14 @@ module Netzke
               if (!item.oldSize) item.oldSize = item.getSize();
               if (item.region == 'east' || item.region == 'west') item.on('resize', function(panel, w, h){
                 if (panel.oldSize.width != w) {
-                  Ext.Ajax.request({
-                    url:this.initialConfig.interface.resizeRegion,
-                    params: {region_name: panel.region, new_width:w}
-                  });
+                  this.resizeRegion({region_name: panel.region, new_width:w});
                   panel.oldSize.width = w;
                 }
                 return true;
               }, this);
               else if (item.region == 'south' || item.region == 'north') item.on('resize', function(panel, w, h){
                 if (panel.oldSize.height != h) {
-                  Ext.Ajax.request({
-                    url:this.initialConfig.interface.resizeRegion,
-                    params: {region_name: panel.region, new_height:h}
-                  });
+                  this.resizeRegion({region_name: panel.region, new_height:h});
                   panel.oldSize.height = h;
                 }
                 return true;
@@ -115,6 +109,8 @@ module Netzke
     end
   
     def resize_region(params)
+      logger.debug "!!! params: #{params.inspect}"
+      logger.debug "!!! persistent_config.class: #{persistent_config.class.inspect}"
       persistent_config["#{params["region_name"]}_width"] = params["new_width"].to_i if params["new_width"]
       persistent_config["#{params["region_name"]}_height"] = params["new_height"].to_i if params["new_height"]
       {}

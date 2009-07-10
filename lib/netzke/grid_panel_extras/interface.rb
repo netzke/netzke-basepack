@@ -3,15 +3,20 @@ module Netzke
     module Interface
       def post_data(params)
         success = true
-        mod_record_ids = {}
+        mod_records = {}
         [:create, :update].each do |operation|
-          data = ActiveSupport::JSON.decode(params.delete("#{operation}d_records".to_sym)) if params["#{operation}d_records".to_sym]
+          data = ActiveSupport::JSON.decode(params["#{operation}d_records"]) if params["#{operation}d_records"]
           if !data.nil? && !data.empty? # data may be nil for one of the operations
-            mod_record_ids[operation] = process_data(data, operation)
+            mod_records[operation] = process_data(data, operation)
+            mod_records[operation] = nil if mod_records[operation].empty?
           end
           break if !success
         end
-        {:success => success, :flash => @flash, :mod_record_ids => mod_record_ids}
+        {:this => {
+            :update_new_records => mod_records[:create], 
+            :update_mod_records => mod_records[:update],
+            :feedback => @flash.empty? ? nil : @flash
+        }}
       end
   
       def get_data(params = {})
@@ -19,7 +24,7 @@ module Netzke
           records = get_records(params)
           
           # {:data => records, :total => records.total_records}
-          {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}
+          {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries, :this => {:feedback => "hi"}}
           # [{:load_store_data => {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}}]
         else
           flash :error => "You don't have permissions to read data"
@@ -28,17 +33,14 @@ module Netzke
       end
 
       def delete_data(params = {})
-        if @permissions[:delete]
+        if @permissions[:delete] && false
           record_ids = ActiveSupport::JSON.decode(params.delete(:records))
           klass = config[:data_class_name].constantize
           klass.delete(record_ids)
-          flash :notice => "Deleted #{record_ids.size} record(s)"
-          success = true
+          {:this => {:feedback => "Deleted #{record_ids.size} record(s)", :load_store_data => get_data}}
         else
-          flash :error => "You don't have permissions to delete data"
-          success = false
+          {:this => {:feedback => "You don't have permissions to delete data"}}
         end
-        {:success => success, :flash => @flash}
       end
 
       def resize_column(params)
@@ -70,8 +72,8 @@ module Netzke
           NetzkeLayoutItem.move_item(params[:old_index].to_i, params[:new_index].to_i)
         end
 
-        # provide the client side with the new columns order
-        {:columns => columns.map(&:name)}
+        # reorder the columns on the client side (still not sure if it's not an overkill)
+        {:this => {:reorder_columns => columns.map(&:name)}}
       end
 
       # Return the choices for the column
@@ -88,7 +90,8 @@ module Netzke
       # operation => :update || :create
       def process_data(data, operation)
         success = true
-        mod_record_ids = []
+        # mod_record_ids = []
+        mod_records = {}
         if @permissions[operation]
           klass = config[:data_class_name].constantize
           modified_records = 0
@@ -110,7 +113,8 @@ module Netzke
         
             # try to save
             # modified_records += 1 if success && record.save
-            mod_record_ids << id if success && record.save
+            mod_records[id] = record.to_array(columns) if success && record.save
+            # mod_record_ids << id if success && record.save
 
             # flash eventual errors
             if !record.errors.empty?
@@ -125,7 +129,8 @@ module Netzke
           success = false
           flash :error => "You don't have permissions to #{operation} data"
         end
-        mod_record_ids
+        mod_records
+        # mod_record_ids
       end
   
       # get records

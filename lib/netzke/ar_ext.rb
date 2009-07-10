@@ -94,34 +94,38 @@ module Netzke
       end
       
       # which columns are to be picked up by grids and forms
-      def expose_columns(*column_configs)
-        if column_configs.first == :all
-          write_inheritable_attribute(:exposed_columns, self.column_names.map(&:to_sym))
+      def netzke_expose_attributes(*args)
+        if args.first == :all
+          column_names = self.column_names.map(&:to_sym) + netzke_virtual_attributes
+          if args.last.is_a?(Hash) && columns_to_exclude = args.last[:except]
+            column_names.reject!{ |n| [*columns_to_exclude].include?(n) }
+          end
+          write_inheritable_attribute(:exposed_attributes, column_names)
         else
-          write_inheritable_attribute(:exposed_columns, column_configs)
+          write_inheritable_attribute(:exposed_attributes, args)
         end
       end
       
-      def exposed_columns
-        read_inheritable_attribute(:exposed_columns) || write_inheritable_attribute(:exposed_columns, expose_columns(:all) + virtual_columns)
+      def netzke_exposed_attributes
+        read_inheritable_attribute(:exposed_attributes) || write_inheritable_attribute(:exposed_attributes, netzke_expose_attributes(:all))
       end
       
       # virtual "columns" that simply correspond to instance methods of an ActiveRecord class
-      def virtual_column(config)
+      def netzke_virtual_attribute(config)
         if config.is_a?(Symbol) 
           config = {:name => config}
         else
           config = {:name => config.keys.first}.merge(config.values.first)
         end
-        write_inheritable_attribute(:virtual_columns, (read_inheritable_attribute(:virtual_columns) || []) << config)
+        write_inheritable_attribute(:virtual_attributes, (read_inheritable_attribute(:virtual_attributes) || []) << config)
       end
       
-      def virtual_columns
-        read_inheritable_attribute(:virtual_columns) || []
+      def netzke_virtual_attributes
+        read_inheritable_attribute(:virtual_attributes) || []
       end
       
-      def is_virtual_column?(column)
-        read_inheritable_attribute(:virtual_columns).keys.include?(column)
+      def is_netzke_virtual_attribute?(column)
+        read_inheritable_attribute(:virtual_attributes).keys.include?(column)
       end
       
       def default_dbfield_config(config, mode = :grid)

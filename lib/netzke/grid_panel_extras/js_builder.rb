@@ -9,6 +9,7 @@ module Netzke
         res = super
         res.merge!(:columns => columns)
         res.merge!(:data_class_name => config[:data_class_name])
+        res.merge!(:inline_data => get_data) if config[:load_inline_data]
         res
       end
   
@@ -30,13 +31,12 @@ module Netzke
             :cm               => "cm".l,
             :sel_model        => "new Ext.grid.RowSelectionModel()".l,
             :auto_scroll      => true,
-            :click_to_edit    => 2,
             :track_mouse_over => true,
             :plugins          => "plugins".l,
             :load_mask        => true,
-      
+
             #custom configs
-            :auto_load_data   => true
+            :auto_load_data   => false
           })
         end
   
@@ -47,7 +47,7 @@ module Netzke
           this.recordConfig = [];
           Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name});}, this);
           this.Row = Ext.data.Record.create(this.recordConfig);
-
+          
           var ds = new Ext.data.Store({
               proxy: this.proxy = new Ext.data.HttpProxy({url:config.id+"__get_data"}),
               reader: new Ext.data.ArrayReader({root: "data", totalProperty: "total", successProperty: "succes", id:0}, this.Row),
@@ -57,7 +57,7 @@ module Netzke
                 scope:this
               }}
           });
-    
+          
           this.cmConfig = [];
           Ext.each(config.columns, function(c){
             var extConfig;
@@ -122,7 +122,11 @@ module Netzke
             pageSize : config.rowsPerPage, 
             items : config.bbar ? ["-", config.bbar] : [], 
             store : ds, 
-            emptyMsg:'Empty'}) : config.bbar
+            emptyMsg:'Empty'
+          }) : config.bbar
+
+          // Load data after the toolbar is bound to the store, which will provide for correct page number
+          ds.loadData(config.inlineData);
     
           JS
         end
@@ -143,6 +147,8 @@ module Netzke
                   // if we have a paging toolbar, load the first page
                   if (this.getBottomToolbar() && this.getBottomToolbar().changePage) {this.getBottomToolbar().changePage(0);} else {this.store.load();}
                 }
+                
+                
               }
             JS
       
@@ -215,21 +221,55 @@ module Netzke
                       this.getSelectionModel().each(function(r){
                         records.push(r.get('id'));
                       }, this);
-                      Ext.Ajax.request({
-                        url: this.initialConfig.interface.deleteData,
-                        params: {records: Ext.encode(records)},
-                        success:function(r){ 
-                          var m = Ext.decode(r.responseText);
-                          this.store.reload();
-                          this.feedback(m.flash);
-                        },
-                        scope:this
-                      });
+                      this.deleteData({records: Ext.encode(records)});
                     }
                   }, this);
                 }
               }
             JS
+
+            # Called by the server side to update newly created records
+            :update_new_records => <<-JS.l,
+              function(records){
+                this.updateRecords(records);
+              }
+            JS
+            
+            # Called by the server side to update modified records
+            :update_mod_records => <<-JS.l,
+              function(records){
+                this.updateRecords(records, true);
+              }
+            JS
+            
+            # Updates modified or newly created records
+            # Example of the records argument:
+            #   {1098 => [1, 'value1', 'value2'], 1099 => [2, 'value1', 'value2']}
+            :update_records => <<-JS.l,
+              function(records, mod){
+                if (!mod) {mod = false;}
+                var modRecords = [].concat(this.store.getModifiedRecords()); // there must be a better way to clone an array...
+                // replace arrays of data in the args object with Ext.data.Record objects
+                for (var k in records){
+                  records[k] = this.store.reader.readRecords([records[k]]).records[0];
+                }
+                
+                // for each new record write the data returned by the server, and commit the record
+                Ext.each(modRecords, function(r){
+                  if (mod ^ r.is_new) {
+                    var newData = records[r.get('id')];
+                    for (var k in r.data){
+                      r.set(k, newData.get(k));
+                      r.commit();
+                      r.is_new = false;
+                    }
+                  }
+                });
+                
+                
+              }
+            JS
+            
             :apply => <<-JS.l,
               function(){
                 var newRecords = [];
@@ -260,35 +300,7 @@ module Netzke
                     params.base_params = Ext.encode(this.store.baseParams);
                   }
                   
-                  Ext.Ajax.request({
-                    url:this.initialConfig.interface.postData,
-                    params: params,
-                    success:function(response){
-                      var m = Ext.decode(response.responseText);
-                      if (m.success) {
-                        // commit those rows that have successfully been updated/created
-                        var modRecords = [].concat(this.store.getModifiedRecords()); // there must be a better way to clone an array...
-                        Ext.each(modRecords, function(r){
-                          var idsToSearch = r.is_new ? m.modRecordIds.create : m.modRecordIds.update;
-                          if (idsToSearch.indexOf(r.id) >= 0) {r.commit();}
-                        });
-
-                        // reload the grid only when there were no errors
-                        // (we need to reload because of filtering, sorting, etc)
-                        if (this.store.getModifiedRecords().length === 0){
-                          this.store.reload();
-                        }
-
-                        this.feedback(m.flash);
-                      } else {
-                        this.feedback(m.flash);
-                      }
-                    },
-                    failure:function(response){
-                      this.feedback('Bad response from server');
-                    },
-                    scope:this
-                  });
+                  this.postData(params);
                 }
           
               }
@@ -298,58 +310,44 @@ module Netzke
               function() {
                 if (this.fireEvent('refresh', this) !== false) {
                   this.store.reload();
-                  // this.getData();
                 }
               }
             JS
       
             :on_column_resize => <<-JS.l,
               function(index, size){
-                Ext.Ajax.request({
-                  url:this.initialConfig.interface.resizeColumn,
-                  params:{
-                    index:index,
-                    size:size
-                  }
+                this.resizeColumn({
+                  index:index,
+                  size:size
                 });
               }
             JS
       
             :on_column_hidden_change => <<-JS.l,
               function(cm, index, hidden){
-                Ext.Ajax.request({
-                  url:this.initialConfig.interface.hideColumn,
-                  params:{
-                    index:index,
-                    hidden:hidden
-                  }
+                this.hideColumn({
+                  index:index,
+                  hidden:hidden
                 });
+              }
+            JS
+      
+            :reorder_columns => <<-JS.l,
+              function(columns){
+                columnsInNewOrder = [];
+                Ext.each(columns, function(c){
+                  columnsInNewOrder.push({name:c});
+                });
+                newRecordType = Ext.data.Record.create(columnsInNewOrder);
+                this.store.reader.recordType = newRecordType; // yes, recordType is a protected property, but that's the only way we can do it, and it seems to work
               }
             JS
       
             :on_column_move => <<-JS.l
               function(oldIndex, newIndex){
-                Ext.Ajax.request({
-                  url:this.initialConfig.interface.moveColumn,
-                  params:{
-                    old_index:oldIndex,
-                    new_index:newIndex
-                  },
-                  success : function(response){
-                    // we need to reconfigure ArrayReader's recordType in order to correctly interprete
-                    // the new order of data fields coming from the server
-
-                    // we receive new record order from the server, which is less error-prone than trying to
-                    // blindly track the column order on the client side
-                    columns = Ext.decode(response.responseText).columns;
-                    columnsInNewOrder = [];
-                    Ext.each(columns, function(c){
-                      columnsInNewOrder.push({name:c});
-                    });
-                    newRecordType = Ext.data.Record.create(columnsInNewOrder);
-                    this.store.reader.recordType = newRecordType; // yes, recordType is a protected property, but that's the only way we can do it, and it seems to work
-                  },
-                  scope : this
+                this.moveColumn({
+                  old_index:oldIndex,
+                  new_index:newIndex
                 });
               }
             JS
