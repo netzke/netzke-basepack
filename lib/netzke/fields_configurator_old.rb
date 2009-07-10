@@ -1,6 +1,6 @@
 module Netzke
   class FieldsConfigurator < GridPanel
-    interface :load_defaults
+    api :load_defaults
 
     def self.js_base_class
       GridPanel
@@ -39,7 +39,7 @@ module Netzke
             Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
               if (btn == 'yes') {
                 Ext.Ajax.request({
-                  url:this.initialConfig.interface.loadDefaults,
+                  url:this.initialConfig.api.loadDefaults,
                   callback:function(){
                     this.store.reload();
                   },

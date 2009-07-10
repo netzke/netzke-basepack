@@ -16,11 +16,11 @@ lib/netzke/field_model.rb
 lib/netzke/fields_configurator.rb
 lib/netzke/fields_configurator_old.rb
 lib/netzke/form_panel.rb
-lib/netzke/form_panel_extras/interface.rb
+lib/netzke/form_panel_extras/api.rb
 lib/netzke/form_panel_extras/javascripts/xcheckbox.js
 lib/netzke/form_panel_extras/js_builder.rb
 lib/netzke/grid_panel.rb
-lib/netzke/grid_panel_extras/interface.rb
+lib/netzke/grid_panel_extras/api.rb
 lib/netzke/grid_panel_extras/javascripts/check-column.js
 lib/netzke/grid_panel_extras/javascripts/filters.js
 lib/netzke/grid_panel_extras/js_builder.rb

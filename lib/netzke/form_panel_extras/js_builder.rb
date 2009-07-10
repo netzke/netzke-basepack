@@ -80,7 +80,7 @@ module Netzke
             JS
             :load_record => <<-JS.l,
               function(id, neighbour){
-                var proxy = new Ext.data.HttpProxy({url:this.initialConfig.interface.load});
+                var proxy = new Ext.data.HttpProxy({url:this.initialConfig.api.load});
                 proxy.load({id:id, neighbour:neighbour}, this.reader, function(data){
                   if (data){
                     this.form.loadRecord(data.records[0])
@@ -117,7 +117,7 @@ module Netzke
             :apply => <<-JS.l,
               function() {
                 this.form.submit({
-                  url:this.initialConfig.interface.submit,
+                  url:this.initialConfig.api.submit,
                   success :function(form, action){
                     if (action.result.flash) this.feedback(action.result.flash);
                     this.form.loadRecord(this.reader.readRecord(action.result.data[0]));

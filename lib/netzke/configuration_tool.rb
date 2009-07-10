@@ -50,7 +50,7 @@ module Netzke
                 if (w.closeRes == 'OK'){
                   widget = this;
                   if (widget.ownerCt) {
-                    widget.ownerCt.loadWidget(widget.initialConfig.interface.getWidget);
+                    widget.ownerCt.loadWidget(widget.initialConfig.api.getWidget);
                   } else {
                     this.feedback('Reload current window'); // we are embedded directly in HTML
                   }

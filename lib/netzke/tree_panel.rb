@@ -1,5 +1,5 @@
 class Netzke::TreePanel < Netzke::Base
-  interface :get_children
+  api :get_children
   
   def self.js_base_class
     "Ext.tree.TreePanel"
@@ -8,7 +8,7 @@ class Netzke::TreePanel < Netzke::Base
   def self.js_default_config
     super.merge({
       :root => {:text => '/', :id => 'source'},
-      :loader => {:data_url => "config.interface.getChildren".l}
+      :loader => {:data_url => "config.api.getChildren".l}
     })
   end
   

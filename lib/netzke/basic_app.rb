@@ -11,8 +11,8 @@ module Netzke
   # * aggregation of widget's own menus
   #
   class BasicApp < Base
-    # interface :app_get_widget # to dynamically load the widgets that are defined in initial_late_aggregatees
-    # interface :load_widget
+    # api :app_get_widget # to dynamically load the widgets that are defined in initial_late_aggregatees
+    # api :load_widget
     
     module ClassMethods
 
@@ -147,7 +147,7 @@ module Netzke
           :process_history => <<-JS.l,
             function(token){
               if (token){
-                // this.findById('main-panel').loadWidget(this.initialConfig.interface.appGetWidget, {widget:token})
+                // this.findById('main-panel').loadWidget(this.initialConfig.api.appGetWidget, {widget:token})
                 this.loadAggregatee({id:token, container:'main-panel'});
               } else {
                 // this.findById('main-panel').loadWidget(null)
@@ -210,7 +210,7 @@ module Netzke
     end
     
     # Interface implementation
-    # def interface_app_get_widget(params)
+    # def api_app_get_widget(params)
     #   widget = params.delete(:widget).underscore
     #   persistent_config['last_loaded_widget'] = widget # store the last loaded widget in the persistent storage
     #   send("#{widget}__get_widget", params)
@@ -223,7 +223,7 @@ module Netzke
     #   # {:this => [{:eval_js => widget.js_missing_code, :eval_css => css_missing_code}, {:instantiate_aggregatee => widget.js_config}]}
     # end
 
-    # this should go into base_extras/interface.rb
+    # this should go into base_extras/api.rb
     # def load_aggregatee(params)
     #   widget = aggregatee_instance(params[:id])
     #   {:this => [{:eval_js => widget.js_missing_code, :eval_css => css_missing_code}, {:render_widget_in_container => {:container => params[:container], :config => widget.js_config}}]}

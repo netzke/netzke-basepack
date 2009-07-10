@@ -1,6 +1,6 @@
 module Netzke
   class BorderLayoutPanel < Base
-    interface :resize_region
+    api :resize_region
     
     REGIONS = %w(center west east south north).map(&:to_sym)
 

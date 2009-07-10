@@ -44,7 +44,7 @@ module Netzke
       end
 
       def resize_column(params)
-        raise "Called interface_resize_column while not configured to do so" unless config[:ext_config][:enable_column_resize]
+        raise "Called api_resize_column while not configured to do so" unless config[:ext_config][:enable_column_resize]
         if config[:persistent_layout]
           NetzkeLayoutItem.widget = id_name
           column = NetzkeLayoutItem.find(params[:index].to_i + 1)
@@ -55,7 +55,7 @@ module Netzke
       end
   
       def hide_column(params)
-        raise "Called interface_hide_column while not configured to do so" unless config[:ext_config][:enable_column_hide]
+        raise "Called api_hide_column while not configured to do so" unless config[:ext_config][:enable_column_hide]
         if config[:persistent_layout]
           NetzkeLayoutItem.widget = id_name
           column = NetzkeLayoutItem.find(params[:index].to_i + 1)
@@ -66,7 +66,7 @@ module Netzke
       end
   
       def move_column(params)
-        raise "Called interface_move_column while not configured to do so" unless config[:ext_config][:enable_column_move]
+        raise "Called api_move_column while not configured to do so" unless config[:ext_config][:enable_column_move]
         if config[:persistent_layout]
           NetzkeLayoutItem.widget = id_name
           NetzkeLayoutItem.move_item(params[:old_index].to_i, params[:new_index].to_i)

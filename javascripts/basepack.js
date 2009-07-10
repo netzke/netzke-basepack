@@ -19,7 +19,7 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
     var row = Ext.data.Record.create([{name:'id'}]);
     // console.info(this.parentWidget);
     var store = new Ext.data.Store({
-      proxy         : new Ext.data.HttpProxy({url:this.parentConfig.interface.getCbChoices, jsonData:{column:this.fieldConfig.name}}),
+      proxy         : new Ext.data.HttpProxy({url:this.parentConfig.api.getCbChoices, jsonData:{column:this.fieldConfig.name}}),
       reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
     });
     

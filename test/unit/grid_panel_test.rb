@@ -8,7 +8,7 @@ require 'netzke/configuration_tool'
 require 'netzke/accordion_panel'
 
 require 'netzke/db_fields'
-require 'netzke/grid_panel_extras/interface'
+require 'netzke/grid_panel_extras/api'
 require 'netzke/grid_panel_extras/js_builder'
 require 'netzke/grid_panel'
 
@@ -17,7 +17,7 @@ require 'netzke/ar_ext'
 
 class GridPanelTest < ActiveSupport::TestCase
   
-  test "interface" do
+  test "api" do
     grid = Netzke::GridPanel.new(:name => 'grid', :data_class_name => 'Book', :layout_manager => false, :columns => [:id, :title, :recent])
 
     # post

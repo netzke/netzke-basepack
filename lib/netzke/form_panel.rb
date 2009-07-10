@@ -16,7 +16,7 @@ module Netzke
     # extra javascripts
     js_include %w{ xcheckbox }.map{|js| "#{File.dirname(__FILE__)}/form_panel_extras/javascripts/#{js}.js"}
     
-    interface :submit, :load, :get_cb_choices
+    api :submit, :load, :get_cb_choices
 
     def self.widget_type
       :form

@@ -48,7 +48,7 @@ module Netzke
 
     # define connection points between client side and server side of GridPanel. 
     # See implementation of equally named methods in the GridPanelExtras::Interface module.
-    interface :get_data, :post_data, :delete_data, :resize_column, :move_column, :hide_column, :get_cb_choices
+    api :get_data, :post_data, :delete_data, :resize_column, :move_column, :hide_column, :get_cb_choices
 
     # widget type for DbFields
     # TODO: ugly, rethink
