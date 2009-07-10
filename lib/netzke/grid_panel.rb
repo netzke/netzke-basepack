@@ -31,7 +31,7 @@ module Netzke
     end
 
     include Netzke::GridPanelExtras::JsBuilder
-    include Netzke::GridPanelExtras::Interface
+    include Netzke::GridPanelExtras::Api
     include Netzke::DbFields # database field operations
 
     # javascripts for grid-filtering (from Ext examples)
@@ -47,7 +47,7 @@ module Netzke
     js_include "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/check-column.js"
 
     # define connection points between client side and server side of GridPanel. 
-    # See implementation of equally named methods in the GridPanelExtras::Interface module.
+    # See implementation of equally named methods in the GridPanelExtras::Api module.
     api :get_data, :post_data, :delete_data, :resize_column, :move_column, :hide_column, :get_cb_choices
 
     # widget type for DbFields

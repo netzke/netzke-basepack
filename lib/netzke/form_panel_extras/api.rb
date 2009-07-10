@@ -1,6 +1,6 @@
 module Netzke
   module FormPanelExtras
-    module Interface
+    module Api
       def submit(params)
         params.delete(:authenticity_token)
         params.delete(:controller)

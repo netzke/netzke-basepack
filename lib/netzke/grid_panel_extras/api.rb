@@ -1,6 +1,6 @@
 module Netzke
   module GridPanelExtras
-    module Interface
+    module Api
       def post_data(params)
         success = true
         mod_records = {}
@@ -33,8 +33,8 @@ module Netzke
       end
 
       def delete_data(params = {})
-        if @permissions[:delete] && false
-          record_ids = ActiveSupport::JSON.decode(params.delete(:records))
+        if @permissions[:delete]
+          record_ids = ActiveSupport::JSON.decode(params[:records])
           klass = config[:data_class_name].constantize
           klass.delete(record_ids)
           {:this => {:feedback => "Deleted #{record_ids.size} record(s)", :load_store_data => get_data}}

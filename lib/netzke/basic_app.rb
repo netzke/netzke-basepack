@@ -209,7 +209,7 @@ module Netzke
       } << super
     end
     
-    # Interface implementation
+    # Api implementation
     # def api_app_get_widget(params)
     #   widget = params.delete(:widget).underscore
     #   persistent_config['last_loaded_widget'] = widget # store the last loaded widget in the persistent storage
