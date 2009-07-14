@@ -79,13 +79,6 @@ module Netzke
     end
     extend ClassMethods
     
-    # default instance-level configuration
-    def initial_config
-      {
-        :persistent_config => true
-      }
-    end
-    
     def initial_aggregatees
       config[:regions] || {}
     end

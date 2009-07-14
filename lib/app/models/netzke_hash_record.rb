@@ -1,27 +1,14 @@
+# Simulating ActiveRecord class: instead of keeping data in a database,
+# NetzkeHashRecord keeps it in an array of hashes.
 class NetzkeHashRecord < Hash
-  include Netzke::ActiveRecordExtensions
-  #
-  # Class methods
-  #
-  def self.widget=(w)
-    @@widget = w
-    reload
-  end
-  
-  def self.widget
-    @@widget ||= nil
-    raise "No widget specified for NetzkeHashRecord" if @@widget.nil?
-    @@widget
-  end
-  
   def self.data=(data)
     @@records = data
     save
   end
   
-  def self.raw_data=(data)
-    persistent_config.for_widget(widget) {|p| p[:layout__columns] = data}
-  end
+  # def self.raw_data=(data)
+  #   persistent_config.for_widget(widget) {|p| p[:layout__columns] = data}
+  # end
   
   def self.columns_hash
     @@columns_hash ||= build_columns_hash
@@ -72,18 +59,28 @@ class NetzkeHashRecord < Hash
     save
   end
   
-  def self.save
-    records_without_ids = records.map{ |r| r.reject{ |k,v| k == :id } }
-    persistent_config.for_widget(widget) {|p| p[:layout__columns] = records_without_ids}
-    true
-  end
-  
   def self.column_names
     columns_hash.keys.sort{ |x,y| x == "id" ? -1 : 0} # "id"-column should always come first (required by the GridPanel)
   end
   
   def self.reflect_on_all_associations
     []
+  end
+  
+  # Searchlogic
+  def self.search(*args)
+    self
+  end
+  
+  # will_paginate
+  def self.paginate(*args)
+    res = self.all
+    class << res
+      def total_entries
+        self.count
+      end
+    end
+    res
   end
   
   #
@@ -102,14 +99,6 @@ class NetzkeHashRecord < Hash
   end
   
   def save
-    if self.id.nil?
-      self.id = self.class.records.size + 1
-      self.class.push(self)
-    else
-      # nothing to do
-    end
-    
-    self.class.save
   end
   
   def errors
@@ -126,6 +115,8 @@ class NetzkeHashRecord < Hash
     @@records ||= build_records
   end
   
+  
+  
   def self.build_records
     raw_records = persistent_config.for_widget(widget){|p| p[:layout__columns]} || []
     records = []
@@ -134,6 +125,7 @@ class NetzkeHashRecord < Hash
       own_instance.merge!(:id => i + 1) # merging with the id
       records << own_instance
     end
+    # Rails.logger.debug "!!! records: #{records.inspect}"
     records
   end
   

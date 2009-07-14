@@ -11,7 +11,6 @@ module Netzke
 
       config[:conditions]         = {:layout_id => config[:layout].id}
       config[:data_class_name]    = config[:layout].items_class
-      # config[:persistent_layout]  = false
     end
 
     def initial_config

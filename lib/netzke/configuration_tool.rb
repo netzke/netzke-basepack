@@ -1,18 +1,23 @@
 module Netzke
-  #
-  # Include this module into any widget if you want a "Properties" tool button in the top toolbar which will triggger a modal window, which will load the Accordion widgets, which in its turn will contain all the aggregatees specified in "configuration_widgets" method (*must* be defined)
-  #
+  # Include this module into any widget where you want a "gear" tool button in the top toolbar 
+  # which will triggger a modal window, which will load the ConfigurationPanel TabPanel-based 
+  # widget, which in its turn will contain all the aggregatees specified in "configuration_widgets" 
+  # method (which *must* be defined)
+  
   module ConfigurationTool
     def self.included(base)
       base.extend ClassMethods
       
       base.class_eval do
         # replacing instance methods
-        [:tools, :initial_aggregatees].each{ |m| alias_method_chain m, :properties }
+        [:tools, :initial_aggregatees].each{ |m| alias_method_chain m, :config_tool }
+        
+        # API to commit the changes
+        api :commit
 
         # replacing class methods
         class << self
-          alias_method_chain :js_extend_properties, :properties
+          alias_method_chain :js_extend_properties, :config_tool
         end
       end
 
@@ -21,8 +26,8 @@ module Netzke
     end
 
     module ClassMethods
-      def js_extend_properties_with_properties
-        js_extend_properties_without_properties.merge({
+      def js_extend_properties_with_config_tool
+        js_extend_properties_without_config_tool.merge({
           :gear => <<-JS.l
             function(){
               var w = new Ext.Window({
@@ -33,9 +38,15 @@ module Netzke
                 height: Ext.lib.Dom.getViewHeight() *0.9,
                 closeAction:'destroy',
                 buttons:[{
-                  text:'Submit',
+                  text:'OK',
                   handler:function(){
                     this.ownerCt.closeRes = 'OK'; 
+                    this.ownerCt.close();
+                  }
+                },{
+                  text:'Cancel',
+                  handler:function(){
+                    this.ownerCt.closeRes = 'cancel'; 
                     this.ownerCt.close();
                   }
                 }]
@@ -43,17 +54,21 @@ module Netzke
               });
 
               w.show(null, function(){
-                w.loadWidget(this.initialConfig.id+"__properties__get_widget");
+                this.loadAggregatee({id:"configuration_panel", container:w.id});
               }, this);
 
               w.on('close', function(){
                 if (w.closeRes == 'OK'){
-                  widget = this;
-                  if (widget.ownerCt) {
-                    widget.ownerCt.loadWidget(widget.initialConfig.api.getWidget);
-                  } else {
-                    this.feedback('Reload current window'); // we are embedded directly in HTML
-                  }
+                  var configurationPanel = this.getChildWidget('configuration_panel');
+                  var panels = configurationPanel.getLoadedChildren();
+                  var commitData = {};
+                  Ext.each(panels, function(p){
+                    commitData[p.localId(configurationPanel)] = p.getCommitData();
+                  }, this);
+                  configurationPanel.commit({commit_data:Ext.encode(commitData)});
+                } else {
+                  var configurationPanel = this.getChildWidget('configuration_panel');
+                  configurationPanel.cancel();
                 }
               }, this);
             }
@@ -62,15 +77,21 @@ module Netzke
       end
     end
 
-    def initial_aggregatees_with_properties
-      res = initial_aggregatees_without_properties
+    def initial_aggregatees_with_config_tool
+      res = initial_aggregatees_without_config_tool
+      
       # Add the accordion as aggregatee, which in its turn aggregates widgets from the configuration_widgets method
-      res.merge!(:properties => {:widget_class_name => 'TabPanel', :items => configuration_widgets, :ext_config => {:title => false}, :late_aggregation => true}) if config[:ext_config][:config_tool]
+      res.merge!(:configuration_panel => {
+        :widget_class_name => 'ConfigurationPanel', 
+        :items => configuration_widgets,
+        :late_aggregation => true
+      }) if config[:ext_config][:config_tool]
+      
       res
     end
 
-    def tools_with_properties
-      tools = tools_without_properties
+    def tools_with_config_tool
+      tools = tools_without_config_tool
       # Add the toolbutton
       tools << 'gear' if config[:ext_config][:config_tool]
       tools

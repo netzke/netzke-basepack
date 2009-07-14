@@ -2,7 +2,7 @@ require 'test_helper'
 class NetzkeHashRecordTest < ActiveSupport::TestCase
   test "adding records" do
     ahr = NetzkeHashRecord
-    ahr.widget = "my_widget"
+    # ahr.widget = "my_widget"
     assert_equal({}, ahr.columns_hash)
     
     # add a record
@@ -46,7 +46,6 @@ class NetzkeHashRecordTest < ActiveSupport::TestCase
     r = ahr.first
     r.name = "New name"
     r.save
-    
     assert_equal("New name", ahr.first.name)
   end
 end

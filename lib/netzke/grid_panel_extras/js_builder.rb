@@ -9,6 +9,7 @@ module Netzke
         res = super
         res.merge!(:columns => columns)
         res.merge!(:data_class_name => config[:data_class_name])
+        # logger.debug "!!! config[:widget].id_name: #{config[:widget].id_name.inspect}"
         res.merge!(:inline_data => get_data) if config[:load_inline_data]
         res
       end

@@ -16,6 +16,16 @@ module Netzke
 
     def self.js_extend_properties
       {
+        :get_loaded_children => <<-JS.l,
+          function(){
+            var res = [];
+            this.items.each(function(tab){
+              var kid = tab.getWidget();
+              if (kid) { res.push(kid) }
+            }, this);
+            return res;
+          }
+        JS
         # loads widget into the panel if it wasn't loaded yet
         :load_item_widget => <<-JS.l
           function(panel) {
@@ -26,7 +36,7 @@ module Netzke
                 panel.doLayout(); // always needed after adding a component
               } else {
                 // load the widget from the server
-                panel.loadWidget(this.id + "__" + panel.widget + "__get_widget");
+                this.loadAggregatee({id:panel.widget, container:panel.id});
               }
             }
           }

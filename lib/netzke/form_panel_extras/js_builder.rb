@@ -78,16 +78,16 @@ module Netzke
                 this.form.loadRecord(this.reader.readRecords({data:[values]}).records[0]);
               }
             JS
-            :load_record => <<-JS.l,
-              function(id, neighbour){
-                var proxy = new Ext.data.HttpProxy({url:this.initialConfig.api.load});
-                proxy.load({id:id, neighbour:neighbour}, this.reader, function(data){
-                  if (data){
-                    this.form.loadRecord(data.records[0])
-                  }
-                }, this)
-              }
-            JS
+            # :load_record => <<-JS.l,
+            #   function(id, neighbour){
+            #     var proxy = new Ext.data.HttpProxy({url:this.initialConfig.api.load});
+            #     proxy.load({id:id, neighbour:neighbour}, this.reader, function(data){
+            #       if (data){
+            #         this.form.loadRecord(data.records[0])
+            #       }
+            #     }, this)
+            #   }
+            # JS
             :afterlayout_handler => <<-JS.l,
               function() {
                 // Load initial data into the form
@@ -116,17 +116,7 @@ module Netzke
             JS
             :apply => <<-JS.l,
               function() {
-                this.form.submit({
-                  url:this.initialConfig.api.submit,
-                  success :function(form, action){
-                    if (action.result.flash) this.feedback(action.result.flash);
-                    this.form.loadRecord(this.reader.readRecord(action.result.data[0]));
-                  },
-                  failure :function(form, action){
-                    this.feedback(action.result.flash)
-                  },
-                  scope :this
-                })
+                this.submit({data:Ext.encode(this.form.getValues())});
               }
             JS
           }

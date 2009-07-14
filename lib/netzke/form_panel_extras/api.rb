@@ -1,18 +1,21 @@
 module Netzke
   module FormPanelExtras
     module Api
+      # API handling form submission
       def submit(params)
-        params.delete(:authenticity_token)
-        params.delete(:controller)
-        params.delete(:action)
+        data_hsh = ActiveSupport::JSON.decode(params[:data])
+        create_or_update_record(data_hsh)
+      end
 
+      # Creates/updates a record from hash
+      def create_or_update_record(hsh)
         klass = config[:data_class_name].constantize
-        @record = klass.find_by_id(params[:id])
+        @record = klass.find_by_id(hsh.delete("id"))
         success = true
 
         @record = klass.new if @record.nil?
 
-        params.each_pair do |k,v|
+        hsh.each_pair do |k,v|
           begin
             @record.send("#{k}=",v)
           rescue StandardError => exc
@@ -23,16 +26,17 @@ module Netzke
         end
     
         if success && @record.save
-          {:data => [@record.to_array(fields)], :success => true}
+          {:this => {:set_form_values => @record.to_array(fields)}}
         else
           # flash eventual errors
           @record.errors.each_full do |msg|
             flash :error => msg
           end
-          {:success => false, :flash => @flash}
+          {:this => {:feedback => @flash}}
         end
       end
 
+      # API handling form load
       def load(params)
         klass = config[:data_class_name].constantize
         case params[:neighbour]
@@ -43,18 +47,20 @@ module Netzke
         {:data => [array_of_values]}
       end
       
-      def array_of_values
-        @record && @record.to_array(fields)
-      end
-      
-      # Return the choices for the column
-      def get_cb_choices(params)
+      # API that returns options for a combobox
+      def get_combo_box_options(params)
         column = params[:column]
         query = params[:query]
     
         {:data => config[:data_class_name].constantize.choices_for(column, query).map{|s| [s]}}
       end
-        
+
+      private
+      
+      def array_of_values
+        @record && @record.to_array(fields)
+      end
+      
     end
   end
 end

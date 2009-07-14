@@ -1,11 +1,13 @@
 module Netzke
+  # == Configuration
+  #   
   class FormPanel < Base
     # Class-level configuration with defaults
     def self.config
       set_default_config({
-        :config_tool_enabled_by_default       => false,
-        :persistent_layout_enabled_by_default => true,
-        :persistent_config_enabled_by_default => true
+        :config_tool_enabled       => false,
+        :persistent_layout_enabled => true,
+        :persistent_config_enabled => true
       })
     end
 
@@ -16,7 +18,7 @@ module Netzke
     # extra javascripts
     js_include %w{ xcheckbox }.map{|js| "#{File.dirname(__FILE__)}/form_panel_extras/javascripts/#{js}.js"}
     
-    api :submit, :load, :get_cb_choices
+    api :submit, :load, :get_combo_box_options
 
     def self.widget_type
       :form
@@ -31,11 +33,10 @@ module Netzke
     def initial_config
       {
         :ext_config => {
-          :config_tool => self.class.config[:config_tool_enabled_by_default],
+          :config_tool => self.class.config[:config_tool_enabled],
         },
-
-        :persistent_layout => self.class.config[:persistent_layout_enabled_by_default],
-        :persistent_config => self.class.config[:persistent_config_enabled_by_default]
+        :persistent_layout => self.class.config[:persistent_layout_enabled],
+        :persistent_config => self.class.config[:persistent_config_enabled]
       }
     end
 
@@ -82,6 +83,7 @@ module Netzke
       res = super
       res.merge!(:fields => fields)
       res.merge!(:data_class_name => config[:data_class_name])
+      logger.debug "!!! @record: #{@record.inspect}"
       res.merge!(:record_data => @record.to_array(fields)) if @record
       res
     end
@@ -90,9 +92,10 @@ module Netzke
     
     def get_fields
       if config[:persistent_layout]
-        NetzkeLayoutItem.widget = id_name
-        NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
-        NetzkeLayoutItem.all
+        persistent_config['layout__fields'] ||= default_db_fields
+        # NetzkeLayoutItem.widget = id_name
+        # NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
+        # NetzkeLayoutItem.all
       else
         default_db_fields
       end.map{ |r| r.reject{ |k,v| k == :id } }

@@ -20,13 +20,14 @@ module Netzke
     # Class-level configuration and its defaults
     def self.config
       set_default_config({
-        :enable_filters                       => true,
-        :config_tool_enabled_by_default       => false,
-        :column_move_enabled_by_default       => true,
-        :column_hide_enabled_by_default       => true,
-        :column_resize_enabled_by_default     => true,
-        :persistent_layout_enabled_by_default => true,
-        :persistent_config_enabled_by_default => true
+        :load_inline_data          => true,
+        :filters_enabled           => true,
+        :config_tool_enabled       => false,
+        :column_move_enabled       => true,
+        :column_hide_enabled       => true,
+        :column_resize_enabled     => true,
+        :persistent_layout_enabled => true,
+        :persistent_config_enabled => true
       })
     end
 
@@ -35,7 +36,7 @@ module Netzke
     include Netzke::DbFields # database field operations
 
     # javascripts for grid-filtering (from Ext examples)
-    if Netzke::GridPanel.config[:enable_filters]
+    if Netzke::GridPanel.config[:filters_enabled]
       js_include :ext_examples => %w{grid-filtering/menu/EditableItem.js grid-filtering/menu/RangeMenu.js grid-filtering/grid/GridFilters.js}
     
       js_include :ext_examples => %w{Boolean Date List Numeric String}.unshift("").map{|f| "grid-filtering/grid/filter/#{f}Filter.js" }
@@ -48,7 +49,7 @@ module Netzke
 
     # define connection points between client side and server side of GridPanel. 
     # See implementation of equally named methods in the GridPanelExtras::Api module.
-    api :get_data, :post_data, :delete_data, :resize_column, :move_column, :hide_column, :get_cb_choices
+    api :get_data, :post_data, :delete_data, :resize_column, :move_column, :hide_column, :get_combo_box_options
 
     # widget type for DbFields
     # TODO: ugly, rethink
@@ -60,15 +61,15 @@ module Netzke
     def initial_config
       {
         :ext_config => {
-          :config_tool           => self.class.config[:config_tool_enabled_by_default],
-          :enable_column_filters => self.class.config[:enable_filters],
-          :enable_column_move    => self.class.config[:column_move_enabled_by_default],
-          :enable_column_hide    => self.class.config[:column_hide_enabled_by_default],
-          :enable_column_resize  => self.class.config[:column_resize_enabled_by_default]
+          :config_tool           => self.class.config[:config_tool_enabled],
+          :enable_column_filters => self.class.config[:filters_enabled],
+          :enable_column_move    => self.class.config[:column_move_enabled],
+          :enable_column_hide    => self.class.config[:column_hide_enabled],
+          :enable_column_resize  => self.class.config[:column_resize_enabled]
         },
-        :persistent_layout => self.class.config[:persistent_layout_enabled_by_default],
-        :persistent_config => self.class.config[:persistent_config_enabled_by_default],
-        :load_inline_data => true
+        :persistent_layout => self.class.config[:persistent_layout_enabled],
+        :persistent_config => self.class.config[:persistent_config_enabled],
+        :load_inline_data  => self.class.config[:load_inline_data]
       }
     end
 
@@ -82,8 +83,7 @@ module Netzke
         :name              => 'columns',
         :widget_class_name => "FieldsConfigurator",
         :active            => true,
-        :widget            => self,
-        :persistent_layout => true
+        :widget            => self
       } if config[:persistent_layout]
 
       res << {
@@ -113,7 +113,9 @@ module Netzke
     end
 
     def columns
-      @columns ||= get_columns
+      @columns ||= get_columns.convert_keys{|k| k.to_sym}
+      # logger.debug "!!! @columns: #{@columns.inspect}"
+      # @columns
     end
     
     include ConfigurationTool # it will load aggregation with name :properties into a modal window
@@ -126,9 +128,10 @@ module Netzke
 
     def get_columns
       if config[:persistent_layout]
-        NetzkeLayoutItem.widget = id_name
-        NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
-        NetzkeLayoutItem.all
+        persistent_config['layout__columns'] ||= default_db_fields
+        # NetzkeLayoutItem.widget = id_name
+        # NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
+        # NetzkeLayoutItem.all
       else
         default_db_fields
       end

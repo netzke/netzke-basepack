@@ -220,13 +220,13 @@ module Netzke
     #   load_aggregatee(params)
     #   # widget = aggregatee_instance(params[:widget])
     #   # 
-    #   # {:this => [{:eval_js => widget.js_missing_code, :eval_css => css_missing_code}, {:instantiate_aggregatee => widget.js_config}]}
+    #   # {:this => [{:js => widget.js_missing_code, :eval_css => css_missing_code}, {:instantiate_aggregatee => widget.js_config}]}
     # end
 
     # this should go into base_extras/api.rb
     # def load_aggregatee(params)
     #   widget = aggregatee_instance(params[:id])
-    #   {:this => [{:eval_js => widget.js_missing_code, :eval_css => css_missing_code}, {:render_widget_in_container => {:container => params[:container], :config => widget.js_config}}]}
+    #   {:this => [{:js => widget.js_missing_code, :eval_css => css_missing_code}, {:render_widget_in_container => {:container => params[:container], :config => widget.js_config}}]}
     # end
     
   end

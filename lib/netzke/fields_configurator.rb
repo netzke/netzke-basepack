@@ -8,15 +8,16 @@ module Netzke
     
     def initialize(*args)
       super
-
-      NetzkeLayoutItem.widget      = config[:widget].id_name
-      config[:data_class_name]     = "NetzkeLayoutItem"
+      AutoColumn.widget = config[:widget]
     end
 
     def initial_config
       super.recursive_merge({
         :name              => 'columns',
         :widget_class_name => "GridPanel",
+        :data_class_name   => "AutoColumn",
+        :persistent_layout => false,
+        :persistent_config => false,
         :ext_config        => {:title => false}
       })
     end
@@ -33,17 +34,16 @@ module Netzke
     
     def self.js_extend_properties
       super.merge({
+        :get_commit_data => <<-JS.l,
+          function(){
+            return null; // because our commit data is already on the server side
+          }
+        JS
         :defaults => <<-JS.l,
           function(){
             Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
               if (btn == 'yes') {
-                Ext.Ajax.request({
-                  url:this.initialConfig.api.loadDefaults,
-                  callback:function(){
-                    this.store.reload();
-                  },
-                  scope:this
-                })
+                this.loadDefaults();
               }
             }, this);
           }
@@ -52,19 +52,23 @@ module Netzke
     end
     
     def load_defaults(params)
-      persistent_config.for_widget(config[:widget].id_name){ |p| p[:layout__columns] = config[:widget].default_db_fields }
+      persistent_config.for_widget(config[:widget].id_name){ |p| 
+        p[:layout__columns] = config[:widget].default_db_fields 
+      }
       # NetzkeLayoutItem.data = config[:widget].default_db_fields
+      {:this => {:load_store_data => get_data}}
+    end
+   
+    def commit(params)
+      # directly access self.class.persistent_config
+      self.class.persistent_config.for_widget(config[:widget].id_name) do |p|
+        p[:layout__columns] = AutoColumn.all.map(&:attributes)
+      end
       {}
     end
-    
-    def default_db_fields_with_widget_change
-      NetzkeLayoutItem.widget = config[:widget].id_name
-      res = default_db_fields_without_widget_change
-      NetzkeLayoutItem.widget = id_name
-      res
+   
+    def cancel
+      AutoColumn.reset
     end
-    
-    alias_method_chain :default_db_fields, :widget_change
-    
   end
 end

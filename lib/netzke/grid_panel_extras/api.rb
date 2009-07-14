@@ -20,15 +20,16 @@ module Netzke
       end
   
       def get_data(params = {})
+        logger.debug "!!! config[:data_class_name]: #{config[:data_class_name].inspect}"
         if @permissions[:read]
           records = get_records(params)
           
           # {:data => records, :total => records.total_records}
-          {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries, :this => {:feedback => "hi"}}
+          {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}
           # [{:load_store_data => {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}}]
         else
           flash :error => "You don't have permissions to read data"
-          {:success => false, :flash => @flash}
+          {:this => {:feedback => @flash}}
         end
       end
 
@@ -77,7 +78,7 @@ module Netzke
       end
 
       # Return the choices for the column
-      def get_cb_choices(params)
+      def get_combo_box_options(params)
         column = params[:column]
         query = params[:query]
     
