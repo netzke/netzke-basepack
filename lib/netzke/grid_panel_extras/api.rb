@@ -20,13 +20,9 @@ module Netzke
       end
   
       def get_data(params = {})
-        logger.debug "!!! config[:data_class_name]: #{config[:data_class_name].inspect}"
         if @permissions[:read]
           records = get_records(params)
-          
-          # {:data => records, :total => records.total_records}
           {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}
-          # [{:load_store_data => {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}}]
         else
           flash :error => "You don't have permissions to read data"
           {:this => {:feedback => @flash}}
@@ -141,20 +137,21 @@ module Netzke
         search_params = normalize_params(params)  # make params coming from the browser understandable by searchlogic
         search_params[:conditions].recursive_merge!(config[:conditions] || {})  # merge with conditions coming from the config
 
+        search = config[:data_class_name].constantize.search(search_params)
+
         # sorting
-        # order_by = if params[:sort]
-        #   assoc, method = params[:sort].split('__')
-        #   method.nil? ? assoc : {assoc => method}
-        # end
-    
-    
+        if params[:sort]
+          assoc, method = params[:sort].split('__')
+          sort_string = method.nil? ? assoc : "#{assoc}_#{method}"
+          sort_string = (params[:dir] == "ASC" ? "ascend_by_" : "descend_by_") + sort_string
+          search.order(sort_string)
+        end
+        
+        # pagination
         if config[:ext_config][:rows_per_page]
           per_page = config[:ext_config][:rows_per_page]
           page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
         end
-        # , :order_by => order_by, :order_as => params[:dir], 
-    
-        search = config[:data_class_name].constantize.search(search_params)
         
         search.paginate(:per_page => per_page, :page => page)
       end
