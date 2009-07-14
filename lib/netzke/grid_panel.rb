@@ -15,7 +15,10 @@ module Netzke
   #
   # == Configuration
   # * <tt>:ext_config[:config_tool]</tt> - enable configuration tool
-  
+  #
+  # == TODO
+  # * (optimization) come up with a way to not send default configuration values in js_config, 
+  # as their number will grow with time
   class GridPanel < Base
     # Class-level configuration and its defaults
     def self.config
@@ -65,11 +68,11 @@ module Netzke
           :enable_column_filters => self.class.config[:filters_enabled],
           :enable_column_move    => self.class.config[:column_move_enabled],
           :enable_column_hide    => self.class.config[:column_hide_enabled],
-          :enable_column_resize  => self.class.config[:column_resize_enabled]
+          :enable_column_resize  => self.class.config[:column_resize_enabled],
+          :load_inline_data      => self.class.config[:load_inline_data]
         },
         :persistent_layout => self.class.config[:persistent_layout_enabled],
-        :persistent_config => self.class.config[:persistent_config_enabled],
-        :load_inline_data  => self.class.config[:load_inline_data]
+        :persistent_config => self.class.config[:persistent_config_enabled]
       }
     end
 
@@ -129,9 +132,6 @@ module Netzke
     def get_columns
       if config[:persistent_layout]
         persistent_config['layout__columns'] ||= default_db_fields
-        # NetzkeLayoutItem.widget = id_name
-        # NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
-        # NetzkeLayoutItem.all
       else
         default_db_fields
       end

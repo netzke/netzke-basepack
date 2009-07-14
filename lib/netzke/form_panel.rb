@@ -1,6 +1,6 @@
 module Netzke
   # == Configuration
-  #   
+  #   * <tt>:record</tt> - initial record to be displayd in the form
   class FormPanel < Base
     # Class-level configuration with defaults
     def self.config
@@ -75,7 +75,7 @@ module Netzke
     end
     
     def fields
-      @fields ||= get_fields
+      @fields ||= get_fields.convert_keys{|k| k.to_sym}
     end
 
     # parameters used to instantiate the JS object
@@ -83,7 +83,6 @@ module Netzke
       res = super
       res.merge!(:fields => fields)
       res.merge!(:data_class_name => config[:data_class_name])
-      logger.debug "!!! @record: #{@record.inspect}"
       res.merge!(:record_data => @record.to_array(fields)) if @record
       res
     end
@@ -93,9 +92,6 @@ module Netzke
     def get_fields
       if config[:persistent_layout]
         persistent_config['layout__fields'] ||= default_db_fields
-        # NetzkeLayoutItem.widget = id_name
-        # NetzkeLayoutItem.data = default_db_fields if NetzkeLayoutItem.all.empty?
-        # NetzkeLayoutItem.all
       else
         default_db_fields
       end.map{ |r| r.reject{ |k,v| k == :id } }

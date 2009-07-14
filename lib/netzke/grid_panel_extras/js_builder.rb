@@ -9,8 +9,7 @@ module Netzke
         res = super
         res.merge!(:columns => columns)
         res.merge!(:data_class_name => config[:data_class_name])
-        # logger.debug "!!! config[:widget].id_name: #{config[:widget].id_name.inspect}"
-        res.merge!(:inline_data => get_data) if config[:load_inline_data]
+        res.merge!(:inline_data => get_data) if config[:ext_config][:load_inline_data]
         res
       end
   
@@ -127,7 +126,7 @@ module Netzke
           }) : config.bbar
 
           // Load data after the toolbar is bound to the store, which will provide for correct page number
-          ds.loadData(config.inlineData);
+          if (config.loadInlineData) {ds.loadData(config.inlineData);}
     
           JS
         end
@@ -307,6 +306,12 @@ module Netzke
               }
             JS
    
+            :select_first_row => <<-JS.l,
+              function(){
+                this.getSelectionModel().selectRow(0);
+              }
+            JS
+            
             :refresh => <<-JS.l,
               function() {
                 if (this.fireEvent('refresh', this) !== false) {

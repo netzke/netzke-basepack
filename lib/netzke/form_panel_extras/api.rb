@@ -54,9 +54,8 @@ module Netzke
     
         {:data => config[:data_class_name].constantize.choices_for(column, query).map{|s| [s]}}
       end
-
-      private
       
+      # Returns array of form values according to the configured fields
       def array_of_values
         @record && @record.to_array(fields)
       end
