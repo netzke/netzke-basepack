@@ -66,9 +66,6 @@ module Netzke
                     commitData[p.localId(configurationPanel)] = p.getCommitData();
                   }, this);
                   configurationPanel.commit({commit_data:Ext.encode(commitData)});
-                } else {
-                  var configurationPanel = this.getChildWidget('configuration_panel');
-                  configurationPanel.cancel();
                 }
               }, this);
             }
@@ -85,7 +82,7 @@ module Netzke
         :widget_class_name => 'ConfigurationPanel', 
         :items => configuration_widgets,
         :late_aggregation => true
-      }) if config[:ext_config][:config_tool]
+      }) if ext_config[:config_tool]
       
       res
     end
@@ -93,7 +90,7 @@ module Netzke
     def tools_with_config_tool
       tools = tools_without_config_tool
       # Add the toolbutton
-      tools << 'gear' if config[:ext_config][:config_tool]
+      tools << 'gear' if ext_config[:config_tool]
       tools
     end
   

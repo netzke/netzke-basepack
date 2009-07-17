@@ -235,6 +235,7 @@ module Netzke
         type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
 
         common = {
+          :name        => config[:name].to_s || "unnamed",
           :field_label => config[:name].to_s.gsub('__', '_').humanize,
           :hidden      => config[:name] == :id,
           :xtype       => XTYPE_MAP[type] || XTYPE_MAP[:string]
@@ -252,6 +253,14 @@ module Netzke
           end
         end
         
+        # detect association column (e.g. :category_id)
+        if assoc = reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == config[:name]}
+          common[:xtype] = :combobox
+          assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
+          common[:name] = "#{assoc.name}__#{assoc_method}"
+        end
+        
+        config.delete(:name) # because we might have changed the name
         common.merge(config)
 
         # default = DEFAULTS_FOR_FIELD[type] || DEFAULTS_FOR_FIELD[:string] # fallback to plain textfield

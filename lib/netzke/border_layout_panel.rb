@@ -78,6 +78,11 @@ module Netzke
       end
     end
     extend ClassMethods
+    def default_config
+      {
+        :persistent_config => true
+      }
+    end
     
     def initial_aggregatees
       config[:regions] || {}
@@ -102,8 +107,6 @@ module Netzke
     end
   
     def resize_region(params)
-      logger.debug "!!! params: #{params.inspect}"
-      logger.debug "!!! persistent_config.class: #{persistent_config.class.inspect}"
       persistent_config["#{params["region_name"]}_width"] = params["new_width"].to_i if params["new_width"]
       persistent_config["#{params["region_name"]}_height"] = params["new_height"].to_i if params["new_height"]
       {}

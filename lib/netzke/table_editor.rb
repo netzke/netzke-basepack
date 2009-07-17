@@ -37,7 +37,7 @@ module Netzke
       })
     end
 
-    def initial_config
+    def default_config
       # don't show the title on the top level
       super.merge!({:ext_config => {:title => false}})
     end

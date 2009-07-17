@@ -12,11 +12,11 @@ module Netzke
           end
           break if !success
         end
-        {:this => {
-            :update_new_records => mod_records[:create], 
-            :update_mod_records => mod_records[:update],
-            :feedback => @flash.empty? ? nil : @flash
-        }}
+        {
+          :update_new_records => mod_records[:create], 
+          :update_mod_records => mod_records[:update],
+          :feedback => @flash.empty? ? nil : @flash
+        }
       end
   
       def get_data(params = {})
@@ -25,7 +25,7 @@ module Netzke
           {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}
         else
           flash :error => "You don't have permissions to read data"
-          {:this => {:feedback => @flash}}
+          {:feedback => @flash}
         end
       end
 
@@ -34,43 +34,43 @@ module Netzke
           record_ids = ActiveSupport::JSON.decode(params[:records])
           klass = config[:data_class_name].constantize
           klass.delete(record_ids)
-          {:this => {:feedback => "Deleted #{record_ids.size} record(s)", :load_store_data => get_data}}
+          {:feedback => "Deleted #{record_ids.size} record(s)", :load_store_data => get_data}
         else
-          {:this => {:feedback => "You don't have permissions to delete data"}}
+          {:feedback => "You don't have permissions to delete data"}
         end
       end
 
       def resize_column(params)
-        raise "Called api_resize_column while not configured to do so" unless config[:ext_config][:enable_column_resize]
+        raise "Called api_resize_column while not configured to do so" unless ext_config[:enable_column_resize]
         if config[:persistent_layout]
-          NetzkeLayoutItem.widget = id_name
-          column = NetzkeLayoutItem.find(params[:index].to_i + 1)
-          column.width = params[:size].to_i
-          column.save
+          columns = persistent_config[:layout__columns]
+          columns[params[:index].to_i]["width"] = params[:size].to_i
+          persistent_config[:layout__columns] = columns
         end
         {}
       end
   
       def hide_column(params)
-        raise "Called api_hide_column while not configured to do so" unless config[:ext_config][:enable_column_hide]
+        raise "Called api_hide_column while not configured to do so" unless ext_config[:enable_column_hide]
         if config[:persistent_layout]
-          NetzkeLayoutItem.widget = id_name
-          column = NetzkeLayoutItem.find(params[:index].to_i + 1)
-          column.hidden = params[:hidden].to_b
-          column.save
+          columns = persistent_config[:layout__columns]
+          columns[params[:index].to_i]["hidden"] = params[:hidden].to_b
+          persistent_config[:layout__columns] = columns
         end
         {}
       end
   
       def move_column(params)
-        raise "Called api_move_column while not configured to do so" unless config[:ext_config][:enable_column_move]
+        raise "Called api_move_column while not configured to do so" unless ext_config[:enable_column_move]
         if config[:persistent_layout]
-          NetzkeLayoutItem.widget = id_name
-          NetzkeLayoutItem.move_item(params[:old_index].to_i, params[:new_index].to_i)
+          cols = persistent_config[:layout__columns]
+          column_to_move = cols.delete_at(params[:old_index].to_i)
+          cols.insert(params[:new_index].to_i, column_to_move)
+          persistent_config[:layout__columns] = cols
         end
 
         # reorder the columns on the client side (still not sure if it's not an overkill)
-        {:this => {:reorder_columns => columns.map(&:name)}}
+        {:reorder_columns => columns.map(&:name)}
       end
 
       # Return the choices for the column
@@ -96,8 +96,11 @@ module Netzke
             id = record_hash.delete('id')
             record = operation == :create ? klass.new : klass.find(id)
             success = true
-        
-            # process all attirubutes for the same record (OPTIMIZE: we can use update_attributes separately for regular attributes to speed things up)
+
+            # merge with strong default attirbutes
+            record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
+            
+            # process all attirubutes for this record
             record_hash.each_pair do |k,v|
               begin
                 record.send("#{k}=",v)
@@ -107,7 +110,7 @@ module Netzke
                 break
               end
             end
-        
+          
             # try to save
             # modified_records += 1 if success && record.save
             mod_records[id] = record.to_array(columns) if success && record.save
@@ -132,12 +135,22 @@ module Netzke
   
       # get records
       def get_records(params)
-        raise ArgumentError, "No data_class_name specified for widget '#{config[:name]}'" if !config[:data_class_name]
+        raise ArgumentError, "No data_class_name specified for widget '#{name}'" if !config[:data_class_name]
 
         search_params = normalize_params(params)  # make params coming from the browser understandable by searchlogic
         search_params[:conditions].recursive_merge!(config[:conditions] || {})  # merge with conditions coming from the config
 
         search = config[:data_class_name].constantize.search(search_params)
+        
+        # applying scopes
+        scopes.each do |s|
+          if s.is_a?(Array)
+            scope_name, *args = s
+            search.send(scope_name, *args)
+          else
+            search.send(s)
+          end
+        end
 
         # sorting
         if params[:sort]
@@ -148,15 +161,19 @@ module Netzke
         end
         
         # pagination
-        if config[:ext_config][:rows_per_page]
-          per_page = config[:ext_config][:rows_per_page]
+        if ext_config[:rows_per_page]
+          per_page = ext_config[:rows_per_page]
           page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
         end
         
         search.paginate(:per_page => per_page, :page => page)
       end
+      
+      # Search scopes, searchlogic format
+      def scopes
+        @scopes ||= (config[:scopes] || []) + (widget_session[:scopes] || [])
+      end
   
-      #
       # Converts Ext.grid.GridFilters filters to searchlogic conditions, e.g.
       # {"0" => {
       #   "data" => {
@@ -176,7 +193,6 @@ module Netzke
       #  => 
       #
       # {"id_gt" => 100, "food_name_contains" => "pizza"}
-      #
       def convert_filters(column_filter)
         res = {}
         column_filter.each_pair do |k,v|

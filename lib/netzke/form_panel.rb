@@ -20,6 +20,8 @@ module Netzke
     
     api :submit, :load, :get_combo_box_options
 
+    attr_accessor :record
+    
     def self.widget_type
       :form
     end
@@ -30,7 +32,7 @@ module Netzke
     end
     
     # default instance-level configuration
-    def initial_config
+    def default_config
       {
         :ext_config => {
           :config_tool => self.class.config[:config_tool_enabled],
@@ -74,24 +76,24 @@ module Netzke
       persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ apply }
     end
     
-    def fields
-      @fields ||= get_fields.convert_keys{|k| k.to_sym}
+    def columns
+      @columns ||= get_columns.convert_keys{|k| k.to_sym}
     end
-
+    
     # parameters used to instantiate the JS object
     def js_config
       res = super
-      res.merge!(:fields => fields)
+      res.merge!(:columns => columns)
       res.merge!(:data_class_name => config[:data_class_name])
-      res.merge!(:record_data => @record.to_array(fields)) if @record
+      res.merge!(:record_data => @record.to_array(columns)) if @record
       res
     end
  
     protected
     
-    def get_fields
+    def get_columns
       if config[:persistent_layout]
-        persistent_config['layout__fields'] ||= default_db_fields
+        persistent_config['layout__columns'] ||= default_db_fields
       else
         default_db_fields
       end.map{ |r| r.reject{ |k,v| k == :id } }

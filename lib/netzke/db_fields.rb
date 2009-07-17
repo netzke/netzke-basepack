@@ -5,7 +5,7 @@ module Netzke
     # It is a synthesis of 1) columns declared in the model, 2) columns provided in the configuration for the widget
     #
     def default_db_fields
-      config[:data_class_name].nil? && raise(ArgumentError, "No data_class_name specified for widget #{config[:name]}")
+      config[:data_class_name].nil? && raise(ArgumentError, "No data_class_name specified for widget #{name}")
       
       data_class          = config[:data_class_name].constantize
       exposed_attributes     = normalize_columns(data_class.netzke_exposed_attributes) # columns exposed from the data class

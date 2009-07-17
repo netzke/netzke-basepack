@@ -8,14 +8,14 @@ module Netzke
     
     def initialize(*args)
       super
-      AutoColumn.widget = config[:widget]
+      NetzkeAutoColumn.widget = config[:widget]
     end
 
-    def initial_config
+    def default_config
       super.recursive_merge({
         :name              => 'columns',
         :widget_class_name => "GridPanel",
-        :data_class_name   => "AutoColumn",
+        :data_class_name   => "NetzkeAutoColumn",
         :persistent_layout => false,
         :persistent_config => false,
         :ext_config        => {:title => false}
@@ -52,23 +52,20 @@ module Netzke
     end
     
     def load_defaults(params)
-      persistent_config.for_widget(config[:widget].id_name){ |p| 
-        p[:layout__columns] = config[:widget].default_db_fields 
-      }
-      # NetzkeLayoutItem.data = config[:widget].default_db_fields
-      {:this => {:load_store_data => get_data}}
+      config[:widget].persistent_config[:layout__columns] = config[:widget].default_db_fields
+      NetzkeAutoColumn.rebuild_table
+      {:load_store_data => get_data}
     end
    
     def commit(params)
-      # directly access self.class.persistent_config
-      self.class.persistent_config.for_widget(config[:widget].id_name) do |p|
-        p[:layout__columns] = AutoColumn.all.map(&:attributes)
-      end
+      config[:widget].persistent_config[:layout__columns] = NetzkeAutoColumn.all_columns
       {}
     end
    
-    def cancel
-      AutoColumn.reset
+    # each time that we are loaded into the app, rebuild the table
+    def before_load
+      NetzkeAutoColumn.rebuild_table
     end
+   
   end
 end

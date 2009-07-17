@@ -74,6 +74,9 @@ module Netzke
           seen_active = true
         end
       end
+      
+      # the first tab is forced to become active, if none was configured as active
+      items.first[:active] = true unless seen_active
     end
     
     # the items are late aggregatees, besides the one that is configured active

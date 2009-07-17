@@ -26,13 +26,13 @@ module Netzke
         end
     
         if success && @record.save
-          {:this => {:set_form_values => @record.to_array(fields)}}
+          {:set_form_values => @record.to_array(columns)}
         else
           # flash eventual errors
           @record.errors.each_full do |msg|
             flash :error => msg
           end
-          {:this => {:feedback => @flash}}
+          {:feedback => @flash}
         end
       end
 
@@ -55,9 +55,9 @@ module Netzke
         {:data => config[:data_class_name].constantize.choices_for(column, query).map{|s| [s]}}
       end
       
-      # Returns array of form values according to the configured fields
+      # Returns array of form values according to the configured columns
       def array_of_values
-        @record && @record.to_array(fields)
+        @record && @record.to_array(columns)
       end
       
     end

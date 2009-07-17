@@ -7,7 +7,7 @@ module Netzke
       @record = PropertyEditorExtras::HelperModel.new
     end
 
-    def initial_config
+    def default_config
       super.merge({
         :persistent_config => false,
         :persistent_layout => false,
@@ -32,8 +32,5 @@ module Netzke
     
     alias_method :commit, :create_or_update_record
 
-    # To be compatible with the configuration panel
-    def cancel
-    end
   end
 end

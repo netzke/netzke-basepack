@@ -6,7 +6,7 @@ module Netzke
   # Functionality:
   # * data operations - get, post, delete, create
   # * column resize and move
-  # * column hide - TODO
+  # * column hide
   # * permissions
   # * sorting
   # * pagination
@@ -14,6 +14,9 @@ module Netzke
   # * properties and column configuration
   #
   # == Configuration
+  # * <tt>:strong_default_attrs</tt> - a hash of attributes to be merged atop of every created/updated record.
+  # * <tt>:scopes</tt> - an array of searchlogic-compatible scopes like this: ["user_id_not", user_id].
+  # These scopes will be applied when records are searched for the grid.
   # * <tt>:ext_config[:config_tool]</tt> - enable configuration tool
   #
   # == TODO
@@ -61,7 +64,7 @@ module Netzke
     end
 
     # default instance-level configuration
-    def initial_config
+    def default_config
       {
         :ext_config => {
           :config_tool           => self.class.config[:config_tool_enabled],
@@ -117,11 +120,9 @@ module Netzke
 
     def columns
       @columns ||= get_columns.convert_keys{|k| k.to_sym}
-      # logger.debug "!!! @columns: #{@columns.inspect}"
-      # @columns
     end
-    
-    include ConfigurationTool # it will load aggregation with name :properties into a modal window
+
+    include ConfigurationTool # it will load ConfigurationPanel into a modal window
     
     protected
     

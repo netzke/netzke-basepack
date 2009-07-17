@@ -9,13 +9,13 @@ module Netzke
         res = super
         res.merge!(:columns => columns)
         res.merge!(:data_class_name => config[:data_class_name])
-        res.merge!(:inline_data => get_data) if config[:ext_config][:load_inline_data]
+        res.merge!(:inline_data => get_data) if ext_config[:load_inline_data]
         res
       end
   
       def js_ext_config
         super.merge({
-          :rows_per_page => persistent_config["rows_per_page"] ||= config[:ext_config][:rows_per_page]
+          :rows_per_page => persistent_config["rows_per_page"] ||= ext_config[:rows_per_page]
         })
       end
       
@@ -308,7 +308,9 @@ module Netzke
    
             :select_first_row => <<-JS.l,
               function(){
+                this.getSelectionModel().suspendEvents();
                 this.getSelectionModel().selectRow(0);
+                this.getSelectionModel().resumeEvents();
               }
             JS
             

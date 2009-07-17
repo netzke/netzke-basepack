@@ -6,15 +6,7 @@ module Netzke
       commit_data.each_pair do |k,v|
         aggregatee_instance(k).commit(v)
       end
-      {:this => {:reload_parent => true, :feedback => (@flash.empty? ? nil : @flash)}}
-    end
-    
-    api :cancel
-    def cancel(params)
-      aggregatees.each_pair do |aggr, config|
-        aggregatee_instance(aggr).cancel
-      end
-      {}
+      {:reload_parent => true, :feedback => (@flash.empty? ? nil : @flash)}
     end
     
     def self.js_extend_properties
@@ -26,6 +18,5 @@ module Netzke
         JS
       })
     end
-    
   end
 end

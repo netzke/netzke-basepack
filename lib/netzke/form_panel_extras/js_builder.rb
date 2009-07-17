@@ -12,15 +12,15 @@ module Netzke
 
         def js_before_constructor
           <<-JS
-          var fields = config.fields;
+          var columns = config.columns;
           var recordFields = [];
           var index = 0;
-          Ext.each(fields, function(field){
+          Ext.each(columns, function(field){
             recordFields.push({
               name:field.name, 
               mapping:index++
             });
-            field.hideLabel = field.hidden; // completely hide fields marked "hidden"
+            field.hideLabel = field.hidden; // completely hide columns marked "hidden"
             var extConfig;
             try{
               extConfig = Ext.decode(field.extConfig)
@@ -44,7 +44,7 @@ module Netzke
             :auto_scroll    => true,
             :bbar           => "config.actions".l,
             # :plugins      => "plugins".l,
-            :items          => "fields".l,
+            :items          => "columns".l,
             :default_type   => 'textfield',
             :body_style     => 'padding:5px 5px 0',
             :label_width    => 150,
