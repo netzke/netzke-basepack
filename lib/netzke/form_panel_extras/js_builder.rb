@@ -21,6 +21,7 @@ module Netzke
               mapping:index++
             });
             field.hideLabel = field.hidden; // completely hide columns marked "hidden"
+            if (field.xtype == "xcheckbox") field.checked = field.value;
             var extConfig;
             try{
               extConfig = Ext.decode(field.extConfig)
@@ -91,10 +92,10 @@ module Netzke
             :afterlayout_handler => <<-JS.l,
               function() {
                 // Load initial data into the form
-                if (this.initialConfig.recordData){
-                  var record = this.reader.readRecord(this.initialConfig.recordData);
-                  this.form.loadRecord(record);
-                }
+                // if (this.initialConfig.recordData){
+                //   var record = this.reader.readRecord(this.initialConfig.recordData);
+                //   this.form.loadRecord(record);
+                // }
               }
             JS
             :refresh=> <<-JS.l,

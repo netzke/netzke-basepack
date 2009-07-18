@@ -21,6 +21,7 @@ module Netzke
       else
         # we didn't have columns configured in widget's config, so, use the columns from the data class
         columns_for_create = exposed_attributes
+        logger.debug "!!! columns_for_create: #{columns_for_create.inspect}"
       end
 
       res = []

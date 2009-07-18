@@ -32,7 +32,6 @@ module Netzke
         :column_move_enabled       => true,
         :column_hide_enabled       => true,
         :column_resize_enabled     => true,
-        :persistent_layout_enabled => true,
         :persistent_config_enabled => true
       })
     end
@@ -72,9 +71,17 @@ module Netzke
           :enable_column_move    => self.class.config[:column_move_enabled],
           :enable_column_hide    => self.class.config[:column_hide_enabled],
           :enable_column_resize  => self.class.config[:column_resize_enabled],
-          :load_inline_data      => self.class.config[:load_inline_data]
+          :load_inline_data      => self.class.config[:load_inline_data],
+          
+          :bbar => %w{ add edit apply delete },
+          
+          :prohibit_create  => false,
+          :prohibit_update  => false,
+          :prohibit_delete  => false,
+          :prohibit_read    => false,
+          
+          :header => true
         },
-        :persistent_layout => self.class.config[:persistent_layout_enabled],
         :persistent_config => self.class.config[:persistent_config_enabled]
       }
     end
@@ -90,12 +97,12 @@ module Netzke
         :widget_class_name => "FieldsConfigurator",
         :active            => true,
         :widget            => self
-      } if config[:persistent_layout]
+      }
 
       res << {
         :name               => 'general',
         :widget_class_name  => "PropertyEditor",
-        :widget_name        => id_name,
+        :widget             => self,
         :ext_config         => {:title => false}
       }
       
@@ -107,16 +114,16 @@ module Netzke
     end
 
     def actions
-      { :add    => {:text => 'Add',     :disabled => !@permissions[:create]},
-        :edit   => {:text => 'Edit',    :disabled => !@permissions[:update]},
-        :delete => {:text => 'Delete',  :disabled => !@permissions[:delete]},
-        :apply  => {:text => 'Apply',   :disabled => !@permissions[:update] && !@permissions[:create]}
+      { :add    => {:text => 'Add',     :disabled => config[:ext_config][:prohibit_create]},
+        :edit   => {:text => 'Edit',    :disabled => config[:ext_config][:prohibit_update]},
+        :delete => {:text => 'Delete',  :disabled => config[:ext_config][:prohibit_delete]},
+        :apply  => {:text => 'Apply',   :disabled => config[:ext_config][:prohibit_update] && config[:ext_config][:prohibit_create]}
       }
     end
 
-    def bbar
-      persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ add edit apply delete }
-    end
+    # def bbar
+    #   persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ add edit apply delete }
+    # end
 
     def columns
       @columns ||= get_columns.convert_keys{|k| k.to_sym}
@@ -131,11 +138,11 @@ module Netzke
     end
 
     def get_columns
-      if config[:persistent_layout]
+      # if config[:persistent_config]
         persistent_config['layout__columns'] ||= default_db_fields
-      else
-        default_db_fields
-      end
+      # else
+      #   default_db_fields
+      # end
     end
     
   end

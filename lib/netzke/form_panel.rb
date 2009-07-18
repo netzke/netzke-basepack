@@ -6,7 +6,6 @@ module Netzke
     def self.config
       set_default_config({
         :config_tool_enabled       => false,
-        :persistent_layout_enabled => true,
         :persistent_config_enabled => true
       })
     end
@@ -36,8 +35,9 @@ module Netzke
       {
         :ext_config => {
           :config_tool => self.class.config[:config_tool_enabled],
+          :bbar => %w{ apply },
+          :header => true
         },
-        :persistent_layout => self.class.config[:persistent_layout_enabled],
         :persistent_config => self.class.config[:persistent_config_enabled]
       }
     end
@@ -50,12 +50,12 @@ module Netzke
         :widget_class_name => "FieldsConfigurator",
         :active            => true,
         :widget            => self
-      } if config[:persistent_layout]
+      }
 
       res << {
         :name               => 'general',
         :widget_class_name  => "PropertyEditor",
-        :widget_name        => id_name,
+        :widget             => self,
         :ext_config         => {:title => false}
       }
       
@@ -72,9 +72,9 @@ module Netzke
       }
     end
     
-    def bbar
-      persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ apply }
-    end
+    # def bbar
+    #   persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ apply }
+    # end
     
     def columns
       @columns ||= get_columns.convert_keys{|k| k.to_sym}
@@ -83,20 +83,27 @@ module Netzke
     # parameters used to instantiate the JS object
     def js_config
       res = super
-      res.merge!(:columns => columns)
+      if @record && false
+        # add the values
+        res.merge!(:columns => columns.map{ |c| c.merge(:value => @record.send(c[:name]))})
+      else
+        res.merge!(:columns => columns)
+      end
       res.merge!(:data_class_name => config[:data_class_name])
-      res.merge!(:record_data => @record.to_array(columns)) if @record
+      # res.merge!(:record_data => @record.to_array(columns)) if @record
       res
     end
  
     protected
     
     def get_columns
-      if config[:persistent_layout]
-        persistent_config['layout__columns'] ||= default_db_fields
-      else
-        default_db_fields
-      end.map{ |r| r.reject{ |k,v| k == :id } }
+      res = persistent_config['layout__columns'] ||= default_db_fields.map{ |r| r.reject{ |k,v| k == :id } }
+      
+      # merge values for each field if the record is known
+      if @record
+        res.each{ |c| c.merge!(:value => @record.send(c.name)) }
+      end
+      res
     end
       
     

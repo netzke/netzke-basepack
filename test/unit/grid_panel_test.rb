@@ -21,7 +21,7 @@ class GridPanelTest < ActiveSupport::TestCase
     grid = Netzke::GridPanel.new(:name => 'grid', :data_class_name => 'Book', :layout_manager => false, :columns => [:id, :title, :recent])
 
     # post
-    res = grid.post_data("created_records" => [{:title => 'Lord of the Rings'}].to_json)
+    res = grid.post_data("created_records" => [{:title => 'Lord of the Rings'}].to_nifty_json)
     assert_equal('Lord of the Rings', Book.first.title)
 
     grid.post_data("updated_records" => [{:id => Book.first.id, :title => 'Lolita'}].to_json)

@@ -3,21 +3,26 @@ module Netzke
     
     def initialize(*args)
       super
-      PropertyEditorExtras::HelperModel.widget_name = config[:widget_name]
+      PropertyEditorExtras::HelperModel.widget = config[:widget]
       @record = PropertyEditorExtras::HelperModel.new
     end
 
     def default_config
-      super.merge({
+      super.recursive_merge({
         :persistent_config => false,
-        :persistent_layout => false,
-        :bbar => false,
+        :bbar => [],
         :data_class_name => "Netzke::PropertyEditorExtras::HelperModel"
+      })
+    end
+    
+    def self.js_default_config
+      super.recursive_merge({
+        :label_width => 200
       })
     end
 
     def self.js_base_class
-      FormPanel
+      "Ext.form.FormPanel"
     end
     
     def self.js_extend_properties

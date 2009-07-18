@@ -83,7 +83,7 @@ module Netzke
           
             } else {
               // editor is created by xtype stored in c.editor
-              var editor = (c.readOnly || !config.permissions.update) ? null : Ext.ComponentMgr.create({
+              var editor = (c.readOnly || config.prohibitUpdate) ? null : Ext.ComponentMgr.create({
                 xtype:c.editor, 
                 parentConfig:config, 
                 fieldConfig:c, 

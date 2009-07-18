@@ -1,18 +1,19 @@
 module Netzke
   module PropertyEditorExtras 
     class HelperModel
-      def self.widget_name=(name)
-        @@widget_name = name
+      def self.widget=(w)
+        @@widget = w
       end
-  
+      
+      def self.widget
+        @@widget ||= raise "No widget specified for PropertyEditorExtras::HelperModel"
+      end
+      
       def self.netzke_exposed_attributes
-        # preferences = NetzkePreference.find_all_by_widget_name_and_user_id(@@widget_name, Netzke::Base.user && Netzke::Base.user.id)
-        preferences = NetzkePreference.find_all_for_widget(@@widget_name)
-        preferences.map{|p| {
-          :name => p.name,
-          :field_label => p.name.gsub('__', "/").humanize,
-          :type => p.pref_type.to_sym
-        }}
+        preferences = self.widget.flat_default_config
+        # preferences = NetzkePreference.find_all_for_widget(widget.name)
+        preferences.each { |p| p.reject!{ |k,v| k == :value}.merge!(:field_label => p[:name].to_s.gsub('__', "/").humanize) }
+        preferences
       end
 
       DEFAULTS_FOR_FIELD = {
@@ -67,36 +68,52 @@ module Netzke
         res
       end
 
+      # somewhat sofisticated code to convert all NetzkePreferences for current widget into a hash ("un-flatten")
+      def attributes
+        prefs = NetzkePreference.find_all_for_widget(self.class.widget.id_name)
+        res = {}
+        prefs.each do |p|
+          tmp_res = {}
+          hsh_levels = p.name.split("__").map(&:to_sym)
+          hsh_levels.each do |level_prefix|
+            tmp_res[level_prefix] ||= level_prefix == hsh_levels.last ? p.normalized_value : {}
+            res[level_prefix] = tmp_res[level_prefix] if level_prefix == hsh_levels.first
+            tmp_res = tmp_res[level_prefix]
+          end
+        end
+        res
+      end
+
       def method_missing(method_name, *args)
+        # Rails.logger.debug "!!! method_name: #{method_name.inspect}"
         method_name = method_name.to_s
         method_name_without_equal_sign = method_name.sub(/=$/, '')
-        NetzkePreference.widget_name = @@widget_name
+        NetzkePreference.widget_name = self.class.widget.id_name
 
         if method_name =~ /=$/
-          current_value = NetzkePreference[method_name_without_equal_sign]
-          new_value = args.first
-      
-          if new_value.blank?
-            new_value = nil
-          else
-            if current_value.is_a?(Array) || current_value.is_a?(Hash)
-              begin
-                # JSON-parse if we expect an Array on Hash
-                new_value = ActiveSupport::JSON.decode(new_value)
-              rescue JSON::ParserError
-                new_value = current_value # TODO: provide nice feedback about JSON parsing failed
-              end
-            elsif current_value.is_a?(TrueClass) || current_value.is_a?(FalseClass)
-              # convert to true/false if expecting a Boolean
-              new_value = {"false" => false, "true" => true}[new_value] 
-            else
-              new_value = new_value.send(NetzkePreference::ELEMENTARY_CONVERTION_METHODS[current_value.class.name])
-            end
+          # current_value = NetzkePreference[method_name_without_equal_sign] # may be nil
+          current_value = self.class.widget.flat_independent_config(method_name_without_equal_sign)
+          
+          begin
+            new_value = ActiveSupport::JSON.decode(args.first) # TODO: provide feedback about this error
+          rescue ActiveSupport::JSON::ParseError
+            new_value = current_value
           end
-
+          
+          # default_value = self.class.widget.flat_default_config(method_name_without_equal_sign)
+          initial_value = self.class.widget.flat_initial_config(method_name_without_equal_sign)
+      
+          # Rails.logger.debug "!!! current_value: #{current_value.inspect}"
+          # Rails.logger.debug "!!! new_value: #{new_value.inspect}"
+          # Rails.logger.debug "!!! initial_value: #{initial_value.inspect}"
+      
+          new_value = nil if new_value == initial_value
+          # Rails.logger.debug "!!! new_value: #{new_value.inspect}"
           NetzkePreference[method_name_without_equal_sign] = new_value
         else
-          NetzkePreference[method_name_without_equal_sign]
+          res = self.class.widget.flat_independent_config(method_name_without_equal_sign)
+          res = ActiveSupport::JSON.encode(res) if res.is_a?(Array) || res.is_a?(Hash)
+          res
         end
       end
   

@@ -16,9 +16,10 @@ module Netzke
         :name              => 'columns',
         :widget_class_name => "GridPanel",
         :data_class_name   => "NetzkeAutoColumn",
-        :persistent_layout => false,
         :persistent_config => false,
-        :ext_config        => {:title => false}
+        :ext_config        => {
+          :header => false
+        }
       })
     end
     

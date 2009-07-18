@@ -20,7 +20,7 @@ module Netzke
       end
   
       def get_data(params = {})
-        if @permissions[:read]
+        if !config[:ext_config][:prohibit_read]
           records = get_records(params)
           {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}
         else
@@ -30,7 +30,7 @@ module Netzke
       end
 
       def delete_data(params = {})
-        if @permissions[:delete]
+        if !config[:ext_config][:prohibit_delete]
           record_ids = ActiveSupport::JSON.decode(params[:records])
           klass = config[:data_class_name].constantize
           klass.delete(record_ids)
@@ -42,7 +42,7 @@ module Netzke
 
       def resize_column(params)
         raise "Called api_resize_column while not configured to do so" unless ext_config[:enable_column_resize]
-        if config[:persistent_layout]
+        if config[:persistent_config]
           columns = persistent_config[:layout__columns]
           columns[params[:index].to_i]["width"] = params[:size].to_i
           persistent_config[:layout__columns] = columns
@@ -52,7 +52,7 @@ module Netzke
   
       def hide_column(params)
         raise "Called api_hide_column while not configured to do so" unless ext_config[:enable_column_hide]
-        if config[:persistent_layout]
+        if config[:persistent_config]
           columns = persistent_config[:layout__columns]
           columns[params[:index].to_i]["hidden"] = params[:hidden].to_b
           persistent_config[:layout__columns] = columns
@@ -62,7 +62,7 @@ module Netzke
   
       def move_column(params)
         raise "Called api_move_column while not configured to do so" unless ext_config[:enable_column_move]
-        if config[:persistent_layout]
+        if config[:persistent_config]
           cols = persistent_config[:layout__columns]
           column_to_move = cols.delete_at(params[:old_index].to_i)
           cols.insert(params[:new_index].to_i, column_to_move)
@@ -89,7 +89,8 @@ module Netzke
         success = true
         # mod_record_ids = []
         mod_records = {}
-        if @permissions[operation]
+        puts "config: #{config.inspect}"
+        if !config[:ext_config]["prohibit_#{operation}".to_sym]
           klass = config[:data_class_name].constantize
           modified_records = 0
           data.each do |record_hash|
