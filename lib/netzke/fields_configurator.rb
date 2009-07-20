@@ -18,8 +18,9 @@ module Netzke
         :data_class_name   => "NetzkeAutoColumn",
         :persistent_config => false,
         :ext_config        => {
-          :header => false
-        }
+          :header => false,
+          :bbar => super[:ext_config][:bbar] << "-" << "defaults"
+        },
       })
     end
     
@@ -27,10 +28,6 @@ module Netzke
       super.merge(
         :defaults => {:text => 'Restore defaults'}
       )
-    end
-    
-    def bbar
-      super << "-" << "defaults"
     end
     
     def self.js_extend_properties
@@ -55,7 +52,7 @@ module Netzke
     def load_defaults(params)
       config[:widget].persistent_config[:layout__columns] = config[:widget].default_db_fields
       NetzkeAutoColumn.rebuild_table
-      {:load_store_data => get_data}
+      {:load_store_data => get_data, :reconfigure => js_config}
     end
    
     def commit(params)

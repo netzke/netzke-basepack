@@ -69,7 +69,10 @@ module Netzke
             }
             delete(c.extConfig);
         
-            if (c.editor == 'checkbox') {
+            // normalize c.editor
+            c.editor = Netzke.isObject(c.editor) ? c.editor : {xtype:c.editor};
+            
+            if (c.editor.xtype == 'checkbox') {
               var plugin = new Ext.grid.CheckColumn(Ext.apply({
           			header    : c.label || c.name,
           			dataIndex : c.name,
@@ -82,13 +85,14 @@ module Netzke
               this.cmConfig.push(plugin);
           
             } else {
-              // editor is created by xtype stored in c.editor
-              var editor = (c.readOnly || config.prohibitUpdate) ? null : Ext.ComponentMgr.create({
-                xtype:c.editor, 
-                parentConfig:config, 
-                fieldConfig:c, 
-                selectOnFocus:true
-              });
+              if (!c.readOnly && !config.prohibitUpdate) {
+                // c.editor either contains xtype of the editor, or complete config of it
+                var editor = Ext.ComponentMgr.create(Ext.apply({
+                  parentId:config.id, 
+                  fieldConfig:c,
+                  selectOnFocus:true
+                }, c.editor));
+              }
               
               var renderer = Ext.netzke.renderer(c.renderer);
 
@@ -112,7 +116,7 @@ module Netzke
           if (config.enableColumnFilters) {
             var filters = [];
             Ext.each(config.columns, function(c){
-              filters.push({type:Ext.netzke.filterMap[c.editor], dataIndex:c.name});
+              filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
             });
             var gridFilters = new Ext.grid.GridFilters({filters:filters});
             plugins.push(gridFilters);

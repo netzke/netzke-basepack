@@ -209,25 +209,5 @@ module Netzke
       } << super
     end
     
-    # Api implementation
-    # def api_app_get_widget(params)
-    #   widget = params.delete(:widget).underscore
-    #   persistent_config['last_loaded_widget'] = widget # store the last loaded widget in the persistent storage
-    #   send("#{widget}__get_widget", params)
-    # end
-   
-    # def load_widget(params)
-    #   load_aggregatee(params)
-    #   # widget = aggregatee_instance(params[:widget])
-    #   # 
-    #   # {:this => [{:js => widget.js_missing_code, :eval_css => css_missing_code}, {:instantiate_aggregatee => widget.js_config}]}
-    # end
-
-    # this should go into base_extras/api.rb
-    # def load_aggregatee(params)
-    #   widget = aggregatee_instance(params[:id])
-    #   {:this => [{:js => widget.js_missing_code, :eval_css => css_missing_code}, {:render_widget_in_container => {:container => params[:container], :config => widget.js_config}}]}
-    # end
-    
   end
 end

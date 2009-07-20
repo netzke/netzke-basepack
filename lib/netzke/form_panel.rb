@@ -83,12 +83,7 @@ module Netzke
     # parameters used to instantiate the JS object
     def js_config
       res = super
-      if @record && false
-        # add the values
-        res.merge!(:columns => columns.map{ |c| c.merge(:value => @record.send(c[:name]))})
-      else
-        res.merge!(:columns => columns)
-      end
+      res.merge!(:columns => columns)
       res.merge!(:data_class_name => config[:data_class_name])
       # res.merge!(:record_data => @record.to_array(columns)) if @record
       res

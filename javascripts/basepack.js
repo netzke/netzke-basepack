@@ -8,24 +8,28 @@ Ext.reg('passfield', Ext.netzke.PassField);
 
 // Combobox that knows to talk to the server side (used in both grids and panels)
 Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
-  mode          : 'remote',
   displayField  : 'id',
   valueField    : 'id',
   triggerAction : 'all',
   typeAhead     : true,
-  selectOnFocus : true,
   
   initComponent : function(){
-    var row = Ext.data.Record.create([{name:'id'}]);
-    // console.info(this.parentWidget);
-    var store = new Ext.data.Store({
-      proxy         : new Ext.data.HttpProxy({url:this.parentConfig.id+"__get_combo_box_options", jsonData:{column:this.fieldConfig.name}}),
-      reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
-    });
+    if (this.options) {
+      Ext.apply(this, {
+        store : this.options,
+        mode : "local"
+      });
+    } else {
+      var row = Ext.data.Record.create([{name:'id'}]);
+      var store = new Ext.data.Store({
+        proxy         : new Ext.data.HttpProxy({url:this.parentId+"__get_combo_box_options", jsonData:{column:this.fieldConfig.name}}),
+        reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
+      });
     
-    Ext.apply(this, {
-      store : store
-    });
+      Ext.apply(this, {
+        store : store
+      });
+    }
     
     Ext.netzke.ComboBox.superclass.initComponent.apply(this, arguments);
     

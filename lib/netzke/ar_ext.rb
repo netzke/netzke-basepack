@@ -69,9 +69,9 @@ module Netzke
       
       # Returns all unique values for a column, filtered by the query
       def choices_for(column, query = nil)
-        if respond_to?("#{column}_choices", query)
+        if respond_to?("#{column}_choices")
           # AR class provides the choices itself
-          send("#{column}_choices")
+          send("#{column}_choices", query)
         else
           if (assoc_name, *assoc_method = column.split('__')).size > 1
             # column is an association column

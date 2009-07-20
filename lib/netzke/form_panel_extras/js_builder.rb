@@ -32,11 +32,17 @@ module Netzke
             delete(field.extConfig);
             Ext.apply(field, extConfig);
 
-            field.parentConfig = config;
+            field.parentId = config.id;
             field.fieldConfig = field;
           }, this);
           var Record = Ext.data.Record.create(recordFields);
           this.reader = new Ext.data.RecordArrayReader({root:"data"}, Record);
+          JS
+        end
+        
+        def js_after_constructor
+          <<-JS
+            this.addEvents('apply');
           JS
         end
 
@@ -117,7 +123,9 @@ module Netzke
             JS
             :apply => <<-JS.l,
               function() {
-                this.submit({data:Ext.encode(this.form.getValues())});
+                if (this.fireEvent('apply', this)) {
+                  this.submit({data:Ext.encode(this.form.getValues())});
+                }
               }
             JS
           }

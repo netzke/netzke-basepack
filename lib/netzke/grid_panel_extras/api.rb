@@ -89,7 +89,6 @@ module Netzke
         success = true
         # mod_record_ids = []
         mod_records = {}
-        puts "config: #{config.inspect}"
         if !config[:ext_config]["prohibit_#{operation}".to_sym]
           klass = config[:data_class_name].constantize
           modified_records = 0
@@ -138,8 +137,14 @@ module Netzke
       def get_records(params)
         raise ArgumentError, "No data_class_name specified for widget '#{name}'" if !config[:data_class_name]
 
-        search_params = normalize_params(params)  # make params coming from the browser understandable by searchlogic
-        search_params[:conditions].recursive_merge!(config[:conditions] || {})  # merge with conditions coming from the config
+        # make params coming from the browser understandable by searchlogic
+        search_params = normalize_params(params)
+
+        # merge with conditions coming from the config
+        search_params[:conditions].recursive_merge!(config[:conditions] || {})
+
+        # merge with extra conditions (in searchlogic format)
+        search_params[:conditions].recursive_merge!(ActiveSupport::JSON.decode(params[:extra_conditions])) if params[:extra_conditions]
 
         search = config[:data_class_name].constantize.search(search_params)
         
