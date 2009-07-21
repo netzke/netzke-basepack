@@ -68,7 +68,7 @@ module Netzke
       end
       
       # Returns all unique values for a column, filtered by the query
-      def choices_for(column, query = nil)
+      def options_for(column, query = nil)
         if respond_to?("#{column}_choices")
           # AR class provides the choices itself
           send("#{column}_choices", query)
@@ -77,7 +77,7 @@ module Netzke
             # column is an association column
             assoc_method = assoc_method.join('__') # in case we get something like country__continent__name
             association = reflect_on_association(assoc_name.to_sym) || raise(NameError, "Association #{assoc_name} not known for class #{name}")
-            association.klass.choices_for(assoc_method, query)
+            association.klass.options_for(assoc_method, query)
           else
             column = assoc_name
             if self.column_names.include?(column)
@@ -128,6 +128,37 @@ module Netzke
         read_inheritable_attribute(:virtual_attributes).keys.include?(column)
       end
       
+      #
+      # Used by Netzke::GridPanel
+      #
+      
+      DEFAULT_COLUMN_WIDTH = 100
+      
+      # identify Ext editor (xtype) for the data type
+      TYPE_EDITOR_MAP = {
+        :integer => :numberfield,
+        :boolean => :checkbox,
+        :date => :datefield,
+        :datetime => :xdatetime,
+        :string => :textfield
+      }
+
+      def default_column_config_new(config)
+        config = config.is_a?(Symbol) ? {:name => config} : config.dup
+        
+        # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
+        type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
+        
+        res = config
+        res.reverse_recursive_merge!({
+          :header => config[:name],
+          :editor => ext_editor(type),
+          :hidden => config[:name] == self.class.primary_key
+        })
+        res
+      end
+      
+      
       def default_dbfield_config(config, mode = :grid)
         config = config.is_a?(Symbol) ? {:name => config} : config.dup
 
@@ -172,21 +203,6 @@ module Netzke
         res.merge(config)
       end
       
-      #
-      # Used by Netzke::GridPanel
-      #
-      
-      DEFAULT_COLUMN_WIDTH = 100
-      
-      # identify Ext editor (xtype) for the data type
-      TYPE_EDITOR_MAP = {
-        :integer => :numberfield,
-        :boolean => :checkbox,
-        :date => :datefield,
-        :datetime => :xdatetime,
-        :string => :textfield
-      }
-
       # Returns default column config understood by Netzke::GridPanel
       # Argument: column name (as Symbol) or column config
       def default_column_config(config)
@@ -228,7 +244,6 @@ module Netzke
       }
 
       def default_field_config(config)
-        # default_dbfield_config(config, :form)
         config = config.is_a?(Symbol) ? {:name => config} : config.dup
 
         # detect ActiveRecord column type (if the column is "real") or fall back to :virtual

@@ -20,9 +20,9 @@ module Netzke
       end
   
       def get_data(params = {})
-        if !config[:ext_config][:prohibit_read]
+        if !ext_config[:prohibit_read]
           records = get_records(params)
-          {:data => records.map{|r| r.to_array(columns)}, :total => records.total_entries}
+          {:data => records.map{|r| r.to_array(columns)}, :total => ext_config[:rows_per_page] && records.total_entries}
         else
           flash :error => "You don't have permissions to read data"
           {:feedback => @flash}
@@ -30,7 +30,7 @@ module Netzke
       end
 
       def delete_data(params = {})
-        if !config[:ext_config][:prohibit_delete]
+        if !ext_config[:prohibit_delete]
           record_ids = ActiveSupport::JSON.decode(params[:records])
           klass = config[:data_class_name].constantize
           klass.delete(record_ids)
@@ -78,7 +78,7 @@ module Netzke
         column = params[:column]
         query = params[:query]
     
-        {:data => config[:data_class_name].constantize.choices_for(column, query).map{|s| [s]}}
+        {:data => config[:data_class_name].constantize.options_for(column, query).map{|s| [s]}}
       end
   
   
@@ -89,7 +89,7 @@ module Netzke
         success = true
         # mod_record_ids = []
         mod_records = {}
-        if !config[:ext_config]["prohibit_#{operation}".to_sym]
+        if !ext_config["prohibit_#{operation}".to_sym]
           klass = config[:data_class_name].constantize
           modified_records = 0
           data.each do |record_hash|
@@ -144,7 +144,9 @@ module Netzke
         search_params[:conditions].recursive_merge!(config[:conditions] || {})
 
         # merge with extra conditions (in searchlogic format)
-        search_params[:conditions].recursive_merge!(ActiveSupport::JSON.decode(params[:extra_conditions])) if params[:extra_conditions]
+        search_params[:conditions].recursive_merge!(
+          normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
+        ) if params[:extra_conditions]
 
         search = config[:data_class_name].constantize.search(search_params)
         
@@ -170,9 +172,12 @@ module Netzke
         if ext_config[:rows_per_page]
           per_page = ext_config[:rows_per_page]
           page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
+          search.paginate(:per_page => per_page, :page => page)
+        else
+          search.all
         end
         
-        search.paginate(:per_page => per_page, :page => page)
+        
       end
       
       # Search scopes, searchlogic format
@@ -213,6 +218,10 @@ module Netzke
           res.merge!({field => value})
         end
         res
+      end
+  
+      def normalize_extra_conditions(conditions)
+        conditions.convert_keys{|k| k.to_s.gsub("__", "_").to_sym}
       end
   
       # make params understandable to searchlogic

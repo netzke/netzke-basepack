@@ -114,10 +114,10 @@ module Netzke
     end
 
     def actions
-      { :add    => {:text => 'Add',     :disabled => config[:ext_config][:prohibit_create]},
-        :edit   => {:text => 'Edit',    :disabled => config[:ext_config][:prohibit_update]},
-        :delete => {:text => 'Delete',  :disabled => config[:ext_config][:prohibit_delete]},
-        :apply  => {:text => 'Apply',   :disabled => config[:ext_config][:prohibit_update] && config[:ext_config][:prohibit_create]}
+      { :add    => {:text => 'Add',     :disabled => ext_config[:prohibit_create]},
+        :edit   => {:text => 'Edit',    :disabled => ext_config[:prohibit_update]},
+        :delete => {:text => 'Delete',  :disabled => ext_config[:prohibit_delete]},
+        :apply  => {:text => 'Apply',   :disabled => ext_config[:prohibit_update] && ext_config[:prohibit_create]}
       }
     end
 
@@ -138,11 +138,7 @@ module Netzke
     end
 
     def get_columns
-      # if config[:persistent_config]
-        persistent_config['layout__columns'] ||= default_db_fields
-      # else
-      #   default_db_fields
-      # end
+      persistent_config['layout__columns'] ||= default_db_fields
     end
     
   end

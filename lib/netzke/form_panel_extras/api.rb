@@ -52,7 +52,7 @@ module Netzke
         column = params[:column]
         query = params[:query]
     
-        {:data => config[:data_class_name].constantize.choices_for(column, query).map{|s| [s]}}
+        {:data => config[:data_class_name].constantize.options_for(column, query).map{|s| [s]}}
       end
       
       # Returns array of form values according to the configured columns

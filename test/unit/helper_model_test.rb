@@ -19,12 +19,12 @@ class HelperModelTest < ActiveSupport::TestCase
     
     assert(true, helper_model.persistent_config)
 
-    assert(true, form.config[:ext_config][:config_tool])
+    assert(true, form.ext_config[:config_tool])
     
     # now try to change the configuration
     helper_model.ext_config__config_tool = "false"
     # form = Netzke::FormPanel.new(:data_class_name => "Book")
-    # assert(false, form.config[:ext_config][:config_tool]) # FIXME: make it work
+    # assert(false, form.ext_config[:config_tool]) # FIXME: make it work
   end
 
 end

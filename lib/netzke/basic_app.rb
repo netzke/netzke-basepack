@@ -81,17 +81,8 @@ module Netzke
           user_name = user.respond_to?(:name) ? user.name : user.login # try to display user's name, fallback to login
           res << "->" <<
           {
-            :text => "Logout #{user_name}",
-            :handler => <<-JS.l,
-              function(){
-                Ext.MessageBox.confirm('Confirm', 'Are you sure you want to logout?', function(btn){
-    							if( btn == "yes" ) {
-    								this.logout();
-    							}
-    						}.createDelegate(this));
-              }
-            JS
-  			    :scope => this
+            :text => "#{user_name}",
+            :menu => js_user_menu
           }
         else
           res << "->" <<
@@ -106,6 +97,22 @@ module Netzke
           }
         end
         res
+      end
+      
+      def js_user_menu
+        [{
+          :text => "Log out",
+          :handler => <<-JS.l,
+            function(){
+              Ext.MessageBox.confirm('Confirm', 'Are you sure you want to logout?', function(btn){
+  							if( btn == "yes" ) {
+  								this.logout();
+  							}
+  						}.createDelegate(this));
+            }
+          JS
+			    :scope => this
+        }]
       end
       
       def js_extend_properties
