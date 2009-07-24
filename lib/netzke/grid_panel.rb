@@ -86,9 +86,9 @@ module Netzke
       }
     end
 
-    def initial_dependencies
-      ["FieldsConfigurator"] # TODO: make this happen automatically
-    end
+    # def initial_dependencies
+    #   ["FieldsConfigurator"] # TODO: make this happen automatically
+    # end
 
     def configuration_widgets
       res = []

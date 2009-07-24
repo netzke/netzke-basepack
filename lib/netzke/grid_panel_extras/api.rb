@@ -81,6 +81,38 @@ module Netzke
         {:data => config[:data_class_name].constantize.options_for(column, query).map{|s| [s]}}
       end
   
+      # Returns searchlogic's search with all the conditions
+      def get_search(params)
+        @search ||= begin
+          raise ArgumentError, "No data_class_name specified for widget '#{name}'" if !config[:data_class_name]
+
+          # make params coming from the browser understandable by searchlogic
+          search_params = normalize_params(params)
+
+          # merge with conditions coming from the config
+          search_params[:conditions].recursive_merge!(config[:conditions] || {})
+
+          # merge with extra conditions (in searchlogic format)
+          search_params[:conditions].recursive_merge!(
+            normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
+          ) if params[:extra_conditions]
+
+          search = config[:data_class_name].constantize.search(search_params)
+        
+          # applying scopes
+          scopes.each do |s|
+            if s.is_a?(Array)
+              scope_name, *args = s
+              search.send(scope_name, *args)
+            else
+              search.send(s)
+            end
+          end
+        
+          search
+        end
+      end
+  
   
       protected
 
@@ -135,31 +167,8 @@ module Netzke
   
       # get records
       def get_records(params)
-        raise ArgumentError, "No data_class_name specified for widget '#{name}'" if !config[:data_class_name]
-
-        # make params coming from the browser understandable by searchlogic
-        search_params = normalize_params(params)
-
-        # merge with conditions coming from the config
-        search_params[:conditions].recursive_merge!(config[:conditions] || {})
-
-        # merge with extra conditions (in searchlogic format)
-        search_params[:conditions].recursive_merge!(
-          normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
-        ) if params[:extra_conditions]
-
-        search = config[:data_class_name].constantize.search(search_params)
+        search = get_search(params)
         
-        # applying scopes
-        scopes.each do |s|
-          if s.is_a?(Array)
-            scope_name, *args = s
-            search.send(scope_name, *args)
-          else
-            search.send(s)
-          end
-        end
-
         # sorting
         if params[:sort]
           assoc, method = params[:sort].split('__')
@@ -176,8 +185,6 @@ module Netzke
         else
           search.all
         end
-        
-        
       end
       
       # Search scopes, searchlogic format

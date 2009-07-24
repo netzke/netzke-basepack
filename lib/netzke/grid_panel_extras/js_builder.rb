@@ -48,9 +48,29 @@ module Netzke
           Ext.each(config.columns, function(column){this.recordConfig.push({name:column.name});}, this);
           this.Row = Ext.data.Record.create(this.recordConfig);
           
+          // explicitely create the connection, because we don't want the app-wide Ext.Ajax to be used,
+          // as we are going to subscribe to its events
+          var connection = new Ext.data.Connection({
+            url:config.id+"__get_data",
+            extraParams : {
+              authenticity_token : Ext.authenticityToken
+            }
+          });
+
+          // besides getting data, we may also get commands to execute - this is how we do it
+          connection.on('requestcomplete', function(conn, r){
+            var response = Ext.decode(r.responseText);
+            
+            // delete data-related properties
+            Ext.each(['data', 'total', 'success'], function(property){delete response[property];});
+            this.bulkExecute(response);
+          }, this);
+          
+          var httpProxy = new Ext.data.HttpProxy(connection);
+          
           var ds = new Ext.data.Store({
-              proxy: this.proxy = new Ext.data.HttpProxy({url:config.id+"__get_data"}),
-              reader: new Ext.data.ArrayReader({root: "data", totalProperty: "total", successProperty: "succes", id:0}, this.Row),
+              proxy: this.proxy = httpProxy,
+              reader: new Ext.data.ArrayReader({root: "data", totalProperty: "total", successProperty: "success", id:0}, this.Row),
               remoteSort: true,
               listeners:{'loadexception':{
                 fn:this.loadExceptionHandler,
@@ -117,6 +137,7 @@ module Netzke
             var filters = [];
             Ext.each(config.columns, function(c){
               filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
+              
             });
             var gridFilters = new Ext.grid.GridFilters({filters:filters});
             plugins.push(gridFilters);
@@ -151,8 +172,6 @@ module Netzke
                   // if we have a paging toolbar, load the first page
                   if (this.getBottomToolbar() && this.getBottomToolbar().changePage) {this.getBottomToolbar().changePage(0);} else {this.store.load();}
                 }
-                
-                
               }
             JS
       
@@ -172,7 +191,6 @@ module Netzke
     
             :load_store_data => <<-JS.l,
               function(data){
-                // console.info(data);
                 this.store.loadData(data);
               }
             JS
@@ -262,6 +280,7 @@ module Netzke
                 Ext.each(modRecords, function(r){
                   if (mod ^ r.is_new) {
                     var newData = records[r.get('id')];
+                    // there must be a faster way to do this
                     for (var k in r.data){
                       r.set(k, newData.get(k));
                       r.commit();

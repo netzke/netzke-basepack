@@ -10,7 +10,7 @@ module Netzke
       
       base.class_eval do
         # replacing instance methods
-        [:tools, :initial_aggregatees].each{ |m| alias_method_chain m, :config_tool }
+        [:tools, :initial_aggregatees, :js_config].each{ |m| alias_method_chain m, :config_tool }
         
         # API to commit the changes
         api :commit
@@ -63,7 +63,7 @@ module Netzke
                   var panels = configurationPanel.getLoadedChildren();
                   var commitData = {};
                   Ext.each(panels, function(p){
-                    commitData[p.localId(configurationPanel)] = p.getCommitData();
+                    if (p.getCommitData) {commitData[p.localId(configurationPanel)] = p.getCommitData();}
                   }, this);
                   configurationPanel.commit({commit_data:Ext.encode(commitData)});
                 }
@@ -82,7 +82,7 @@ module Netzke
         :widget_class_name => 'ConfigurationPanel', 
         :items => configuration_widgets,
         :late_aggregation => true
-      }) if ext_config[:config_tool]
+      }) if config_tool_needed?
       
       res
     end
@@ -90,8 +90,17 @@ module Netzke
     def tools_with_config_tool
       tools = tools_without_config_tool
       # Add the toolbutton
-      tools << 'gear' if ext_config[:config_tool]
+      tools << 'gear' if config_tool_needed?
       tools
+    end
+  
+    def js_config_with_config_tool
+      orig_config = js_config_without_config_tool
+      config_tool_needed? ? orig_config.merge({:header => true}) : orig_config
+    end
+  
+    def config_tool_needed?
+      ext_config[:config_tool] || ext_config[:mode] == :config
     end
   
   end

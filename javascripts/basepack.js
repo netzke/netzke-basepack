@@ -73,7 +73,7 @@ Ext.netzke.filterMap = {
   xdatetime:'String',
   checkbox:'Boolean',
   combobox:'String',
-  date:'Date'
+  datefield:'Date'
 };
 
 Ext.override(Ext.StatusBar, {

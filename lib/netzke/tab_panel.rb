@@ -5,17 +5,40 @@ module Netzke
   # Features:
   # * Dynamically loads widgets for the tabs that get activated for the first time
   # * Is loaded along with the active widget - saves a request to the server
+  # 
+  # * Provides the method markTabsOutdated to mark all inactive tabs as 'outdated', and calls "update" method on
+  # widgets in tabs when they get activated
   #
   # TODO:
   # * Stores the last active tab in persistent_config
   # 
   class TabPanel < Base
+    api :api_activate_tab
+    
     def self.js_base_class
       "Ext.TabPanel"
     end
 
     def self.js_extend_properties
       {
+        
+        :mark_tabs_outdated => <<-JS.l,
+          function(){
+            this.items.each(function(i){
+              if (this.getActiveTab() != i){
+                i.outdated = true
+              }
+            }, this);
+          }
+        JS
+        
+        # bulkExecute in active tab
+        :execute_in_active_tab => <<-JS.l,
+          function(commands){
+            this.getActiveTab().getWidget().bulkExecute(commands);
+          }
+        JS
+        
         :get_loaded_children => <<-JS.l,
           function(){
             var res = [];
@@ -26,6 +49,7 @@ module Netzke
             return res;
           }
         JS
+        
         # loads widget into the panel if it wasn't loaded yet
         :load_item_widget => <<-JS.l
           function(panel) {
@@ -39,6 +63,16 @@ module Netzke
                 this.loadAggregatee({id:panel.widget, container:panel.id});
               }
             }
+            
+            // inform the server about active tab changed
+            this.apiActivateTab({tab:panel.widget});
+            
+            // call "update" on the widget
+            if (panel.outdated) {
+              delete panel.outdated;
+              var widget = panel.getWidget();
+              if (widget && widget.update) {widget.update.call(widget)};
+            }
           }
         JS
       }
@@ -49,11 +83,9 @@ module Netzke
     end
 
     def js_config
-      # active_item_config = items.detect{|i| i[:active]}
       super.merge({
         :items => fit_panels,
         :active_tab => id_name + '_active'
-        # :active_tab => active_item_config && id_name + '_active'
       })
     end
 
@@ -119,5 +151,13 @@ module Netzke
       res
     end
     
+    def api_activate_tab(params)
+      widget_session[:active_tab] = params[:tab]
+      {}
+    end
+    
+    def get_active_tab
+      aggregatee_instance(widget_session[:active_tab])
+    end
   end
 end
