@@ -63,13 +63,15 @@ module Netzke
             if (lastLoaded) Ext.History.add(lastLoaded);
           }
           
-          if (this.initialConfig.menu) {this.addMenu(this.initialConfig.menu, this);}
 
           // add initial menus to the tool-bar
           var toolbar = this.findById('main-toolbar');
           Ext.each(#{js_initial_menus.to_nifty_json}, function(menu){
             toolbar.add(menu);
           });
+          
+          // add session-specific menu
+          if (this.initialConfig.menu) {this.addMenu(this.initialConfig.menu, this);}
         JS
       end
       
