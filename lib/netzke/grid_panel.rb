@@ -115,8 +115,8 @@ module Netzke
 
     def actions
       { :add    => {:text => 'Add',     :disabled => ext_config[:prohibit_create]},
-        :edit   => {:text => 'Edit',    :disabled => ext_config[:prohibit_update]},
-        :delete => {:text => 'Delete',  :disabled => ext_config[:prohibit_delete]},
+        :edit   => {:text => 'Edit',    :disabled => true},
+        :delete => {:text => 'Delete',  :disabled => true},
         :apply  => {:text => 'Apply',   :disabled => ext_config[:prohibit_update] && ext_config[:prohibit_create]}
       }
     end

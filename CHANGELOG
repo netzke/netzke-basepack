@@ -5,6 +5,7 @@ New: GridPanel now can be loaded along with the data, which saves a request to t
 Configuration panel for grids and forms now works cleaner and more consistently.
 New: "scopes" configuration option added to GridPanel to specify the searchlogic-compatible scope for the data.
 New: "strong_default_attrs" config option added to GridPanel to specify the attributes that will be assigned to each record that is created or modified by the grid.
+Improvement: GridPanel's actions now get enabled/disabled according to the current selection.
 
 v0.4.2
 2009-05-07

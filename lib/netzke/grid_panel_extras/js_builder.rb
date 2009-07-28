@@ -155,6 +155,15 @@ module Netzke
     
           JS
         end
+
+        def js_after_constructor
+          <<-JS
+            this.getSelectionModel().on('selectionchange', function(selModel){
+              this.actions.delete.setDisabled(!selModel.hasSelection() || this.prohibitDelete);
+              this.actions.edit.setDisabled(selModel.getCount() != 1 || this.prohibitUpdate);
+            }, this);
+          JS
+        end
   
         def js_listeners
           super.merge({
@@ -172,6 +181,7 @@ module Netzke
                   // if we have a paging toolbar, load the first page
                   if (this.getBottomToolbar() && this.getBottomToolbar().changePage) {this.getBottomToolbar().changePage(0);} else {this.store.load();}
                 }
+                
               }
             JS
       

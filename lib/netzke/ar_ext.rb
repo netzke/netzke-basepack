@@ -25,8 +25,11 @@ module Netzke
             assoc_method = split.last.chop
             if assoc
               assoc_instance = assoc.klass.send("find_by_#{assoc_method}", *args)
-              raise ArgumentError, "Couldn't find association #{split.first} by #{assoc_method} '#{args.first}'" unless assoc_instance
-              self.send("#{split.first}=", assoc_instance)
+              if (assoc_instance)
+                self.send("#{split.first}=", assoc_instance)
+              else
+                logger.debug "!!! Couldn't find association #{split.first} by #{assoc_method} '#{args.first}'"
+              end
             else
               super
             end

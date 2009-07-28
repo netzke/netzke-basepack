@@ -124,10 +124,15 @@ module Netzke
             :apply => <<-JS.l,
               function() {
                 if (this.fireEvent('apply', this)) {
-                  this.submit({data:Ext.encode(this.form.getValues())});
+                  var values = this.form.getValues();
+                  for (var k in values) {
+                    if (values[k] == "") {delete values[k];}
+                  }
+                  this.submit(Ext.apply(this.baseParams, {data:Ext.encode(values)}));
                 }
               }
             JS
+            :base_params => {:test => 100}
           }
         end
         
