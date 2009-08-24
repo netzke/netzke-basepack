@@ -1,13 +1,13 @@
 module Netzke
   class Panel < Base
     def self.js_extend_properties
-      super.merge({
-        :update_body_html => <<-JS.l,
+      {
+        :update_body_html => <<-END_OF_JAVASCRIPT.l,
           function(html){
             this.body.update(html);
           }
-        JS
-      })
+        END_OF_JAVASCRIPT
+      }
     end
   end
 end

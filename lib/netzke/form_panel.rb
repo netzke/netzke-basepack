@@ -2,46 +2,45 @@ module Netzke
   # == Configuration
   #   * <tt>:record</tt> - initial record to be displayd in the form
   class FormPanel < Base
+    include Netzke::FormPanelJs  # javascript (client-side)
+    include Netzke::FormPanelApi # API (server-side)
+
     # Class-level configuration with defaults
     def self.config
       set_default_config({
-        :config_tool_enabled       => false,
-        :persistent_config_enabled => true
+        :config_tool_available       => true,
+        
+        :default_config => {
+          :ext_config => {
+            :bbar => %w{ apply },
+            :tools => %w{ refresh }
+          },
+          :persistent_config => false
+        }
       })
     end
-
-    include Netzke::FormPanelExtras::JsBuilder
-    include Netzke::FormPanelExtras::Api
-    include Netzke::DbFields # database field operations
     
-    # extra javascripts
-    js_include %w{ xcheckbox }.map{|js| "#{File.dirname(__FILE__)}/form_panel_extras/javascripts/#{js}.js"}
+    # Extra javascripts
+    def self.include_js
+      [
+        "#{File.dirname(__FILE__)}/form_panel_extras/javascripts/xcheckbox.js"
+      ]
+    end
     
-    api :submit, :load, :get_combo_box_options
+    api :submit, :load, :get_combobox_options
 
     attr_accessor :record
-    
-    def self.widget_type
-      :form
-    end
     
     def initialize(*args)
       super
       @record = config[:record]
     end
     
-    # default instance-level configuration
-    def default_config
-      {
-        :ext_config => {
-          :config_tool => self.class.config[:config_tool_enabled],
-          :bbar => %w{ apply },
-          :header => true
-        },
-        :persistent_config => self.class.config[:persistent_config_enabled]
-      }
+    def data_class
+      # @data_class ||= config[:data_class_name].nil? ? raise(ArgumentError, "No data_class_name specified for widget #{id_name}") : config[:data_class_name].constantize
+      @data_class ||= config[:data_class_name] && config[:data_class_name].constantize
     end
-
+    
     def configuration_widgets
       res = []
       
@@ -72,41 +71,145 @@ module Netzke
       }
     end
     
-    # def bbar
-    #   persistent_config[:bottom_bar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ apply }
-    # end
-    
     def columns
       @columns ||= get_columns.convert_keys{|k| k.to_sym}
+    end
+    
+    def normalized_columns
+      @normalized_columns ||= normalize_fields(columns)
     end
     
     # parameters used to instantiate the JS object
     def js_config
       res = super
-      res.merge!(:columns => columns)
+      res.merge!(:clmns => columns)
       res.merge!(:data_class_name => config[:data_class_name])
-      # res.merge!(:record_data => @record.to_array(columns)) if @record
       res
     end
  
+    # columns to be displayed by the FieldConfigurator (which is GridPanel-based)
+    def self.config_columns
+      [
+        {:data_index => :name, :type => :string, :editor => :combobox, :width => 200},
+        {:data_index => :hidden, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Excl"},
+        {:data_index => :xtype, :type => :string},
+        {:data_index => :value, :type => :string},
+        {:data_index => :field_label, :type => :string}
+      ]
+    end
+ 
     protected
-    
     def get_columns
-      res = persistent_config['layout__columns'] ||= default_db_fields.map{ |r| r.reject{ |k,v| k == :id } }
-      
-      # merge values for each field if the record is known
-      if @record
-        res.each{ |c| c.merge!(:value => @record.send(c.name)) }
+      if config[:persistent_config]
+        persistent_config['layout__columns'] ||= default_fields
+        res = normalize_array_of_fields(persistent_config['layout__columns'])
+      else
+        res = default_fields
       end
+
+      # merge values for each field if the record is specified
+      @record && res.map! do |c|
+        value = @record.send(normalize_field(c)[:name])
+        value.nil? ? c : normalize_field(c).merge(:value => value)
+      end
+
       res
     end
+    
+    XTYPE_MAP = {
+      :integer => :numberfield,
+      :boolean => :xcheckbox,
+      :date => :datefield,
+      :datetime => :xdatetime,
+      :text => :textarea,
+      :json => :jsonfield
+      # :string => :textfield
+    }
+    
+    def normalize_array_of_fields(arry)
+      arry.map do |f| 
+        if f.is_a?(Hash)
+          f.symbolize_keys
+        else
+          f.to_sym
+        end
+      end
+    end
+    
+    def normalize_fields(items)
+      items.map{|c| normalize_field(c)}
+    end
+    
+    def normalize_field(field)
+      field.is_a?(Symbol) ? {:name => field} : field
+    end
+    
+    def default_fields
+      # columns exposed from the data class
+      exposed_columns = normalize_fields(data_class.netzke_exposed_attributes) if data_class
+
+      # columns specified in widget's config
+      columns_from_config = config[:columns] && normalize_fields(config[:columns])
       
+      if columns_from_config
+        # reverse-merge each column hash from config with each column hash from exposed_attributes (columns from config have higher priority)
+        if exposed_columns
+          for c in columns_from_config
+            corresponding_exposed_column = exposed_columns.find{ |k| k[:name] == c[:name] }
+            c.reverse_merge!(corresponding_exposed_column) if corresponding_exposed_column
+          end
+        end
+        columns_for_create = columns_from_config
+      elsif exposed_columns
+        # we didn't have columns configured in widget's config, so, use the columns from the data class
+        columns_for_create = exposed_columns
+      else
+        raise ArgumentError, "No columns specified for widget '#{id_name}'"
+      end
+      
+      columns_for_create.map! do |c|
+        if data_class
+          # Try to figure out the configuration from data class
+          # detect :assoc__method
+          if c[:name].to_s.index('__')
+            assoc_name, method = c[:name].to_s.split('__').map(&:to_sym)
+            if assoc = data_class.reflect_on_association(assoc_name)
+              assoc_column = assoc.klass.columns_hash[method.to_s]
+              assoc_method_type = assoc_column.try(:type)
+              if assoc_method_type
+                c[:xtype] ||= XTYPE_MAP[assoc_method_type] == :xcheckbox ? :xcheckbox : :combobox
+              end
+            end
+          end
+      
+          # detect association column (e.g. :category_id)
+          if assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == c[:name]}
+            c[:xtype] ||= :combobox
+            assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
+            c[:name] = "#{assoc.name}__#{assoc_method}".to_sym
+          end
+          c[:hidden] = true if c[:name] == data_class.primary_key.to_sym && c[:hidden].nil? # hide ID column by default
+
+        end
+        
+        # detect column type
+        type = c[:type] || data_class && data_class.columns_hash[c[:name].to_s].try(:type) || :string
+        
+        c[:xtype] ||= XTYPE_MAP[type] unless XTYPE_MAP[type].nil?
+
+        # if the column is finally simply {:name => "something"}, cut it down to "something"
+        c.reject{ |k,v| k == :name }.empty? ? c[:name] : c
+      end
+      
+      columns_for_create
+      
+    end
+     
     
     # def available_permissions
     #   %w{ read update }
     # end
     
-    include ConfigurationTool # it will load aggregation with name :properties into a modal window
-      
+    include ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
   end
 end

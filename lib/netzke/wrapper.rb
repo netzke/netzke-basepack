@@ -1,6 +1,6 @@
 module Netzke
   class Wrapper < Base
-    def self.js_default_config
+    def self.js_common_config_for_constructor
       # make us an invisible 'fit'-layout panel
       super.merge({
         :layout => 'fit',

@@ -36,9 +36,9 @@ module Netzke
       res = ""
       item_aggregatees.each_pair do |k,v|
         next if v[:late_aggregation]
-        res << <<-JS
+        res << <<-END_OF_JAVASCRIPT
         var #{k.jsonify} = new Ext.netzke.cache['#{v[:widget_class_name]}'](config.#{k.jsonify}Config);
-        JS
+        END_OF_JAVASCRIPT
       end
       res
     end
@@ -61,11 +61,11 @@ module Netzke
     def self.js_extend_properties
       {
         # loads widget into the panel if it's not loaded yet
-        :load_item_widget => <<-JS.l,
+        :load_item_widget => <<-END_OF_JAVASCRIPT.l,
           function(panel) {
             if (!panel.getWidget()) panel.loadWidget(this.id + "__" + panel.id + "__get_widget");
           }
-        JS
+        END_OF_JAVASCRIPT
       }
     end
 

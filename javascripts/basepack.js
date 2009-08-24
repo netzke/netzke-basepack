@@ -22,7 +22,7 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
     } else {
       var row = Ext.data.Record.create([{name:'id'}]);
       var store = new Ext.data.Store({
-        proxy         : new Ext.data.HttpProxy({url:this.parentId+"__get_combo_box_options", jsonData:{column:this.fieldConfig.name}}),
+        proxy         : new Ext.data.HttpProxy({url:this.parentId+"__get_combobox_options", jsonData:{column:this.name}}),
         reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
       });
     
@@ -113,6 +113,32 @@ Ext.data.RecordArrayReader = Ext.extend(Ext.data.JsonReader, {
   }
 });
 
+Ext.netzke.JsonField = Ext.extend(Ext.form.TextField, {
+  // initComponent : function(){
+  //   // call parent initComponent
+  //   Ext.ux.form.DateTime.superclass.initComponent.call(this);
+  //   
+  //   // this.value = Ext.encode(this.value);
+  //   // console.info(this.value);
+  // }
+  
+  validator: function(value) {
+    try{
+      var d = Ext.decode(value);
+      return true;
+    } catch(e) {
+      return "Invalid JSON"
+    }
+  }
+  
+  ,setValue: function(value) {
+    this.setRawValue(Ext.encode(value));
+  }
+  
+});
+
+Ext.reg('jsonfield', Ext.netzke.JsonField);
+
 /**
  * @class Ext.ux.form.DateTime
  * @extends Ext.form.Field
@@ -136,6 +162,7 @@ Ext.data.RecordArrayReader = Ext.extend(Ext.data.JsonReader, {
  */
 
 Ext.ns('Ext.ux.form');
+
 
 /**
  * @constructor
@@ -746,3 +773,4 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
 Ext.reg('xdatetime', Ext.ux.form.DateTime);
 
 // eof
+

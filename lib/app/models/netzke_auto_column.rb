@@ -25,43 +25,57 @@ class NetzkeAutoColumn < ActiveRecord::Base
     column_types_to_create = {} # columns that must be in the table
     columns_to_expose = []
     
-    @@widget.columns.each do |c|
-      c.each_pair do |k,v|
-        column_hash = {:name => k}
-        meta_data = v.is_a?(Hash) && v.delete(:meta)
-        if meta_data
-          column_hash.merge!(meta_data)
-        end
-        columns_to_expose.reject!{ |c| c[:name] == k }
-        
-        columns_to_expose << column_hash 
-        
-        column_type = case v.class.to_s
-        when "TrueClass"
-          :boolean
-        when "FalseClass"
-          :boolean
-        when "Fixnum"
-          :integer
-        else
-          :string
-        end
-
-        column_types_to_create[k] = {:type => column_type}
-      end
+    normalized_config_columns = []
+    @@widget.class.config_columns.each do |mc|
+      column_hash = mc.is_a?(Symbol) ? {:data_index => mc} : mc
+      column_hash[:type] ||= :string
+      normalized_config_columns << column_hash
     end
+    
+    # @@widget.columns.each do |c|
+    #   c.each_pair do |k,v|
+    #     column_hash = {:name => k}
+    #     meta_data = v.is_a?(Hash) && v.delete(:meta)
+    #     if meta_data
+    #       column_hash.merge!(meta_data)
+    #     end
+    #     columns_to_expose.reject!{ |c| c[:name] == k }
+    #     
+    #     columns_to_expose << column_hash 
+    #     
+    #     column_type = case v.class.to_s
+    #     when "TrueClass"
+    #       :boolean
+    #     when "FalseClass"
+    #       :boolean
+    #     when "Fixnum"
+    #       :integer
+    #     else
+    #       :string
+    #     end
+    # 
+    #     column_types_to_create[k] = {:type => column_type}
+    #   end
+    # end
   
     # create the table with the fields
     self.connection.create_table('netzke_auto_columns') do |t|
-      column_types_to_create.each_pair do |k,v|
-        t.column k, v[:type]
+      normalized_config_columns.each do |mc|
+        t.column mc[:data_index], mc[:type]
       end
     end
+    # self.connection.create_table('netzke_auto_columns') do |t|
+    #   column_types_to_create.each_pair do |k,v|
+    #     t.column k, v[:type]
+    #   end
+    # end
   
-    # populate the table with data (excluding meta columns attributes)
-    NetzkeAutoColumn.create @@widget.columns.map(&:deebeefy_values)
+    # populate the table with data
+    logger.debug "!!! @@widget.normalized_columns: #{@@widget.normalized_columns.inspect}\n"
+    NetzkeAutoColumn.create @@widget.normalized_columns.map(&:deebeefy_values)
     
-    netzke_expose_attributes :id, *columns_to_expose
+    # netzke_expose_attributes :id, *columns_to_expose
+    netzke_expose_attributes :id, *normalized_config_columns
     
   end
 

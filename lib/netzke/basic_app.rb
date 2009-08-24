@@ -11,9 +11,6 @@ module Netzke
   # * aggregation of widget's own menus
   #
   class BasicApp < Base
-    # api :app_get_widget # to dynamically load the widgets that are defined in initial_late_aggregatees
-    # api :load_widget
-    
     module ClassMethods
 
       def js_base_class
@@ -23,58 +20,26 @@ module Netzke
       # Global BasicApp configuration
       def config
         set_default_config({
-          :logout_url => "/logout" # logout url assumed by default
+          :logout_url => "/logout" # default logout url
         })
       end
       
       # The layout
-      def js_default_config
-        super.merge({
-          :layout => 'border',
-          :items => [{
-            :id => 'main-panel',
-            :region => 'center',
-            :layout => 'fit'
-          },{
-      			:id => 'main-toolbar',
-      			:xtype => 'toolbar',
-            :region => 'north',
-            :height => 25
-          }]
-        })
-      end
+      # def js_common_config_for_constructor
+      #   super.merge({
+      #     :items => [{
+      #       :id => 'main-panel',
+      #       :region => 'center',
+      #       :layout => 'fit'
+      #     },{
+      #       :id => 'main-toolbar',
+      #       :xtype => 'toolbar',
+      #       :region => 'north',
+      #       :height => 25
+      #     }]
+      #   })
+      # end
 
-      def js_after_constructor
-        <<-JS.l
-          // call appLoaded() once after the application is fully rendered
-          // this.on("resize", function(){alert('show');this.appLoaded();}, this, {single:true});
-
-          // Initialize menus (upcoming support for dynamically loaded menus)
-          this.menus = {};
-          
-          Ext.History.on('change', this.processHistory, this);
-
-          // If we are given a token, load the corresponding widget, otherwise load the last loaded widget
-          var currentToken = Ext.History.getToken();
-          if (currentToken != "") {
-            this.processHistory(currentToken)
-          } else {
-            var lastLoaded = this.initialConfig.widgetToLoad; // passed from the server
-            if (lastLoaded) Ext.History.add(lastLoaded);
-          }
-          
-
-          // add initial menus to the tool-bar
-          var toolbar = this.findById('main-toolbar');
-          Ext.each(#{js_initial_menus.to_nifty_json}, function(menu){
-            toolbar.add(menu);
-          });
-          
-          // add session-specific menu
-          if (this.initialConfig.menu) {this.addMenu(this.initialConfig.menu, this);}
-        JS
-      end
-      
       # Set the Logout button if Netzke::Base.user is set
       def js_initial_menus
         res = []
@@ -90,11 +55,11 @@ module Netzke
           res << "->" <<
           {
             :text => "Login",
-            :handler => <<-JS.l,
+            :handler => <<-END_OF_JAVASCRIPT.l,
               function(){
                 window.location = "/login"
               }
-            JS
+            END_OF_JAVASCRIPT
   			    :scope => this
           }
         end
@@ -104,7 +69,7 @@ module Netzke
       def js_user_menu
         [{
           :text => "Log out",
-          :handler => <<-JS.l,
+          :handler => <<-END_OF_JAVASCRIPT.l,
             function(){
               Ext.MessageBox.confirm('Confirm', 'Are you sure you want to logout?', function(btn){
   							if( btn == "yes" ) {
@@ -112,15 +77,66 @@ module Netzke
   							}
   						}.createDelegate(this));
             }
-          JS
+          END_OF_JAVASCRIPT
 			    :scope => this
         }]
       end
       
       def js_extend_properties
-        super.merge({
+        {
+          :layout => 'border',
+          
+          :panels => [{
+            :id => 'main-panel',
+            :region => 'center',
+            :layout => 'fit'
+          },{
+            :id => 'main-toolbar',
+            :xtype => 'toolbar',
+            :region => 'north',
+            :height => 25
+          }],
+          
+          :init_component => <<-END_OF_JAVASCRIPT.l,
+            function(){
+              this.items = this.panels;
+              Ext.netzke.cache.BasicApp.superclass.initComponent.call(this);
+            }
+          END_OF_JAVASCRIPT
+          
+          :after_constructor => <<-END_OF_JAVASCRIPT.l,
+            function(){
+              // call appLoaded() once after the application is fully rendered
+              // this.on("resize", function(){alert('show');this.appLoaded();}, this, {single:true});
 
-          :host_menu => <<-JS.l,
+              // Initialize menus (upcoming support for dynamically loaded menus)
+              this.menus = {};
+
+              Ext.History.on('change', this.processHistory, this);
+
+              // If we are given a token, load the corresponding widget, otherwise load the last loaded widget
+              var currentToken = Ext.History.getToken();
+              if (currentToken != "") {
+                this.processHistory(currentToken)
+              } else {
+                var lastLoaded = this.initialConfig.widgetToLoad; // passed from the server
+                if (lastLoaded) Ext.History.add(lastLoaded);
+              }
+
+
+              // add initial menus to the tool-bar
+              var toolbar = this.findById('main-toolbar');
+              Ext.each(#{js_initial_menus.to_nifty_json}, function(menu){
+                toolbar.add(menu);
+              });
+
+              // add session-specific menu
+              if (this.initialConfig.menu) {this.addMenu(this.initialConfig.menu, this);}
+              
+            }
+          END_OF_JAVASCRIPT
+
+          :host_menu => <<-END_OF_JAVASCRIPT.l,
             function(menu, owner){
               var toolbar = this.findById('main-toolbar');
               if (!this.menus[owner.id]) this.menus[owner.id] = [];
@@ -132,9 +148,9 @@ module Netzke
             	  this.menus[owner.id].push(newMenu);
             	}, this);
           	}
-          JS
+          END_OF_JAVASCRIPT
 
-          :unhost_menu => <<-JS.l,
+          :unhost_menu => <<-END_OF_JAVASCRIPT.l,
             function(owner){
               var toolbar = this.findById('main-toolbar');
               if (this.menus[owner.id]) {
@@ -144,16 +160,16 @@ module Netzke
                 });
               }
             }
-          JS
+          END_OF_JAVASCRIPT
 
-          :logout => <<-JS.l,
+          :logout => <<-END_OF_JAVASCRIPT.l,
             function(){
               window.location = "#{config[:logout_url]}"
             }
-          JS
+          END_OF_JAVASCRIPT
 
           # Event handler for history change
-          :process_history => <<-JS.l,
+          :process_history => <<-END_OF_JAVASCRIPT.l,
             function(token){
               if (token){
                 // this.findById('main-panel').loadWidget(this.initialConfig.api.appGetWidget, {widget:token})
@@ -162,37 +178,37 @@ module Netzke
                 // this.findById('main-panel').loadWidget(null)
               }
             }
-          JS
+          END_OF_JAVASCRIPT
           
-          :instantiate_aggregatee => <<-JS.l,
+          :instantiate_aggregatee => <<-END_OF_JAVASCRIPT.l,
             function(config){
               this.findById('main-panel').instantiateChild(config);
             }
-          JS
+          END_OF_JAVASCRIPT
           
           # Loads widget by name
-          :app_load_widget => <<-JS.l,
+          :app_load_widget => <<-END_OF_JAVASCRIPT.l,
             function(name){
               Ext.History.add(name);
             }
-          JS
+          END_OF_JAVASCRIPT
 
           # Loads widget by action
-          :load_widget_by_action => <<-JS.l
+          :load_widget_by_action => <<-END_OF_JAVASCRIPT.l
             function(action){
               this.appLoadWidget(action.widget || action.name);
             }
-          JS
-        })
+          END_OF_JAVASCRIPT
+        }
       end
     end
     
     extend ClassMethods
     
     # Pass the last loaded widget from the persistent storage (DB) to the browser
-    def js_config
-      super.merge({:widget_to_load => persistent_config['last_loaded_widget']})
-    end
+    # def js_config
+    #   super.merge({:widget_to_load => persistent_config['last_loaded_widget']})
+    # end
     
     # Html required for Ext.History to work
     def js_widget_html

@@ -6,7 +6,15 @@ module Netzke
       end
       
       def self.widget
-        @@widget ||= raise "No widget specified for PropertyEditorExtras::HelperModel"
+        @@widget ||= raise RuntimeError, "No widget specified for PropertyEditorExtras::HelperModel"
+      end
+      
+      def self.reflect_on_all_associations
+        []
+      end
+      
+      def self.primary_key
+        "id"
       end
       
       def self.netzke_exposed_attributes

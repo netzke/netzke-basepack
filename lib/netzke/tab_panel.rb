@@ -1,16 +1,14 @@
 module Netzke
-  #
   # TabPanel
   # 
   # Features:
   # * Dynamically loads widgets for the tabs that get activated for the first time
   # * Is loaded along with the active widget - saves a request to the server
-  # 
-  # * Provides the method markTabsOutdated to mark all inactive tabs as 'outdated', and calls "update" method on
-  # widgets in tabs when they get activated
+  # * Provides the method markTabsOutdated to mark all inactive tabs as 'outdated', and calls "update" method on widgets in tabs when they get activated
   #
   # TODO:
   # * Stores the last active tab in persistent_config
+  # * Introduce a second or two delay before informing the server about a tab switched
   # 
   class TabPanel < Base
     api :api_activate_tab
@@ -21,8 +19,18 @@ module Netzke
 
     def self.js_extend_properties
       {
+        :id_delimiter => "___", # the default was "__", which conflicts with Netzke's double underscore notation
+        :defaults => {:layout => 'fit'}, # all tabs will be Ext.Panel-s with layout 'fit' ("fit-panels")
         
-        :mark_tabs_outdated => <<-JS.l,
+        :init_component => <<-END_OF_JAVASCRIPT.l,
+          function(){
+            Ext.netzke.cache.#{short_widget_class_name}.superclass.initComponent.call(this);
+            
+            this.on('tabchange', function(self, tab){this.loadItemWidget(tab)}, this);
+          }
+        END_OF_JAVASCRIPT
+        
+        :mark_tabs_outdated => <<-END_OF_JAVASCRIPT.l,
           function(){
             this.items.each(function(i){
               if (this.getActiveTab() != i){
@@ -30,16 +38,16 @@ module Netzke
               }
             }, this);
           }
-        JS
+        END_OF_JAVASCRIPT
         
         # bulkExecute in active tab
-        :execute_in_active_tab => <<-JS.l,
+        :execute_in_active_tab => <<-END_OF_JAVASCRIPT.l,
           function(commands){
             this.getActiveTab().getWidget().bulkExecute(commands);
           }
-        JS
+        END_OF_JAVASCRIPT
         
-        :get_loaded_children => <<-JS.l,
+        :get_loaded_children => <<-END_OF_JAVASCRIPT.l,
           function(){
             var res = [];
             this.items.each(function(tab){
@@ -48,10 +56,10 @@ module Netzke
             }, this);
             return res;
           }
-        JS
+        END_OF_JAVASCRIPT
         
         # loads widget into the panel if it wasn't loaded yet
-        :load_item_widget => <<-JS.l
+        :load_item_widget => <<-END_OF_JAVASCRIPT.l
           function(panel) {
             if (!panel.getWidget()) {
               if (preloadedItemConfig = this.initialConfig[panel.widget+"Config"]){
@@ -74,7 +82,7 @@ module Netzke
               if (widget && widget.update) {widget.update.call(widget)};
             }
           }
-        JS
+        END_OF_JAVASCRIPT
       }
     end
     
@@ -94,7 +102,7 @@ module Netzke
       super
       
       # to remove duplicated active panels
-      seen_active = false
+      first_active = nil
 
       items.each_with_index do |item, i|
         # if the item is provided without a name, give it a generated name
@@ -102,13 +110,18 @@ module Netzke
 
         # remove duplicated "active" configuration
         if item[:active]
-          item[:active] = nil if seen_active
-          seen_active = true
+          if first_active.nil?
+            first_active = item.name
+          else
+            item[:active] = nil
+          end
         end
       end
       
       # the first tab is forced to become active, if none was configured as active
-      items.first[:active] = true unless seen_active
+      items.first[:active] = true and first_active = items.first.name if first_active.nil?
+      
+      widget_session[:active_tab] = first_active
     end
     
     # the items are late aggregatees, besides the one that is configured active
@@ -121,23 +134,6 @@ module Netzke
       res
     end
 
-    def self.js_default_config
-      super.merge({
-        :id_delimiter => "___", # the default is "__", which conflicts with Netzke
-        :defaults => {:layout => 'fit'}, # all tabs will be Ext.Panel-s with layout 'fit' ("fit-panels")
-        :listeners => {
-          # when tab is activated, its content gets loaded from the server
-          :tabchange => {
-            :fn => <<-JS.l
-              function(self, tab){
-                this.loadItemWidget(tab);
-              }
-            JS
-          }
-        }
-      })
-    end
-    
     def fit_panels
       res = []
       items.each_with_index do |item, i|

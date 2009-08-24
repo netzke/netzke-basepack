@@ -4,6 +4,7 @@ require 'searchlogic'
 require 'will_paginate'
 
 require 'netzke/ar_ext'
+require 'netzke/ext'
 
 %w{ models }.each do |dir|
   path = File.join(File.dirname(__FILE__), 'app', dir)

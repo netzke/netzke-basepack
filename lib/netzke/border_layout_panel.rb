@@ -8,51 +8,62 @@ module Netzke
     # JS-class generation
     #
     module ClassMethods
-      def js_listeners
-        {
-          :afterlayout => {:fn => "this.setResizeEvents".l, :scope => this}
-        }
-      end
+      # def js_listeners
+      #   {
+      #     :afterlayout => {:fn => "this.setResizeEvents".l, :scope => this}
+      #   }
+      # end
 
-      def js_before_constructor
-        <<-JS.l
-          var items = [];
-          Ext.each(['center', 'west', 'east', 'south', 'north'], function(r){
-            var configName = r+'Config';
-            if (config[configName]){
-              var regionConfig = config.regions[r] || {};
-              regionConfig.layout = 'fit';
-              regionConfig.region = r;
-              regionConfig.items = [new Ext.netzke.cache[config[configName].widgetClassName](config[configName])]
-              items.push(regionConfig);
-              
-              // A function to access a region widget (even if the widget gets reloaded, the function will work).
-              // E.g.: getEastWidget()
-              this['get'+r.capitalize()+'Widget'] = function(){
-                return this.find('region', r)[0].getWidget()
-              }.createDelegate(this)
-              
-              
-            };
-          }, this)
-        JS
-      end
+      # def js_before_constructor
+      #   <<-END_OF_JAVASCRIPT.l
+      #   END_OF_JAVASCRIPT
+      # end
 
-      def js_default_config
-        super.merge({
-          :layout => 'border',
-          :items => "items".l
-        })
-      end
+      # def js_common_config_for_constructor
+      #   super.merge({
+      #     :items => "items".l
+      #   })
+      # end
 
       def js_extend_properties
         {
-          :get_region_widget => <<-JS.l,
+          :layout => 'border',
+          
+          :init_component => <<-END_OF_JAVASCRIPT.l,
+            function(){
+              this.items = [];
+              Ext.each(['center', 'west', 'east', 'south', 'north'], function(r){
+                var configName = r+'Config';
+                if (this[configName]){
+                  var regionConfig = this.regions[r] || {};
+                  regionConfig.layout = 'fit';
+                  regionConfig.region = r;
+                  regionConfig.items = [new Ext.netzke.cache[this[configName].widgetClassName](this[configName])]
+                  this.items.push(regionConfig);
+
+                  // A function to access a region widget (even if the widget gets reloaded, the function will work).
+                  // E.g.: getEastWidget()
+                  this['get'+r.capitalize()+'Widget'] = function(){
+                    return this.find('region', r)[0].getWidget()
+                  }.createDelegate(this)
+                };
+              }, this);
+              
+              // Now let Ext.Panel do the rest
+              Ext.netzke.cache.BorderLayoutPanel.superclass.initComponent.call(this);
+              
+              // Set events
+              this.on('afterlayout', this.setResizeEvents, this);
+            }
+          END_OF_JAVASCRIPT
+          
+          :get_region_widget => <<-END_OF_JAVASCRIPT.l,
             function(region){
               return this.find('region', region)[0].getWidget()
             }
-          JS
-          :set_resize_events => <<-JS.l,
+          END_OF_JAVASCRIPT
+          
+          :set_resize_events => <<-END_OF_JAVASCRIPT.l,
           function(){
             this.items.each(function(item, index, length){
               if (!item.oldSize) item.oldSize = item.getSize();
@@ -73,17 +84,12 @@ module Netzke
             }, this);
             this.un('afterlayout', this.setResizeEvents, this); // to avoid redefinition of resize events
           }
-        JS
+        END_OF_JAVASCRIPT
       }
       end
     end
     extend ClassMethods
-    def default_config
-      {
-        :persistent_config => true
-      }
-    end
-    
+
     def initial_aggregatees
       config[:regions] || {}
     end
@@ -97,25 +103,16 @@ module Netzke
       REGIONS.each do |r|
         if region_aggr = aggregatees[r]
           regions.merge!(r => region_aggr[:region_config] || {})
-          height = persistent_config["#{r}_height"] ||= regions[r][:height] if regions[r][:height]
-          width = persistent_config["#{r}_width"] ||= regions[r][:width] if regions[r][:width]
-          regions[r].merge!(:height => height)
-          regions[r].merge!(:width => width)
         end
       end
       super.merge(:regions => regions)
     end
   
     def resize_region(params)
-      persistent_config["#{params["region_name"]}_width"] = params["new_width"].to_i if params["new_width"]
-      persistent_config["#{params["region_name"]}_height"] = params["new_height"].to_i if params["new_height"]
+      persistent_config["regions__#{params["region_name"]}__region_config__width"] = params["new_width"].to_i if params["new_width"]
+      persistent_config["regions__#{params["region_name"]}__region_config__height"] = params["new_height"].to_i if params["new_height"]
       {}
     end
-    
-    protected
-  
-    def extend_functions; ""; end
-    def js_extra_events; ""; end
     
   end
 end

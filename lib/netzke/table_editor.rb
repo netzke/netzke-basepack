@@ -6,15 +6,15 @@ module Netzke
   class TableEditor < BorderLayoutPanel
     
     def self.js_extend_properties
-      super.merge({
-        :get_form_widget => <<-JS.l,
+      {
+        :get_form_widget => <<-END_OF_JAVASCRIPT.l,
           function(){
             return this.getRegionWidget(this.initialConfig.region);
           }
-        JS
+        END_OF_JAVASCRIPT
         
         # a grid row clicked
-        :on_row_click => <<-JS.l,
+        :on_row_click => <<-END_OF_JAVASCRIPT.l,
           function(grid, index, e){
             // don't react if the selection hasn't changed
         		if (index == this.lastSelectedRow) return false;
@@ -26,15 +26,15 @@ module Netzke
             // load the form with the record id
             this.getRegionWidget(this.initialConfig.region).loadRecord(recordId);
           }
-        JS
+        END_OF_JAVASCRIPT
         
         # after the form is submitted, reload the grid
-        :on_form_actioncomplete => <<-JS.l
+        :on_form_actioncomplete => <<-END_OF_JAVASCRIPT.l
           function(grid, index, e){
             this.getRegionWidget('center').store.load()
           }
-        JS
-      })
+        END_OF_JAVASCRIPT
+      }
     end
 
     def default_config
@@ -50,7 +50,7 @@ module Netzke
     end
 
     def self.js_after_constructor
-      super << <<-JS
+      super << <<-END_OF_JAVASCRIPT
         var setCentralWidgetEvents = function(){
           this.getCenterWidget().on('addclick', function(){
             this.getFormWidget().getForm().reset();
@@ -75,7 +75,7 @@ module Netzke
         };
         this.getCenterWidget().ownerCt.on('add', setCentralWidgetEvents, this);
         setCentralWidgetEvents.call(this);
-      JS
+      END_OF_JAVASCRIPT
     end
 
     def initial_aggregatees
@@ -88,7 +88,7 @@ module Netzke
           :ext_config           => {
             :title        => config[:grid_title] || config[:data_class_name].pluralize
           }
-        }.recursive_merge(config[:grid_config] || {}),
+        }.deep_merge(config[:grid_config] || {}),
         
         split_region => {
           :widget_class_name    => "FormPanel", 
@@ -105,7 +105,7 @@ module Netzke
               :fn => "function(f, a){this.ownerCt.ownerCt.onFormActioncomplete(f,a)}".l
             }}
           }
-        }.recursive_merge(config[:form_config] || {})
+        }.deep_merge(config[:form_config] || {})
       }
     end
 

@@ -5,7 +5,7 @@ class Netzke::TreePanel < Netzke::Base
     "Ext.tree.TreePanel"
   end
   
-  def self.js_default_config
+  def self.js_common_config_for_constructor
     super.merge({
       :root => {:text => '/', :id => 'source'},
       :loader => {:data_url => "config.api.getChildren".l}
@@ -14,32 +14,32 @@ class Netzke::TreePanel < Netzke::Base
   
   def self.js_extend_properties
     {
-      :on_widget_load => <<-JS.l,
+      :on_widget_load => <<-END_OF_JAVASCRIPT.l,
         function(){
         }
-      JS
-      :refresh_handler => <<-JS.l,
+      END_OF_JAVASCRIPT
+      :refresh_handler => <<-END_OF_JAVASCRIPT.l,
         function(){
           console.info('refresh!');
         }
-      JS
-      :add_handler => <<-JS.l,
+      END_OF_JAVASCRIPT
+      :add_handler => <<-END_OF_JAVASCRIPT.l,
         function(e){
           console.info(e);
         }
-      JS
-      :edit_handler => <<-JS.l,
-        function(e){
-          console.info(e);
-        
-        }
-      JS
-      :delete_handler => <<-JS.l
+      END_OF_JAVASCRIPT
+      :edit_handler => <<-END_OF_JAVASCRIPT.l,
         function(e){
           console.info(e);
         
         }
-      JS
+      END_OF_JAVASCRIPT
+      :delete_handler => <<-END_OF_JAVASCRIPT.l
+        function(e){
+          console.info(e);
+        
+        }
+      END_OF_JAVASCRIPT
     }
   end
   

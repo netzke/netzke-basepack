@@ -52,11 +52,13 @@ module Netzke
       end
     end
     
+    # Transforms a record to array of values according to the passed columns. Works both for grids and forms.
     def to_array(columns)
       res = []
       for c in columns
-        method = c.is_a?(Symbol) ? c : c[:name]
-        res << send(method)
+        nc = c.is_a?(Symbol) ? {:data_index => c} : c
+        method = nc[:data_index] || nc[:name] # :name - in case of forms
+        res << send(method) unless nc[:excluded]
       end
       res
     end
@@ -72,9 +74,10 @@ module Netzke
       
       # Returns all unique values for a column, filtered by the query
       def options_for(column, query = nil)
-        if respond_to?("#{column}_choices")
+        logger.debug "!!! column: #{column.inspect}"
+        if respond_to?("#{column}_combobox_options")
           # AR class provides the choices itself
-          send("#{column}_choices", query)
+          send("#{column}_combobox_options", query)
         else
           if (assoc_name, *assoc_method = column.split('__')).size > 1
             # column is an association column
@@ -96,6 +99,17 @@ module Netzke
         end
       end
       
+      # which columns should by default be displayed by FieldConfigurator
+      # def netzke_expose_meta_attributes(*args)
+      #   write_inheritable_attribute(:netzke_meta_attributes, args)
+      # end
+      # 
+      # # which columns should by default be displayed by FieldConfigurator
+      # def netzke_exposed_meta_attributes
+      #   read_inheritable_attribute(:netzke_meta_attributes) || write_inheritable_attribute(:netzke_meta_attributes, {})
+      # end
+
+      
       # which columns are to be picked up by grids and forms
       def netzke_expose_attributes(*args)
         if args.first == :all
@@ -114,13 +128,17 @@ module Netzke
       end
       
       # virtual "columns" that simply correspond to instance methods of an ActiveRecord class
-      def netzke_virtual_attribute(config)
-        if config.is_a?(Symbol) 
-          config = {:name => config}
-        else
-          config = {:name => config.keys.first}.merge(config.values.first)
-        end
-        write_inheritable_attribute(:virtual_attributes, (read_inheritable_attribute(:virtual_attributes) || []) << config)
+      # def netzke_virtual_attribute(config)
+      #   if config.is_a?(Symbol) 
+      #     config = {:name => config}
+      #   else
+      #     config = {:name => config.keys.first}.merge(config.values.first)
+      #   end
+      #   write_inheritable_attribute(:virtual_attributes, (read_inheritable_attribute(:virtual_attributes) || []) << config)
+      # end
+
+      def netzke_virtual_attribute(name)
+        write_inheritable_attribute(:virtual_attributes, (read_inheritable_attribute(:virtual_attributes) || []) << name)
       end
       
       def netzke_virtual_attributes
@@ -131,165 +149,171 @@ module Netzke
         read_inheritable_attribute(:virtual_attributes).keys.include?(column)
       end
       
+      # all columns + virtual attributes
+      def all_netzke_attribute_names
+        column_names + netzke_virtual_attributes.map(&:to_s)
+      end
+      
       #
       # Used by Netzke::GridPanel
       #
       
-      DEFAULT_COLUMN_WIDTH = 100
-      
-      # identify Ext editor (xtype) for the data type
-      TYPE_EDITOR_MAP = {
-        :integer => :numberfield,
-        :boolean => :checkbox,
-        :date => :datefield,
-        :datetime => :xdatetime,
-        :string => :textfield
-      }
-
-      def default_column_config_new(config)
-        config = config.is_a?(Symbol) ? {:name => config} : config.dup
-        
-        # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
-        type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
-        
-        res = config
-        res.reverse_recursive_merge!({
-          :header => config[:name],
-          :editor => ext_editor(type),
-          :hidden => config[:name] == self.class.primary_key
-        })
-        res
-      end
-      
-      
-      def default_dbfield_config(config, mode = :grid)
-        config = config.is_a?(Symbol) ? {:name => config} : config.dup
-
-        # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
-        type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
-
-        res = {
-          :name => config[:name].to_s || "unnamed",
-          :label => config[:label] || config[:name].to_s.gsub('__', '_').humanize,
-          :read_only => config[:name] == :id, # make "id" column read-only by default
-          :hidden => config[:name] == :id, # hide "id" column by default
-          :width => mode == :grid ? DEFAULT_COLUMN_WIDTH : DEFAULT_FIELD_WIDTH,
-          :editor => ext_editor(type)
-        }
-        
-        # for forms fields also set up the height
-        res.merge!(:height => DEFAULT_FIELD_HEIGHT) if mode == :form
-
-        # detect :assoc__method
-        if config[:name].to_s.index('__')
-          assoc_name, method = config[:name].to_s.split('__').map(&:to_sym)
-          if assoc = reflect_on_association(assoc_name)
-            assoc_column = assoc.klass.columns_hash[method.to_s]
-            assoc_method_type = assoc_column.try(:type)
-            if assoc_method_type
-              res[:editor] = ext_editor(assoc_method_type) == :checkbox ? :checkbox : :combobox
-            end
-          end
-        end
-        
-        # detect association column (e.g. :category_id)
-        if assoc = reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == config[:name]}
-          res[:editor] = :combobox
-          assoc_method = %w{name title label}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
-          res[:name] = "#{assoc.name}__#{assoc_method}"
-        end
-
-        res[:width] = 50 if res[:editor] == :checkbox # more narrow column for checkboxes
-        
-        # merge with the given confg, which has the priority
-        config.delete(:name) # because we might have changed the name
-        res.merge(config)
-      end
-      
-      # Returns default column config understood by Netzke::GridPanel
-      # Argument: column name (as Symbol) or column config
-      def default_column_config(config)
-        default_dbfield_config(config, :grid)
-      end
-      
-      #
-      # Used by Netzke::FormPanel
-      #
-      
-      # default configuration as a function of ActivRecord's column type
-      # DEFAULTS_FOR_FIELD = {
-      #   :integer => {
-      #     :xtype => :numberfield
-      #   },
-      #   :boolean => {
-      #     :xtype => :numberfield
-      #   },
-      #   :date => {
-      #     :xtype => :datefield
-      #   },
-      #   :datetime => {
-      #     :xtype => :xdatetime
-      #     # :date_format => "Y-m-d",
-      #     # :time_format => "H:i",
-      #     # :time_width => 60
-      #   },
-      #   :string => {
-      #     :xtype => :textfield
-      #   }
+      # DEFAULT_COLUMN_WIDTH = 100
+      # 
+      # # identify Ext editor (xtype) for the data type
+      # TYPE_EDITOR_MAP = {
+      #   :integer => :numberfield,
+      #   :boolean => :checkbox,
+      #   :date => :datefield,
+      #   :datetime => :xdatetime,
+      #   :string => :textfield
       # }
-
-      XTYPE_MAP = {
-        :integer => :numberfield,
-        :boolean => :xcheckbox,
-        :date => :datefield,
-        :datetime => :xdatetime,
-        :string => :textfield
-      }
-
-      def default_field_config(config)
-        config = config.is_a?(Symbol) ? {:name => config} : config.dup
-
-        # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
-        type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
-
-        common = {
-          :name        => config[:name].to_s || "unnamed",
-          :field_label => config[:name].to_s.gsub('__', '_').humanize,
-          :hidden      => config[:name] == :id,
-          :xtype       => XTYPE_MAP[type] || XTYPE_MAP[:string]
-        }
-
-        # detect :assoc__method
-        if config[:name].to_s.index('__')
-          assoc_name, method = config[:name].to_s.split('__').map(&:to_sym)
-          if assoc = reflect_on_association(assoc_name)
-            assoc_column = assoc.klass.columns_hash[method.to_s]
-            assoc_method_type = assoc_column.try(:type)
-            if assoc_method_type
-              common[:xtype] = ext_editor(assoc_method_type) == :checkbox ? :checkbox : :combobox
-            end
-          end
-        end
-        
-        # detect association column (e.g. :category_id)
-        if assoc = reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == config[:name]}
-          common[:xtype] = :combobox
-          assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
-          common[:name] = "#{assoc.name}__#{assoc_method}"
-        end
-        
-        config.delete(:name) # because we might have changed the name
-        common.merge(config)
-
-        # default = DEFAULTS_FOR_FIELD[type] || DEFAULTS_FOR_FIELD[:string] # fallback to plain textfield
-
-        # res = default.merge(common).merge(config)
-      end
-      
-      private
-      def ext_editor(type)
-        TYPE_EDITOR_MAP[type] || :textfield # fall back to :text_field
-      end
+      # 
+      # def default_column_config(config)
+      #   config = config.is_a?(Symbol) ? {:name => config} : config.dup
+      #   
+      #   # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
+      #   type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
+      #   
+      #   res = config
+      #   res.reverse_deep_merge!()
+      #   # res.reverse_deep_merge!({
+      #   #   :header => config[:name],
+      #   #   :editor => ext_editor(type),
+      #   #   :hidden => config[:name] == self.class.primary_key
+      #   # })
+      #   res
+      # end
+      # 
+      # 
+      # def default_dbfield_config(config, mode = :grid)
+      #   config = config.is_a?(Symbol) ? {:name => config} : config.dup
+      # 
+      #   # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
+      #   type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
+      # 
+      #   res = {
+      #     :name => config[:name].to_s || "unnamed",
+      #     :label => config[:label] || config[:name].to_s.gsub('__', '_').humanize,
+      #     :read_only => config[:name] == :id, # make "id" column read-only by default
+      #     :hidden => config[:name] == :id, # hide "id" column by default
+      #     :width => mode == :grid ? DEFAULT_COLUMN_WIDTH : DEFAULT_FIELD_WIDTH,
+      #     :editor => ext_editor(type)
+      #   }
+      #   
+      #   # for forms fields also set up the height
+      #   res.merge!(:height => DEFAULT_FIELD_HEIGHT) if mode == :form
+      # 
+      #   # detect :assoc__method
+      #   if config[:name].to_s.index('__')
+      #     assoc_name, method = config[:name].to_s.split('__').map(&:to_sym)
+      #     if assoc = reflect_on_association(assoc_name)
+      #       assoc_column = assoc.klass.columns_hash[method.to_s]
+      #       assoc_method_type = assoc_column.try(:type)
+      #       if assoc_method_type
+      #         res[:editor] = ext_editor(assoc_method_type) == :checkbox ? :checkbox : :combobox
+      #       end
+      #     end
+      #   end
+      #   
+      #   # detect association column (e.g. :category_id)
+      #   if assoc = reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == config[:name]}
+      #     res[:editor] = :combobox
+      #     assoc_method = %w{name title label}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
+      #     res[:name] = "#{assoc.name}__#{assoc_method}"
+      #   end
+      # 
+      #   res[:width] = 50 if res[:editor] == :checkbox # more narrow column for checkboxes
+      #   
+      #   # merge with the given confg, which has the priority
+      #   config.delete(:name) # because we might have changed the name
+      #   res.merge(config)
+      # end
+      # 
+      # # Returns default column config understood by Netzke::GridPanel
+      # # Argument: column name (as Symbol) or column config
+      # def default_column_config_old(config)
+      #   default_dbfield_config(config, :grid)
+      # end
+      # 
+      # #
+      # # Used by Netzke::FormPanel
+      # #
+      # 
+      # # default configuration as a function of ActivRecord's column type
+      # # DEFAULTS_FOR_FIELD = {
+      # #   :integer => {
+      # #     :xtype => :numberfield
+      # #   },
+      # #   :boolean => {
+      # #     :xtype => :numberfield
+      # #   },
+      # #   :date => {
+      # #     :xtype => :datefield
+      # #   },
+      # #   :datetime => {
+      # #     :xtype => :xdatetime
+      # #     # :date_format => "Y-m-d",
+      # #     # :time_format => "H:i",
+      # #     # :time_width => 60
+      # #   },
+      # #   :string => {
+      # #     :xtype => :textfield
+      # #   }
+      # # }
+      # 
+      # XTYPE_MAP = {
+      #   :integer => :numberfield,
+      #   :boolean => :xcheckbox,
+      #   :date => :datefield,
+      #   :datetime => :xdatetime,
+      #   :string => :textfield
+      # }
+      # 
+      # def default_field_config(config)
+      #   config = config.is_a?(Symbol) ? {:name => config} : config.dup
+      # 
+      #   # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
+      #   type = (columns_hash[config[:name].to_s] && columns_hash[config[:name].to_s].type) || :virtual
+      # 
+      #   common = {
+      #     # :name        => config[:name].to_s || "unnamed",
+      #     # :field_label => config[:name].to_s.gsub('__', '_').humanize,
+      #     # :hidden      => config[:name] == :id,
+      #     # :xtype       => XTYPE_MAP[type] || XTYPE_MAP[:string]
+      #   }
+      # 
+      #   # detect :assoc__method
+      #   if config[:name].to_s.index('__')
+      #     assoc_name, method = config[:name].to_s.split('__').map(&:to_sym)
+      #     if assoc = reflect_on_association(assoc_name)
+      #       assoc_column = assoc.klass.columns_hash[method.to_s]
+      #       assoc_method_type = assoc_column.try(:type)
+      #       if assoc_method_type
+      #         common[:xtype] = ext_editor(assoc_method_type) == :checkbox ? :checkbox : :combobox
+      #       end
+      #     end
+      #   end
+      #   
+      #   # detect association column (e.g. :category_id)
+      #   if assoc = reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == config[:name]}
+      #     common[:xtype] = :combobox
+      #     assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
+      #     common[:name] = "#{assoc.name}__#{assoc_method}"
+      #   end
+      #   
+      #   config.delete(:name) # because we might have changed the name
+      #   common.merge(config)
+      # 
+      #   # default = DEFAULTS_FOR_FIELD[type] || DEFAULTS_FOR_FIELD[:string] # fallback to plain textfield
+      # 
+      #   # res = default.merge(common).merge(config)
+      # end
+      # 
+      # private
+      # def ext_editor(type)
+      #   TYPE_EDITOR_MAP[type] || :textfield # fall back to :text_field
+      # end
       
     end
   end

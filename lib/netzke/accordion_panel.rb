@@ -15,18 +15,18 @@ module Netzke
     #
     module ClassMethods
 
-      def js_default_config
+      def js_common_config_for_constructor
         super.merge({
           :layout => 'accordion',
           :defaults => {:layout => 'fit'}, # Container's items will be of type Panel with layout 'fit' ("fit-panels")
           :listeners => {
             # every item gets an expand event set, which dynamically loads a widget into this item 
             :add => {
-              :fn => <<-JS.l
+              :fn => <<-END_OF_JAVASCRIPT.l
               function(self, comp){
                 comp.on('expand', this.loadItemWidget, self)
               }
-              JS
+              END_OF_JAVASCRIPT
             }
           }
         })
@@ -35,13 +35,13 @@ module Netzke
       def js_extend_properties
         {
           # loads widget into the panel if it wasn't loaded yet
-          :load_item_widget => <<-JS.l,
+          :load_item_widget => <<-END_OF_JAVASCRIPT.l,
             function(panel) {
               if (!panel.getWidget()) panel.loadWidget(this.id + "__" + panel.widget + "__get_widget");
             }
-          JS
+          END_OF_JAVASCRIPT
           
-          :on_widget_load => <<-JS.l
+          :on_widget_load => <<-END_OF_JAVASCRIPT.l
             function(){
               // immediately instantiate the active panel
               var activePanel = this.findById(this.id + "_active");
@@ -51,7 +51,7 @@ module Netzke
                 activePanel.add(new Ext.netzke.cache[activeItemConfig.widgetClassName](activeItemConfig));
               }
             }
-          JS
+          END_OF_JAVASCRIPT
         }
       end
     end

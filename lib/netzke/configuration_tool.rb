@@ -10,7 +10,8 @@ module Netzke
       
       base.class_eval do
         # replacing instance methods
-        [:tools, :initial_aggregatees, :js_config].each{ |m| alias_method_chain m, :config_tool }
+        [:config, :initial_aggregatees, :js_config].each{ |m| alias_method_chain m, :config_tool }
+        # [:tools, :initial_aggregatees, :js_config].each{ |m| alias_method_chain m, :config_tool }
         
         # API to commit the changes
         api :commit
@@ -21,14 +22,15 @@ module Netzke
         end
       end
 
-      # if you include ConfigurationTool, you must define configuration_widgets method which will returns an array of arrgeratees that will be included in the property window (each in its own tab or accordion pane)
+      # if you include ConfigurationTool, you are supposed to provide configuration_widgets method which will returns an array of arrgeratees
+      # that will be included in the property window (each in its own tab or accordion pane)
       raise "configuration_widgets method undefined" unless base.instance_methods.include?("configuration_widgets")
     end
 
     module ClassMethods
       def js_extend_properties_with_config_tool
         js_extend_properties_without_config_tool.merge({
-          :gear => <<-JS.l
+          :gear => <<-END_OF_JAVASCRIPT.l
             function(){
               var w = new Ext.Window({
                 title:'Config',
@@ -69,15 +71,25 @@ module Netzke
                 }
               }, this);
             }
-          JS
+          END_OF_JAVASCRIPT
         })
       end
     end
 
+    def config_with_config_tool
+      orig_config = config_without_config_tool
+      return orig_config unless config_tool_needed?
+      orig_config.deep_merge({
+        :ext_config => {
+          :tools => orig_config[:ext_config][:tools].clone << "gear"
+        }
+      })
+    end
+
     def initial_aggregatees_with_config_tool
       res = initial_aggregatees_without_config_tool
-      
-      # Add the accordion as aggregatee, which in its turn aggregates widgets from the configuration_widgets method
+      # Add the ConfigurationPanel as aggregatee, which in its turn aggregates widgets from the 
+      # configuration_widgets method
       res.merge!(:configuration_panel => {
         :widget_class_name => 'ConfigurationPanel', 
         :items => configuration_widgets,
@@ -100,7 +112,8 @@ module Netzke
     end
   
     def config_tool_needed?
-      ext_config[:config_tool] || ext_config[:mode] == :config
+      config_without_config_tool[:ext_config][:config_tool] || config_without_config_tool[:ext_config][:mode] == :config
+      # ext_config[:config_tool] || ext_config[:mode] == :config
     end
   
   end

@@ -7,9 +7,8 @@ require 'netzke/configuration_tool'
 # require 'netzke/container'
 require 'netzke/accordion_panel'
 
-require 'netzke/db_fields'
-require 'netzke/grid_panel_extras/api'
-require 'netzke/grid_panel_extras/js_builder'
+require 'netzke/grid_panel_api'
+require 'netzke/grid_panel_js'
 require 'netzke/grid_panel'
 
 require 'netzke/ar_ext'

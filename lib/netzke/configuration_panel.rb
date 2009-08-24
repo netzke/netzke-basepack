@@ -10,13 +10,13 @@ module Netzke
     end
     
     def self.js_extend_properties
-      super.merge({
-        :reload_parent => <<-JS.l,
+      {
+        :reload_parent => <<-END_OF_JAVASCRIPT.l,
           function(){
             this.getParent().reload();
           }
-        JS
-      })
+        END_OF_JAVASCRIPT
+      }
     end
   end
 end

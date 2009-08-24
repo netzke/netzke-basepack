@@ -5,9 +5,9 @@ require 'netzke-core'
 class HelperModelTest < ActiveSupport::TestCase
   
   test "reading/writing values" do
-    Netzke::FormPanel.config.recursive_merge!({
+    Netzke::FormPanel.config.deep_merge!({
       :ext_config => {
-        :config_tool => true
+        :enable_config_tool => true
       },
       :persistent_config => true
     })
@@ -19,12 +19,12 @@ class HelperModelTest < ActiveSupport::TestCase
     
     assert(true, helper_model.persistent_config)
 
-    assert(true, form.ext_config[:config_tool])
+    assert(true, form.ext_config[:enable_config_tool])
     
     # now try to change the configuration
     helper_model.ext_config__config_tool = "false"
     # form = Netzke::FormPanel.new(:data_class_name => "Book")
-    # assert(false, form.ext_config[:config_tool]) # FIXME: make it work
+    # assert(false, form.ext_config[:enable_config_tool]) # FIXME: make it work
   end
 
 end
