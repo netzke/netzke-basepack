@@ -2,6 +2,7 @@ v0.5.0
 2009-08-24
 Major refactoring.
 Compatibility with netzke-core v0.4.0.
+New: GridPanel now supports adding/editing records in a form and extended configurable search.
 New: GridPanel now can be loaded along with the data, which saves a request to the server.
 Configuration panel for grids and forms now works cleaner and more consistently.
 New: "scopes" configuration option added to GridPanel to specify the searchlogic-compatible scope for the data.

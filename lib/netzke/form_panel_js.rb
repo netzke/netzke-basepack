@@ -49,6 +49,9 @@ module Netzke
               
               // Now let Ext.form.FormPanel do the rest
               Ext.netzke.cache.FormPanel.superclass.initComponent.call(this);
+              
+              // Apply event
+              this.addEvents('apply');
             }
           END_OF_JAVASCRIPT
 
@@ -71,12 +74,6 @@ module Netzke
           :default_column_config => config_columns.inject({}){ |r, c| r.merge!({
             c[:name] => c[:default]
           }) },
-          
-          :after_constructor => <<-END_OF_JAVASCRIPT.l,
-            function(){
-              this.addEvents('apply');
-            }
-          END_OF_JAVASCRIPT
           
           :set_form_values => <<-END_OF_JAVASCRIPT.l,
             function(values){

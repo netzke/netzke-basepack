@@ -240,7 +240,12 @@ module Netzke
         :search_panel => {
           :widget_class_name => "SearchPanel",
           :search_class_name => config[:data_class_name],
-          :ext_config => {:header => false, :bbar => false, :mode => ext_config[:mode]},
+          :persistent_config => true,
+          :ext_config => {
+            :header => false, 
+            :bbar => false, 
+            :mode => ext_config[:mode]
+          },
         }
       }) if ext_config[:enable_extended_search]
       

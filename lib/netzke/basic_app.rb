@@ -1,10 +1,8 @@
 module Netzke
-  #
   # Basis for a Ext.Viewport-based application
   #
   # Features:
   # * dynamic loading of widgets
-  # * restoring of the last loaded widget (not working for now)
   # * authentification support
   # * browser history support (press the "Back"-button to go to the previously loaded widget)
   # * FeedbackGhost-powered feedback
@@ -24,22 +22,6 @@ module Netzke
         })
       end
       
-      # The layout
-      # def js_common_config_for_constructor
-      #   super.merge({
-      #     :items => [{
-      #       :id => 'main-panel',
-      #       :region => 'center',
-      #       :layout => 'fit'
-      #     },{
-      #       :id => 'main-toolbar',
-      #       :xtype => 'toolbar',
-      #       :region => 'north',
-      #       :height => 25
-      #     }]
-      #   })
-      # end
-
       # Set the Logout button if Netzke::Base.user is set
       def js_initial_menus
         res = []
@@ -86,6 +68,7 @@ module Netzke
         {
           :layout => 'border',
           
+          # Ovewrite this to have your own layout
           :panels => [{
             :id => 'main-panel',
             :region => 'center',
@@ -94,25 +77,15 @@ module Netzke
             :id => 'main-toolbar',
             :xtype => 'toolbar',
             :region => 'north',
-            :height => 25
+            :height => 25,
+            :items => js_initial_menus
           }],
           
           :init_component => <<-END_OF_JAVASCRIPT.l,
             function(){
-              this.items = this.panels;
+              this.items = this.panels; // a bit weird, but working; can't assign it straight
+              
               Ext.netzke.cache.BasicApp.superclass.initComponent.call(this);
-            }
-          END_OF_JAVASCRIPT
-          
-          :after_constructor => <<-END_OF_JAVASCRIPT.l,
-            function(){
-              // call appLoaded() once after the application is fully rendered
-              // this.on("resize", function(){alert('show');this.appLoaded();}, this, {single:true});
-
-              // Initialize menus (upcoming support for dynamically loaded menus)
-              this.menus = {};
-
-              Ext.History.on('change', this.processHistory, this);
 
               // If we are given a token, load the corresponding widget, otherwise load the last loaded widget
               var currentToken = Ext.History.getToken();
@@ -123,19 +96,13 @@ module Netzke
                 if (lastLoaded) Ext.History.add(lastLoaded);
               }
 
-
-              // add initial menus to the tool-bar
-              var toolbar = this.findById('main-toolbar');
-              Ext.each(#{js_initial_menus.to_nifty_json}, function(menu){
-                toolbar.add(menu);
-              });
-
-              // add session-specific menu
-              if (this.initialConfig.menu) {this.addMenu(this.initialConfig.menu, this);}
+              Ext.History.on('change', this.processHistory, this);
               
+              // Hosted menus
+              this.menus = {};
             }
           END_OF_JAVASCRIPT
-
+          
           :host_menu => <<-END_OF_JAVASCRIPT.l,
             function(menu, owner){
               var toolbar = this.findById('main-toolbar');

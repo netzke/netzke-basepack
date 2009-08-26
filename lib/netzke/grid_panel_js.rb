@@ -18,18 +18,6 @@ module Netzke
         'Ext.grid.EditorGridPanel'
       end
 
-      # def js_common_config_for_constructor
-      #   super.merge({
-      #     # :store            => "ds".l,
-      #     # :cm               => "cm".l,
-      #     # :sel_model        => "".l,
-      #     # :plugins          => "this.plugins".l,
-      # 
-      #     #custom configs
-      #     # :auto_load_data   => false
-      #   })
-      # end
-
       # Optional filters
       def js_filters_code
         <<-END_OF_JAVASCRIPT if config[:column_filters_available]
@@ -44,13 +32,7 @@ module Netzke
         END_OF_JAVASCRIPT
       end
 
-      # def js_listeners
-      #   super.merge({
-      #     :columnresize => {:fn => "this.onColumnResize".l, :scope => this},
-      #     :columnmove   => {:fn => "this.onColumnMove".l, :scope => this}
-      #   })
-      # end
-      
+      # Ext.Component#initComponent, built up from pices (dependent on class configuration)
       def js_init_component
         # Edit in form related events
         edit_in_form_events = <<-END_OF_JAVASCRIPT if config[:edit_in_form_available]
@@ -176,11 +158,11 @@ module Netzke
             // Normalize bottom bar
             this.bbar = (this.rowsPerPage) ? new Ext.PagingToolbar({
               pageSize : this.rowsPerPage, 
-              items : this.bbar ? ["-", this.bbar] : [], 
+              items : this.bbar ? ["-"].concat(this.bbar) : [],
               store : this.store, 
-              emptyMsg:'Empty'
+              emptyMsg: 'Empty'
             }) : this.bbar;
-
+            
             // Selection model
             this.sm = new Ext.grid.RowSelectionModel();
             
@@ -188,21 +170,39 @@ module Netzke
             #{js_filters_code}
             
             // Now let Ext.grid.EditorGridPanel do the rest
+            // Original initComponent
             Ext.netzke.cache.GridPanel.superclass.initComponent.call(this);
+            
             
             // Set the events
             this.on('columnresize', this.onColumnResize, this);
             this.on('columnmove', this.onColumnMove, this);
             
+            // this.on('rowclick', function(g,i,e){alert('rowclick');});
+            // this.on('click', function(e){console.info(this.getGridEl());}, this);
+            
             // Load data after the toolbar is bound to the store, which will provide for correct page number
             if (this.loadInlineData) {
               this.getStore().loadData(this.inlineData);
 
+              // If rows per page specified, fake store.lastOptions as if the data was loaded
+              // by PagingToolbar (for correct functionning of refresh tool and extended search)
+              if (this.rowsPerPage) {
+                this.getStore().lastOptions = {params:{limit:this.rowsPerPage, start:0}}; // this is how PagingToolbar does it...
+              }
+              
               // inlineData may also contain commands (TODO: make it DRY)
               // delete data-related properties
               Ext.each(['data', 'total', 'success'], function(property){delete this.inlineData[property];}, this);
               this.bulkExecute(this.inlineData);
             }
+            
+            // Process selectionchange event
+            this.getSelectionModel().on('selectionchange', function(selModel){
+              // enable/disable actions
+              this.actions.delete.setDisabled(!selModel.hasSelection() || this.prohibitDelete);
+              this.actions.edit.setDisabled(selModel.getCount() != 1 || this.prohibitUpdate);
+            }, this);
             
             #{edit_in_form_events}
           }
@@ -225,26 +225,17 @@ module Netzke
           
           :init_component => js_init_component.l,
 
-          :on_widget_load => <<-END_OF_JAVASCRIPT.l,
-            function(){
-              
-              // auto-load
-              if (this.initialConfig.autoLoadData) {
-                // if we have a paging toolbar, load the first page
-                if (this.getBottomToolbar() && this.getBottomToolbar().changePage) {this.getBottomToolbar().changePage(0);} else {this.store.load();}
-              }
-              
-            }
-          END_OF_JAVASCRIPT
-    
-          :after_constructor => <<-END_OF_JAVASCRIPT.l,
-            function(){
-              this.getSelectionModel().on('selectionchange', function(selModel){
-                this.actions.delete.setDisabled(!selModel.hasSelection() || this.prohibitDelete);
-                this.actions.edit.setDisabled(selModel.getCount() != 1 || this.prohibitUpdate);
-              }, this);
-            }
-          END_OF_JAVASCRIPT
+          # :on_widget_load => <<-END_OF_JAVASCRIPT.l,
+          #   function(){
+          #     
+          #     // auto-load
+          #     if (this.initialConfig.autoLoadData) {
+          #       // if we have a paging toolbar, load the first page
+          #       if (this.getBottomToolbar() && this.getBottomToolbar().changePage) {this.getBottomToolbar().changePage(0);} else {this.store.load();}
+          #     }
+          #     
+          #   }
+          # END_OF_JAVASCRIPT
     
           :load_exception_handler => <<-END_OF_JAVASCRIPT.l,
           function(proxy, options, response, error){
