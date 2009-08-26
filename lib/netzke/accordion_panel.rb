@@ -40,18 +40,6 @@ module Netzke
               if (!panel.getWidget()) panel.loadWidget(this.id + "__" + panel.widget + "__get_widget");
             }
           END_OF_JAVASCRIPT
-          
-          # :on_widget_load => <<-END_OF_JAVASCRIPT.l
-          #   function(){
-          #     // immediately instantiate the active panel
-          #     var activePanel = this.findById(this.id + "_active");
-          #     
-          #     var activeItemConfig = this.initialConfig[this.initialConfig.expandedItem+"Config"];
-          #     if (activeItemConfig) {
-          #       activePanel.add(new Ext.netzke.cache[activeItemConfig.widgetClassName](activeItemConfig));
-          #     }
-          #   }
-          # END_OF_JAVASCRIPT
         }
       end
     end

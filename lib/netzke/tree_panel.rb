@@ -14,26 +14,25 @@ class Netzke::TreePanel < Netzke::Base
   
   def self.js_extend_properties
     {
-      :on_widget_load => <<-END_OF_JAVASCRIPT.l,
-        function(){
-        }
-      END_OF_JAVASCRIPT
       :refresh_handler => <<-END_OF_JAVASCRIPT.l,
         function(){
           console.info('refresh!');
         }
       END_OF_JAVASCRIPT
+
       :add_handler => <<-END_OF_JAVASCRIPT.l,
         function(e){
           console.info(e);
         }
       END_OF_JAVASCRIPT
+
       :edit_handler => <<-END_OF_JAVASCRIPT.l,
         function(e){
           console.info(e);
         
         }
       END_OF_JAVASCRIPT
+
       :delete_handler => <<-END_OF_JAVASCRIPT.l
         function(e){
           console.info(e);

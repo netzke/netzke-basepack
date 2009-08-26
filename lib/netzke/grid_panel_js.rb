@@ -225,18 +225,6 @@ module Netzke
           
           :init_component => js_init_component.l,
 
-          # :on_widget_load => <<-END_OF_JAVASCRIPT.l,
-          #   function(){
-          #     
-          #     // auto-load
-          #     if (this.initialConfig.autoLoadData) {
-          #       // if we have a paging toolbar, load the first page
-          #       if (this.getBottomToolbar() && this.getBottomToolbar().changePage) {this.getBottomToolbar().changePage(0);} else {this.store.load();}
-          #     }
-          #     
-          #   }
-          # END_OF_JAVASCRIPT
-    
           :load_exception_handler => <<-END_OF_JAVASCRIPT.l,
           function(proxy, options, response, error){
             if (response.status == 200 && (responseObject = Ext.decode(response.responseText)) && responseObject.flash){
