@@ -24,7 +24,7 @@ module Netzke
         if (this.enableColumnFilters) {
           var filters = [];
           Ext.each(normClmns, function(c){
-            filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.dataIndex});
+            filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
           });
           var gridFilters = new Ext.grid.GridFilters({filters:filters});
           this.plugins.push(gridFilters);
@@ -55,7 +55,7 @@ module Netzke
               if (!c.excluded) {
                 // normalize columns
                 if (typeof c == 'string') {
-                  normClmns.push({dataIndex:c});
+                  normClmns.push({name:c});
                 } else {
                   normClmns.push(c);
                 }
@@ -66,12 +66,16 @@ module Netzke
             var cmConfig = []; // column model config - we'll use it later to create the ColumnModel
             this.plugins = []; // checkbox colums is a special case, being a plugin
 
-            // Run through each column
+            // Run through columns
             Ext.each(normClmns, function(c){
+              // Apply default column config
               Ext.applyIf(c, this.defaultColumnConfig);
 
+              // setting dataIndex separately
+              c.dataIndex = c.name;
+
               // Automatically calculated default values
-              if (!c.header) {c.header = c.dataIndex.humanize()}
+              if (!c.header) {c.header = c.name.humanize()}
 
               // normalize editor
               if (c.editor) {
@@ -88,25 +92,18 @@ module Netzke
               } else {
                 if (!c.readOnly && !this.prohibitUpdate) {
                   // c.editor either contains xtype of the editor, or complete config of it
-                  var editor = Ext.ComponentMgr.create(Ext.apply({
+                  c.editor = Ext.ComponentMgr.create(Ext.apply({
                     parentId:this.id,
-                    name: c.dataIndex,
+                    name: c.name,
                     // fieldConfig:c,
                     selectOnFocus:true
                   }, c.editor));
                 }
 
-                // Set renderer
-                var renderer = Ext.netzke.renderer(c.renderer);
-
-                var defaultColumnConfig = {}; // Ext.apply({}, this.defaultColumnConfig);
-                var defaultMergedWithPassed = Ext.apply(defaultColumnConfig, c);
-
-                var completeColumnConfig = Ext.apply(defaultMergedWithPassed, {
-                  editor    : editor
-                });
-
-                cmConfig.push(completeColumnConfig);
+                // Set the renderer
+                c.renderer = Ext.netzke.normalizedRenderer(c.renderer);
+                
+                cmConfig.push(c);
               }
 
             }, this);
@@ -119,7 +116,7 @@ module Netzke
 
             // Create Ext.data.Record constructor specific for our particular column configuration
             this.recordConfig = [];
-            Ext.each(normClmns, function(column){this.recordConfig.push({name:column.dataIndex});}, this);
+            Ext.each(normClmns, function(column){this.recordConfig.push({name:column.name});}, this);
             this.Row = Ext.data.Record.create(this.recordConfig);
 
             // Explicitely create the connection to get grid's data, 
@@ -178,10 +175,12 @@ module Netzke
             this.on('columnresize', this.onColumnResize, this);
             this.on('columnmove', this.onColumnMove, this);
             
-            // this.on('rowclick', function(g,i,e){alert('rowclick');});
-            // this.on('click', function(e){console.info(this.getGridEl());}, this);
+            // Context menu
+            if (this.enableContextMenu) {
+              this.on('rowcontextmenu', this.onRowContextMenu, this);
+            }
             
-            // Load data after the toolbar is bound to the store, which will provide for correct page number
+            // Load data AFTER the toolbar is bound to the store, which will provide for correct page number
             if (this.loadInlineData) {
               this.getStore().loadData(this.inlineData);
 
@@ -221,7 +220,7 @@ module Netzke
           :load_mask        => true,
           :auto_scroll      => true,
 
-          :default_column_config => config_columns.inject({}){ |r, c| r.merge!(c[:data_index] => c[:default]) },
+          :default_column_config => config_columns.inject({}){ |r, c| r.merge!(c[:name] => c[:default]) },
           
           :init_component => js_init_component.l,
 
@@ -438,6 +437,23 @@ module Netzke
                 old_index:oldIndex,
                 new_index:newIndex
               });
+            }
+          END_OF_JAVASCRIPT
+          
+          :on_row_context_menu => <<-END_OF_JAVASCRIPT.l,
+            function(grid, rowIndex, e){
+              e.stopEvent();
+              var coords = e.getXY();
+              
+              if (!grid.getSelectionModel().hasSelection()) {
+                grid.getSelectionModel().selectRow(rowIndex);
+              }
+              
+              var menu = new Ext.menu.Menu({
+                items: this.contextMenu
+              });
+              
+              menu.showAt(coords);
             }
           END_OF_JAVASCRIPT
         }

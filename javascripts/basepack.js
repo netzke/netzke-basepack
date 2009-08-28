@@ -42,28 +42,47 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
     });
   }
 });
+
 Ext.reg('combobox', Ext.netzke.ComboBox);
 
-// TODO: rethink
-Ext.netzke.renderer = function(renderer, c, config){
-  res = null; // null-renderer means "no renderer"
+/* 
+  Accepts a string which either contains:
+  Ext.util.Format method (e.g. 'usMoney'), 
+  or 
+  JSON-encoded array, where the first element is Ext.util.Format method (e.g. 'ellipsis'), 
+  and the rest of the elements - configuration parameters that should be passed to this method besids
+  the value to be rendered (e.g. '2');
   
-  if (renderer){
-    switch (renderer) {
+  Example of the latter: ["defaultValue", "MyDefaultValue"]
+*/
+Ext.netzke.normalizedRenderer = function(config) {
+  res = null;
+  
+  if (config) {
+    try{
+      config = Ext.decode(config); // it's an array consisting of renderer's name *and* eventual options
+    } catch(e) {
+      // leave config as is - it's supposed to be the renderer's name
+    }
 
-      // more renderers can be later added like this:
-      case 'my_renderer':
-        res = function(value){ return "My renderer: " + value };
-      break
-
-      // falls back to Ext.util.Format renderers
-      default:
-        res = Ext.util.Format[renderer] ? Ext.util.Format[renderer] : function(value){return "Unknown renderer"}
-      break
+    if (Ext.isArray(config)) {
+      res = function(v){
+        var formatMethod = config[0];
+        var valueAndOptions = config.slice(1);
+        valueAndOptions.unshift(v);
+        // call the Format function with the argument *and* configuration
+        return Ext.util.Format[formatMethod] ? Ext.util.Format[formatMethod].apply(this, valueAndOptions) : "Unknown renderer";
+      }
+    } else {
+      res = Ext.util.Format[config] ? Ext.util.Format[config] : function(v){return "Unknown renderer"}
     }
   }
+    
+  return res;
+};
 
-  return res
+Ext.util.Format.mask = function(v){
+  return "********";
 };
 
 // Mapping of editor field to grid filters
@@ -114,14 +133,6 @@ Ext.data.RecordArrayReader = Ext.extend(Ext.data.JsonReader, {
 });
 
 Ext.netzke.JsonField = Ext.extend(Ext.form.TextField, {
-  // initComponent : function(){
-  //   // call parent initComponent
-  //   Ext.ux.form.DateTime.superclass.initComponent.call(this);
-  //   
-  //   // this.value = Ext.encode(this.value);
-  //   // console.info(this.value);
-  // }
-  
   validator: function(value) {
     try{
       var d = Ext.decode(value);
@@ -138,6 +149,70 @@ Ext.netzke.JsonField = Ext.extend(Ext.form.TextField, {
 });
 
 Ext.reg('jsonfield', Ext.netzke.JsonField);
+
+Ext.ns('Ext.netzke.form');
+
+Ext.netzke.form.FileWithType = Ext.extend(Ext.form.Field, {
+  defaultAutoCreate:{tag:'input', type:'hidden'},
+
+  initComponent: function(){
+    Ext.netzke.form.FileWithType.superclass.initComponent.call(this);
+    
+    // this.ft = new Ext.form.ComboBox({
+    // });
+    this.ft = new Ext.form.TextField({
+      name: this.name + "_filetype"
+    });
+    this.ft.ownerCt = this;
+    
+    this.f = new Ext.form.TextField({
+      inputType:'file',
+      name: this.name + "_file"
+    });
+    this.f.ownerCt = this;
+  },
+
+  onRender: function(ct, position){
+    if(this.isRendered) {
+        return;
+    }
+    
+    // render underlying hidden field
+    Ext.netzke.form.FileWithType.superclass.onRender.call(this, ct, position);
+    
+    var t; // table
+    
+    t = Ext.DomHelper.append(ct, {tag:'table',style:'border-collapse:collapse',children:[
+      {tag:'tr',children:[
+        {tag:'td', style:'padding:4px', cls:'ux-filewithtype-type'},
+        {tag:'td', style:'padding:4px', cls:'ux-filewithtype-file'}
+      ]}
+    ]}, true);
+    
+    this.ft.render(t.child('td.ux-filewithtype-type'));
+    this.f.render(t.child('td.ux-filewithtype-file'));
+    
+    this.el.dom.removeAttribute("name");
+    
+    // 
+    // this.tableEl = t;
+    
+    // we're rendered flag
+    this.isRendered = true;
+    
+    // this.updateHidden();
+  },
+  
+  // updateHidden:function() {
+  //   if(this.isRendered) {
+  //     var value = this.dateValue instanceof Date ? this.dateValue.format(this.hiddenFormat) : '';
+  //     this.el.dom.value = value;
+  //   }
+  // }
+  
+});
+
+Ext.reg('filewithtype', Ext.netzke.form.FileWithType);
 
 /**
  * @class Ext.ux.form.DateTime
@@ -162,7 +237,6 @@ Ext.reg('jsonfield', Ext.netzke.JsonField);
  */
 
 Ext.ns('Ext.ux.form');
-
 
 /**
  * @constructor

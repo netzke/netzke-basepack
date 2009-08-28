@@ -66,7 +66,7 @@ module Netzke
     end
    
     def commit(params)
-      defaults_hash = config[:widget].class.config_columns.inject({}){ |r, c| r.merge!(c[:data_index] => c[:default]) }
+      defaults_hash = config[:widget].class.config_columns.inject({}){ |r, c| r.merge!(c[:name] => c[:default]) }
       config[:widget].persistent_config[:layout__columns] = NetzkeAutoColumn.all_columns.map do |c| 
         c.reject!{ |k,v| defaults_hash[k.to_sym].to_s == v.to_s } # reject all keys that are same as defaults
         c = c["data_index"] || c["name"] if c.keys.count == 1 # denormalize the column

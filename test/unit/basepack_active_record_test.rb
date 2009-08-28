@@ -1,6 +1,6 @@
 require 'test_helper'
 
-require 'netzke/ar_ext'
+require 'netzke/basepack_active_record'
 
 class ArExtTest < ActiveSupport::TestCase
   fixtures :cities, :countries, :continents

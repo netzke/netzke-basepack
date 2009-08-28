@@ -3,7 +3,7 @@ require 'netzke-core'
 require 'searchlogic'
 require 'will_paginate'
 
-require 'netzke/ar_ext'
+require 'netzke/basepack_active_record'
 require 'netzke/ext'
 
 %w{ models }.each do |dir|

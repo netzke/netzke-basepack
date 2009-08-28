@@ -18,6 +18,7 @@ module Netzke
         begin
           @record.send("#{k}=",v)
         rescue StandardError => exc
+          logger.debug "!!! FormPanelApi#create_or_update_record exception: #{exc.inspect}\n"
           flash :error => exc.message
           success = false
           break

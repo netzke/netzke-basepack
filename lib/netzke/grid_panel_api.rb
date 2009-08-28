@@ -60,7 +60,7 @@ module Netzke
       save_columns!
 
       # reorder the columns on the client side (still not sure if it's not an overkill)
-      # {:reorder_columns => columns.map(&:data_index)} # Well, I think it IS an overkill - commented out 
+      # {:reorder_columns => columns.map(&:name)} # Well, I think it IS an overkill - commented out 
       # until proven to be necessary
       {}
     end

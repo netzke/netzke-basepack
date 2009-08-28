@@ -70,6 +70,7 @@ module Netzke
             :enable_extended_search => true,
             :enable_column_filters  => true,
             :load_inline_data       => true,
+            :enable_context_menu    => true,
             
             :tools => %w{ refresh }
           },
@@ -110,18 +111,39 @@ module Netzke
     def data_class
       @data_class ||= config[:data_class_name].nil? ? raise(ArgumentError, "No data_class_name specified for widget #{id_name}") : config[:data_class_name].constantize
     end
+    
+    def initialize(config = {}, parent = nil)
+      super
+      activate_helpers
+    end
+
+    def activate_helpers
+      # BasepackActiveRecord
+      data_class.send(:include, BasepackActiveRecord) unless data_class.include?(BasepackActiveRecord)
+      
+      # Helper module: e.g. Netzke::Helpers::GridPanel::UserHelper
+      const_name = "Netzke::Helpers::#{self.class.short_widget_class_name}::#{data_class.name}Helper"
+      helper_module = const_name.constantize rescue nil
+      
+      if helper_module
+        data_class.extend helper_module unless data_class.extended_by.include?(helper_module)
+        data_class.activate_helper
+      end
+    end
 
     # Columns to be displayed by the FieldConfigurator. 
     def self.config_columns
       [
-        {:data_index => :data_index, :type => :string, :editor => :combobox, :width => 200},
-        {:data_index => :excluded, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Excl"},
-        {:data_index => :value, :type => :string, :editor => :textfield},
-        {:data_index => :header, :type => :string},
-        {:data_index => :hidden, :type => :boolean, :editor => :checkbox},
-        {:data_index => :hideable, :type => :boolean, :editor => :checkbox},
-        {:data_index => :editor, :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::FORM_FIELD_XTYPES}},
-        {:data_index => :width, :type => :integer, :editor => :numberfield, :hidden => true}
+        {:name => :name, :type => :string, :editor => :combobox, :width => 200},
+        {:name => :excluded, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Excl"},
+        {:name => :value, :type => :string, :editor => :textfield},
+        {:name => :header, :type => :string},
+        {:name => :hidden, :type => :boolean, :editor => :checkbox},
+        {:name => :hideable, :type => :boolean, :editor => :checkbox},
+        {:name => :editor, :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::FORM_FIELD_XTYPES}},
+        {:name => :renderer, :type => :string},
+        # {:name => :renderer, :type => :string, :editor => {:xtype => :jsonfield}},
+        {:name => :width, :type => :integer, :editor => :numberfield, :hidden => true}
       ]
     end
     
@@ -129,6 +151,8 @@ module Netzke
       res = [
         {:name => :ext_config__title, :type => :string},
         {:name => :ext_config__header, :type => :boolean, :default => true},
+        {:name => :ext_config__enable_context_menu, :type => :boolean, :default => true},
+        {:name => :ext_config__context_menu, :type => :json},
         # {:name => :ext_config__bbar, :type => :json},
         {:name => :ext_config__prohibit_create, :type => :boolean},
         {:name => :ext_config__prohibit_update, :type => :boolean},
@@ -146,12 +170,22 @@ module Netzke
     def independent_config
       res = super
       
+      # Bottom bar
       if res[:ext_config][:bbar].nil?
         res[:ext_config][:bbar] = %w{ add edit apply delete }
         res[:ext_config][:bbar] << "-" << "add_in_form" << "edit_in_form" if res[:ext_config][:enable_edit_in_form]
         res[:ext_config][:bbar] << "-" << "search" if res[:ext_config][:enable_extended_search]
       end
       
+      # Context menu
+      res[:ext_config][:context_menu] ||= default_context_menu(res)
+      
+      res
+    end
+    
+    def default_context_menu(indep_config)
+      res = %w{ edit delete }
+      res << "-" << "edit_in_form" if indep_config[:ext_config][:enable_edit_in_form]
       res
     end
     
@@ -257,9 +291,9 @@ module Netzke
     
     protected
     
-    def available_permissions
-      %w(read update create delete)
-    end
+    # def available_permissions
+    #   %w(read update create delete)
+    # end
 
     ### COLUMNS
     public
@@ -281,7 +315,7 @@ module Netzke
       end
 
       # denormalize
-      res.map{ |c| c.is_a?(Hash) && c.reject{ |k,v| k == :data_index }.empty? ? c[:data_index].to_sym : c }
+      res.map{ |c| c.is_a?(Hash) && c.reject{ |k,v| k == :name }.empty? ? c[:name].to_sym : c }
     end
     
     # Normalizes the column at position +index+ and returns it.
@@ -320,7 +354,7 @@ module Netzke
       if columns_from_config
         # reverse-merge each column hash from config with each column hash from exposed_attributes (columns from config have higher priority)
         for c in columns_from_config
-          corresponding_exposed_column = exposed_columns.find{ |k| k[:data_index] == c[:data_index] }
+          corresponding_exposed_column = exposed_columns.find{ |k| k[:name] == c[:name] }
           c.reverse_merge!(corresponding_exposed_column) if corresponding_exposed_column
         end
         columns_for_create = columns_from_config
@@ -331,11 +365,11 @@ module Netzke
       
       columns_for_create.map! do |c|
         # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
-        type = (data_class.columns_hash[c[:data_index].to_s] && data_class.columns_hash[c[:data_index].to_s].type) || :virtual
+        type = (data_class.columns_hash[c[:name].to_s] && data_class.columns_hash[c[:name].to_s].type) || :virtual
 
         # detect :assoc__method
-        if c[:data_index].to_s.index('__')
-          assoc_name, method = c[:data_index].to_s.split('__').map(&:to_sym)
+        if c[:name].to_s.index('__')
+          assoc_name, method = c[:name].to_s.split('__').map(&:to_sym)
           if assoc = data_class.reflect_on_association(assoc_name)
             assoc_column = assoc.klass.columns_hash[method.to_s]
             assoc_method_type = assoc_column.try(:type)
@@ -346,16 +380,16 @@ module Netzke
         end
         
         # detect association column (e.g. :category_id)
-        if assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == c[:data_index]}
+        if assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == c[:name]}
           c[:editor] ||= :combobox
           assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
-          c[:data_index] = "#{assoc.name}__#{assoc_method}".to_sym
+          c[:name] = "#{assoc.name}__#{assoc_method}".to_sym
         end
 
-        c[:data_index] ||= TYPE_EDITOR_MAP[type] unless TYPE_EDITOR_MAP[type].nil?
-        c[:hidden] = true if c[:data_index] == data_class.primary_key.to_sym && c[:hidden].nil? # hide ID column by default
+        c[:name] ||= TYPE_EDITOR_MAP[type] unless TYPE_EDITOR_MAP[type].nil?
+        c[:hidden] = true if c[:name] == data_class.primary_key.to_sym && c[:hidden].nil? # hide ID column by default
         
-        c.reject{ |k,v| k == :data_index }.empty? ? c[:data_index] : c
+        c.reject{ |k,v| k == :name }.empty? ? c[:name] : c
       end
       
       columns_for_create
@@ -378,7 +412,7 @@ module Netzke
     end
     
     def normalize_column(field)
-      field.is_a?(Symbol) ? {:data_index => field} : field
+      field.is_a?(Symbol) ? {:name => field} : field
     end
     
   end

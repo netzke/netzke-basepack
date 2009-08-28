@@ -11,15 +11,14 @@ module Netzke
       base.class_eval do
         # replacing instance methods
         [:config, :initial_aggregatees, :js_config].each{ |m| alias_method_chain m, :config_tool }
-        # [:tools, :initial_aggregatees, :js_config].each{ |m| alias_method_chain m, :config_tool }
         
-        # API to commit the changes
-        api :commit
-
         # replacing class methods
         class << self
           alias_method_chain :js_extend_properties, :config_tool
         end
+
+        # API to commit the changes
+        api :commit
       end
 
       # if you include ConfigurationTool, you are supposed to provide configuration_widgets method which will returns an array of arrgeratees
@@ -113,7 +112,6 @@ module Netzke
   
     def config_tool_needed?
       config_without_config_tool[:ext_config][:config_tool] || config_without_config_tool[:ext_config][:mode] == :config
-      # ext_config[:config_tool] || ext_config[:mode] == :config
     end
   
   end

@@ -90,11 +90,11 @@ module Netzke
     # columns to be displayed by the FieldConfigurator (which is GridPanel-based)
     def self.config_columns
       [
-        {:data_index => :name, :type => :string, :editor => :combobox, :width => 200},
-        {:data_index => :hidden, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Excl"},
-        {:data_index => :xtype, :type => :string},
-        {:data_index => :value, :type => :string},
-        {:data_index => :field_label, :type => :string}
+        {:name => :name, :type => :string, :editor => :combobox, :width => 200},
+        {:name => :hidden, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Excl"},
+        {:name => :xtype, :type => :string},
+        {:name => :value, :type => :string},
+        {:name => :field_label, :type => :string}
       ]
     end
  

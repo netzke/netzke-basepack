@@ -1,6 +1,6 @@
 module Netzke
   class FieldModel < Hash
-    include ActiveRecordExtensions
+    include BasepackActiveRecord
     
     def self.new_from_hash(hsh)
       self.new.replace(hsh)

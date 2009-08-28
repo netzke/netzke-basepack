@@ -11,7 +11,7 @@ require 'netzke/grid_panel_api'
 require 'netzke/grid_panel_js'
 require 'netzke/grid_panel'
 
-require 'netzke/ar_ext'
+require 'netzke/basepack_active_record'
 # require 'netzke/column'
 
 class GridPanelTest < ActiveSupport::TestCase

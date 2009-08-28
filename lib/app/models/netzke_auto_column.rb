@@ -27,7 +27,7 @@ class NetzkeAutoColumn < ActiveRecord::Base
     
     normalized_config_columns = []
     @@widget.class.config_columns.each do |mc|
-      column_hash = mc.is_a?(Symbol) ? {:data_index => mc} : mc
+      column_hash = mc.is_a?(Symbol) ? {:name => mc} : mc
       column_hash[:type] ||= :string
       normalized_config_columns << column_hash
     end
@@ -61,7 +61,7 @@ class NetzkeAutoColumn < ActiveRecord::Base
     # create the table with the fields
     self.connection.create_table('netzke_auto_columns') do |t|
       normalized_config_columns.each do |mc|
-        t.column mc[:data_index], mc[:type]
+        t.column mc[:name], mc[:type]
       end
     end
     # self.connection.create_table('netzke_auto_columns') do |t|
