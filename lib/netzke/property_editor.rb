@@ -4,16 +4,7 @@ module Netzke
     def initialize(*args)
       super
       @widget = @passed_config[:widget]
-      
     end
-    
-    # def default_config
-    #   super.deep_merge({
-    #     :ext_config => {
-    #       :bbar => nil
-    #     }
-    #   })
-    # end
     
     def independent_config
       res = super
@@ -40,6 +31,14 @@ module Netzke
     def self.js_extend_properties
       {
         :label_width => 200,
+        
+        # Disable the 'gear' tool for now
+        :gear => <<-END_OF_JAVASCRIPT.l,
+          function(){
+            this.feedback("You can't configure property editor (yet)");
+          }
+        END_OF_JAVASCRIPT
+        
         :restore_defaults => <<-END_OF_JAVASCRIPT.l,
           function(){
             this.restoreDefaults();
@@ -102,9 +101,5 @@ module Netzke
       {}
     end
     
-    def method_name
-      
-    end
-
   end
 end

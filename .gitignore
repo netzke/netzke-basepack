@@ -1,5 +1,6 @@
 .DS_Store
 *.log
+Manifest
 pkg
 doc
 test/app_root/vendor/plugins/netzke-core

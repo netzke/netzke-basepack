@@ -1,4 +1,8 @@
+require 'acts_as_list'
 class NetzkeAutoColumn < ActiveRecord::Base
+  
+  acts_as_list
+  default_scope :order => "position"
 
   # Returns an array of column configuration hashes (without the "id" attribute)
   def self.all_columns
@@ -15,67 +19,30 @@ class NetzkeAutoColumn < ActiveRecord::Base
       end
       column_hash
     end
-    
   end
 
   # Build the table with columns for this widget
   def self.rebuild_table
     connection.drop_table('netzke_auto_columns') if table_exists?
   
-    column_types_to_create = {} # columns that must be in the table
-    columns_to_expose = []
-    
     normalized_config_columns = []
+    
     @@widget.class.config_columns.each do |mc|
       column_hash = mc.is_a?(Symbol) ? {:name => mc} : mc
       column_hash[:type] ||= :string
       normalized_config_columns << column_hash
     end
     
-    # @@widget.columns.each do |c|
-    #   c.each_pair do |k,v|
-    #     column_hash = {:name => k}
-    #     meta_data = v.is_a?(Hash) && v.delete(:meta)
-    #     if meta_data
-    #       column_hash.merge!(meta_data)
-    #     end
-    #     columns_to_expose.reject!{ |c| c[:name] == k }
-    #     
-    #     columns_to_expose << column_hash 
-    #     
-    #     column_type = case v.class.to_s
-    #     when "TrueClass"
-    #       :boolean
-    #     when "FalseClass"
-    #       :boolean
-    #     when "Fixnum"
-    #       :integer
-    #     else
-    #       :string
-    #     end
-    # 
-    #     column_types_to_create[k] = {:type => column_type}
-    #   end
-    # end
-  
     # create the table with the fields
     self.connection.create_table('netzke_auto_columns') do |t|
       normalized_config_columns.each do |mc|
-        t.column mc[:name], mc[:type]
+        t.column mc[:name], mc[:type], :default => mc[:default]
       end
+      t.column :position, :integer
     end
-    # self.connection.create_table('netzke_auto_columns') do |t|
-    #   column_types_to_create.each_pair do |k,v|
-    #     t.column k, v[:type]
-    #   end
-    # end
-  
+
     # populate the table with data
-    logger.debug "!!! @@widget.normalized_columns: #{@@widget.normalized_columns.inspect}\n"
     NetzkeAutoColumn.create @@widget.normalized_columns.map(&:deebeefy_values)
-    
-    # netzke_expose_attributes :id, *columns_to_expose
-    netzke_expose_attributes :id, *normalized_config_columns
     
   end
 

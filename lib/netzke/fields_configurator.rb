@@ -14,14 +14,13 @@ module Netzke
     def default_config
       super.deep_merge({
         :name              => 'columns',
-        # :widget_class_name => "GridPanel",
         :data_class_name   => "NetzkeAutoColumn",
-        :persistent_config => false,
         :ext_config        => {
           :header => false,
           :enable_extended_search => false,
-          :enable_edit_in_form => false
-          # :bbar => super[:ext_config][:bbar] << "-" << "defaults"
+          :enable_edit_in_form => false,
+          :enable_rows_reordering => GridPanel.config[:rows_reordering_available],
+          :enable_pagination => false
         },
       })
     end
@@ -38,8 +37,19 @@ module Netzke
       res
     end
         
+    def predefined_columns
+      [{:name => :id}, *config[:widget].class.config_columns]
+    end
+        
     def self.js_extend_properties
       {
+        # Disable the 'gear' tool for now
+        :gear => <<-END_OF_JAVASCRIPT.l,
+          function(){
+            this.feedback("You can't configure configurator (yet)");
+          }
+        END_OF_JAVASCRIPT
+        
         # we need to provide this function so that the server-side commit would happen
         :get_commit_data => <<-END_OF_JAVASCRIPT.l,
           function(){
@@ -60,7 +70,7 @@ module Netzke
     end
     
     def load_defaults(params)
-      config[:widget].persistent_config[:layout__columns] = config[:widget].default_db_fields
+      config[:widget].persistent_config[:layout__columns] = config[:widget].default_columns
       NetzkeAutoColumn.rebuild_table
       {:load_store_data => get_data, :reconfigure => js_config}
     end
@@ -68,8 +78,9 @@ module Netzke
     def commit(params)
       defaults_hash = config[:widget].class.config_columns.inject({}){ |r, c| r.merge!(c[:name] => c[:default]) }
       config[:widget].persistent_config[:layout__columns] = NetzkeAutoColumn.all_columns.map do |c| 
-        c.reject!{ |k,v| defaults_hash[k.to_sym].to_s == v.to_s } # reject all keys that are same as defaults
-        c = c["data_index"] || c["name"] if c.keys.count == 1 # denormalize the column
+        # reject all keys that are 1) same as defaults, 2) 'position'
+        c.reject!{ |k,v| defaults_hash[k.to_sym].to_s == v.to_s || k == 'position'} 
+        c = c["name"] if c.keys.count == 1 # denormalize the column
         c
       end
       {}

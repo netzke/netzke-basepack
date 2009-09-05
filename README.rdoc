@@ -5,7 +5,7 @@ Note that if you would like to modify this code or experiment with it, you may b
 
 = Prerequisites
 1. Rails >= 2.2
-2. Ext JS >= 2.0: its root *must* be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder): 
+2. Ext JS >= 2.0: its root *must* be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder):
     cd public && ln -s ~/Developer/extjs/ext-2.2 extjs
 
 3. acts_as_list plugin must be installed: 
@@ -84,4 +84,4 @@ TODO: this part will be covered later
 = Credentials
 Testing done with the help of http://github.com/pluginaweek/plugin_test_helper
 
-Copyright (c) 2008-2009 Sergei Kozlov, released under the LGPL 3.0
+Copyright (c) 2008-2009 Sergei Kozlov, released under the MIT license

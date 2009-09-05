@@ -1,9 +1,8 @@
-module Netzke
+module Netzke::Plugins
   # Include this module into any widget where you want a "gear" tool button in the top toolbar 
   # which will triggger a modal window, which will load the ConfigurationPanel TabPanel-based 
-  # widget, which in its turn will contain all the aggregatees specified in "configuration_widgets" 
+  # widget, which in its turn will contain all the aggregatees specified in widget's "configuration_widgets" 
   # method (which *must* be defined)
-  
   module ConfigurationTool
     def self.included(base)
       base.extend ClassMethods
@@ -40,15 +39,17 @@ module Netzke
                 closeAction:'destroy',
                 buttons:[{
                   text:'OK',
+                  disabled: !this.configurable,
+                  tooltip: this.configurable ? null : "No dynamic configuration for this component",
                   handler:function(){
-                    this.ownerCt.closeRes = 'OK'; 
-                    this.ownerCt.close();
+                    w.closeRes = 'OK'; 
+                    w.close();
                   }
                 },{
                   text:'Cancel',
                   handler:function(){
-                    this.ownerCt.closeRes = 'cancel'; 
-                    this.ownerCt.close();
+                    w.closeRes = 'cancel'; 
+                    w.close();
                   }
                 }]
 
@@ -80,13 +81,15 @@ module Netzke
       return orig_config unless config_tool_needed?
       orig_config.deep_merge({
         :ext_config => {
-          :tools => orig_config[:ext_config][:tools].clone << "gear"
+          :tools => orig_config[:ext_config][:tools].clone << "gear",
+          :header => true
         }
       })
     end
 
     def initial_aggregatees_with_config_tool
       res = initial_aggregatees_without_config_tool
+      
       # Add the ConfigurationPanel as aggregatee, which in its turn aggregates widgets from the 
       # configuration_widgets method
       res.merge!(:configuration_panel => {
@@ -107,7 +110,7 @@ module Netzke
   
     def js_config_with_config_tool
       orig_config = js_config_without_config_tool
-      config_tool_needed? ? orig_config.merge({:header => true}) : orig_config
+      orig_config.merge(:configurable => config[:persistent_config])
     end
   
     def config_tool_needed?

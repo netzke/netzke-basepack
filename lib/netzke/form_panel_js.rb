@@ -15,12 +15,15 @@ module Netzke
           :auto_scroll    => true,
           :label_width    => 150,
           :default_type   => 'textfield',
+          # :label_align => 'top',
 
           :init_component => <<-END_OF_JAVASCRIPT.l,
             function(){
               var recordFields = []; // Record
               this.items = [];
               var index = 0;
+              
+              // Process columns
               Ext.each(this.clmns, function(field){
                 if (typeof field == 'string') field = {name:field}; // normalize field
                 if (!field.hidden || field.name == 'id') {
@@ -80,6 +83,7 @@ module Netzke
               this.form.loadRecord(this.reader.readRecords({data:[values]}).records[0]);
             }
           END_OF_JAVASCRIPT
+
           # :load_record => <<-END_OF_JAVASCRIPT.l,
           #   function(id, neighbour){
           #     var proxy = new Ext.data.HttpProxy({url:this.initialConfig.api.load});
@@ -90,41 +94,27 @@ module Netzke
           #     }, this)
           #   }
           # END_OF_JAVASCRIPT
-          # :afterlayout_handler => <<-END_OF_JAVASCRIPT.l,
+          
+          # :previous => <<-END_OF_JAVASCRIPT.l,
           #   function() {
-          #     // Load initial data into the form
-          #     // if (this.initialConfig.recordData){
-          #     //   var record = this.reader.readRecord(this.initialConfig.recordData);
-          #     //   this.form.loadRecord(record);
-          #     // }
+          #     var currentId = this.form.getValues().id;
+          #     this.loadRecord(currentId, 'previous');
           #   }
           # END_OF_JAVASCRIPT
-          :refresh=> <<-END_OF_JAVASCRIPT.l,
-            function() {
-              this.feedback('Implement me!');
-            }
-          END_OF_JAVASCRIPT
-          
-          :previous => <<-END_OF_JAVASCRIPT.l,
-            function() {
-              var currentId = this.form.getValues().id;
-              this.loadRecord(currentId, 'previous');
-            }
-          END_OF_JAVASCRIPT
-          
-          :next => <<-END_OF_JAVASCRIPT.l,
-            function() {
-              var currentId = this.form.getValues().id;
-              this.loadRecord(currentId, 'next');
-            }
-          END_OF_JAVASCRIPT
+          # 
+          # :next => <<-END_OF_JAVASCRIPT.l,
+          #   function() {
+          #     var currentId = this.form.getValues().id;
+          #     this.loadRecord(currentId, 'next');
+          #   }
+          # END_OF_JAVASCRIPT
           
           :apply => <<-END_OF_JAVASCRIPT.l
             function() {
               if (this.fireEvent('apply', this)) {
                 var values = this.form.getValues();
                 for (var k in values) {
-                  if (values[k] == "") {values[k] = null}
+                  if (values[k] == "") {delete values[k]}
                 }
                 this.submit(Ext.apply((this.baseParams || {}), {data:Ext.encode(values)}));
               }

@@ -62,7 +62,7 @@ module Netzke
         :load_item_widget => <<-END_OF_JAVASCRIPT.l
           function(panel) {
             if (!panel.getWidget()) {
-              if (preloadedItemConfig = this.initialConfig[panel.widget+"Config"]){
+              if (preloadedItemConfig = this.initialConfig[panel.widget.camelize()+"Config"]){
                 // preloaded widget only needs to be instantiated, as its class and configuration have already been loaded
                 panel.add(new Ext.netzke.cache[preloadedItemConfig.widgetClassName](preloadedItemConfig));
                 panel.doLayout(); // always needed after adding a component
@@ -93,7 +93,7 @@ module Netzke
     def js_config
       super.merge({
         :items => fit_panels,
-        :active_tab => id_name + '_active'
+        :active_tab => id_name + '_active' # id of the fit panel that is active
       })
     end
 
@@ -101,7 +101,7 @@ module Netzke
     def initialize(*args)
       super
       
-      # to remove duplicated active panels
+      # to remove duplicated active tabs
       first_active = nil
 
       items.each_with_index do |item, i|
@@ -134,6 +134,7 @@ module Netzke
       res
     end
 
+    # "Fit panels" - Panels with layout 'fit' that serve as containers for (dynamically) loaded widgets
     def fit_panels
       res = []
       items.each_with_index do |item, i|

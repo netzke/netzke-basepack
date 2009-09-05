@@ -13,7 +13,7 @@ module Netzke
       end
       {
         :update_new_records => mod_records[:create], 
-        :update_mod_records => mod_records[:update],
+        :update_mod_records => mod_records[:update] || {},
         :feedback => @flash
       }
     end
@@ -21,7 +21,7 @@ module Netzke
     def get_data(params = {})
       if !ext_config[:prohibit_read]
         records = get_records(params)
-        {:data => records.map{|r| r.to_array(normalized_columns)}, :total => ext_config[:rows_per_page] && records.total_entries}
+        {:data => records.map{|r| r.to_array(normalized_columns)}, :total => ext_config[:enable_pagination] && records.total_entries}
       else
         flash :error => "You don't have permissions to read data"
         {:feedback => @flash}
@@ -78,13 +78,13 @@ module Netzke
       @search ||= begin
         raise ArgumentError, "No data_class_name specified for widget '#{name}'" if !config[:data_class_name]
 
-        # make params coming from the browser understandable by searchlogic
+        # make params coming from Ext grid filters understandable by searchlogic
         search_params = normalize_params(params)
 
         # merge with conditions coming from the config
         search_params[:conditions].deep_merge!(config[:conditions] || {})
 
-        # merge with extra conditions (in searchlogic format)
+        # merge with extra conditions (in searchlogic format, come from the extended search form)
         search_params[:conditions].deep_merge!(
           normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
         ) if params[:extra_conditions]
@@ -106,15 +106,14 @@ module Netzke
     end
 
     def configuration_panel__columns__get_combobox_options(params)
-      # data_class = config[:data_class_name].constantize
       query = params[:query]
       
       data_arry = case params[:column]
-      when "data_index"
-        data_class.column_names + data_class.netzke_virtual_attributes.map(&:to_s)
-      else
-        raise RuntimeError, "Don't know about options for column '#{params[:column]}'"
-      end
+                  when "name"
+                    predefined_columns.map{ |c| c[:name].to_s }
+                  else
+                    raise RuntimeError, "Don't know about options for column '#{params[:column]}'"
+                  end
       
       {:data => data_arry.grep(/^#{query}/).map{ |n| [n] }}.to_nifty_json
     end
@@ -167,11 +166,18 @@ module Netzke
         flash :error => "You don't have permissions to #{operation} data"
       end
       mod_records
-      # mod_record_ids
     end
 
     # get records
     def get_records(params)
+      # Restore params from widget_session if requested
+      if params[:with_last_params]
+        params = widget_session[:last_params]
+      else
+        # remember the last params
+        widget_session[:last_params] = params
+      end
+      
       search = get_search(params)
       
       # sorting
@@ -183,7 +189,7 @@ module Netzke
       end
       
       # pagination
-      if ext_config[:rows_per_page]
+      if ext_config[:enable_pagination]
         per_page = ext_config[:rows_per_page]
         page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
         search.paginate(:per_page => per_page, :page => page)
@@ -204,20 +210,33 @@ module Netzke
       end
       res
     end
+    
+    # Move rows 
+    def move_rows(params)
+      if defined?(ActsAsList) && data_class.ancestors.include?(ActsAsList::InstanceMethods)
+        ids = JSON.parse(params[:ids]).reverse
+        ids.each_with_index do |id, i|
+          r = data_class.find(id)
+          r.insert_at(params[:new_index].to_i + i + 1)
+        end
+      else
+        raise RuntimeError, "Data class should 'acts_as_list' to support moving rows"
+      end
+      {}
+    end
 
     # When providing the edit_form aggregatee, fill in the form with the requested record
     def load_aggregatee_with_cache(params)
       if params[:id] == 'edit_form'
-        record = config[:data_class_name].constantize.find(params[:record_id])
-        super(params, {:record => record})
+        super(params.merge(:config => {:record_id => params[:record_id]}.to_json))
       else
         super
       end
     end
     
-    # Search scopes, searchlogic format
+    # Search scopes, in searchlogic format
     def scopes
-      @scopes ||= (config[:scopes] || []) + (widget_session[:scopes] || [])
+      @scopes ||= config[:scopes] || []
     end
 
     # Converts Ext.grid.GridFilters filters to searchlogic conditions, e.g.
@@ -242,7 +261,7 @@ module Netzke
     def convert_filters(column_filter)
       res = {}
       column_filter.each_pair do |k,v|
-        field = v["field"]
+        field = v["field"].dup
         case v["data"]["type"]
         when "string"
           field << "_contains"

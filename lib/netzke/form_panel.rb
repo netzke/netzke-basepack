@@ -1,9 +1,20 @@
 module Netzke
+  # = FormPanel
+  # 
+  # Represents Ext.form.FormPanel
+  # 
   # == Configuration
-  #   * <tt>:record</tt> - initial record to be displayd in the form
+  # * <tt>:data_class_name</tt> - name of the ActiveRecord model that provides data to this GridPanel.
+  # * <tt>:record</tt> - record to be displayd in the form. Takes precedence over <tt>:record_id</tt>
+  # * <tt>:record_id</tt> - id of the record to be displayd in the form. Also see <tt>:record</tt>
+  # 
+  # In the <tt>:ext_config</tt> hash (see Netzke::Base) the following FormPanel specific options are available:
+  # 
+  # * <tt>:mode</tt> - when set to <tt>:config</tt>, FormPanel loads in configuration mode
   class FormPanel < Base
     include Netzke::FormPanelJs  # javascript (client-side)
     include Netzke::FormPanelApi # API (server-side)
+    include Netzke::DataAccessor # some code shared between GridPanel, FormPanel, and other widgets that use database attributes
 
     # Class-level configuration with defaults
     def self.config
@@ -13,7 +24,7 @@ module Netzke
         :default_config => {
           :ext_config => {
             :bbar => %w{ apply },
-            :tools => %w{ refresh }
+            :tools => %w{ }
           },
           :persistent_config => false
         }
@@ -33,7 +44,8 @@ module Netzke
     
     def initialize(*args)
       super
-      @record = config[:record]
+      apply_helpers
+      @record = config[:record] || data_class && data_class.find_by_id(config[:record_id])
     end
     
     def data_class
@@ -48,7 +60,8 @@ module Netzke
         :name              => 'fields',
         :widget_class_name => "FieldsConfigurator",
         :active            => true,
-        :widget            => self
+        :widget            => self,
+        :persistent_config => true
       }
 
       res << {
@@ -61,10 +74,6 @@ module Netzke
       res
     end
 
-    def tools
-      %w{ refresh }
-    end
-    
     def actions
       {
         :apply => {:text => 'Apply'}
@@ -73,10 +82,6 @@ module Netzke
     
     def columns
       @columns ||= get_columns.convert_keys{|k| k.to_sym}
-    end
-    
-    def normalized_columns
-      @normalized_columns ||= normalize_fields(columns)
     end
     
     # parameters used to instantiate the JS object
@@ -94,23 +99,44 @@ module Netzke
         {:name => :hidden, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Excl"},
         {:name => :xtype, :type => :string},
         {:name => :value, :type => :string},
-        {:name => :field_label, :type => :string}
+        {:name => :field_label, :type => :string},
+        {:name => :input_type, :type => :string}
       ]
     end
  
-    protected
+    def self.property_fields
+      res = [
+        {:name => :ext_config__title,               :type => :string},
+        {:name => :ext_config__header,              :type => :boolean, :default => true}
+         # {:name => :ext_config__bbar,              :type => :json},
+        # {:name => :ext_config__prohibit_create,     :type => :boolean},
+        # {:name => :ext_config__prohibit_update,     :type => :boolean},
+        # {:name => :ext_config__prohibit_delete,     :type => :boolean},
+        # {:name => :ext_config__prohibit_read,       :type => :boolean}
+      ]
+      
+      res
+      
+    end
+ 
+    # Normalized columns
+    def normalized_columns
+      @normalized_columns ||= normalize_columns(columns)
+    end
+    
+ 
     def get_columns
       if config[:persistent_config]
-        persistent_config['layout__columns'] ||= default_fields
-        res = normalize_array_of_fields(persistent_config['layout__columns'])
+        persistent_config['layout__columns'] ||= default_columns
+        res = normalize_array_of_columns(persistent_config['layout__columns'])
       else
-        res = default_fields
+        res = default_columns
       end
 
       # merge values for each field if the record is specified
       @record && res.map! do |c|
-        value = @record.send(normalize_field(c)[:name])
-        value.nil? ? c : normalize_field(c).merge(:value => value)
+        value = @record.send(normalize_column(c)[:name])
+        value.nil? ? c : normalize_column(c).merge(:value => value)
       end
 
       res
@@ -126,43 +152,20 @@ module Netzke
       # :string => :textfield
     }
     
-    def normalize_array_of_fields(arry)
-      arry.map do |f| 
-        if f.is_a?(Hash)
-          f.symbolize_keys
-        else
-          f.to_sym
-        end
-      end
-    end
-    
-    def normalize_fields(items)
-      items.map{|c| normalize_field(c)}
-    end
-    
-    def normalize_field(field)
-      field.is_a?(Symbol) ? {:name => field} : field
-    end
-    
-    def default_fields
-      # columns exposed from the data class
-      exposed_columns = normalize_fields(data_class.netzke_exposed_attributes) if data_class
-
+    def default_columns
       # columns specified in widget's config
-      columns_from_config = config[:columns] && normalize_fields(config[:columns])
+      columns_from_config = config[:columns] && normalize_columns(config[:columns])
       
       if columns_from_config
         # reverse-merge each column hash from config with each column hash from exposed_attributes (columns from config have higher priority)
-        if exposed_columns
-          for c in columns_from_config
-            corresponding_exposed_column = exposed_columns.find{ |k| k[:name] == c[:name] }
-            c.reverse_merge!(corresponding_exposed_column) if corresponding_exposed_column
-          end
+        for c in columns_from_config
+          corresponding_exposed_column = predefined_columns.find{ |k| k[:name] == c[:name] }
+          c.reverse_merge!(corresponding_exposed_column) if corresponding_exposed_column
         end
         columns_for_create = columns_from_config
-      elsif exposed_columns
+      elsif predefined_columns
         # we didn't have columns configured in widget's config, so, use the columns from the data class
-        columns_for_create = exposed_columns
+        columns_for_create = predefined_columns
       else
         raise ArgumentError, "No columns specified for widget '#{id_name}'"
       end
@@ -210,6 +213,6 @@ module Netzke
     #   %w{ read update }
     # end
     
-    include ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
+    include Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
   end
 end

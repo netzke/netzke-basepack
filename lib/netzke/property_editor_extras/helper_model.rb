@@ -111,10 +111,6 @@ module Netzke
           # default_value = self.class.widget.flat_default_config(method_name_without_equal_sign)
           initial_value = self.class.widget.flat_initial_config(method_name_without_equal_sign)
       
-          # Rails.logger.debug "!!! current_value: #{current_value.inspect}"
-          # Rails.logger.debug "!!! new_value: #{new_value.inspect}"
-          # Rails.logger.debug "!!! initial_value: #{initial_value.inspect}"
-      
           new_value = nil if new_value == initial_value
           # Rails.logger.debug "!!! new_value: #{new_value.inspect}"
           NetzkePreference[method_name_without_equal_sign] = new_value

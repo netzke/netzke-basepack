@@ -1,8 +1,8 @@
 require 'test_helper'
 
-require 'netzke/basepack_active_record'
+require 'netzke/active_record/basepack'
 
-class ArExtTest < ActiveSupport::TestCase
+class ActiveRecordBasepackTest < ActiveSupport::TestCase
   fixtures :cities, :countries, :continents
 
   # test "default column and field configs" do
@@ -44,6 +44,7 @@ class ArExtTest < ActiveSupport::TestCase
   end
 
   test "to array" do
+    Book.send(:include, Netzke::ActiveRecord::DataAccessor)
     b = Book.create({:title => 'Rayuela', :genre_id => 200, :amount => 1000})
     columns = [:recent, {:name => :title}, {:name => :amount}, :genre_id]
     assert_equal(['Yes', 'Rayuela', 1000, 200], b.to_array(columns))

@@ -56,9 +56,8 @@ module Netzke
     end
     
     def configuration_panel__fields__get_combobox_options(params)
-      data_class = config[:data_class_name].constantize
       query = params[:query]
-      {:data => (data_class.column_names + data_class.netzke_virtual_attributes.map(&:to_s)).grep(/^#{query}/).map{ |n| [n] }}.to_nifty_json
+      {:data => (predefined_columns.map{ |c| c[:name].to_s }).grep(/^#{query}/).map{ |n| [n] }}.to_nifty_json
     end
     
     # Returns array of form values according to the configured columns

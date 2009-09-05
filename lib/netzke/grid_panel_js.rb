@@ -18,27 +18,18 @@ module Netzke
         'Ext.grid.EditorGridPanel'
       end
 
-      # Optional filters
-      def js_filters_code
-        <<-END_OF_JAVASCRIPT if config[:column_filters_available]
-        if (this.enableColumnFilters) {
-          var filters = [];
-          Ext.each(normClmns, function(c){
-            filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
-          });
-          var gridFilters = new Ext.grid.GridFilters({filters:filters});
-          this.plugins.push(gridFilters);
-        }
-        END_OF_JAVASCRIPT
-      end
-
       # Ext.Component#initComponent, built up from pices (dependent on class configuration)
       def js_init_component
-        # Edit in form related events
+        
+        # Optional "edit in form"-related events
         edit_in_form_events = <<-END_OF_JAVASCRIPT if config[:edit_in_form_available]
           if (this.enableEditInForm) {
             this.getSelectionModel().on('selectionchange', function(selModel){
-              this.actions.editInForm.setDisabled(!selModel.hasSelection());
+              // Disable "edit in form" button if new record is present in selection
+              var disabled = !selModel.each(function(r){
+                if (r.isNew) { return false; }
+              });
+              this.actions.editInForm.setDisabled(disabled);
             }, this);
           }
         END_OF_JAVASCRIPT
@@ -61,11 +52,14 @@ module Netzke
                 }
               }
             });
-            delete this.clmns; // we don't need them anymore
 
+            delete this.clmns; // we don't need them anymore
+            
             var cmConfig = []; // column model config - we'll use it later to create the ColumnModel
             this.plugins = []; // checkbox colums is a special case, being a plugin
 
+            var filters = [];
+            
             // Run through columns
             Ext.each(normClmns, function(c){
               // Apply default column config
@@ -83,6 +77,11 @@ module Netzke
               } else {
                 c.editor = {xtype: 'textfield'}
               }
+              
+              // collect filters
+              if (c.withFilters){
+                filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
+              }
 
               if (c.editor && c.editor.xtype == 'checkbox') {
                 // Special case of checkbox column
@@ -90,19 +89,21 @@ module Netzke
                 this.plugins.push(plugin);
                 cmConfig.push(plugin);
               } else {
+                // "normal" column, not a plugin
                 if (!c.readOnly && !this.prohibitUpdate) {
-                  // c.editor either contains xtype of the editor, or complete config of it
+                  // c.editor contains complete config of the editor
+                  var xtype = c.editor.xtype;
                   c.editor = Ext.ComponentMgr.create(Ext.apply({
                     parentId:this.id,
                     name: c.name,
-                    // fieldConfig:c,
                     selectOnFocus:true
                   }, c.editor));
                 }
 
-                // Set the renderer
+                // set the renderer
                 c.renderer = Ext.netzke.normalizedRenderer(c.renderer);
                 
+                // add to the list
                 cmConfig.push(c);
               }
 
@@ -112,12 +113,25 @@ module Netzke
             this.cm = new Ext.grid.ColumnModel(cmConfig);
             this.cm.on('hiddenchange', this.onColumnHiddenChange, this);
 
-            /* Done with columns */
-
+            /* ... and done with columns */
+            
+            // Filters
+            if (this.enableColumnFilters) {
+              this.plugins.push(new Ext.grid.GridFilters({filters:filters}));
+            }
+            
             // Create Ext.data.Record constructor specific for our particular column configuration
             this.recordConfig = [];
             Ext.each(normClmns, function(column){this.recordConfig.push({name:column.name});}, this);
             this.Row = Ext.data.Record.create(this.recordConfig);
+
+            // Drag'n'Drop
+            if (this.enableRowsReordering){
+              this.ddPlugin = new Ext.ux.dd.GridDragDropRowOrder({
+                  scrollable: true, // enable scrolling support (default is false)
+              });
+              this.plugins.push(this.ddPlugin);
+            }
 
             // Explicitely create the connection to get grid's data, 
             // because we don't want the app-wide Ext.Ajax to be used,
@@ -153,8 +167,8 @@ module Netzke
             });
 
             // Normalize bottom bar
-            this.bbar = (this.rowsPerPage) ? new Ext.PagingToolbar({
-              pageSize : this.rowsPerPage, 
+            this.bbar = (this.enablePagination) ? new Ext.PagingToolbar({
+              pageSize : this.rowsPerPage,
               items : this.bbar ? ["-"].concat(this.bbar) : [],
               store : this.store, 
               emptyMsg: 'Empty'
@@ -163,13 +177,9 @@ module Netzke
             // Selection model
             this.sm = new Ext.grid.RowSelectionModel();
             
-            // Filters
-            #{js_filters_code}
-            
             // Now let Ext.grid.EditorGridPanel do the rest
             // Original initComponent
             Ext.netzke.cache.GridPanel.superclass.initComponent.call(this);
-            
             
             // Set the events
             this.on('columnresize', this.onColumnResize, this);
@@ -203,6 +213,14 @@ module Netzke
               this.actions.edit.setDisabled(selModel.getCount() != 1 || this.prohibitUpdate);
             }, this);
             
+            // Drag n Drop event
+            if (this.enableRowsReordering){
+              this.ddPlugin.on('afterrowmove', this.onAfterRowMove, this);
+            }
+            
+            // GridView
+            this.getView().getRowClass = this.defaultGetRowClass;
+            
             #{edit_in_form_events}
           }
           
@@ -220,10 +238,10 @@ module Netzke
           :load_mask        => true,
           :auto_scroll      => true,
 
-          :default_column_config => config_columns.inject({}){ |r, c| r.merge!(c[:name] => c[:default]) },
+          :default_column_config => config_columns.inject({}){ |r, c| c.is_a?(Hash) ? r.merge(c[:name] => c[:default]) : r },
           
           :init_component => js_init_component.l,
-
+          
           :load_exception_handler => <<-END_OF_JAVASCRIPT.l,
           function(proxy, options, response, error){
             if (response.status == 200 && (responseObject = Ext.decode(response.responseText)) && responseObject.flash){
@@ -255,12 +273,8 @@ module Netzke
           :add => <<-END_OF_JAVASCRIPT.l,
             function(){
               var rowConfig = {};
-              // Ext.each(this.initialConfig.columns, function(c){
-              //   rowConfig[c.name] = c.defaultValue || ''; // FIXME: if the user is happy with all the defaults, the record won't be 'dirty'
-              // }, this);
-        
               var r = new this.Row(rowConfig); // TODO: add default values
-              r.is_new = true; // to distinguish new records
+              r.isNew = true; // to distinguish new records
               r.set('id', r.id); // otherwise later r.get('id') returns empty string
               this.stopEditing();
               this.store.add(r);
@@ -298,9 +312,18 @@ module Netzke
                   if (btn == 'yes') {
                     var records = [];
                     this.getSelectionModel().each(function(r){
-                      records.push(r.get('id'));
+                      if (r.isNew) {
+                        // this record is not know to server - simply remove from store
+                        this.store.remove(r);
+                      } else {
+                        records.push(r.get('id'));
+                      }
                     }, this);
-                    this.deleteData({records: Ext.encode(records)});
+
+                    if (records.length > 0){
+                      // call API
+                      this.deleteData({records: Ext.encode(records)});
+                    }
                   }
                 }, this);
               }
@@ -327,26 +350,55 @@ module Netzke
           :update_records => <<-END_OF_JAVASCRIPT.l,
             function(records, mod){
               if (!mod) {mod = false;}
-              var modRecords = [].concat(this.store.getModifiedRecords()); // there must be a better way to clone an array...
+              var modRecordsInGrid = [].concat(this.store.getModifiedRecords()); // there must be a better way to clone an array...
+
               // replace arrays of data in the args object with Ext.data.Record objects
               for (var k in records){
                 records[k] = this.store.reader.readRecords([records[k]]).records[0];
               }
               
               // for each new record write the data returned by the server, and commit the record
-              Ext.each(modRecords, function(r){
-                if (mod ^ r.is_new) {
-                  var newData = records[r.get('id')];
-                  // there must be a faster way to do this
-                  for (var k in r.data){
-                    r.set(k, newData.get(k));
-                    r.commit();
-                    r.is_new = false;
+              Ext.each(modRecordsInGrid, function(recordInGrid){
+                if (mod ^ recordInGrid.isNew) {
+                  // new data that the server sent us to update this record
+                  var newData = records[recordInGrid.get('id')];
+                  
+                  if (newData){
+                    for (var k in newData.data){
+                      recordInGrid.set(k, newData.get(k));
+                    }
+
+                    recordInGrid.isNew = false;
+                    recordInGrid.commit();
                   }
+                  
                 }
               });
               
+              // clear the selections
+              this.getSelectionModel().clearSelections();
+
+              // check if there are still records with errors
+              var modRecords = this.store.getModifiedRecords();
+              if (modRecords.length == 0) {
+                // if all records are accepted, reload the grid (so that eventual order/filtering is correct)
+                this.store.reload();
+                
+                // ... and set default getRowClass function
+                this.getView().getRowClass = this.defaultGetRowClass;
+              } else {
+                this.getView().getRowClass = function(r){
+                  return r.dirty ? "grid-dirty-record" : ""
+                }
+              }
               
+              this.getView().refresh();
+            }
+          END_OF_JAVASCRIPT
+          
+          :default_get_row_class => <<-END_OF_JAVASCRIPT.l,
+            function(r){
+              return r.isNew ? "grid-dirty-record" : ""
             }
           END_OF_JAVASCRIPT
           
@@ -357,7 +409,7 @@ module Netzke
 
               Ext.each(this.store.getModifiedRecords(),
                 function(r) {
-                  if (r.is_new) {
+                  if (r.isNew) {
                     newRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
                   } else {
                     updatedRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
@@ -445,7 +497,7 @@ module Netzke
               e.stopEvent();
               var coords = e.getXY();
               
-              if (!grid.getSelectionModel().hasSelection()) {
+              if (!grid.getSelectionModel().isSelected(rowIndex)) {
                 grid.getSelectionModel().selectRow(rowIndex);
               }
               
@@ -454,6 +506,16 @@ module Netzke
               });
               
               menu.showAt(coords);
+            }
+          END_OF_JAVASCRIPT
+          
+          :on_after_row_move => <<-END_OF_JAVASCRIPT.l,
+            function(dt, oldIndex, newIndex, records){
+          		var ids = [];
+          		// collect records ids
+          		Ext.each(records, function(r){ids.push(r.get('id'))});
+          		// call GridPanel's API
+          		this.moveRows({ids:Ext.encode(ids), new_index: newIndex});
             }
           END_OF_JAVASCRIPT
         }

@@ -19,3 +19,8 @@ left: -24px;
 .x-accordion-hd {
 	font-weight:bold;
 }
+
+/* highilght new records in grid */
+.grid-dirty-record {
+  background: #fdd;
+}
