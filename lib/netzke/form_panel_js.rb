@@ -84,16 +84,17 @@ module Netzke
             }
           END_OF_JAVASCRIPT
 
-          # :load_record => <<-END_OF_JAVASCRIPT.l,
-          #   function(id, neighbour){
-          #     var proxy = new Ext.data.HttpProxy({url:this.initialConfig.api.load});
-          #     proxy.load({id:id, neighbour:neighbour}, this.reader, function(data){
-          #       if (data){
-          #         this.form.loadRecord(data.records[0])
-          #       }
-          #     }, this)
-          #   }
-          # END_OF_JAVASCRIPT
+          :load_record => <<-END_OF_JAVASCRIPT.l,
+            function(id, neighbour){
+              this.load({id:id});
+              // var proxy = new Ext.data.HttpProxy({url:this.initialConfig.api.load});
+              // proxy.load({id:id, neighbour:neighbour}, this.reader, function(data){
+              //   if (data){
+              //     this.form.loadRecord(data.records[0])
+              //   }
+              // }, this)
+            }
+          END_OF_JAVASCRIPT
           
           # :previous => <<-END_OF_JAVASCRIPT.l,
           #   function() {

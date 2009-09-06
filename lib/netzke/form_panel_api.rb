@@ -37,14 +37,19 @@ module Netzke
     end
 
     # API handling form load
+    # def load(params)
+    #   klass = config[:data_class_name].constantize
+    #   case params[:neighbour]
+    #     when "previous" then @record = klass.previous(params[:id])
+    #     when "next"     then @record = klass.next(params[:id])
+    #     else                 @record = klass.find(params[:id])
+    #   end
+    #   {:data => [array_of_values]}
+    # end
+    
     def load(params)
-      klass = config[:data_class_name].constantize
-      case params[:neighbour]
-        when "previous" then @record = klass.previous(params[:id])
-        when "next"     then @record = klass.next(params[:id])
-        else                 @record = klass.find(params[:id])
-      end
-      {:data => [array_of_values]}
+      record = data_class && data_class.find_by_id(params[:id])
+      {:set_form_values => record.to_array(columns)}
     end
     
     # API that returns options for a combobox

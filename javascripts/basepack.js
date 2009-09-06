@@ -201,15 +201,7 @@ Ext.netzke.form.FileWithType = Ext.extend(Ext.form.Field, {
     this.isRendered = true;
     
     // this.updateHidden();
-  },
-  
-  // updateHidden:function() {
-  //   if(this.isRendered) {
-  //     var value = this.dateValue instanceof Date ? this.dateValue.format(this.hiddenFormat) : '';
-  //     this.el.dom.value = value;
-  //   }
-  // }
-  
+  }
 });
 
 Ext.reg('filewithtype', Ext.netzke.form.FileWithType);

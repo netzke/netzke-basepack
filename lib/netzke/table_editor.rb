@@ -1,15 +1,49 @@
 module Netzke
-  #
+  # == TableEditor CURRENTLY NOT SUPPORTED AND MAY BE BROKEN. Instead, use GridPanel's adding/editing records in form.
+  # 
   # A widget used for editing a DB table. It contains a grid and a form which may display different DB fields,
   # configured by grid_columns and form_fields configuration options respectively
-  #
   class TableEditor < BorderLayoutPanel
     
     def self.js_extend_properties
       {
+        :init_component => <<-END_OF_JAVASCRIPT.l,
+          function(){
+            Ext.netzke.cache.#{short_widget_class_name}.superclass.initComponent.call(this);
+
+            var setCentralWidgetEvents = function(){
+              this.getCenterWidget().on('addclick', function(){
+                this.getFormWidget().getForm().reset();
+
+                var firstEditableField = null;
+                this.getFormWidget().getForm().items.each(function(f){
+                  if (!f.hidden && !f.disabled){
+                    firstEditableField = f;
+                    return false; // break the loop
+                  }
+                })
+                if (firstEditableField) firstEditableField.focus();
+
+                this.getFormWidget().ownerCt.expand();
+
+                this.getCenterWidget().getSelectionModel().clearSelections();
+                this.lastSelectedRow = null;
+                return false;
+              }, this)
+
+              this.getCenterWidget().on('rowclick', this.onRowClick, this);
+            };
+
+            this.getCenterWidget().ownerCt.on('add', setCentralWidgetEvents, this);
+            setCentralWidgetEvents.call(this);
+            
+          }
+        END_OF_JAVASCRIPT
+        
+        
         :get_form_widget => <<-END_OF_JAVASCRIPT.l,
           function(){
-            return this.getRegionWidget(this.initialConfig.region);
+            return this.getRegionWidget(this.region);
           }
         END_OF_JAVASCRIPT
         
@@ -24,7 +58,7 @@ module Netzke
             var recordId = this.getCenterWidget().getStore().getAt(index).get('id');
             
             // load the form with the record id
-            this.getRegionWidget(this.initialConfig.region).loadRecord(recordId);
+            this.getRegionWidget(this.region).loadRecord(recordId);
           }
         END_OF_JAVASCRIPT
         
@@ -47,35 +81,6 @@ module Netzke
       super.merge({
         :region => config[:split_region]
       })
-    end
-
-    def self.js_after_constructor
-      super << <<-END_OF_JAVASCRIPT
-        var setCentralWidgetEvents = function(){
-          this.getCenterWidget().on('addclick', function(){
-            this.getFormWidget().getForm().reset();
-          
-            var firstEditableField = null;
-            this.getFormWidget().getForm().items.each(function(f){
-              if (!f.hidden && !f.disabled){
-                firstEditableField = f;
-                return false; // break the loop
-              }
-            })
-            if (firstEditableField) firstEditableField.focus();
-
-            this.getFormWidget().ownerCt.expand();
-
-            this.getCenterWidget().getSelectionModel().clearSelections();
-            this.lastSelectedRow = null;
-            return false;
-          }, this)
-        
-          this.getCenterWidget().on('rowclick', this.onRowClick, this);
-        };
-        this.getCenterWidget().ownerCt.on('add', setCentralWidgetEvents, this);
-        setCentralWidgetEvents.call(this);
-      END_OF_JAVASCRIPT
     end
 
     def initial_aggregatees

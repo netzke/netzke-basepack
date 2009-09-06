@@ -49,7 +49,6 @@ module Netzke
     end
     
     def data_class
-      # @data_class ||= config[:data_class_name].nil? ? raise(ArgumentError, "No data_class_name specified for widget #{id_name}") : config[:data_class_name].constantize
       @data_class ||= config[:data_class_name] && config[:data_class_name].constantize
     end
     
@@ -97,6 +96,7 @@ module Netzke
       [
         {:name => :name, :type => :string, :editor => :combobox, :width => 200},
         {:name => :hidden, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Excl"},
+        {:name => :disabled, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Dis"},
         {:name => :xtype, :type => :string},
         {:name => :value, :type => :string},
         {:name => :field_label, :type => :string},

@@ -121,6 +121,9 @@ module Netzke
         %w{Boolean Date List Numeric String}.unshift("").each do |f|
           res << ext_examples + "grid-filtering/grid/filter/#{f}Filter.js"
         end
+        
+        res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/filters.js"
+        
       end
       
       # DD
@@ -410,6 +413,9 @@ module Netzke
 
         # narrow column for checkbox
         c[:width] ||= 50 if c[:editor] == :checkbox
+        
+        # wider column for xdatetime
+        c[:width] ||= 120 if c[:editor] == :xdatetime
         
         # hide ID column
         c[:hidden] = true if c[:name] == data_class.primary_key.to_sym && c[:hidden].nil?
