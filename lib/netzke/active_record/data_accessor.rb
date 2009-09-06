@@ -7,7 +7,12 @@ module Netzke::ActiveRecord
       res = []
       for c in columns
         nc = c.is_a?(Symbol) ? {:name => c} : c
-        res << send(nc[:name]) unless nc[:excluded]
+        begin
+          res << send(nc[:name]) unless nc[:excluded]
+        rescue
+          # So that we don't crash at a badly configured column
+          res << "UNDEF"
+        end
       end
       res
     end

@@ -157,6 +157,7 @@ module Netzke
         {:name => :value},
         {:name => :header},
         {:name => :hidden,     :type => :boolean, :editor => :checkbox},
+        {:name => :read_only,  :type => :boolean, :editor => :checkbox, :header => "R"},
         {:name => :editor,     :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::FORM_FIELD_XTYPES}},
         {:name => :renderer,   :type => :string},
         # {:name => :renderer, :type => :string, :editor => {:xtype => :jsonfield}},
@@ -390,6 +391,7 @@ module Netzke
             if assoc_method_type
               c[:editor] ||= TYPE_EDITOR_MAP[assoc_method_type] == :checkbox ? :checkbox : :combobox
             end
+            type = :association
           end
         end
         
@@ -398,22 +400,29 @@ module Netzke
           c[:editor] ||= :combobox
           assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
           c[:name] = "#{assoc.name}__#{assoc_method}".to_sym
+          type = :association
         end
         
         # Some smart defaults
         
         # default editor, dependent on column type
         c[:editor] ||= TYPE_EDITOR_MAP[type] unless TYPE_EDITOR_MAP[type].nil?
+
+        # narrow column for checkbox
+        c[:width] ||= 50 if c[:editor] == :checkbox
         
         # hide ID column
         c[:hidden] = true if c[:name] == data_class.primary_key.to_sym && c[:hidden].nil?
         
-        # disable filters on virtual columns
-        c[:with_filters].nil? && c[:with_filters] = type != :virtual
-        
-        # disable sorting on virtual columns
-        c[:sortable].nil? && c[:sortable] = type != :virtual
-        
+        # Some default limitations for virtual columns
+        if type == :virtual
+          # disable filters
+          c[:with_filters].nil? && c[:with_filters] = false
+          # disable sorting
+          c[:sortable].nil? && c[:sortable] = false
+          # read-only
+          c[:read_only].nil? && c[:read_only] = true
+        end
         
         # denormalize column (save space)
         c.reject{ |k,v| k == :name }.empty? ? c[:name] : c

@@ -197,6 +197,7 @@ module Netzke
         
         # detect column type
         type = c[:type] || data_class && data_class.columns_hash[c[:name].to_s].try(:type) || :string
+        c[:type] ||= type
         
         c[:xtype] ||= XTYPE_MAP[type] unless XTYPE_MAP[type].nil?
 
@@ -208,11 +209,6 @@ module Netzke
       
     end
      
-    
-    # def available_permissions
-    #   %w{ read update }
-    # end
-    
     include Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
   end
 end

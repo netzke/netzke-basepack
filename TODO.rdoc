@@ -1,0 +1,7 @@
+== Priority
+* Make column/fields configuration fool-proof
+* Introduce three-state checkbox for SearchPanel
+
+== One day
+* Add status bar to BasicApp
+* Replace xcheckbox with checkbox in FormPanel

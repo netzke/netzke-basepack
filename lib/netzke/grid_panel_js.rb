@@ -98,6 +98,8 @@ module Netzke
                     name: c.name,
                     selectOnFocus:true
                   }, c.editor));
+                } else {
+                  c.editor = null;
                 }
 
                 // set the renderer
@@ -140,6 +142,19 @@ module Netzke
               url:this.id+"__get_data",
               extraParams : {
                 authenticity_token : Ext.authenticityToken
+              },
+
+              // inform Ext.Ajax about our events
+              listeners: {
+                beforerequest: function(){
+                  Ext.Ajax.fireEvent('beforerequest', arguments);
+                },
+                requestexception: function(){
+                  Ext.Ajax.fireEvent('requestexception', arguments);
+                },
+                requestcomplete: function(){
+                  Ext.Ajax.fireEvent('requestcomplete', arguments);
+                }
               }
             });
 
@@ -607,24 +622,18 @@ module Netzke
                   modal: true,
                   width: 400,
                   height: Ext.lib.Dom.getViewHeight() *0.9,
+                  closeAction: 'hide',
                   buttons:[{
                     text: 'OK',
                     handler: function(){
-                      this.ownerCt.closePositively();
+                      this.ownerCt.getWidget().apply();
                     }
                   },{
                     text:'Cancel',
                     handler:function(){
-                      this.ownerCt.closeNegatively();
+                      this.ownerCt.close();
                     }
-                  }],
-                  closePositively : function(){
-                    this.getWidget().apply();
-                  },
-                  closeNegatively: function(){
-                    this.hide();
-                  }
-
+                  }]
                 });
               }
 

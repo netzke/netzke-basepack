@@ -27,7 +27,7 @@ module Netzke
       data_class_columns = data_class.column_names.map(&:to_sym)
       
       if helper_module
-        exposed_attributes = helper_module.respond_to?(:exposed_attributes) ? helper_module.exposed_attributes : nil
+        exposed_attributes = helper_module.respond_to?(:exposed_attributes) ? normalize_array_of_columns(helper_module.exposed_attributes) : nil
         virtual_attributes = helper_module.respond_to?(:virtual_attributes) ? helper_module.virtual_attributes : []
         excluded_attributes = helper_module.respond_to?(:excluded_attributes) ? helper_module.excluded_attributes : []
         attributes_config = helper_module.respond_to?(:attributes_config) ? helper_module.attributes_config : {}

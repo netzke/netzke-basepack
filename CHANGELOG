@@ -1,13 +1,15 @@
 v0.5.0
-2009-08-24
-Major refactoring.
+2009-09-04
+Major refactoring and code reorganization.
 Compatibility with netzke-core v0.4.0.
 New: GridPanel now supports adding/editing records in a form and extended configurable search.
-New: GridPanel now can be loaded along with the data, which saves a request to the server.
+New: GridPanel now can be loaded along with initial data (saves a request to the server).
 Configuration panel for grids and forms now works cleaner and more consistently.
+New: some smart defaults for column/fields in Grid/FormPanel.
 New: "scopes" configuration option added to GridPanel to specify the searchlogic-compatible scope for the data.
 New: "strong_default_attrs" config option added to GridPanel to specify the attributes that will be assigned to each record that is created or modified by the grid.
-Improvement: GridPanel's actions now get enabled/disabled according to the current selection.
+Usability: GridPanel's actions now get enabled/disabled according to the current selection.
+New: BasicApp supports masquerading and application-wide AJAX activity indicator.
 
 v0.4.2
 2009-05-07
