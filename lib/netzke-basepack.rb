@@ -3,7 +3,6 @@ require 'netzke-core'
 require 'searchlogic'
 require 'will_paginate'
 
-# require 'netzke/basepack_active_record'
 require 'netzke/active_record/basepack'
 require 'netzke/ext'
 
