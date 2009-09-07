@@ -150,62 +150,6 @@ Ext.netzke.JsonField = Ext.extend(Ext.form.TextField, {
 
 Ext.reg('jsonfield', Ext.netzke.JsonField);
 
-Ext.ns('Ext.netzke.form');
-
-Ext.netzke.form.FileWithType = Ext.extend(Ext.form.Field, {
-  defaultAutoCreate:{tag:'input', type:'hidden'},
-
-  initComponent: function(){
-    Ext.netzke.form.FileWithType.superclass.initComponent.call(this);
-    
-    // this.ft = new Ext.form.ComboBox({
-    // });
-    this.ft = new Ext.form.TextField({
-      name: this.name + "_filetype"
-    });
-    this.ft.ownerCt = this;
-    
-    this.f = new Ext.form.TextField({
-      inputType:'file',
-      name: this.name + "_file"
-    });
-    this.f.ownerCt = this;
-  },
-
-  onRender: function(ct, position){
-    if(this.isRendered) {
-        return;
-    }
-    
-    // render underlying hidden field
-    Ext.netzke.form.FileWithType.superclass.onRender.call(this, ct, position);
-    
-    var t; // table
-    
-    t = Ext.DomHelper.append(ct, {tag:'table',style:'border-collapse:collapse',children:[
-      {tag:'tr',children:[
-        {tag:'td', style:'padding:4px', cls:'ux-filewithtype-type'},
-        {tag:'td', style:'padding:4px', cls:'ux-filewithtype-file'}
-      ]}
-    ]}, true);
-    
-    this.ft.render(t.child('td.ux-filewithtype-type'));
-    this.f.render(t.child('td.ux-filewithtype-file'));
-    
-    this.el.dom.removeAttribute("name");
-    
-    // 
-    // this.tableEl = t;
-    
-    // we're rendered flag
-    this.isRendered = true;
-    
-    // this.updateHidden();
-  }
-});
-
-Ext.reg('filewithtype', Ext.netzke.form.FileWithType);
-
 /**
  * @class Ext.ux.form.DateTime
  * @extends Ext.form.Field
