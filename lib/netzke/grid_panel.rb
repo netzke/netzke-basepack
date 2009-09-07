@@ -410,13 +410,10 @@ module Netzke
         
         # default editor, dependent on column type
         c[:editor] ||= TYPE_EDITOR_MAP[type] unless TYPE_EDITOR_MAP[type].nil?
-
         # narrow column for checkbox
         c[:width] ||= 50 if c[:editor] == :checkbox
-        
         # wider column for xdatetime
         c[:width] ||= 120 if c[:editor] == :xdatetime
-        
         # hide ID column
         c[:hidden] = true if c[:name] == data_class.primary_key.to_sym && c[:hidden].nil?
         

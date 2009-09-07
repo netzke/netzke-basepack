@@ -24,7 +24,7 @@ module Netzke
     def predefined_columns
       helper_module = "Netzke::Helpers::#{short_widget_class_name}#{data_class.name}".constantize rescue nil
       
-      data_class_columns = data_class.column_names.map(&:to_sym)
+      data_class_columns = data_class && data_class.column_names.map(&:to_sym) || []
       
       if helper_module
         exposed_attributes = helper_module.respond_to?(:exposed_attributes) ? normalize_array_of_columns(helper_module.exposed_attributes) : nil

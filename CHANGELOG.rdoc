@@ -1,3 +1,6 @@
+v0.5.1
+Fix: crash when FormPanel has no data_class_name specified.
+
 v0.5.0
 2009-09-06
 Major refactoring and code reorganization.
