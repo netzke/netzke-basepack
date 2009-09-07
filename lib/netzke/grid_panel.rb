@@ -200,7 +200,7 @@ module Netzke
       
       # Bottom bar
       if res[:ext_config][:bbar].nil?
-        res[:ext_config][:bbar] = %w{ add edit apply delete }
+        res[:ext_config][:bbar] = %w{ add edit apply del }
         res[:ext_config][:bbar] << "-" << "add_in_form" << "edit_in_form" if res[:ext_config][:enable_edit_in_form]
         res[:ext_config][:bbar] << "-" << "search" if res[:ext_config][:enable_extended_search]
       end
@@ -212,7 +212,7 @@ module Netzke
     end
     
     def default_context_menu(indep_config)
-      res = %w{ edit delete }
+      res = %w{ edit del }
       res << "-" << "edit_in_form" if indep_config[:ext_config][:enable_edit_in_form]
       res
     end
@@ -240,7 +240,7 @@ module Netzke
       res = { 
         :add    => {:text => 'Add',     :disabled => ext_config[:prohibit_create]},
         :edit   => {:text => 'Edit',    :disabled => true},
-        :delete => {:text => 'Delete',  :disabled => true},
+        :del    => {:text => 'Delete',  :disabled => true},
         :apply  => {:text => 'Apply',   :disabled => ext_config[:prohibit_update] && ext_config[:prohibit_create]}
       }
       

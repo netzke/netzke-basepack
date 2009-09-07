@@ -45,7 +45,7 @@ class Netzke::TreePanel < Netzke::Base
   def actions
     { :add    => {:text => 'Add'},
       :edit   => {:text => 'Edit'},
-      :delete => {:text => 'Delete', :disabled => true}
+      :del => {:text => 'Delete', :disabled => true}
     }
   end
   

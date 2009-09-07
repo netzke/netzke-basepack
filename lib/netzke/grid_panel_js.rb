@@ -130,7 +130,7 @@ module Netzke
             // Drag'n'Drop
             if (this.enableRowsReordering){
               this.ddPlugin = new Ext.ux.dd.GridDragDropRowOrder({
-                  scrollable: true, // enable scrolling support (default is false)
+                  scrollable: true // enable scrolling support (default is false)
               });
               this.plugins.push(this.ddPlugin);
             }
@@ -224,7 +224,7 @@ module Netzke
             // Process selectionchange event
             this.getSelectionModel().on('selectionchange', function(selModel){
               // enable/disable actions
-              this.actions.delete.setDisabled(!selModel.hasSelection() || this.prohibitDelete);
+              this.actions.del.setDisabled(!selModel.hasSelection() || this.prohibitDelete);
               this.actions.edit.setDisabled(selModel.getCount() != 1 || this.prohibitUpdate);
             }, this);
             
@@ -320,7 +320,7 @@ module Netzke
             }
           END_OF_JAVASCRIPT
 
-          :delete => <<-END_OF_JAVASCRIPT.l,
+          :del => <<-END_OF_JAVASCRIPT.l,
             function() {
               if (this.getSelectionModel().hasSelection()){
                 Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
