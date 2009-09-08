@@ -399,7 +399,8 @@ module Netzke
         end
         
         # detect association column (e.g. :category_id)
-        if assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == c[:name]}
+        assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == c[:name]}
+        if  assoc && !assoc.options[:polymorphic]
           c[:editor] ||= :combobox
           assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
           c[:name] = "#{assoc.name}__#{assoc_method}".to_sym
