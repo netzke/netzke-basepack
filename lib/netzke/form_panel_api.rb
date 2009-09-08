@@ -26,7 +26,7 @@ module Netzke
       end
   
       if success && @record.save
-        {:set_form_values => @record.to_array(columns)}
+        {:set_form_values => array_of_values}
       else
         # flash eventual errors
         @record.errors.each_full do |msg|
@@ -48,8 +48,8 @@ module Netzke
     # end
     
     def load(params)
-      record = data_class && data_class.find_by_id(params[:id])
-      {:set_form_values => record.to_array(columns)}
+      @record = data_class && data_class.find_by_id(params[:id])
+      {:set_form_values => array_of_values}
     end
     
     # API that returns options for a combobox
@@ -67,7 +67,7 @@ module Netzke
     
     # Returns array of form values according to the configured columns
     def array_of_values
-      @record && @record.to_array(columns)
+      @record && @record.to_array(columns, self)
     end
     
   end

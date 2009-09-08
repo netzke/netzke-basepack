@@ -66,7 +66,7 @@ module Netzke
         a
       end
   
-      def to_array(columns)
+      def to_array(columns, widget = nil)
         res = []
         for c in columns
           method = c.is_a?(Symbol) ? c : c[:name]

@@ -21,7 +21,7 @@ module Netzke
     def get_data(params = {})
       if !ext_config[:prohibit_read]
         records = get_records(params)
-        {:data => records.map{|r| r.to_array(normalized_columns)}, :total => ext_config[:enable_pagination] && records.total_entries}
+        {:data => records.map{|r| r.to_array(normalized_columns, self)}, :total => ext_config[:enable_pagination] && records.total_entries}
       else
         flash :error => "You don't have permissions to read data"
         {:feedback => @flash}
@@ -149,7 +149,7 @@ module Netzke
         
           # try to save
           # modified_records += 1 if success && record.save
-          mod_records[id] = record.to_array(columns) if success && record.save
+          mod_records[id] = record.to_array(columns, self) if success && record.save
           # mod_record_ids << id if success && record.save
 
           # flash eventual errors
