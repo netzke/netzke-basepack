@@ -22,11 +22,27 @@ module Netzke
         :id_delimiter => "___", # the default was "__", which conflicts with Netzke's double underscore notation
         :defaults => {:layout => 'fit'}, # all tabs will be Ext.Panel-s with layout 'fit' ("fit-panels")
         
-        :init_component => <<-END_OF_JAVASCRIPT.l,
-          function(){
-            Ext.netzke.cache.#{short_widget_class_name}.superclass.initComponent.call(this);
+        :render => <<-END_OF_JAVASCRIPT.l,
+          function(el){
+            Ext.netzke.cache.#{short_widget_class_name}.superclass.render.call(this, el);
             
-            this.on('tabchange', function(self, tab){this.loadItemWidget(tab)}, this);
+            // We do this all in +render+ because only at this moment the activeTab is actually activated
+            var activeTab = this.getActiveTab();
+            this.loadWidgetInto(activeTab);
+            this.on('tabchange', this.onTabChange, this);
+          }
+        END_OF_JAVASCRIPT
+        
+        :load_widget_into => <<-END_OF_JAVASCRIPT.l,
+          function(fitPanel){
+            var preloadedItemConfig;
+            if (preloadedItemConfig = this[fitPanel.widget.camelize(true)+"Config"]){
+              // preloaded widget only needs to be instantiated, as its class and configuration have already been loaded
+              fitPanel.add(new Ext.netzke.cache[preloadedItemConfig.widgetClassName](preloadedItemConfig));
+            } else {
+              // load the widget from the server
+              this.loadAggregatee({id:fitPanel.widget, container:fitPanel.id});
+            }
           }
         END_OF_JAVASCRIPT
         
@@ -58,27 +74,20 @@ module Netzke
           }
         END_OF_JAVASCRIPT
         
-        # loads widget into the panel if it wasn't loaded yet
-        :load_item_widget => <<-END_OF_JAVASCRIPT.l
-          function(panel) {
-            if (!panel.getWidget()) {
-              if (preloadedItemConfig = this.initialConfig[panel.widget.camelize()+"Config"]){
-                // preloaded widget only needs to be instantiated, as its class and configuration have already been loaded
-                panel.add(new Ext.netzke.cache[preloadedItemConfig.widgetClassName](preloadedItemConfig));
-                panel.doLayout(); // always needed after adding a component
-              } else {
-                // load the widget from the server
-                this.loadAggregatee({id:panel.widget, container:panel.id});
-              }
+        :on_tab_change => <<-END_OF_JAVASCRIPT.l
+          function(self, tab) {
+            // load widget into the panel if it wasn't loaded yet
+            if (!tab.getWidget()) {
+              this.loadWidgetInto(tab);
             }
             
-            // inform the server about active tab changed
-            this.apiActivateTab({tab:panel.widget});
+            // inform the server about active tab change
+            this.apiActivateTab({tab:tab.widget});
             
             // call "update" on the widget
-            if (panel.outdated) {
-              delete panel.outdated;
-              var widget = panel.getWidget();
+            if (tab.outdated) {
+              tab.outdated = false;
+              var widget = tab.getWidget();
               if (widget && widget.update) {widget.update.call(widget)};
             }
           }
