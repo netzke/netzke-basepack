@@ -1,6 +1,7 @@
 == Priority
 * Make column/fields configuration fool-proof
 * Introduce three-state checkbox for SearchPanel
+* Add icons to buttons to actions (toolbars/menus)
 
 == One day
 * Add status bar to BasicApp

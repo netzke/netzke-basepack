@@ -273,7 +273,7 @@ module Netzke
   
           :update => <<-END_OF_JAVASCRIPT.l,
             function(){
-              this.refresh();
+              this.store.reload();
             }
           END_OF_JAVASCRIPT
   

@@ -89,6 +89,7 @@ Ext.util.Format.mask = function(v){
 Ext.netzke.filterMap = {
   numberfield:'Numeric',
   textfield:'String',
+  textarea:'String',
   xdatetime:'String',
   checkbox:'Boolean',
   combobox:'String',
