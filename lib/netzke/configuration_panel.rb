@@ -1,5 +1,5 @@
 module Netzke
-  # TabPanel-based widget that wraps-up "conifuration widgets" that each widget can define 
+  # TabPanel-based widget that wraps-up "configuration widgets" that each widget can define 
   # (along) with including the Plugins::ConfigurationTool tool.
   class ConfigurationPanel < TabPanel
     api :commit

@@ -35,10 +35,11 @@ module Netzke
         
         :load_widget_into => <<-END_OF_JAVASCRIPT.l,
           function(fitPanel){
-            var preloadedItemConfig;
-            if (preloadedItemConfig = this[fitPanel.widget.camelize(true)+"Config"]){
+            var preloadedItemConfig = this[fitPanel.widget.camelize(true)+"Config"];
+            if (preloadedItemConfig){
               // preloaded widget only needs to be instantiated, as its class and configuration have already been loaded
               fitPanel.add(new Ext.netzke.cache[preloadedItemConfig.widgetClassName](preloadedItemConfig));
+              fitPanel.doLayout();
             } else {
               // load the widget from the server
               this.loadAggregatee({id:fitPanel.widget, container:fitPanel.id});

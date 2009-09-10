@@ -1,10 +1,11 @@
-v0.5.1
+-- edge --
 Fix: crash when FormPanel has no data_class_name specified.
 New: DataAccessor widgets (Form/GridPanel) now let the underlying model know which widget (i.e. which instance) accesses its data. Can be useful in virtual attributes for generating widget-specific HTML.
 Fix: DataAccessor widgets (Form/GridPanel) now don't crash when calculating default columns/fields for the underlying model that has polymorphic columns.
 Fix: TabPanel was sending redundant "tabchange" event to server when initially instantiated.
 Fix: column filters were making GridPanel crash when the column editor was set to "textarea".
 Fix: dongling comma and "delete" object properties caused problems in IE and Safari.
+Fix: a stand-alone TabPanel would not render the active item.
 
 v0.5.0
 2009-09-06
