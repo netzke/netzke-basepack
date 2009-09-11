@@ -8,6 +8,7 @@ Fix: dongling comma and "delete" object properties caused problems in IE and Saf
 Fix: a stand-alone TabPanel would not render the active item.
 New: BasicApp: masquerading as "World". In this mode all the "touched" persistent preferences will be overwritten for all roles and users.
 Impr: configuration panel's header now shows the underlying model's name for convenience.
+Fix: MasqueradeSelector widget added.
 
 v0.5.0
 2009-09-06
