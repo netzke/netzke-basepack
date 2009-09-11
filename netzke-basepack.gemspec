@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{netzke-basepack}
-  s.version = "0.5.0"
+  s.version = "0.5.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2009-09-06}
+  s.date = %q{2009-09-11}
   s.description = %q{Pre-built Netzke widgets for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -19,6 +19,7 @@ Gem::Specification.new do |s|
   s.files = [
     ".autotest",
      ".gitignore",
+     "CHANGELOG.rdoc",
      "LICENSE",
      "README.rdoc",
      "Rakefile",
@@ -50,6 +51,7 @@ Gem::Specification.new do |s|
      "lib/netzke/grid_panel_extras/javascripts/filters.js",
      "lib/netzke/grid_panel_extras/javascripts/rows-dd.js",
      "lib/netzke/grid_panel_js.rb",
+     "lib/netzke/masquerade_selector.rb",
      "lib/netzke/panel.rb",
      "lib/netzke/plugins/configuration_tool.rb",
      "lib/netzke/property_editor.rb",
@@ -155,11 +157,14 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::RubyGemsVersion) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<skozlov-netzke-core>, [">= 0.4.0"])
+      s.add_runtime_dependency(%q<netzke-core>, [">= 0"])
+      s.add_runtime_dependency(%q<searchlogic>, [">= 0"])
     else
-      s.add_dependency(%q<skozlov-netzke-core>, [">= 0.4.0"])
+      s.add_dependency(%q<netzke-core>, [">= 0"])
+      s.add_dependency(%q<searchlogic>, [">= 0"])
     end
   else
-    s.add_dependency(%q<skozlov-netzke-core>, [">= 0.4.0"])
+    s.add_dependency(%q<netzke-core>, [">= 0"])
+    s.add_dependency(%q<searchlogic>, [">= 0"])
   end
 end
