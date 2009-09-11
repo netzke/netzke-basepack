@@ -32,6 +32,8 @@ module Netzke
         elsif session[:masq_role]
           role = Role.find(session[:masq_role])
           masq = %Q{role "#{role.name}"}
+        elsif session[:masq_world]
+          masq = %Q{World}
         end
                 
         [{
@@ -153,7 +155,7 @@ module Netzke
           END_OF_JAVASCRIPT
           
           # Masquerade selector window
-          :show_masquerade_selector => <<-END_OF_JAVASCRIPT.l,
+          :show_masquerade_selector => <<-END_OF_JAVASCRIPT.l
             function(){
               var w = new Ext.Window({
         				title: 'Masquerade as',
@@ -177,7 +179,18 @@ module Netzke
                   },
                   scope:this
                 },{
-                  text:'Turn off masquerading',
+                  text:'As World',
+                  handler:function(){
+                    Ext.Msg.confirm("Masquerading as World", "Caution! All settings that you will modify will be ovewritten for all roles and all users. Are you sure you know what you're doing?", function(btn){
+                      if (btn === "yes") {
+                        this.masquerade = {world:true};
+                        w.close();
+                      }
+                    }, this);
+                  },
+                  scope:this
+                },{
+                  text:'No masquerading',
                   handler:function(){
                     this.masquerade = {};
                     w.close();
@@ -191,31 +204,13 @@ module Netzke
                   scope:this
                 }],
                 listeners : {close: {fn: function(){
-                  this.masqAs(this.masquerade || w.getWidget().masquerade || {});
+                  this.masqueradeAs(this.masquerade || w.getWidget().masquerade || {});
                 }, scope: this}}
         			});
 
         			w.show(null, function(){
         			  this.loadAggregatee({id:"masqueradeSelector", container:w.id})
         			}, this);
-
-            }
-          END_OF_JAVASCRIPT
-
-          # Masquerade as...
-          :masq_as => <<-END_OF_JAVASCRIPT.l
-            function(masqConfig){
-              params = {};
-
-              if (masqConfig.user) {
-                params.user = masqConfig.user
-              }
-
-              if (masqConfig.role) {
-                params.role = masqConfig.role
-              }
-
-              this.masqueradeAs(params);
 
             }
           END_OF_JAVASCRIPT
@@ -260,7 +255,7 @@ module Netzke
 
       if session[:netzke_just_logged_in] || session[:netzke_just_logged_out]
         session[:config_mode] = false
-        session[:masq_user] = session[:masq_roles] = nil
+        session[:masq_world] = session[:masq_user] = session[:masq_roles] = nil
       end
 
       strong_children_config.deep_merge!({:ext_config => {:mode => :config}}) if session[:config_mode]
@@ -316,6 +311,7 @@ module Netzke
     api :masquerade_as
     def masquerade_as(params)
       session = Netzke::Base.session
+      session[:masq_world] = params[:world]
       session[:masq_role] = params[:role]
       session[:masq_user] = params[:user]
       {:js => "window.location.reload()"}

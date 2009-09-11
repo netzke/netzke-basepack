@@ -385,7 +385,7 @@ module Netzke
         # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
         type = (data_class.columns_hash[c[:name].to_s] && data_class.columns_hash[c[:name].to_s].type) || :virtual
 
-        # detect :assoc__method
+        # detect :assoc__method columns
         if c[:name].to_s.index('__')
           assoc_name, method = c[:name].to_s.split('__').map(&:to_sym)
           if assoc = data_class.reflect_on_association(assoc_name)

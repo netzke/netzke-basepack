@@ -31,7 +31,7 @@ module Netzke::Plugins
           :gear => <<-END_OF_JAVASCRIPT.l
             function(){
               var w = new Ext.Window({
-                title:'Config',
+                title:'Config - '+ this.dataClassName,
                 layout:'fit',
                 modal:true,
                 width: Ext.lib.Dom.getViewWidth() *0.9,
