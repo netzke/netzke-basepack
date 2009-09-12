@@ -69,7 +69,6 @@ module Netzke
     def get_combobox_options(params)
       column = params[:column]
       query = params[:query]
-  
       {:data => config[:data_class_name].constantize.options_for(column, query).map{|s| [s]}}
     end
 

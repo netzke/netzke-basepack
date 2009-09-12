@@ -62,7 +62,7 @@ module Netzke::ActiveRecord
 
     module ClassMethods
 
-      def options_for(column, query = nil)
+      def options_for(column, query = "")
         # First, check if we have options for this class and column defined in persistent storage
         NetzkePreference.widget_name = self.name
         options = NetzkePreference[:combobox_options] || {}
@@ -82,12 +82,12 @@ module Netzke::ActiveRecord
             column = assoc_name
             if self.column_names.include?(column)
               # it's simply a column in the table
-              records = query.nil? ? find_by_sql("select distinct #{column} from #{table_name}") : find_by_sql("select distinct #{column} from #{table_name} where #{column} like '#{query}%'")
+              records = query.empty? ? find_by_sql("select distinct #{column} from #{table_name}") : find_by_sql("select distinct #{column} from #{table_name} where #{column} like '#{query}%'")
               records.map{|r| r.send(column)}
             else
               # it's a "virtual" column - the least effective search
               records = self.find(:all).map{|r| r.send(column)}.uniq
-              query.nil? ? records : records.select{|r| r.index(/^#{query}/)}
+              query.empty? ? records : records.select{|r| r.index(/^#{query}/)}
             end
           end
         end
