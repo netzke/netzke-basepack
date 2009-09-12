@@ -226,11 +226,11 @@ module Netzke
 
     # When providing the edit_form aggregatee, fill in the form with the requested record
     def load_aggregatee_with_cache(params)
-      if params[:id] == 'edit_form'
-        super(params.merge(:config => {:record_id => params[:record_id]}.to_json))
-      else
-        super
+      if params[:id] == 'editForm'
+        aggregatees[:edit_form].merge!(:record_id => params[:record_id])
       end
+      
+      super
     end
     
     # Search scopes, in searchlogic format
@@ -345,7 +345,6 @@ module Netzke
       
       res.to_nifty_json
     end
-    
     
   end
 end

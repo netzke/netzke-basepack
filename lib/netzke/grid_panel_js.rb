@@ -581,12 +581,14 @@ module Netzke
               this.editFormWindow.show(null, function(){
                 var selModel = this.getSelectionModel();
                 if (selModel.getCount() > 1) {
-                  this.editFormWindow.setTitle('Multi-edit');
+
                   // multiedit
+                  this.editFormWindow.setTitle('Multi-edit');
                   this.loadAggregatee({
                     id: "multiEditForm",
                     container: this.editFormWindow.id,
                     callback: function(aggr){
+                      // on apply attach ids of selected rows
                       aggr.on('apply', function(){
                         var ids = [];
                         selModel.each(function(r){
@@ -598,14 +600,16 @@ module Netzke
                     scope: this
                   });
                 } else {
+                  
                   // single edit
                   this.editFormWindow.setTitle('Edit');
                   var recordId = selModel.getSelected().get('id');
                   this.loadAggregatee({
                     id: "editForm",
                     container: this.editFormWindow.id,
-                    scope: this,
-                    record_id: recordId
+                    params: {
+                      record_id: recordId
+                    }
                   });
                 }
               }, this);
