@@ -584,7 +584,7 @@ module Netzke
                   this.editFormWindow.setTitle('Multi-edit');
                   // multiedit
                   this.loadAggregatee({
-                    id: "multi_edit_form",
+                    id: "multiEditForm",
                     container: this.editFormWindow.id,
                     callback: function(aggr){
                       aggr.on('apply', function(){
@@ -602,7 +602,7 @@ module Netzke
                   this.editFormWindow.setTitle('Edit');
                   var recordId = selModel.getSelected().get('id');
                   this.loadAggregatee({
-                    id: "edit_form",
+                    id: "editForm",
                     container: this.editFormWindow.id,
                     scope: this,
                     record_id: recordId
@@ -640,7 +640,7 @@ module Netzke
               this.formWindow.show(null, function(){
                 this.formWindow.closeRes = 'cancel';
                 if (!this.formWindow.getWidget()){
-                  this.loadAggregatee({id:"new_record_form", container:this.formWindow.id});
+                  this.loadAggregatee({id:"newRecordForm", container:this.formWindow.id});
                 }
               }, this);
 
@@ -704,7 +704,7 @@ module Netzke
               this.searchWindow.show(null, function(){
                 this.searchWindow.closeRes = 'cancel';
                 if (!this.searchWindow.getWidget()){
-                  this.loadAggregatee({id:"search_panel", container:this.searchWindow.id});
+                  this.loadAggregatee({id:"searchPanel", container:this.searchWindow.id});
                 }
               }, this);
 
