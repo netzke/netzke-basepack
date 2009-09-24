@@ -8,8 +8,8 @@ begin
     gemspec.homepage = "http://github.com/skozlov/netzke-basepack"
     gemspec.rubyforge_project = "netzke-basepack"
     gemspec.authors = ["Sergei Kozlov"]
-    gemspec.add_dependency "netzke-core"
-    gemspec.add_dependency "searchlogic"
+    gemspec.add_dependency("netzke-core", ">=0.4.3")
+    gemspec.add_dependency("searchlogic", ">=2.0.0")
   end
   Jeweler::RubyforgeTasks.new do |rubyforge|
     rubyforge.doc_task = "rdoc"

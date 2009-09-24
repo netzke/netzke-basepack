@@ -1,6 +1,7 @@
-- edge -
+v0.5.2 - 2009-09-24
 Fix: combobox options for association columns didn't work properly.
 Fix: GridPanel's multi-edit functionality didn't work.
+Fix: gem dependencies are now correct.
 
 v0.5.1 - 2009-09-11
 Fix: crash when FormPanel has no data_class_name specified.
