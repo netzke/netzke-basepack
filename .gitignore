@@ -4,3 +4,4 @@ pkg
 doc
 Manifest
 test/app_root/vendor/plugins/netzke-core
+rdoc
