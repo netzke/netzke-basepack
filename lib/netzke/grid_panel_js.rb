@@ -311,7 +311,7 @@ module Netzke
             function(row){
               if (row === null) {return;}
               var editableColumns = this.getColumnModel().getColumnsBy(function(columnConfig, index){
-                return !columnConfig.hidden && !!columnConfig.editor;
+                return !columnConfig.hidden && !!columnConfig.editor && (columnConfig.editor.xtype !== 'checkbox');
               });
               var firstEditableColumn = editableColumns[0];
               if (firstEditableColumn){

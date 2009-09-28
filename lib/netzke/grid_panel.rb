@@ -38,9 +38,9 @@ module Netzke
   # The following config options are available:
   # * <tt>:data_class_name</tt> - name of the ActiveRecord model that provides data to this GridPanel.
   # * <tt>:strong_default_attrs</tt> - a hash of attributes to be merged atop of every created/updated record.
-  # * <tt>:scopes</tt> - an array of searchlogic-compatible scopes to filter grid data like this: 
+  # * <tt>:scopes</tt> - an array of named scopes to filter grid data, e.g.:
   #     
-  #     ["user_id_not", 100]
+  #     [["user_id_not", 100], ["name_like", "Peter"]]
   # 
   # In the <tt>:ext_config</tt> hash (see Netzke::Base) the following GridPanel specific options are available:
   # 

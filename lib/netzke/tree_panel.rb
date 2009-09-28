@@ -5,64 +5,16 @@ class Netzke::TreePanel < Netzke::Base
     "Ext.tree.TreePanel"
   end
   
-  def self.js_common_config_for_constructor
-    super.merge({
-      :root => {:text => '/', :id => 'source'},
-      :loader => {:data_url => "config.api.getChildren".l}
-    })
-  end
-  
   def self.js_extend_properties
     {
-      :refresh_handler => <<-END_OF_JAVASCRIPT.l,
-        function(){
-          console.info('refresh!');
-        }
-      END_OF_JAVASCRIPT
-
-      :add_handler => <<-END_OF_JAVASCRIPT.l,
-        function(e){
-          console.info(e);
-        }
-      END_OF_JAVASCRIPT
-
-      :edit_handler => <<-END_OF_JAVASCRIPT.l,
-        function(e){
-          console.info(e);
-        
-        }
-      END_OF_JAVASCRIPT
-
-      :delete_handler => <<-END_OF_JAVASCRIPT.l
-        function(e){
-          console.info(e);
-        
-        }
-      END_OF_JAVASCRIPT
+      :root => {:text => '/', :id => 'source'}
     }
   end
   
-  def actions
-    { :add    => {:text => 'Add'},
-      :edit   => {:text => 'Edit'},
-      :del => {:text => 'Delete', :disabled => true}
-    }
-  end
-  
-  def bbar
-    persistent_config[:bbar] ||= config[:bbar] == false ? nil : config[:bbar] || %w{ add edit delete }
-  end
-  
-  def tools
-    persistent_config[:tools] ||= config[:tools] == false ? nil : config[:tools] #|| %w{ gear refresh }
-  end
-  
-  def tbar
-    persistent_config[:tbar] ||= config[:tbar] == false ? nil : config[:tbar]
-  end
-
-  def menu
-    persistent_config[:menu] ||= config[:menu] == false ? nil : config[:menu] # || [{:text => 'Button', :menu => ['edit', {:text => 'Submenu', :menu => ['delete']}]}]
+  def js_config
+    super.deep_merge({
+      :loader => {:data_url => id_name+"__get_children".l}
+    })
   end
   
   def get_children(params)

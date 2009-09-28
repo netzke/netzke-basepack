@@ -1,3 +1,6 @@
+-- edge --
+Fix: GridPanel didn't fire row editing when the first column was a "checkbox" column.
+
 v0.5.2 - 2009-09-24
 Fix: combobox options for association columns didn't work properly.
 Fix: GridPanel's multi-edit functionality didn't work.
