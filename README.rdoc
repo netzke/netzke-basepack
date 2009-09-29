@@ -3,20 +3,26 @@ A pack of basic Rails/ExtJS widgets as a part of the Netzke framework. Live demo
 
 Note that if you would like to modify this code or experiment with it, you may be better off cloning this project into your app's vendor/plugin directory - it will then behave as a Rails plugin.
 
+> ! For *Ext3.0* compatibility, check out the "ext30" branch !
+
 = Prerequisites
 1. Rails >= 2.2
-2. Ext JS >= 2.0: its root *must* be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder):
+2. Ext JS >= 2.0, < 3.0: its root *must* be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder):
     cd public && ln -s ~/Developer/extjs/ext-2.2 extjs
 
 3. acts_as_list plugin must be installed: 
     ./script/plugin install git://github.com/rails/acts_as_list.git
 
+4. mislav-will_paginate >= 2.3.0
+    gem sources -a http://gems.github.com/
+    sudo gem install mislav-will_paginate
+
 = Installation
-Install the gem:
-    gem install skozlov-netzke-basepack
+Install the Netzke gems:
+    gem install netzke-basepack
 
 Include it into environment.rb:
-    config.gem "skozlov-netzke-basepack"
+    config.gem "netzke-basepack"
 
 Include mapping for Netzke controller providing *.js and *.css (in routes.rb):
     map.netzke
