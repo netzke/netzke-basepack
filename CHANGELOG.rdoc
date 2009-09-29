@@ -1,5 +1,6 @@
 -- edge --
 Fix: GridPanel didn't fire row editing when the first column was a "checkbox" column.
+Fix: Compatibility with Ext 3.0.
 
 v0.5.2 - 2009-09-24
 Fix: combobox options for association columns didn't work properly.

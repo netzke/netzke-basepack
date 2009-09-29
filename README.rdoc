@@ -13,10 +13,10 @@ Note that if you would like to modify this code or experiment with it, you may b
 
 = Installation
 Install the gem:
-    gem install skozlov-netzke-basepack
+    gem install netzke-basepack
 
 Include it into environment.rb:
-    config.gem "skozlov-netzke-basepack"
+    config.gem "netzke-basepack"
 
 Include mapping for Netzke controller providing *.js and *.css (in routes.rb):
     map.netzke
