@@ -24,6 +24,19 @@ module Netzke
         })
       end
       
+      def include_js
+        res = []
+        ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
+        res << ext_examples + "ux/StatusBar.js"
+        res << "#{File.dirname(__FILE__)}/basic_app_extras/statusbar_ext.js"
+      end
+      
+      # def include_css
+      #   res = []
+      #   res << Netzke::Base.config[:ext_location] + "/examples/ux/css/StatusBar.css"
+      #   res
+      # end
+      
       def js_panels
         # In status bar we want to show what we are masquerading as
         if session[:masq_user]
@@ -50,6 +63,7 @@ module Netzke
           :id => 'main-statusbar',
           :xtype => 'statusbar',
           :region => 'south',
+          :height => 22,
           :statusAlign => 'right',
           :busyText => 'Busy...',
           :default_text => masq.nil? ? "Ready #{"(config mode)" if session[:config_mode]}" : "Masquerading as #{masq}",
@@ -181,7 +195,7 @@ module Netzke
                 },{
                   text:'As World',
                   handler:function(){
-                    Ext.Msg.confirm("Masquerading as World", "Caution! All settings that you will modify will be ovewritten for all roles and all users. Are you sure you know what you're doing?", function(btn){
+                    Ext.Msg.confirm("Masquerading as World", "Caution! All settings that you will modify will be overwritten for all roles and all users. Are you sure you know what you're doing?", function(btn){
                       if (btn === "yes") {
                         this.masquerade = {world:true};
                         w.close();
@@ -197,7 +211,7 @@ module Netzke
                   },
                   scope:this
                 },{
-                  text:'Cansel',
+                  text:'Cancel',
                   handler:function(){
                     w.hide();
                   },

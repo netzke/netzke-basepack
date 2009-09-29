@@ -96,15 +96,6 @@ Ext.netzke.filterMap = {
   datefield:'Date'
 };
 
-Ext.override(Ext.StatusBar, {
-  hideBusy : function(){
-    return this.setStatus({
-      text: this.defaultText,
-      iconCls: this.defaultIconCls
-    });
-  }
-});
-
 Ext.data.RecordArrayReader = Ext.extend(Ext.data.JsonReader, {
   /**
    * Create a data block containing Ext.data.Records from an Array.
@@ -784,4 +775,3 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
 Ext.reg('xdatetime', Ext.ux.form.DateTime);
 
 // eof
-

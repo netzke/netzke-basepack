@@ -79,22 +79,23 @@ module Netzke
               }
               
               // collect filters
-              if (c.withFilters){
-                filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
-              }
+              // Not compatible with Ext 3.0
+              //if (c.withFilters){
+              //  filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
+              //}
 
               if (c.editor && c.editor.xtype == 'checkbox') {
                 // Special case of checkbox column
-                var plugin = new Ext.grid.CheckColumn(c);
+                var plugin = new Ext.ux.grid.CheckColumn(c);
                 this.plugins.push(plugin);
                 cmConfig.push(plugin);
               } else {
-                // "normal" column, not a plugin
+                // a "normal" column, not a plugin
                 if (!c.readOnly && !this.prohibitUpdate) {
                   // c.editor contains complete config of the editor
                   var xtype = c.editor.xtype;
                   c.editor = Ext.ComponentMgr.create(Ext.apply({
-                    parentId:this.id,
+                    parentId: this.id,
                     name: c.name,
                     selectOnFocus:true
                   }, c.editor));
@@ -103,7 +104,8 @@ module Netzke
                 }
 
                 // set the renderer
-                c.renderer = Ext.netzke.normalizedRenderer(c.renderer);
+                var renderer = Ext.netzke.normalizedRenderer(c.renderer);
+                if (renderer != null) c.renderer = renderer;
                 
                 // add to the list
                 cmConfig.push(c);
@@ -118,9 +120,10 @@ module Netzke
             /* ... and done with columns */
             
             // Filters
-            if (this.enableColumnFilters) {
-              this.plugins.push(new Ext.grid.GridFilters({filters:filters}));
-            }
+            // Not compatible with Ext 3.0
+            // if (this.enableColumnFilters) {
+            //  this.plugins.push(new Ext.grid.GridFilters({filters:filters}));
+            // }
             
             // Create Ext.data.Record constructor specific for our particular column configuration
             this.recordConfig = [];
@@ -567,12 +570,12 @@ module Netzke
                 buttons:[{
                   text: 'OK',
                   handler: function(){
-                    this.ownerCt.getWidget().apply();
+                    this.ownerCt.ownerCt.getWidget().apply();
                   }
                 },{
                   text:'Cancel',
                   handler:function(){
-                    this.ownerCt.close();
+                    this.ownerCt.ownerCt.close();
                   }
                 }]
               });
@@ -630,12 +633,13 @@ module Netzke
                   buttons:[{
                     text: 'OK',
                     handler: function(){
-                      this.ownerCt.getWidget().apply();
+                      this.ownerCt.ownerCt.getWidget().apply();
                     }
                   },{
                     text:'Cancel',
                     handler:function(){
-                      this.ownerCt.close();
+                      console.info(this);
+                      this.ownerCt.ownerCt.close();
                     }
                   }]
                 });
@@ -670,12 +674,12 @@ module Netzke
                   buttons:[{
                     text: 'OK',
                     handler: function(){
-                      this.ownerCt.closePositively();
+                      this.ownerCt.ownerCt.closePositively();
                     }
                   },{
                     text:'Cancel',
                     handler:function(){
-                      this.ownerCt.closeNegatively();
+                      this.ownerCt.ownerCt.closeNegatively();
                     }
                   }],
                   closePositively : function(){

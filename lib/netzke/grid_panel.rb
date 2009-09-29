@@ -109,22 +109,26 @@ module Netzke
       res = []
       
       # Checkcolumn
-      res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/check-column.js"
+      ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
+      res << ext_examples + "ux/CheckColumn.js"
+      # res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/check-column.js"
+      
       
       # Filters
-      if config[:column_filters_available]
-        ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
-        res << ext_examples + "grid-filtering/menu/EditableItem.js"
-        res << ext_examples + "grid-filtering/menu/RangeMenu.js"
-        res << ext_examples + "grid-filtering/grid/GridFilters.js"
-
-        %w{Boolean Date List Numeric String}.unshift("").each do |f|
-          res << ext_examples + "grid-filtering/grid/filter/#{f}Filter.js"
-        end
-        
-        res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/filters.js"
-        
-      end
+      # Not compatible with Ext 3.0
+      # if config[:column_filters_available]
+      #   ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
+      #   res << ext_examples + "grid-filtering/menu/EditableItem.js"
+      #   res << ext_examples + "grid-filtering/menu/RangeMenu.js"
+      #   res << ext_examples + "grid-filtering/grid/GridFilters.js"
+      # 
+      #   %w{Boolean Date List Numeric String}.unshift("").each do |f|
+      #     res << ext_examples + "grid-filtering/grid/filter/#{f}Filter.js"
+      #   end
+      #   
+      #   res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/filters.js"
+      #   
+      # end
       
       # DD
       if config[:rows_reordering_available]
@@ -160,11 +164,17 @@ module Netzke
         {:name => :value},
         {:name => :header},
         {:name => :hidden,     :type => :boolean, :editor => :checkbox},
-        {:name => :read_only,  :type => :boolean, :editor => :checkbox, :header => "R"},
+        {:name => :editable,  :type => :boolean, :editor => :checkbox, :header => "Editable", :default => true},
         {:name => :editor,     :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::FORM_FIELD_XTYPES}},
         {:name => :renderer,   :type => :string},
+        
+        # maybe later
+        # {:name => :xtype, :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::COLUMN_XTYPES}},
+        
         # {:name => :renderer, :type => :string, :editor => {:xtype => :jsonfield}},
-        {:name => :with_filters,   :type => :boolean, :editor => :checkbox, :default => true, :header => "Filters"},
+        
+        # Filters not supported in Ext 3.0
+        # {:name => :with_filters,   :type => :boolean, :editor => :checkbox, :default => true, :header => "Filters"},
 
         # some rarely used configurations, hidden
         {:name => :width,      :type => :integer, :editor => :numberfield, :hidden => true},
@@ -421,11 +431,12 @@ module Netzke
         # Some default limitations for virtual columns
         if type == :virtual
           # disable filters
-          c[:with_filters].nil? && c[:with_filters] = false
+          # c[:with_filters].nil? && c[:with_filters] = false
           # disable sorting
           c[:sortable].nil? && c[:sortable] = false
           # read-only
-          c[:read_only].nil? && c[:read_only] = true
+          # c[:read_only].nil? && c[:read_only] = true
+          c[:editable].nil? && c[:editable] = false
         end
         
         # denormalize column (save space)

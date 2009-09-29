@@ -24,3 +24,8 @@ left: -24px;
 .grid-dirty-record {
   background: #fdd;
 }
+
+/* StatusBar - fixing forgotten "!important" */
+.x-statusbar .x-status-busy {
+    padding-left: 25px !important;
+}
