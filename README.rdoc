@@ -1,5 +1,5 @@
 = netzke-basepack
-A pack of basic Rails/ExtJS widgets as a part of the Netzke framework. Live demo/tutorials on http://blog.writelesscode.com. Introduction to the Netzke framework: http://github.com/skozlov/netzke/tree/master
+A pack of basic Rails/ExtJS widgets as a part of the Netzke framework. Live demo/tutorials on http://blog.writelesscode.com. Introduction to the Netzke framework and the Wiki: http://github.com/skozlov/netzke
 
 Note that if you would like to modify this code or experiment with it, you may be better off cloning this project into your app's vendor/plugin directory - it will then behave as a Rails plugin.
 
