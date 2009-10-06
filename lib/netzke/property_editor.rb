@@ -6,10 +6,8 @@ module Netzke
       @widget = @passed_config[:widget]
     end
     
-    def independent_config
-      res = super
-      res[:ext_config][:bbar] = %w{ restore_defaults }
-      res
+    def default_bbar
+      %w{ restore_defaults }
     end
 
     def actions
@@ -79,26 +77,32 @@ module Netzke
       fields = @widget.class.property_fields
       data.each_pair do |property, value|
         field = fields.detect{ |f| f[:name] == property.to_sym }
-        # default = @widget.config[property].nil? ? field[:default] : @widget.config[property]
         default = @widget.flat_initial_config(property).nil? ? field[:default] : @widget.flat_initial_config(property)
-        # Only store the value in persistent config when it's different from the default one
+
+        new_value = normalize_form_value(value, field)
+
+       # Only store the value in persistent config when it's different from the default one
         if field[:type] == :boolean
           # handle boolean type separately
-          value = value.to_b
-          @widget.persistent_config[property] = value ^ default ? value : nil
+          @widget.persistent_config[property] = new_value ^ default ? new_value : nil
         else 
-          if field[:type] == :json
-            value = ActiveSupport::JSON.decode(value)
-          end
-
-          # Empty string means "null" for now...
-          # value = nil if value.blank?
-          # logger.debug "!!! value: #{value.inspect}\n"
-          
-          @widget.persistent_config[property] = default == value ? nil : value
+          @widget.persistent_config[property] = default == new_value ? nil : new_value
         end
       end
       {}
+    end
+    
+    def normalize_form_value(value, field)
+      case field[:type]
+      when :boolean
+        value.to_b
+      when :json
+        ActiveSupport::JSON.decode(value) # no need to check for exceptions, as the value has been validated in browser
+      when :integer
+        value.to_i
+      else
+        value # TODO: support other types like :date and :datetime
+      end
     end
     
   end

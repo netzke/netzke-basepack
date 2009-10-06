@@ -1,6 +1,9 @@
 -- edge --
 Fix: GridPanel didn't fire row editing when the first column was a "checkbox" column.
-Fix: Compatibility with Ext 3.0.
+Fix: compatibility with Ext 3.0.
+Fix: Form/GridPanel-based widgets: more consistent Ext.Action-related functionality, like (context)menu, bbar, etc
+Impr: GridPanel: rows_reordering_available is now true by default.
+Impr: TreePanel now sets "leaf" attribute to true if the node has no children.
 
 v0.5.2 - 2009-09-24
 Fix: combobox options for association columns didn't work properly.

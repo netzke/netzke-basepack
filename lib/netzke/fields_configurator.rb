@@ -31,10 +31,8 @@ module Netzke
       )
     end
     
-    def independent_config
-      res = super
-      res[:ext_config][:bbar] = %w{ edit apply - defaults }
-      res
+    def default_bbar
+      %w{ edit apply - defaults }
     end
         
     def predefined_columns
