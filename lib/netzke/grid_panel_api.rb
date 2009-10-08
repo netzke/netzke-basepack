@@ -32,7 +32,7 @@ module Netzke
       if !ext_config[:prohibit_delete]
         record_ids = ActiveSupport::JSON.decode(params[:records])
         klass = config[:data_class_name].constantize
-        klass.delete(record_ids)
+        klass.destroy(record_ids)
         {:feedback => "Deleted #{record_ids.size} record(s)", :load_store_data => get_data}
       else
         {:feedback => "You don't have permissions to delete data"}
