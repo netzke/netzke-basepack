@@ -96,7 +96,7 @@ module Netzke
             scope_name, *args = s
             search.send(scope_name, *args)
           else
-            search.send(s)
+            search.send(s, true)
           end
         end
       

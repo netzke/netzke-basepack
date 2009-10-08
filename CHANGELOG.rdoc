@@ -4,6 +4,8 @@ Fix: now compatible with Ext 3.0.
 Impr: Form/GridPanel-based widgets: more consistent Ext.Action-related functionality and code, like (context) menu, bbar, etc.
 Impr: GridPanel: rows_reordering_available is now true by default.
 Impr: TreePanel now sets "leaf" attribute to true if the node has no children.
+Fix: the GridPanel's <tt>:scopes</tt> parameter now correctly processes named scopes as strings inside the array, e.g.
+    :scopes => ["current", [:id_gt, 100]]
 
 v0.5.2 - 2009-09-24
 Fix: combobox options for association columns didn't work properly.

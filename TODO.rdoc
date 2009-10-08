@@ -4,6 +4,8 @@
 * Add icons to buttons to actions (toolbars/menus)
 * On grid refresh, reset the dirty fields, so that the "Apply" button doesn't do anything
 
+== Optimizations
+* Add indexes into tables
+
 == One day
-* Add status bar to BasicApp
 * Replace xcheckbox with checkbox in FormPanel
