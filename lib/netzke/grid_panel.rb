@@ -79,7 +79,7 @@ module Netzke
         :config_tool_available        => true,
         :edit_in_form_available       => true,
         :extended_search_available    => true,
-        :rows_reordering_available    => false,
+        :rows_reordering_available    => true,
         
         :default_config => {
           :ext_config => {
@@ -109,22 +109,26 @@ module Netzke
       res = []
       
       # Checkcolumn
-      res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/check-column.js"
+      ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
+      res << ext_examples + "ux/CheckColumn.js"
+      # res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/check-column.js"
+      
       
       # Filters
-      if config[:column_filters_available]
-        ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
-        res << ext_examples + "grid-filtering/menu/EditableItem.js"
-        res << ext_examples + "grid-filtering/menu/RangeMenu.js"
-        res << ext_examples + "grid-filtering/grid/GridFilters.js"
-
-        %w{Boolean Date List Numeric String}.unshift("").each do |f|
-          res << ext_examples + "grid-filtering/grid/filter/#{f}Filter.js"
-        end
-        
-        res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/filters.js"
-        
-      end
+      # Not compatible with Ext 3.0
+      # if config[:column_filters_available]
+      #   ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
+      #   res << ext_examples + "grid-filtering/menu/EditableItem.js"
+      #   res << ext_examples + "grid-filtering/menu/RangeMenu.js"
+      #   res << ext_examples + "grid-filtering/grid/GridFilters.js"
+      # 
+      #   %w{Boolean Date List Numeric String}.unshift("").each do |f|
+      #     res << ext_examples + "grid-filtering/grid/filter/#{f}Filter.js"
+      #   end
+      #   
+      #   res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/filters.js"
+      #   
+      # end
       
       # DD
       if config[:rows_reordering_available]
@@ -160,11 +164,17 @@ module Netzke
         {:name => :value},
         {:name => :header},
         {:name => :hidden,     :type => :boolean, :editor => :checkbox},
-        {:name => :read_only,  :type => :boolean, :editor => :checkbox, :header => "R"},
+        {:name => :editable,  :type => :boolean, :editor => :checkbox, :header => "Editable", :default => true},
         {:name => :editor,     :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::FORM_FIELD_XTYPES}},
         {:name => :renderer,   :type => :string},
+        
+        # maybe later
+        # {:name => :xtype, :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::COLUMN_XTYPES}},
+        
         # {:name => :renderer, :type => :string, :editor => {:xtype => :jsonfield}},
-        {:name => :with_filters,   :type => :boolean, :editor => :checkbox, :default => true, :header => "Filters"},
+        
+        # Filters not supported in Ext 3.0
+        # {:name => :with_filters,   :type => :boolean, :editor => :checkbox, :default => true, :header => "Filters"},
 
         # some rarely used configurations, hidden
         {:name => :width,      :type => :integer, :editor => :numberfield, :hidden => true},
@@ -181,7 +191,7 @@ module Netzke
         {:name => :ext_config__context_menu,        :type => :json},
         {:name => :ext_config__enable_pagination,   :type => :boolean, :default => true},
         {:name => :ext_config__rows_per_page,       :type => :integer},
-        # {:name => :ext_config__bbar,              :type => :json},
+        {:name => :ext_config__bbar,              :type => :json},
         {:name => :ext_config__prohibit_create,     :type => :boolean},
         {:name => :ext_config__prohibit_update,     :type => :boolean},
         {:name => :ext_config__prohibit_delete,     :type => :boolean},
@@ -195,25 +205,25 @@ module Netzke
       
     end
     
-    def independent_config
+    def initial_config
       res = super
       
-      # Bottom bar
-      if res[:ext_config][:bbar].nil?
-        res[:ext_config][:bbar] = %w{ add edit apply del }
-        res[:ext_config][:bbar] << "-" << "add_in_form" << "edit_in_form" if res[:ext_config][:enable_edit_in_form]
-        res[:ext_config][:bbar] << "-" << "search" if res[:ext_config][:enable_extended_search]
-      end
-      
-      # Context menu
-      res[:ext_config][:context_menu] ||= default_context_menu(res)
+      res[:ext_config][:bbar] ||= default_bbar
+      res[:ext_config][:context_menu] ||= default_context_menu
       
       res
     end
     
-    def default_context_menu(indep_config)
+    def default_bbar
+      res = %w{ add edit apply del }
+      res << "-" << "add_in_form" << "edit_in_form" if self.class.config[:edit_in_form_available]
+      res << "-" << "search" if self.class.config[:extended_search_available]
+      res
+    end
+    
+    def default_context_menu
       res = %w{ edit del }
-      res << "-" << "edit_in_form" if indep_config[:ext_config][:enable_edit_in_form]
+      res << "-" << "edit_in_form" if self.class.config[:edit_in_form_available]
       res
     end
     
@@ -238,22 +248,22 @@ module Netzke
     def actions
       # Defaults
       res = { 
-        :add    => {:text => 'Add',     :disabled => ext_config[:prohibit_create]},
-        :edit   => {:text => 'Edit',    :disabled => true},
-        :del    => {:text => 'Delete',  :disabled => true},
-        :apply  => {:text => 'Apply',   :disabled => ext_config[:prohibit_update] && ext_config[:prohibit_create]}
+        :add          => {:text => 'Add',     :disabled      => ext_config[:prohibit_create]},
+        :edit         => {:text => 'Edit',    :disabled      => true},
+        :del          => {:text => 'Delete',  :disabled      => true},
+        :apply        => {:text => 'Apply',   :disabled      => ext_config[:prohibit_update] && ext_config[:prohibit_create]},
+        :add_in_form  => {:text => 'Add in form', :disabled  => !ext_config[:enable_edit_in_form]},
+        :edit_in_form => {:text => 'Edit in form', :disabled => true},
+        :search       => {:text => 'Search', :disabled       => !ext_config[:enable_extended_search]}
       }
       
       # Edit in form
-      res.merge!({
-        :add_in_form => {:text => 'Add in form'},
-        :edit_in_form => {:text => 'Edit in form', :disabled => true}
-      }) if ext_config[:enable_edit_in_form]
-      
-      # Extended search
-      res.merge!({
-        :search => {:text => 'Search'}
-      }) if ext_config[:enable_extended_search]
+      # res.merge!({
+      # })# if ext_config[:enable_edit_in_form]
+      # 
+      # # Extended search
+      # res.merge!({
+      # }) if ext_config[:enable_extended_search]
 
       res
     end
@@ -421,11 +431,12 @@ module Netzke
         # Some default limitations for virtual columns
         if type == :virtual
           # disable filters
-          c[:with_filters].nil? && c[:with_filters] = false
+          # c[:with_filters].nil? && c[:with_filters] = false
           # disable sorting
           c[:sortable].nil? && c[:sortable] = false
           # read-only
-          c[:read_only].nil? && c[:read_only] = true
+          # c[:read_only].nil? && c[:read_only] = true
+          c[:editable].nil? && c[:editable] = false
         end
         
         # denormalize column (save space)

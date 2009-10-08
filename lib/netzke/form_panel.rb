@@ -23,12 +23,21 @@ module Netzke
         
         :default_config => {
           :ext_config => {
-            :bbar => %w{ apply },
             :tools => %w{ }
           },
           :persistent_config => false
         }
       })
+    end
+    
+    def initial_config
+      res = super
+      res[:ext_config][:bbar] ||= default_bbar
+      res
+    end
+
+    def default_bbar
+      %w{ apply }
     end
     
     # Extra javascripts
@@ -107,16 +116,11 @@ module Netzke
     def self.property_fields
       res = [
         {:name => :ext_config__title,               :type => :string},
-        {:name => :ext_config__header,              :type => :boolean, :default => true}
-         # {:name => :ext_config__bbar,              :type => :json},
-        # {:name => :ext_config__prohibit_create,     :type => :boolean},
-        # {:name => :ext_config__prohibit_update,     :type => :boolean},
-        # {:name => :ext_config__prohibit_delete,     :type => :boolean},
-        # {:name => :ext_config__prohibit_read,       :type => :boolean}
+        {:name => :ext_config__header,              :type => :boolean, :default => true},
+        {:name => :ext_config__bbar,              :type => :json}
       ]
       
       res
-      
     end
  
     # Normalized columns

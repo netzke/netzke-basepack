@@ -18,7 +18,7 @@ Note that if you would like to modify this code or experiment with it, you may b
     sudo gem install mislav-will_paginate
 
 = Installation
-Install the Netzke gems:
+Install Netzke gems:
     gem install netzke-basepack
 
 Include it into environment.rb:
