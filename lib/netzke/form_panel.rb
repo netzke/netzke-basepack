@@ -25,7 +25,7 @@ module Netzke
           :ext_config => {
             :tools => %w{ }
           },
-          :persistent_config => false
+          :persistent_config => true
         }
       })
     end

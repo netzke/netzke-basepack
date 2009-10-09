@@ -99,7 +99,7 @@ module Netzke
             :tools => %w{ refresh }
           },
           
-          :persistent_config => false
+          :persistent_config => true
         }
       })
     end

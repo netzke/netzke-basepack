@@ -5,6 +5,7 @@
 * Impr: Form/GridPanel-based widgets: more consistent Ext.Action-related functionality and code, like (context) menu, bbar, etc.
 * Impr: GridPanel: <tt>rows_reordering_available</tt> is now true by default.
 * Impr: TreePanel now sets "leaf" attribute to true if the node has no children.
+* Impr: Grid/TreePanel now have persistent config enabled by default.
 * Fix: GridPanel didn't fire row editing when the first column was a "checkbox" column.
 * Fix: the GridPanel's <tt>:scopes</tt> parameter now correctly processes named scopes as strings inside the array, e.g.
     :scopes => ["current", [:id_gt, 100]]
