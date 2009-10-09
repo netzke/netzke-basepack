@@ -28,7 +28,7 @@ module Netzke::Plugins
     module ClassMethods
       def js_extend_properties_with_config_tool
         js_extend_properties_without_config_tool.merge({
-          :gear => <<-END_OF_JAVASCRIPT.l
+          :on_gear => <<-END_OF_JAVASCRIPT.l
             function(){
               var w = new Ext.Window({
                 title:'Config - '+ this.dataClassName,

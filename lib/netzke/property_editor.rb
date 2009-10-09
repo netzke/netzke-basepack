@@ -31,7 +31,7 @@ module Netzke
         :label_width => 200,
         
         # Disable the 'gear' tool for now
-        :gear => <<-END_OF_JAVASCRIPT.l,
+        :on_gear => <<-END_OF_JAVASCRIPT.l,
           function(){
             this.feedback("You can't configure property editor (yet)");
           }

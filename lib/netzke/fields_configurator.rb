@@ -42,7 +42,7 @@ module Netzke
     def self.js_extend_properties
       {
         # Disable the 'gear' tool for now
-        :gear => <<-END_OF_JAVASCRIPT.l,
+        :on_gear => <<-END_OF_JAVASCRIPT.l,
           function(){
             this.feedback("You can't configure configurator (yet)");
           }
