@@ -775,3 +775,23 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
 Ext.reg('xdatetime', Ext.ux.form.DateTime);
 
 // eof
+Ext.grid.HeaderDropZone.prototype.onNodeDrop = function(n, dd, e, data){
+    var h = data.header;
+    if(h != n){
+        var cm = this.grid.colModel;
+        var x = Ext.lib.Event.getPageX(e);
+        var r = Ext.lib.Dom.getRegion(n.firstChild);
+        var pt = (r.right - x) <= ((r.right-r.left)/2) ? "after" : "before";
+        var oldIndex = this.view.getCellIndex(h);
+        var newIndex = this.view.getCellIndex(n);
+        if(pt == "after"){
+            newIndex++;
+        }
+        if(oldIndex < newIndex){
+            newIndex--;
+        }
+        cm.moveColumn(oldIndex, newIndex);
+        return true;
+    }
+    return false;
+}

@@ -1,6 +1,6 @@
 = edge (minor version update)
 
-* Compatibility with Ext 3.0.
+* Compatibility with Ext 3.0 (and dropping compatibility with 2.x)
 * Compatibility with latest netzke-core
 * Impr: Form/GridPanel-based widgets: more consistent Ext.Action-related functionality and code, like (context) menu, bbar, etc.
 * Impr: GridPanel: <tt>rows_reordering_available</tt> is now true by default.
@@ -9,7 +9,8 @@
 * Fix: the GridPanel's <tt>:scopes</tt> parameter now correctly processes named scopes as strings inside the array, e.g.
     :scopes => ["current", [:id_gt, 100]]
 * Fix: on deleting records from GridPanel, <tt>destroy</tt> method is being called instead of <tt>delete</tt>.
-* Fix: FieldsConfigurator made a little bit more stable
+* Fix: FieldsConfigurator made a little bit more stable.
+* Fix: patching Ext's bug that caused double firing of "columnmove" in GridPanel.
 
 = v0.5.2 - 2009-09-24
 Fix: combobox options for association columns didn't work properly.
