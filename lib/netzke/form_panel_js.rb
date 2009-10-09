@@ -15,7 +15,6 @@ module Netzke
           :auto_scroll    => true,
           :label_width    => 150,
           :default_type   => 'textfield',
-          # :label_align => 'top',
 
           :init_component => <<-END_OF_JAVASCRIPT.l,
             function(){
@@ -87,12 +86,6 @@ module Netzke
           :load_record => <<-END_OF_JAVASCRIPT.l,
             function(id, neighbour){
               this.load({id:id});
-              // var proxy = new Ext.data.HttpProxy({url:this.initialConfig.api.load});
-              // proxy.load({id:id, neighbour:neighbour}, this.reader, function(data){
-              //   if (data){
-              //     this.form.loadRecord(data.records[0])
-              //   }
-              // }, this)
             }
           END_OF_JAVASCRIPT
           
@@ -110,7 +103,7 @@ module Netzke
           #   }
           # END_OF_JAVASCRIPT
           
-          :apply => <<-END_OF_JAVASCRIPT.l
+          :on_apply => <<-END_OF_JAVASCRIPT.l
             function() {
               if (this.fireEvent('apply', this)) {
                 var values = this.form.getValues();

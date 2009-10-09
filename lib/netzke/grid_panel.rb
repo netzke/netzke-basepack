@@ -250,7 +250,7 @@ module Netzke
       res = { 
         :add          => {:text => 'Add',     :disabled      => ext_config[:prohibit_create]},
         :edit         => {:text => 'Edit',    :disabled      => true},
-        :del          => {:text => 'Delete',  :disabled      => true},
+        :del       => {:text => 'Delete',  :disabled      => true},
         :apply        => {:text => 'Apply',   :disabled      => ext_config[:prohibit_update] && ext_config[:prohibit_create]},
         :add_in_form  => {:text => 'Add in form', :disabled  => !ext_config[:enable_edit_in_form]},
         :edit_in_form => {:text => 'Edit in form', :disabled => true},

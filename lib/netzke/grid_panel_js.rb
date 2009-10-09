@@ -249,7 +249,7 @@ module Netzke
       def js_extend_properties
         res = super
         
-        # Defaults
+        # Generic (non-optional) functionality
         res.merge!(
         {
           :track_mouse_over => true,
@@ -259,6 +259,160 @@ module Netzke
           :default_column_config => config_columns.inject({}){ |r, c| c.is_a?(Hash) ? r.merge(c[:name] => c[:default]) : r },
           
           :init_component => js_init_component.l,
+          
+          # Handlers for actions
+          # 
+          
+          :on_add => <<-END_OF_JAVASCRIPT.l,
+            function(){
+              var rowConfig = {};
+              var r = new this.Row(rowConfig); // TODO: add default values
+              r.isNew = true; // to distinguish new records
+              r.set('id', r.id); // otherwise later r.get('id') returns empty string
+              this.stopEditing();
+              this.store.add(r);
+              this.tryStartEditing(this.store.indexOf(r));
+            }
+          END_OF_JAVASCRIPT
+  
+          :on_edit => <<-END_OF_JAVASCRIPT.l,
+            function(){
+              var row = this.getSelectionModel().getSelected();
+              if (row){
+                this.tryStartEditing(this.store.indexOf(row));
+              }
+            }
+          END_OF_JAVASCRIPT
+  
+          :on_del => <<-END_OF_JAVASCRIPT.l,
+            function() {
+              Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
+                if (btn == 'yes') {
+                  var records = [];
+                  this.getSelectionModel().each(function(r){
+                    if (r.isNew) {
+                      // this record is not know to server - simply remove from store
+                      this.store.remove(r);
+                    } else {
+                      records.push(r.get('id'));
+                    }
+                  }, this);
+
+                  if (records.length > 0){
+                    // call API
+                    this.deleteData({records: Ext.encode(records)});
+                  }
+                }
+              }, this);
+            }
+          END_OF_JAVASCRIPT
+          
+          :on_apply => <<-END_OF_JAVASCRIPT.l,
+            function(){
+              var newRecords = [];
+              var updatedRecords = [];
+
+              Ext.each(this.store.getModifiedRecords(),
+                function(r) {
+                  if (r.isNew) {
+                    newRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
+                  } else {
+                    updatedRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
+                  }
+                }, 
+              this);
+        
+              if (newRecords.length > 0 || updatedRecords.length > 0) {
+                var params = {};
+
+                if (newRecords.length > 0) {
+                  params.created_records = Ext.encode(newRecords);
+                }
+                
+                if (updatedRecords.length > 0) {
+                  params.updated_records = Ext.encode(updatedRecords);
+                }
+                
+                if (this.store.baseParams !== {}) {
+                  params.base_params = Ext.encode(this.store.baseParams);
+                }
+                
+                this.postData(params);
+              }
+        
+            }
+          END_OF_JAVASCRIPT
+
+          # Handlers for tools
+          # 
+          
+          :on_refresh => <<-END_OF_JAVASCRIPT.l,
+            function() {
+              if (this.fireEvent('refresh', this) !== false) {
+                this.store.reload();
+              }
+            }
+          END_OF_JAVASCRIPT
+    
+          # Event handlers
+          # 
+          
+          :on_column_resize => <<-END_OF_JAVASCRIPT.l,
+            function(index, size){
+              this.resizeColumn({
+                index:index,
+                size:size
+              });
+            }
+          END_OF_JAVASCRIPT
+    
+          :on_column_hidden_change => <<-END_OF_JAVASCRIPT.l,
+            function(cm, index, hidden){
+              this.hideColumn({
+                index:index,
+                hidden:hidden
+              });
+            }
+          END_OF_JAVASCRIPT
+          
+          :on_column_move => <<-END_OF_JAVASCRIPT.l,
+            function(oldIndex, newIndex){
+              this.moveColumn({
+                old_index:oldIndex,
+                new_index:newIndex
+              });
+            }
+          END_OF_JAVASCRIPT
+          
+          :on_row_context_menu => <<-END_OF_JAVASCRIPT.l,
+            function(grid, rowIndex, e){
+              e.stopEvent();
+              var coords = e.getXY();
+              
+              if (!grid.getSelectionModel().isSelected(rowIndex)) {
+                grid.getSelectionModel().selectRow(rowIndex);
+              }
+              
+              var menu = new Ext.menu.Menu({
+                items: this.contextMenu
+              });
+              
+              menu.showAt(coords);
+            }
+          END_OF_JAVASCRIPT
+          
+          :on_after_row_move => <<-END_OF_JAVASCRIPT.l,
+            function(dt, oldIndex, newIndex, records){
+          		var ids = [];
+          		// collect records ids
+          		Ext.each(records, function(r){ids.push(r.get('id'))});
+          		// call GridPanel's API
+          		this.moveRows({ids:Ext.encode(ids), new_index: newIndex});
+            }
+          END_OF_JAVASCRIPT
+          
+          # Other methods
+          # 
           
           :load_exception_handler => <<-END_OF_JAVASCRIPT.l,
           function(proxy, options, response, error){
@@ -288,27 +442,6 @@ module Netzke
             }
           END_OF_JAVASCRIPT
   
-          :add => <<-END_OF_JAVASCRIPT.l,
-            function(){
-              var rowConfig = {};
-              var r = new this.Row(rowConfig); // TODO: add default values
-              r.isNew = true; // to distinguish new records
-              r.set('id', r.id); // otherwise later r.get('id') returns empty string
-              this.stopEditing();
-              this.store.add(r);
-              this.tryStartEditing(this.store.indexOf(r));
-            }
-          END_OF_JAVASCRIPT
-  
-          :edit => <<-END_OF_JAVASCRIPT.l,
-            function(){
-              var row = this.getSelectionModel().getSelected();
-              if (row){
-                this.tryStartEditing(this.store.indexOf(row));
-              }
-            }
-          END_OF_JAVASCRIPT
-  
           # try editing the first editable (i.e. not hidden, not read-only) sell
           :try_start_editing => <<-END_OF_JAVASCRIPT.l,
             function(row){
@@ -319,31 +452,6 @@ module Netzke
               var firstEditableColumn = editableColumns[0];
               if (firstEditableColumn){
                 this.startEditing(row, firstEditableColumn.id);
-              }
-            }
-          END_OF_JAVASCRIPT
-
-          :del => <<-END_OF_JAVASCRIPT.l,
-            function() {
-              if (this.getSelectionModel().hasSelection()){
-                Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
-                  if (btn == 'yes') {
-                    var records = [];
-                    this.getSelectionModel().each(function(r){
-                      if (r.isNew) {
-                        // this record is not know to server - simply remove from store
-                        this.store.remove(r);
-                      } else {
-                        records.push(r.get('id'));
-                      }
-                    }, this);
-
-                    if (records.length > 0){
-                      // call API
-                      this.deleteData({records: Ext.encode(records)});
-                    }
-                  }
-                }, this);
               }
             }
           END_OF_JAVASCRIPT
@@ -420,42 +528,6 @@ module Netzke
             }
           END_OF_JAVASCRIPT
           
-          :apply => <<-END_OF_JAVASCRIPT.l,
-            function(){
-              var newRecords = [];
-              var updatedRecords = [];
-
-              Ext.each(this.store.getModifiedRecords(),
-                function(r) {
-                  if (r.isNew) {
-                    newRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
-                  } else {
-                    updatedRecords.push(Ext.apply(r.getChanges(), {id:r.get('id')}));
-                  }
-                }, 
-              this);
-        
-              if (newRecords.length > 0 || updatedRecords.length > 0) {
-                var params = {};
-
-                if (newRecords.length > 0) {
-                  params.created_records = Ext.encode(newRecords);
-                }
-                
-                if (updatedRecords.length > 0) {
-                  params.updated_records = Ext.encode(updatedRecords);
-                }
-                
-                if (this.store.baseParams !== {}) {
-                  params.base_params = Ext.encode(this.store.baseParams);
-                }
-                
-                this.postData(params);
-              }
-        
-            }
-          END_OF_JAVASCRIPT
- 
           :select_first_row => <<-END_OF_JAVASCRIPT.l,
             function(){
               this.getSelectionModel().suspendEvents();
@@ -464,32 +536,6 @@ module Netzke
             }
           END_OF_JAVASCRIPT
           
-          :refresh => <<-END_OF_JAVASCRIPT.l,
-            function() {
-              if (this.fireEvent('refresh', this) !== false) {
-                this.store.reload();
-              }
-            }
-          END_OF_JAVASCRIPT
-    
-          :on_column_resize => <<-END_OF_JAVASCRIPT.l,
-            function(index, size){
-              this.resizeColumn({
-                index:index,
-                size:size
-              });
-            }
-          END_OF_JAVASCRIPT
-    
-          :on_column_hidden_change => <<-END_OF_JAVASCRIPT.l,
-            function(cm, index, hidden){
-              this.hideColumn({
-                index:index,
-                hidden:hidden
-              });
-            }
-          END_OF_JAVASCRIPT
-    
           # :reorder_columns => <<-END_OF_JAVASCRIPT.l,
           #   function(columns){
           #     columnsInNewShipment = [];
@@ -500,46 +546,10 @@ module Netzke
           #     this.store.reader.recordType = newRecordType; // yes, recordType is a protected property, but that's the only way we can do it, and it seems to work for now
           #   }
           # END_OF_JAVASCRIPT
-    
-          :on_column_move => <<-END_OF_JAVASCRIPT.l,
-            function(oldIndex, newIndex){
-              this.moveColumn({
-                old_index:oldIndex,
-                new_index:newIndex
-              });
-            }
-          END_OF_JAVASCRIPT
-          
-          :on_row_context_menu => <<-END_OF_JAVASCRIPT.l,
-            function(grid, rowIndex, e){
-              e.stopEvent();
-              var coords = e.getXY();
-              
-              if (!grid.getSelectionModel().isSelected(rowIndex)) {
-                grid.getSelectionModel().selectRow(rowIndex);
-              }
-              
-              var menu = new Ext.menu.Menu({
-                items: this.contextMenu
-              });
-              
-              menu.showAt(coords);
-            }
-          END_OF_JAVASCRIPT
-          
-          :on_after_row_move => <<-END_OF_JAVASCRIPT.l,
-            function(dt, oldIndex, newIndex, records){
-          		var ids = [];
-          		// collect records ids
-          		Ext.each(records, function(r){ids.push(r.get('id'))});
-          		// call GridPanel's API
-          		this.moveRows({ids:Ext.encode(ids), new_index: newIndex});
-            }
-          END_OF_JAVASCRIPT
         }
         )
         
-        # Edit in form
+        # Optional edit in form functionality
         res.merge!(
         {
           :on_successfull_record_creation => <<-END_OF_JAVASCRIPT.l,
@@ -557,7 +567,7 @@ module Netzke
             }
           END_OF_JAVASCRIPT
 
-          :edit_in_form => <<-END_OF_JAVASCRIPT.l,
+          :on_edit_in_form => <<-END_OF_JAVASCRIPT.l,
             function(){
               // create the window
               delete this.editFormWindow;
@@ -620,7 +630,7 @@ module Netzke
             }
           END_OF_JAVASCRIPT
 
-          :add_in_form => <<-END_OF_JAVASCRIPT.l,
+          :on_add_in_form => <<-END_OF_JAVASCRIPT.l,
             function(){
               if (!this.formWindow) {
                 this.formWindow = new Ext.Window({
@@ -633,12 +643,11 @@ module Netzke
                   buttons:[{
                     text: 'OK',
                     handler: function(){
-                      this.ownerCt.ownerCt.getWidget().apply();
+                      this.ownerCt.ownerCt.getWidget().onApply();
                     }
                   },{
                     text:'Cancel',
                     handler:function(){
-                      console.info(this);
                       this.ownerCt.ownerCt.close();
                     }
                   }]
@@ -658,10 +667,10 @@ module Netzke
         }
         ) if config[:edit_in_form_available]
         
-        # Extended search
+        # Optional extended search functionality
         res.merge!(
         {
-          :search => <<-END_OF_JAVASCRIPT.l,
+          :on_search => <<-END_OF_JAVASCRIPT.l,
             function(){
               if (!this.searchWindow){
                 this.searchWindow = new Ext.Window({
