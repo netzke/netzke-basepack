@@ -590,7 +590,7 @@ module Netzke
                 buttons:[{
                   text: 'OK',
                   handler: function(){
-                    this.ownerCt.ownerCt.getWidget().apply();
+                    this.ownerCt.ownerCt.getWidget().onApply();
                   }
                 },{
                   text:'Cancel',

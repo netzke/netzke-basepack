@@ -205,7 +205,7 @@ module Netzke
     def initial_config
       res = super
       
-      res[:ext_config][:bbar] ||= default_bbar
+      res[:ext_config][:bbar] = default_bbar if res[:ext_config][:bbar].nil?
       res[:ext_config][:context_menu] ||= default_context_menu
       
       res
@@ -265,7 +265,7 @@ module Netzke
         :edit_form => {
           :widget_class_name => "FormPanel",
           :data_class_name => config[:data_class_name],
-          :persistent_config => true,
+          :persistent_config => config[:persistent_config],
           :ext_config => {
             :bbar => false,
             :header => false,
@@ -276,7 +276,7 @@ module Netzke
         :multi_edit_form => {
           :widget_class_name => "FormPanel",
           :data_class_name => config[:data_class_name],
-          :persistent_config => true,
+          :persistent_config => config[:persistent_config],
           :ext_config => {
             :bbar => false,
             :header => false,
@@ -287,7 +287,7 @@ module Netzke
         :new_record_form => {
           :widget_class_name => "FormPanel",
           :data_class_name => config[:data_class_name],
-          :persistent_config => true,
+          :persistent_config => config[:persistent_config],
           :ext_config => {
             :bbar => false,
             :header => false,
@@ -302,7 +302,7 @@ module Netzke
         :search_panel => {
           :widget_class_name => "SearchPanel",
           :search_class_name => config[:data_class_name],
-          :persistent_config => true,
+          :persistent_config => config[:persistent_config],
           :ext_config => {
             :header => false, 
             :bbar => false, 

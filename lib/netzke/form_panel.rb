@@ -32,7 +32,7 @@ module Netzke
     
     def initial_config
       res = super
-      res[:ext_config][:bbar] ||= default_bbar
+      res[:ext_config][:bbar] = default_bbar if res[:ext_config][:bbar].nil?
       res
     end
 
