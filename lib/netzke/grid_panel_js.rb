@@ -115,7 +115,9 @@ module Netzke
 
             // Finally, create the ColumnModel based on processed columns
             this.cm = new Ext.grid.ColumnModel(cmConfig);
-            this.cm.on('hiddenchange', this.onColumnHiddenChange, this);
+            
+            // Hidden change event
+            if (this.persistentConfig) {this.cm.on('hiddenchange', this.onColumnHiddenChange, this);}
 
             /* ... and done with columns */
             
@@ -199,9 +201,11 @@ module Netzke
             // Original initComponent
             Ext.netzke.cache.GridPanel.superclass.initComponent.call(this);
             
-            // Set the events
-            this.on('columnresize', this.onColumnResize, this);
-            this.on('columnmove', this.onColumnMove, this);
+            // Inform the server part about column operations
+            if (this.persistentConfig) {
+              this.on('columnresize', this.onColumnResize, this);
+              this.on('columnmove', this.onColumnMove, this);
+            }
             
             // Context menu
             if (this.enableContextMenu) {
@@ -381,6 +385,12 @@ module Netzke
                 old_index:oldIndex,
                 new_index:newIndex
               });
+
+              var newRecordConfig = [];
+              Ext.each(this.getColumnModel().config, function(c){newRecordConfig.push({name: c.name})});
+              delete this.Row; // old record constructor
+              this.Row = Ext.data.Record.create(newRecordConfig);
+              this.getStore().reader.recordType = this.Row;
             }
           END_OF_JAVASCRIPT
           
@@ -445,14 +455,14 @@ module Netzke
           # try editing the first editable (i.e. not hidden, not read-only) sell
           :try_start_editing => <<-END_OF_JAVASCRIPT.l,
             function(row){
-              if (row === null) {return;}
-              var editableColumns = this.getColumnModel().getColumnsBy(function(columnConfig, index){
-                return !columnConfig.hidden && !!columnConfig.editor && (columnConfig.editor.xtype !== 'checkbox');
+              var editableIndex = 0;
+              Ext.each(this.getColumnModel().config, function(c){
+                if (!c.hidden && c.editor && (c.editor.xtype !== 'checkbox')) {
+                  return false;
+                }
+                editableIndex++;
               });
-              var firstEditableColumn = editableColumns[0];
-              if (firstEditableColumn){
-                this.startEditing(row, firstEditableColumn.id);
-              }
+              if (editableIndex < this.getColumnModel().config.length) {this.startEditing(row, editableIndex);}
             }
           END_OF_JAVASCRIPT
 

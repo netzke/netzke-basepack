@@ -22,10 +22,10 @@ module Netzke
         :config_tool_available       => true,
         
         :default_config => {
+          :persistent_config => true,
           :ext_config => {
-            :tools => %w{ }
+            :tools => []
           },
-          :persistent_config => true
         }
       })
     end
@@ -130,7 +130,7 @@ module Netzke
     
  
     def get_columns
-      if config[:persistent_config]
+      if persistent_config_enabled
         persistent_config['layout__columns'] ||= default_columns
         res = normalize_array_of_columns(persistent_config['layout__columns'])
       else

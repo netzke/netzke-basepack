@@ -88,18 +88,15 @@ module Netzke
             :enable_column_filters  => true,
             :load_inline_data       => true,
             :enable_context_menu    => true,
-            
+            :enable_rows_reordering => false, # column drag n drop
             :enable_pagination      => true,
             :rows_per_page          => 25,
+            :tools                  => %w{ refresh },
             
-            :mode                   => :normal, # when set to :config, :configuration button is enabled
-            
-            :enable_rows_reordering => false, # drag n drop
-            
-            :tools => %w{ refresh }
+            :mode                   => :normal # when set to :config, :configuration button is enabled
           },
+          :persistent_config      => true
           
-          :persistent_config => true
         }
       })
     end
@@ -250,21 +247,13 @@ module Netzke
       res = { 
         :add          => {:text => 'Add',     :disabled      => ext_config[:prohibit_create]},
         :edit         => {:text => 'Edit',    :disabled      => true},
-        :del       => {:text => 'Delete',  :disabled      => true},
+        :del          => {:text => 'Delete',  :disabled      => true},
         :apply        => {:text => 'Apply',   :disabled      => ext_config[:prohibit_update] && ext_config[:prohibit_create]},
         :add_in_form  => {:text => 'Add in form', :disabled  => !ext_config[:enable_edit_in_form]},
         :edit_in_form => {:text => 'Edit in form', :disabled => true},
         :search       => {:text => 'Search', :disabled       => !ext_config[:enable_extended_search]}
       }
       
-      # Edit in form
-      # res.merge!({
-      # })# if ext_config[:enable_edit_in_form]
-      # 
-      # # Extended search
-      # res.merge!({
-      # }) if ext_config[:enable_extended_search]
-
       res
     end
 
@@ -275,8 +264,8 @@ module Netzke
       res.merge!({
         :edit_form => {
           :widget_class_name => "FormPanel",
-          :persistent_config => true,
           :data_class_name => config[:data_class_name],
+          :persistent_config => true,
           :ext_config => {
             :bbar => false,
             :header => false,
@@ -286,8 +275,8 @@ module Netzke
         
         :multi_edit_form => {
           :widget_class_name => "FormPanel",
-          :persistent_config => true,
           :data_class_name => config[:data_class_name],
+          :persistent_config => true,
           :ext_config => {
             :bbar => false,
             :header => false,
@@ -297,8 +286,8 @@ module Netzke
         
         :new_record_form => {
           :widget_class_name => "FormPanel",
-          :persistent_config => true,
           :data_class_name => config[:data_class_name],
+          :persistent_config => true,
           :ext_config => {
             :bbar => false,
             :header => false,
@@ -338,7 +327,7 @@ module Netzke
     end
 
     def get_columns
-      if config[:persistent_config]
+      if persistent_config_enabled
         persistent_config['layout__columns'] ||= default_columns
         res = normalize_array_of_columns(persistent_config['layout__columns'])
       else

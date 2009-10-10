@@ -64,7 +64,7 @@ module Netzke
             Ext.netzke.cache.BorderLayoutPanel.superclass.initComponent.call(this);
             
             // First time on "afterlayout", set resize events
-            this.on('afterlayout', this.setResizeEvents, this, {single: true});
+            if (this.persistentConfig) {this.on('afterlayout', this.setResizeEvents, this, {single: true});}
           }
         END_OF_JAVASCRIPT
         

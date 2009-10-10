@@ -6,10 +6,10 @@ class HelperModelTest < ActiveSupport::TestCase
   
   test "reading/writing values" do
     Netzke::FormPanel.config.deep_merge!({
+      :persistent_config => true,
       :ext_config => {
         :enable_config_tool => true
       },
-      :persistent_config => true
     })
     form = Netzke::FormPanel.new(:data_class_name => "Book")
     Netzke::PropertyEditorExtras::HelperModel.widget = form
