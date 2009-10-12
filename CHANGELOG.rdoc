@@ -1,3 +1,6 @@
+= v0.5.4 - 2009-10-12
+* Dependencies updated
+
 = v0.5.3 - 2009-10-12
 * Compatibility with Ext 3.0 (and dropping compatibility with 2.x).
 * Compatibility with netzke-core v0.4.4.
