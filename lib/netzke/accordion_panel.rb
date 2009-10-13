@@ -89,7 +89,7 @@ module Netzke
       res = []
       config[:items].each_with_index do |item, i|
         res << {
-          # :id => item[:active] && id_name + '_active', # to mark the fit-panel which will contain the active widget
+          # :id => item[:active] && global_id + '_active', # to mark the fit-panel which will contain the active widget
           :title => item[:title] || (item[:name] && item[:name].to_s.humanize),
           :widget => item[:name], # to know which fit panel will load which widget
           :collapsed => !(item[:active] || false)

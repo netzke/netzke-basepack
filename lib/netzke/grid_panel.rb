@@ -143,7 +143,7 @@ module Netzke
     api :create_new_record if config[:edit_in_form_available]
 
     def data_class
-      @data_class ||= config[:data_class_name].nil? ? raise(ArgumentError, "No data_class_name specified for widget #{id_name}") : config[:data_class_name].constantize
+      @data_class ||= config[:data_class_name].nil? ? raise(ArgumentError, "No data_class_name specified for widget #{global_id}") : config[:data_class_name].constantize
     end
 
     

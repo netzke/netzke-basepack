@@ -13,7 +13,7 @@ class Netzke::TreePanel < Netzke::Base
   
   def js_config
     super.deep_merge({
-      :loader => {:data_url => id_name+"__get_children".l}
+      :loader => {:data_url => global_id+"__get_children".l}
     })
   end
   

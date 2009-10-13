@@ -6,3 +6,4 @@ Manifest
 test/app_root/vendor/plugins/netzke-core
 rdoc
 netzke-basepack.gemspec
+netzke-basepack-*.gem

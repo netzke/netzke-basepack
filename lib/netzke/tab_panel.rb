@@ -103,7 +103,7 @@ module Netzke
     def js_config
       super.merge({
         :items => fit_panels,
-        :active_tab => id_name + '_active' # id of the fit panel that is active
+        :active_tab => global_id + '_active' # id of the fit panel that is active
       })
     end
 
@@ -149,7 +149,7 @@ module Netzke
       res = []
       items.each_with_index do |item, i|
         item_config = {
-          :id => item[:active] && id_name + '_active',
+          :id => item[:active] && global_id + '_active',
           :title => item[:title] || (item[:name] && item[:name].humanize),
           :widget => item[:name] # to know which fit-panel will load which widget
         }

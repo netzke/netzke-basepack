@@ -1,3 +1,6 @@
+= edge
+* Compatibility with latest netzke-core
+
 = v0.5.4 - 2009-10-12
 * Dependencies updated
 

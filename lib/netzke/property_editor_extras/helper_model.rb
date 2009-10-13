@@ -78,7 +78,7 @@ module Netzke
 
       # somewhat sofisticated code to convert all NetzkePreferences for current widget into a hash ("un-flatten")
       def attributes
-        prefs = NetzkePreference.find_all_for_widget(self.class.widget.id_name)
+        prefs = NetzkePreference.find_all_for_widget(self.class.widget.global_id)
         res = {}
         prefs.each do |p|
           tmp_res = {}
@@ -96,7 +96,7 @@ module Netzke
         # Rails.logger.debug "!!! method_name: #{method_name.inspect}"
         method_name = method_name.to_s
         method_name_without_equal_sign = method_name.sub(/=$/, '')
-        NetzkePreference.widget_name = self.class.widget.id_name
+        NetzkePreference.widget_name = self.class.widget.global_id
 
         if method_name =~ /=$/
           # current_value = NetzkePreference[method_name_without_equal_sign] # may be nil

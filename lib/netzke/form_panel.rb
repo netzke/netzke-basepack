@@ -171,7 +171,7 @@ module Netzke
         # we didn't have columns configured in widget's config, so, use the columns from the data class
         columns_for_create = predefined_columns
       else
-        raise ArgumentError, "No columns specified for widget '#{id_name}'"
+        raise ArgumentError, "No columns specified for widget '#{global_id}'"
       end
       
       columns_for_create.map! do |c|

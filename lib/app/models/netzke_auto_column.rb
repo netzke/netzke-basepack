@@ -48,9 +48,9 @@ class NetzkeAutoColumn < ActiveRecord::Base
 
   def self.widget=(widget)
     @@widget = widget
-    if Netzke::Base.session["netzke_auto_column_last_widget"] != @@widget.id_name
+    if Netzke::Base.session["netzke_auto_column_last_widget"] != @@widget.global_id
       rebuild_table
-      Netzke::Base.session["netzke_auto_column_last_widget"] = @@widget.id_name
+      Netzke::Base.session["netzke_auto_column_last_widget"] = @@widget.global_id
     end
   end
 end
