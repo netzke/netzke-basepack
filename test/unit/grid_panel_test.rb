@@ -15,7 +15,7 @@ require 'netzke/active_record/basepack'
 class GridPanelTest < ActiveSupport::TestCase
   
   test "api" do
-    grid = Netzke::GridPanel.new(:name => 'grid', :data_class_name => 'Book', :layout_manager => false, :columns => [:id, :title, :recent])
+    grid = Netzke::GridPanel.new(:name => 'grid', :data_class_name => 'Book', :columns => [:id, :title, :recent])
 
     # post
     res = grid.post_data("created_records" => [{:title => 'Lord of the Rings'}].to_nifty_json)
@@ -36,7 +36,16 @@ class GridPanelTest < ActiveSupport::TestCase
     assert_equal(nil, Book.first)
     
   end
-
+  
+  test "normalize index" do
+    grid = Netzke::GridPanel.new(:name => 'grid', :data_class_name => 'Book', :columns => [:id, :col0, {:name => :col1, :excluded => true}, :col2, {:name => :col3, :excluded => true}, :col4, :col5])
+    
+    assert_equal(0, grid.normalize_index(0))
+    assert_equal(1, grid.normalize_index(1))
+    assert_equal(3, grid.normalize_index(2))
+    assert_equal(5, grid.normalize_index(3))
+    assert_equal(6, grid.normalize_index(4))
+  end
   
   # TODO: add tests with association column
   

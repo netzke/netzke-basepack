@@ -1,11 +1,10 @@
 == Priority
-* Make column/fields configuration fool-proof
 * Introduce three-state checkbox for SearchPanel
 * Add icons to buttons to actions (toolbars/menus)
 * On grid refresh, reset the dirty fields, so that the "Apply" button doesn't do anything
 
-== Optimizations
-* Add indexes into tables
+== Foolproof
+* Should not be possible delete the "ID" field from grids/forms
 
 == One day
 * Replace xcheckbox with checkbox in FormPanel

@@ -39,24 +39,38 @@ module Netzke
       end
     end
 
+    # Given an index of a column among enabled (non-excluded) columns, provides the index (position) in the table
+    def normalize_index(index)
+      norm_index = 0
+      index.times do
+        while true do
+          norm_index += 1 
+          break unless normalized_columns[norm_index][:excluded]
+        end
+      end
+      norm_index
+    end
+
     def resize_column(params)
       raise "Called api_resize_column while not configured to do so" if ext_config[:enable_column_resize] == false
-      column_at(params[:index].to_i)[:width] = params[:size].to_i
+      column_at(normalize_index(params[:index].to_i))[:width] = params[:size].to_i
       save_columns!
       {}
     end
 
     def hide_column(params)
       raise "Called api_hide_column while not configured to do so" if ext_config[:enable_column_hide] == false
-      column_at(params[:index].to_i)[:hidden] = params[:hidden].to_b
+      column_at(normalize_index(params[:index].to_i))[:hidden] = params[:hidden].to_b
       save_columns!
       {}
     end
 
     def move_column(params)
       raise "Called api_move_column while not configured to do so" if ext_config[:enable_column_move] == false
-      column_to_move = columns.delete_at(params[:old_index].to_i)
-      columns.insert(params[:new_index].to_i, column_to_move)
+      remove_from = normalize_index(params[:old_index].to_i)
+      insert_to = normalize_index(params[:new_index].to_i)
+      column_to_move = columns.delete_at(remove_from)
+      columns.insert(insert_to, column_to_move)
       save_columns!
 
       # reorder the columns on the client side (still not sure if it's not an overkill)
@@ -239,24 +253,24 @@ module Netzke
     end
 
     # Converts Ext.grid.GridFilters filters to searchlogic conditions, e.g.
-    # {"0" => {
-    #   "data" => {
-    #     "type" => "numeric", 
-    #     "comparison" => "gt", 
-    #     "value" => 10 }, 
-    #   "field" => "id"
-    # }, 
-    # "1" => {
-    #   "data" => {
-    #     "type" => "string",
-    #     "value" => "pizza"
-    #   },
-    #   "field" => "food_name"
-    # }}
-    #
-    #  => 
-    #
-    # {"id_gt" => 100, "food_name_contains" => "pizza"}
+    #     {"0" => {
+    #       "data" => {
+    #         "type" => "numeric", 
+    #         "comparison" => "gt", 
+    #         "value" => 10 }, 
+    #       "field" => "id"
+    #     }, 
+    #     "1" => {
+    #       "data" => {
+    #         "type" => "string",
+    #         "value" => "pizza"
+    #       },
+    #       "field" => "food_name"
+    #     }}
+    #     
+    #      => 
+    #     
+    #     {"id_gt" => 100, "food_name_contains" => "pizza"}
     def convert_filters(column_filter)
       res = {}
       column_filter.each_pair do |k,v|

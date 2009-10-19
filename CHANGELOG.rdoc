@@ -1,6 +1,7 @@
 = edge
 * Compatibility with latest netzke-core
 * Regression: pressing "enter" was not submitting the form (FormPanel)
+* Fix: excluding columns in FieldConfigurator was causing inconsistent column behavior (move/hide/resize)
 
 = v0.5.4 - 2009-10-12
 * Dependencies updated
