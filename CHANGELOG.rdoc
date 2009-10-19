@@ -1,5 +1,6 @@
 = edge
 * Compatibility with latest netzke-core
+* Regression: pressing "enter" was not submitting the form (FormPanel)
 
 = v0.5.4 - 2009-10-12
 * Dependencies updated

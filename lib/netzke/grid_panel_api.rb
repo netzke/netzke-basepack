@@ -28,7 +28,7 @@ module Netzke
       end
     end
 
-    def delete_data(params = {})
+    def delete_data(params)
       if !ext_config[:prohibit_delete]
         record_ids = ActiveSupport::JSON.decode(params[:records])
         klass = config[:data_class_name].constantize

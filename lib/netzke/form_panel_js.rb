@@ -66,7 +66,7 @@ module Netzke
       				:specialkey => {
       				  :fn => <<-END_OF_JAVASCRIPT.l
         				  function(field, event){
-          					if (event.getKey() == 13) this.ownerCt.apply();
+          					if (event.getKey() == 13) this.ownerCt.onApply();
           				}
       				  END_OF_JAVASCRIPT
     				  }
