@@ -2,6 +2,7 @@
 * Compatibility with latest netzke-core
 * Regression: pressing "enter" was not submitting the form (FormPanel)
 * Fix: excluding columns in FieldConfigurator was causing inconsistent column behavior (move/hide/resize)
+* Fix: resolving conflicts with Ext.form.FormPanel's <tt>submit</tt> and <tt>load</tt> methods
 
 = v0.5.4 - 2009-10-12
 * Dependencies updated

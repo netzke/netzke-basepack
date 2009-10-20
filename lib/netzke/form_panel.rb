@@ -47,7 +47,7 @@ module Netzke
       ]
     end
     
-    api :submit, :load, :get_combobox_options
+    api :netzke_submit, :netzke_load, :get_combobox_options
 
     attr_accessor :record
     

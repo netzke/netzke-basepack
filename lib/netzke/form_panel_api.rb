@@ -1,9 +1,10 @@
 module Netzke
   module FormPanelApi
     # API handling form submission
-    def submit(params)
+    def netzke_submit(params)
       data_hsh = ActiveSupport::JSON.decode(params[:data])
       create_or_update_record(data_hsh)
+      {}
     end
 
     # Creates/updates a record from hash
@@ -47,7 +48,7 @@ module Netzke
     #   {:data => [array_of_values]}
     # end
     
-    def load(params)
+    def netzke_load(params)
       @record = data_class && data_class.find_by_id(params[:id])
       {:set_form_values => array_of_values}
     end

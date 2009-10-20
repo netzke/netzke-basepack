@@ -85,7 +85,7 @@ module Netzke
 
           :load_record => <<-END_OF_JAVASCRIPT.l,
             function(id, neighbour){
-              this.load({id:id});
+              this.netzkeLoad({id:id});
             }
           END_OF_JAVASCRIPT
           
