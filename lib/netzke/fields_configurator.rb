@@ -55,7 +55,7 @@ module Netzke
           }
         END_OF_JAVASCRIPT
         
-        :defaults => <<-END_OF_JAVASCRIPT.l,
+        :on_defaults => <<-END_OF_JAVASCRIPT.l,
           function(){
             Ext.Msg.confirm('Confirm', 'Are you sure?', function(btn){
               if (btn == 'yes') {
@@ -70,7 +70,7 @@ module Netzke
     def load_defaults(params)
       config[:widget].persistent_config[:layout__columns] = config[:widget].default_columns
       NetzkeAutoColumn.rebuild_table
-      {:load_store_data => get_data, :reconfigure => js_config}
+      {:load_store_data => get_data}
     end
    
     def commit(params)
