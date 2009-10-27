@@ -306,13 +306,8 @@ module Netzke
     end
     
     ## Edit in form specific API
-    def new_record_form__submit(params)
-      form_data = ActiveSupport::JSON.decode(params[:data])
-      
-      # merge with strong default attirbutes
-      form_data.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
-      
-      res = aggregatee_instance(:new_record_form).create_or_update_record(form_data)
+    def new_record_form__netzke_submit(params)
+      res = aggregatee_instance(:new_record_form).netzke_submit(params)
       
       if res[:set_form_values]
         # successful creation
@@ -334,24 +329,21 @@ module Netzke
       end
     end
 
-    def edit_form__submit(params)
-      form_data = ActiveSupport::JSON.decode(params[:data])
-      res = aggregatee_instance(:new_record_form).create_or_update_record(form_data)
+    def edit_form__netzke_submit(params)
+      res = aggregatee_instance(:edit_form).netzke_submit(params)
       
       check_for_positive_result(res)
       
       res.to_nifty_json
     end
 
-    def multi_edit_form__submit(params)
-      form_data = ActiveSupport::JSON.decode(params[:data])
-      form_instance = aggregatee_instance(:new_record_form)
-      
-      ids = ActiveSupport::JSON.decode(params[:ids])
+    def multi_edit_form__netzke_submit(params)
+      ids = ActiveSupport::JSON.decode(params.delete(:ids))
 
       res = {}
       ids.each do |id|
-        res = form_instance.create_or_update_record(form_data.merge("id" => id))
+        form_instance = aggregatee_instance(:edit_form, :record => data_class.find(id))
+        res = form_instance.netzke_submit(params)
         break if !res[:set_form_values]
       end
       

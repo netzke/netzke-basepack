@@ -59,8 +59,8 @@ module Netzke
 
           # Defaults for each field
           :defaults       => {
-            # :anchor       => '-20', # to leave some space for the scrollbar
-            :width => 180,
+            :anchor       => '-20', # to leave some space for the scrollbar
+            # :width => 180, # we do NOT want fixed size because it doesn't look nice when resizing
             :listeners    => {
               # On "return" key, submit the form
       				:specialkey => {
@@ -106,11 +106,27 @@ module Netzke
           :on_apply => <<-END_OF_JAVASCRIPT.l
             function() {
               if (this.fireEvent('apply', this)) {
-                var values = this.form.getValues();
+                var values = this.getForm().getValues();
                 for (var k in values) {
                   if (values[k] == "") {delete values[k]}
                 }
-                this.submit(Ext.apply((this.baseParams || {}), {data:Ext.encode(values)}));
+                if (this.fileUpload) {
+                  // Not a Netzke's standard API call, because the form is multipart
+                  this.getForm().submit({
+                    url: this.id + '__netzke_submit',
+                    params: {
+                      data: Ext.encode(values)
+                    },
+                    failure: function(form, action){
+                      // It will always be failure, as we don't play along with the Ext success indication (not returning {success: true})
+                      this.bulkExecute(Ext.decode(action.response.responseText));
+                      this.fireEvent('submitsuccess');
+                    },
+                    scope: this
+                  });
+                } else {
+                  this.netzkeSubmit(Ext.apply((this.baseParams || {}), {data:Ext.encode(values)}));
+                }
               }
             }
           END_OF_JAVASCRIPT

@@ -2,15 +2,25 @@ module Netzke
   module FormPanelApi
     # API handling form submission
     def netzke_submit(params)
-      data_hsh = ActiveSupport::JSON.decode(params[:data])
-      create_or_update_record(data_hsh)
-      {}
+      success = create_or_update_record(params)
+
+      if success
+        {:set_form_values => array_of_values}
+      else
+        # flash eventual errors
+        @record.errors.each_full do |msg|
+          flash :error => msg
+        end
+        {:feedback => @flash}
+      end
     end
 
     # Creates/updates a record from hash
-    def create_or_update_record(hsh)
+    def create_or_update_record(params)
+      hsh = ActiveSupport::JSON.decode(params[:data])
+      hsh.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
       klass = config[:data_class_name].constantize
-      @record = klass.find_by_id(hsh.delete("id"))
+      @record ||= klass.find_by_id(hsh.delete("id")) # only pick up the record specified in the params if it was not provided in the configuration
       success = true
 
       @record = klass.new if @record.nil?
@@ -25,16 +35,9 @@ module Netzke
           break
         end
       end
-  
-      if success && @record.save
-        {:set_form_values => array_of_values}
-      else
-        # flash eventual errors
-        @record.errors.each_full do |msg|
-          flash :error => msg
-        end
-        {:feedback => @flash}
-      end
+      
+      # did we have complete success?
+      success && @record.save
     end
 
     # API handling form load

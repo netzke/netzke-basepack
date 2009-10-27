@@ -288,6 +288,7 @@ module Netzke
           :widget_class_name => "FormPanel",
           :data_class_name => config[:data_class_name],
           :persistent_config => config[:persistent_config],
+          :strong_default_attrs => config[:strong_default_attrs],
           :ext_config => {
             :bbar => false,
             :header => false,

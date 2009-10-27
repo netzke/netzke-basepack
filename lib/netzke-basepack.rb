@@ -20,3 +20,4 @@ ActiveSupport::Dependencies.load_once_paths.delete(File.join(File.dirname(__FILE
 # These files will get loaded at the initial load of the framework (along with Ext and Netzke-core).
 Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/basepack.js"
 Netzke::Base.config[:stylesheets] << "#{File.dirname(__FILE__)}/../stylesheets/basepack.css"
+Netzke::Base.config[:stylesheets] << Netzke::Base.config[:ext_location] + "/examples/form/file-upload.css"
