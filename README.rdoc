@@ -70,7 +70,7 @@ Declaring a widget in the controller provides you with a couple of helpers that 
 
 1. books_class_definition will contain the JavaScript code defining the code for the JS class.
 2. books_widget_instance will declare a local JavaScript variable called 'book'.
-3. books_widget_render will provide the JavaScript code that calls the "render" method on the variable declared by books_widget_instance.
+3. books_widget_render will provide the JavaScript code that calls the "render" method on the variable declared by books_widget_instance; the widget will be rendered into a div with id "books-div".
 
 Use these helpers inside of the script-tag like the following (in the view):
 	
@@ -81,7 +81,7 @@ Use these helpers inside of the script-tag like the following (in the view):
     	<%= books_widget_render %>
     })
     </script>
-    <div id="books">the widget will be rendered in this div</div>
+    <div id="books-div">the widget will be rendered in this div</div>
 
 If your layout already calls yield :javascripts wrapped in the <script>-tag, you can have all javascript-code in one place on the page:
 
@@ -93,7 +93,7 @@ If your layout already calls yield :javascripts wrapped in the <script>-tag, you
     })
     <% end %>
     <p>... your page content here ...</p>
-    <div id="books">the widget will be rendered in this div</div>
+    <div id="books-div">the widget will be rendered in this div</div>
 
 == Dynamic loading of widgets
 TODO: this part will be covered later
