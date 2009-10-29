@@ -1,7 +1,7 @@
 = edge
 * Compatibility with latest netzke-core
 * Regression: pressing "enter" was not submitting the form (FormPanel)
-* Regression: "Restore defaults" button was not working in FieldsConfigurator
+* Regression: "Restore defaults" button was not working in FieldsConfigurator and PropertyEditor
 * Fix: excluding columns in FieldConfigurator was causing inconsistent column behavior (move/hide/resize)
 * Fix: resolving conflicts with Ext.form.FormPanel's <tt>submit</tt> and <tt>load</tt> methods
 * New: rudimentary FileUploadField support in FormPanel (it will do a normal, non-AJAX, form submit)

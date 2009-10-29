@@ -37,7 +37,7 @@ module Netzke
           }
         END_OF_JAVASCRIPT
         
-        :restore_defaults => <<-END_OF_JAVASCRIPT.l,
+        :on_restore_defaults => <<-END_OF_JAVASCRIPT.l,
           function(){
             this.restoreDefaults();
           }

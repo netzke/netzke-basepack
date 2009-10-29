@@ -6,34 +6,47 @@ Note that if you would like to modify this code or experiment with it, you may b
 = Prerequisites
 1. Rails >= 2.2
 2. Ext JS >= 3.0: its root *must* be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder):
+
     cd public && ln -s ~/Developer/extjs/ext-3.0 extjs
 
 3. acts_as_list plugin must be installed: 
+
     ./script/plugin install git://github.com/rails/acts_as_list.git
 
-4. mislav-will_paginate >= 2.3.0
-    gem sources -a http://gems.github.com/
-    sudo gem install mislav-will_paginate
+4. will_paginate >= 2.3.0
+
+    sudo gem install will_paginate
 
 = Installation
-Install Netzke gems:
+The gem is hosted on gemcutter. If you haven't yet enabled gemcutter, run the following:
+
+    sudo gem install gemcutter && gem tumble
+
+Install the gem:
+
     gem install netzke-basepack
 
 Include it into environment.rb:
+
     config.gem "netzke-basepack"
 
 Include mapping for Netzke controller providing *.js and *.css (in routes.rb):
+
     map.netzke
 
 = Usage
 First, run the generators to have the necessary migrations:
+
     ./script/generate netzke_core
 
 Do the migrations:
+
     rake db:migrate
 
 The following example will provide you with a grid-based scaffold for ActiveRecord-model called Book. You may generate it like this:
+
     ./script/generate model Book title:string amount:integer
+
 (don't forget to re-run the migrations after it)
 
 In the controller declare the widget:
