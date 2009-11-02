@@ -237,7 +237,7 @@ module Netzke
     # Set the Logout button if Netzke::Base.user is set
     def menu
       res = []
-      user = Netzke::Base.user
+      user = User.find_by_id(session[:netzke_user_id])
       if !user.nil?
         user_name = user.respond_to?(:name) ? user.name : user.login # try to display user's name, fallback to login
         res << "->" <<

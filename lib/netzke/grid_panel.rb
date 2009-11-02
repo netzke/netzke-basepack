@@ -64,7 +64,7 @@ module Netzke
     include Netzke::DataAccessor
 
     def self.enforce_config_consistency
-      config[:default_config][:ext_config][:enable_edit_in_form] &&= config[:edit_in_form_available]
+      config[:default_config][:ext_config][:enable_edit_in_form]    &&= config[:edit_in_form_available]
       config[:default_config][:ext_config][:enable_extended_search] &&= config[:extended_search_available]
       config[:default_config][:ext_config][:enable_rows_reordering] &&= config[:rows_reordering_available]
     end
@@ -188,7 +188,7 @@ module Netzke
         {:name => :ext_config__context_menu,        :type => :json},
         {:name => :ext_config__enable_pagination,   :type => :boolean, :default => true},
         {:name => :ext_config__rows_per_page,       :type => :integer},
-        {:name => :ext_config__bbar,              :type => :json},
+        {:name => :ext_config__bbar,                :type => :json},
         {:name => :ext_config__prohibit_create,     :type => :boolean},
         {:name => :ext_config__prohibit_update,     :type => :boolean},
         {:name => :ext_config__prohibit_delete,     :type => :boolean},
@@ -202,11 +202,11 @@ module Netzke
       
     end
     
-    def initial_config
+    def default_config
       res = super
       
-      res[:ext_config][:bbar] = default_bbar if res[:ext_config][:bbar].nil?
-      res[:ext_config][:context_menu] ||= default_context_menu
+      res[:ext_config][:bbar] = default_bbar
+      res[:ext_config][:context_menu] = default_context_menu
       
       res
     end
@@ -244,17 +244,16 @@ module Netzke
 
     def actions
       # Defaults
-      res = { 
+      { 
         :add          => {:text => 'Add',     :disabled      => ext_config[:prohibit_create]},
         :edit         => {:text => 'Edit',    :disabled      => true},
         :del          => {:text => 'Delete',  :disabled      => true},
-        :apply        => {:text => 'Apply',   :disabled      => ext_config[:prohibit_update] && ext_config[:prohibit_create]},
+        :apply        => {:text => 'Apply',   :disabled      => ext_config[:prohibit_update] &&
+                                                                ext_config[:prohibit_create]},
         :add_in_form  => {:text => 'Add in form', :disabled  => !ext_config[:enable_edit_in_form]},
         :edit_in_form => {:text => 'Edit in form', :disabled => true},
         :search       => {:text => 'Search', :disabled       => !ext_config[:enable_extended_search]}
       }
-      
-      res
     end
 
     def initial_late_aggregatees
