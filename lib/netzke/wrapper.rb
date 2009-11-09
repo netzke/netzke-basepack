@@ -25,7 +25,7 @@ module Netzke
         
         :init_component => <<-END_OF_JAVASCRIPT.l,
           function(){
-            Ext.netzke.cache.#{short_widget_class_name}.superclass.initComponent.call(this);
+            #{js_full_class_name}.superclass.initComponent.call(this);
 
             // instantiate the item
             this.instantiateChild(this.itemConfig);

@@ -49,7 +49,8 @@ module Netzke
                 var regionConfig = this.regions[r] || {};
                 regionConfig.layout = 'fit';
                 regionConfig.region = r;
-                regionConfig.items = [new Ext.netzke.cache[this[configName].widgetClassName](this[configName])]
+                var klass = this.classifyScopedName(this[configName].scopedClassName);
+                regionConfig.items = [new klass(this[configName])]
                 this.items.push(regionConfig);
 
                 // A function to access a region widget (even if the widget gets reloaded, the function will work).
@@ -61,7 +62,7 @@ module Netzke
             }, this);
             
             // Now let Ext.Panel do the rest
-            Ext.netzke.cache.BorderLayoutPanel.superclass.initComponent.call(this);
+            #{js_full_class_name}.superclass.initComponent.call(this);
             
             // First time on "afterlayout", set resize events
             if (this.persistentConfig) {this.on('afterlayout', this.setResizeEvents, this, {single: true});}
@@ -119,6 +120,7 @@ module Netzke
     # API
     api :resize_region # handles regions resize
     def resize_region(params)
+      # Write to persistent_config such way that these settings are automatically picked up by region widgets
       persistent_config["regions__#{params["region_name"]}__region_config__width"] = params["new_width"].to_i if params["new_width"]
       persistent_config["regions__#{params["region_name"]}__region_config__height"] = params["new_height"].to_i if params["new_height"]
       {}

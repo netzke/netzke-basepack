@@ -81,12 +81,12 @@ module Netzke
             function(){
               this.items = this.panels; // a bit weird, but working; can't assign it straight
               
-              Ext.netzke.cache.BasicApp.superclass.initComponent.call(this);
+              #{js_full_class_name}.superclass.initComponent.call(this);
 
               // If we are given a token, load the corresponding widget, otherwise load the last loaded widget
               var currentToken = Ext.History.getToken();
               if (currentToken != "") {
-                this.processHistory(currentToken)
+                this.processHistory(currentToken);
               } else {
                 var lastLoaded = this.initialConfig.widgetToLoad; // passed from the server
                 if (lastLoaded) Ext.History.add(lastLoaded);
@@ -305,7 +305,7 @@ module Netzke
     # Besides instantiating ourselves, also instantiate the FeedbackGhost
     def js_widget_instance
       <<-END_OF_JAVASCRIPT << super
-        new Ext.netzke.cache['FeedbackGhost']({id:'feedback_ghost'})
+        new Netzke.classes.Netzke.FeedbackGhost({id:'feedback_ghost'})
         // Initialize history (can't say why it's not working well inside the appLoaded handler)
         Ext.History.init();
       END_OF_JAVASCRIPT

@@ -24,7 +24,7 @@ module Netzke
         
         :render => <<-END_OF_JAVASCRIPT.l,
           function(el){
-            Ext.netzke.cache.#{short_widget_class_name}.superclass.render.call(this, el);
+            #{js_full_class_name}.superclass.render.call(this, el);
             
             // We do this all in +render+ because only at this moment the activeTab is actually activated
             var activeTab = this.getActiveTab();
@@ -38,7 +38,8 @@ module Netzke
             var preloadedItemConfig = this[fitPanel.widget.camelize(true)+"Config"];
             if (preloadedItemConfig){
               // preloaded widget only needs to be instantiated, as its class and configuration have already been loaded
-              fitPanel.add(new Ext.netzke.cache[preloadedItemConfig.widgetClassName](preloadedItemConfig));
+              var klass = this.classifyScopedName(preloadedItemConfig.scopedClassName);
+              fitPanel.add(new klass(preloadedItemConfig));
               fitPanel.doLayout();
             } else {
               // load the widget from the server

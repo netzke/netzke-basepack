@@ -50,7 +50,7 @@ module Netzke
               delete this.clmns; // we don't need them anymore
               
               // Now let Ext.form.FormPanel do the rest
-              Ext.netzke.cache.FormPanel.superclass.initComponent.call(this);
+              #{js_full_class_name}.superclass.initComponent.call(this);
               
               // Apply event
               this.addEvents('apply');
@@ -125,7 +125,10 @@ module Netzke
                     scope: this
                   });
                 } else {
-                  this.netzkeSubmit(Ext.apply((this.baseParams || {}), {data:Ext.encode(values)}));
+                  // Submit the data and process the result
+                  this.netzkeSubmit(Ext.apply((this.baseParams || {}), {data:Ext.encode(values)}), function(result){
+                    if (result === "ok") {this.fireEvent("submitsuccess")};
+                  }, this);
                 }
               }
             }

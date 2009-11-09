@@ -199,7 +199,7 @@ module Netzke
             
             // Now let Ext.grid.EditorGridPanel do the rest
             // Original initComponent
-            Ext.netzke.cache.GridPanel.superclass.initComponent.call(this);
+            #{js_full_class_name}.superclass.initComponent.call(this);
             
             // Inform the server part about column operations
             if (this.persistentConfig) {
@@ -595,7 +595,7 @@ module Netzke
                 },{
                   text:'Cancel',
                   handler:function(){
-                    this.ownerCt.ownerCt.close();
+                    this.ownerCt.ownerCt.hide();
                   }
                 }]
               });
@@ -642,38 +642,15 @@ module Netzke
 
           :on_add_in_form => <<-END_OF_JAVASCRIPT.l,
             function(){
-              if (!this.formWindow) {
-                this.formWindow = new Ext.Window({
-                  title:'Add',
-                  layout: 'fit',
-                  modal: true,
-                  width: 400,
-                  height: Ext.lib.Dom.getViewHeight() *0.9,
-                  closeAction: 'hide',
-                  buttons:[{
-                    text: 'OK',
-                    handler: function(){
-                      this.ownerCt.ownerCt.getWidget().onApply();
-                    }
-                  },{
-                    text:'Cancel',
-                    handler:function(){
-                      this.ownerCt.ownerCt.close();
-                    }
-                  }]
-                });
-              }
-
-              this.formWindow.show(null, function(){
-                this.formWindow.closeRes = 'cancel';
-                if (!this.formWindow.getWidget()){
-                  this.loadAggregatee({id:"newRecordForm", container:this.formWindow.id});
-                }
-              }, this);
-
+              this.loadAggregatee({id: "addForm", callback: function(form){
+                form.on('close', function(){
+                  if (form.closeRes === "ok") {
+                    this.store.reload();
+                  }
+                }, this);
+              }, scope: this});
             }
           END_OF_JAVASCRIPT
-          
         }
         ) if config[:edit_in_form_available]
         

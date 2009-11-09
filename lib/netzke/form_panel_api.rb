@@ -5,7 +5,7 @@ module Netzke
       success = create_or_update_record(params)
 
       if success
-        {:set_form_values => array_of_values}
+        {:set_form_values => array_of_values, :set_result => "ok"}
       else
         # flash eventual errors
         @record.errors.each_full do |msg|

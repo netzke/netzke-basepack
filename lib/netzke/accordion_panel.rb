@@ -16,7 +16,7 @@ module Netzke
         :defaults => {:layout => 'fit'},
         :init_component => <<-END_OF_JAVASCRIPT.l,
           function(){
-            Ext.netzke.cache.#{short_widget_class_name}.superclass.initComponent.call(this);
+            #{js_full_class_name}.superclass.initComponent.call(this);
 
             // Set events
             this.items.each(function(i){
@@ -26,7 +26,8 @@ module Netzke
               // If not collapsed, add the active aggregatee (item) into it
               if (!i.collapsed) {
                 var preloadedItemConfig = this[i.widget.camelize(true) + "Config"];
-                i.add(new Ext.netzke.cache[preloadedItemConfig.widgetClassName](preloadedItemConfig));
+                var klass = this.classifyScopedName(preloadedItemConfig.scopedClassName);
+                i.add(new klass(preloadedItemConfig));
                 i.doLayout(); // always needed after adding a component
               }
             }, this);
@@ -41,7 +42,8 @@ module Netzke
             
             if (preloadedItemConfig){
               // preloaded widget only needs to be instantiated, as its class and configuration have already been loaded
-              panel.add(new Ext.netzke.cache[preloadedItemConfig.widgetClassName](preloadedItemConfig));
+              var klass = this.classifyScopedName(preloadedItemConfig.scopedClassName);
+              panel.add(new klass(preloadedItemConfig));
               panel.doLayout(); // always needed after adding a component
             } else {
               // load the widget from the server
