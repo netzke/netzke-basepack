@@ -132,7 +132,13 @@ module Netzke
             }
           END_OF_JAVASCRIPT
 
-          :logout => <<-END_OF_JAVASCRIPT.l,
+          :on_login => <<-END_OF_JAVASCRIPT.l,
+            function(){
+              window.location = "/login"
+            }
+          END_OF_JAVASCRIPT
+          
+          :on_logout => <<-END_OF_JAVASCRIPT.l,
             function(){
               window.location = "#{config[:logout_url]}"
             }
@@ -167,6 +173,13 @@ module Netzke
               this.appLoadWidget(action.widget || action.name);
             }
           END_OF_JAVASCRIPT
+          
+          :on_toggle_config_mode => <<-END_OF_JAVASCRIPT.l,
+            function(){
+              this.toggleConfigMode();
+            }
+          END_OF_JAVASCRIPT
+          
           
           # Masquerade selector window
           :show_masquerade_selector => <<-END_OF_JAVASCRIPT.l
@@ -246,22 +259,13 @@ module Netzke
           :menu => user_menu
         }
       else
-        res << "->" <<
-        {
-          :text => "Login",
-          :handler => <<-END_OF_JAVASCRIPT.l,
-            function(){
-              window.location = "/login"
-            }
-          END_OF_JAVASCRIPT
-          :scope => this
-        }
+        res << "->" << :login
       end
       res
     end
 
     def user_menu
-      ['logout']
+      [:logout]
     end
 
     def initialize(*args)
@@ -281,8 +285,9 @@ module Netzke
     def actions
       { 
         :masquerade_selector => {:text => "Masquerade as ...", :fn => "showMasqueradeSelector"},
-        :toggle_config_mode => {:text => "#{session[:config_mode] ? "Leave" : "Enter"} config mode", :fn => "toggleConfigMode"},
-        :logout => {:text => "Log out", :fn => "logout"}
+        :toggle_config_mode => {:text => "#{session[:config_mode] ? "Leave" : "Enter"} config mode"},
+        :login => {:text => "Login"},
+        :logout => {:text => "Logout"}
       }
     end
     
