@@ -1,22 +1,24 @@
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
+    gemspec.version = "0.5.5"
     gemspec.name = "netzke-basepack"
-    gemspec.summary = "Pre-built Netzke widgets for your RIA"
-    gemspec.description = "Pre-built Netzke widgets for your RIA"
+    gemspec.summary = "Pre-built Rails + ExtJS widgets for your RIA"
+    gemspec.description = "A set of full-featured extendible Netzke widgets (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
     gemspec.email = "sergei@playcode.nl"
     gemspec.homepage = "http://github.com/skozlov/netzke-basepack"
     gemspec.rubyforge_project = "netzke-basepack"
     gemspec.authors = ["Sergei Kozlov"]
-    gemspec.add_dependency("netzke-core", ">=0.4.4")
+    gemspec.add_dependency("netzke-core", ">=0.4.5")
     gemspec.add_dependency("searchlogic", ">=2.0.0")
     gemspec.add_dependency("will_paginate", ">=2.0.0")
   end
-  Jeweler::RubyforgeTasks.new do |rubyforge|
-    rubyforge.doc_task = "rdoc"
-  end
+  Jeweler::GemcutterTasks.new
+  # Jeweler::RubyforgeTasks.new do |rubyforge|
+  #   rubyforge.doc_task = "rdoc"
+  # end
 rescue LoadError
-  puts "Jeweler not available. Install it with: sudo gem install technicalpickles-jeweler -s http://gems.github.com"
+  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end
 
 require 'rake/rdoctask'
