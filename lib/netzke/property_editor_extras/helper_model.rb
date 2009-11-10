@@ -93,13 +93,11 @@ module Netzke
       end
 
       def method_missing(method_name, *args)
-        # Rails.logger.debug "!!! method_name: #{method_name.inspect}"
         method_name = method_name.to_s
         method_name_without_equal_sign = method_name.sub(/=$/, '')
         NetzkePreference.widget_name = self.class.widget.global_id
 
         if method_name =~ /=$/
-          # current_value = NetzkePreference[method_name_without_equal_sign] # may be nil
           current_value = self.class.widget.flat_independent_config(method_name_without_equal_sign)
           
           begin
@@ -108,11 +106,9 @@ module Netzke
             new_value = current_value
           end
           
-          # default_value = self.class.widget.flat_default_config(method_name_without_equal_sign)
           initial_value = self.class.widget.flat_initial_config(method_name_without_equal_sign)
       
           new_value = nil if new_value == initial_value
-          # Rails.logger.debug "!!! new_value: #{new_value.inspect}"
           NetzkePreference[method_name_without_equal_sign] = new_value
         else
           res = self.class.widget.flat_independent_config(method_name_without_equal_sign)

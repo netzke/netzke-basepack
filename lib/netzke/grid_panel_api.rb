@@ -288,7 +288,7 @@ module Netzke
     end
 
     def normalize_extra_conditions(conditions)
-      conditions.convert_keys{|k| k.to_s.gsub("__", "_").to_sym}
+      conditions.deep_convert_keys{|k| k.to_s.gsub("__", "_").to_sym}
     end
 
     # make params understandable to searchlogic

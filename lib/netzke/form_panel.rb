@@ -91,7 +91,7 @@ module Netzke
     end
     
     def columns
-      @columns ||= get_columns.convert_keys{|k| k.to_sym}
+      @columns ||= get_columns.deep_convert_keys{|k| k.to_sym}
     end
     
     # parameters used to instantiate the JS object
