@@ -5,17 +5,13 @@ Note that if you would like to modify this code or experiment with it, you may b
 
 = Prerequisites
 1. Rails >= 2.2
-2. Ext JS >= 3.0: its root *must* be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder):
+2. Ext JS >= 3.0: its root by default must be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder):
 
     cd public && ln -s ~/Developer/extjs/ext-3.0 extjs
 
 3. acts_as_list plugin must be installed: 
 
     ./script/plugin install git://github.com/rails/acts_as_list.git
-
-4. will_paginate >= 2.3.0
-
-    sudo gem install will_paginate
 
 = Installation
 The gem is hosted on gemcutter. If you haven't yet enabled gemcutter, run the following:

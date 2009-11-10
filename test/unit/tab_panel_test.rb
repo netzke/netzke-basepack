@@ -15,7 +15,7 @@ class TabPanelTest < ActiveSupport::TestCase
     assert_equal("item0", tab_panel.aggregatees[:item0][:name])
     assert_equal("second_panel", tab_panel.aggregatees[:second_panel][:name])
     assert(tab_panel.aggregatees[:second_panel][:active])
-    assert_equal("Panel", tab_panel.js_config[:second_panel_config][:widget_class_name])
+    assert_equal("Panel", tab_panel.js_config[:second_panel_config][:scoped_class_name])
   end
 
 end
