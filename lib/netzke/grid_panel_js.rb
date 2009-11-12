@@ -144,9 +144,9 @@ module Netzke
             // because we don't want the app-wide Ext.Ajax to be used,
             // as we are going to subscribe to its events
             var connection = new Ext.data.Connection({
-              url:this.id+"__get_data",
-              extraParams : {
-                authenticity_token : Ext.authenticityToken
+              url: this.buildApiUrl("get_data"),
+              extraParams: {
+                authenticity_token : Netzke.authenticityToken
               },
 
               // inform Ext.Ajax about our events
