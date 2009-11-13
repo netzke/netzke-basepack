@@ -57,7 +57,6 @@ module Netzke
         :xtype => 'toolbar',
         :region => 'north',
         :height => 25
-        # :items => ["-"]
       },{
         :id => 'main-statusbar',
         :xtype => 'statusbar',
@@ -115,10 +114,10 @@ module Netzke
               // var position = toolbar.items.getCount() - 2;
               // position = position < 0 ? 0 : position;
               // toolbar.insertButton(position, newMenu);
-
               toolbar.add(item);
               // this.menus[owner.id].push(newMenu); // TODO: remember the menus from this owner in some other way
           	}, this);
+          	toolbar.doLayout(); // required since Ext 3.0.3
         	}
         END_OF_JAVASCRIPT
 
