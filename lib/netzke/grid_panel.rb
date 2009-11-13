@@ -198,6 +198,8 @@ module Netzke
       res << {:name => :ext_config__enable_extended_search, :type => :boolean} if config[:extended_search_available]
       res << {:name => :ext_config__enable_edit_in_form, :type => :boolean} if config[:edit_in_form_available]
       
+      res << {:name => :layout__columns,                 :type => :json}
+      
       res
       
     end
