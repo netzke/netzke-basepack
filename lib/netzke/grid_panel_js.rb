@@ -103,7 +103,6 @@ module Netzke
                   c.editor = null;
                 }
 
-                console.info(c.renderer);
                 // set the renderer
                 if (c.renderer && c.renderer.match(/^\\s*function\\s*\\(/)) {
                   // if the renderer is an inline function - eval it (double escaping because we are inside of the Ruby string here...)
