@@ -1,6 +1,7 @@
 require "netzke/grid_panel/grid_panel_js"
 require "netzke/grid_panel/grid_panel_api"
 require "netzke/plugins/configuration_tool"
+require "netzke/data_accessor"
 
 module Netzke
   # == GridPanel
@@ -63,7 +64,7 @@ module Netzke
       # API (server-side)
     include GridPanelApi
       # Code shared between GridPanel, FormPanel, and other widgets that serve as interface to database tables
-    include DataAccessor
+    include Netzke::DataAccessor
 
     def self.enforce_config_consistency
       config[:default_config][:ext_config][:enable_edit_in_form]    &&= config[:edit_in_form_available]

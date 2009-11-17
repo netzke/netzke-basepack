@@ -1,3 +1,4 @@
+require 'activerecord'
 require 'searchlogic'
 require 'will_paginate'
 

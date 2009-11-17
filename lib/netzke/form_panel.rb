@@ -1,6 +1,7 @@
 require "netzke/form_panel/form_panel_js"
 require "netzke/form_panel/form_panel_api"
 require "netzke/plugins/configuration_tool"
+require "netzke/data_accessor"
 
 module Netzke
   # = FormPanel
@@ -18,7 +19,7 @@ module Netzke
   class FormPanel < Base
     include FormPanelJs  # javascript (client-side)
     include FormPanelApi # API (server-side)
-    include DataAccessor # some code shared between GridPanel, FormPanel, and other widgets that use database attributes
+    include Netzke::DataAccessor # some code shared between GridPanel, FormPanel, and other widgets that use database attributes
 
     # Class-level configuration with defaults
     def self.config

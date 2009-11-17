@@ -1,3 +1,5 @@
+require "netzke/property_editor/helper_model"
+
 module Netzke
   class PropertyEditor < FormPanel
     
