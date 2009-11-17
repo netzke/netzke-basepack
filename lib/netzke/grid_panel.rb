@@ -267,7 +267,7 @@ module Netzke
       # Edit in form
       res.merge!({
         :add_form => {
-          :widget_class_name => "GridPanelExtras::RecordFormWindow",
+          :widget_class_name => "GridPanel::RecordFormWindow",
           :ext_config => {
             :title => "Add #{config[:data_class_name].humanize}",
             :button_align => "right"

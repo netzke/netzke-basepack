@@ -1,3 +1,5 @@
+require "netzke/active_record/data_accessor"
+
 module Netzke
   # This module is included into such data-driven widgets as GridPanel, FormPanel, etc. It provides for
   # flexible pre-configuration of (virtual) attributes.

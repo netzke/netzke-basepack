@@ -1,8 +1,6 @@
 require 'test_helper'
 require 'netzke-core'
 
-module Netzke::GridPanelExtras; end
-
 require 'netzke/plugins/configuration_tool'
 require 'netzke/accordion_panel'
 
