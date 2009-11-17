@@ -1,3 +1,4 @@
+require "activerecord"
 module Netzke::ActiveRecord
   # Provides extensions to all ActiveRecord-based classes
   module Basepack

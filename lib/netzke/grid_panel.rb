@@ -1,4 +1,6 @@
-require 'searchlogic'
+require "netzke/grid_panel/grid_panel_js"
+require "netzke/grid_panel/grid_panel_api"
+require "netzke/plugins/configuration_tool"
 
 module Netzke
   # == GridPanel
@@ -57,11 +59,11 @@ module Netzke
   # Additionally supports Netzke::Base config options.
   class GridPanel < Base
       # javascript (client-side)
-    include Netzke::GridPanelJs
+    include GridPanelJs
       # API (server-side)
-    include Netzke::GridPanelApi
+    include GridPanelApi
       # Code shared between GridPanel, FormPanel, and other widgets that serve as interface to database tables
-    include Netzke::DataAccessor
+    include DataAccessor
 
     def self.enforce_config_consistency
       config[:default_config][:ext_config][:enable_edit_in_form]    &&= config[:edit_in_form_available]
@@ -108,7 +110,7 @@ module Netzke
       # Checkcolumn
       ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
       res << ext_examples + "ux/CheckColumn.js"
-      # res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/check-column.js"
+      # res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/check-column.js"
       
       
       # Filters
@@ -123,13 +125,13 @@ module Netzke
       #     res << ext_examples + "grid-filtering/grid/filter/#{f}Filter.js"
       #   end
       #   
-      #   res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/filters.js"
+      #   res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/filters.js"
       #   
       # end
       
       # DD
       if config[:rows_reordering_available]
-        res << "#{File.dirname(__FILE__)}/grid_panel_extras/javascripts/rows-dd.js"
+        res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"
       end
 
       res

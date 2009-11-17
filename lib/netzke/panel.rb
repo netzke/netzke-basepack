@@ -1,5 +1,4 @@
-module Netzke
-  class Panel < Base
+class Netzke::Panel < Netzke::Base
     def self.js_extend_properties
       {
         :update_body_html => <<-END_OF_JAVASCRIPT.l,
@@ -9,5 +8,4 @@ module Netzke
         END_OF_JAVASCRIPT
       }
     end
-  end
 end

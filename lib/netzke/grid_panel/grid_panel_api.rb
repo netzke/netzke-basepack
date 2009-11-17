@@ -1,3 +1,6 @@
+require 'searchlogic'
+require 'will_paginate'
+
 module Netzke
   module GridPanelApi
     def post_data(params)

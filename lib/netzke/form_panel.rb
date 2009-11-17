@@ -1,3 +1,7 @@
+require "netzke/form_panel/form_panel_js"
+require "netzke/form_panel/form_panel_api"
+require "netzke/plugins/configuration_tool"
+
 module Netzke
   # = FormPanel
   # 
@@ -12,9 +16,9 @@ module Netzke
   # 
   # * <tt>:mode</tt> - when set to <tt>:config</tt>, FormPanel loads in configuration mode
   class FormPanel < Base
-    include Netzke::FormPanelJs  # javascript (client-side)
-    include Netzke::FormPanelApi # API (server-side)
-    include Netzke::DataAccessor # some code shared between GridPanel, FormPanel, and other widgets that use database attributes
+    include FormPanelJs  # javascript (client-side)
+    include FormPanelApi # API (server-side)
+    include DataAccessor # some code shared between GridPanel, FormPanel, and other widgets that use database attributes
 
     # Class-level configuration with defaults
     def self.config
@@ -43,9 +47,9 @@ module Netzke
     # Extra javascripts
     def self.include_js
       [
-        "#{File.dirname(__FILE__)}/form_panel_extras/javascripts/xcheckbox.js",
+        "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js",
         Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
-        "#{File.dirname(__FILE__)}/form_panel_extras/javascripts/netzkefileupload.js"
+        "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
       ]
     end
     
