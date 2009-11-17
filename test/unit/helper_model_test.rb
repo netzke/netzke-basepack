@@ -12,8 +12,8 @@ class HelperModelTest < ActiveSupport::TestCase
       },
     })
     form = Netzke::FormPanel.new(:data_class_name => "Book")
-    Netzke::PropertyEditorExtras::HelperModel.widget = form
-    helper_model = Netzke::PropertyEditorExtras::HelperModel.new
+    Netzke::PropertyEditor::HelperModel.widget = form
+    helper_model = Netzke::PropertyEditor::HelperModel.new
     
     assert(true, helper_model.ext_config__config_tool)
     

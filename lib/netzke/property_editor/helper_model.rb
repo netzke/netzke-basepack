@@ -1,12 +1,12 @@
 module Netzke
-  module PropertyEditorExtras 
+  class PropertyEditor < FormPanel
     class HelperModel
       def self.widget=(w)
         @@widget = w
       end
       
       def self.widget
-        @@widget ||= raise RuntimeError, "No widget specified for PropertyEditorExtras::HelperModel"
+        @@widget ||= raise RuntimeError, "No widget specified for PropertyEditor::HelperModel"
       end
       
       def self.reflect_on_all_associations
