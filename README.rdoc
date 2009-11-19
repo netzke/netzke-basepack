@@ -1,20 +1,30 @@
 = netzke-basepack
 A pack of basic Rails/ExtJS widgets as a part of the Netzke framework. Live demo/tutorials on http://blog.writelesscode.com. Introduction to the Netzke framework and the Wiki: http://github.com/skozlov/netzke
 
-Note that if you would like to modify this code or experiment with it, you may be better off cloning this project into your app's vendor/plugin directory - it will then behave as a Rails plugin.
-
 = Prerequisites
 1. Rails >= 2.2
-2. Ext JS >= 3.0: its root by default must be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder):
+2. ExtJS = 3.0.3. Its root by default must be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder):
 
-    cd public && ln -s ~/Developer/extjs/ext-3.0 extjs
+    cd public && ln -s ~/Developer/extjs/ext-3.0.3 extjs
 
-3. acts_as_list plugin must be installed: 
+3. acts_as_list plugin: 
 
     ./script/plugin install git://github.com/rails/acts_as_list.git
 
+4. netzke-core gem or plugin. Gem:
+  
+    gem install netzke-core
+    
+Plugin (for the "edge" stuff, recommended):
+
+    ./script/plugin install git://github.com/skozlov/netzke-core.git
+
 = Installation
-The gem is hosted on gemcutter. If you haven't yet enabled gemcutter, run the following:
+For the "edge" stuff, install as plugin (recommended):
+
+    ./script/plugin install git://github.com/skozlov/netzke-basepack.git
+
+Otherwise install as gem. The gem is hosted on gemcutter. If you haven't yet enabled gemcutter, run the following:
 
     sudo gem install gemcutter && gem tumble
 
@@ -22,74 +32,39 @@ Install the gem:
 
     gem install netzke-basepack
 
-Include it into environment.rb:
+= Usage
+If using as gem, include it into environment.rb:
 
     config.gem "netzke-basepack"
 
-Include mapping for Netzke controller providing *.js and *.css (in routes.rb):
+Include mapping for Netzke controller providing Netzke javascripts and styles (in routes.rb):
 
     map.netzke
 
-= Usage
-First, run the generators to have the necessary migrations:
+To be able to use persistent on-the-fly configuration of widgets, run netzke-core generators to have the necessary migrations:
 
     ./script/generate netzke_core
 
-Do the migrations:
+... then run the migrations:
 
     rake db:migrate
 
-The following example will provide you with a grid-based scaffold for ActiveRecord-model called Book. You may generate it like this:
+== Embedding widgets into Rails' view
+To enable Netzke widgets in Rails' views, you need to add the following helper into your layout template, inside the "head" tag:
+
+    <%= netzke_init %>
+    
+This will include both ExtJS-related files (JavaScript and styles), and Netzke-related files.
+
+Now let's embed a widget into a view. The following example will provide you with a grid-based scaffold for ActiveRecord-model called Book. You may generate it like this:
 
     ./script/generate model Book title:string amount:integer
 
 (don't forget to re-run the migrations after it)
 
-In the controller declare the widget:
+Now embed a widget into a view like this:
 
-    class WelcomeController < ApplicationController
-      netzke :books, :widget_class_name => 'GridPanel', :data_class_name => 'Book'
-    end
-
-After a widget is declared in the controller, it can be accessed in 3 different ways: 1) loaded by means of an automatically created controller action which will produce a basic HTML-page with the widget (handy for testing), 2) embedded directly into a view (by means of helpers), 3) dynamically loaded by other widgets (like BasicApp-derived, if you want a desktop-like, AJAX-driven web-app).
-
-== Using automatically created controller action
-Without writing any more code, you can access the widget by http://localhost:3000/welcome/books_test. That is to say, you simply append _test to your widget's name (as declared in the controller) to get the action's name.
-
-== Embedding a widget into a view
-netzke-core plugin provides the following 2 helpers to put inside your head-tag (use it in your layout):
-
-1. netzke_js_include - to include extjs and netzke javascript files
-2. netzke_css_include - to include the css. This one can take a parameter to specify a color schema you wish for Ext JS, e.g.: netzke_css_include(:gray)
-
-Declaring a widget in the controller provides you with a couple of helpers that can be used in the view:
-
-1. books_class_definition will contain the JavaScript code defining the code for the JS class.
-2. books_widget_instance will declare a local JavaScript variable called 'book'.
-3. books_widget_render will provide the JavaScript code that calls the "render" method on the variable declared by books_widget_instance; the widget will be rendered into a div with id "books-div".
-
-Use these helpers inside of the script-tag like the following (in the view):
-	
-    <script type="text/javascript" charset="utf-8">
-    <%= books_class_definition %>
-    Ext.onReady(function(){
-    	<%= books_widget_instance %>
-    	<%= books_widget_render %>
-    })
-    </script>
-    <div id="books-div">the widget will be rendered in this div</div>
-
-If your layout already calls yield :javascripts wrapped in the <script>-tag, you can have all javascript-code in one place on the page:
-
-    <% content_for :javascripts do %>
-    <%= books_class_definition %>
-    Ext.onReady(function(){
-    	<%= books_widget_instance %>
-    	books.render("books");
-    })
-    <% end %>
-    <p>... your page content here ...</p>
-    <div id="books-div">the widget will be rendered in this div</div>
+  <%= netzke :books, :widget_class_name => 'GridPanel', :data_class_name => 'Book' %>
 
 == Dynamic loading of widgets
 TODO: this part will be covered later

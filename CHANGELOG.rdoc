@@ -1,3 +1,8 @@
+= v0.6.0 edge
+* Compatibility with latest netzke-core
+* Compatibility with Ext JS v3.0.3
+* Code reorganization
+
 = v0.5.5.1 - 2009-11-09
 * Compatibility with latest netzke-core
 
