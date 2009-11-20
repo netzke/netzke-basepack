@@ -4,8 +4,8 @@ module Netzke
   # FormPanel-based widget that allows create configurable searchlogic-compatible searches. 
   # Pretty much work in progress.
   class SearchPanel < FormPanel
-    # Something like [:equals, :greater_than_or_equal_to, :does_not_equal, :less_than, :less_than_or_equal_to, :greater_than, :ends_with, :like, :begins_with, :empty, :null]
-    CONDITIONS = [:COMPARISON_CONDITIONS, :WILDCARD_CONDITIONS, :BOOLEAN_CONDITIONS].inject([]){|r, c| r + Searchlogic::NamedScopes::Conditions.const_get(c).keys}
+    
+    CONDITIONS = [:COMPARISON_CONDITIONS, :WILDCARD_CONDITIONS, :BOOLEAN_CONDITIONS].inject([]){|r, c| r + Searchlogic::NamedScopes::Conditions.const_get(c).keys} # Something like [:equals, :greater_than_or_equal_to, :does_not_equal, :less_than, :less_than_or_equal_to, :greater_than, :ends_with, :like, :begins_with, :empty, :null]
     
     def default_config
       super.merge({
@@ -21,7 +21,7 @@ module Netzke
         norm_column.merge!({
           :condition => "equals"
         })
-        norm_column.merge!(:hidden => true) if norm_column[:name].to_s.index("__")
+        norm_column.merge!(:hidden => true) if norm_column[:name].to_s.index("__") || norm_column[:xtype] == :xcheckbox
         
         norm_column
       end

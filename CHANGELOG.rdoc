@@ -3,7 +3,8 @@
 * Compatibility with Ext JS v3.0.3
 * Impr: Code reorganization
 * Impr: Non-standard primary key support in GridPanel and FormPanel
-* Impr: Search button in GridPanel indicates that filtering records is active
+* Impr: Search button in GridPanel indicates that records filtering is active
+* Fix: by default, SearchPanel excludes boolean fields for now (until a 3-state checkbox is introduced)
 
 = v0.5.5.1 - 2009-11-09
 * Compatibility with latest netzke-core
