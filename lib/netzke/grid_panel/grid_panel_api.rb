@@ -153,7 +153,7 @@ module Netzke
 
             # merge with strong default attirbutes
             record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
-          
+
             # process all attirubutes for this record
             record_hash.each_pair do |k,v|
               begin

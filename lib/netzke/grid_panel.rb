@@ -253,11 +253,10 @@ module Netzke
         :add          => {:text => 'Add',     :disabled      => ext_config[:prohibit_create]},
         :edit         => {:text => 'Edit',    :disabled      => true},
         :del          => {:text => 'Delete',  :disabled      => true},
-        :apply        => {:text => 'Apply',   :disabled      => ext_config[:prohibit_update] &&
-                                                                ext_config[:prohibit_create]},
+        :apply        => {:text => 'Apply',   :disabled      => ext_config[:prohibit_update] && ext_config[:prohibit_create]},
         :add_in_form  => {:text => 'Add in form', :disabled  => !ext_config[:enable_edit_in_form]},
         :edit_in_form => {:text => 'Edit in form', :disabled => true},
-        :search       => {:text => 'Search', :disabled       => !ext_config[:enable_extended_search]}
+        :search       => {:text => 'Search', :disabled       => !ext_config[:enable_extended_search], :checked => true}
       }
     end
 
@@ -442,6 +441,8 @@ module Netzke
         c[:width] ||= 120 if c[:editor] == :xdatetime
         # hide ID column
         c[:hidden] = true if c[:name] == data_class.primary_key.to_sym && c[:hidden].nil?
+        # make ID column read-only
+        c[:editable] = false if c[:name] == data_class.primary_key.to_sym && c[:editable].nil?
         
         # Some default limitations for virtual columns
         if type == :virtual

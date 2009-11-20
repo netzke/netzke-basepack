@@ -61,7 +61,7 @@ module Netzke
     def initialize(*args)
       super
       apply_helpers
-      @record = config[:record] || data_class && data_class.find_by_id(config[:record_id])
+      @record = config[:record] || config[:record_id] && data_class && data_class.find(:first, :conditions  => {data_class.primary_key => config[:record_id]})
     end
     
     def data_class
@@ -104,6 +104,7 @@ module Netzke
       res = super
       res.merge!(:clmns => columns)
       res.merge!(:data_class_name => config[:data_class_name])
+      res.merge!(:pri => data_class.primary_key) if data_class
       res
     end
  

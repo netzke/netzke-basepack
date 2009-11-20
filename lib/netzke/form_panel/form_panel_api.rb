@@ -21,7 +21,7 @@ module Netzke
         hsh = ActiveSupport::JSON.decode(params[:data])
         hsh.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
         klass = config[:data_class_name].constantize
-        @record ||= klass.find_by_id(hsh.delete("id")) # only pick up the record specified in the params if it was not provided in the configuration
+        @record ||= klass.find(:first, :conditions => {data_class.primary_key => hsh.delete(data_class.primary_key)}) # only pick up the record specified in the params if it was not provided in the configuration
         success = true
 
         @record = klass.new if @record.nil?

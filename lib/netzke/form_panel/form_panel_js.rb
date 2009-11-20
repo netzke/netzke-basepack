@@ -26,7 +26,7 @@ module Netzke
                 // Process columns
                 Ext.each(this.clmns, function(field){
                   if (typeof field == 'string') field = {name:field}; // normalize field
-                  if (!field.hidden || field.name == 'id') {
+                  if (!field.hidden || field.name == this.pri) {
                     recordFields.push({name:field.name, mapping:index++});
 
                     var defaultColumnConfig = Ext.apply({}, this.defaultColumnConfig);
@@ -114,7 +114,7 @@ module Netzke
                   if (this.fileUpload) {
                     // Not a Netzke's standard API call, because the form is multipart
                     this.getForm().submit({
-                      url: this.id + '__netzke_submit',
+                      url: this.buildApiUrl("netzke_submit"),
                       params: {
                         data: Ext.encode(values)
                       },
