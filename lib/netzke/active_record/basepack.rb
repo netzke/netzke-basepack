@@ -61,6 +61,32 @@ module Netzke::ActiveRecord
         super
       end
     end
+    
+    # Make respond_to? return true for association assignment method, like "genre__name="
+    def respond_to?(method, include_private = false)
+      split = method.to_s.split(/__/)
+      if split.size > 1
+        if split.last =~ /=$/ 
+          if split.size == 2
+            # search for association and assign it to self
+            assoc = self.class.reflect_on_association(split.first.to_sym)
+            assoc_method = split.last.chop
+            if assoc
+              assoc.klass.respond_to?("find_by_#{assoc_method}")
+            else
+              super
+            end
+          else
+            super
+          end
+        else
+          # self.respond_to?(split.first) ? self.send(split.first).respond_to?(split[1..-1].join("__")) : false
+          super
+        end
+      else
+        super
+      end
+    end
 
     module ClassMethods
 
