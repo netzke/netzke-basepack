@@ -18,7 +18,9 @@ module Netzke
     
     # Set the passed item as the only aggregatee
     def initial_aggregatees
-      {:item => config[:item]}
+      res = {}
+      res.merge!(:item => config[:item]) if config[:item]
+      res
     end
     
     # Extends the JavaScript class
@@ -43,7 +45,10 @@ module Netzke
               this.on("move", this.onMove, this);
               this.on("resize", this.onSelfResize, this, {buffer: 50}); // Work around firing "resize" event twice (currently a bug in ExtJS)
             }, this);
-            this.instantiateChild(this.itemConfig);
+
+            if (this.itemConfig){
+              this.instantiateChild(this.itemConfig);
+            }
           }
         END_OF_JAVASCRIPT
       

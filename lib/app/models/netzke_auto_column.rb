@@ -42,7 +42,7 @@ class NetzkeAutoColumn < ActiveRecord::Base
     end
 
     # populate the table with data
-    NetzkeAutoColumn.create @@widget.normalized_columns.map(&:deebeefy_values) rescue ActiveRecord::UnknownAttributeError
+    NetzkeAutoColumn.create @@widget.normalized_columns.map(&:deebeefy_values) # rescue ActiveRecord::UnknownAttributeError
     
   end
 
