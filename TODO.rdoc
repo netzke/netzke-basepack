@@ -9,5 +9,8 @@
 == Optimizations
 * Check persistent_config-related queries (aren't they too many?)
 
+== Code design
+* Replace <tt>initial_late_aggregatees</tt> method with a set of methods for each aggregatee, so that more logic would be possible at the moment of on-demand aggregatee loading.
+
 == One day
 * Replace xcheckbox with checkbox in FormPanel
