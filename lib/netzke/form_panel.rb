@@ -117,7 +117,7 @@ module Netzke
         {:name => :xtype, :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::FORM_FIELD_XTYPES}},
         {:name => :value, :type => :string},
         {:name => :field_label, :type => :string},
-        {:name => :input_type, :type => :string}
+        {:name => :input_type, :type => :string, :hidden => true}
       ]
     end
  
