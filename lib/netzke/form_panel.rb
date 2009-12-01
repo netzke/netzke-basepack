@@ -114,7 +114,7 @@ module Netzke
         {:name => :name, :type => :string, :editor => :combobox, :width => 200},
         {:name => :hidden, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Excl"},
         {:name => :disabled, :type => :boolean, :editor => :checkbox, :width => 40, :header => "Dis"},
-        {:name => :xtype, :type => :string},
+        {:name => :xtype, :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::FORM_FIELD_XTYPES}},
         {:name => :value, :type => :string},
         {:name => :field_label, :type => :string},
         {:name => :input_type, :type => :string}

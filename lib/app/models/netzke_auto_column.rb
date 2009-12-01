@@ -1,4 +1,5 @@
 require 'acts_as_list'
+
 class NetzkeAutoColumn < ActiveRecord::Base
   
   acts_as_list

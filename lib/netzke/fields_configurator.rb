@@ -32,7 +32,7 @@ module Netzke
     end
     
     def default_bbar
-      %w{ edit apply - defaults }
+      %w{ add edit apply del - defaults }
     end
         
     def predefined_columns
