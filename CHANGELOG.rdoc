@@ -8,6 +8,7 @@
 * Impr: made it possible to create new AR records with assigned associations using double-underscore notation, e.g.: Clerk.new(:boss__last_name => "Aguraijuja ")
 * Impr: specifying an item for Netzke::Window is now optional
 * Fix: xtype field in FieldsConfigurator is now a combobox
+* Fix: FieldsConfigurator was crashing when fired consequently for grid and form
 
 = v0.5.5.1 - 2009-11-09
 * Compatibility with latest netzke-core

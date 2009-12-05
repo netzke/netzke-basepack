@@ -8,13 +8,24 @@ module Netzke
 
     def initialize(*args)
       super
-      NetzkeAutoColumn.widget = config[:widget]
+      @auto_table_klass = is_for_grid? ? NetzkeAutoColumn : NetzkeAutoField
+      @auto_table_klass.widget = client_widget
+    end
+
+    # widget that uses us
+    def client_widget
+      @passed_config[:widget]
+    end
+
+    # is our client widget a grid (as opposed to a form)?
+    def is_for_grid?
+      client_widget.class.ancestors.include?(GridPanel)
     end
 
     def default_config
       super.deep_merge({
         :name              => 'columns',
-        :data_class_name   => "NetzkeAutoColumn",
+        :data_class_name   => is_for_grid? ? "NetzkeAutoColumn" : "NetzkeAutoField",
         :ext_config        => {
           :header => false,
           :enable_extended_search => false,
@@ -69,13 +80,13 @@ module Netzke
     
     def load_defaults(params)
       config[:widget].persistent_config[:layout__columns] = config[:widget].default_columns
-      NetzkeAutoColumn.rebuild_table
+      @auto_table_klass.rebuild_table
       {:load_store_data => get_data}
     end
    
     def commit(params)
       defaults_hash = config[:widget].class.config_columns.inject({}){ |r, c| r.merge!(c[:name] => c[:default]) }
-      config[:widget].persistent_config[:layout__columns] = NetzkeAutoColumn.all_columns.map do |c| 
+      config[:widget].persistent_config[:layout__columns] = @auto_table_klass.all_columns.map do |c| 
         # reject all keys that are 1) same as defaults, 2) 'position'
         c.reject!{ |k,v| defaults_hash[k.to_sym].to_s == v.to_s || k == 'position'} 
         c = c["name"] if c.keys.count == 1 # denormalize the column
@@ -86,7 +97,7 @@ module Netzke
    
     # each time that we are loaded into the app, rebuild the table
     def before_load
-      NetzkeAutoColumn.rebuild_table
+      @auto_table_klass.rebuild_table
     end
    
   end
