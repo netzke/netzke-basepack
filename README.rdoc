@@ -64,7 +64,7 @@ Now let's embed a widget into a view. The following example will provide you wit
 
 Now embed a widget into a view like this:
 
-  <%= netzke :books, :widget_class_name => 'GridPanel', :data_class_name => 'Book' %>
+  <%= netzke :books, :class_name => 'GridPanel', :model => 'Book' %>
 
 == Dynamic loading of widgets
 TODO: this part will be covered later

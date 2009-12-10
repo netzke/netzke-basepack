@@ -39,7 +39,7 @@ module Netzke
   # 
   # == Instance configuration
   # The following config options are available:
-  # * <tt>:data_class_name</tt> - name of the ActiveRecord model that provides data to this GridPanel.
+  # * <tt>:model</tt> - name of the ActiveRecord model that provides data to this GridPanel.
   # * <tt>:strong_default_attrs</tt> - a hash of attributes to be merged atop of every created/updated record.
   # * <tt>:scopes</tt> - an array of named scopes to filter grid data, e.g.:
   #     
@@ -51,7 +51,7 @@ module Netzke
   # * <tt>:enable_edit_in_form</tt> - provide buttons into the toolbar that activate editing/adding records via a form
   # * <tt>:enable_extended_search</tt> - provide a button into the toolbar that shows configurable search form
   # * <tt>:enable_context_menu</tt> - enable rows context menu
-  # * <tt>:enable_rows_reordering</tt> - enable reordering of rows with drag-n-drop; underlying model (specified in <tt>:data_class_name</tt>) must implement "acts_as_list"-compatible functionality; defaults to <tt>false</tt>
+  # * <tt>:enable_rows_reordering</tt> - enable reordering of rows with drag-n-drop; underlying model (specified in <tt>:model</tt>) must implement "acts_as_list"-compatible functionality; defaults to <tt>false</tt>
   # * <tt>:enable_pagination</tt> - enable pagination; defaults to <tt>true</tt>
   # * <tt>:rows_per_page</tt> - number of rows per page (ignored when <tt>:enable_pagination</tt> is set to <tt>false</tt>)
   # * <tt>:load_inline_data</tt> - load initial data into the grid right after its instantiation (saves a request to server); defaults to <tt>true</tt>
@@ -145,10 +145,12 @@ module Netzke
     # Edit in form
     api :create_new_record if config[:edit_in_form_available]
 
+    # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
-      @data_class ||= config[:data_class_name].nil? ? raise(ArgumentError, "No data_class_name specified for widget #{global_id}") : config[:data_class_name].constantize
+      ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
+      model_name = config[:model] || config[:data_class_name]
+      @data_class ||= model_name.nil? ? raise(ArgumentError, "No model specified for widget #{global_id}") : model_name.constantize
     end
-
     
     def initialize(config = {}, parent = nil)
       super
@@ -269,12 +271,12 @@ module Netzke
         :add_form => {
           :widget_class_name => "GridPanel::RecordFormWindow",
           :ext_config => {
-            :title => "Add #{config[:data_class_name].humanize}",
+            :title => "Add #{data_class.name.humanize}",
             :button_align => "right"
           },
           :item => {
             :widget_class_name => "FormPanel",
-            :data_class_name => config[:data_class_name],
+            :data_class_name => data_class.name,
             :persistent_config => config[:persistent_config],
             :strong_default_attrs => config[:strong_default_attrs],
             :ext_config => {
@@ -283,13 +285,13 @@ module Netzke
               :header => false,
               :mode => ext_config[:mode]
             },
-            :record => config[:data_class_name].constantize.new
+            :record => data_class.new
           }
         },
         
         :edit_form => {
           :widget_class_name => "FormPanel",
-          :data_class_name => config[:data_class_name],
+          :data_class_name => data_class.name,
           :persistent_config => config[:persistent_config],
           :ext_config => {
             :bbar => false,
@@ -300,7 +302,7 @@ module Netzke
         
         :multi_edit_form => {
           :widget_class_name => "FormPanel",
-          :data_class_name => config[:data_class_name],
+          :data_class_name => data_class.name,
           :persistent_config => config[:persistent_config],
           :ext_config => {
             :bbar => false,
@@ -311,7 +313,7 @@ module Netzke
         
         :new_record_form => {
           :widget_class_name => "FormPanel",
-          :data_class_name => config[:data_class_name],
+          :data_class_name => data_class.name,
           :persistent_config => config[:persistent_config],
           :strong_default_attrs => config[:strong_default_attrs],
           :ext_config => {
@@ -319,7 +321,7 @@ module Netzke
             :header => false,
             :mode => ext_config[:mode]
           },
-          :record => config[:data_class_name].constantize.new
+          :record => data_class.new
         }
       }) if ext_config[:enable_edit_in_form]
       
@@ -327,7 +329,7 @@ module Netzke
       res.merge!({
         :search_panel => {
           :widget_class_name => "SearchPanel",
-          :search_class_name => config[:data_class_name],
+          :search_class_name => data_class.name,
           :persistent_config => config[:persistent_config],
           :ext_config => {
             :header => false, 

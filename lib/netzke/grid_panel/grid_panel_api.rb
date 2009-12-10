@@ -36,8 +36,7 @@ module Netzke
       def delete_data(params)
         if !ext_config[:prohibit_delete]
           record_ids = ActiveSupport::JSON.decode(params[:records])
-          klass = config[:data_class_name].constantize
-          klass.destroy(record_ids)
+          data_class.destroy(record_ids)
           {:feedback => "Deleted #{record_ids.size} record(s)", :load_store_data => get_data}
         else
           {:feedback => "You don't have permissions to delete data"}
@@ -88,14 +87,12 @@ module Netzke
       def get_combobox_options(params)
         column = params[:column]
         query = params[:query]
-        {:data => config[:data_class_name].constantize.options_for(column, query).map{|s| [s]}}
+        {:data => data_class.options_for(column, query).map{|s| [s]}}
       end
 
       # Returns searchlogic's search with all the conditions
       def get_search(params)
         @search ||= begin
-          raise ArgumentError, "No data_class_name specified for widget '#{name}'" if !config[:data_class_name]
-
           # make params coming from Ext grid filters understandable by searchlogic
           search_params = normalize_params(params)
 
@@ -107,7 +104,7 @@ module Netzke
             normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
           ) if params[:extra_conditions]
 
-          search = config[:data_class_name].constantize.search(search_params)
+          search = data_class.search(search_params)
       
           # applying scopes
           scopes.each do |s|
@@ -144,11 +141,10 @@ module Netzke
         # mod_record_ids = []
         mod_records = {}
         if !ext_config["prohibit_#{operation}".to_sym]
-          klass = config[:data_class_name].constantize
           modified_records = 0
           data.each do |record_hash|
             id = record_hash.delete('id')
-            record = operation == :create ? klass.new : klass.find(id)
+            record = operation == :create ? data_class.new : data_class.find(id)
             success = true
 
             # merge with strong default attirbutes

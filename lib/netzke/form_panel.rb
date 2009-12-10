@@ -9,7 +9,7 @@ module Netzke
   # Represents Ext.form.FormPanel
   # 
   # == Configuration
-  # * <tt>:data_class_name</tt> - name of the ActiveRecord model that provides data to this GridPanel.
+  # * <tt>:model</tt> - name of the ActiveRecord model that provides data to this GridPanel.
   # * <tt>:record</tt> - record to be displayd in the form. Takes precedence over <tt>:record_id</tt>
   # * <tt>:record_id</tt> - id of the record to be displayd in the form. Also see <tt>:record</tt>
   # 
@@ -64,8 +64,11 @@ module Netzke
       @record = config[:record] || config[:record_id] && data_class && data_class.find(:first, :conditions  => {data_class.primary_key => config[:record_id]})
     end
     
+    # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
-      @data_class ||= config[:data_class_name] && config[:data_class_name].constantize
+      ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
+      model_name = config[:model] || config[:data_class_name]
+      @data_class ||= model_name.nil? ? raise(ArgumentError, "No model specified for widget #{global_id}") : model_name.constantize
     end
     
     def configuration_widgets

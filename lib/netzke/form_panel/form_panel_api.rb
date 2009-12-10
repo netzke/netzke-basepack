@@ -20,11 +20,10 @@ module Netzke
       def create_or_update_record(params)
         hsh = ActiveSupport::JSON.decode(params[:data])
         hsh.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
-        klass = config[:data_class_name].constantize
-        @record ||= klass.find(:first, :conditions => {data_class.primary_key => hsh.delete(data_class.primary_key)}) # only pick up the record specified in the params if it was not provided in the configuration
+        @record ||= data_class.find(:first, :conditions => {data_class.primary_key => hsh.delete(data_class.primary_key)}) # only pick up the record specified in the params if it was not provided in the configuration
         success = true
 
-        @record = klass.new if @record.nil?
+        @record = data_class.new if @record.nil?
 
         hsh.each_pair do |k,v|
           begin
@@ -62,7 +61,7 @@ module Netzke
         column = params[:column]
         query = params[:query]
 
-        {:data => config[:data_class_name].constantize.options_for(column, query).map{|s| [s]}}
+        {:data => data_class.options_for(column, query).map{|s| [s]}}
       end
   
       def configuration_panel__fields__get_combobox_options(params)
