@@ -100,5 +100,10 @@ module Netzke
       @auto_table_klass.rebuild_table
     end
    
+    # Don't show the config tool
+    def config_tool_needed?
+      false
+    end
+   
   end
 end

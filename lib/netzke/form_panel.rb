@@ -68,7 +68,7 @@ module Netzke
     def data_class
       ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
       model_name = config[:model] || config[:data_class_name]
-      @data_class ||= model_name.nil? ? raise(ArgumentError, "No model specified for widget #{global_id}") : model_name.constantize
+      @data_class ||= model_name && model_name.constantize
     end
     
     def configuration_widgets
@@ -106,7 +106,7 @@ module Netzke
     def js_config
       res = super
       res.merge!(:clmns => columns)
-      res.merge!(:data_class_name => config[:data_class_name])
+      res.merge!(:data_class_name => data_class.name) if data_class
       res.merge!(:pri => data_class.primary_key) if data_class
       res
     end

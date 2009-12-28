@@ -356,8 +356,8 @@ module Netzke
 
     def get_columns
       if persistent_config_enabled?
-        persistent_config['layout__columns'] ||= default_columns
-        res = normalize_array_of_columns(persistent_config['layout__columns'])
+        columns = persistent_config['layout__columns'] || default_columns
+        res = normalize_array_of_columns(columns)
       else
         res = default_columns
       end
