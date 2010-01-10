@@ -1,10 +1,6 @@
 module Netzke
   class GridPanel < Base
     class RecordFormWindow < Window
-      def actions
-        {:ok => {:text => "OK"}, :cancel => {:text => "Cancel"}}
-      end
-    
       def initial_config
         super.deep_merge({
           :ext_config => {

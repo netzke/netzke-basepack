@@ -794,35 +794,75 @@ Ext.grid.HeaderDropZone.prototype.onNodeDrop = function(n, dd, e, data){
         return true;
     }
     return false;
-}
+};
 
-// Feedback Ghost
-Netzke.FeedbackGhost = function(){};
-Ext.apply(Netzke.FeedbackGhost.prototype, {
-  showFeedback: function(msg){
-    var createBox = function(s, l){
-        return ['<div class="msg">',
-                '<div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>',
-                '<div class="x-box-ml"><div class="x-box-mr"><div class="x-box-mc">', s, '</div></div></div>',
-                '<div class="x-box-bl"><div class="x-box-br"><div class="x-box-bc"></div></div></div>',
-                '</div>'].join('');
-    }
+// Temporary fix for Ext 3.1 resize problem:
+Ext.override(Ext.Panel, {
 
-    var showBox = function(msg, lvl){
-      if (!lvl) {lvl = 'notice'};
-      var msgCt = Ext.DomHelper.insertFirst(document.body, {'class':'netzke-feedback'}, true);
-      var m = Ext.DomHelper.append(msgCt, {html:createBox(msg,lvl)}, true);
-      m.slideIn('t').pause(2).ghost("b", {remove:true});
-    }
+   // private
+    onResize : function(w, h, rw, rh){
+        if(Ext.isDefined(w) || Ext.isDefined(h)){
+            if(!this.collapsed){
+                // First, set the the Panel's body width.
+                // If we have auto-widthed it, get the resulting full offset width so we can size the Toolbars to match
+                // The Toolbars must not buffer this resize operation because we need to know their heights.
 
-    if (typeof msg != 'string') {
-      var compoundMsg = "";
-      Ext.each(msg, function(m){
-        compoundMsg += m.msg + '<br>';
-      });
-      if (compoundMsg != "") showBox(compoundMsg, null); // the second parameter will be level
-    } else {
-      showBox(msg);
+                if(Ext.isNumber(w)){
+                    this.body.setWidth(w = this.adjustBodyWidth(w - this.getFrameWidth()));
+                } else if (w == 'auto') {
+                    w = this.body.setWidth('auto').dom.offsetWidth;
+                } else {
+                    w = this.body.dom.offsetWidth;
+                }
+
+                if(this.tbar){
+                    this.tbar.setWidth(w);
+                    if(this.topToolbar){
+                        this.topToolbar.setSize(w);
+                    }
+                }
+                if(this.bbar){
+                    this.bbar.setWidth(w);
+                    if(this.bottomToolbar){
+                        this.bottomToolbar.setSize(w);
+                        // The bbar does not move on resize without this.
+                        if (Ext.isIE) {
+                            this.bbar.setStyle('position', 'static');
+                            this.bbar.setStyle('position', '');
+                        }
+                    }
+                }
+                if(this.footer){
+                    this.footer.setWidth(w);
+                    if(this.fbar){
+                        this.fbar.setSize(Ext.isIE ? (w - this.footer.getFrameWidth('lr')) : 'auto');
+                    }
+                }
+
+                // At this point, the Toolbars must be layed out for getFrameHeight to find a result.
+                if(Ext.isNumber(h)){
+                    h = Math.max(0, this.adjustBodyHeight(h - this.getFrameHeight()));
+                    this.body.setHeight(h);
+                }else if(h == 'auto'){
+                    this.body.setHeight(h);
+                }
+
+                if(this.disabled && this.el._mask){
+                    this.el._mask.setSize(this.el.dom.clientWidth, this.el.getHeight());
+                }
+            }else{
+                this.queuedBodySize = {width: w, height: h};
+                if(!this.queuedExpand && this.allowQueuedExpand !== false){
+                    this.queuedExpand = true;
+                    this.on('expand', function(){
+                        delete this.queuedExpand;
+                        this.onResize(this.queuedBodySize.width, this.queuedBodySize.height);
+                    }, this, {single:true});
+                }
+            }
+            this.onBodyResize(w, h);
+        }
+        this.syncShadow();
+        Ext.Panel.superclass.onResize.call(this, w, h, rw, rh);
     }
-	}
 });

@@ -27,6 +27,7 @@ module Netzke
     def self.js_extend_properties
       {
         :layout => "fit",
+        
         :init_component => <<-END_OF_JAVASCRIPT.l,
           function(){
             // Width and height may be specified as percentage of available space, e.g. "60%".
@@ -43,7 +44,7 @@ module Netzke
             // Set the move and resize events after window is shown, so that they don't fire at initial rendering
             this.on("show", function(){
               this.on("move", this.onMove, this);
-              this.on("resize", this.onSelfResize, this, {buffer: 50}); // Work around firing "resize" event twice (currently a bug in ExtJS)
+              this.on("resize", this.onSelfResize, this); // Work around firing "resize" event twice (currently a bug in ExtJS)
             }, this);
 
             if (this.itemConfig){
