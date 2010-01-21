@@ -1,6 +1,6 @@
-= v0.6.0 - EDGE
+= v0.5.6
 * Compatibility with latest netzke-core
-* Compatibility with Ext JS v3.0.3
+* Compatibility with Ext JS v3.1
 * Impr: Code reorganization
 * Impr: Non-standard primary key support in GridPanel and FormPanel
 * Impr: Search button in GridPanel indicates that records filtering is active
