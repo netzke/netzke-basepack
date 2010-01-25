@@ -106,7 +106,7 @@ module Netzke
                   }
 
                   // set the renderer
-                  if (c.renderer && c.renderer.match(/^\\s*function\\s*\\(/)) {
+                  if (c.renderer && !Ext.isArray(c.renderer) && c.renderer.match(/^\\s*function\\s*\\(/)) {
                     // if the renderer is an inline function - eval it (double escaping because we are inside of the Ruby string here...)
                     eval("c.renderer = " + c.renderer + ";");
                   } else {
