@@ -43,8 +43,8 @@ module Netzke
             
             // Set the move and resize events after window is shown, so that they don't fire at initial rendering
             this.on("show", function(){
-              this.on("move", this.onMove, this);
-              this.on("resize", this.onSelfResize, this); // Work around firing "resize" event twice (currently a bug in ExtJS)
+              this.on("move", this.onMoveResize, this);
+              this.on("resize", this.onMoveResize, this);
             }, this);
 
             if (this.itemConfig){
@@ -53,30 +53,32 @@ module Netzke
           }
         END_OF_JAVASCRIPT
       
-        :on_move => <<-END_OF_JAVASCRIPT.l,
-          function(w,x,y){
-            this.moveToPosition({x:x, y:y});
-          }
-        END_OF_JAVASCRIPT
+        :on_move_resize => <<-END_OF_JAVASCRIPT.l,
+          function(){
+            var x = this.getPosition()[0], y = this.getPosition()[1], w = this.getSize().width, h = this.getSize().height;
 
-        :on_self_resize => <<-END_OF_JAVASCRIPT.l,
-          function(w, width, height){
-            this.selfResize({w:width, h:height});
+            // Don't bother the server twice when both move and resize events are called at the same time
+            // (happens when the left or upper window border is dragged)
+            if (this.moveResizeTimer) {clearTimeout(this.moveResizeTimer)};
+            
+            this.moveResizeTimer = (function(sizeAndPosition){
+              this.setSizeAndPosition(sizeAndPosition); // API call
+            }).defer(10, this, [{x:x, y:y, w:w, h:h}]); // 10ms should be enough
           }
         END_OF_JAVASCRIPT
+        
       }
     end
     
     # Processing API calls from client
-    api :move_to_position
-    def move_to_position(params)
-      update_persistent_ext_config(:x => params[:x].to_i, :y => params[:y].to_i)
-      {}
-    end
-    
-    api :self_resize
-    def self_resize(params)
-      update_persistent_ext_config(:width => params[:w].to_i, :height => params[:h].to_i)
+    api :set_size_and_position
+    def set_size_and_position(params)
+      update_persistent_ext_config(
+        :x => params[:x].to_i, 
+        :y => params[:y].to_i, 
+        :width => params[:w].to_i, 
+        :height => params[:h].to_i
+      )
       {}
     end
   end

@@ -104,7 +104,7 @@ module Netzke
     def initial_aggregatees
       res = {}
       config[:items].each_with_index do |item, i|
-        item[:late_aggregation] = !item[:active]
+        item[:late_aggregation] = !item[:active] && !item[:preloaded]
         res.merge!(item[:name].to_sym => item)
       end
       res
