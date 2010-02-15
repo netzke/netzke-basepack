@@ -1,15 +1,14 @@
 module Netzke
   # == Window
-  # Ext.Window-based widget
+  # Ext.Window-based widget able to nest other Netzke widgets
   # 
   # == Features
-  # * Persistent position
-  # * Persistent dimensions
+  # * Persistent position and dimensions
   # 
   # == Instance configuration
-  # <tt>:height</tt> and <tt>:width</tt> - besides accepting a number (which would be just standard ExtJS),
-  # can accept a string specifying relative sizes, calculated from current browser window dimensions.
-  # E.g.: :height => "90%", :width => "60%"
+  # <tt>:item</tt> - nested Netzke widget, e.g.:
+  #     
+  #     netzke :window, :item => {:class_name => "GridPanel", :model => "User"}
   class Window < Base
     # Based on Ext.Window, naturally
     def self.js_base_class
@@ -26,27 +25,25 @@ module Netzke
     # Extends the JavaScript class
     def self.js_extend_properties
       {
+        # we nest widget inside the "fit" layout
         :layout => "fit",
+        
+        # default width and height
+        :width => 300, 
+        :height => 200,
         
         :init_component => <<-END_OF_JAVASCRIPT.l,
           function(){
-            // Width and height may be specified as percentage of available space, e.g. "60%".
-            // Convert them into actual pixels.
-            Ext.each(["width", "length"], function(k){
-              if (Ext.isString(this[k])) {
-                this[k] = Ext.lib.Dom.getViewHeight() * parseFloat("." + this[k].substr(0, this[k].length - 1)); // "66%" => ".66"
-              }
-            });
-            
-            // Superclass' initComponent
+            // superclass' initComponent
             #{js_full_class_name}.superclass.initComponent.call(this);
             
-            // Set the move and resize events after window is shown, so that they don't fire at initial rendering
+            // set the move and resize events after window is shown, so that they don't fire at initial rendering
             this.on("show", function(){
               this.on("move", this.onMoveResize, this);
               this.on("resize", this.onMoveResize, this);
             }, this);
 
+            // instantiate the aggregatee
             if (this.itemConfig){
               this.instantiateChild(this.itemConfig);
             }
@@ -57,8 +54,8 @@ module Netzke
           function(){
             var x = this.getPosition()[0], y = this.getPosition()[1], w = this.getSize().width, h = this.getSize().height;
 
-            // Don't bother the server twice when both move and resize events are called at the same time
-            // (happens when the left or upper window border is dragged)
+            // Don't bother the server twice when both move and resize events are fired at the same time
+            // (which happens when the left or upper window border is dragged)
             if (this.moveResizeTimer) {clearTimeout(this.moveResizeTimer)};
             
             this.moveResizeTimer = (function(sizeAndPosition){

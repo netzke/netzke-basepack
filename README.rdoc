@@ -3,9 +3,9 @@ A pack of basic Rails/ExtJS widgets as a part of the Netzke framework. Live demo
 
 = Prerequisites
 1. Rails >= 2.2
-2. ExtJS = 3.0.3. Its root by default must be accessible as RAILS_ROOT/public/extjs. You may symlink your Ext JS library here like this (from your app folder):
+2. Netzke assumes that your ExtJS library is in public/extjs, which may be a symbolic link, e.g:
 
-    cd public && ln -s ~/Developer/extjs/ext-3.0.3 extjs
+    cd public && ln -s ~/Developer/extjs/ext-3.1.1 extjs
 
 3. acts_as_list plugin: 
 
@@ -24,11 +24,7 @@ For the "edge" stuff, install as plugin (recommended):
 
     ./script/plugin install git://github.com/skozlov/netzke-basepack.git
 
-Otherwise install as gem. The gem is hosted on gemcutter. If you haven't yet enabled gemcutter, run the following:
-
-    sudo gem install gemcutter && gem tumble
-
-Install the gem:
+Or install as gem:
 
     gem install netzke-basepack
 
@@ -66,10 +62,19 @@ Now embed a widget into a view like this:
 
   <%= netzke :books, :class_name => 'GridPanel', :model => 'Book' %>
 
-== Dynamic loading of widgets
-TODO: this part will be covered later
+For more examples, see http://netzke-demo.writelesscode.com
+
+== More info
+Introduction to Netzke framework and wiki: http://github.com/skozlov/netzke
+
+Twitter: http://twitter.com/skozlov
+
+Tutorials: http://blog.writelesscode.com
+
+Live-demo with sample code: http://netzke-demo.writelesscode.com
 
 = Credentials
 Testing done with the help of http://github.com/pluginaweek/plugin_test_helper
 
-Copyright (c) 2008-2009 Sergei Kozlov, released under the MIT license
+---
+Copyright (c) 2008-2010 Sergei Kozlov, released under the MIT license
