@@ -5,8 +5,8 @@ module Netzke
       @items ||= [{
           :name              => "roles",
           :active            => true,
-          :widget_class_name => "GridPanel",
-          :data_class_name   => 'Role',
+          :class_name => "GridPanel",
+          :model   => 'Role',
           :columns           => [:id, :name],
           :ext_config => {
             :header        => false,
@@ -15,8 +15,8 @@ module Netzke
         },{
           :name                 => "users",
           :preloaded            => true,
-          :widget_class_name    => "GridPanel", 
-          :data_class_name      => 'User', 
+          :class_name    => "GridPanel", 
+          :model      => 'User', 
           :ext_config           => {
             :header        => false,
             :rows_per_page => 10,

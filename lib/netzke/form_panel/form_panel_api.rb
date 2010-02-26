@@ -42,7 +42,7 @@ module Netzke
 
       # API handling form load
       # def load(params)
-      #   klass = config[:data_class_name].constantize
+      #   klass = config[:model].constantize
       #   case params[:neighbour]
       #     when "previous" then @record = klass.previous(params[:id])
       #     when "next"     then @record = klass.next(params[:id])

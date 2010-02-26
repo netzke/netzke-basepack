@@ -237,13 +237,13 @@ module Netzke
       res << {
         :persistent_config => true,
         :name              => 'columns',
-        :widget_class_name => "FieldsConfigurator",
+        :class_name => "FieldsConfigurator",
         :active            => true,
         :widget            => self
       }
       res << {
         :name               => 'general',
-        :widget_class_name  => "PropertyEditor",
+        :class_name  => "PropertyEditor",
         :widget             => self,
         :ext_config         => {:title => false}
       }
@@ -269,14 +269,14 @@ module Netzke
       # Edit in form
       res.merge!({
         :add_form => {
-          :widget_class_name => "GridPanel::RecordFormWindow",
+          :class_name => "GridPanel::RecordFormWindow",
           :ext_config => {
             :title => "Add #{data_class.name.humanize}",
             :button_align => "right"
           },
           :item => {
-            :widget_class_name => "FormPanel",
-            :data_class_name => data_class.name,
+            :class_name => "FormPanel",
+            :model => data_class.name,
             :persistent_config => config[:persistent_config],
             :strong_default_attrs => config[:strong_default_attrs],
             :ext_config => {
@@ -290,8 +290,8 @@ module Netzke
         },
         
         :edit_form => {
-          :widget_class_name => "FormPanel",
-          :data_class_name => data_class.name,
+          :class_name => "FormPanel",
+          :model => data_class.name,
           :persistent_config => config[:persistent_config],
           :ext_config => {
             :bbar => false,
@@ -301,8 +301,8 @@ module Netzke
         },
         
         :multi_edit_form => {
-          :widget_class_name => "FormPanel",
-          :data_class_name => data_class.name,
+          :class_name => "FormPanel",
+          :model => data_class.name,
           :persistent_config => config[:persistent_config],
           :ext_config => {
             :bbar => false,
@@ -312,8 +312,8 @@ module Netzke
         },
         
         :new_record_form => {
-          :widget_class_name => "FormPanel",
-          :data_class_name => data_class.name,
+          :class_name => "FormPanel",
+          :model => data_class.name,
           :persistent_config => config[:persistent_config],
           :strong_default_attrs => config[:strong_default_attrs],
           :ext_config => {
@@ -328,7 +328,7 @@ module Netzke
       # Extended search
       res.merge!({
         :search_panel => {
-          :widget_class_name => "SearchPanel",
+          :class_name => "SearchPanel",
           :search_class_name => data_class.name,
           :persistent_config => config[:persistent_config],
           :ext_config => {

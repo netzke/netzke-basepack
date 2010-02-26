@@ -18,7 +18,7 @@ class Netzke::TreePanel < Netzke::Base
   end
   
   def get_children(params)
-    klass = config[:data_class_name].constantize
+    klass = config[:model].constantize
     node = params[:node] == 'source' ? klass.find_by_parent_id(nil) : klass.find(params[:node].to_i)
     node.children.map{|n| {:text => n.name, :id => n.id, :leaf => n.children.empty?}}
   end

@@ -22,10 +22,10 @@ module Netzke
   # == Example configuration:
   # 
   #     :regions => {
-  #       :center => {:widget_class_name => "Panel", :ext_config => {:html => "A panel"}}, 
+  #       :center => {:class_name => "Panel", :ext_config => {:html => "A panel"}}, 
   #       :west => {
-  #         :widget_class_name => "GridPanel", 
-  #         :data_class_name => "User", 
+  #         :class_name => "GridPanel", 
+  #         :model => "User", 
   #         :region_config => {
   #           :width => 100,
   #           :split => true

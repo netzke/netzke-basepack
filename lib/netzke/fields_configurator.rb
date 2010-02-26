@@ -25,7 +25,7 @@ module Netzke
     def default_config
       super.deep_merge({
         :name              => 'columns',
-        :data_class_name   => is_for_grid? ? "NetzkeAutoColumn" : "NetzkeAutoField",
+        :model   => is_for_grid? ? "NetzkeAutoColumn" : "NetzkeAutoField",
         :ext_config        => {
           :header => false,
           :enable_extended_search => false,

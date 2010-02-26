@@ -11,8 +11,8 @@ module Netzke
   # Example:
   # 
   #   netzke :wrapper, :item => {
-  #     :widget_class_name => "FormPanel",
-  #     :data_class_name => "User"
+  #     :class_name => "FormPanel",
+  #     :model => "User"
   #   }
   class Wrapper < Base
     def self.js_extend_properties

@@ -88,16 +88,16 @@ module Netzke
       split_size    = config[:split_size] || 200
       {
         :center => {
-          :widget_class_name    => "GridPanel", 
-          :data_class_name      => config[:data_class_name], 
+          :class_name    => "GridPanel", 
+          :model      => config[:model], 
           :ext_config           => {
-            :title        => config[:grid_title] || config[:data_class_name].pluralize
+            :title        => config[:grid_title] || config[:model].pluralize
           }
         }.deep_merge(config[:grid_config] || {}),
         
         split_region => {
-          :widget_class_name    => "FormPanel", 
-          :data_class_name      => config[:data_class_name], 
+          :class_name    => "FormPanel", 
+          :model      => config[:model], 
           :region_config        => {
             :width  => split_size, 
             :height => split_size, 
@@ -105,7 +105,7 @@ module Netzke
             :collapsible => true
           },
           :ext_config => {
-            :title        => config[:form_title] || "#{config[:data_class_name]} details",
+            :title        => config[:form_title] || "#{config[:model]} details",
             :listeners    => {:actioncomplete => {
               :fn => "function(f, a){this.ownerCt.ownerCt.onFormActioncomplete(f,a)}".l
             }}

@@ -11,7 +11,7 @@ class HelperModelTest < ActiveSupport::TestCase
         :enable_config_tool => true
       },
     })
-    form = Netzke::FormPanel.new(:data_class_name => "Book")
+    form = Netzke::FormPanel.new(:model => "Book")
     Netzke::PropertyEditor::HelperModel.widget = form
     helper_model = Netzke::PropertyEditor::HelperModel.new
     
@@ -23,7 +23,7 @@ class HelperModelTest < ActiveSupport::TestCase
     
     # now try to change the configuration
     helper_model.ext_config__config_tool = "false"
-    # form = Netzke::FormPanel.new(:data_class_name => "Book")
+    # form = Netzke::FormPanel.new(:model => "Book")
     # assert(false, form.ext_config[:enable_config_tool]) # FIXME: make it work
   end
 

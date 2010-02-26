@@ -8,7 +8,7 @@ module Netzke
       def js_config
         res = super
         res.merge!(:clmns => columns)
-        res.merge!(:data_class_name => config[:data_class_name])
+        res.merge!(:model => config[:model])
         res.merge!(:inline_data => get_data) if ext_config[:load_inline_data]
         res.merge!(:pri => data_class.primary_key)
         res

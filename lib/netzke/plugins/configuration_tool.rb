@@ -31,7 +31,7 @@ module Netzke::Plugins
           :on_gear => <<-END_OF_JAVASCRIPT.l
             function(){
               var w = new Ext.Window({
-                title:'Config - '+ this.dataClassName,
+                title:'Config - '+ this.model,
                 layout:'fit',
                 modal:true,
                 width: Ext.lib.Dom.getViewWidth() *0.9,
@@ -93,7 +93,7 @@ module Netzke::Plugins
       # Add the ConfigurationPanel as aggregatee, which in its turn aggregates widgets from the 
       # configuration_widgets method
       res.merge!(:configuration_panel => {
-        :widget_class_name => 'ConfigurationPanel', 
+        :class_name => 'ConfigurationPanel', 
         :items => configuration_widgets,
         :late_aggregation => true
       }) if config_tool_needed?

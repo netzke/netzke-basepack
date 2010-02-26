@@ -6,9 +6,9 @@ class AccordionPanelTest < ActiveSupport::TestCase
   
   test "specifying items" do
     accordion = Netzke::AccordionPanel.new(:items => [{
-      :widget_class_name => "Panel"
+      :class_name => "Panel"
     },{
-      :widget_class_name => "Panel", :name => "second_panel", :active => true
+      :class_name => "Panel", :name => "second_panel", :active => true
     }])
         
     assert_equal(2, accordion.initial_aggregatees.keys.size)

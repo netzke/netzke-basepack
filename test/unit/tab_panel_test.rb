@@ -6,9 +6,9 @@ class TabPanelTest < ActiveSupport::TestCase
   
   test "active item" do
     tab_panel = Netzke::TabPanel.new(:items => [{
-      :widget_class_name => "Panel"
+      :class_name => "Panel"
     },{
-      :widget_class_name => "Panel", :name => "second_panel", :active => true
+      :class_name => "Panel", :name => "second_panel", :active => true
     }])
         
     assert_equal(2, tab_panel.initial_aggregatees.keys.size)

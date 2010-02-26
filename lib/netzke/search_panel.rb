@@ -9,7 +9,7 @@ module Netzke
     
     def default_config
       super.merge({
-        :data_class_name => @passed_config[:search_class_name]
+        :model => @passed_config[:search_class_name]
       })
     end
     

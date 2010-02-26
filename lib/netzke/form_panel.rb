@@ -76,7 +76,7 @@ module Netzke
       
       res << {
         :name              => 'fields',
-        :widget_class_name => "FieldsConfigurator",
+        :class_name => "FieldsConfigurator",
         :active            => true,
         :widget            => self,
         :persistent_config => true
@@ -84,7 +84,7 @@ module Netzke
 
       res << {
         :name               => 'general',
-        :widget_class_name  => "PropertyEditor",
+        :class_name  => "PropertyEditor",
         :widget             => self,
         :ext_config         => {:title => false}
       }
@@ -106,7 +106,7 @@ module Netzke
     def js_config
       res = super
       res.merge!(:clmns => columns)
-      res.merge!(:data_class_name => data_class.name) if data_class
+      res.merge!(:model => data_class.name) if data_class
       res.merge!(:pri => data_class.primary_key) if data_class
       res
     end

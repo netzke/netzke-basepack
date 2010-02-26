@@ -1,6 +1,7 @@
-= EDGE
+= v0.5.7 - 2010-02-26
 * Regression: column config for GridPanel again accepts a renderer along with its parameters (as array, where the first element is the renderers name, the second - the parameters passed to the renderer, e.g.: :renderer => ["date", "y-m-d"])
 * Fix: Window resize/move now works correctly
+* Code: taking care of deprecated methods
 
 = v0.5.6 - 2010-01-10
 * Compatibility with latest netzke-core
