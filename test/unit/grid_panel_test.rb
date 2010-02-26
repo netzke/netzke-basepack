@@ -4,8 +4,8 @@ require 'netzke-core'
 require 'netzke/plugins/configuration_tool'
 require 'netzke/accordion_panel'
 
-require 'netzke/grid_panel_api'
-require 'netzke/grid_panel_js'
+require 'netzke/grid_panel/grid_panel_api'
+require 'netzke/grid_panel/grid_panel_js'
 require 'netzke/grid_panel'
 
 require 'netzke/active_record/basepack'
