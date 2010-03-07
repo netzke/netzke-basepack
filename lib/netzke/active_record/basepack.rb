@@ -4,6 +4,8 @@ module Netzke::ActiveRecord
   # Provides extensions to all ActiveRecord-based classes
   module Basepack
     def self.included(base)
+      base.alias_method_chain :method_missing, :basepack
+      base.alias_method_chain :respond_to?, :basepack
       base.extend ClassMethods
     end
     
@@ -17,9 +19,9 @@ module Netzke::ActiveRecord
     #   Book.first.genre = Genre.find_by_name('Fantasy')
     #
     # The result - easier forms and grids that handle nested models: simply specify column/field name as "genre__name".
-    def method_missing(method, *args, &block)
+    def method_missing_with_basepack(method, *args, &block)
       # if refering to a column, just pass it to the original method_missing
-      return super if self.class.column_names.include?(method.to_s)
+      return method_missing_without_basepack(method, *args, &block) if self.class.column_names.include?(method.to_s)
     
       split = method.to_s.split(/\.|__/)
       if split.size > 1
@@ -41,10 +43,10 @@ module Netzke::ActiveRecord
                 logger.debug "!!! Couldn't find association #{split.first} by #{assoc_method} '#{args.first}'"
               end
             else
-              super
+              method_missing_without_basepack(method, *args, &block)
             end
           else
-            super
+            method_missing_without_basepack(method, *args, &block)
           end
         else
           res = self
@@ -52,18 +54,18 @@ module Netzke::ActiveRecord
             if res.respond_to?(m)
               res = res.send(m) unless res.nil?
             else
-              res.nil? ? nil : super
+              res.nil? ? nil : method_missing_without_basepack(method, *args, &block)
             end
           end
           res
         end
       else
-        super
+        method_missing_without_basepack(method, *args, &block)
       end
     end
     
     # Make respond_to? return true for association assignment method, like "genre__name="
-    def respond_to?(method, include_private = false)
+    def respond_to_with_basepack?(method, include_private = false)
       split = method.to_s.split(/__/)
       if split.size > 1
         if split.last =~ /=$/ 
@@ -74,17 +76,17 @@ module Netzke::ActiveRecord
             if assoc
               assoc.klass.respond_to?("find_by_#{assoc_method}")
             else
-              super
+              respond_to_without_basepack?(method, include_private)
             end
           else
-            super
+            respond_to_without_basepack?(method, include_private)
           end
         else
           # self.respond_to?(split.first) ? self.send(split.first).respond_to?(split[1..-1].join("__")) : false
-          super
+          respond_to_without_basepack?(method, include_private)
         end
       else
-        super
+        respond_to_without_basepack?(method, include_private)
       end
     end
 
