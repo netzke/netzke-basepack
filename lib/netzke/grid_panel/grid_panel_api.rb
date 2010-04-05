@@ -299,8 +299,7 @@ module Netzke
   
         normalized_conditions = {}
         conditions && conditions.each_pair do |k, v|
-          assoc, method = k.split('__')
-          normalized_conditions.merge!(method.nil? ? {assoc => v} : {assoc => {method => v}})
+          normalized_conditions.merge!(k.gsub("__", "_") => v)
         end
   
         {:conditions => normalized_conditions}
