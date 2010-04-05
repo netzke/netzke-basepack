@@ -1,5 +1,9 @@
-= v0.5.8 - EDGE
-* GertThiel's method_missing-related fix enabling better compatibility with other libs
+= v0.5.9 - EDGE
+* Fix: GridPanel's "local filters" are back (they were out since the release of Ext 3.0)
+
+= v0.5.8 - 2010-03-12
+* Fix: GertThiel's method_missing-related fix enabling better compatibility with other Ruby libs
+* Fix: acts_as_list runtime dependency
 
 = v0.5.7 - 2010-02-26
 * Regression: column config for GridPanel again accepts a renderer along with its parameters (as array, where the first element is the renderers name, the second - the parameters passed to the renderer, e.g.: :renderer => ["date", "y-m-d"])

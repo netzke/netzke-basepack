@@ -25,5 +25,13 @@ end
 Netzke::Base.config[:javascripts] << "#{File.dirname(__FILE__)}/../javascripts/basepack.js"
 Netzke::Base.config[:stylesheets] << "#{File.dirname(__FILE__)}/../stylesheets/basepack.css"
 
-# FIXME: doesn't belong here
-Netzke::Base.config[:stylesheets] << Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/css/fileuploadfield.css" if Netzke::Base.config[:ext_location]
+# FIXME: The following stylesheet inclusion doesn't *really* belong here, being widget-specific, 
+# but I don't see any other solution for now. The problem is that these stylesheets come straight from
+# Ext JS, having *relative* URLs to the images, which doesn't allow us to include them all together as those stylesheets 
+# from Netzke.
+# 
+# Used by FormPanel (file upload field)
+Netzke::Base.config[:external_css] << "/extjs/examples/ux/fileuploadfield/css/fileuploadfield"
+# Used by GridPanel
+Netzke::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/RangeMenu"
+Netzke::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/GridFilters"

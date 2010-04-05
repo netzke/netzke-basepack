@@ -253,7 +253,7 @@ module Netzke
         @scopes ||= config[:scopes] || []
       end
 
-      # Converts Ext.grid.GridFilters filters to searchlogic conditions, e.g.
+      # Converts Ext.ux.grid.GridFilters filters to searchlogic conditions, e.g.
       #     {"0" => {
       #       "data" => {
       #         "type" => "numeric", 

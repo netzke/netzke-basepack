@@ -82,9 +82,9 @@ module Netzke
               
                 // collect filters
                 // Not compatible with Ext 3.0
-                //if (c.withFilters){
-                //  filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
-                //}
+                if (c.withFilters){
+                  filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
+                }
 
                 if (c.editor && c.editor.xtype == 'checkbox') {
                   // Special case of checkbox column
@@ -133,9 +133,9 @@ module Netzke
             
               // Filters
               // Not compatible with Ext 3.0
-              // if (this.enableColumnFilters) {
-              //  this.plugins.push(new Ext.grid.GridFilters({filters:filters}));
-              // }
+              if (this.enableColumnFilters) {
+               this.plugins.push(new Ext.ux.grid.GridFilters({filters:filters}));
+              }
             
               // Create Ext.data.Record constructor specific for our particular column configuration
               this.recordConfig = [];

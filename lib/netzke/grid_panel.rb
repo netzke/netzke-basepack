@@ -116,19 +116,17 @@ module Netzke
       
       # Filters
       # Not compatible with Ext 3.0
-      # if config[:column_filters_available]
-      #   ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
-      #   res << ext_examples + "grid-filtering/menu/EditableItem.js"
-      #   res << ext_examples + "grid-filtering/menu/RangeMenu.js"
-      #   res << ext_examples + "grid-filtering/grid/GridFilters.js"
-      # 
-      #   %w{Boolean Date List Numeric String}.unshift("").each do |f|
-      #     res << ext_examples + "grid-filtering/grid/filter/#{f}Filter.js"
-      #   end
-      #   
-      #   res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/filters.js"
-      #   
-      # end
+      if config[:column_filters_available]
+        ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
+        res << ext_examples + "ux/gridfilters/menu/ListMenu.js"
+        res << ext_examples + "ux/gridfilters/menu/RangeMenu.js"
+        res << ext_examples + "ux/gridfilters/GridFilters.js"
+      
+        %w{Boolean Date List Numeric String}.unshift("").each do |f|
+          res << ext_examples + "ux/gridfilters/filter/#{f}Filter.js"
+        end
+        
+      end
       
       # DD
       if config[:rows_reordering_available]
@@ -137,7 +135,7 @@ module Netzke
 
       res
     end
-
+    
     # Define connection points between client side and server side of GridPanel. 
     # See implementation of equally named methods in the GridPanelApi module.
     api :get_data, :post_data, :delete_data, :resize_column, :move_column, :hide_column, :get_combobox_options, :move_rows
@@ -176,7 +174,7 @@ module Netzke
         # {:name => :renderer, :type => :string, :editor => {:xtype => :jsonfield}},
         
         # Filters not supported in Ext 3.0
-        # {:name => :with_filters,   :type => :boolean, :editor => :checkbox, :default => true, :header => "Filters"},
+        {:name => :with_filters,   :type => :boolean, :editor => :checkbox, :default => true, :header => "Filters"},
 
         # some rarely used configurations, hidden
         {:name => :width,      :type => :integer, :editor => :numberfield, :hidden => true},
@@ -450,7 +448,7 @@ module Netzke
         # Some default limitations for virtual columns
         if type == :virtual
           # disable filters
-          # c[:with_filters].nil? && c[:with_filters] = false
+          c[:with_filters].nil? && c[:with_filters] = false
           # disable sorting
           c[:sortable].nil? && c[:sortable] = false
           # read-only
