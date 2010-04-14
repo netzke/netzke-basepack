@@ -28,23 +28,25 @@ module Netzke
             
             // We do this all in +render+ because only at this moment the activeTab is actually activated
             var activeTab = this.getActiveTab();
-            this.loadWidgetInto(activeTab);
+            
+            // Insert (render) preloaded widgets into their respective tabs
+            this.items.each(function(fitPanel){
+              var preloadedItemConfig = this[fitPanel.widget.camelize(true)+"Config"];
+              if (preloadedItemConfig){
+                var klass = this.classifyScopedName(preloadedItemConfig.scopedClassName);
+                fitPanel.add(new klass(preloadedItemConfig));
+              }
+            }, this);
+            
+            // setting the tabchange event
             this.on('tabchange', this.onTabChange, this);
           }
         END_OF_JAVASCRIPT
         
+        # loads widget from the server
         :load_widget_into => <<-END_OF_JAVASCRIPT.l,
           function(fitPanel){
-            var preloadedItemConfig = this[fitPanel.widget.camelize(true)+"Config"];
-            if (preloadedItemConfig){
-              // preloaded widget only needs to be instantiated, as its class and configuration have already been loaded
-              var klass = this.classifyScopedName(preloadedItemConfig.scopedClassName);
-              fitPanel.add(new klass(preloadedItemConfig));
-              fitPanel.doLayout();
-            } else {
-              // load the widget from the server
-              this.loadAggregatee({id:fitPanel.widget, container:fitPanel.id});
-            }
+            this.loadAggregatee({id:fitPanel.widget, container:fitPanel.id});
           }
         END_OF_JAVASCRIPT
         
@@ -78,7 +80,7 @@ module Netzke
         
         :on_tab_change => <<-END_OF_JAVASCRIPT.l
           function(self, tab) {
-            // load widget into the panel if it wasn't loaded yet
+            // load widget into the panel from the server if it's not there yet
             if (!tab.getWidget()) {
               this.loadWidgetInto(tab);
             }
