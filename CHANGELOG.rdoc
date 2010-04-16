@@ -1,6 +1,7 @@
 = v0.5.9 - EDGE
 * Fix: GridPanel's "local filters" are back (they were out since the release of Ext 3.0)
 * Impr: obey "preloaded" option for tabs better: really add the widgets into their respective tabs from the start
+* Fix: datetime filters now also are take into account when searching in GridPanel is performed
 
 = v0.5.8 - 2010-03-12
 * Fix: GertThiel's method_missing-related fix enabling better compatibility with other Ruby libs
