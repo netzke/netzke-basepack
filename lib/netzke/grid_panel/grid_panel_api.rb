@@ -279,7 +279,7 @@ module Netzke
           case v["data"]["type"]
           when "string"
             field << "_contains"
-          when "numeric"
+          when "numeric" || "date"
             field << "_#{v["data"]["comparison"]}"
           end
           value = v["data"]["value"]
