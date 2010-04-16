@@ -115,7 +115,6 @@ module Netzke
       
       
       # Filters
-      # Not compatible with Ext 3.0
       if config[:column_filters_available]
         ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
         res << ext_examples + "ux/gridfilters/menu/ListMenu.js"
@@ -173,7 +172,7 @@ module Netzke
         
         # {:name => :renderer, :type => :string, :editor => {:xtype => :jsonfield}},
         
-        # Filters not supported in Ext 3.0
+        # Filters
         {:name => :with_filters,   :type => :boolean, :editor => :checkbox, :default => true, :header => "Filters"},
 
         # some rarely used configurations, hidden
