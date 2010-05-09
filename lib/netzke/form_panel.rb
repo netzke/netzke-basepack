@@ -61,7 +61,6 @@ module Netzke
     def initialize(*args)
       super
       apply_helpers
-      @record = config[:record] || config[:record_id] && data_class && data_class.find(:first, :conditions  => {data_class.primary_key => config[:record_id]})
     end
     
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
@@ -69,6 +68,10 @@ module Netzke
       ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
       model_name = config[:model] || config[:data_class_name]
       @data_class ||= model_name && model_name.constantize
+    end
+    
+    def record
+      @record ||= config[:record] || config[:record_id] && data_class && data_class.find(:first, :conditions  => {data_class.primary_key => config[:record_id]})
     end
     
     def configuration_widgets
@@ -149,23 +152,25 @@ module Netzke
       end
 
       # merge values for each field if the record is specified
-      @record && res.map! do |c|
-        value = @record.send(normalize_column(c)[:name])
+      record && res.map! do |c|
+        value = record.send(normalize_column(c)[:name])
         value.nil? ? c : normalize_column(c).merge(:value => value)
       end
 
       res
     end
     
-    XTYPE_MAP = {
-      :integer => :numberfield,
-      :boolean => :xcheckbox,
-      :date => :datefield,
-      :datetime => :xdatetime,
-      :text => :textarea,
-      :json => :jsonfield
-      # :string => :textfield
-    }
+    def xtype_map
+      {
+        :integer => :numberfield,
+        :boolean => :xcheckbox,
+        :date => :datefield,
+        :datetime => :xdatetime,
+        :text => :textarea,
+        :json => :jsonfield
+        # :string => :textfield
+      }
+    end
     
     def default_columns
       # columns specified in widget's config
@@ -195,7 +200,7 @@ module Netzke
               assoc_column = assoc.klass.columns_hash[method.to_s]
               assoc_method_type = assoc_column.try(:type)
               if assoc_method_type
-                c[:xtype] ||= XTYPE_MAP[assoc_method_type] == :xcheckbox ? :xcheckbox : :combobox
+                c[:xtype] ||= assoc_method_type == :boolean ? :xtype_map[assoc_method_type] : :combobox
               end
             end
           end
@@ -214,7 +219,7 @@ module Netzke
         type = c[:type] || data_class && data_class.columns_hash[c[:name].to_s].try(:type) || :string
         c[:type] ||= type
         
-        c[:xtype] ||= XTYPE_MAP[type] unless XTYPE_MAP[type].nil?
+        c[:xtype] ||= xtype_map[type] unless xtype_map[type].nil?
 
         # if the column is finally simply {:name => "something"}, cut it down to "something"
         c.reject{ |k,v| k == :name }.empty? ? c[:name] : c

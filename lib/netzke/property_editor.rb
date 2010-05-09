@@ -21,7 +21,7 @@ module Netzke
 
       for f in fields
         f[:value] = @widget.flat_config(f[:name]).nil? ? f[:default] : @widget.flat_config(f[:name])
-        f[:xtype] = XTYPE_MAP[f[:type]]
+        f[:xtype] = xtype_map[f[:type]]
         f[:field_label] = f[:name].to_s.gsub("__", "/").humanize
       end
       

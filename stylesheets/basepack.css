@@ -29,3 +29,44 @@ left: -24px;
 .x-statusbar .x-status-busy {
     padding-left: 25px !important;
 }
+
+/* Tri-state checkbox */
+.x-form-tscheckbox {
+	height: 13px;
+	width: 13px;
+	background: url('basepack/ts-checkbox.gif') no-repeat 0 0;
+	vertical-align: bottom;
+}
+.x-checkbox-checked .x-form-tscheckbox {
+	background-position:0 -13px;
+}
+.x-checkbox-undef .x-form-tscheckbox {
+	background-position:0 -26px;
+}
+.x-item-disabled .x-form-tscheckbox {
+	background-position:-39px 0;
+}
+.x-form-check-over .x-form-tscheckbox {
+	background-position: -13px 0;
+}
+.x-form-check-down .x-form-tscheckbox {
+	background-position:-26px 0;
+}
+.x-checkbox-checked .x-form-check-over .x-form-tscheckbox {
+	background-position:-13px -13px;
+}
+.x-checkbox-checked .x-form-check-down .x-form-tscheckbox {
+	background-position:-26px -13px;
+}
+.x-checkbox-checked.x-item-disabled .x-form-tscheckbox {
+	background-position:-39px -13px;
+}
+.x-checkbox-undef .x-form-check-over .x-form-tscheckbox {
+	background-position:-13px -26px;
+}
+.x-checkbox-undef .x-form-check-down .x-form-tscheckbox {
+	background-position:-26px -26px;
+}
+.x-checkbox-undef.x-item-disabled .x-form-tscheckbox {
+	background-position:-39px -26px;
+}
