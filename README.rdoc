@@ -37,10 +37,14 @@ Include mapping for Netzke controller providing Netzke javascripts and styles (i
 
     map.netzke
 
+Copy the assets into the public folder:
+    
+    ./script/generate netzke_basepack
+
 To be able to use persistent on-the-fly configuration of widgets, run netzke-core generators to have the necessary migrations:
 
     ./script/generate netzke_core
-
+    
 ... then run the migrations:
 
     rake db:migrate
