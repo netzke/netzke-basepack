@@ -198,8 +198,9 @@ module Netzke
               this.bbar = (this.enablePagination) ? new Ext.PagingToolbar({
                 pageSize : this.rowsPerPage,
                 items : this.bbar ? ["-"].concat(this.bbar) : [],
-                store : this.store, 
-                emptyMsg: 'Empty'
+                store : this.store,
+                emptyMsg: 'Empty',
+                displayInfo: true
               }) : this.bbar;
             
               // Selection model
