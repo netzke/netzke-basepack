@@ -90,7 +90,7 @@ Ext.netzke.filterMap = {
   numberfield:'Numeric',
   textfield:'String',
   textarea:'String',
-  xdatetime:'String',
+  xdatetime:'Date',
   checkbox:'Boolean',
   combobox:'String',
   datefield:'Date'

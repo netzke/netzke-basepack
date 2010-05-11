@@ -7,6 +7,7 @@
 * Impr: obey "preloaded" option for tabs better: really add the widgets into their respective tabs from the start
 * Fix: datetime filters now also are take into account when searching in GridPanel is performed
 * Fix: FieldsConfigurator should now work on Heroku
+* Fix: GridPanel date filter now should work
 
 = v0.5.8 - 2010-03-12
 * Fix: GertThiel's method_missing-related fix enabling better compatibility with other Ruby libs

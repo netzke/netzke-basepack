@@ -276,12 +276,14 @@ module Netzke
         res = {}
         column_filter.each_pair do |k,v|
           field = v["field"].dup
+
           case v["data"]["type"]
           when "string"
             field << "_contains"
-          when "numeric" || "date"
+          when "numeric", "date"
             field << "_#{v["data"]["comparison"]}"
           end
+          
           value = v["data"]["value"]
           res.merge!({field => value})
         end
@@ -296,7 +298,7 @@ module Netzke
       def normalize_params(params)
         # filters
         conditions = params[:filter] && convert_filters(params[:filter])
-  
+        
         normalized_conditions = {}
         conditions && conditions.each_pair do |k, v|
           normalized_conditions.merge!(k.gsub("__", "_") => v)
