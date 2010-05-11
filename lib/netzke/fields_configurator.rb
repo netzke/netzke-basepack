@@ -89,7 +89,7 @@ module Netzke
       config[:widget].persistent_config[:layout__columns] = @auto_table_klass.all_columns.map do |c| 
         # reject all keys that are 1) same as defaults, 2) 'position'
         c.reject!{ |k,v| defaults_hash[k.to_sym].to_s == v.to_s || k == 'position'} 
-        c = c["name"] if c.keys.count == 1 # denormalize the column
+        c = c["name"] if c.keys.size == 1 # denormalize the column
         c
       end
       {}
