@@ -92,6 +92,7 @@ module Netzke::ActiveRecord
 
     module ClassMethods
 
+      # TODO: rename to netzke_options_for (to avoid polluting the namespace)
       def options_for(column, query = "")
         # First, check if we have options for this class and column defined in persistent storage
         NetzkePreference.widget_name = self.name
