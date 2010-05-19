@@ -23,7 +23,7 @@ module Netzke
     end
 
     # Returns columns that are exposed by the class and the helpers
-    def predefined_columns
+    def predefined_columns_DELETEME
       helper_module = "Netzke::Helpers::#{short_widget_class_name}#{data_class.name}".constantize rescue nil
       
       data_class_columns = data_class && data_class.column_names.map(&:to_sym) || []

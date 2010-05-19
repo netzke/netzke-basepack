@@ -4,6 +4,7 @@ require 'netzke-core'
 
 # ExtJS-related constants
 require 'netzke/ext'
+require 'netzke/active_record'
 
 # Make widget classes auto-loadable with help of ActiveSupport
 path = File.dirname(__FILE__)

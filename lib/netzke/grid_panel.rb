@@ -389,6 +389,11 @@ module Netzke
       # :string => :textfield
     }
     
+    # TODO: rename
+    def predefined_columns
+      data_class.netzke_attributes
+    end
+    
     def default_columns
       # columns specified in widget's config
       columns_from_config = config[:columns] && normalize_columns(config[:columns]) 
@@ -407,7 +412,8 @@ module Netzke
       
       columns_for_create.map! do |c|
         # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
-        type = (data_class.columns_hash[c[:name].to_s] && data_class.columns_hash[c[:name].to_s].type) || :virtual
+        # type = (data_class.columns_hash[c[:name].to_s] && data_class.columns_hash[c[:name].to_s].type) || :virtual
+        type = c[:virtual] ? (c[:type] || :string) : data_class.columns_hash[c[:name].to_s].type
 
         # detect :assoc__method columns
         if c[:name].to_s.index('__')
