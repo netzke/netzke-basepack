@@ -163,7 +163,7 @@ module Netzke
         {:name => :value},
         {:name => :header},
         {:name => :hidden,     :type => :boolean, :editor => :checkbox},
-        {:name => :editable,  :type => :boolean, :editor => :checkbox, :header => "Editable", :default => true},
+        {:name => :editable,   :type => :boolean, :editor => :checkbox, :header => "Editable", :default => true},
         {:name => :editor,     :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::FORM_FIELD_XTYPES}},
         {:name => :renderer,   :type => :string},
         
@@ -236,7 +236,7 @@ module Netzke
         :name              => 'columns',
         :class_name => "FieldsConfigurator",
         :active            => true,
-        :widget            => self
+        :owner             => self
       }
       res << {
         :name               => 'general',
