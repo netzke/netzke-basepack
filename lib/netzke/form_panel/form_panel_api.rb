@@ -65,7 +65,7 @@ module Netzke
   
       def configuration_panel__fields__get_combobox_options(params)
         query = params[:query]
-        {:data => (predefined_columns.map{ |c| c[:name].to_s }).grep(/^#{query}/).map{ |n| [n] }}.to_nifty_json
+        {:data => (default_columns.map{ |c| c[:name].to_s }).grep(/^#{query}/).map{ |n| [n] }}.to_nifty_json
       end
   
       # Returns array of form values according to the configured columns

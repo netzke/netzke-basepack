@@ -1,26 +1,27 @@
 module Netzke
   class GridPanel < Base
+    # (Dynamic) JavaScript for GridPanel
     module GridPanelJs
-      def self.included(base)
-        base.extend ClassMethods
-      end
-
+      
+      # The result of this method (a hash) is converted to a JSON object and passed as the configuration parameter
+      # to the constructor of our JavaScript class. Override it when you want to pass any extra configuration
+      # to the JavaScript side.
       def js_config
-        res = super
-        res.merge!(:clmns => columns)
-        res.merge!(:model => config[:model])
-        res.merge!(:inline_data => get_data) if ext_config[:load_inline_data]
-        res.merge!(:pri => data_class.primary_key)
-        res
+        super.merge(
+          :clmns => columns, # columns
+          :model => config[:model], # the model name
+          :inline_data => (get_data if ext_config[:load_inline_data]), # inline data (loaded along with the grid panel)
+          :pri => data_class.primary_key # table primary key name
+        )
       end
 
       module ClassMethods
-
+        
         def js_base_class 
           'Ext.grid.EditorGridPanel'
         end
 
-        # Ext.Component#initComponent, built up from pices (dependent on class configuration)
+        # Ext.Component#initComponent, built up from pices (dependent on class-level configuration)
         def js_init_component
         
           # Optional "edit in form"-related events
@@ -45,13 +46,11 @@ module Netzke
               // Normalize columns passed in the config
               var normClmns = [];
               Ext.each(this.clmns, function(c){
-                if (!c.excluded) {
-                  // normalize columns
-                  if (typeof c == 'string') {
-                    normClmns.push({name:c});
-                  } else {
-                    normClmns.push(c);
-                  }
+                // normalize columns
+                if (typeof c == 'string') {
+                  normClmns.push({name:c});
+                } else {
+                  normClmns.push(c);
                 }
               });
 
@@ -62,8 +61,11 @@ module Netzke
 
               var filters = [];
             
-              // Run through columns
+              // Run through columns and set up different configuration for each
               Ext.each(normClmns, function(c){
+                // We will not use meta columns as actual columns (not even hidden), only in the Record
+                if (c.meta) return;
+                
                 // Apply default column config
                 Ext.applyIf(c, this.defaultColumnConfig);
 
@@ -77,11 +79,11 @@ module Netzke
                 if (c.editor) {
                   c.editor = Netzke.isObject(c.editor) ? c.editor : {xtype:c.editor};
                 } else {
-                  c.editor = {xtype: 'textfield'}
+                  c.editor = {xtype: this.attrTypeEditorMap[c.attrType] || 'textfield'}
                 }
               
                 // collect filters
-                if (c.withFilters){
+                if (c.filterable){
                   filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
                 }
 
@@ -137,7 +139,7 @@ module Netzke
             
               // Create Ext.data.Record constructor specific for our particular column configuration
               this.recordConfig = [];
-              Ext.each(normClmns, function(column){this.recordConfig.push({name:column.name});}, this);
+              Ext.each(normClmns, function(column){this.recordConfig.push({name:column.name, defaultValue:column.defaultValue});}, this);
               this.Row = Ext.data.Record.create(this.recordConfig);
 
               // Drag'n'Drop
@@ -259,31 +261,46 @@ module Netzke
         
         end
 
+        # All the rest that makes our JavaScript class
         def js_extend_properties
           res = super
         
-          # Generic (non-optional) functionality
           res.merge!(
           {
+            # all the options are overrideable in config, of course
             :track_mouse_over => true,
             :load_mask        => true,
             :auto_scroll      => true,
 
-            :default_column_config => config_columns.inject({}){ |r, c| c.is_a?(Hash) ? r.merge(c[:name] => c[:default]) : r },
+            :default_column_config => meta_columns.inject({}){ |r, c| c.is_a?(Hash) ? r.merge(c[:name] => c[:default]) : r },
           
             :init_component => js_init_component.l,
           
+            :attr_type_editor_map => {
+              :integer  => "numberfield",
+              :boolean  => "checkbox",
+              :decimal  => "numberfield",
+              :datetime => "xdatetime",
+              :date     => "datefield",
+              :string   => "textfield"
+            },
+            
             # Handlers for actions
             # 
           
             :on_add => <<-END_OF_JAVASCRIPT.l,
               function(){
-                var rowConfig = {};
-                var r = new this.Row(rowConfig); // TODO: add default values
+                var r = new this.Row();
                 r.isNew = true; // to distinguish new records
                 // r.set('id', r.id); // otherwise later r.get('id') returns empty string
                 this.stopEditing();
                 this.getStore().add(r);
+                
+                // Set default values
+                this.getStore().fields.each(function(field){
+                  r.set(field.name, field.defaultValue);
+                });
+                
                 this.tryStartEditing(this.store.indexOf(r));
               }
             END_OF_JAVASCRIPT
@@ -465,11 +482,13 @@ module Netzke
               function(row){
                 var editableIndex = 0;
                 Ext.each(this.getColumnModel().config, function(c){
-                  if (!c.hidden && c.editable && c.editor && (c.editor.xtype !== 'checkbox')) {
+                  // skip columns that cannot be edited
+                  if (!(c.hidden == true || c.editable == false || !c.editor || c["type"] == 'boolean')) {
                     return false;
                   }
                   editableIndex++;
                 });
+                
                 if (editableIndex < this.getColumnModel().config.length) {this.startEditing(row, editableIndex);}
               }
             END_OF_JAVASCRIPT
@@ -741,6 +760,11 @@ module Netzke
           res
         end
       end
+      
+      def self.included(base)
+        base.extend ClassMethods
+      end
+      
     end
   end
 end

@@ -16,12 +16,12 @@ module Netzke
       {:restore_defaults => {:text => "Restore defaults"}}
     end
 
-    def get_columns
+    def fields
       fields = @widget.class.property_fields
 
       for f in fields
         f[:value] = @widget.flat_config(f[:name]).nil? ? f[:default] : @widget.flat_config(f[:name])
-        f[:xtype] = xtype_map[f[:type]]
+        f[:xtype] = xtype_for_attr_type(f[:type])
         f[:field_label] = f[:name].to_s.gsub("__", "/").humanize
       end
       
@@ -95,7 +95,7 @@ module Netzke
     end
     
     def normalize_form_value(value, field)
-      case field[:type]
+      case field[:attr_type]
       when :boolean
         value.to_b
       when :json

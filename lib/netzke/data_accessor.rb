@@ -23,7 +23,7 @@ module Netzke
     end
 
     # Returns columns that are exposed by the class and the helpers
-    def predefined_columns_DELETEME
+    def default_columns_DELETEME
       helper_module = "Netzke::Helpers::#{short_widget_class_name}#{data_class.name}".constantize rescue nil
       
       data_class_columns = data_class && data_class.column_names.map(&:to_sym) || []
@@ -61,7 +61,7 @@ module Netzke
     
     # From symbol to config hash
     def normalize_column(field)
-      field.is_a?(Symbol) ? {:name => field} : field
+      field.is_a?(Symbol) ? {:name => field.to_s} : field
     end
     
     # From symbols to config hashes

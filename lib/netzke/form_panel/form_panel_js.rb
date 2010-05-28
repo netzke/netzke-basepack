@@ -1,8 +1,13 @@
 module Netzke
   class FormPanel < Base
     module FormPanelJs
-      def self.included(base)
-        base.extend ClassMethods
+      # parameters used to instantiate the JS object
+      def js_config
+        res = super
+        res.merge!(:fields => fields)
+        res.merge!(:model => data_class.name) if data_class
+        res.merge!(:pri => data_class.primary_key) if data_class
+        res
       end
 
       module ClassMethods
@@ -24,21 +29,22 @@ module Netzke
                 var index = 0;
             
                 // Process columns
-                Ext.each(this.clmns, function(field){
-                  if (typeof field == 'string') field = {name:field}; // normalize field
+                Ext.each(this.fields, function(field){
                   if (!field.hidden || field.name == this.pri) {
                     recordFields.push({name:field.name, mapping:index++});
-
+                    
                     var defaultColumnConfig = Ext.apply({}, this.defaultColumnConfig);
                     var columnConfig = Ext.apply(defaultColumnConfig, field);
 
                     // apply dynamically defined properties
-                    Ext.apply(columnConfig, {
+                    Ext.applyIf(columnConfig, {
+                      xtype     : this.attrTypeEditorMap[columnConfig.attrType],
                       fieldLabel: columnConfig.fieldLabel || columnConfig.name.humanize(),
-                      hideLabel: columnConfig.hidden, // completely hide fields marked "hidden"
-                      parentId: this.id,
-                      name: columnConfig.name,
-                      checked: columnConfig.xtype == "xcheckbox" ? columnConfig.value : null // checkbox state
+                      hideLabel : columnConfig.hidden, // completely hide fields marked "hidden"
+                      parentId  : this.id,
+                      name      : columnConfig.name,
+                      value     : columnConfig.value,
+                      checked   : columnConfig.attrType == "boolean" ? columnConfig.value : null // checkbox state
                     });
 
                     this.items.push(columnConfig);
@@ -48,7 +54,7 @@ module Netzke
                 var Record = Ext.data.Record.create(recordFields);
                 this.reader = new Ext.data.RecordArrayReader({root:"data"}, Record);
             
-                delete this.clmns; // we don't need them anymore
+                delete this.fields; // we don't need them anymore
             
                 // Now let Ext.form.FormPanel do the rest
                 #{js_full_class_name}.superclass.initComponent.call(this);
@@ -57,6 +63,15 @@ module Netzke
                 this.addEvents('apply');
               }
             END_OF_JAVASCRIPT
+
+            :attr_type_editor_map => {
+              :integer  => "numberfield",
+              :boolean  => "checkbox",
+              :decimal  => "numberfield",
+              :datetime => "xdatetime",
+              :date     => "datefield",
+              :string   => "textfield"
+            },
 
             # Defaults for each field
             :defaults       => {
@@ -74,9 +89,9 @@ module Netzke
               }
             },
         
-            :default_column_config => config_columns.inject({}){ |r, c| r.merge!({
-              c[:name] => c[:default]
-            }) },
+            # :default_column_config => meta_columns.inject({}){ |r, c| r.merge!({
+            #   c[:name] => c[:default_value]
+            # })},
         
             :set_form_values => <<-END_OF_JAVASCRIPT.l,
               function(values){
@@ -138,6 +153,11 @@ module Netzke
         end
     
       end
+    
+      def self.included(base)
+        base.extend ClassMethods
+      end
+    
     end
   end
 end

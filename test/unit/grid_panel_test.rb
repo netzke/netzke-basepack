@@ -35,15 +35,23 @@ class GridPanelTest < ActiveSupport::TestCase
     
   end
   
-  test "normalize index" do
-    grid = Netzke::GridPanel.new(:name => 'grid', :model => 'Book', :columns => [:id, :col0, {:name => :col1, :excluded => true}, :col2, {:name => :col3, :excluded => true}, :col4, :col5])
+  # test "normalize index" do
+  #   grid = Netzke::GridPanel.new(:name => 'grid', :model => 'Book', :columns => [:id, :col0, {:name => :col1, :excluded => true}, :col2, {:name => :col3, :excluded => true}, :col4, :col5])
+  #   
+  #   assert_equal(0, grid.normalize_index(0))
+  #   assert_equal(1, grid.normalize_index(1))
+  #   assert_equal(3, grid.normalize_index(2))
+  #   assert_equal(5, grid.normalize_index(3))
+  #   assert_equal(6, grid.normalize_index(4))
+  # end
+
+  test "default columns" do
+    grid = Netzke::GridPanel.new(:model => "Book")
     
-    assert_equal(0, grid.normalize_index(0))
-    assert_equal(1, grid.normalize_index(1))
-    assert_equal(3, grid.normalize_index(2))
-    assert_equal(5, grid.normalize_index(3))
-    assert_equal(6, grid.normalize_index(4))
+    assert_equal(6, grid.columns.size)
+    assert_equal({:name => "id", :type => :integer}, grid.columns.first)
   end
+  
   
   # TODO: add tests with association column
   

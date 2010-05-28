@@ -58,13 +58,45 @@ module Netzke
   # * <tt>:mode</tt> - when set to <tt>:config</tt>, GridPanel loads in configuration mode
   # 
   # Additionally supports Netzke::Base config options.
+  # 
+  # == Column
+  # Here's how the GridPanel decides which columns in which sequence and with which configuration to display.
+  # First, the column configs are aquired from this GridPanel's persistent storage, as an array of hashes, each 
+  # representing a column configuration, such as:
+  #
+  #   {:name => :created_at, :header => "Created", :tooltip => "When the record was created"}
+  # 
+  # This hash *overrides* (deep_merge) the hard-coded configuration, an example of which can be specifying 
+  # columns for a GridPanel instance, e.g.:
+  # 
+  #   :columns => [{:name => :created_at, :sortable => false}]
+  # 
+  # ... which in its turn overrides the defaults provided by persistent storage managed by the AttributesConfigurator
+  # that provides *model-level* (as opposed to a widget-level) configuration of a database model 
+  # (which is used by both grids and forms in Netzke).
+  # And lastly, the defaults for AttributesConfigurator are calculated from the database model itself, powered by Netzke.
+  # For example, in the model you can specify virtual attributes and their types that will be picked up by Netzke, the default
+  # order of columns, or excluded columns. For details see <tt>Netzke::ActiveRecord::Attributes</tt>.
+  # 
+  # The columns are displayed in the order specified by what's found first in the following sequence:
+  #   GridPanel instance's persistent storage
+  #   hardcoded config
+  #   AttributesConfigurator persistent storage
+  #   netzke_expose_attributes in the database model
+  #   database columns + (eventually) virtual attributes specified with netzke_virtual_attribute
   class GridPanel < Base
-      # javascript (client-side)
+    # javascript (client-side)
     include GridPanelJs
-      # API (server-side)
+    
+    # API (server-side)
     include GridPanelApi
-      # Code shared between GridPanel, FormPanel, and other widgets that serve as interface to database tables
+    
+    # Columns
+    include GridPanelColumns
+    
+    # Code shared between GridPanel, FormPanel, and other widgets that serve as interface to database tables
     include Netzke::DataAccessor
+    
 
     def self.enforce_config_consistency
       config[:default_config][:ext_config][:enable_edit_in_form]    &&= config[:edit_in_form_available]
@@ -111,8 +143,6 @@ module Netzke
       # Checkcolumn
       ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
       res << ext_examples + "ux/CheckColumn.js"
-      # res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/check-column.js"
-      
       
       # Filters
       if config[:column_filters_available]
@@ -155,52 +185,28 @@ module Netzke
       apply_helpers
     end
 
-    # Columns to be displayed by the FieldConfigurator. 
-    def self.config_columns
-      [
-        {:name => :name,       :type => :string, :editor => :combobox, :width => 200},
-        {:name => :excluded,   :type => :boolean, :editor => :checkbox, :width => 40, :header => "Excl"},
-        {:name => :value},
-        {:name => :header},
-        {:name => :hidden,     :type => :boolean, :editor => :checkbox},
-        {:name => :editable,   :type => :boolean, :editor => :checkbox, :header => "Editable", :default => true},
-        {:name => :editor,     :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::FORM_FIELD_XTYPES}},
-        {:name => :renderer,   :type => :string},
-        
-        # maybe later
-        # {:name => :xtype, :type => :string, :editor => {:xtype => :combobox, :options => Netzke::Ext::COLUMN_XTYPES}},
-        
-        # {:name => :renderer, :type => :string, :editor => {:xtype => :jsonfield}},
-        
-        # Filters
-        {:name => :with_filters,   :type => :boolean, :editor => :checkbox, :default => true, :header => "Filters"},
 
-        # some rarely used configurations, hidden
-        {:name => :width,      :type => :integer, :editor => :numberfield, :hidden => true},
-        {:name => :hideable,   :type => :boolean, :editor => :checkbox, :default => true, :hidden => true},
-        {:name => :sortable,   :type => :boolean, :editor => :checkbox, :default => true, :hidden => true},
-      ]
-    end
     
+    # Fields to be displayed in the "General" tab of the configuration panel
     def self.property_fields
       res = [
         {:name => :ext_config__title,               :type => :string},
         {:name => :ext_config__header,              :type => :boolean, :default => true},
         {:name => :ext_config__enable_context_menu, :type => :boolean, :default => true},
-        {:name => :ext_config__context_menu,        :type => :json},
+        # {:name => :ext_config__context_menu,        :type => :json},
         {:name => :ext_config__enable_pagination,   :type => :boolean, :default => true},
         {:name => :ext_config__rows_per_page,       :type => :integer},
-        {:name => :ext_config__bbar,                :type => :json},
+        # {:name => :ext_config__bbar,                :type => :json},
         {:name => :ext_config__prohibit_create,     :type => :boolean},
         {:name => :ext_config__prohibit_update,     :type => :boolean},
         {:name => :ext_config__prohibit_delete,     :type => :boolean},
         {:name => :ext_config__prohibit_read,       :type => :boolean}
       ]
       
-      res << {:name => :ext_config__enable_extended_search, :type => :boolean} if config[:extended_search_available]
-      res << {:name => :ext_config__enable_edit_in_form, :type => :boolean} if config[:edit_in_form_available]
+      # res << {:name => :ext_config__enable_extended_search, :type => :boolean} if config[:extended_search_available]
+      # res << {:name => :ext_config__enable_edit_in_form, :type => :boolean} if config[:edit_in_form_available]
       
-      # TODO: buggy thing
+      # TODO: a buggy thing
       # res << {:name => :layout__columns,                 :type => :json}
       
       res
@@ -285,6 +291,23 @@ module Netzke
             :record => data_class.new
           }
         },
+        # :edit_form => {
+        #   :class_name => "GridPanel::RecordFormWindow",
+        #   :ext_config => {
+        #     :title => "Edit #{data_class.name.humanize}",
+        #     :button_align => "right"
+        #   },
+        #   :item => {
+        #     :class_name => "FormPanel",
+        #     :model => data_class.name,
+        #     :persistent_config => config[:persistent_config],
+        #     :ext_config => {
+        #       :bbar => false,
+        #       :header => false,
+        #       :mode => ext_config[:mode]
+        #     }
+        #   },
+        # },
         
         :edit_form => {
           :class_name => "FormPanel",
@@ -339,135 +362,7 @@ module Netzke
       res
     end
 
-
     include Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window
-    
-    def columns
-      @columns ||= get_columns
-    end
-
-    # Normalized columns
-    def normalized_columns
-      @normalized_columns ||= normalize_columns(columns)
-    end
-
-    def get_columns
-      if persistent_config_enabled?
-        columns = persistent_config['layout__columns'] || default_columns
-        res = normalize_array_of_columns(columns)
-      else
-        res = default_columns
-      end
-
-      # denormalize
-      res.map{ |c| c.is_a?(Hash) && c.reject{ |k,v| k == :name }.empty? ? c[:name].to_sym : c }
-    end
-    
-    # Normalizes the column at position +index+ and returns it.
-    def column_at(index)
-      if columns[index].is_a?(Hash)
-        columns[index]
-      else
-        column_name = columns.delete_at(index)
-        normalized_column = normalize_column(column_name)
-        columns.insert(index, normalized_column)
-        normalized_column
-      end
-    end
-    
-    # Stores modified columns in persistent storage
-    def save_columns!
-      persistent_config[:layout__columns] = columns
-    end
-    
-    TYPE_EDITOR_MAP = {
-      :integer => :numberfield,
-      :boolean => :checkbox,
-      :date => :datefield,
-      :datetime => :xdatetime,
-      :text => :textarea
-      # :string => :textfield
-    }
-    
-    # TODO: rename
-    def predefined_columns
-      data_class.netzke_attributes
-    end
-    
-    def default_columns
-      # columns specified in widget's config
-      columns_from_config = config[:columns] && normalize_columns(config[:columns]) 
-      
-      if columns_from_config
-        # reverse-merge each column hash from config with each column hash from exposed_attributes (columns from config have higher priority)
-        for c in columns_from_config
-          corresponding_exposed_column = predefined_columns.find{ |k| k[:name] == c[:name] }
-          c.reverse_merge!(corresponding_exposed_column) if corresponding_exposed_column
-        end
-        columns_for_create = columns_from_config
-      else
-        # we didn't have columns configured in widget's config, so, use the columns from the data class
-        columns_for_create = predefined_columns
-      end
-      
-      columns_for_create.map! do |c|
-        # detect ActiveRecord column type (if the column is "real") or fall back to :virtual
-        # type = (data_class.columns_hash[c[:name].to_s] && data_class.columns_hash[c[:name].to_s].type) || :virtual
-        type = c[:virtual] ? (c[:type] || :string) : data_class.columns_hash[c[:name].to_s].type
-
-        # detect :assoc__method columns
-        if c[:name].to_s.index('__')
-          assoc_name, method = c[:name].to_s.split('__').map(&:to_sym)
-          if assoc = data_class.reflect_on_association(assoc_name)
-            assoc_column = assoc.klass.columns_hash[method.to_s]
-            assoc_method_type = assoc_column.try(:type)
-            if assoc_method_type
-              c[:editor] ||= TYPE_EDITOR_MAP[assoc_method_type] == :checkbox ? :checkbox : :combobox
-            end
-            type = :association
-          end
-        end
-        
-        # detect association column (e.g. :category_id)
-        assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name.to_sym == c[:name]}
-        if  assoc && !assoc.options[:polymorphic]
-          c[:editor] ||= :combobox
-          assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
-          c[:name] = "#{assoc.name}__#{assoc_method}".to_sym
-          type = :association
-        end
-        
-        # Some smart defaults
-        
-        # default editor, dependent on column type
-        c[:editor] ||= TYPE_EDITOR_MAP[type] unless TYPE_EDITOR_MAP[type].nil?
-        # narrow column for checkbox
-        c[:width] ||= 50 if c[:editor] == :checkbox
-        # wider column for xdatetime
-        c[:width] ||= 120 if c[:editor] == :xdatetime
-        # hide ID column
-        c[:hidden] = true if c[:name] == data_class.primary_key.to_sym && c[:hidden].nil?
-        # make ID column read-only
-        c[:editable] = false if c[:name] == data_class.primary_key.to_sym && c[:editable].nil?
-        
-        # Some default limitations for virtual columns
-        if type == :virtual
-          # disable filters
-          c[:with_filters].nil? && c[:with_filters] = false
-          # disable sorting
-          c[:sortable].nil? && c[:sortable] = false
-          # read-only
-          # c[:read_only].nil? && c[:read_only] = true
-          c[:editable].nil? && c[:editable] = false
-        end
-        
-        # denormalize column (save space)
-        c.reject{ |k,v| k == :name }.empty? ? c[:name] : c
-      end
-      
-      columns_for_create
-      
-    end
     
   end
 end

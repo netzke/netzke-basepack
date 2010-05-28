@@ -20,9 +20,8 @@ module Netzke::ActiveRecord
       self.netzke_widget = widget
       res = []
       for c in columns
-        nc = c.is_a?(Symbol) ? {:name => c} : c
         begin
-          res << send(nc[:name]) unless nc[:excluded]
+          res << send(c[:name]) unless c[:excluded]
         rescue
           # So that we don't crash at a badly configured column
           res << "UNDEF"

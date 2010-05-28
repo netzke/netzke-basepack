@@ -14,7 +14,7 @@ module Netzke
       })
     end
     
-    def default_columns
+    def initial_fields
       res = super
 
       res.map! do |f| 
@@ -24,7 +24,7 @@ module Netzke
         })
         # norm_column.merge!(:hidden => true) if norm_column[:name].to_s.index("__") || norm_column[:xtype] == :xcheckbox
         
-        norm_column.merge!(:xtype => xtype_map[:string]) if norm_column[:name].to_s.index("__")
+        norm_column.merge!(:xtype => xtype_for_field_type(:string)) if norm_column[:name].to_s.index("__")
         norm_column.merge!(:condition => "greater_than") if [:datetime, :integer, :date].include?(norm_column[:type])
         norm_column.merge!(:condition => "equals") if [:boolean].include?(norm_column[:type])
         norm_column
@@ -34,39 +34,41 @@ module Netzke
     end
     
     # columns to be displayed by the FieldConfigurator (which is GridPanel-based)
-    def self.config_columns
-      [
-        {:name => :hidden, :type => :boolean, :editor => :checkbox, :width => 50},
-        {:name => :name, :type => :string, :editor => :combobox},
-        {:name => :condition, :type => :string, :editor => {:xtype => :combobox, :options => CONDITIONS}},
-        {:name => :field_label, :type => :string},
-        {:name => :xtype, :type => :string},
-        {:name => :value, :type => :string},
+    def self.meta_columns
+      [                                         
+        {:name => "hidden",      :type => :boolean, :editor => :checkbox, :width => 50},
+        {:name => "name",        :type => :string,  :editor => :combobox},
+        {:name => "condition",   :type => :string,  :editor => {:xtype => :combobox, :options => CONDITIONS}},
+        {:name => "field_label", :type => :string},
+        {:name => "xtype",       :type => :string},
+        {:name => "value",       :type => :string},
       ]
     end
 
     # tweaking the form fields at the last moment
     def js_config
       super.merge({
-        :clmns => columns.map{ |c| c.merge({
+        :clmns => fields.map{ |c| c.merge({
           :field_label => "#{c[:field_label] || c[:name]} #{c[:condition]}".humanize,
           :name => "#{c[:name]}_#{c[:condition]}"
         })}
       })
     end
     
-    # we need to correct the queries to cut off the condition suffixes, otherwise the FormPanel gets confused
-    def get_combobox_options(params)
-      column_name = params[:column]
-      CONDITIONS.each { |c| column_name.sub!(/_#{c}$/, "") }
-      super(:column => column_name)
-    end
     
-    def xtype_map
-      super.merge({
-        :boolean => :tricheckbox
-      })
-    end
+    private
+      # we need to correct the queries to cut off the condition suffixes, otherwise the FormPanel gets confused
+      def get_combobox_options(params)
+        column_name = params[:column]
+        CONDITIONS.each { |c| column_name.sub!(/_#{c}$/, "") }
+        super(:column => column_name)
+      end
+      
+      def field_type_to_xtype_map
+        super.merge({
+          :boolean => :tricheckbox
+        })
+      end
     
   end
 end

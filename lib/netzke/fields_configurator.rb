@@ -6,33 +6,17 @@ module Netzke
   class FieldsConfigurator < JsonArrayEditor
     api :load_defaults
 
-    # def initialize(*args)
-    #   super
-    #   @auto_table_klass = is_for_grid? ? NetzkeAutoColumn : NetzkeAutoField
-    #   @auto_table_klass.widget = client_widget
-    # end
-
-    # widget that uses us
-    # def client_widget
-    #   @passed_config[:widget]
-    # end
-
-    # is our client widget a grid (as opposed to a form)?
-    def is_for_grid?
-      config[:owner].class.ancestors.include?(GridPanel)
-    end
-
     def default_config
       super.deep_merge({
         :name              => 'columns',
-        # :model   => is_for_grid? ? "NetzkeAutoColumn" : "NetzkeAutoField",
         :ext_config        => {
+          :mode => :config,
           :header => false,
           :enable_extended_search => false,
           :enable_edit_in_form => false,
           :enable_rows_reordering => GridPanel.config[:rows_reordering_available],
           :enable_pagination => false
-        },
+        }
       })
     end
     
@@ -46,17 +30,51 @@ module Netzke
       %w{ add edit apply del - defaults }
     end
         
-    def dynamic_fields
-      config[:owner].class.config_columns.map { |c| {:name => c[:name], :type => c[:type] || :string} } <<
-        {:name => :position, :type => :integer}
-    end
-    
-    def predefined_columns
-      [{:name => :id}, *config[:owner].class.config_columns]
+    def default_columns
+      [
+        {:name => "id", :attr_type => :integer}, 
+        {:name => "position", :attr_type => :integer, :excluded => true},
+        {:name => "attr_type", :attr_type => :string, :meta => true},
+        *config[:owner].class.meta_columns
+      ]
     end
         
     def self.js_extend_properties
       {
+        :init_component => <<-END_OF_JAVASCRIPT.l,
+          function(){
+            #{js_full_class_name}.superclass.initComponent.call(this);
+            
+            // Automatically set the correct editor for the default_value column
+            this.on('beforeedit', function(e){
+              var column = this.getColumnModel().getColumnById(this.getColumnModel().getColumnId(e.column));
+              var record = this.getStore().getAt(e.row);
+              
+              if (column.dataIndex === "default_value") {
+                if (record.get("name") === this.pri) {
+                  // Don't allow setting default value for the primary key
+                  column.setEditor(null);
+                } else {
+                  // Auto set the editor, dependent on the field type
+                  var attrType = record.get("attr_type");
+                  column.setEditor(Ext.create({xtype: this.attrTypeEditorMap[attrType] || "textfield"}));
+                }
+              }
+              
+            }, this);
+            
+          }
+        END_OF_JAVASCRIPT
+        
+        :attr_type_editor_map => {
+          :integer  => "numberfield",
+          :boolean  => "checkbox",
+          :decimal  => "numberfield",
+          :datetime => "xdatetime",
+          :date     => "datefield",
+          :string   => "textfield"
+        },
+        
         # Disable the 'gear' tool for now
         :on_gear => <<-END_OF_JAVASCRIPT.l,
           function(){
@@ -84,43 +102,46 @@ module Netzke
     end
     
     def load_defaults(params)
-      config[:owner].persistent_config[:layout__columns] = config[:owner].default_columns
-      @auto_table_klass.rebuild_table
+      # Reload the temp table with default values
+      data_class.replace_data(default_owner_fields)
+
+      # ... and reflect it in the persistent storage
+      on_data_changed
+      
+      # Update the grid
       {:load_store_data => get_data}
     end
    
-    # def commit(params)
-    #   defaults_hash = config[:owner].class.config_columns.inject({}){ |r, c| r.merge!(c[:name] => c[:default]) }
-    #   config[:owner].persistent_config[:layout__columns] = @auto_table_klass.all_columns.map do |c| 
-    #     # reject all keys that are 1) same as defaults, 2) 'position'
-    #     c.reject!{ |k,v| defaults_hash[k.to_sym].to_s == v.to_s || k == 'position'} 
-    #     c = c["name"] if c.keys.size == 1 # denormalize the column
-    #     c
-    #   end
-    #   {}
-    # end
-   
-    # each time that we are loaded into the app, rebuild the table
-    # def before_load
-    #   @auto_table_klass.rebuild_table
-    # end
-   
     # Don't show the config tool
-    def config_tool_needed?
-      false
-    end
+    # def config_tool_needed?
+    #   false
+    # end
    
     private
       # An override
       def store_data(data)
-        Rails.logger.debug "!!! data: #{data.inspect}\n"
-        config[:owner].persistent_config[:layout__columns] = data
+        NetzkeFieldList.write_list(config[:owner].global_id, data)
       end
       
       # An override
       def initial_data
-        Rails.logger.debug "!!! config[:owner].default_columns: #{config[:owner].default_columns.inspect}\n"
-        config[:owner].persistent_config[:layout__columns] || normalize_columns(config[:owner].default_columns).map(&:deebeefy_values)
+        NetzkeFieldList.read_list(config[:owner].global_id) || default_owner_fields
+      end
+      
+      def default_owner_fields
+        config[:owner].initial_columns.map(&:deebeefy_values)
+        # NetzkeFieldList.read_list("#{config[:owner].data_class.name.tableize}_model_fields") || normalize_columns(config[:owner].initial_columns.map{ |c| c.merge(:attr_type => c[:attr_type]) }).map(&:deebeefy_values)
+      end
+   
+      # This is an override of GridPanel#on_data_changed
+      def on_data_changed
+        # Default column settings taken from 
+        defaults_hash = config[:owner].class.meta_columns.inject({}){ |r, c| r.merge!(c[:name] => c[:default_value]) }
+        stripped_columns = data_class.all_columns.map do |c| 
+          # reject all keys that are 1) same as defaults
+          c.reject{ |k,v| defaults_hash[k.to_sym].to_s == v.to_s } 
+        end
+        store_data(stripped_columns)
       end
    
   end

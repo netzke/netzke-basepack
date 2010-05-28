@@ -13,7 +13,7 @@ module Netzke
       def get_data(params = {})
         if !ext_config[:prohibit_read]
           records = get_records(params)
-          {:data => records.map{|r| r.to_array(normalized_columns, self)}, :total => ext_config[:enable_pagination] && records.total_entries}
+          {:data => records.map{|r| r.to_array(columns, self)}, :total => ext_config[:enable_pagination] && records.total_entries}
         else
           flash :error => "You don't have permissions to read data"
           {:feedback => @flash}
@@ -52,7 +52,7 @@ module Netzke
 
       def resize_column(params)
         raise "Called api_resize_column while not configured to do so" if ext_config[:enable_column_resize] == false
-        column_at(normalize_index(params[:index].to_i))[:width] = params[:size].to_i
+        columns[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
         save_columns!
         {}
       end
@@ -73,7 +73,7 @@ module Netzke
 
       def hide_column(params)
         raise "Called api_hide_column while not configured to do so" if ext_config[:enable_column_hide] == false
-        column_at(normalize_index(params[:index].to_i))[:hidden] = params[:hidden].to_b
+        columns[normalize_index(params[:index].to_i)][:hidden] = params[:hidden].to_b
         save_columns!
         {}
       end
@@ -160,7 +160,7 @@ module Netzke
       
         data_arry = case params[:column]
                     when "name"
-                      predefined_columns.map{ |c| c[:name].to_s }
+                      default_columns.map{ |c| c[:name] }
                     else
                       raise RuntimeError, "Don't know about options for column '#{params[:column]}'"
                     end
@@ -180,7 +180,7 @@ module Netzke
           index.times do
             while true do
               norm_index += 1 
-              break unless normalized_columns[norm_index][:excluded]
+              break unless columns[norm_index][:excluded]
             end
           end
           norm_index
