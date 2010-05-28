@@ -1,5 +1,3 @@
-require 'netzke/active_record/basepack'
-
 module Netzke::ActiveRecord
   # Provides extensions to those ActiveRecord-based models that provide data to the "data accessor" widgets,
   # like GridPanel, FormPanel, etc
