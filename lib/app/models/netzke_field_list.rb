@@ -3,7 +3,10 @@ class NetzkeFieldList < ActiveRecord::Base
   belongs_to :role
   belongs_to :parent, :class_name => "NetzkeFieldList"
   has_many :children, :class_name => "NetzkeFieldList", :foreign_key => "parent_id"
-  
+
+
+  # If the <tt>model</tt> param is provided, then this preference will be assigned a parent preference
+  # that configures the attributes for that model. This way we can track all preferences related to a model.
   def self.write_list(name, list, model = nil)
     pref_to_store_the_list = self.pref_to_write(name)
     pref_to_store_the_list.try(:update_attribute, :value, list.to_json)

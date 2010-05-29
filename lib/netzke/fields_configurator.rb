@@ -120,7 +120,7 @@ module Netzke
     private
       # An override
       def store_data(data)
-        NetzkeFieldList.write_list(config[:owner].global_id, data)
+        NetzkeFieldList.write_list(config[:owner].global_id, data, config[:owner].data_class.name)
       end
       
       # An override
