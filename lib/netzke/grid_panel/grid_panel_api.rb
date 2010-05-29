@@ -83,6 +83,7 @@ module Netzke
         column = params[:column]
         query = params[:query]
         {:data => data_class.options_for(column, query).map{|s| [s]}}
+        # {:data => data_class.options_for(column, query).map{|s| [s]}}
       end
 
       def move_rows(params)

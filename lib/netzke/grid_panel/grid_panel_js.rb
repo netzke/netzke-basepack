@@ -81,7 +81,12 @@ module Netzke
                 } else {
                   c.editor = {xtype: this.attrTypeEditorMap[c.attrType] || 'textfield'}
                 }
-              
+
+                // if comboboxOptions are provided, we render a combobox instead of textfield
+                if (c.comboboxOptions && c.editor.xtype === "textfield") {
+                  c.editor = {xtype: "combobox", options: c.comboboxOptions.split('\\n')}
+                }
+                
                 // collect filters
                 if (c.filterable){
                   filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});

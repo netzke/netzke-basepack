@@ -19,6 +19,9 @@ module Netzke
             # The default value of this column. Is used when a new row in the grid gets created.
             {:name => "default_value", :attr_type => :string, :width => 200},
 
+            # Options for drop-downs
+            {:name => "combobox_options",       :attr_type => :string, :editor => "textarea", :width => 200},
+
             # Whether the column is editable in the grid.
             {:name => "read_only",     :attr_type => :boolean, :header => "R/O", :tooltip => "Read-only"},
 
@@ -40,7 +43,7 @@ module Netzke
             {:name => "hideable",      :attr_type => :boolean, :default_value => true, :hidden => true},
 
             # Whether the column should be sortable (why change it? normally it's hardcoded)
-            {:name => "sortable",      :attr_type => :boolean, :default_value => true, :hidden => true},
+            {:name => "sortable",      :attr_type => :boolean, :default_value => true, :hidden => true}
 
             # {:name => :renderer, :attr_type => :string, :editor => {:xtype => :jsonfield}},
           ]
