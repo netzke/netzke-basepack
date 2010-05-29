@@ -30,6 +30,8 @@ class NetzkePersistentArrayAutoModel < ActiveRecord::Base
       end
     end
 
+    self.reset_column_information
+
     # self.create config[:initial_data]
     self.replace_data(config[:initial_data])
   end
