@@ -1,7 +1,8 @@
 require 'acts_as_list'
 class NetzkePersistentArrayAutoModel < ActiveRecord::Base
-  init_temporal_table
-  
+  set_table_name "netzke_temp_table"
+  connection.create_table(table_name) if !connection.table_exists?(table_name)  
+
   acts_as_list
   default_scope :order => "position"
 
@@ -46,11 +47,6 @@ class NetzkePersistentArrayAutoModel < ActiveRecord::Base
   end
   
   private
-    # Create the table before we do anything else to avoid confusing exceptions (e.g. when acts_as_list is not present)
-    def self.init_temporal_table
-      set_table_name "netzke_temp_table"
-      connection.create_table(table_name) if !connection.table_exists?(table_name)
-    end
   
     def self.refresh_token
       @@refresh_token ||= begin

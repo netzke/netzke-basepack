@@ -1,9 +1,18 @@
 class NetzkeFieldList < ActiveRecord::Base
   belongs_to :user
   belongs_to :role
+  belongs_to :parent, :class_name => "NetzkeFieldList"
+  has_many :children, :class_name => "NetzkeFieldList", :foreign_key => "parent_id"
   
-  def self.write_list(name, list)
-    self.pref_to_write(name).try(:update_attribute, :value, list.to_json)
+  def self.write_list(name, list, model = nil)
+    pref_to_store_the_list = self.pref_to_write(name)
+    pref_to_store_the_list.try(:update_attribute, :value, list.to_json)
+    
+    # link this preference to the parent that contains default attributes for the same model
+    if model
+      model_level_attrs_pref = self.pref_to_read("#{model.tableize}_model_attrs")
+      model_level_attrs_pref.children << pref_to_store_the_list if model_level_attrs_pref && pref_to_store_the_list
+    end
   end
   
   def self.read_list(name)
@@ -11,7 +20,73 @@ class NetzkeFieldList < ActiveRecord::Base
     ActiveSupport::JSON.decode(json_encoded_value) if json_encoded_value
   end
 
+  # Read model-level attrs
+  def self.read_attrs_for_model(model)
+    read_list("#{model.tableize}_model_attrs")
+  end
+  
+  # Write model-level attrs
+  def self.write_attrs_for_model(model, data)
+    write_list("#{model.tableize}_model_attrs", data)
+  end
+  
+  # Options:
+  # :attr - attribute to propagate. If not specified, all attrs found in configuration for the model
+  # will be propagated.
+  def self.update_children_on_attr(model, options = {})
+    attr_name = options[:attr].try(:to_s)
+    
+    parent_pref = pref_to_read("#{model.tableize}_model_attrs")
+    
+    if parent_pref
+      parent_list = ActiveSupport::JSON.decode(parent_pref.value)
+      # Rails.logger.debug "!!! parent_list: #{parent_list.inspect}\n"
+      parent_pref.children.each do |ch|
+        child_list = ActiveSupport::JSON.decode(ch.value)
+        # Rails.logger.debug "!!! child_list: #{child_list.inspect}\n"
+        
+        if attr_name
+          # propagate a certain attribute
+          propagate_attr(attr_name, parent_list, child_list)
+        else
+          # propagate all attributes found in parent
+          all_attrs = parent_list.first.try(:keys)
+          all_attrs && all_attrs.each{ |attr_name| propagate_attr(attr_name, parent_list, child_list) }
+        end
+        
+        ch.update_attribute(:value, child_list.to_json)
+      end
+    end
+  end
+  
+  # meta_attrs:
+  #   {"city"=>{"included"=>true}, "building_number"=>{"default_value"=>100}}
+  def self.update_children(model, meta_attrs)
+    parent_pref = pref_to_read("#{model.tableize}_model_attrs")
+
+
+    if parent_pref
+      parent_pref.children.each do |ch|
+        child_list = ActiveSupport::JSON.decode(ch.value)
+        
+        meta_attrs.each_pair do |k,v|
+          child_list.detect{ |child_attr| child_attr["name"] == k }.try(:merge!, v)
+        end
+        
+        ch.update_attribute(:value, child_list.to_json)
+      end
+    end
+  end
+
   private
+  
+    def self.propagate_attr(attr_name, src_list, dest_list)
+      for src_field in src_list
+        dest_field = dest_list.detect{ |df| df["name"] == src_field["name"] }
+        dest_field[attr_name] = src_field[attr_name] if dest_field && src_field[attr_name]
+      end
+    end
+  
     # Overwrite pref_to_read, pref_to_write methods, and find_all_for_widget if you want a different way of 
     # identifying the proper preference based on your own authorization strategy.
     #

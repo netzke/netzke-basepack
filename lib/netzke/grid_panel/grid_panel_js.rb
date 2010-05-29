@@ -73,7 +73,7 @@ module Netzke
                 c.dataIndex = c.name;
 
                 // Automatically calculated default values
-                if (!c.header) {c.header = c.name.humanize()}
+                if (!c.header) {c.header = c.label || c.name.humanize()}
 
                 // normalize editor
                 if (c.editor) {

@@ -8,7 +8,7 @@ module Netzke
           [
             {:name => "included", :attr_type => :boolean, :width => 40, :header => "Incl", :default_value => true},
             {:name => "name", :attr_type => :string, :editor => :combobox, :width => 200},
-            {:name => "field_label", :attr_type => :string, :header => "Label"},
+            {:name => "label", :attr_type => :string, :header => "Label"},
             {:name => "default_value", :attr_type => :string}
           ]
         end
@@ -18,7 +18,7 @@ module Netzke
       module InstanceMethods
         def fields
           @fields ||= begin
-            flds = NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
+            flds = load_fields
             flds && flds.map!(&:symbolize_keys) # or should it be deep_convert_keys{|k| k.to_sym} ?
             flds ||= initial_fields
             
@@ -26,13 +26,14 @@ module Netzke
               value = record.send(c[:name])
               value.nil? ? c : c.merge(:value => value)
             end if record
+            
             flds
           end
         end
 
         def default_fields
           @default_fields ||= begin
-            model_level_fields = NetzkeFieldList.read_list("#{data_class.name.tableize}_model_fields")
+            model_level_fields = load_model_level_attrs
             model_level_fields && model_level_fields.map!(&:symbolize_keys) 
             model_level_fields ||= data_class.netzke_attributes
           end
@@ -57,6 +58,8 @@ module Netzke
           else
             raise ArgumentError, "No fields specified for widget '#{global_id}'"
           end
+          
+          fields_for_create.reject!{ |c| c[:included] == false }
           
           fields_for_create.map! do |c|
             if data_class
@@ -91,6 +94,19 @@ module Netzke
       end
       
       private
+        # Stores modified columns in persistent storage
+        def save_fields!
+          NetzkeFieldList.write_list(global_id, fields, data_class.name)
+        end
+      
+        def load_fields
+          NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
+        end
+        
+        def load_model_level_attrs
+          NetzkeFieldList.read_attrs_for_model(data_class.name)
+        end
+        
         def set_default_field_label(c)
           c[:field_label] = c.delete(:label) || c[:name].humanize
         end

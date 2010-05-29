@@ -168,8 +168,6 @@ module Netzke
         {:data => data_arry.grep(/^#{query}/).map{ |n| [n] }}.to_nifty_json
       end
 
-
-
       protected
         # Override this method to react on each operation that caused changing of data
         def on_data_changed; end
@@ -180,7 +178,7 @@ module Netzke
           index.times do
             while true do
               norm_index += 1 
-              break unless columns[norm_index][:excluded]
+              break unless columns[norm_index][:included] == false
             end
           end
           norm_index

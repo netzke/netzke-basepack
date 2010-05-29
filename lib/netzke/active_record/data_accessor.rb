@@ -19,7 +19,7 @@ module Netzke::ActiveRecord
       res = []
       for c in columns
         begin
-          res << send(c[:name]) unless c[:excluded]
+          res << send(c[:name]) unless c[:included] == false
         rescue
           # So that we don't crash at a badly configured column
           res << "UNDEF"

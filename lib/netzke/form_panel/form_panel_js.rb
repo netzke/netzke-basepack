@@ -39,11 +39,11 @@ module Netzke
                     // apply dynamically defined properties
                     Ext.applyIf(columnConfig, {
                       xtype     : this.attrTypeEditorMap[columnConfig.attrType],
-                      fieldLabel: columnConfig.fieldLabel || columnConfig.name.humanize(),
+                      fieldLabel: columnConfig.fieldLabel || columnConfig.label || columnConfig.name.humanize(),
                       hideLabel : columnConfig.hidden, // completely hide fields marked "hidden"
                       parentId  : this.id,
                       name      : columnConfig.name,
-                      value     : columnConfig.value,
+                      value     : columnConfig.value || columnConfig.defaultValue,
                       checked   : columnConfig.attrType == "boolean" ? columnConfig.value : null // checkbox state
                     });
 

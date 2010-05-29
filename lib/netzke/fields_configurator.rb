@@ -33,7 +33,7 @@ module Netzke
     def default_columns
       [
         {:name => "id", :attr_type => :integer}, 
-        {:name => "position", :attr_type => :integer, :excluded => true},
+        {:name => "position", :attr_type => :integer, :included => false},
         {:name => "attr_type", :attr_type => :string, :meta => true},
         *config[:owner].class.meta_columns
       ]
@@ -129,7 +129,7 @@ module Netzke
       end
       
       def default_owner_fields
-        config[:owner].initial_columns.map(&:deebeefy_values)
+        config[:owner].initial_columns(false).map(&:deebeefy_values)
         # NetzkeFieldList.read_list("#{config[:owner].data_class.name.tableize}_model_fields") || normalize_columns(config[:owner].initial_columns.map{ |c| c.merge(:attr_type => c[:attr_type]) }).map(&:deebeefy_values)
       end
    

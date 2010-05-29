@@ -14,13 +14,13 @@ module Netzke
             {:name => "name",          :attr_type => :string, :editor => :combobox, :width => 200},
 
             # The header for the column.
-            {:name => "header",        :attr_type => :string, :width => 200},
+            {:name => "label",         :attr_type => :string, :width => 200, :header => "Header"},
 
             # The default value of this column. Is used when a new row in the grid gets created.
             {:name => "default_value", :attr_type => :string, :width => 200},
 
             # Whether the column is editable in the grid.
-            {:name => "read_only",     :attr_type => :boolean, :header => "R/O"},
+            {:name => "read_only",     :attr_type => :boolean, :header => "R/O", :tooltip => "Read-only"},
 
             # Whether the column will be in the hidden state (hide/show columns from the column menu, if it's enabled).
             {:name => "hidden",        :attr_type => :boolean},
@@ -52,21 +52,16 @@ module Netzke
         
         # Normalized columns for the grid, e.g.:
         # [{:name => :id, :hidden => true, ...}, {:name => :name, :editable => false, ...}, ...]
-        def columns
+        def columns(only_included = true)
           @columns ||= begin
-            cols = NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
-            cols && cols.map!(&:symbolize_keys)
-            cols || initial_columns
+            if cols = load_columns
+              cols.map!(&:symbolize_keys)
+              filter_out_excluded_columns(cols) if only_included
+              cols
+            else
+              initial_columns(only_included)
+            end
           end
-        end
-
-        # Stores modified columns in persistent storage
-        def save_columns!
-          NetzkeFieldList.write_list(global_id, columns)
-        end
-
-        def model_level_columns
-          
         end
 
         # Columns that we fall back to when neither persistent columns, nor configured columns are present.
@@ -75,14 +70,14 @@ module Netzke
         # Override this method if you want to provide a fix set of columns in your subclass.
         def default_columns
           @default_columns ||= begin
-            model_level_fields = NetzkeFieldList.read_list("#{data_class.name.tableize}_model_fields")
+            model_level_fields = load_model_level_attrs
             model_level_fields && model_level_fields.map!(&:symbolize_keys) 
             model_level_fields ||= data_class.netzke_attributes
           end
         end
 
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
-        def initial_columns
+        def initial_columns(only_included = true)
           # Normalize here, as from the config we can get symbols (names) instead of hashes
           columns_from_config = config[:columns] && normalize_attr_config(config[:columns])
 
@@ -98,12 +93,11 @@ module Netzke
             columns_for_create = default_columns
           end
           
-          # Never use excluded columns
-          columns_for_create.reject!{ |c| c[:excluded] }
+          filter_out_excluded_columns(columns_for_create) if only_included
           
           columns_for_create.each do |c|
             detect_association(c)
-            set_default_header(c)
+            # set_default_header(c)
             set_default_editor(c)
             set_default_width(c)
             set_default_hidden(c)
@@ -118,6 +112,24 @@ module Netzke
       end
       
       private
+        def filter_out_excluded_columns(cols)
+          cols.reject!{ |c| c[:included] == false }
+        end
+      
+        # Stores modified columns in persistent storage
+        def save_columns!
+          NetzkeFieldList.write_list(global_id, columns(false), data_class.name)
+        end
+      
+        def load_columns
+          NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
+        end
+        
+        def load_model_level_attrs
+          NetzkeFieldList.read_attrs_for_model(data_class.name)
+        end
+        
+        # whether a column is bound to the primary_key
         def reflects_primary_key?(c)
           c[:name] == data_class.primary_key
         end
