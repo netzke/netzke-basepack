@@ -17,7 +17,7 @@ class NetzkePersistentArrayAutoModel < ActiveRecord::Base
     if NetzkePreference.first(:conditions => {:name => "netzke_persistent_array_refresh_token"}).try(:value) != refresh_token || !connection.table_exists?(table_name)
       rebuild_table(:columns => config[:columns], :initial_data => config[:initial_data])
     end
-    NetzkePreference.find_or_create_by_name("netzke_persistent_array_owner").update_attribute(:value, refresh_token)
+    NetzkePreference.find_or_create_by_name("netzke_persistent_array_refresh_token").update_attribute(:value, refresh_token)
   end
   
   def self.rebuild_table(config)
