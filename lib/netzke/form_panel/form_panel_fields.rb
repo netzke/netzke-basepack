@@ -42,7 +42,7 @@ module Netzke
           ::ActiveSupport::Deprecation.warn("The :columns option for FormPanel is deprecated. Use :fields instead", caller) if config[:columns]
           
           # Normalize here, as from the config we can get symbols (names) instead of hashes
-          fields_from_config = (config[:columns] || config[:fields]) && normalize_columns(config[:columns] || config[:fields])
+          fields_from_config = (config[:columns] || config[:fields]) && normalize_attr_config(config[:columns] || config[:fields])
 
           if fields_from_config
             # reverse-merge each column hash from config with each column hash from exposed_attributes (fields from config have higher priority)

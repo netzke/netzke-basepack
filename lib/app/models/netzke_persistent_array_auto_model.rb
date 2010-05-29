@@ -1,3 +1,4 @@
+require 'acts_as_list'
 class NetzkePersistentArrayAutoModel < ActiveRecord::Base
   set_table_name "netzke_temp_table"
   
@@ -13,10 +14,10 @@ class NetzkePersistentArrayAutoModel < ActiveRecord::Base
   # Configuration
   def self.configure(config)
     self.config = config
-    if NetzkePreference.first(:conditions => {:name => "netzke_persistent_array_owner"}).try(:value) != config[:owner] || !connection.table_exists?(table_name)
+    if NetzkePreference.first(:conditions => {:name => "netzke_persistent_array_refresh_token"}).try(:value) != refresh_token || !connection.table_exists?(table_name)
       rebuild_table(:columns => config[:columns], :initial_data => config[:initial_data])
     end
-    NetzkePreference.find_or_create_by_name("netzke_persistent_array_owner").update_attribute(:value, config[:owner])
+    NetzkePreference.find_or_create_by_name("netzke_persistent_array_owner").update_attribute(:value, refresh_token)
   end
   
   def self.rebuild_table(config)
@@ -41,4 +42,12 @@ class NetzkePersistentArrayAutoModel < ActiveRecord::Base
     self.delete_all
     self.create(clean_data)
   end
+  
+  def self.refresh_token
+    @@refresh_token ||= begin
+      session = Netzke::Base.session
+      config[:owner] + (session[:masq_user] || session[:masq_role] || session[:masq_world] || session[:netzke_user_id]).to_s
+    end
+  end
+  
 end

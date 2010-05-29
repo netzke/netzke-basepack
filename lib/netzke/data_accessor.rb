@@ -48,6 +48,15 @@ module Netzke
       res
     end
 
+    # [:col1, "col2", {:name => :col3}] =>
+    #   [{:name => "col1"}, {:name => "col2"}, {:name => "col3"}]
+    def normalize_attr_config(cols)
+      cols.map do |c|
+        c.is_a?(Symbol) || c.is_a?(String) ? {:name => c.to_s} : c.merge(:name => c[:name].to_s)
+      end
+    end
+    
+
     # Make sure we have keys as symbols, not strings
     def normalize_array_of_columns(arry)
       arry.map do |f| 
