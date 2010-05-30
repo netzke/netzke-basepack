@@ -38,6 +38,11 @@ module Netzke
     #   false
     # end
     
+    def before_load
+      data_class.rebuild_table
+      super
+    end
+    
     private
       # Override this
       def store_data(data); end

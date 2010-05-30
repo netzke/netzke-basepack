@@ -60,10 +60,10 @@ module Netzke
               this.plugins = []; // checkbox colums is a special case, being a plugin
 
               var filters = [];
-            
+              
               // Run through columns and set up different configuration for each
               Ext.each(normClmns, function(c){
-                // We will not use meta columns as actual columns (not even hidden), only in the Record
+                // We will not use meta columns as actual columns (not even hidden) - only to create the records
                 if (c.meta) return;
                 
                 // Apply default column config

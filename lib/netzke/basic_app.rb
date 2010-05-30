@@ -182,6 +182,42 @@ module Netzke
           }
         END_OF_JAVASCRIPT
         
+        # NOT USED
+        :show_login_window => <<-END_OF_JAVASCRIPT.l,
+          function(){
+            var w = new Ext.Window({
+              title: "Please, login",
+              modal: true,
+              width: 350,
+              height: 200,
+              layout: 'fit',
+              items: [{
+                xtype: 'form',
+                padding: 20,
+                defaults: {anchor: '100%'},
+                frame: true,
+                border: false,
+                items: [
+                  {xtype: 'textfield', fieldLabel: 'Username', name: 'login'},
+                  {name: 'password', xtype: 'textfield', inputType: 'password', fieldLabel: "Password"}
+                ],
+                buttons: [{
+                  name: "submit",
+                  text: "Login",
+                  app: this,
+                  handler: function() {
+                    this.ownerCt.ownerCt.getForm().submit({
+                      url: this.app.buildApiUrl("submit_login"),
+                    });
+                  }
+                }]
+              }],
+            });
+            
+            w.show();
+          }
+        END_OF_JAVASCRIPT
+        
         
         # Masquerade selector window
         :show_masquerade_selector => <<-END_OF_JAVASCRIPT.l
@@ -318,7 +354,14 @@ module Netzke
       session[:masq_world] = params[:world]
       session[:masq_role] = params[:role]
       session[:masq_user] = params[:user]
-      {:js => "window.location.reload()"}
+      {:js => "window.location.reload();"}
+    end
+    
+    # Login request from the in-app login form
+    api :submit_login
+    def submit_login(params)
+      # TODO: implement me
+      {:feedback => "OK"}
     end
     
   end
