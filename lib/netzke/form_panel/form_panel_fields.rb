@@ -19,7 +19,6 @@ module Netzke
         def fields
           @fields ||= begin
             flds = load_fields
-            flds && flds.map!(&:symbolize_keys) # or should it be deep_convert_keys{|k| k.to_sym} ?
             flds ||= initial_fields
             
             flds.map! do |c|
@@ -32,11 +31,7 @@ module Netzke
         end
 
         def default_fields
-          @default_fields ||= begin
-            model_level_fields = load_model_level_attrs
-            model_level_fields && model_level_fields.map!(&:symbolize_keys) 
-            model_level_fields ||= data_class.netzke_attributes
-          end
+          @default_fields ||= load_model_level_attrs || data_class.netzke_attributes
         end
 
         def initial_fields
@@ -94,17 +89,19 @@ module Netzke
       end
       
       private
-        # Stores modified columns in persistent storage
-        def save_fields!
-          NetzkeFieldList.write_list(global_id, fields, data_class.name)
-        end
+        # Stores modified fields in persistent storage (not used in forms, as we can't modify them on the fly, only via FieldsConfigurator)
+        # def save_fields!
+        #   NetzkeFieldList.update_list_for_current_authority(global_id, fields, data_class.name)
+        # end
       
         def load_fields
-          NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
+          flds = NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
+          flds && flds.map(&:symbolize_keys)
         end
         
         def load_model_level_attrs
-          NetzkeFieldList.read_attrs_for_model(data_class.name)
+          attrs = NetzkeModelAttrList.read_list(data_class.name)
+          attrs && attrs.map(&:symbolize_keys) 
         end
         
         def set_default_field_label(c)

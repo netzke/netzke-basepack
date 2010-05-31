@@ -1,9 +1,73 @@
+# TODO: rename to NetzkeAttrList
 class NetzkeFieldList < ActiveRecord::Base
   belongs_to :user
   belongs_to :role
   belongs_to :parent, :class_name => "NetzkeFieldList"
   has_many :children, :class_name => "NetzkeFieldList", :foreign_key => "parent_id"
 
+
+  def self.update_fields(owner_id, attrs_hash)
+    self.find_all_below_current_authority_level(owner_id).each do |list|
+      list.update_attrs(attrs_hash)
+    end
+  end
+
+  # Updates attributes in the list
+  def update_attrs(attrs_hash)
+    list = ActiveSupport::JSON.decode(self.value)
+    list.each do |field|
+      field.merge!(attrs_hash[field["name"]]) if attrs_hash[field["name"]]
+    end
+    update_attribute(:value, list.to_json)
+  end
+  
+
+  def self.find_all_below_current_authority_level(pref_name)
+    authority_level, authority_id = Netzke::Base.authority_level
+    case authority_level
+    when :world
+      self.all(:conditions => {:name => pref_name})
+    when :role
+      role = Role.find(authority_id)
+      role.users.inject([]) do |r, user|
+        r += self.all(:conditions => {:user_id => user.id, :name => pref_name})
+      end
+    else
+      []
+    end
+  end
+  
+  def self.find_all_lists_under_current_authority(model_name)
+    authority_level, authority_id = Netzke::Base.authority_level
+    case authority_level
+    when :world
+      self.all(:conditions => {:model_name => model_name})
+    when :role
+      role = Role.find(authority_id)
+      role.users.inject([]) do |r, user|
+        r += self.all(:conditions => {:user_id => user.id, :model_name => model_name})
+      end
+    when :user
+      self.all(:conditions => {:user_id => authority_id, :model_name => model_name})
+    when :self
+      self.all(:conditions => {:user_id => authority_id, :model_name => model_name})
+    else
+      []
+    end
+    
+  end
+  
+  
+  
+  # Replaces the list with the data - only for the list found for the current authority. 
+  # If the list is not found, it's created.
+  def self.update_list_for_current_authority(pref_name, data, model_name = nil)
+    pref = find_or_create_pref_to_read(pref_name)
+    pref.value = data.to_json
+    pref.model_name = model_name
+    pref.save!
+  end
+  
 
   # If the <tt>model</tt> param is provided, then this preference will be assigned a parent preference
   # that configures the attributes for that model. This way we can track all preferences related to a model.
@@ -24,14 +88,16 @@ class NetzkeFieldList < ActiveRecord::Base
   end
 
   # Read model-level attrs
-  def self.read_attrs_for_model(model)
-    read_list("#{model.tableize}_model_attrs")
+  def self.read_attrs_for_model(model_name)
+    read_list(model_name)
+    # read_list("#{model.tableize}_model_attrs")
   end
   
   # Write model-level attrs
-  def self.write_attrs_for_model(model, data)
-    write_list("#{model.tableize}_model_attrs", data)
-  end
+  # def self.write_attrs_for_model(model_name, data)
+  #   # write_list("#{model_name.tableize}_model_attrs", data)
+  #   write_list(model_name, data)
+  # end
   
   # Options:
   # :attr - attribute to propagate. If not specified, all attrs found in configuration for the model
@@ -119,6 +185,8 @@ class NetzkeFieldList < ActiveRecord::Base
         res = self.find(:first, :conditions => cond.merge({:role_id => session[:masq_role]}))
         # if it doesn't exist, get them for the World (role_id = 0)
         res ||= self.find(:first, :conditions => cond.merge({:role_id => 0}))
+      elsif session[:masq_world]
+        res = self.find(:first, :conditions => cond.merge({:role_id => 0}))
       elsif session[:netzke_user_id]
         user = User.find(session[:netzke_user_id])
         # first, get the prefs for this user
@@ -132,6 +200,31 @@ class NetzkeFieldList < ActiveRecord::Base
       end
     
       res      
+    end
+    
+    def self.find_or_create_pref_to_read(name)
+      name = name.to_s
+      attrs = extend_attrs_for_current_authority(:name => name)
+      self.first(:conditions => attrs) || self.new(attrs)
+    end
+    
+    # def self.find_list_for_current_authority(name)
+    #   name = name.to_s
+    #   self.first(:conditions => extend_attrs_for_current_authority({:name => name}))
+    # end
+    
+    def self.extend_attrs_for_current_authority(hsh)
+      authority_level, authority_id = Netzke::Base.authority_level
+      case authority_level
+      when :world
+        hsh.merge!(:role_id => 0)
+      when :role
+        hsh.merge!(:role_id => authority_id)
+      when :user
+        hsh.merge!(:user_id => authority_id)
+      when :self
+        hsh.merge!(:user_id => authority_id)
+      end
     end
   
     def self.pref_to_write(name)

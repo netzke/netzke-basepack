@@ -3,9 +3,10 @@ class CreateNetzkeFieldLists < ActiveRecord::Migration
     create_table :netzke_field_lists do |t|
       t.string :name
       t.text :value
+      t.string :type
+      t.string :model_name
       t.integer :user_id
       t.integer :role_id
-      t.integer :parent_id
 
       t.timestamps
     end

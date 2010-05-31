@@ -43,9 +43,12 @@ module Netzke
             {:name => "hideable",      :attr_type => :boolean, :default_value => true, :hidden => true},
 
             # Whether the column should be sortable (why change it? normally it's hardcoded)
-            {:name => "sortable",      :attr_type => :boolean, :default_value => true, :hidden => true}
+            {:name => "sortable",      :attr_type => :boolean, :default_value => true, :hidden => true},
 
-            # {:name => :renderer, :attr_type => :string, :editor => {:xtype => :jsonfield}},
+            #
+            # And finally some meta columns that we probably never want to see in the GUI
+            #
+            {:name => "editor",        :attr_type => :string, :meta => true}
           ]
         end
         
@@ -58,7 +61,6 @@ module Netzke
         def columns(only_included = true)
           @columns ||= begin
             if cols = load_columns
-              cols.map!(&:symbolize_keys)
               filter_out_excluded_columns(cols) if only_included
               cols
             else
@@ -72,11 +74,7 @@ module Netzke
         # Otherwise the defaults straight from the ActiveRecord model ("netzke_attributes").
         # Override this method if you want to provide a fix set of columns in your subclass.
         def default_columns
-          @default_columns ||= begin
-            model_level_fields = load_model_level_attrs
-            model_level_fields && model_level_fields.map!(&:symbolize_keys) 
-            model_level_fields ||= data_class.netzke_attributes
-          end
+          @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
         end
 
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
@@ -87,8 +85,8 @@ module Netzke
           if columns_from_config
             # reverse-merge each column hash from config with each column hash from exposed_attributes (columns from config have higher priority)
             for c in columns_from_config
-              corresponding_exposed_column = default_columns.find{ |k| k[:name] == c[:name] }
-              c.reverse_merge!(corresponding_exposed_column) if corresponding_exposed_column
+              corresponding_default_column = default_columns.find{ |k| k[:name] == c[:name] }
+              c.reverse_merge!(corresponding_default_column) if corresponding_default_column
             end
             columns_for_create = columns_from_config
           else
@@ -98,9 +96,10 @@ module Netzke
           
           filter_out_excluded_columns(columns_for_create) if only_included
           
+          # Make the column config complete with the defaults
           columns_for_create.each do |c|
             detect_association(c)
-            # set_default_header(c)
+            set_default_header(c)
             set_default_editor(c)
             set_default_width(c)
             set_default_hidden(c)
@@ -121,15 +120,17 @@ module Netzke
       
         # Stores modified columns in persistent storage
         def save_columns!
-          NetzkeFieldList.write_list(global_id, columns(false), data_class.name)
+          NetzkeFieldList.update_list_for_current_authority(global_id, columns(false), data_class.name)
         end
       
         def load_columns
-          NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
+          cols = NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
+          cols && cols.map(&:symbolize_keys)
         end
         
         def load_model_level_attrs
-          NetzkeFieldList.read_attrs_for_model(data_class.name)
+          attrs = NetzkeModelAttrList.read_list(data_class.name)
+          attrs && attrs.map(&:symbolize_keys) 
         end
         
         # whether a column is bound to the primary_key
@@ -138,7 +139,7 @@ module Netzke
         end
       
         def set_default_header(c)
-          c[:header] ||= c.delete(:label) || c[:name].humanize
+          c[:label] ||= c[:name].humanize
         end
         
         def set_default_editor(c)
@@ -208,14 +209,12 @@ module Netzke
             assoc = data_class.reflect_on_association(assoc_name.to_sym)
           end
           
-          if assoc
+          if assoc_method
             assoc_column = assoc.klass.columns_hash[assoc_method]
             assoc_method_type = assoc_column.try(:type)
             
-            if assoc_method_type
-              # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
-              c[:editor] = assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
-            end
+            # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
+            c[:editor] = assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
           end
         end
       

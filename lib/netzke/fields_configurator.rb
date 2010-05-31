@@ -10,7 +10,7 @@ module Netzke
       super.deep_merge({
         :name              => 'columns',
         :ext_config        => {
-          :mode => :config,
+          :config_tool => false,
           :header => false,
           :enable_extended_search => false,
           :enable_edit_in_form => false,
@@ -18,6 +18,10 @@ module Netzke
           :enable_pagination => false
         }
       })
+    end
+    
+    def config_tool_needed?
+      false
     end
     
     def actions
@@ -30,10 +34,11 @@ module Netzke
       %w{ add edit apply del - defaults }
     end
         
+    # Default columns for the configurator
     def default_columns
       [
-        {:name => "id", :attr_type => :integer}, 
-        {:name => "position", :attr_type => :integer, :included => false},
+        {:name => "id", :attr_type => :integer, :meta => true}, 
+        {:name => "position", :attr_type => :integer, :meta => true},
         {:name => "attr_type", :attr_type => :string, :meta => true},
         *config[:owner].class.meta_columns
       ]
@@ -118,9 +123,26 @@ module Netzke
     # end
    
     private
+    
+      # An override
+      def process_data(data, operation)
+        meta_attrs_to_update = data.inject({}) do |r,el|
+          r.merge({
+            data_class.find(el["id"]).name => el.reject{ |k,v| k == "id" }
+          })
+        end
+      
+        res = super
+      
+        NetzkeFieldList.update_fields(config[:owner].global_id, meta_attrs_to_update)
+        
+        res
+      end
+    
       # An override
       def store_data(data)
-        NetzkeFieldList.write_list(config[:owner].global_id, data, config[:owner].data_class.name)
+        Rails.logger.debug "!!! data: #{data.inspect}\n"
+        NetzkeFieldList.update_list_for_current_authority(config[:owner].global_id, data, config[:owner].data_class.name)
       end
       
       # An override

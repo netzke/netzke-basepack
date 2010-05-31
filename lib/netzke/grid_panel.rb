@@ -240,7 +240,7 @@ module Netzke
       res << {
         :persistent_config => true,
         :name              => 'columns',
-        :class_name => "FieldsConfigurator",
+        :class_name        => "FieldsConfigurator",
         :active            => true,
         :owner             => self
       }

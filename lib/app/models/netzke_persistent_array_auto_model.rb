@@ -1,7 +1,7 @@
 require 'acts_as_list'
 class NetzkePersistentArrayAutoModel < ActiveRecord::Base
   set_table_name "netzke_temp_table"
-  connection.create_table(table_name) if !connection.table_exists?(table_name)  
+  connection.create_table(table_name){} if !connection.table_exists?(table_name)  
 
   acts_as_list
   default_scope :order => "position"

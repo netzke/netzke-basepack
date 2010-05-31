@@ -351,9 +351,9 @@ module Netzke
     api :masquerade_as
     def masquerade_as(params)
       session = Netzke::Base.session
-      session[:masq_world] = params[:world]
-      session[:masq_role] = params[:role]
-      session[:masq_user] = params[:user]
+      session[:masq_world] = params[:world] == "true"
+      session[:masq_role] = params[:role].try(:to_i)
+      session[:masq_user] = params[:user].try(:to_i)
       {:js => "window.location.reload();"}
     end
     

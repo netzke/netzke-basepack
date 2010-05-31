@@ -221,7 +221,7 @@ module Netzke
           success = true
           # mod_record_ids = []
           mod_records = {}
-          if !ext_config["prohibit_#{operation}".to_sym]
+          if !ext_config[:"prohibit_#{operation}"]
             modified_records = 0
             data.each do |record_hash|
               id = record_hash.delete('id')
