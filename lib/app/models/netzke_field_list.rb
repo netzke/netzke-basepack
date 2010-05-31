@@ -1,4 +1,4 @@
-# TODO: rename to NetzkeAttrList
+# TODO: clean up
 class NetzkeFieldList < ActiveRecord::Base
   belongs_to :user
   belongs_to :role
