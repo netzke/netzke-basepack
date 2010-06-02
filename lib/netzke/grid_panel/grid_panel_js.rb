@@ -89,7 +89,7 @@ module Netzke
                 
                 // collect filters
                 if (c.filterable){
-                  filters.push({type:Ext.netzke.filterMap[c.editor.xtype], dataIndex:c.name});
+                  filters.push({type:this.filterTypeForAttrType(c.attrType), dataIndex:c.name});
                 }
 
                 if (c.editor && c.editor.xtype == 'checkbox') {
@@ -289,6 +289,20 @@ module Netzke
               :date     => "datefield",
               :string   => "textfield"
             },
+            
+            :filter_type_for_attr_type => <<-END_OF_JAVASCRIPT.l,
+              function(attrType){
+                var map = {
+                  integer :'Numeric',
+                  decimal :'Numeric',
+                  datetime:'Date',
+                  date    :'Date',
+                  string  :'String',
+                };
+                map['boolean'] = "Boolean"; // "boolean" is a JS reserved word
+                return map[attrType] || 'String';
+              }
+            END_OF_JAVASCRIPT
             
             # Handlers for actions
             # 

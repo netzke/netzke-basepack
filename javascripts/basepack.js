@@ -6,7 +6,7 @@ Ext.netzke.PassField = Ext.extend(Ext.form.TextField, {
 });
 Ext.reg('passfield', Ext.netzke.PassField);
 
-// Combobox that knows to talk to the server side (used in both grids and panels)
+// ComboBox that gets options from the server (used in both grids and panels)
 Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
   displayField  : 'id',
   valueField    : 'id',
@@ -14,29 +14,22 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
   typeAhead     : true,
   
   initComponent : function(){
-    if (this.options) {
-      Ext.apply(this, {
-        store : this.options,
-        mode : "local"
-      });
-    } else {
-      var row = Ext.data.Record.create([{name:'id'}]);
-      var store = new Ext.data.Store({
-        proxy         : new Ext.data.HttpProxy({url: Ext.getCmp(this.parentId).buildApiUrl("get_combobox_options"), jsonData:{column:this.name}}),
-        reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
-      });
-    
-      Ext.apply(this, {
-        store : store
-      });
-    }
+    var row = Ext.data.Record.create([{name:'id'}]);
+    var store = new Ext.data.Store({
+      proxy         : new Ext.data.HttpProxy({url: Ext.getCmp(this.parentId).buildApiUrl("get_combobox_options"), jsonData:{column:this.name}}),
+      reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
+    });
+  
+    Ext.apply(this, {
+      store : store
+    });
     
     Ext.netzke.ComboBox.superclass.initComponent.apply(this, arguments);
     
     this.on('blur', function(cb){
       cb.setValue(cb.getRawValue());
     });
-
+  
     this.on('specialkey', function(cb, event){
       if (event.getKey() == 9 || event.getKey() == 13) {cb.setValue(cb.getRawValue());}
     });
@@ -83,17 +76,6 @@ Ext.netzke.normalizedRenderer = function(config) {
 
 Ext.util.Format.mask = function(v){
   return "********";
-};
-
-// Mapping of editor field to grid filters
-Ext.netzke.filterMap = {
-  numberfield:'Numeric',
-  textfield:'String',
-  textarea:'String',
-  xdatetime:'Date',
-  checkbox:'Boolean',
-  combobox:'String',
-  datefield:'Date'
 };
 
 Ext.data.RecordArrayReader = Ext.extend(Ext.data.JsonReader, {

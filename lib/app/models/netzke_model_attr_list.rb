@@ -12,4 +12,10 @@ class NetzkeModelAttrList < NetzkeFieldList
     end
   end
   
+  def self.add_attrs(attrs)
+    NetzkeFieldList.find_all_lists_under_current_authority(owner_id).each do |list|
+      attrs.each{ |attr_hash| list.append_attr(attr_hash) }
+    end
+  end
+  
 end

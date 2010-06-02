@@ -38,7 +38,7 @@ module Netzke
       [                                         
         {:name => "hidden",      :type => :boolean, :editor => :checkbox, :width => 50},
         {:name => "name",        :type => :string,  :editor => :combobox},
-        {:name => "condition",   :type => :string,  :editor => {:xtype => :combobox, :options => CONDITIONS}},
+        {:name => "condition",   :type => :string,  :editor => {:xtype => :combo, :store => CONDITIONS}},
         {:name => "field_label", :type => :string},
         {:name => "xtype",       :type => :string},
         {:name => "value",       :type => :string},

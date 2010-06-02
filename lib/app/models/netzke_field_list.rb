@@ -21,6 +21,11 @@ class NetzkeFieldList < ActiveRecord::Base
     update_attribute(:value, list.to_json)
   end
   
+  def append_attr(attr_hash)
+    list = ActiveSupport::JSON.decode(self.value)
+    list << attr_hash
+    update_attribute(:value, list.to_json)
+  end
 
   def self.find_all_below_current_authority_level(pref_name)
     authority_level, authority_id = Netzke::Base.authority_level
