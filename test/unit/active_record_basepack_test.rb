@@ -46,7 +46,7 @@ class ActiveRecordBasepackTest < ActiveSupport::TestCase
   test "to array" do
     Book.send(:include, Netzke::ActiveRecord::DataAccessor)
     b = Book.create({:title => 'Rayuela', :genre_id => 200, :amount => 1000})
-    columns = [:recent, {:name => "title"}, {:name => "amount"}, :genre_id]
+    columns = [{:name => "recent"}, {:name => "title"}, {:name => "amount"}, {:name => "genre_id"}]
     assert_equal(['Yes', 'Rayuela', 1000, 200], b.to_array(columns))
   end
   

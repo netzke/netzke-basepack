@@ -1,36 +1,30 @@
 require 'test_helper'
 require 'netzke-core'
 
-require 'netzke/plugins/configuration_tool'
-require 'netzke/accordion_panel'
-
-require 'netzke/grid_panel/grid_panel_api'
-require 'netzke/grid_panel/grid_panel_js'
-require 'netzke/grid_panel'
-
-require 'netzke/active_record/basepack'
-
 class GridPanelTest < ActiveSupport::TestCase
   
   test "api" do
     grid = Netzke::GridPanel.new(:name => 'grid', :model => 'Book', :columns => [:id, :title, :recent])
+    grid_data = grid.get_data[:data]
+    assert_equal(2, grid_data.count)
 
     # post
     res = grid.post_data("created_records" => [{:title => 'Lord of the Rings'}].to_nifty_json)
-    assert_equal('Lord of the Rings', Book.first.title)
+    assert_equal('Lord of the Rings', Book.last.title)
 
-    grid.post_data("updated_records" => [{:id => Book.first.id, :title => 'Lolita'}].to_json)
-    assert_equal('Lolita', Book.first.title)
+    # update
+    grid.post_data("updated_records" => [{:id => Book.last.id, :title => 'Lolita'}].to_json)
+    assert_equal('Lolita', Book.last.title)
 
-    grid.post_data("created_records" => [{:title => 'Upanishad'}].to_json)
-    
     # get
-    data = grid.get_data
-    assert_equal('Lolita', data[:data][0][1]) # title of the first book
-    assert_equal('Yes', data[:data][1][2]) # "recent" virtual column in the second book
+    data = grid.get_data[:data]
+    assert_equal(3, Book.count)
+    assert_equal('Separate Reality', data[0][1]) # title of the first book
+    assert_equal('The Journey to Ixtlan', data[1][1]) # title of the second book
+    assert_equal('Yes', data[2][2]) # "recent" virtual column in the last book
 
-    # delete
-    res = grid.delete_data(:records => [1,2].to_json)
+    # delete all books
+    res = grid.delete_data(:records => Book.all.map(&:id).to_json)
     assert_equal(nil, Book.first)
     
   end
@@ -48,8 +42,8 @@ class GridPanelTest < ActiveSupport::TestCase
   test "default columns" do
     grid = Netzke::GridPanel.new(:model => "Book")
     
-    assert_equal(6, grid.columns.size)
-    assert_equal({:name => "id", :type => :integer}, grid.columns.first)
+    assert_equal(7, grid.columns.size)
+    # assert_equal({:name => "id", :type => :integer}, grid.columns.first)
   end
   
   

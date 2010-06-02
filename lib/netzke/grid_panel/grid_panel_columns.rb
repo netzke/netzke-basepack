@@ -124,13 +124,11 @@ module Netzke
         end
       
         def load_columns
-          cols = NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
-          cols && cols.map(&:symbolize_keys)
+          NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
         end
         
         def load_model_level_attrs
-          attrs = NetzkeModelAttrList.read_list(data_class.name)
-          attrs && attrs.map(&:symbolize_keys) 
+          NetzkeModelAttrList.read_list(data_class.name)
         end
         
         # whether a column is bound to the primary_key

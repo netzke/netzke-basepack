@@ -58,7 +58,6 @@ class NetzkeFieldList < ActiveRecord::Base
   end
   
   
-  
   # Replaces the list with the data - only for the list found for the current authority. 
   # If the list is not found, it's created.
   def self.update_list_for_current_authority(pref_name, data, model_name = nil)
@@ -84,14 +83,14 @@ class NetzkeFieldList < ActiveRecord::Base
   
   def self.read_list(name)
     json_encoded_value = self.pref_to_read(name).try(:value)
-    ActiveSupport::JSON.decode(json_encoded_value) if json_encoded_value
+    ActiveSupport::JSON.decode(json_encoded_value).map(&:symbolize_keys) if json_encoded_value
   end
 
   # Read model-level attrs
-  def self.read_attrs_for_model(model_name)
-    read_list(model_name)
-    # read_list("#{model.tableize}_model_attrs")
-  end
+  # def self.read_attrs_for_model(model_name)
+  #   read_list(model_name)
+  #   # read_list("#{model.tableize}_model_attrs")
+  # end
   
   # Write model-level attrs
   # def self.write_attrs_for_model(model_name, data)

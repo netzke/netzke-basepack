@@ -1,5 +1,6 @@
 require "netzke/grid_panel/grid_panel_js"
 require "netzke/grid_panel/grid_panel_api"
+require "netzke/grid_panel/grid_panel_columns"
 require "netzke/plugins/configuration_tool"
 require "netzke/data_accessor"
 

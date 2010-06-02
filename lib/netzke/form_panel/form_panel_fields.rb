@@ -31,7 +31,7 @@ module Netzke
         end
 
         def default_fields
-          @default_fields ||= load_model_level_attrs || data_class.netzke_attributes
+          @default_fields ||= load_model_level_attrs || (data_class && data_class.netzke_attributes) || []
         end
 
         def initial_fields
@@ -100,8 +100,7 @@ module Netzke
         end
         
         def load_model_level_attrs
-          attrs = NetzkeModelAttrList.read_list(data_class.name)
-          attrs && attrs.map(&:symbolize_keys) 
+          NetzkeModelAttrList.read_list(data_class.name) if data_class
         end
         
         def set_default_field_label(c)
