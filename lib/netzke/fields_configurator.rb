@@ -20,10 +20,6 @@ module Netzke
       })
     end
     
-    def config_tool_needed?
-      false
-    end
-    
     def actions
       super.merge(
         :defaults => {:text => 'Restore defaults'}
@@ -117,26 +113,30 @@ module Netzke
       {:load_store_data => get_data}
     end
    
-    # Don't show the config tool
-    # def config_tool_needed?
-    #   false
-    # end
+    # Never show the config tool
+    def config_tool_needed?
+      false
+    end
    
     private
     
       # An override
       def process_data(data, operation)
-        meta_attrs_to_update = data.inject({}) do |r,el|
-          r.merge({
-            data_class.find(el["id"]).name => el.reject{ |k,v| k == "id" }
-          })
-        end
+        if operation == :update
+          meta_attrs_to_update = data.inject({}) do |r,el|
+            r.merge({
+              data_class.find(el["id"]).name => el.reject{ |k,v| k == "id" }
+            })
+          end
       
-        res = super
+          res = super
       
-        NetzkeFieldList.update_fields(config[:owner].global_id, meta_attrs_to_update)
+          NetzkeFieldList.update_fields(config[:owner].global_id, meta_attrs_to_update)
         
-        res
+          res
+        else
+          super
+        end
       end
     
       # An override
