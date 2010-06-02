@@ -488,7 +488,7 @@ module Netzke
                 var editableIndex = 0;
                 Ext.each(this.getColumnModel().config, function(c){
                   // skip columns that cannot be edited
-                  if (!(c.hidden == true || c.editable == false || !c.editor || c["type"] == 'boolean')) {
+                  if (!(c.hidden == true || c.editable == false || !c.editor || c.attrType == 'boolean')) {
                     return false;
                   }
                   editableIndex++;
