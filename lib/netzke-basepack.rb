@@ -38,3 +38,7 @@ Netzke::Base.config[:external_css] << "/extjs/examples/ux/fileuploadfield/css/fi
 # Used by GridPanel
 Netzke::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/RangeMenu"
 Netzke::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/GridFilters"
+
+if Netzke::Base.config[:with_icons].nil? && defined?(RAILS_ROOT)
+  Netzke::Base.config[:with_icons] = File.exists?("#{RAILS_ROOT}/public#{Netzke::Base.config[:icons_uri]}")
+end

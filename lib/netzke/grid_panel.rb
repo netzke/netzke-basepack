@@ -256,15 +256,30 @@ module Netzke
 
     def actions
       # Defaults
-      { 
-        :add          => {:text => 'Add',     :disabled      => ext_config[:prohibit_create]},
-        :edit         => {:text => 'Edit',    :disabled      => true},
-        :del          => {:text => 'Delete',  :disabled      => true},
-        :apply        => {:text => 'Apply',   :disabled      => ext_config[:prohibit_update] && ext_config[:prohibit_create]},
-        :add_in_form  => {:text => 'Add in form', :disabled  => !ext_config[:enable_edit_in_form]},
+      actions = {                                     
+        :add          => {:text => 'Add',          :disabled => ext_config[:prohibit_create]},
+        :edit         => {:text => 'Edit',         :disabled => true},
+        :del          => {:text => 'Delete',       :disabled => true},
+        :apply        => {:text => 'Apply',        :disabled => ext_config[:prohibit_update] && ext_config[:prohibit_create]},
+        :add_in_form  => {:text => 'Add in form',  :disabled => !ext_config[:enable_edit_in_form]},
         :edit_in_form => {:text => 'Edit in form', :disabled => true},
-        :search       => {:text => 'Search', :disabled       => !ext_config[:enable_extended_search], :checked => true}
+        :search       => {:text => 'Search',       :disabled => !ext_config[:enable_extended_search], :checked => true}
       }
+      
+      if Netzke::Base.config[:with_icons]
+        icons_uri = Netzke::Base.config[:icons_uri]
+        actions.deep_merge!(
+          :add => {:icon => icons_uri + "add.png"},
+          :edit => {:icon => icons_uri + "table_edit.png"},
+          :del => {:icon => icons_uri + "table_row_delete.png"},
+          :apply => {:icon => icons_uri + "tick.png"},
+          :add_in_form => {:icon => icons_uri + "application_form_add.png"},
+          :edit_in_form => {:icon => icons_uri + "application_form_edit.png"},
+          :search => {:icon => icons_uri + "find.png"}
+        )
+      end
+      
+      actions
     end
 
     def initial_late_aggregatees

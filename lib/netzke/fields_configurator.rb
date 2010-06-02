@@ -22,7 +22,7 @@ module Netzke
     
     def actions
       super.merge(
-        :defaults => {:text => 'Restore defaults'}
+        :defaults => {:text => 'Restore defaults', :icon => Netzke::Base.config[:with_icons] && (Netzke::Base.config[:icons_uri] + "wand.png")}
       )
     end
     

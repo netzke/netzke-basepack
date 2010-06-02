@@ -98,9 +98,18 @@ module Netzke
     end
 
     def actions
-      {
+      actions = {
         :apply => {:text => 'Apply'}
       }
+      
+      if Netzke::Base.config[:with_icons]
+        icons_url = Netzke::Base.config[:icons_url]
+        actions.deep_merge!(
+          :apply => {:icon => icons_url + "tick.png"}
+        )
+      end
+      
+      actions
     end
     
     def self.property_fields
