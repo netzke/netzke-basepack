@@ -34,7 +34,7 @@ module Netzke
           @default_fields ||= load_model_level_attrs || (data_class && data_class.netzke_attributes) || []
         end
 
-        def initial_fields
+        def initial_fields(only_included = true)
           ::ActiveSupport::Deprecation.warn("The :columns option for FormPanel is deprecated. Use :fields instead", caller) if config[:columns]
           
           # Normalize here, as from the config we can get symbols (names) instead of hashes
@@ -95,8 +95,7 @@ module Netzke
         # end
       
         def load_fields
-          flds = NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
-          flds && flds.map(&:symbolize_keys)
+          NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
         end
         
         def load_model_level_attrs
@@ -104,7 +103,7 @@ module Netzke
         end
         
         def set_default_field_label(c)
-          c[:field_label] = c.delete(:label) || c[:name].humanize
+          c[:label] ||= c[:name].humanize
         end
       
         def attr_type_to_xtype_map

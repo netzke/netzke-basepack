@@ -13,8 +13,6 @@ class FieldsConfigurationTest < ActiveSupport::TestCase
     Netzke::Base.masquerade_as(:role, Role.find_by_name("seller").id)
     list = NetzkeModelAttrList.read_list("Book")
     # assert_equal(["Title for seller1", false], [list[0][:label], list[0][:hidden]])
-    
-    puts "!!! list: #{list.inspect}\n"
   end
   
 end

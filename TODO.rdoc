@@ -1,10 +1,10 @@
 == Priority
-* Introduce three-state checkbox for SearchPanel - DONE
 * Add icons to buttons to actions (toolbars/menus)
 * On grid refresh, reset the dirty fields, so that the "Apply" button doesn't do anything
 
 == Foolproof
 * Should not be possible delete the "ID" field from grids/forms
+* Should not be possible to put the "ID" field on any place but first for grids (otherwise record ID is not correct)
 
 == Optimizations
 * Check persistent_config-related queries (aren't they too many?)

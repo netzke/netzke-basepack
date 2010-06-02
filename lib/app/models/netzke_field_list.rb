@@ -113,10 +113,8 @@ class NetzkeFieldList < ActiveRecord::Base
     
     if parent_pref
       parent_list = ActiveSupport::JSON.decode(parent_pref.value)
-      # Rails.logger.debug "!!! parent_list: #{parent_list.inspect}\n"
       parent_pref.children.each do |ch|
         child_list = ActiveSupport::JSON.decode(ch.value)
-        # Rails.logger.debug "!!! child_list: #{child_list.inspect}\n"
         
         if attr_name
           # propagate a certain attribute

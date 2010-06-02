@@ -14,42 +14,38 @@ module Netzke
       })
     end
     
-    def initial_fields
+    def initial_fields(only_included = true)
       res = super
 
-      res.map! do |f| 
-        norm_column = normalize_column(f)
-        norm_column.merge!({
-          :condition => "like"
-        })
-        # norm_column.merge!(:hidden => true) if norm_column[:name].to_s.index("__") || norm_column[:xtype] == :xcheckbox
-        
-        norm_column.merge!(:xtype => xtype_for_field_type(:string)) if norm_column[:name].to_s.index("__")
-        norm_column.merge!(:condition => "greater_than") if [:datetime, :integer, :date].include?(norm_column[:type])
-        norm_column.merge!(:condition => "equals") if [:boolean].include?(norm_column[:type])
-        norm_column
-      end
+      res.reject!{ |f| f[:virtual] }
       
+      res.each do |f| 
+        f.merge!(:condition => "like", :default_value => nil)
+        f.merge!(:xtype => xtype_for_attr_type(:string), :attr_type => "string") if f[:name].to_s.index("__")
+        f.merge!(:condition => "greater_than") if [:datetime, :integer, :date].include?(f[:attr_type].to_sym)
+        f.merge!(:condition => "equals") if f["attr_type"] == "boolean"
+      end
+
       res
     end
     
     # columns to be displayed by the FieldConfigurator (which is GridPanel-based)
     def self.meta_columns
       [                                         
-        {:name => "hidden",      :type => :boolean, :editor => :checkbox, :width => 50},
-        {:name => "name",        :type => :string,  :editor => :combobox},
-        {:name => "condition",   :type => :string,  :editor => {:xtype => :combo, :store => CONDITIONS}},
-        {:name => "field_label", :type => :string},
-        {:name => "xtype",       :type => :string},
-        {:name => "value",       :type => :string},
+        {:name => "hidden",      :attr_type => :boolean, :editor => :checkbox, :width => 50},
+        {:name => "name",        :attr_type => :string,  :editor => :combobox},
+        {:name => "condition",   :attr_type => :string,  :editor => {:xtype => :combo, :store => CONDITIONS}},
+        {:name => "field_label", :attr_type => :string},
+        {:name => "xtype",       :attr_type => :string},
+        {:name => "value",       :attr_type => :string},
       ]
     end
 
     # tweaking the form fields at the last moment
     def js_config
       super.merge({
-        :clmns => fields.map{ |c| c.merge({
-          :field_label => "#{c[:field_label] || c[:name]} #{c[:condition]}".humanize,
+        :fields => fields.map{ |c| c.merge({
+          :label => "#{c[:label] || c[:name]} #{c[:condition]}".humanize,
           :name => "#{c[:name]}_#{c[:condition]}"
         })}
       })
@@ -64,7 +60,7 @@ module Netzke
         super(:column => column_name)
       end
       
-      def field_type_to_xtype_map
+      def attr_type_to_xtype_map
         super.merge({
           :boolean => :tricheckbox
         })

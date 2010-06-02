@@ -141,7 +141,6 @@ module Netzke
     
       # An override
       def store_data(data)
-        Rails.logger.debug "!!! data: #{data.inspect}\n"
         NetzkeFieldList.update_list_for_current_authority(config[:owner].global_id, data, config[:owner].data_class.name)
       end
       
@@ -152,7 +151,6 @@ module Netzke
       
       def default_owner_fields
         config[:owner].initial_columns(false).map(&:deebeefy_values)
-        # NetzkeFieldList.read_list("#{config[:owner].data_class.name.tableize}_model_fields") || normalize_columns(config[:owner].initial_columns.map{ |c| c.merge(:attr_type => c[:attr_type]) }).map(&:deebeefy_values)
       end
    
       # This is an override of GridPanel#on_data_changed
