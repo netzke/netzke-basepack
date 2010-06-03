@@ -103,9 +103,9 @@ module Netzke
       }
       
       if Netzke::Base.config[:with_icons]
-        icons_url = Netzke::Base.config[:icons_url]
+        icons_uri = Netzke::Base.config[:icons_uri]
         actions.deep_merge!(
-          :apply => {:icon => icons_url + "tick.png"}
+          :apply => {:icon => icons_uri + "tick.png"}
         )
       end
       

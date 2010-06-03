@@ -70,7 +70,7 @@ module Netzke
   
       # Returns array of form values according to the configured columns
       def array_of_values
-        @record && @record.to_array(columns, self)
+        @record && @record.to_array(fields, self)
       end
     end
   end
