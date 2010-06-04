@@ -36,7 +36,7 @@ module Netzke
         {:name => "id", :attr_type => :integer, :meta => true}, 
         {:name => "position", :attr_type => :integer, :meta => true},
         {:name => "attr_type", :attr_type => :string, :meta => true},
-        *config[:owner].class.meta_columns
+        *config[:owner].class.meta_columns.map { |c| c[:name] == "name" ? inject_combo_for_name_column(c) : c }
       ]
     end
         
@@ -147,6 +147,12 @@ module Netzke
       # An override
       def initial_data
         NetzkeFieldList.read_list(config[:owner].global_id) || default_owner_fields
+      end
+
+      # Set strict combo for the "name" column, with options of the attributes provided by the data_class
+      def inject_combo_for_name_column(c)
+        netzke_attrs = config[:owner].data_class.netzke_attributes.map{ |a| a[:name] }
+        c.merge(:editor => {:xtype => :combo, :store => netzke_attrs, :force_selection => true})
       end
       
       def default_owner_fields

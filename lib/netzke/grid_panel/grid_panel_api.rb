@@ -156,19 +156,6 @@ module Netzke
         res.to_nifty_json
       end
       
-      def configuration_panel__columns__get_combobox_options(params)
-        query = params[:query]
-      
-        data_arry = case params[:column]
-                    when "name"
-                      default_columns.map{ |c| c[:name] }
-                    else
-                      raise RuntimeError, "Don't know about options for column '#{params[:column]}'"
-                    end
-      
-        {:data => data_arry.grep(/^#{query}/).map{ |n| [n] }}.to_nifty_json
-      end
-
       protected
         # Override this method to react on each operation that caused changing of data
         def on_data_changed; end

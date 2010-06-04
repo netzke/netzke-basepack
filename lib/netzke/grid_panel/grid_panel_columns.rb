@@ -11,7 +11,7 @@ module Netzke
             {:name => "included",      :attr_type => :boolean, :width => 40, :header => "Incl", :default_value => true},
 
             # The name of the column. May be any accessible method or attribute of the data_class.
-            {:name => "name",          :attr_type => :string, :editor => :combobox, :width => 200},
+            {:name => "name",          :attr_type => :string, :width => 200},
 
             # The header for the column.
             {:name => "label",         :attr_type => :string, :width => 200, :header => "Header"},
