@@ -115,12 +115,17 @@ module Netzke
                   if (c.renderer && !Ext.isArray(c.renderer) && c.renderer.match(/^\\s*function\\s*\\(/)) {
                     // if the renderer is an inline function - eval it (double escaping because we are inside of the Ruby string here...)
                     eval("c.renderer = " + c.renderer + ";");
+                  } else if (Ext.isFunction(this[c.renderer])) {
+                    // whether the renderer is defined in this.scope
+                    c.renderer = this[c.renderer].createDelegate(this);
                   } else {
                     // othrewise it's a string representing the name of the renderer or an json-encoded array,
                     // where the first parameter is the renderer's name, and the rest - parameters that should be
                     // passed to the renderer at the moment of calling
                     var renderer = Ext.netzke.normalizedRenderer(c.renderer);
-                    if (renderer != null) c.renderer = renderer;
+                    if (renderer != null) {
+                      c.renderer = renderer
+                    };
                   }
                 
                   // add to the list

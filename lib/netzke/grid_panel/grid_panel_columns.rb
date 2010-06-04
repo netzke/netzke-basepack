@@ -207,7 +207,7 @@ module Netzke
             assoc = data_class.reflect_on_association(assoc_name.to_sym)
           end
           
-          if assoc_method
+          if assoc && assoc_method
             assoc_column = assoc.klass.columns_hash[assoc_method]
             assoc_method_type = assoc_column.try(:type)
             
