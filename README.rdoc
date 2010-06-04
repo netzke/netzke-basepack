@@ -1,7 +1,7 @@
 = netzke-basepack
 A pack of basic Rails/ExtJS widgets as a part of the Netzke framework. Live demo/tutorials on http://blog.writelesscode.com. Introduction to the Netzke framework and the Wiki: http://github.com/skozlov/netzke
 
-= Prerequisites
+== Prerequisites
 1. Rails >= 2.2
 2. Netzke assumes that your ExtJS library is in public/extjs, which may be a symbolic link, e.g:
 
@@ -28,7 +28,7 @@ Or install as gem:
 
     gem install netzke-basepack
 
-= Usage
+== Usage
 If using as gem, include it into environment.rb:
 
     config.gem "netzke-basepack"
@@ -67,6 +67,9 @@ Now embed a widget into a view like this:
   <%= netzke :books, :class_name => 'GridPanel', :model => 'Book' %>
 
 For more examples, see http://netzke-demo.writelesscode.com
+
+== Icons support
+Netzke-basepack supports FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable it, download it and put the "icons" folder into your app's public/images folder. Then restart your application.
 
 == More info
 Introduction to Netzke framework and wiki: http://github.com/skozlov/netzke
