@@ -143,17 +143,20 @@ module Netzke
 
       def multi_edit_form__netzke_submit(params)
         ids = ActiveSupport::JSON.decode(params.delete(:ids))
-
-        res = {}
-        ids.each do |id|
-          form_instance = aggregatee_instance(:edit_form, :record => data_class.find(id))
-          res = form_instance.netzke_submit(params)
-          break if !res[:set_form_values]
+        data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
+        
+        mod_records_count = process_data(data, :update).count
+        
+        # remove duplicated flash messages
+        @flash = @flash.inject([]){ |r,hsh| r.include?(hsh) ? r : r.push(hsh) }
+        
+        if mod_records_count > 0
+          on_data_changed
+          flash :notice => "Updated #{mod_records_count} records."
+          {:parent => {:on_successfull_edit => true}, :feedback => @flash}.to_nifty_json
+        else
+          {:feedback => @flash}.to_nifty_json
         end
-      
-        on_data_changed if check_for_positive_result(res)
-      
-        res.to_nifty_json
       end
       
       protected
