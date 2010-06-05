@@ -307,57 +307,52 @@ module Netzke
             :record => data_class.new
           }
         },
-        # :edit_form => {
-        #   :class_name => "GridPanel::RecordFormWindow",
-        #   :ext_config => {
-        #     :title => "Edit #{data_class.name.humanize}",
-        #     :button_align => "right"
-        #   },
-        #   :item => {
-        #     :class_name => "FormPanel",
-        #     :model => data_class.name,
-        #     :persistent_config => config[:persistent_config],
-        #     :ext_config => {
-        #       :bbar => false,
-        #       :header => false,
-        #       :mode => ext_config[:mode]
-        #     }
-        #   },
-        # },
         
         :edit_form => {
-          :class_name => "FormPanel",
-          :model => data_class.name,
-          :persistent_config => config[:persistent_config],
+          :class_name => "GridPanel::RecordFormWindow",
           :ext_config => {
-            :bbar => false,
-            :header => false,
-            :mode => ext_config[:mode]
-          }
+            :title => "Edit #{data_class.name.humanize}",
+            :button_align => "right"
+          },
+          :item => {
+            :class_name => "FormPanel",
+            :model => data_class.name,
+            :persistent_config => config[:persistent_config],
+            :ext_config => {
+              :bbar => false,
+              :header => false,
+              :mode => ext_config[:mode]
+            }
+          },
         },
+        
+        # :edit_form => {
+        #   :class_name => "FormPanel",
+        #   :model => data_class.name,
+        #   :persistent_config => config[:persistent_config],
+        #   :ext_config => {
+        #     :bbar => false,
+        #     :header => false,
+        #     :mode => ext_config[:mode]
+        #   }
+        # },
         
         :multi_edit_form => {
-          :class_name => "FormPanel",
-          :model => data_class.name,
-          :persistent_config => config[:persistent_config],
+          :class_name => "GridPanel::RecordFormWindow",
           :ext_config => {
-            :bbar => false,
-            :header => false,
-            :mode => ext_config[:mode]
-          }
-        },
-        
-        :new_record_form => {
-          :class_name => "FormPanel",
-          :model => data_class.name,
-          :persistent_config => config[:persistent_config],
-          :strong_default_attrs => config[:strong_default_attrs],
-          :ext_config => {
-            :bbar => false,
-            :header => false,
-            :mode => ext_config[:mode]
+            :title => "Edit #{data_class.name.humanize}",
+            :button_align => "right"
           },
-          :record => data_class.new
+          :item => {
+            :class_name => "FormPanel",
+            :model => data_class.name,
+            :persistent_config => config[:persistent_config],
+            :ext_config => {
+              :bbar => false,
+              :header => false,
+              :mode => ext_config[:mode]
+            }
+          }
         }
       }) if ext_config[:enable_edit_in_form]
       

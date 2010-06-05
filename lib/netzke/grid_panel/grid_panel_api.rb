@@ -100,48 +100,34 @@ module Netzke
         {}
       end
       
-      # Create record with a form
-      def create_new_record(params)
-        form_data = ActiveSupport::JSON.decode(params[:data])
-        res = aggregatee_instance(:new_record_form).create_or_update_record(form_data)
-      
-        if res[:set_form_values]
-          # successful creation
-          on_data_changed
-          res[:set_form_values] = nil
-          res[:on_successfull_record_creation] = true
-        end
-        res
-      end
-    
       #
       # Some aggregatees' overridden API 
       # 
     
       ## Edit in form specific API
-      def new_record_form__netzke_submit(params)
-        res = aggregatee_instance(:new_record_form).netzke_submit(params)
+      def add_form__item__netzke_submit(params)
+        res = aggregatee_instance(:add_form__item).netzke_submit(params)
       
         if res[:set_form_values]
           # successful creation
           on_data_changed
           res[:set_form_values] = nil
-          res.merge!({
-            :parent => {:on_successfull_record_creation => true}
-          })
         end
         res.to_nifty_json
       end
 
-      def edit_form__netzke_submit(params)
-        res = aggregatee_instance(:edit_form).netzke_submit(params)
-      
-        on_data_changed if check_for_positive_result(res)
+      def edit_form__item__netzke_submit(params)
+        res = aggregatee_instance(:edit_form__item).netzke_submit(params)
+
+        if res[:set_form_values]
+          on_data_changed
+          res[:set_form_values] = nil
+        end
       
         res.to_nifty_json
       end
 
-      def multi_edit_form__netzke_submit(params)
+      def multi_edit_form__item__netzke_submit(params)
         ids = ActiveSupport::JSON.decode(params.delete(:ids))
         data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
         
@@ -153,7 +139,7 @@ module Netzke
         if mod_records_count > 0
           on_data_changed
           flash :notice => "Updated #{mod_records_count} records."
-          {:parent => {:on_successfull_edit => true}, :feedback => @flash}.to_nifty_json
+          {:set_result => "ok", :feedback => @flash}.to_nifty_json
         else
           {:feedback => @flash}.to_nifty_json
         end
@@ -286,7 +272,7 @@ module Netzke
         # When providing the edit_form aggregatee, fill in the form with the requested record
         def load_aggregatee_with_cache(params)
           if params[:id] == 'editForm'
-            aggregatees[:edit_form].merge!(:record_id => params[:record_id])
+            aggregatees[:edit_form][:item].merge!(:record_id => params[:record_id])
           end
       
           super
@@ -351,18 +337,18 @@ module Netzke
           {:conditions => normalized_conditions}
         end
     
-        def check_for_positive_result(res)
-          if res[:set_form_values]
-            # successful creation
-            res[:set_form_values] = nil
-            res.merge!({
-              :parent => {:on_successfull_edit => true}
-            })
-            true
-          else
-            false
-          end
-        end
+        # def check_for_positive_result(res)
+        #   if res[:set_form_values]
+        #     # successful creation
+        #     res[:set_form_values] = nil
+        #     res.merge!({
+        #       :parent => {:on_successfull_edit => true}
+        #     })
+        #     true
+        #   else
+        #     false
+        #   end
+        # end
 
     end
   end

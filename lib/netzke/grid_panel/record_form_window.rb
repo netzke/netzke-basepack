@@ -36,7 +36,13 @@ module Netzke
               this.close();
             }
           END_OF_JAVASCRIPT
-        
+          
+          :on_test => <<-END_OF_JAVASCRIPT.l,
+            function(){
+              console.info("this.parent: ", this.getParent());
+            }
+          END_OF_JAVASCRIPT
+          
         }
       end
     end

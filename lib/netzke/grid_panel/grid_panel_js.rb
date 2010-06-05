@@ -617,84 +617,44 @@ module Netzke
           # Optional edit in form functionality
           res.merge!(
           {
-            :on_successfull_record_creation => <<-END_OF_JAVASCRIPT.l,
-              function(){
-                this.formWindow.hide();
-                this.getStore().reload();
-              }
-            END_OF_JAVASCRIPT
-
-            :on_successfull_edit => <<-END_OF_JAVASCRIPT.l,
-              function(){
-                this.editFormWindow.close();
-                delete this.editFormWindow;
-                this.getStore().reload();
-              }
-            END_OF_JAVASCRIPT
-
             :on_edit_in_form => <<-END_OF_JAVASCRIPT.l,
               function(){
-                // create the window
-                delete this.editFormWindow;
-                this.editFormWindow = new Ext.Window({
-                  title: 'Edit',
-                  layout: 'fit',
-                  modal: true,
-                  width: 400,
-                  height: Ext.lib.Dom.getViewHeight() *0.9,
-                  buttons:[{
-                    text: 'OK',
-                    handler: function(){
-                      this.ownerCt.ownerCt.getWidget().onApply();
-                    }
-                  },{
-                    text:'Cancel',
-                    handler:function(){
-                      this.ownerCt.ownerCt.hide();
-                    }
-                  }]
-                });
-
-                // show it and load the correct aggregatee in it
-                this.editFormWindow.show(null, function(){
-                  var selModel = this.getSelectionModel();
-                  if (selModel.getCount() > 1) {
-
-                    // multiedit
-                    this.editFormWindow.setTitle('Multi-edit');
-                    this.loadAggregatee({
-                      id: "multiEditForm",
-                      container: this.editFormWindow.id,
-                      callback: function(aggr){
-                        // on apply attach ids of selected rows
-                        aggr.on('apply', function(){
-                          var ids = [];
-                          selModel.each(function(r){
-                            ids.push(r.id);
-                          });
-                          aggr.baseParams = {ids: Ext.encode(ids)}
-                        }, this);
-                      },
-                      scope: this
-                    });
-                  } else {
-                  
-                    // single edit
-                    this.editFormWindow.setTitle('Edit');
-                    var recordId = selModel.getSelected().id;
-                    this.loadAggregatee({
-                      id: "editForm",
-                      container: this.editFormWindow.id,
-                      params: {
-                        record_id: recordId
-                      }
-                    });
-                  }
-                }, this);
-
+                var selModel = this.getSelectionModel();
+                if (selModel.getCount() > 1) {
+                  var recordId = selModel.getSelected().id;
+                  this.loadAggregatee({id: "multiEditForm",
+                    params: {record_id: recordId},
+                    callback: function(w){
+                      var form = w.items.first();
+                      form.on('apply', function(){
+                        var ids = [];
+                        selModel.each(function(r){
+                          ids.push(r.id);
+                        });
+                        form.baseParams = {ids: Ext.encode(ids)}
+                      }, this);
+                      
+                      w.on('close', function(){
+                        if (w.closeRes === "ok") {
+                          this.store.reload();
+                        }
+                      }, this);
+                    }, scope: this});
+                } else {
+                  var recordId = selModel.getSelected().id;
+                  this.loadAggregatee({id: "editForm",
+                    params: {record_id: recordId},
+                    callback: function(form){
+                      form.on('close', function(){
+                        if (form.closeRes === "ok") {
+                          this.store.reload();
+                        }
+                      }, this);
+                    }, scope: this});
+                }
               }
             END_OF_JAVASCRIPT
-
+            
             :on_add_in_form => <<-END_OF_JAVASCRIPT.l,
               function(){
                 this.loadAggregatee({id: "addForm", callback: function(form){
