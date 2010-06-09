@@ -14,15 +14,6 @@ module Netzke
       # Generic extensions to the data model
       if data_class # because some widgets, like FormPanel, may have it optional
         data_class.send(:include, Netzke::ActiveRecord::DataAccessor) if !data_class.include?(Netzke::ActiveRecord::DataAccessor)
-        #       
-        # # Model helpers
-        # model_extensions = "Netzke::Helpers::#{data_class.name}".constantize rescue nil
-        # data_class.send(:include, model_extensions) if model_extensions && !data_class.include?(model_extensions)
-        module_name = "Netzke::ModelInjections::#{data_class.name}#{short_widget_class_name}"
-        injector_module = "Netzke::ModelInjections::#{data_class.name}#{short_widget_class_name}".constantize rescue nil
-        data_class.send(:include, injector_module) if injector_module && !data_class.include?(injector_module)
-        injector_module = "Netzke::ModelInjections::#{short_widget_class_name}".constantize rescue nil
-        data_class.send(:include, injector_module) if injector_module && !data_class.include?(injector_module)
       end
     end
     

@@ -67,9 +67,14 @@ module Netzke
     
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
-      ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
-      model_name = config[:model] || config[:data_class_name]
-      @data_class ||= model_name && model_name.constantize
+      @data_class ||= begin
+        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_widget_class_name}".constantize rescue nil
+        klass || begin
+          ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
+          model_name = config[:model] || config[:data_class_name]
+          model_name && model_name.constantize
+        end
+      end
     end
     
     def record

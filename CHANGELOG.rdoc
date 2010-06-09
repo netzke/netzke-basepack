@@ -1,4 +1,4 @@
-= v0.5.9 - EDGE
+= v0.6.0 - EDGE
 * !!!: after updating to this version, run script/generate netzke_basepack
 * New: tri-state checkbox introduced into the search form
 * Impr: better defaults for the search form
@@ -14,6 +14,7 @@
 * Impr: Multi-level column/fields configuration reworked and made more consistent.
 * New: New configuration layer introduced between the AR models and the rest of Netzke widgets. Use AttributesConfigurator to access it.
 * New: FamFamFam Silk icons support.
+* Impr: Reworked Netzke (virtual) attributes for Grid/FormPanel
 
 = v0.5.8 - 2010-03-12
 * Fix: GertThiel's method_missing-related fix enabling better compatibility with other Ruby libs

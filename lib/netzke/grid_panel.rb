@@ -84,7 +84,7 @@ module Netzke
   #   hardcoded config
   #   AttributesConfigurator persistent storage
   #   netzke_expose_attributes in the database model
-  #   database columns + (eventually) virtual attributes specified with netzke_virtual_attribute
+  #   database columns + (eventually) virtual attributes specified with netzke_attribute
   class GridPanel < Base
     # javascript (client-side)
     include GridPanelJs
@@ -175,9 +175,14 @@ module Netzke
 
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
-      ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
-      model_name = config[:model] || config[:data_class_name]
-      @data_class ||= model_name.nil? ? raise(ArgumentError, "No model specified for widget #{global_id}") : model_name.constantize
+      @data_class ||= begin
+        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_widget_class_name}".constantize rescue nil
+        klass || begin
+          ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
+          model_name = config[:model] || config[:data_class_name]
+          model_name.nil? ? raise(ArgumentError, "No model specified for widget #{global_id}") : model_name.constantize
+        end
+      end
     end
     
     def initialize(config = {}, parent = nil)
@@ -186,7 +191,10 @@ module Netzke
       apply_helpers
     end
 
-
+    # def data_class
+    #   klass = "Netzke::ModelExtensions::#{data_class.name}#{short_widget_class_name}Ext".constantize rescue nil
+    #   klass || data_class
+    # end
     
     # Fields to be displayed in the "General" tab of the configuration panel
     def self.property_fields
@@ -295,7 +303,7 @@ module Netzke
           },
           :item => {
             :class_name => "FormPanel",
-            :model => data_class.name,
+            :model => config[:model],
             :persistent_config => config[:persistent_config],
             :strong_default_attrs => config[:strong_default_attrs],
             :ext_config => {

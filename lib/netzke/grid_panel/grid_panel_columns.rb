@@ -75,6 +75,7 @@ module Netzke
         # Override this method if you want to provide a fix set of columns in your subclass.
         def default_columns
           @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
+          # @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
         end
         
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
