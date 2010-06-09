@@ -54,10 +54,16 @@ module Netzke::ActiveRecord::Attributes
         attrs.collect do |attr_name|
           declared = netzke_declared_attributes.detect { |va| va[:name] == attr_name } || {}
           in_columns_hash = columns_hash[attr_name] && {:name => attr_name, :attr_type => columns_hash[attr_name].type, :default_value => columns_hash[attr_name].default} || {} # {:virtual => true} # if nothing found in columns, mark it as "virtual" or not?
-          merged = in_columns_hash.merge(declared)
+          if in_columns_hash.empty?
+            # If not among the model columns, it's either virtual, or an association
+            merged = association_attr?(attr_name) ? {:name => attr_name} : declared.merge(:virtual => true)
+          else
+            # .. otherwise merge with what's declared
+            merged = in_columns_hash.merge(declared)
+          end
           
-          # if nothing found among declared, nor in columns, it may be an association attr, such as "boss__last_name"
-          merged[:name] ||= attr_name
+          # We didn't find it among declared, nor among the model columns, nor does it seem association attribute
+          merged[:name].nil? && raise(ArgumentError, "Unknown attribute '#{attr_name}' for model #{self.name}", caller)
           
           merged
         end
@@ -81,14 +87,14 @@ module Netzke::ActiveRecord::Attributes
           declared_attrs
         ).reject { |attr| netzke_excluded_attributes.include?(attr[:name]) }
       end
-    
-  end
-  
-  module InstanceMethods
+      
+      def association_attr?(attr_name)
+        !!attr_name.index("__") # probably we can't do much better than this, as we don't know at this moment if the associated model has a specific attribute, and we don't really want to find it out
+      end
+      
   end
   
   def self.included(receiver)
     receiver.extend         ClassMethods
-    receiver.send :include, InstanceMethods
   end
 end

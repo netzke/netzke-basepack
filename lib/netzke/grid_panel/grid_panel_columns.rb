@@ -155,7 +155,7 @@ module Netzke
         end
         
         def set_default_editable(c)
-          c[:editable] = c[:read_only].nil? ? !reflects_primary_key?(c) : !c[:read_only]
+          c[:editable] = c[:read_only].nil? ? !(reflects_primary_key?(c) || c[:virtual]) : !c[:read_only]
           c.delete(:read_only)
         end
         

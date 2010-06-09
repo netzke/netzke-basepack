@@ -324,7 +324,7 @@ module Netzke
           },
           :item => {
             :class_name => "FormPanel",
-            :model => data_class.name,
+            :model => config[:model],
             :persistent_config => config[:persistent_config],
             :ext_config => {
               :bbar => false,
@@ -353,7 +353,7 @@ module Netzke
           },
           :item => {
             :class_name => "FormPanel",
-            :model => data_class.name,
+            :model => config[:model],
             :persistent_config => config[:persistent_config],
             :ext_config => {
               :bbar => false,
@@ -368,7 +368,7 @@ module Netzke
       res.merge!({
         :search_panel => {
           :class_name => "SearchPanel",
-          :search_class_name => data_class.name,
+          :search_class_name => config[:model],
           :persistent_config => config[:persistent_config],
           :ext_config => {
             :header => false, 
