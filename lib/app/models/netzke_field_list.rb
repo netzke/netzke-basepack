@@ -1,4 +1,4 @@
-# TODO: clean up
+# TODO: clean up, document and test
 class NetzkeFieldList < ActiveRecord::Base
   belongs_to :user
   belongs_to :role
@@ -206,14 +206,10 @@ class NetzkeFieldList < ActiveRecord::Base
     
     def self.find_or_create_pref_to_read(name)
       name = name.to_s
-      attrs = extend_attrs_for_current_authority(:name => name)
+      attrs = {:name => name}
+      extend_attrs_for_current_authority(attrs)
       self.first(:conditions => attrs) || self.new(attrs)
     end
-    
-    # def self.find_list_for_current_authority(name)
-    #   name = name.to_s
-    #   self.first(:conditions => extend_attrs_for_current_authority({:name => name}))
-    # end
     
     def self.extend_attrs_for_current_authority(hsh)
       authority_level, authority_id = Netzke::Base.authority_level

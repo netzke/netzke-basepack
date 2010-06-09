@@ -1,4 +1,4 @@
-require "activerecord"
+require "active_record"
 
 module Netzke::ActiveRecord
   # Provides extensions to all ActiveRecord-based classes

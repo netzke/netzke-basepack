@@ -5,17 +5,17 @@ module Netzke::ActiveRecord
     
     # Allow specify the netzke widget that requires this data. Virtual attributes may be using it to produce
     # widget-dependent result.
-    def netzke_widget=(widget)
-      @netzke_widget = widget
-    end
-    
-    def netzke_widget
-      @netzke_widget
-    end
+    # def netzke_widget=(widget)
+    #   @netzke_widget = widget
+    # end
+    # 
+    # def netzke_widget
+    #   @netzke_widget
+    # end
     
     # Transforms a record to array of values according to the passed columns.
     def to_array(columns, widget = nil)
-      self.netzke_widget = widget
+      # self.netzke_widget = widget
       res = []
       for c in columns
         begin

@@ -76,7 +76,7 @@ module Netzke
         def default_columns
           @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
         end
-
+        
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
         def initial_columns(only_included = true)
           # Normalize here, as from the config we can get symbols (names) instead of hashes

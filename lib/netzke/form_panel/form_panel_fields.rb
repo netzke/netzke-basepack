@@ -69,17 +69,11 @@ module Netzke
               end
 
               c[:hidden] = true if c[:name] == data_class.primary_key && c[:hidden].nil? # hide ID column by default
-              # c[:type] ||= c[:virtual] ? (c[:type] || :string) : data_class.columns_hash[c[:name]].try(:type) || :string
-
             end
 
             set_default_field_label(c)
             
-            # c[:field_label] ||= c[:name].humanize
             c[:xtype] ||= xtype_for_attr_type(c[:attr_type]) # unless xtype_map[type].nil?
-
-            # if the column is finally simply {:name => "something"}, cut it down to "something"
-            # c.reject{ |k,v| k == :name }.empty? ? c[:name] : c
             c
           end
 

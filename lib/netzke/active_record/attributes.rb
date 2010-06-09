@@ -1,14 +1,21 @@
 module Netzke::ActiveRecord::Attributes
   module ClassMethods
     
-    # Define a single virtual attribute.
+    # Define or configure an attribute.
     # Example:
-    #   netzke_virtual_attribute :recent, :type => :boolean, :read_only => true
-    def netzke_virtual_attribute(name, options = {})
+    #   netzke_attribute :recent, :type => :boolean, :read_only => true
+    def netzke_attribute(name, options = {})
+      name = name.to_s
       options[:attr_type] = options.delete(:type) || :string
-      virtual_attrs = read_inheritable_attribute(:netzke_virtual_attributes) || []
-      virtual_attrs << {:name => name.to_s}.merge(options)
-      write_inheritable_attribute(:netzke_virtual_attributes, virtual_attrs)
+      declared_attrs = read_inheritable_attribute(:netzke_declared_attributes) || []
+      # if the attr was declared already, simply merge it with the new options
+      existing = declared_attrs.detect{ |va| va[:name] == name }
+      if existing
+        existing.merge!(options)
+      else
+        declared_attrs << {:name => name}.merge(options)
+      end
+      write_inheritable_attribute(:netzke_declared_attributes, declared_attrs)
     end
     
     # Exclude attributes from being picked up by grids and forms.
@@ -35,8 +42,8 @@ module Netzke::ActiveRecord::Attributes
     end
     
     private
-      def netzke_virtual_attributes
-        (read_inheritable_attribute(:netzke_virtual_attributes) || []).map { |attr| attr.merge(:virtual => true) }
+      def netzke_declared_attributes
+        read_inheritable_attribute(:netzke_declared_attributes) || []
       end
     
       def netzke_excluded_attributes
@@ -44,26 +51,40 @@ module Netzke::ActiveRecord::Attributes
       end
 
       def netzke_attrs_in_forced_order(attrs)
-        attrs.collect do |attr|
-          netzke_virtual_attributes.detect { |va| va[:name] == attr } || {:name => attr, :attr_type => columns_hash[attr].type, :default_value => columns_hash[attr].default}
+        attrs.collect do |attr_name|
+          declared = netzke_declared_attributes.detect { |va| va[:name] == attr_name } || {}
+          in_columns_hash = columns_hash[attr_name] && {:name => attr_name, :attr_type => columns_hash[attr_name].type, :default_value => columns_hash[attr_name].default} || {} # {:virtual => true} # if nothing found in columns, mark it as "virtual" or not?
+          merged = in_columns_hash.merge(declared)
+          
+          # if nothing found among declared, nor in columns, it may be an association attr, such as "boss__last_name"
+          merged[:name] ||= attr_name
+          
+          merged
         end
       end
       
       def netzke_attrs_in_natural_order
         (
-          column_names.map do |name| 
+          declared_attrs = netzke_declared_attributes
+          column_names.map do |name|
             c = {:name => name, :attr_type => columns_hash[name].type}
+            # auto set up the default value from the column settings
             c.merge!(:default_value => columns_hash[name].default) if columns_hash[name].default
+            
+            # if there's a declared attr with the same name, simply merge it with what's taken from the model's columns
+            if declared = declared_attrs.detect{ |va| va[:name] == name }
+              c.merge!(declared)
+              declared_attrs.delete(declared)
+            end
             c
-          end + 
-          netzke_virtual_attributes
+          end +
+          declared_attrs
         ).reject { |attr| netzke_excluded_attributes.include?(attr[:name]) }
       end
     
   end
   
   module InstanceMethods
-    
   end
   
   def self.included(receiver)
