@@ -1,15 +1,14 @@
 module Netzke::ActiveRecord::ComboboxOptions
   module ClassMethods
     # TODO: rename to netzke_options_for (to avoid polluting the namespace)
-    # TODO: remove dependency on NetzkePreference, refactor
     def options_for(column, query = "")
       # First, check if we have options for this class and column defined in persistent storage
-      NetzkePreference.widget_name = self.name
-      options = NetzkePreference[:combobox_options] || {}
-      if options[column]
-        options[column].select{ |o| o.index(/^#{query}/) }
-      elsif respond_to?("#{column}_combobox_options")
-        # AR class provides the choices itself
+      # NetzkePreference.widget_name = self.name
+      # options = NetzkePreference[:combobox_options] || {}
+      # if options[column]
+      #   options[column].select{ |o| o.index(/^#{query}/) }
+      if respond_to?("#{column}_combobox_options")
+        # AR model provides the choices itself
         send("#{column}_combobox_options", query)
       else
         # Returns all unique values for a column, filtered with <tt>query</tt>
