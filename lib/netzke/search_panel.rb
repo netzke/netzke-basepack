@@ -14,6 +14,136 @@ module Netzke
       })
     end
     
+    def independent_config
+      super.deep_merge(
+        :ext_config => {
+          :tbar => ["Presets:", 
+            {
+              :xtype => "combo", 
+              :fieldLabel => "Presets",
+              :triggerAction => "all",
+              :store => (persistent_config[:saved_searches] || []).map{ |s| s["name"] },
+              :id => "presets-combo",
+              :listeners => {:before_select => {
+                :fn => "function(combo, record){Ext.getCmp('#{global_id}').selectPreset(record.data.field1);}".l
+              }}
+            }, :save, :del]
+        }
+      )
+    end
+    
+    def actions
+      super.merge(
+        :save => {:text => "Save", :icon => "/images/icons/disk.png"},
+        :del => {:text => "Delete", :icon => "/images/icons/delete.png"}
+      )
+    end
+    
+    def self.js_extend_properties
+      {
+        :remove_search_from_list => <<-END_OF_JAVASCRIPT.l,
+          function(name){
+            var presetsCombo = Ext.getCmp("presets-combo");
+            var presetsComboStore = presetsCombo.getStore();
+            presetsComboStore.removeAt(presetsComboStore.find('field1', name));
+            presetsCombo.reset();
+            this.getForm().reset();
+          }
+        END_OF_JAVASCRIPT
+        
+        :set_values => <<-END_OF_JAVASCRIPT.l,
+          function(values){
+            this.getForm().setValues(Ext.decode(values));
+          }
+        END_OF_JAVASCRIPT
+        
+        :select_preset => <<-END_OF_JAVASCRIPT.l,
+          function(name){
+            this.getForm().reset();
+            this.loadSearch({name: name});
+          }
+        END_OF_JAVASCRIPT
+        
+        :on_save => <<-END_OF_JAVASCRIPT.l,
+          function(){
+            var searchName = Ext.getCmp("presets-combo").getValue();
+            if (searchName !== "") {
+              var presetsComboStore = Ext.getCmp("presets-combo").getStore();
+              if (presetsComboStore.find('field1', searchName) !== -1) {
+                Ext.Msg.confirm("Overwriting preset '" + searchName + "'", "Are you sure you want to overwrite this preset?", function(btn, text){
+                  if (btn == 'yes') {
+                     this.doSavePreset(searchName);
+                  }
+                }, this);
+              } else {
+                this.doSavePreset(searchName);
+                presetsComboStore.add(new presetsComboStore.recordType({field1: searchName}));
+              }
+            }
+          }
+        END_OF_JAVASCRIPT
+        
+        :do_save_preset => <<-END_OF_JAVASCRIPT.l,
+          function(name){
+            var values = this.getForm().getValues();
+            for (var k in values) {
+              if (values[k] == "") {delete values[k]}
+            }
+          
+            this.saveSearch({
+              name: name,
+              values: Ext.encode(values)
+            });
+          }
+        END_OF_JAVASCRIPT
+        
+        :on_del => <<-END_OF_JAVASCRIPT.l,
+          function(){
+            var searchName = Ext.getCmp("presets-combo").getValue();
+            if (searchName !== "") {
+              Ext.Msg.confirm("Deleting preset '" + searchName + "'", "Are you sure you want to delete this preset?", function(btn, text){
+                if (btn == 'yes') {
+                  this.deleteSearch({
+                    name: searchName
+                  });
+                }
+              }, this);
+            }
+          }
+        END_OF_JAVASCRIPT
+        
+      }
+    end
+    
+    api :save_search
+    def save_search(params)
+      saved_searches = persistent_config[:saved_searches] || []
+      existing = saved_searches.detect{ |s| s["name"] == params[:name] }
+      values = ActiveSupport::JSON.decode(params[:values])
+      if existing
+        existing["values"].replace(values)
+      else
+        saved_searches << {"name" => params[:name], "values" => values}
+      end
+      persistent_config[:saved_searches] = saved_searches
+      {:feedback => "Preset successfully saved"}
+    end
+    
+    api :delete_search
+    def delete_search(params)
+      saved_searches = persistent_config[:saved_searches]
+      saved_searches.delete_if{ |s| s["name"] == params[:name] }
+      {:feedback => "Preset successfully deleted", :remove_search_from_list => params[:name]}
+    end
+    
+    api :load_search
+    def load_search(params)
+      saved_searches = persistent_config[:saved_searches]
+      the_search = saved_searches.detect{ |s| s["name"] == params[:name] }
+      
+      {:set_values => the_search["values"].to_json}
+    end
+    
     def initial_fields(only_included = true)
       res = super
 
@@ -50,7 +180,6 @@ module Netzke
         })}
       })
     end
-    
     
     private
       # we need to correct the queries to cut off the condition suffixes, otherwise the FormPanel gets confused

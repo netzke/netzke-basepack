@@ -12,7 +12,6 @@ module Netzke
             {:name => "default_value", :attr_type => :string}
           ]
         end
-        
       end
       
       module InstanceMethods

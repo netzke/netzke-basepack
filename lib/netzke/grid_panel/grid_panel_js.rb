@@ -681,7 +681,7 @@ module Netzke
                   modal: true,
                   width: 400,
                   height: Ext.lib.Dom.getViewHeight() *0.9,
-                  closeAction:'hide',
+                  closeAction:'close',
                   buttons:[{
                     text: 'OK',
                     handler: function(){
@@ -696,15 +696,15 @@ module Netzke
                   closePositively : function(){
                     this.conditions = this.getWidget().getForm().getValues();
                     this.closeRes = 'OK'; 
-                    this.hide();
+                    this.close();
                   },
                   closeNegatively: function(){
                     this.closeRes = 'cancel'; 
-                    this.hide();
+                    this.close();
                   }
                 });
 
-                this.searchWindow.on('hide', function(){
+                this.searchWindow.on('close', function(){
                   if (this.searchWindow.closeRes == 'OK'){
                     var searchConditions = this.searchWindow.conditions;
                     var filtered = false;
