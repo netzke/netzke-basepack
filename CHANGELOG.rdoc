@@ -1,4 +1,4 @@
-= v0.5.9
+= v0.5.9 - 2010-06-11
 * !!!: after updating to this version, run script/generate netzke_basepack
 * New: tri-state checkbox introduced into the search form
 * Impr: better defaults for the search form
