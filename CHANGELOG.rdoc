@@ -1,3 +1,6 @@
+= v0.5.10 - EDGE
+* Impr: Checkbox replaced with tristate checkbox in multi-edit form in GridPanel.
+
 = v0.5.9 - 2010-06-11
 * !!!: after updating to this version, run script/generate netzke_basepack
 * New: tri-state checkbox introduced into the search form
@@ -9,8 +12,8 @@
 * Fix: FieldsConfigurator should now work on Heroku
 * Fix: GridPanel date filter now should work
 * New: GridPanel now has a method on_data_changed that can be overridden by children to detect actions that modify data
-* New: New way of Netzke virtual attributes in AR models.
-* New: Grid/FormPanel refactoring.
+* New: New way of configuring Netzke (virtual) attributes for AR models.
+* Impr: Grid/FormPanel refactoring.
 * Impr: Multi-level column/fields configuration reworked and made more consistent.
 * New: New configuration layer introduced between the AR models and the rest of Netzke widgets. Use AttributesConfigurator to access it.
 * New: FamFamFam Silk icons support.

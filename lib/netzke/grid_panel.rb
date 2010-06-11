@@ -352,7 +352,7 @@ module Netzke
             :button_align => "right"
           },
           :item => {
-            :class_name => "FormPanel",
+            :class_name => "GridPanel::MultiEditForm",
             :model => config[:model],
             :persistent_config => config[:persistent_config],
             :ext_config => {

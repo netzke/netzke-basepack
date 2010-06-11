@@ -15,17 +15,17 @@ begin
     gemspec.add_dependency("acts_as_list", ">=0.1.2")
     gemspec.post_install_message = <<-MESSAGE
 
-    ========================================================================
+========================================================================
 
-               Thanks for installing Netzke Basepack!
-               
-      Run "./script/generate netzke_basepack" to finish the installation.
+           Thanks for installing Netzke Basepack!
+           
+  Run "./script/generate netzke_basepack" to finish the installation.
 
-      Netzke home page:     http://netzke.org
-      Netzke Google Groups: http://groups.google.com/group/netzke
-      Netzke tutorials:     http://blog.writelesscode.com
+  Netzke home page:     http://netzke.org
+  Netzke Google Groups: http://groups.google.com/group/netzke
+  Netzke tutorials:     http://blog.writelesscode.com
 
-    ========================================================================
+========================================================================
 
     MESSAGE
     
