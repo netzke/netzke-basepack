@@ -13,10 +13,26 @@ begin
     gemspec.add_dependency("searchlogic", ">=2.0.0")
     gemspec.add_dependency("will_paginate", ">=2.0.0")
     gemspec.add_dependency("acts_as_list", ">=0.1.2")
+    gemspec.post_install_message = <<-MESSAGE
+
+    ========================================================================
+
+               Thanks for installing Netzke Basepack!
+               
+      Run "./script/generate netzke_basepack" to finish the installation.
+
+      Netzke home page:     http://netzke.org
+      Netzke Google Groups: http://groups.google.com/group/netzke
+      Netzke tutorials:     http://blog.writelesscode.com
+
+    ========================================================================
+
+    MESSAGE
+    
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
-  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
+  puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
 require 'rake/rdoctask'

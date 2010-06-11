@@ -1,6 +1,6 @@
 require 'test_helper'
 
-require 'netzke/active_record/basepack'
+require 'netzke/active_record/attributes'
 
 class ActiveRecordBasepackTest < ActiveSupport::TestCase
   fixtures :cities, :countries, :continents

@@ -22,7 +22,7 @@ module Netzke::Plugins
 
       # if you include ConfigurationTool, you are supposed to provide configuration_widgets method which will returns an array of arrgeratees
       # that will be included in the property window (each in its own tab or accordion pane)
-      raise "configuration_widgets method undefined" unless base.instance_methods.include?("configuration_widgets")
+      raise "configuration_widgets method undefined" unless base.instance_methods.map(&:to_sym).include?(:configuration_widgets)
     end
 
     module ClassMethods
