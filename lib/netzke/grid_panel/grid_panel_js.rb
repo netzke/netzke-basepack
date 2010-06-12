@@ -37,7 +37,6 @@ module Netzke
                     if (r.isNew) { return false; }
                   });
                 };
-
                 this.actions.editInForm.setDisabled(disabled);
               }, this);
             }

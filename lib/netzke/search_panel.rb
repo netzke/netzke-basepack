@@ -149,11 +149,11 @@ module Netzke
 
       res.reject!{ |f| f[:virtual] }
       
-      res.each do |f| 
+      res.each do |f|
         f.merge!(:condition => "like", :default_value => nil)
         f.merge!(:xtype => xtype_for_attr_type(:string), :attr_type => "string") if f[:name].to_s.index("__")
-        f.merge!(:condition => "greater_than") if [:datetime, :integer, :date].include?(f[:attr_type].to_sym)
-        f.merge!(:condition => "equals") if f["attr_type"] == "boolean"
+        f.merge!(:condition => "greater_than") if [:datetime, :integer, :date].include?(f[:attr_type])
+        f.merge!(:condition => "equals") if f[:attr_type] == :boolean
       end
 
       res

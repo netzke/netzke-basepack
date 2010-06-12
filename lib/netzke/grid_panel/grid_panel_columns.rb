@@ -216,6 +216,10 @@ module Netzke
             c[:editor] = assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
           end
         end
+        
+        def default_fields_for_forms
+          columns.map{ |c| {:name => c[:name]} }
+        end
       
       def self.included(receiver)
         receiver.extend         ClassMethods

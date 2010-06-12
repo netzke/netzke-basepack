@@ -304,6 +304,7 @@ module Netzke
           :item => {
             :class_name => "FormPanel",
             :model => config[:model],
+            :fields => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
             :strong_default_attrs => config[:strong_default_attrs],
             :ext_config => {
@@ -325,6 +326,7 @@ module Netzke
           :item => {
             :class_name => "FormPanel",
             :model => config[:model],
+            :fields => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
             :ext_config => {
               :bbar => false,
@@ -333,17 +335,6 @@ module Netzke
             }
           },
         },
-        
-        # :edit_form => {
-        #   :class_name => "FormPanel",
-        #   :model => data_class.name,
-        #   :persistent_config => config[:persistent_config],
-        #   :ext_config => {
-        #     :bbar => false,
-        #     :header => false,
-        #     :mode => ext_config[:mode]
-        #   }
-        # },
         
         :multi_edit_form => {
           :class_name => "GridPanel::RecordFormWindow",
@@ -354,6 +345,7 @@ module Netzke
           :item => {
             :class_name => "GridPanel::MultiEditForm",
             :model => config[:model],
+            :fields => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
             :ext_config => {
               :bbar => false,
@@ -368,6 +360,7 @@ module Netzke
       res.merge!({
         :search_panel => {
           :class_name => "SearchPanel",
+          :fields => default_fields_for_forms,
           :search_class_name => config[:model],
           :persistent_config => config[:persistent_config],
           :ext_config => {
