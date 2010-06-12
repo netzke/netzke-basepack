@@ -28,10 +28,16 @@ module Netzke
           edit_in_form_events = <<-END_OF_JAVASCRIPT if config[:edit_in_form_available]
             if (this.enableEditInForm) {
               this.getSelectionModel().on('selectionchange', function(selModel){
-                // Disable "edit in form" button if new record is present in selection
-                var disabled = !selModel.each(function(r){
-                  if (r.isNew) { return false; }
-                });
+                var disabled;
+                if (!selModel.hasSelection()) {
+                  disabled = true;
+                } else {
+                  // Disable "edit in form" button if new record is present in selection
+                  disabled = !selModel.each(function(r){
+                    if (r.isNew) { return false; }
+                  });
+                };
+
                 this.actions.editInForm.setDisabled(disabled);
               }, this);
             }
@@ -587,6 +593,7 @@ module Netzke
                 }
               
                 this.getView().refresh();
+                this.getSelectionModel().fireEvent('selectionchange', this.getSelectionModel());
               }
             END_OF_JAVASCRIPT
           
