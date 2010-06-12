@@ -38,42 +38,6 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
 
 Ext.reg('combobox', Ext.netzke.ComboBox);
 
-/* 
-  Accepts a string which either contains:
-  Ext.util.Format method (e.g. 'usMoney'), 
-  or 
-  JSON-encoded array, where the first element is Ext.util.Format method (e.g. 'ellipsis'), 
-  and the rest of the elements - configuration parameters that should be passed to this method besids
-  the value to be rendered (e.g. '2');
-  
-  Example of the latter: ["defaultValue", "MyDefaultValue"]
-*/
-Ext.netzke.normalizedRenderer = function(config) {
-  res = null;
-  
-  if (config) {
-    try{
-      config = Ext.decode(config); // it's an array consisting of renderer's name *and* eventual options
-    } catch(e) {
-      // leave config as is - it's supposed to be the renderer's name
-    }
-
-    if (Ext.isArray(config)) {
-      res = function(v){
-        var formatMethod = config[0];
-        var valueAndOptions = config.slice(1);
-        valueAndOptions.unshift(v);
-        // call the Format function with the argument *and* configuration
-        return Ext.util.Format[formatMethod] ? Ext.util.Format[formatMethod].apply(this, valueAndOptions) : "Unknown renderer";
-      }
-    } else {
-      res = Ext.util.Format[config] ? Ext.util.Format[config] : function(v){return "Unknown renderer"}
-    }
-  }
-    
-  return res;
-};
-
 Ext.util.Format.mask = function(v){
   return "********";
 };

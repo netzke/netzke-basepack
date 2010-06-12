@@ -111,23 +111,26 @@ module Netzke
                     c.editor = null;
                   }
 
+                  // Normalize the renderer
+                  this.normalizeRenderer(c);
+                  
                   // set the renderer
-                  if (c.renderer && !Ext.isArray(c.renderer) && c.renderer.match(/^\\s*function\\s*\\(/)) {
-                    // if the renderer is an inline function - eval it (double escaping because we are inside of the Ruby string here...)
-                    eval("c.renderer = " + c.renderer + ";");
-                  } else if (Ext.isFunction(this[c.renderer])) {
-                    // whether the renderer is defined in this.scope
-                    c.renderer = this[c.renderer].createDelegate(this);
-                  } else {
-                    // othrewise it's a string representing the name of the renderer or an json-encoded array,
-                    // where the first parameter is the renderer's name, and the rest - parameters that should be
-                    // passed to the renderer at the moment of calling
-                    var renderer = Ext.netzke.normalizedRenderer(c.renderer);
-                    if (renderer != null) {
-                      c.renderer = renderer
-                    };
-                  }
-                
+//                  if (c.renderer && !Ext.isArray(c.renderer) && c.renderer.match(/^\\s*function\\s*\\(/)) {
+//                    // if the renderer is an inline function - eval it (double escaping because we are inside of the Ruby string here...)
+//                    eval("c.renderer = " + c.renderer + ";");
+//                  } else if (Ext.isFunction(this[c.renderer])) {
+//                    // whether the renderer is defined in this.scope
+//                    c.renderer = this[c.renderer].createDelegate(this);
+//                  } else {
+//                    // othrewise it's a string representing the name of the renderer or a json-encoded array,
+//                    // where the first parameter is the renderer's name, and the rest - parameters that should be
+//                    // passed to the renderer at the moment of calling
+//                    var renderer = Ext.netzke.normalizedRenderer(c.renderer);
+//                    if (renderer != null) {
+//                      c.renderer = renderer
+//                    };
+//                  }
+//                
                   // add to the list
                   cmConfig.push(c);
                 }
@@ -600,6 +603,48 @@ module Netzke
                 this.getSelectionModel().resumeEvents();
               }
             END_OF_JAVASCRIPT
+            
+            # Normalizes the renderer for a column.
+            # Renderer may be:
+            # 1) a string that contains the name of the function to be used as renderer.
+            # 2) an array, where the first element is the function name, and the rest - the arguments
+            # that will be passed to that function along with the value to be rendered.
+            # The function is searched in the following objects: 1) Ext.util.Format, 2) this.
+            # If not found, it is simply evaluated. Handy, when as renderer we receive an inline JS function,
+            # or reference to a function in some other scope.
+            # So, these will work:
+            # * "uppercase"
+            # * ["ellipsis", 10]
+            # * ["substr", 3, 5]
+            # * "myRenderer" (if this.myRenderer is a function)
+            # * ["Some.scope.Format.customRenderer", 10, 20, 30] (if Some.scope.Format.customRenderer is a function)
+            # * "function(v){ return 'Value: ' + v; }"
+            :normalize_renderer => <<-END_OF_JAVASCRIPT.l,
+              function(c) {
+                if (!c.renderer) return;
+
+                var name, args = [];
+
+                if ('string' === typeof c.renderer) {
+                  name = c.renderer;
+                } else {
+                  name = c.renderer[0];
+                  args = c.renderer.slice(1);
+                }
+                
+                // First check whether Ext.util.Format has it
+                if (Ext.isFunction(Ext.util.Format[name])) {
+                   c.renderer = Ext.util.Format[name].createDelegate(this, args, 1);
+                } else if (Ext.isFunction(this[name])) {
+                  // ... then if our own class has it
+                  c.renderer = this[name].createDelegate(this, args, 1);
+                } else {
+                  // ... and, as last resort, evaluate it (allows passing inline javascript function as renderer)
+                  eval("c.renderer = " + c.renderer + ";");
+                }
+              }
+            END_OF_JAVASCRIPT
+            
           
             # :reorder_columns => <<-END_OF_JAVASCRIPT.l,
             #   function(columns){

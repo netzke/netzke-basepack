@@ -1,5 +1,6 @@
 = v0.5.10 - EDGE
 * Impr: Checkbox replaced with tristate checkbox in multi-edit form in GridPanel.
+* Impr: column renderers reworked, allowing for more flexibility and cleanness.
 
 = v0.5.9 - 2010-06-11
 * !!!: after updating to this version, run script/generate netzke_basepack
