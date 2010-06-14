@@ -1,7 +1,7 @@
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
-    gemspec.version = "0.5.9"
+    gemspec.version = "0.5.10"
     gemspec.name = "netzke-basepack"
     gemspec.summary = "Pre-built Rails + ExtJS widgets for your RIA"
     gemspec.description = "A set of full-featured extendible Netzke widgets (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
@@ -9,7 +9,7 @@ begin
     gemspec.homepage = "http://github.com/skozlov/netzke-basepack"
     gemspec.rubyforge_project = "netzke-basepack"
     gemspec.authors = ["Sergei Kozlov"]
-    gemspec.add_dependency("netzke-core", ">=0.5.2")
+    gemspec.add_dependency("netzke-core", ">=0.5.3")
     gemspec.add_dependency("searchlogic", ">=2.0.0")
     gemspec.add_dependency("will_paginate", ">=2.0.0")
     gemspec.add_dependency("acts_as_list", ">=0.1.2")
@@ -19,7 +19,8 @@ begin
 
            Thanks for installing Netzke Basepack!
            
-  Run "./script/generate netzke_basepack" to finish the installation.
+  Don't forget to run "./script/generate netzke_basepack" for each 
+  Rails app that will be using this gem.
 
   Netzke home page:     http://netzke.org
   Netzke Google Groups: http://groups.google.com/group/netzke
