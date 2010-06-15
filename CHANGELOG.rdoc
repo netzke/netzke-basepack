@@ -1,3 +1,6 @@
+= v0.5.11 - EDGE
+* Fix: In some circumstances Netzke::ActiveRecord modules were not loading.
+
 = v0.5.10 - 2010-06-14
 * Impr: Checkbox replaced with tri-state checkbox in multi-edit form in GridPanel.
 * Impr: Column renderers reworked, allowing for more flexibility and cleanness.
