@@ -310,7 +310,7 @@ module Netzke
                   decimal :'Numeric',
                   datetime:'Date',
                   date    :'Date',
-                  string  :'String',
+                  string  :'String'
                 };
                 map['boolean'] = "Boolean"; // "boolean" is a JS reserved word
                 return map[attrType] || 'String';
