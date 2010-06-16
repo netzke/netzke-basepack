@@ -207,11 +207,11 @@ module Netzke
                   app: this,
                   handler: function() {
                     this.ownerCt.ownerCt.getForm().submit({
-                      url: this.app.buildApiUrl("submit_login"),
+                      url: this.app.buildApiUrl("submit_login")
                     });
                   }
                 }]
-              }],
+              }]
             });
             
             w.show();
