@@ -1,3 +1,6 @@
+= v0.5.12 - 2010-06-21
+* Fix: when used with Bundler, was crashing with the "uninitialized constant" exception
+
 = v0.5.11 - 2010-06-20
 * Fix: Partial fix for IE's (the rest to be fixed in Ext).
 * Fix: In some circumstances Netzke::ActiveRecord modules were not loading.
