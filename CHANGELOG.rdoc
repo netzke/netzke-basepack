@@ -1,3 +1,6 @@
+= v0.5.13 - EDGE
+* Fix: when a TabPanel was used as a standalone widget, the first tab was rendered empty.
+
 = v0.5.12 - 2010-06-21
 * Fix: when used with Bundler, was crashing with the "uninitialized constant" exception
 
