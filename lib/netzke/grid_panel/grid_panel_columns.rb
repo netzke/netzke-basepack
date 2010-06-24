@@ -217,6 +217,11 @@ module Netzke
           end
         end
         
+        def assoc_and_assoc_method_for_column(c)
+          assoc_name, !c[:name].index('__')
+          
+        end
+        
         def default_fields_for_forms
           columns.map{ |c| {:name => c[:name]} }
         end

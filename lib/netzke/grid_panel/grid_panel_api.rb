@@ -79,8 +79,21 @@ module Netzke
       end
 
       # Returns choices for a column
-      def get_combobox_options(params)
+      def get_combobox_options_DELETME(params)
         column = params[:column]
+        query = params[:query]
+        {:data => data_class.options_for(column, query).map{|s| [s]}}
+        # {:data => data_class.options_for(column, query).map{|s| [s]}}
+      end
+
+      # Returns choices for a column
+      def get_combobox_options(params)
+        column = columns.detect{ |c| c[:name] == params[:column] }
+        scopes = (column[:editor] || {})[:scopes]
+        
+        assoc, assoc_method = assoc_and_assoc_method_for_column(column)
+        
+        
         query = params[:query]
         {:data => data_class.options_for(column, query).map{|s| [s]}}
         # {:data => data_class.options_for(column, query).map{|s| [s]}}
