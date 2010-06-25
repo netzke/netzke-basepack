@@ -75,7 +75,6 @@ module Netzke
         # Override this method if you want to provide a fix set of columns in your subclass.
         def default_columns
           @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
-          # @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
         end
         
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
@@ -213,13 +212,14 @@ module Netzke
             assoc_method_type = assoc_column.try(:type)
             
             # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
-            c[:editor] = assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
+            c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
           end
         end
         
         def assoc_and_assoc_method_for_column(c)
-          assoc_name, !c[:name].index('__')
-          
+          assoc_name, assoc_method = c[:name].split('__')
+          assoc = data_class.reflect_on_association(assoc_name.to_sym) if assoc_method
+          [assoc, assoc_method]
         end
         
         def default_fields_for_forms

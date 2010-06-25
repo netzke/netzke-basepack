@@ -56,7 +56,7 @@ module Netzke::ActiveRecord::Attributes
           in_columns_hash = columns_hash[attr_name] && {:name => attr_name, :attr_type => columns_hash[attr_name].type, :default_value => columns_hash[attr_name].default} || {} # {:virtual => true} # if nothing found in columns, mark it as "virtual" or not?
           if in_columns_hash.empty?
             # If not among the model columns, it's either virtual, or an association
-            merged = association_attr?(attr_name) ? {:name => attr_name} : declared.merge(:virtual => true)
+            merged = association_attr?(attr_name) ? declared.merge!(:name => attr_name) : declared.merge(:virtual => true)
           else
             # .. otherwise merge with what's declared
             merged = in_columns_hash.merge(declared)
