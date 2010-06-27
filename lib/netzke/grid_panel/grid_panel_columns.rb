@@ -216,15 +216,29 @@ module Netzke
           end
         end
         
-        def assoc_and_assoc_method_for_column(c)
-          assoc_name, assoc_method = c[:name].split('__')
-          assoc = data_class.reflect_on_association(assoc_name.to_sym) if assoc_method
-          [assoc, assoc_method]
+        # Default fields that will be displayed in the Add/Edit/Search forms
+        def default_fields_for_forms
+          form_klass = "Netzke::ModelExtensions::#{config[:model]}ForFormPanel".constantize rescue nil
+          form_klass ||= original_data_class
+          
+          # Select only those fields that are known to the form_klass
+          selected_columns = columns.select do |c|
+            form_klass.column_names.include?(c[:name]) ||
+            form_klass.instance_methods.include?("#{c[:name]}=") ||
+            association_attr?(c[:name])
+          end
+          
+          selected_columns.map do |c|
+            field_config = {:name => c[:name]}
+            
+            # scopes for combobox options
+            field_config[:scopes] = c[:editor].is_a?(Hash) && c[:editor][:scopes]
+            
+            field_config
+          end
+          
         end
         
-        def default_fields_for_forms
-          columns.map{ |c| {:name => c[:name]} }
-        end
       
       def self.included(receiver)
         receiver.extend         ClassMethods

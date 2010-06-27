@@ -65,15 +65,21 @@ module Netzke
       apply_helpers
     end
     
+    # Model class
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
       @data_class ||= begin
         klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_widget_class_name}".constantize rescue nil
-        klass || begin
-          ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
-          model_name = config[:model] || config[:data_class_name]
-          model_name && model_name.constantize
-        end
+        klass || original_data_class
+      end
+    end
+    
+    # Model class before model extensions are taken into account
+    def original_data_class
+      @original_data_class ||= begin
+        ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
+        model_name = config[:model] || config[:data_class_name]
+        model_name && model_name.constantize
       end
     end
     

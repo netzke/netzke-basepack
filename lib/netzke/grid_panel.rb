@@ -97,7 +97,6 @@ module Netzke
     
     # Code shared between GridPanel, FormPanel, and other widgets that serve as interface to database tables
     include Netzke::DataAccessor
-    
 
     def self.enforce_config_consistency
       config[:default_config][:ext_config][:enable_edit_in_form]    &&= config[:edit_in_form_available]
@@ -173,53 +172,42 @@ module Netzke
     # Edit in form
     api :create_new_record if config[:edit_in_form_available]
 
+    # Model class
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
       @data_class ||= begin
         klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_widget_class_name}".constantize rescue nil
-        klass || begin
-          ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
-          model_name = config[:model] || config[:data_class_name]
-          model_name.nil? ? raise(ArgumentError, "No model specified for widget #{global_id}") : model_name.constantize
-        end
+        klass || original_data_class
       end
     end
     
+    # Model class before model extensions are taken into account
+    def original_data_class
+      @original_data_class ||= begin
+        ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
+        model_name = config[:model] || config[:data_class_name]
+        model_name.nil? ? raise(ArgumentError, "No model specified for widget #{global_id}") : model_name.constantize
+      end
+    end
+
     def initialize(config = {}, parent = nil)
       super
-
       apply_helpers
     end
 
-    # def data_class
-    #   klass = "Netzke::ModelExtensions::#{data_class.name}#{short_widget_class_name}Ext".constantize rescue nil
-    #   klass || data_class
-    # end
-    
     # Fields to be displayed in the "General" tab of the configuration panel
     def self.property_fields
-      res = [
+      [
         {:name => :ext_config__title,               :type => :string},
         {:name => :ext_config__header,              :type => :boolean, :default => true},
         {:name => :ext_config__enable_context_menu, :type => :boolean, :default => true},
-        # {:name => :ext_config__context_menu,        :type => :json},
         {:name => :ext_config__enable_pagination,   :type => :boolean, :default => true},
         {:name => :ext_config__rows_per_page,       :type => :integer},
-        # {:name => :ext_config__bbar,                :type => :json},
         {:name => :ext_config__prohibit_create,     :type => :boolean},
         {:name => :ext_config__prohibit_update,     :type => :boolean},
         {:name => :ext_config__prohibit_delete,     :type => :boolean},
         {:name => :ext_config__prohibit_read,       :type => :boolean}
       ]
-      
-      # res << {:name => :ext_config__enable_extended_search, :type => :boolean} if config[:extended_search_available]
-      # res << {:name => :ext_config__enable_edit_in_form, :type => :boolean} if config[:edit_in_form_available]
-      
-      # TODO: a buggy thing
-      # res << {:name => :layout__columns,                 :type => :json}
-      
-      res
-      
     end
     
     def default_config

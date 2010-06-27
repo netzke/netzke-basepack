@@ -89,33 +89,10 @@ module Netzke
       # Returns choices for a column
       def get_combobox_options(params)
         column = columns.detect{ |c| c[:name] == params[:column] }.try(:to_options!)
-        scopes = column && (column[:editor].is_a?(Hash) && column[:editor] || {}).to_options[:scopes]
+        scopes = (column[:editor].is_a?(Hash) && column[:editor] || {}).to_options[:scopes]
         query = params[:query]
-        assoc, assoc_method = assoc_and_assoc_method_for_column(column)
         
-        options = if assoc
-          search = assoc.klass.searchlogic
-        
-          # apply scopes
-          scopes && scopes.each do |s|
-            if s.is_a?(Array)
-              scope_name, *args = s
-              search.send(scope_name, *args)
-            else
-              search.send(s, true)
-            end
-          end
-          
-          # apply query
-          search.send("#{assoc_method}_like", "#{query}%") if query
-          
-          search.all.map{ |r| [r.send(assoc_method)] }
-        else
-          # options for a non-association column
-          data_class.options_for(column[:name], query).map{|s| [s]}
-        end
-        
-        {:data => options}
+        {:data => combobox_options_for_column(column, :query => query, :scopes => scopes)}
       end
 
       def move_rows(params)
