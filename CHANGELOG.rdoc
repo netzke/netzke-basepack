@@ -1,6 +1,6 @@
 = v0.5.13 - EDGE
 * Fix: when a TabPanel was used as a standalone widget, the first tab was rendered empty.
-* Impr: scopes can now be specified for an association combobox in GridPanels
+* Impr: scopes can now be specified for an association combobox in Grid/FormPanels
 * Fix: when a TabPanel was used as a standalone widget, the first tab was rendered empty.
 
 = v0.5.12 - 2010-06-21

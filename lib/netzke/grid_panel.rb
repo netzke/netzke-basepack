@@ -286,7 +286,7 @@ module Netzke
         :add_form => {
           :class_name => "GridPanel::RecordFormWindow",
           :ext_config => {
-            :title => "Add #{data_class.name.humanize}",
+            :title => "Add #{data_class.table_name.singularize.humanize}",
             :button_align => "right"
           },
           :item => {
@@ -308,7 +308,7 @@ module Netzke
         :edit_form => {
           :class_name => "GridPanel::RecordFormWindow",
           :ext_config => {
-            :title => "Edit #{data_class.name.humanize}",
+            :title => "Edit #{data_class.table_name.singularize.humanize}",
             :button_align => "right"
           },
           :item => {
@@ -327,7 +327,7 @@ module Netzke
         :multi_edit_form => {
           :class_name => "GridPanel::RecordFormWindow",
           :ext_config => {
-            :title => "Edit #{data_class.name.humanize}",
+            :title => "Edit #{data_class.table_name.humanize}",
             :button_align => "right"
           },
           :item => {
