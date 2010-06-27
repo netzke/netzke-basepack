@@ -1,7 +1,10 @@
 = v0.5.13 - EDGE
-* Fix: when a TabPanel was used as a standalone widget, the first tab was rendered empty.
-* Impr: scopes can now be specified for an association combobox in Grid/FormPanels
-* Fix: when a TabPanel was used as a standalone widget, the first tab was rendered empty.
+* bug fix
+  * when a TabPanel was used as a standalone widget, the first tab was rendered empty
+  
+* enhancements
+  * scopes can now be specified for an association combobox in Grid/FormPanels
+  * GridPanel: you can now configure add/edit/multi_edit/search panels (e.g. to override the fields) and corresponding windows (e.g. to override the title)
 
 = v0.5.12 - 2010-06-21
 * Fix: when used with Bundler, was crashing with the "uninitialized constant" exception

@@ -44,7 +44,7 @@ module Netzke
   # * <tt>:strong_default_attrs</tt> - a hash of attributes to be merged atop of every created/updated record.
   # * <tt>:scopes</tt> - an array of named scopes to filter grid data, e.g.:
   #     
-  #     [["user_id_not", 100], ["name_like", "Peter"]]
+  #     [["user_id_not", 100], ["name_like", "Peter"], :recent]
   # 
   # In the <tt>:ext_config</tt> hash (see Netzke::Base) the following GridPanel specific options are available:
   # 
@@ -57,10 +57,12 @@ module Netzke
   # * <tt>:rows_per_page</tt> - number of rows per page (ignored when <tt>:enable_pagination</tt> is set to <tt>false</tt>)
   # * <tt>:load_inline_data</tt> - load initial data into the grid right after its instantiation (saves a request to server); defaults to <tt>true</tt>
   # * <tt>:mode</tt> - when set to <tt>:config</tt>, GridPanel loads in configuration mode
+  # * <tt>:add/edit/multi_edit/search_form_config</tt> - additional configuration for add/edit/multi_edit/search form panel
+  # * <tt>:add/edit/multi_edit_form_window_config</tt> - additional configuration for the window that wrapps up add/edit/multi_edit form panel
   # 
   # Additionally supports Netzke::Base config options.
   # 
-  # == Column
+  # == Columns
   # Here's how the GridPanel decides which columns in which sequence and with which configuration to display.
   # First, the column configs are aquired from this GridPanel's persistent storage, as an array of hashes, each 
   # representing a column configuration, such as:
@@ -75,7 +77,7 @@ module Netzke
   # ... which in its turn overrides the defaults provided by persistent storage managed by the AttributesConfigurator
   # that provides *model-level* (as opposed to a widget-level) configuration of a database model 
   # (which is used by both grids and forms in Netzke).
-  # And lastly, the defaults for AttributesConfigurator are calculated from the database model itself, powered by Netzke.
+  # And lastly, the defaults for AttributesConfigurator are calculated from the database model itself (extended by Netzke).
   # For example, in the model you can specify virtual attributes and their types that will be picked up by Netzke, the default
   # order of columns, or excluded columns. For details see <tt>Netzke::ActiveRecord::Attributes</tt>.
   # 
@@ -302,8 +304,8 @@ module Netzke
               :mode => ext_config[:mode]
             },
             :record => data_class.new
-          }
-        },
+          }.deep_merge(config[:add_form_config] || {})
+        }.deep_merge(config[:add_form_window_config] || {}),
         
         :edit_form => {
           :class_name => "GridPanel::RecordFormWindow",
@@ -321,8 +323,8 @@ module Netzke
               :header => false,
               :mode => ext_config[:mode]
             }
-          },
-        },
+          }.deep_merge(config[:edit_form_config] || {})
+        }.deep_merge(config[:edit_form_window_config] || {}),
         
         :multi_edit_form => {
           :class_name => "GridPanel::RecordFormWindow",
@@ -340,8 +342,8 @@ module Netzke
               :header => false,
               :mode => ext_config[:mode]
             }
-          }
-        }
+          }.deep_merge(config[:multi_edit_form_config] || {})
+        }.deep_merge(config[:multi_edit_form_window_config] || {})
       }) if ext_config[:enable_edit_in_form]
       
       # Extended search
@@ -357,7 +359,7 @@ module Netzke
             :mode => ext_config[:mode]
           },
         }
-      }) if ext_config[:enable_extended_search]
+      }.deep_merge(config[:search_form_config] || {})) if ext_config[:enable_extended_search]
       
       res
     end
