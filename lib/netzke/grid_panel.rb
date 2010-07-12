@@ -358,8 +358,8 @@ module Netzke
             :bbar => false, 
             :mode => ext_config[:mode]
           },
-        }
-      }.deep_merge(config[:search_form_config] || {})) if ext_config[:enable_extended_search]
+        }.deep_merge(config[:search_form_config] || {})
+      }) if ext_config[:enable_extended_search]
       
       res
     end
