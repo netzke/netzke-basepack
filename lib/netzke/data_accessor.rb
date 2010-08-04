@@ -14,32 +14,37 @@ module Netzke
     
     # Returns options for comboboxes in grids/forms
     def combobox_options_for_column(column, method_options = {})
-      assoc, assoc_method = assoc_and_assoc_method_for_column(column)
+      # First, check if we have options for this column defined in persistent storage
+      options = column[:combobox_options] && column[:combobox_options].split("\n")
+      if options
+        (method_options[:query].nil? ? options : options.select{ |o| o.index(/^#{method_options[:query]}/) }).map{ |el| [el] }
+      else      
+        assoc, assoc_method = assoc_and_assoc_method_for_column(column)
       
-      options = if assoc
-        # Options for an asssociation attribute
+        if assoc
+          # Options for an asssociation attribute
         
-        search = assoc.klass.searchlogic
+          search = assoc.klass.searchlogic
       
-        # apply scopes
-        method_options[:scopes] && method_options[:scopes].each do |s|
-          if s.is_a?(Array)
-            scope_name, *args = s
-            search.send(scope_name, *args)
-          else
-            search.send(s, true)
+          # apply scopes
+          method_options[:scopes] && method_options[:scopes].each do |s|
+            if s.is_a?(Array)
+              scope_name, *args = s
+              search.send(scope_name, *args)
+            else
+              search.send(s, true)
+            end
           end
+        
+          # apply query
+          search.send("#{assoc_method}_like", "#{method_options[:query]}%") if method_options[:query]
+        
+          search.all.map{ |r| [r.send(assoc_method)] }
+        else
+          # Options for a non-association attribute
+          data_class.options_for(column[:name], method_options[:query]).map{|s| [s]}
         end
-        
-        # apply query
-        search.send("#{assoc_method}_like", "#{method_options[:query]}%") if method_options[:query]
-        
-        search.all.map{ |r| [r.send(assoc_method)] }
-      else
-        # Options for a non-association attribute
-        data_class.options_for(column[:name], query).map{|s| [s]}
       end
-      
     end
     
     # [:col1, "col2", {:name => :col3}] =>

@@ -65,7 +65,6 @@ module Netzke
         query = params[:query]
 
         {:data => combobox_options_for_column(column, :query => query, :scopes => scopes)}
-        # {:data => data_class.options_for(column, query).map{|s| [s]}}
       end
   
       def configuration_panel__fields__get_combobox_options(params)

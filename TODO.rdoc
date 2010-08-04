@@ -1,6 +1,10 @@
 == Priority
 * Add icons to buttons to actions (toolbars/menus)
 * On grid refresh, reset the dirty fields, so that the "Apply" button doesn't do anything
+* GridPanel's read_only vs editable (doesn't work now) options
+* Solve the confusion about columns being stored in the persistent config
+* Inclusion of css in a stand-alone widget
+* Rename the "l" method to something else
 
 == Foolproof
 * Should not be possible delete the "ID" field from grids/forms

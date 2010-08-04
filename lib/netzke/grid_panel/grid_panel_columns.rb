@@ -120,7 +120,7 @@ module Netzke
       
         # Stores modified columns in persistent storage
         def save_columns!
-          NetzkeFieldList.update_list_for_current_authority(global_id, columns(false), data_class.name)
+          NetzkeFieldList.update_list_for_current_authority(global_id, columns(false), original_data_class.name)
         end
       
         def load_columns

@@ -1,4 +1,7 @@
 = v0.5.13 - EDGE
+* regression
+  * combobox options configuration again has effect
+  
 * bug fix
   * when a TabPanel was used as a standalone widget, the first tab was rendered empty
   
