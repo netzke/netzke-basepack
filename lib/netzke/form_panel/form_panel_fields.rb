@@ -133,7 +133,7 @@ module Netzke
 
         # Receives 2 arrays of columns. Merges the missing config from the +source+ into +dest+, matching columns by name
         def reverse_merge_equally_named_fields(dest, source)
-          dest.each{ |dc| dc.reverse_merge!(source.detect{ |sc| sc[:name] == dc[:name] }) }
+          dest.each{ |dc| dc.reverse_merge!(source.detect{ |sc| sc[:name] == dc[:name] } || {}) }
         end
         
       
