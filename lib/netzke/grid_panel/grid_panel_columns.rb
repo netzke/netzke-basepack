@@ -20,7 +20,7 @@ module Netzke
             {:name => "default_value", :attr_type => :string, :width => 200},
 
             # Options for drop-downs
-            {:name => "combobox_options",       :attr_type => :string, :editor => "textarea", :width => 200},
+            {:name => "combobox_options",       :attr_type => :string, :editor => :textarea, :width => 200},
 
             # Whether the column is editable in the grid.
             {:name => "read_only",     :attr_type => :boolean, :header => "R/O", :tooltip => "Read-only"},
@@ -44,73 +44,65 @@ module Netzke
 
             # Whether the column should be sortable (why change it? normally it's hardcoded)
             {:name => "sortable",      :attr_type => :boolean, :default_value => true, :hidden => true},
-
-            #
-            # And finally some meta columns that we probably never want to see in the GUI
-            #
-            {:name => "editor",        :attr_type => :string, :meta => true}
           ]
         end
         
       end
       
-      module InstanceMethods
-        
-        # Normalized columns for the grid, e.g.:
-        # [{:name => :id, :hidden => true, ...}, {:name => :name, :editable => false, ...}, ...]
-        def columns(only_included = true)
-          @columns ||= begin
-            if cols = load_columns
-              filter_out_excluded_columns(cols) if only_included
-              cols
-            else
-              initial_columns(only_included)
-            end
-          end
-        end
-
-        # Columns that we fall back to when neither persistent columns, nor configured columns are present.
-        # If there's a model-level field configuration, it's being used.
-        # Otherwise the defaults straight from the ActiveRecord model ("netzke_attributes").
-        # Override this method if you want to provide a fix set of columns in your subclass.
-        def default_columns
-          @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
-        end
-        
-        # Columns that represent a smart merge of default_columns and columns passed during the configuration.
-        def initial_columns(only_included = true)
-          # Normalize here, as from the config we can get symbols (names) instead of hashes
-          columns_from_config = config[:columns] && normalize_attr_config(config[:columns])
-
-          if columns_from_config
-            # reverse-merge each column hash from config with each column hash from exposed_attributes (columns from config have higher priority)
-            for c in columns_from_config
-              corresponding_default_column = default_columns.find{ |k| k[:name] == c[:name] }
-              c.reverse_merge!(corresponding_default_column) if corresponding_default_column
-            end
-            columns_for_create = columns_from_config
+      # Normalized columns for the grid, e.g.:
+      # [{:name => :id, :hidden => true, ...}, {:name => :name, :editable => false, ...}, ...]
+      def columns(only_included = true)
+        @columns ||= begin
+          if cols = load_columns
+            filter_out_excluded_columns(cols) if only_included
+            reverse_merge_equally_named_columns(cols, initial_columns)
+            cols
           else
-            # we didn't have columns configured in widget's config, so, use the columns from the data class
-            columns_for_create = default_columns
+            initial_columns(only_included)
           end
-          
-          filter_out_excluded_columns(columns_for_create) if only_included
-          
-          # Make the column config complete with the defaults
-          columns_for_create.each do |c|
-            detect_association(c)
-            set_default_header(c)
-            set_default_editor(c)
-            set_default_width(c)
-            set_default_hidden(c)
-            set_default_editable(c)
-            set_default_sortable(c)
-            set_default_filterable(c)
-          end
+        end
+      end
+      
+      # Columns that we fall back to when neither persistent columns, nor configured columns are present.
+      # If there's a model-level field configuration, it's being used.
+      # Otherwise the defaults straight from the ActiveRecord model ("netzke_attributes").
+      # Override this method if you want to provide a fix set of columns in your subclass.
+      def default_columns
+        @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
+      end
+      
+      # Columns that represent a smart merge of default_columns and columns passed during the configuration.
+      def initial_columns(only_included = true)
+        # Normalize here, as from the config we can get symbols (names) instead of hashes
+        columns_from_config = config[:columns] && normalize_attr_config(config[:columns])
 
-          columns_for_create
+        if columns_from_config
+          # reverse-merge each column hash from config with each column hash from exposed_attributes (columns from config have higher priority)
+          for c in columns_from_config
+            corresponding_default_column = default_columns.find{ |k| k[:name] == c[:name] }
+            c.reverse_merge!(corresponding_default_column) if corresponding_default_column
+          end
+          columns_for_create = columns_from_config
+        else
+          # we didn't have columns configured in widget's config, so, use the columns from the data class
+          columns_for_create = default_columns
         end
         
+        filter_out_excluded_columns(columns_for_create) if only_included
+        
+        # Make the column config complete with the defaults
+        columns_for_create.each do |c|
+          detect_association(c)
+          set_default_header(c)
+          set_default_editor(c)
+          set_default_width(c)
+          set_default_hidden(c)
+          set_default_editable(c)
+          set_default_sortable(c)
+          set_default_filterable(c)
+        end
+
+        columns_for_create
       end
       
       private
@@ -142,6 +134,7 @@ module Netzke
         
         def set_default_editor(c)
           c[:editor] ||= editor_for_attr_type(c[:attr_type])
+          c[:editor] = {:xtype => c[:editor]} if c[:editor].is_a?(Symbol)
         end
         
         def set_default_width(c)
@@ -159,11 +152,11 @@ module Netzke
         end
         
         def set_default_sortable(c)
-          c[:sortable] = !c[:virtual]
+          c[:sortable] = !c[:virtual] if c[:sortable].nil?
         end
         
         def set_default_filterable(c)
-          c[:filterable] = !c[:virtual]
+          c[:filterable] = !c[:virtual] if c[:filterable].nil?
         end
         
         # Returns editor's xtype for a column type
@@ -236,13 +229,15 @@ module Netzke
             
             field_config
           end
-          
         end
         
-      
+        # Receives 2 arrays of columns. Merges the missing config from the +source+ into +dest+, matching columns by name
+        def reverse_merge_equally_named_columns(dest, source)
+          dest.each{ |dc| dc.reverse_merge!(source.detect{ |sc| sc[:name] == dc[:name] }) }
+        end
+
       def self.included(receiver)
         receiver.extend         ClassMethods
-        receiver.send :include, InstanceMethods
       end
     end
   end
