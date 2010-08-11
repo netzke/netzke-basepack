@@ -1,3 +1,7 @@
+= v0.5.14 - EDGE
+* bug fix
+  * fields configurator wouldn't open in some cases
+
 = v0.5.13 - 2010-08-11
 * regression
   * combobox options configuration again has effect
