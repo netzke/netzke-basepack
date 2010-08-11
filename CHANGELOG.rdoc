@@ -4,6 +4,7 @@
   
 * bug fix
   * when a TabPanel was used as a standalone widget, the first tab was rendered empty
+  * Grid/FormPanel: dynamically changing of columns doesn't erase those column settings that are not configurable via GUI, but which were specified in the code
   
 * enhancements
   * scopes can now be specified for an association combobox in Grid/FormPanels
