@@ -1,7 +1,7 @@
 begin
   require 'jeweler'
   Jeweler::Tasks.new do |gemspec|
-    gemspec.version = "0.5.12"
+    gemspec.version = "0.5.13"
     gemspec.name = "netzke-basepack"
     gemspec.summary = "Pre-built Rails + ExtJS widgets for your RIA"
     gemspec.description = "A set of full-featured extendible Netzke widgets (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
