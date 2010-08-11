@@ -9,7 +9,7 @@ begin
     gemspec.homepage = "http://github.com/skozlov/netzke-basepack"
     gemspec.rubyforge_project = "netzke-basepack"
     gemspec.authors = ["Sergei Kozlov"]
-    gemspec.add_dependency("netzke-core", ">=0.5.3")
+    gemspec.add_dependency("netzke-core", ">=0.5.4")
     gemspec.add_dependency("searchlogic", ">=2.0.0")
     gemspec.add_dependency("will_paginate", ">=2.0.0")
     gemspec.add_dependency("acts_as_list", ">=0.1.2")
