@@ -36,10 +36,14 @@ module Netzke
             end
           end
         
-          # apply query
-          search.send("#{assoc_method}_like", "#{method_options[:query]}%") if method_options[:query]
+          if assoc.klass.column_names.include?(assoc_method)
+            # apply query
+            search.send("#{assoc_method}_like", "#{method_options[:query]}%") if method_options[:query]
+            search.all.map{ |r| [r.send(assoc_method)] }
+          else
+            search.all.map{ |r| r.send(assoc_method) }.select{ |value| value =~ /^#{method_options[:query]}/  }.map{ |v| [v] }
+          end
         
-          search.all.map{ |r| [r.send(assoc_method)] }
         else
           # Options for a non-association attribute
           data_class.options_for(column[:name], method_options[:query]).map{|s| [s]}
