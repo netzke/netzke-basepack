@@ -18,8 +18,7 @@ module Netzke
       module ClassMethods
         
         def js_base_class 
-          'Netzke.pre.GridPanel'
-          # 'Ext.grid.EditorGridPanel'
+          'Netzke.pre.GridPanel' # see grid_panel_pre.js
         end
 
         # Ext.Component#initComponent, built up from pices (dependent on class-level configuration)
