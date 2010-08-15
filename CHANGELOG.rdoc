@@ -3,7 +3,7 @@
   * fields configurator wouldn't open in some cases
 
 * enhancements
-  * combobox options can now be searched also in virtual columns (not efficient though!)
+  * combobox options can now be searched ("type ahead") also in virtual columns (not efficient though!)
 
 = v0.5.13 - 2010-08-11
 * regression
