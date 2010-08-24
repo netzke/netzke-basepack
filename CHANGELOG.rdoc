@@ -1,6 +1,10 @@
 = v0.5.14 - EDGE
 * bug fix
   * fields configurator wouldn't open in some cases
+  * icons location was hardcoded in search panel (credits to @pschyska)
+  * quick fix for datetimes not being displayed in the preferred timezone
+* enhancements
+  * numberfield is default in grids also for columns of type float
 
 * enhancements
   * combobox options can now be searched ("type ahead") also in virtual columns (not efficient though!)
