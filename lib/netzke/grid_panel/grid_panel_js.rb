@@ -8,6 +8,8 @@ module Netzke
       # to the JavaScript side.
       def js_config
         super.merge(
+          :bbar => default_bbar,
+          :context_menu => default_context_menu,
           :clmns => columns, # columns
           :model => config[:model], # the model name
           :inline_data => (get_data if ext_config[:load_inline_data]), # inline data (loaded along with the grid panel)

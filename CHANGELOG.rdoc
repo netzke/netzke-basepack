@@ -3,6 +3,7 @@
   * fields configurator wouldn't open in some cases
   * icons location was hardcoded in search panel (credits to @pschyska)
   * quick fix for datetimes not being displayed in the preferred timezone
+  * ext_config options :enable_edit_in_form and :enable_advanced_search now do have effect
 * enhancements
   * numberfield is default in grids also for columns of type float
 

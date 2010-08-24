@@ -218,25 +218,16 @@ module Netzke
       ]
     end
     
-    def default_config
-      res = super
-      
-      res[:ext_config][:bbar] = default_bbar
-      res[:ext_config][:context_menu] = default_context_menu
-      
-      res
-    end
-    
     def default_bbar
       res = %w{ add edit apply del }
-      res << "-" << "add_in_form" << "edit_in_form" if self.class.config[:edit_in_form_available]
-      res << "-" << "search" if self.class.config[:extended_search_available]
+      res << "-" << "add_in_form" << "edit_in_form" if ext_config[:enable_edit_in_form]
+      res << "-" << "search" if ext_config[:enable_extended_search]
       res
     end
     
     def default_context_menu
       res = %w{ edit del }
-      res << "-" << "edit_in_form" if self.class.config[:edit_in_form_available]
+      res << "-" << "edit_in_form" if ext_config[:enable_edit_in_form]
       res
     end
     
