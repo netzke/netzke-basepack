@@ -8,7 +8,11 @@ module Netzke::ActiveRecord
       res = []
       for c in columns
         begin
-          res << send(c[:name]) unless c[:included] == false
+          next if c[:included] == false
+          v = send(c[:name])
+          # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
+          v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
+          res << v 
         rescue
           # So that we don't crash at a badly configured column
           res << "UNDEF"
