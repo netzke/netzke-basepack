@@ -4,6 +4,7 @@
 * GridPanel's read_only vs editable (doesn't work now) options
 * Inclusion of css in a stand-alone widget
 * Find a way to print the grid nicely (along with the column and rows that don't fit on the screen)
+* Auto-include the ID column into GridPanel by default
 
 == Foolproof
 * Should not be possible delete the "ID" field from grids/forms
