@@ -13,7 +13,7 @@ module Netzke::ActiveRecord
           # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
           v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
           res << v 
-        rescue
+        rescue NoMethodError
           # So that we don't crash at a badly configured column
           res << "UNDEF"
         end
