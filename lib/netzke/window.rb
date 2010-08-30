@@ -70,12 +70,13 @@ module Netzke
     # Processing API calls from client
     api :set_size_and_position
     def set_size_and_position(params)
-      update_persistent_ext_config(
-        :x => params[:x].to_i, 
-        :y => params[:y].to_i, 
-        :width => params[:w].to_i, 
-        :height => params[:h].to_i
-      )
+      Rails.logger.debug "!!! IMPLEMENT ME (set_size_and_position)\n"
+      # update_persistent_ext_config(
+      #   :x => params[:x].to_i, 
+      #   :y => params[:y].to_i, 
+      #   :width => params[:w].to_i, 
+      #   :height => params[:h].to_i
+      # )
       {}
     end
   end
