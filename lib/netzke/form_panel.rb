@@ -125,9 +125,9 @@ module Netzke
     
     def self.property_fields
       res = [
-        {:name => "ext_config__title",               :type => :string},
-        {:name => "ext_config__header",              :type => :boolean, :default => true},
-        # {:name => "ext_config__bbar",              :type => :json}
+        {:name => "ext_config__title",               :attr_type => :string},
+        {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
+        # {:name => "ext_config__bbar",              :attr_type => :json}
       ]
       
       res

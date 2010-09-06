@@ -4,11 +4,11 @@
   * icons location was hardcoded in search panel (credits to @pschyska)
   * quick fix for datetimes not being displayed in the preferred timezone
   * ext_config options :enable_edit_in_form and :enable_advanced_search now do have effect
+  * PropertyEditor fixed for Grid/FormPanel
+
 * enhancements
   * numberfield is default in grids also for columns of type float
   * more narrow exception rescuing in GridPanel code
-
-* enhancements
   * combobox options can now be searched ("type ahead") also in virtual columns (not efficient though!)
 
 = v0.5.13 - 2010-08-11

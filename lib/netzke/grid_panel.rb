@@ -206,15 +206,15 @@ module Netzke
     # Fields to be displayed in the "General" tab of the configuration panel
     def self.property_fields
       [
-        {:name => :ext_config__title,               :type => :string},
-        {:name => :ext_config__header,              :type => :boolean, :default => true},
-        {:name => :ext_config__enable_context_menu, :type => :boolean, :default => true},
-        {:name => :ext_config__enable_pagination,   :type => :boolean, :default => true},
-        {:name => :ext_config__rows_per_page,       :type => :integer},
-        {:name => :ext_config__prohibit_create,     :type => :boolean},
-        {:name => :ext_config__prohibit_update,     :type => :boolean},
-        {:name => :ext_config__prohibit_delete,     :type => :boolean},
-        {:name => :ext_config__prohibit_read,       :type => :boolean}
+        {:name => :ext_config__title,               :attr_type => :string},
+        {:name => :ext_config__header,              :attr_type => :boolean, :default => true},
+        {:name => :ext_config__enable_context_menu, :attr_type => :boolean, :default => true},
+        {:name => :ext_config__enable_pagination,   :attr_type => :boolean, :default => true},
+        {:name => :ext_config__rows_per_page,       :attr_type => :integer},
+        {:name => :ext_config__prohibit_create,     :attr_type => :boolean},
+        {:name => :ext_config__prohibit_update,     :attr_type => :boolean},
+        {:name => :ext_config__prohibit_delete,     :attr_type => :boolean},
+        {:name => :ext_config__prohibit_read,       :attr_type => :boolean}
       ]
     end
     
