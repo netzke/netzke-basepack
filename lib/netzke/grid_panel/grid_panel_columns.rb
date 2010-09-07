@@ -112,7 +112,7 @@ module Netzke
       
         # Stores modified columns in persistent storage
         def save_columns!
-          NetzkeFieldList.update_list_for_current_authority(global_id, columns(false), original_data_class.name)
+          NetzkeFieldList.update_list_for_current_authority(global_id, columns(false), original_data_class.name) if persistent_config_enabled?
         end
       
         def load_columns
@@ -120,7 +120,7 @@ module Netzke
         end
         
         def load_model_level_attrs
-          NetzkeModelAttrList.read_list(data_class.name)
+          NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled?
         end
         
         # whether a column is bound to the primary_key

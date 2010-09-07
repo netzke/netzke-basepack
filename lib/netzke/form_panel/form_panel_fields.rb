@@ -91,7 +91,7 @@ module Netzke
         end
         
         def load_model_level_attrs
-          NetzkeModelAttrList.read_list(data_class.name) if data_class
+          NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
         end
         
         def set_default_field_label(c)

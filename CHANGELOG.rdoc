@@ -5,6 +5,7 @@
   * quick fix for datetimes not being displayed in the preferred timezone
   * ext_config options :enable_edit_in_form and :enable_advanced_search now do have effect
   * PropertyEditor fixed for Grid/FormPanel
+  * Grid/FormPanel again obeys persistent_config option when loading columns/fields
 
 * enhancements
   * numberfield is default in grids also for columns of type float
