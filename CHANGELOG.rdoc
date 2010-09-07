@@ -9,7 +9,8 @@
 * enhancements
   * numberfield is default in grids also for columns of type float
   * more narrow exception rescuing in GridPanel code
-  * combobox options can now be searched ("type ahead") also in virtual columns (not efficient though!)
+  * combobox options can now be searched ("type ahead") also in virtual columns (not efficient though, use at own risk!)
+  * overriding an already existing attribute with `netzke_attribute` now also has effect on association attributes, such as boss__name
 
 = v0.5.13 - 2010-08-11
 * regression

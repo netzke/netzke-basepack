@@ -181,31 +181,19 @@ module Netzke
         end
       
         # Detects an association column and sets up the proper editor.
-        # If a column is a foreign key (e.g. "category_id"), also renames the column into "normalized" association column, e.g.:
-        #   category__name
-        # If association doesn't respond to methods "name", "title" or "label", falls back to "id", e.g.:
-        #   category__id
         def detect_association(c)
-          # named as foreign key of some association?
-          assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
-          
-          if assoc && !assoc.options[:polymorphic]
-            assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
-            c[:name] = "#{assoc.name}__#{assoc_method}"
-          end
-          
-          # named with an double-underscore notation? surely an association column then
-          if !assoc && c[:name].index('__')
+          # double-underscore notation? surely an association column
+          if c[:name].index('__')
             assoc_name, assoc_method = c[:name].split('__')
             assoc = data_class.reflect_on_association(assoc_name.to_sym)
-          end
           
-          if assoc && assoc_method
-            assoc_column = assoc.klass.columns_hash[assoc_method]
-            assoc_method_type = assoc_column.try(:type)
+            if assoc && assoc_method
+              assoc_column = assoc.klass.columns_hash[assoc_method]
+              assoc_method_type = assoc_column.try(:type)
             
-            # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
-            c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
+              # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
+              c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
+            end
           end
         end
         

@@ -69,16 +69,30 @@ module Netzke::ActiveRecord::Attributes
         end
       end
       
+      # Returns netzke attributes in the order of columns in the table, followed by extra declared attributes
+      # Detects one-to-many association columns and replaces the name of the column with association column name (Netzke style), e.g.:
+      # 
+      #   role_id => role__name
       def netzke_attrs_in_natural_order
         (
           declared_attrs = netzke_declared_attributes
           column_names.map do |name|
             c = {:name => name, :attr_type => columns_hash[name].type}
+            
+            # If it's named as foreign key of some association, then it's an association column
+            assoc = reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
+
+            if assoc && !assoc.options[:polymorphic]
+              assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
+              c[:name] = "#{assoc.name}__#{assoc_method}"
+              c[:attr_type] = assoc.klass.columns_hash[assoc_method].type
+            end
+            
             # auto set up the default value from the column settings
             c.merge!(:default_value => columns_hash[name].default) if columns_hash[name].default
             
             # if there's a declared attr with the same name, simply merge it with what's taken from the model's columns
-            if declared = declared_attrs.detect{ |va| va[:name] == name }
+            if declared = declared_attrs.detect{ |va| va[:name] == c[:name] }
               c.merge!(declared)
               declared_attrs.delete(declared)
             end
