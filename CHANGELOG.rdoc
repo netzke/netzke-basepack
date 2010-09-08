@@ -1,4 +1,4 @@
-= v0.5.14 - EDGE
+= v0.5.14 - 2010-09-08
 * bug fix
   * fields configurator wouldn't open in some cases
   * icons location was hardcoded in search panel (credits to @pschyska)
