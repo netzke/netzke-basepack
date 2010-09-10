@@ -39,12 +39,13 @@ Netzke::Widget::Base.config[:stylesheets] << "#{File.dirname(__FILE__)}/../style
 # from Netzke.
 
 # Used by FormPanel (file upload field)
-Netzke::Widget::Base.config[:external_css] << "/extjs/examples/ux/fileuploadfield/css/fileuploadfield"
+# Netzke::Widget::Base.config[:external_css] << "/extjs/examples/ux/fileuploadfield/css/fileuploadfield"
 
 # Used by GridPanel
-Netzke::Widget::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/RangeMenu"
-Netzke::Widget::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/GridFilters"
+# Netzke::Widget::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/RangeMenu"
+# Netzke::Widget::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/GridFilters"
 
+# Detect icons
 if Netzke::Widget::Base.config[:with_icons].nil? && defined?(RAILS_ROOT)
   Netzke::Widget::Base.config[:with_icons] = File.exists?("#{RAILS_ROOT}/public#{Netzke::Widget::Base.config[:icons_uri]}")
 end
