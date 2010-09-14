@@ -9,7 +9,7 @@ module Netzke
   # <tt>:item</tt> - nested Netzke widget, e.g.:
   #     
   #     netzke :window, :item => {:class_name => "GridPanel", :model => "User"}
-  class Window < Base
+  class Window < Widget::Base
     # Based on Ext.Window, naturally
     def self.js_base_class
       "Ext.Window"

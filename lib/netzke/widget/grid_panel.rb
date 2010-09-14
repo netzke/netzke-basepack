@@ -282,13 +282,13 @@ module Netzke::Widget
       # Edit in form
       res.merge!({
         :add_form => {
-          :class_name => "GridPanel::RecordFormWindow",
+          :class_name => "Widget::GridPanel::RecordFormWindow",
           :title => "Add #{data_class.table_name.singularize.humanize}",
           :button_align => "right",
           :item => {
-            :class_name => "FormPanel",
+            :class_name => "Widget::FormPanel",
             :model => config[:model],
-            :fields => default_fields_for_forms,
+            :items => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
             :strong_default_attrs => config[:strong_default_attrs],
             :border => true,
@@ -300,11 +300,11 @@ module Netzke::Widget
         }.deep_merge(config[:add_form_window_config] || {}),
         
         :edit_form => {
-          :class_name => "GridPanel::RecordFormWindow",
+          :class_name => "Widget::GridPanel::RecordFormWindow",
           :title => "Edit #{data_class.table_name.singularize.humanize}",
           :button_align => "right",
           :item => {
-            :class_name => "FormPanel",
+            :class_name => "Widget::FormPanel",
             :model => config[:model],
             :fields => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
@@ -315,11 +315,11 @@ module Netzke::Widget
         }.deep_merge(config[:edit_form_window_config] || {}),
         
         :multi_edit_form => {
-          :class_name => "GridPanel::RecordFormWindow",
+          :class_name => "Widget::GridPanel::RecordFormWindow",
           :title => "Edit #{data_class.table_name.humanize}",
           :button_align => "right",
           :item => {
-            :class_name => "GridPanel::MultiEditForm",
+            :class_name => "Widget::GridPanel::MultiEditForm",
             :model => config[:model],
             :fields => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
