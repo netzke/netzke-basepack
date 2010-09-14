@@ -17,7 +17,7 @@ module Netzke
       "Ext.TabPanel"
     end
 
-    def self.js_extend_properties
+    def self.js_properties
       {
         :id_delimiter => "___", # the default was "__", which conflicts with Netzke's double underscore notation
         :defaults => {:layout => 'fit'}, # all tabs will be Ext.Panel-s with layout 'fit' ("fit-panels")

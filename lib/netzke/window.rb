@@ -23,7 +23,7 @@ module Netzke
     end
     
     # Extends the JavaScript class
-    def self.js_extend_properties
+    def self.js_properties
       {
         # we nest widget inside the "fit" layout
         :layout => "fit",

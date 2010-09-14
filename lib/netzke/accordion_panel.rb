@@ -10,7 +10,7 @@ module Netzke
   class AccordionPanel < Base
     
     # JavaScript part
-    def self.js_extend_properties
+    def self.js_properties
       {
         :layout => 'accordion',
         :defaults => {:layout => 'fit'},

@@ -26,7 +26,7 @@ module Netzke
       }]
     end
 
-    def self.js_extend_properties
+    def self.js_properties
       {
         :after_constructor => <<-END_OF_JAVASCRIPT.l,
           function(){

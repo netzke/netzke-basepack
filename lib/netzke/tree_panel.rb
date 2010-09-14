@@ -5,7 +5,7 @@ class Netzke::TreePanel < Netzke::Base
     "Ext.tree.TreePanel"
   end
   
-  def self.js_extend_properties
+  def self.js_properties
     {
       :root => {:text => '/', :id => 'source'}
     }

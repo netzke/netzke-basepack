@@ -41,7 +41,7 @@ module Netzke::Widget
       )
     end
     
-    def self.js_extend_properties
+    def self.js_properties
       {
         :remove_search_from_list => <<-END_OF_JAVASCRIPT.l,
           function(name){

@@ -13,7 +13,7 @@ module Netzke
           })
         end
     
-        def self.js_extend_properties
+        def self.js_properties
           {
             :button_align => "right",
         

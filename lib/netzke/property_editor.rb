@@ -28,7 +28,7 @@ module Netzke
       fields
     end
     
-    def self.js_extend_properties
+    def self.js_properties
       {
         :label_width => 200,
         

@@ -15,7 +15,7 @@ module Netzke
   #     :model => "User"
   #   }
   class Wrapper < Base
-    def self.js_extend_properties
+    def self.js_properties
       super.merge({
         :layout => 'fit',
         

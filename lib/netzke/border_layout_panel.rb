@@ -36,7 +36,7 @@ module Netzke
     REGIONS = %w(center west east south north).map(&:to_sym)
 
     # JavaScript part
-    def self.js_extend_properties
+    def self.js_properties
       {
         :layout => 'border',
         

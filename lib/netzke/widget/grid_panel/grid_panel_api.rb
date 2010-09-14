@@ -7,10 +7,6 @@ module Netzke::Widget
   class GridPanel < Base
     module GridPanelApi
       
-      #
-      # Grid's native API
-      # 
-      
       def get_data(params = {})
         if !config[:prohibit_read]
           records = get_records(params)

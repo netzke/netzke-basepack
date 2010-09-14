@@ -40,7 +40,7 @@ module Netzke
       ]
     end
         
-    def self.js_extend_properties
+    def self.js_properties
       {
         :init_component => <<-END_OF_JAVASCRIPT.l,
           function(){

@@ -11,7 +11,7 @@ module Netzke
       {:reload_parent => true, :feedback => (@flash.empty? ? nil : @flash)}
     end
     
-    def self.js_extend_properties
+    def self.js_properties
       {
         :reload_parent => <<-END_OF_JAVASCRIPT.l,
           function(){

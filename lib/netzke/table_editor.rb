@@ -5,7 +5,7 @@ module Netzke
   # configured by grid_columns and form_fields configuration options respectively
   class TableEditor < BorderLayoutPanel
     
-    def self.js_extend_properties
+    def self.js_properties
       {
         :init_component => <<-END_OF_JAVASCRIPT.l,
           function(){
