@@ -1,6 +1,7 @@
-# require 'active_record'
-# require 'searchlogic'
-# require 'will_paginate'
+require 'active_record'
+#require 'searchlogic'
+require 'meta_where'
+require 'will_paginate'
 
 module Netzke::Widget
   class GridPanel < Base
@@ -79,20 +80,11 @@ module Netzke::Widget
       end
 
       # Returns choices for a column
-      def get_combobox_options_DELETME(params)
+      def get_combobox_options(params)
         column = params[:column]
         query = params[:query]
         {:data => data_class.options_for(column, query).map{|s| [s]}}
         # {:data => data_class.options_for(column, query).map{|s| [s]}}
-      end
-
-      # Returns choices for a column
-      def get_combobox_options(params)
-        column = columns.detect{ |c| c[:name] == params[:column] }.try(:to_options!)
-        scopes = (column[:editor].is_a?(Hash) && column[:editor] || {}).to_options[:scopes]
-        query = params[:query]
-        
-        {:data => combobox_options_for_column(column, :query => query, :scopes => scopes)}
       end
 
       def move_rows(params)
@@ -183,16 +175,17 @@ module Netzke::Widget
             search_params[:conditions].deep_merge!(
               normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
             ) if params[:extra_conditions]
-
-            search = data_class.searchlogic(search_params)
+                                     
+            puts "search: #{data_class.name}.where(#{search_params.inspect})"
+            search = data_class.where(search_params[:conditions])
       
             # applying scopes
             scopes.each do |s|
               if s.is_a?(Array)
-                scope_name, *args = s
-                search.send(scope_name, *args)
+                scope_name, *args = s   
+                search.where(scope_name.to_sym => args.first) if args.first != nil
               else
-                search.send(s, true)
+                search.where(s.to_sym => true)
               end
             end
       
@@ -251,38 +244,34 @@ module Netzke::Widget
         # get records
         def get_records(params)
           # Restore params from widget_session if requested
-          # if params[:with_last_params]
-          #   params = widget_session[:last_params]
-          # else
-          #   # remember the last params
-          #   widget_session[:last_params] = params
-          # end
-          #       
-          # search = get_search(params)
-          #       
-          # # sorting
-          # if params[:sort]
-          #   assoc, method = params[:sort].split('__')
-          #   sort_string = method.nil? ? assoc : "#{assoc}_#{method}"
-          #   sort_string = (params[:dir] == "ASC" ? "ascend_by_" : "descend_by_") + sort_string
-          #   search.order(sort_string)
-          # end
-          #       
-          # # pagination
-          # if config[:enable_pagination]
-          #   per_page = config[:rows_per_page]
-          #   page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
-          #   search.paginate(:per_page => per_page, :page => page)
-          # else
-          #   search.all
-          # end
-          
-          # TODO: 2010-09-14
-          data = data_class.all
-          def data.total_entries
-            100
+          if params[:with_last_params]
+            params = widget_session[:last_params]
+          else
+            # remember the last params
+            widget_session[:last_params] = params
           end
-          data
+      
+          search = get_search(params)
+      
+          # sorting
+          if params[:sort]
+            assoc, method = params[:sort].split('__')
+            dir = params[:dir].downcase
+            search = if method.nil?
+              search.order(assoc.to_sym.send(dir))
+            else
+              search.order(assoc.tableize.to_sym => method.to_sym.send(dir)).joins(assoc.to_sym)
+            end
+          end
+          
+          # pagination
+          if config[:enable_pagination]
+            per_page = config[:rows_per_page]
+            page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
+            search.paginate(:per_page => per_page, :page => page)
+          else
+            search.all
+          end
         end
     
         # When providing the edit_form aggregatee, fill in the form with the requested record
@@ -316,28 +305,32 @@ module Netzke::Widget
         #     }}
         #     
         #      => 
-        #     
-        #     {"id_gt" => 100, "food_name_contains" => "pizza"}
+        #             
+        #  metawhere:   :id.gt => 100, :food_name.matches => '%pizza%'
         def convert_filters(column_filter)
           res = {}
           column_filter.each_pair do |k,v|
-            field = v["field"].dup
-
+            field = v["field"].dup.to_sym
+            
+            value = v["data"]["value"]
             case v["data"]["type"]
             when "string"
-              field << "_contains"
+              field = field.send :matches
+              value = "%#{value}%"
             when "numeric", "date"
-              field << "_#{v["data"]["comparison"]}"
-            end
-          
-            value = v["data"]["value"]
+              field = field.send :"#{v['data']['comparison']}"
+            end                      
             res.merge!({field => value})
           end
           res
         end
 
         def normalize_extra_conditions(conditions)
-          conditions.deep_convert_keys{|k| k.to_s.gsub("__", "_").to_sym}
+          conditions.deep_convert_keys{|k| get_key(k)}
+        end
+
+        def get_key(k)
+          k.gsub("__", "").to_sym          
         end
 
         # make params understandable to searchlogic
@@ -347,7 +340,7 @@ module Netzke::Widget
         
           normalized_conditions = {}
           conditions && conditions.each_pair do |k, v|
-            normalized_conditions.merge!(k.gsub("__", "_") => v)
+            normalized_conditions.merge!(get_key(k) => v)
           end
   
           {:conditions => normalized_conditions}

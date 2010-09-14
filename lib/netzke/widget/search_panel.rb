@@ -1,4 +1,4 @@
-module Netzke
+module Netzke::Widget
   # SearchPanel
   # 
   # FormPanel-based widget that allows create configurable searchlogic-compatible searches. 
@@ -6,7 +6,8 @@ module Netzke
   class SearchPanel < FormPanel
     
     # Something like [:equals, :greater_than_or_equal_to, :does_not_equal, :less_than, :less_than_or_equal_to, :greater_than, :ends_with, :like, :begins_with, :empty, :null]
-    CONDITIONS = [:COMPARISON_CONDITIONS, :WILDCARD_CONDITIONS, :BOOLEAN_CONDITIONS].inject([]){|r, c| r + Searchlogic::NamedScopes::Conditions.const_get(c).keys} 
+    # CONDITIONS = [:COMPARISON_CONDITIONS, :WILDCARD_CONDITIONS, :BOOLEAN_CONDITIONS].inject([]){|r, c| r + Searchlogic::NamedScopes::Conditions.const_get(c).keys} 
+    CONDITIONS = [:equals, :greater_than_or_equal_to, :does_not_equal, :less_than, :less_than_or_equal_to, :greater_than, :ends_with, :like, :begins_with, :empty, :null]
     
     def default_config
       super.merge({
@@ -16,26 +17,27 @@ module Netzke
     
     def independent_config
       super.deep_merge(
-        :ext_config => {
-          :tbar => ["Presets:", 
-            {
-              :xtype => "combo", 
-              :fieldLabel => "Presets",
-              :triggerAction => "all",
-              :store => (persistent_config[:saved_searches] || []).map{ |s| s["name"] },
-              :id => "presets-combo",
-              :listeners => {:before_select => {
-                :fn => "function(combo, record){Ext.getCmp('#{global_id}').selectPreset(record.data.field1);}".l
-              }}
-            }, :save, :del]
-        }
+        :tbar => [
+          # TODO: 2010-09-14
+          # "Presets:", 
+          # {
+          #   :xtype => "combo", 
+          #   :fieldLabel => "Presets",
+          #   :triggerAction => "all",
+          #   :store => (persistent_config[:saved_searches] || []).map{ |s| s["name"] },
+          #   :id => "presets-combo",
+          #   :listeners => {:before_select => {
+          #     :fn => "function(combo, record){Ext.getCmp('#{global_id}').selectPreset(record.data.field1);}".l
+          #   }}
+          # }, 
+          :save, :del]
       )
     end
     
     def actions
       super.merge(
-        :save => {:text => "Save", :icon => Netzke::Base.config[:with_icons] && (Netzke::Base.config[:icons_uri] + "disk.png")},
-        :del => {:text => "Delete", :icon => Netzke::Base.config[:with_icons] && (Netzke::Base.config[:icons_uri] + "delete.png")}
+        :save => {:text => "Save", :icon => Netzke::Widget::Base.config[:with_icons] && (Netzke::Widget::Base.config[:icons_uri] + "disk.png")},
+        :del => {:text => "Delete", :icon => Netzke::Widget::Base.config[:with_icons] && (Netzke::Widget::Base.config[:icons_uri] + "delete.png")}
       )
     end
     
@@ -174,7 +176,7 @@ module Netzke
     # tweaking the form fields at the last moment
     def js_config
       super.merge({
-        :fields => fields.map{ |c| c.merge({
+        :items => fields.map{ |c| c.merge({
           :label => "#{c[:label] || c[:name]} #{c[:condition]}".humanize,
           :name => "#{c[:name]}_#{c[:condition]}"
         })}

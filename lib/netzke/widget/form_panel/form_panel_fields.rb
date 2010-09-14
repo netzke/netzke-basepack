@@ -1,4 +1,4 @@
-module Netzke
+module Netzke::Widget
   class FormPanel < Base
     module FormPanelFields
       module ClassMethods
@@ -87,11 +87,11 @@ module Netzke
         # end
       
         def load_fields
-          NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
+          # NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
         end
         
         def load_model_level_attrs
-          NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
+          # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
         end
         
         def set_default_field_label(c)

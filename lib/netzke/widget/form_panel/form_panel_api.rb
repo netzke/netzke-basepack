@@ -1,4 +1,4 @@
-module Netzke
+module Netzke::Widget
   class FormPanel < Base
     module FormPanelApi
       # API handling form submission

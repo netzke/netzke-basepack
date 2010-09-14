@@ -1,10 +1,10 @@
-require "netzke/form_panel/form_panel_js"
-require "netzke/form_panel/form_panel_api"
-require "netzke/form_panel/form_panel_fields"
-require "netzke/plugins/configuration_tool"
-require "netzke/data_accessor"
+# require "netzke/form_panel/form_panel_js"
+# require "netzke/form_panel/form_panel_api"
+# require "netzke/form_panel/form_panel_fields"
+# require "netzke/plugins/configuration_tool"
+# require "netzke/data_accessor"
 
-module Netzke
+module Netzke::Widget
   # = FormPanel
   # 
   # Represents Ext.form.FormPanel
@@ -30,16 +30,14 @@ module Netzke
         
         :default_config => {
           :persistent_config => true,
-          :ext_config => {
-            :tools => []
-          },
+          :tools => []
         }
       })
     end
     
     def initial_config
       res = super
-      res[:ext_config][:bbar] = default_bbar if res[:ext_config][:bbar].nil?
+      res[:bbar] = default_bbar if res[:bbar].nil?
       res
     end
 
@@ -50,9 +48,9 @@ module Netzke
     # Extra javascripts
     def self.include_js
       [
-        "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js",
-        Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
-        "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
+        # "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js",
+        # Netzke::Widget::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
+        # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
       ]
     end
     
@@ -102,7 +100,7 @@ module Netzke
         :name               => 'general',
         :class_name  => "PropertyEditor",
         :widget             => self,
-        :ext_config         => {:title => false}
+        :title => false
       }
       
       res
@@ -113,8 +111,8 @@ module Netzke
         :apply => {:text => 'Apply'}
       }
       
-      if Netzke::Base.config[:with_icons]
-        icons_uri = Netzke::Base.config[:icons_uri]
+      if Netzke::Widget::Base.config[:with_icons]
+        icons_uri = Netzke::Widget::Base.config[:icons_uri]
         actions.deep_merge!(
           :apply => {:icon => icons_uri + "tick.png"}
         )
@@ -125,14 +123,15 @@ module Netzke
     
     def self.property_fields
       res = [
-        {:name => "ext_config__title",               :attr_type => :string},
-        {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
+        # {:name => "ext_config__title",               :attr_type => :string},
+        # {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
         # {:name => "ext_config__bbar",              :attr_type => :json}
       ]
       
       res
     end
  
-    include Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
+    include Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
+    include Netzke::Widget::Actions
   end
 end

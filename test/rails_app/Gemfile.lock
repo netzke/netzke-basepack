@@ -65,7 +65,12 @@ GEM
       activesupport (>= 2.3.6)
       mime-types
       treetop (>= 1.4.5)
+    meta_where (0.9.3)
+      activerecord (~> 3.0.0)
+      activesupport (~> 3.0.0)
+      arel (~> 1.0.1)
     mime-types (1.16)
+    mysql2 (0.2.3)
     nokogiri (1.4.3.1)
     polyglot (0.3.1)
     rack (1.2.1)
@@ -110,6 +115,7 @@ GEM
       polyglot (>= 0.3.1)
     trollop (1.16.2)
     tzinfo (0.3.23)
+    will_paginate (3.0.pre2)
 
 PLATFORMS
   ruby
@@ -120,7 +126,10 @@ DEPENDENCIES
   cucumber-rails
   database_cleaner
   launchy
+  meta_where
+  mysql2
   rails (= 3.0.0)
   rspec-rails (>= 2.0.0.beta.19)
   spork
   sqlite3-ruby
+  will_paginate (= 3.0.pre2)

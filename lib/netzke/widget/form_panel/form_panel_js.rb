@@ -1,12 +1,12 @@
-module Netzke
+module Netzke::Widget
   class FormPanel < Base
     module FormPanelJs
       # parameters used to instantiate the JS object
       def js_config
         res = super
-        res.merge!(:fields => fields)
-        res.merge!(:model => data_class.name) if data_class
-        res.merge!(:pri => data_class.primary_key) if data_class
+        # res.merge!(:fields => fields)
+        res.merge!(:model  => data_class.name) if data_class
+        res.merge!(:pri    => data_class.primary_key) if data_class
         res
       end
 
@@ -15,43 +15,81 @@ module Netzke
           "Ext.FormPanel"
         end
 
-        def js_extend_properties
+        def js_properties
           {
             :body_style     => 'padding:5px 5px 0',
             :auto_scroll    => true,
             :label_width    => 150,
             :default_type   => 'textfield',
+            
+            # This function is recursive, descending into the internals of the static layout
+            :process_fields => <<-END_OF_JAVASCRIPT.l,
+              function(fields){
+                Ext.each(fields, function(field){
+                  if (field.items) {
+                    this.processFields(field.items);
+                  } else {
+                    if (!field.hidden || field.name == this.pri) {
+
+                      this.recordFields.push({name:field.name, mapping:this.recordIndex++});
+
+                      // apply dynamically defined properties
+                      Ext.applyIf(field, {
+                        xtype     : this.attrTypeEditorMap[field.attrType || 'string'],
+                        fieldLabel: field.fieldLabel || field.label || field.name.humanize(),
+                        hideLabel : field.hidden, // completely hide fields marked "hidden"
+                        parentId  : this.id,
+                        // name      : field.name,
+                        value     : field.value || field.defaultValue,
+                        checked   : field.attrType == "boolean" ? field.value : null // checkbox state
+                      });
+
+                      // var defaultColumnConfig = Ext.apply({}, this.defaultColumnConfig);
+                      // var columnConfig = Ext.apply(defaultColumnConfig, field);
+                      // 
+                      // // apply dynamically defined properties
+                      // Ext.apply(field, {
+                      //   name: columnConfig.name,
+                      //   parentId: this.id,
+                      // });
+
+                    }
+                  }
+                }, this);
+              }
+            END_OF_JAVASCRIPT
 
             :init_component => <<-END_OF_JAVASCRIPT.l,
               function(){
-                var recordFields = []; // Record
-                this.items = [];
-                var index = 0;
-            
+                this.recordFields = []; // Record
+                this.recordIndex = 0;
+                
                 // Process columns
-                Ext.each(this.fields, function(field){
-                  if (!field.hidden || field.name == this.pri) {
-                    recordFields.push({name:field.name, mapping:index++});
-                    
-                    var defaultColumnConfig = Ext.apply({}, this.defaultColumnConfig);
-                    var columnConfig = Ext.apply(defaultColumnConfig, field);
-
-                    // apply dynamically defined properties
-                    Ext.applyIf(columnConfig, {
-                      xtype     : this.attrTypeEditorMap[columnConfig.attrType],
-                      fieldLabel: columnConfig.fieldLabel || columnConfig.label || columnConfig.name.humanize(),
-                      hideLabel : columnConfig.hidden, // completely hide fields marked "hidden"
-                      parentId  : this.id,
-                      name      : columnConfig.name,
-                      value     : columnConfig.value || columnConfig.defaultValue,
-                      checked   : columnConfig.attrType == "boolean" ? columnConfig.value : null // checkbox state
-                    });
-
-                    this.items.push(columnConfig);
-                  }
-                }, this);
+                // Ext.each(this.fields, function(field){
+                //   if (!field.hidden || field.name == this.pri) {
+                //     recordFields.push({name:field.name, mapping:index++});
+                //     
+                //     var defaultColumnConfig = Ext.apply({}, this.defaultColumnConfig);
+                //     var columnConfig = Ext.apply(defaultColumnConfig, field);
+                // 
+                //     // apply dynamically defined properties
+                //     Ext.applyIf(columnConfig, {
+                //       xtype     : this.attrTypeEditorMap[columnConfig.attrType],
+                //       fieldLabel: columnConfig.fieldLabel || columnConfig.label || columnConfig.name.humanize(),
+                //       hideLabel : columnConfig.hidden, // completely hide fields marked "hidden"
+                //       parentId  : this.id,
+                //       name      : columnConfig.name,
+                //       value     : columnConfig.value || columnConfig.defaultValue,
+                //       checked   : columnConfig.attrType == "boolean" ? columnConfig.value : null // checkbox state
+                //     });
+                // 
+                //     this.items.push(columnConfig);
+                //   }
+                // }, this);
+                
+                this.processFields(this.items);
             
-                var Record = Ext.data.Record.create(recordFields);
+                var Record = Ext.data.Record.create(this.recordFields);
                 this.reader = new Ext.data.RecordArrayReader({root:"data"}, Record);
             
                 delete this.fields; // we don't need them anymore

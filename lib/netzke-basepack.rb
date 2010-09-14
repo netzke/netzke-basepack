@@ -46,6 +46,6 @@ Netzke::Widget::Base.config[:stylesheets] << "#{File.dirname(__FILE__)}/../style
 # Netzke::Widget::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/GridFilters"
 
 # Detect icons
-if Netzke::Widget::Base.config[:with_icons].nil? && defined?(RAILS_ROOT)
-  Netzke::Widget::Base.config[:with_icons] = File.exists?("#{RAILS_ROOT}/public#{Netzke::Widget::Base.config[:icons_uri]}")
+if Netzke::Widget::Base.config[:with_icons].nil? && defined?(Rails)
+  Netzke::Widget::Base.config[:with_icons] = File.exists?("#{Rails.root}/public#{Netzke::Widget::Base.config[:icons_uri]}")
 end

@@ -151,8 +151,8 @@ module Netzke::Widget
       # TODO: 2010-09-14
       # ext_examples = Netzke::Widget::Base.config[:ext_location] + "/examples/"
       # res << ext_examples + "ux/CheckColumn.js"
-      # 
-      # # Filters
+      
+      # Filters
       # if config[:column_filters_available]
       #   ext_examples = Netzke::Widget::Base.config[:ext_location] + "/examples/"
       #   res << ext_examples + "ux/gridfilters/menu/ListMenu.js"
@@ -162,9 +162,8 @@ module Netzke::Widget
       #   %w{Boolean Date List Numeric String}.unshift("").each do |f|
       #     res << ext_examples + "ux/gridfilters/filter/#{f}Filter.js"
       #   end
-      #   
       # end
-      # 
+      
       # # DD
       # if config[:rows_reordering_available]
       #   res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"
@@ -334,7 +333,7 @@ module Netzke::Widget
       # Extended search
       res.merge!({
         :search_panel => {
-          :class_name => "SearchPanel",
+          :class_name => "Widget::SearchPanel",
           :fields => default_fields_for_forms,
           :search_class_name => config[:model],
           :persistent_config => config[:persistent_config],
