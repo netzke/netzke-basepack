@@ -14,71 +14,70 @@ module Netzke
         end
       end
       
-      module InstanceMethods
-        def fields
-          @fields ||= begin
-            flds = load_fields
-            flds ||= initial_fields
-            
-            flds.map! do |c|
-              value = record.send(c[:name])
-              value.nil? ? c : c.merge(:value => value)
-            end if record
-            
-            flds
-          end
+      def fields
+        @fields ||= begin
+          flds = load_fields
+          reverse_merge_equally_named_fields(flds, initial_fields) if flds
+          flds ||= initial_fields
+          
+          flds.map! do |c|
+            value = record.send(c[:name])
+            value.nil? ? c : c.merge(:value => value)
+          end if record
+          
+          flds
         end
+      end
 
-        def default_fields
-          @default_fields ||= load_model_level_attrs || (data_class && data_class.netzke_attributes) || []
-        end
+      def default_fields
+        @default_fields ||= load_model_level_attrs || (data_class && data_class.netzke_attributes) || []
+      end
 
-        def initial_fields(only_included = true)
-          ::ActiveSupport::Deprecation.warn("The :columns option for FormPanel is deprecated. Use :fields instead", caller) if config[:columns]
-          
-          # Normalize here, as from the config we can get symbols (names) instead of hashes
-          fields_from_config = (config[:columns] || config[:fields]) && normalize_attr_config(config[:columns] || config[:fields])
+      def initial_fields(only_included = true)
+        ::ActiveSupport::Deprecation.warn("The :columns option for FormPanel is deprecated. Use :fields instead", caller) if config[:columns]
+        
+        # Normalize here, as from the config we can get symbols (names) instead of hashes
+        fields_from_config = (config[:columns] || config[:fields]) && normalize_attr_config(config[:columns] || config[:fields])
 
-          if fields_from_config
-            # reverse-merge each column hash from config with each column hash from exposed_attributes (fields from config have higher priority)
-            for c in fields_from_config
-              corresponding_exposed_column = default_fields.find{ |k| k[:name] == c[:name] }
-              c.reverse_merge!(corresponding_exposed_column) if corresponding_exposed_column
-            end
-            fields_for_create = fields_from_config
-          elsif default_fields
-            # we didn't have fields configured in widget's config, so, use the fields from the data class
-            fields_for_create = default_fields
-          else
-            raise ArgumentError, "No fields specified for widget '#{global_id}'"
+        if fields_from_config
+          # reverse-merge each column hash from config with each column hash from exposed_attributes (fields from config have higher priority)
+          for c in fields_from_config
+            corresponding_exposed_column = default_fields.find{ |k| k[:name] == c[:name] }
+            c.reverse_merge!(corresponding_exposed_column) if corresponding_exposed_column
           end
-          
-          fields_for_create.reject!{ |c| c[:included] == false }
-          
-          fields_for_create.map! do |c|
-            if data_class
+          fields_for_create = fields_from_config
+        elsif default_fields
+          # we didn't have fields configured in widget's config, so, use the fields from the data class
+          fields_for_create = default_fields
+        else
+          raise ArgumentError, "No fields specified for widget '#{global_id}'"
+        end
+        
+        fields_for_create.reject!{ |c| c[:included] == false }
+        
+        fields_for_create.map! do |c|
+          if data_class
 
-              detect_association_with_method(c)
-              
-              # detect association column (e.g. :category_id)
-              if assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
-                c[:xtype] ||= xtype_for_association
-                assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
-                c[:name] = "#{assoc.name}__#{assoc_method}"
-              end
-
-              c[:hidden] = true if c[:name] == data_class.primary_key && c[:hidden].nil? # hide ID column by default
+            detect_association_with_method(c)
+            
+            # detect association column (e.g. :category_id)
+            if assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
+              c[:xtype] ||= xtype_for_association
+              assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
+              c[:name] = "#{assoc.name}__#{assoc_method}"
             end
 
-            set_default_field_label(c)
-            
-            c[:xtype] ||= xtype_for_attr_type(c[:attr_type]) # unless xtype_map[type].nil?
-            c
+            c[:hidden] = true if c[:name] == data_class.primary_key && c[:hidden].nil? # hide ID column by default
           end
 
-          fields_for_create
-
+          set_default_field_label(c)
+          
+          c[:xtype] ||= xtype_for_attr_type(c[:attr_type]) # unless xtype_map[type].nil?
+          c
         end
+
+        fields_for_create
+
       end
       
       private
@@ -92,7 +91,7 @@ module Netzke
         end
         
         def load_model_level_attrs
-          NetzkeModelAttrList.read_list(data_class.name) if data_class
+          NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
         end
         
         def set_default_field_label(c)
@@ -130,13 +129,16 @@ module Netzke
               end
             end
           end
-          
         end
 
+        # Receives 2 arrays of columns. Merges the missing config from the +source+ into +dest+, matching columns by name
+        def reverse_merge_equally_named_fields(dest, source)
+          dest.each{ |dc| dc.reverse_merge!(source.detect{ |sc| sc[:name] == dc[:name] } || {}) }
+        end
+        
       
       def self.included(receiver)
         receiver.extend         ClassMethods
-        receiver.send :include, InstanceMethods
 
         receiver.class_eval do
           alias :initial_columns :initial_fields

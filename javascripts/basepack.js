@@ -1,3 +1,6 @@
+Ext.ns("Netzke.pre");
+Ext.ns("Ext.ux.grid");
+
 Ext.apply(Ext.History, new Ext.util.Observable());
 
 // A convenient passfield

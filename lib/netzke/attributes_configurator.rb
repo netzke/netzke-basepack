@@ -55,13 +55,11 @@ module Netzke
     def default_config
       super.deep_merge({
         :name              => 'columns',
-        :ext_config        => {
-          :header                 => false,
-          :enable_extended_search => false,
-          :enable_edit_in_form    => false,
-          :enable_pagination      => false,
-          :enable_rows_reordering => GridPanel.config[:rows_reordering_available]
-        }
+        :header                 => false,
+        :enable_extended_search => false,
+        :enable_edit_in_form    => false,
+        :enable_pagination      => false,
+        :enable_rows_reordering => GridPanel.config[:rows_reordering_available]
       })
     end
     

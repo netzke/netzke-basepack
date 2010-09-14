@@ -16,7 +16,13 @@ module Netzke
 
     # Fields for NetzkePersistentArrayAutoModel (override it)
     def dynamic_fields
-      default_columns.collect { |c| {:name => c[:name], :type => c[:attr_type], :default => c[:default_value]} }
+      default_columns.collect do |c| 
+        {
+          :name => c[:name], 
+          :type => c[:attr_type] == :json ? :text : c[:attr_type], # store :json columns as :text
+          :default => c[:default_value]
+        } 
+      end
     end
 
     # Default predifined columns (override if needed)

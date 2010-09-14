@@ -13,7 +13,7 @@ module Netzke::Plugins
         
         # replacing class methods
         class << self
-          alias_method_chain :js_extend_properties, :config_tool
+          alias_method_chain :js_properties, :config_tool
         end
 
         # API to commit the changes
@@ -26,8 +26,8 @@ module Netzke::Plugins
     end
 
     module ClassMethods
-      def js_extend_properties_with_config_tool
-        js_extend_properties_without_config_tool.merge({
+      def js_properties_with_config_tool
+        js_properties_without_config_tool.merge({
           :on_gear => <<-END_OF_JAVASCRIPT.l
             function(){
               var w = new Ext.Window({
@@ -114,7 +114,7 @@ module Netzke::Plugins
     end
   
     def config_tool_needed?
-      config_without_config_tool[:ext_config][:config_tool] || config_without_config_tool[:ext_config][:mode] == :config
+      config_without_config_tool[:config_tool] || config_without_config_tool[:mode] == :config
     end
   
   end

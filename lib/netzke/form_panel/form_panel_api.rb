@@ -59,8 +59,12 @@ module Netzke
       def get_combobox_options(params)
         column = params[:column]
         query = params[:query]
+        
+        column = fields.detect{ |c| c[:name] == params[:column] }.try(:to_options!)
+        scopes = column.to_options[:scopes]
+        query = params[:query]
 
-        {:data => data_class.options_for(column, query).map{|s| [s]}}
+        {:data => combobox_options_for_column(column, :query => query, :scopes => scopes)}
       end
   
       def configuration_panel__fields__get_combobox_options(params)

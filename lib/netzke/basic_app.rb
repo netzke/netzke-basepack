@@ -311,7 +311,7 @@ module Netzke
         session[:masq_world] = session[:masq_user] = session[:masq_roles] = nil
       end
 
-      strong_children_config.deep_merge!({:ext_config => {:mode => :config}}) if session[:config_mode]
+      strong_children_config.deep_merge!(:mode => :config) if session[:config_mode]
     end
     
     #

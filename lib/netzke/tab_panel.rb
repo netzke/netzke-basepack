@@ -35,6 +35,7 @@ module Netzke
               if (preloadedItemConfig){
                 var klass = this.classifyScopedName(preloadedItemConfig.scopedClassName);
                 fitPanel.add(new klass(preloadedItemConfig));
+                fitPanel.doLayout();
               }
             }, this);
             

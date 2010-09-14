@@ -1,3 +1,34 @@
+= v0.5.14 - 2010-09-08
+* bug fix
+  * fields configurator wouldn't open in some cases
+  * icons location was hardcoded in search panel (credits to @pschyska)
+  * quick fix for datetimes not being displayed in the preferred timezone
+  * ext_config options :enable_edit_in_form and :enable_advanced_search now do have effect
+  * PropertyEditor fixed for Grid/FormPanel
+  * Grid/FormPanel again obeys persistent_config option when loading columns/fields
+
+* enhancements
+  * numberfield is default in grids also for columns of type float
+  * more narrow exception rescuing in GridPanel code
+  * combobox options can now be searched ("type ahead") also in virtual columns (not efficient though, use at own risk!)
+  * overriding an already existing attribute with `netzke_attribute` now also has effect on association attributes, such as boss__name
+
+= v0.5.13 - 2010-08-11
+* regression
+  * combobox options configuration again has effect
+  
+* bug fix
+  * when a TabPanel was used as a standalone widget, the first tab was rendered empty
+  * Grid/FormPanel: dynamically changing of columns doesn't erase those column settings that are not configurable via GUI, but which were specified in the code
+  
+* enhancements
+  * scopes can now be specified for an association combobox in Grid/FormPanels
+  * GridPanel: you can now configure add/edit/multi_edit/search panels (e.g. to override the fields) and corresponding windows (e.g. to override the title)
+  * minor refactoring GridPanel: moved static js out of grid_panel_js.rb
+
+= v0.5.12 - 2010-06-21
+* Fix: when used with Bundler, was crashing with the "uninitialized constant" exception
+
 = v0.5.11 - 2010-06-20
 * Fix: Partial fix for IE's (the rest to be fixed in Ext).
 * Fix: In some circumstances Netzke::ActiveRecord modules were not loading.
