@@ -1,0 +1,1 @@
+* Netzke::Base now becomes Netzke::Widget::Base

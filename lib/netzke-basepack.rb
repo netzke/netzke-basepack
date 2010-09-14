@@ -4,8 +4,8 @@ require 'netzke-core'
 
 
 module Netzke
-  autoload :Ext, 'netzke/ext'
-  autoload :ActiveRecord, 'netzke/active_record'
+  autoload :Ext, 'ext'
+  autoload :ActiveRecord, 'active_record'
 end
 
 # ExtJS-related constants
