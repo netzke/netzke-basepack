@@ -2,16 +2,16 @@ module Netzke::Widget
   
   # Abstract widget that converts the passed items into aggregatees. 
   # Extend it and specify the desired layout.
-  class Container < Base
+  module Container
     
-    def aggregatees
+    def aggregatees_with_container
       config[:items].nil? ? {} : begin
-        config[:items].each_with_index.inject({}){ |r, (item, i)| r.merge(:"item#{i}" => item)}
+        config[:items].select{ |item| item[:class_name]}.each_with_index.inject({}){ |r, (item, i)| r.merge(:"item#{i}" => item)}
       end
     end
     
-    def js_config
-      res = super
+    def js_config_with_container
+      res = js_config_without_container
       
       # Detect inline aggregatees, and replace them with mere references
       detect_aggregatees_in_hash(res)
@@ -34,6 +34,11 @@ module Netzke::Widget
           end
         end
       end
+      
+    def self.included(receiver)
+      receiver.alias_method_chain :aggregatees, :container
+      receiver.alias_method_chain :js_config, :container
+    end
     
   end
 end

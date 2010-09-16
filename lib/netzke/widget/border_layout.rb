@@ -1,17 +1,16 @@
 module Netzke
   module Widget
     
-    # Panel with the border layout
+    # Panel with border layout
     # == Example configuration:
     # 
     #     :items => [
     #       {:title => "Item One", :class_name => "Widget::Panel", :region => :center},
     #       {:title => "Item Two", :class_name => "Widget::Panel", :region => :west, :width => 300, :split => true}
     #     ]
-    
-    class BorderLayout < Container
+    class BorderLayout < Base
       
-      REGIONS = [:center, :west, :east, :south, :north]
+      include Container
       
       def self.js_properties
         {
