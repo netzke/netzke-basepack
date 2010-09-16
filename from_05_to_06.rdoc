@@ -1,1 +1,3 @@
 * Netzke::Base now becomes Netzke::Widget::Base
+* BorderLayoutPanel becomes BorderLayout
+* Regions in BorderLayout are configured inside :items
