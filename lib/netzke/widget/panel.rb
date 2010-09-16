@@ -1,8 +1,7 @@
 module Netzke
   module Widget
-    class Panel < Base
-      include Actions
-      
+    class Panel < Widget::Base
+
       def self.js_properties
         {
           :update_body_html => <<-END_OF_JAVASCRIPT.l,
@@ -12,6 +11,7 @@ module Netzke
           END_OF_JAVASCRIPT
         }
       end
+      
     end
   end
 end
