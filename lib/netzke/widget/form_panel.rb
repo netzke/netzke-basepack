@@ -132,6 +132,5 @@ module Netzke::Widget
     end
  
     include Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
-    include Netzke::Widget::Actions
   end
 end

@@ -7,14 +7,14 @@ module Netzke::Widget
       # to the constructor of our JavaScript class. Override it when you want to pass any extra configuration
       # to the JavaScript side.
       def js_config
-        super.merge(
+        super.merge({
           :bbar => config.has_key?(:bbar) ? config[:bbar] : default_bbar,
           :context_menu => config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu,
           :clmns => columns, # columns
           :model => config[:model], # the model name
           :inline_data => (get_data if config[:load_inline_data]), # inline data (loaded along with the grid panel)
           :pri => data_class.primary_key # table primary key name
-        )
+        })
       end
 
       module ClassMethods

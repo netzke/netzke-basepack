@@ -218,15 +218,15 @@ module Netzke::Widget
     end
     
     def default_bbar
-      res = %w{ add edit apply del }
-      res << "-" << "add_in_form" << "edit_in_form" if config[:enable_edit_in_form]
-      res << "-" << "search" if config[:enable_extended_search]
+      res = %w{ add edit apply del }.map{ |action| js_action(action) }
+      res << "-" << js_action(:add_in_form) << js_action(:edit_in_form) if config[:enable_edit_in_form]
+      res << "-" << js_action(:search) if config[:enable_extended_search]
       res
     end
     
     def default_context_menu
-      res = %w{ edit del }
-      res << "-" << "edit_in_form" if config[:enable_edit_in_form]
+      res = %w{ edit del }.map{ |action| js_action(action) }
+      res << "-" << js_action(:edit_in_form) if config[:enable_edit_in_form]
       res
     end
     
@@ -347,7 +347,6 @@ module Netzke::Widget
     end
 
     include Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window
-    include Netzke::Widget::Actions
  
   end
 end
