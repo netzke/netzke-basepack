@@ -19,3 +19,4 @@
 
 == One day
 * Replace xcheckbox with checkbox in FormPanel
+* Rename FormPanel to Form, GridPanel to Grid

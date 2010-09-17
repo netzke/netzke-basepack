@@ -42,7 +42,7 @@ module Netzke::Widget
     end
 
     def default_bbar
-      %w{ apply }
+      [js_action(:apply)]
     end
     
     # Extra javascripts
@@ -130,6 +130,12 @@ module Netzke::Widget
       
       res
     end
+ 
+    private
+      
+      def self.server_side_config_options
+        [:record]
+      end
  
     include Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
   end
