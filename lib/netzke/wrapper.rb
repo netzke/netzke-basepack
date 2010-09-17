@@ -14,7 +14,7 @@ module Netzke
   #     :class_name => "FormPanel",
   #     :model => "User"
   #   }
-  class Wrapper < Base
+  class Wrapper < Widget::Base
     def self.js_properties
       super.merge({
         :layout => 'fit',
