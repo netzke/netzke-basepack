@@ -18,13 +18,11 @@ module Netzke
           :init_component => <<-END_OF_JAVASCRIPT.l,
             function(){
               Ext.each(['center', 'west', 'east', 'south', 'north'], function(r){
-                if (this[configName]){
-                  // A function to access a region widget (even if the widget gets reloaded, the function will work).
-                  // E.g.: getEastWidget()
-                  this['get'+r.capitalize()+'Widget'] = function(){
-                    return this.find('region', r)[0].getWidget();
-                  }.createDelegate(this);
-                };
+                // A function to access a region widget (even if the widget gets reloaded, the function will work).
+                // E.g.: getEastWidget()
+                this['get'+r.capitalize()+'Widget'] = function(){
+                  return this.find('region', r)[0];
+                }.createDelegate(this);
               }, this);
 
               // Now let Ext.Panel do the rest

@@ -2,19 +2,17 @@
 require 'active_support'
 require 'netzke-core'
 
+path = File.dirname(__FILE__)
+$LOAD_PATH << path
+
+# Make widget classes auto-loadable with help of ActiveSupport
+ActiveSupport::Dependencies.autoload_paths << path
+
 require 'netzke/active_record'
 
 module Netzke
   autoload :Ext, 'ext'
 end
-
-# ExtJS-related constants
-# require 'netzke/ext'
-# require 'netzke/active_record'
-
-# Make widget classes auto-loadable with help of ActiveSupport
-path = File.dirname(__FILE__)
-ActiveSupport::Dependencies.autoload_paths << path
 
 # Make this plugin auto-reloadable for easier development
 ActiveSupport::Dependencies.autoload_once_paths.delete(path)
