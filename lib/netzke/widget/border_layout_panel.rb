@@ -20,7 +20,9 @@ module Netzke
               Ext.each(['center', 'west', 'east', 'south', 'north'], function(r){
                 // A function to access a region widget (even if the widget gets reloaded, the function will work).
                 // E.g.: getEastWidget()
-                this['get'+r.capitalize()+'Widget'] = function(){
+                var methodName = 'get'+r.capitalize()+'Widget';
+                this[methodName] = function(){
+                  Netzke.deprecationWarning("Instead of '" + methodName + "' use getAggregatee(aggregateeName).");
                   return this.find('region', r)[0];
                 }.createDelegate(this);
               }, this);
@@ -32,7 +34,6 @@ module Netzke
               if (this.persistentConfig) {this.on('afterlayout', this.setResizeEvents, this, {single: true});}
             }
           END_OF_JAVASCRIPT
-          
         }
       end
 
