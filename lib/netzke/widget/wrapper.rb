@@ -1,4 +1,4 @@
-module Netzke
+module Netzke::Widget
   # = Wrapper
   # 
   # Simple Ext.Panel with layout 'fit' that wraps up another Netzke widget. Can be useful in HTML pages where
@@ -14,7 +14,9 @@ module Netzke
   #     :class_name => "FormPanel",
   #     :model => "User"
   #   }
-  class Wrapper < Widget::Base
+  class Wrapper < Base
+    include Container
+    
     def self.js_properties
       super.merge({
         :layout => 'fit',
@@ -22,20 +24,7 @@ module Netzke
         # invisible
         :header => false,
         :border => false,
-        
-        :init_component => <<-END_OF_JAVASCRIPT.l,
-          function(){
-            #{js_full_class_name}.superclass.initComponent.call(this);
-
-            // instantiate the item
-            this.instantiateChild(this.itemConfig);
-          }
-        END_OF_JAVASCRIPT
       })
-    end
-
-    def initial_aggregatees
-      {:item => config[:item]}
     end
     
   end
