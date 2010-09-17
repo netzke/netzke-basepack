@@ -2,10 +2,10 @@
 require 'active_support'
 require 'netzke-core'
 
+require 'netzke/active_record'
 
 module Netzke
   autoload :Ext, 'ext'
-  autoload :ActiveRecord, 'active_record'
 end
 
 # ExtJS-related constants
