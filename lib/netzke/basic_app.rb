@@ -13,7 +13,7 @@ module Netzke
   class BasicApp < Base
     def self.include_js
       res = []
-      ext_examples = Netzke::Base.config[:ext_location] + "/examples/"
+      ext_examples = Netzke::Widget::Base.config[:ext_location] + "/examples/"
       res << ext_examples + "ux/statusbar/StatusBar.js"
       res << "#{File.dirname(__FILE__)}/basic_app/statusbar_ext.js"
     end
@@ -32,7 +32,7 @@ module Netzke
     
     # def self.include_css
     #   res = []
-    #   res << Netzke::Base.config[:ext_location] + "/examples/ux/css/StatusBar.css"
+    #   res << Netzke::Widget::Base.config[:ext_location] + "/examples/ux/css/StatusBar.css"
     #   res
     # end
     

@@ -46,7 +46,7 @@ module Netzke::Widget
   #     
   #     [["user_id_not", 100], ["name_like", "Peter"], :recent]
   # 
-  # In the <tt>:ext_config</tt> hash (see Netzke::Base) the following GridPanel specific options are available:
+  # In the <tt>:ext_config</tt> hash (see Netzke::Widget::Base) the following GridPanel specific options are available:
   # 
   # * <tt>:enable_column_filters</tt> - enable filters in column's context menu
   # * <tt>:enable_edit_in_form</tt> - provide buttons into the toolbar that activate editing/adding records via a form
@@ -60,7 +60,7 @@ module Netzke::Widget
   # * <tt>:add/edit/multi_edit/search_form_config</tt> - additional configuration for add/edit/multi_edit/search form panel
   # * <tt>:add/edit/multi_edit_form_window_config</tt> - additional configuration for the window that wrapps up add/edit/multi_edit form panel
   # 
-  # Additionally supports Netzke::Base config options.
+  # Additionally supports Netzke::Widget::Base config options.
   # 
   # == Columns
   # Here's how the GridPanel decides which columns in which sequence and with which configuration to display.
