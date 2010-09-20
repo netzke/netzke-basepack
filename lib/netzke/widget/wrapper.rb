@@ -15,8 +15,6 @@ module Netzke::Widget
   #     :model => "User"
   #   }
   class Wrapper < Base
-    include Container
-    
     def self.js_properties
       super.merge({
         :layout => 'fit',
@@ -26,6 +24,5 @@ module Netzke::Widget
         :border => false,
       })
     end
-    
   end
 end

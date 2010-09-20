@@ -1,6 +1,5 @@
 module Netzke
   module Widget
-    
     # Panel with border layout
     # == Example configuration:
     # 
@@ -9,8 +8,6 @@ module Netzke
     #       {:title => "Item Two", :class_name => "Widget::Panel", :region => :west, :width => 300, :split => true}
     #     ]
     class BorderLayoutPanel < Base
-      
-      include Container
       
       def self.js_properties
         {

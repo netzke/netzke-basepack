@@ -11,26 +11,14 @@ module Netzke::Widget
   # * Introduce a second or two delay before informing the server about a tab switched
   # 
   class TabPanel < Base
-    include Container
-    
-    # api :api_activate_tab
-    
     def self.js_base_class
       "Ext.TabPanel"
     end
 
-    def self.js_properties
-      {
-        :active_tab => 0,
-        :id_delimiter => "___", # the default was "__", which conflicts with Netzke's double underscore notation
-      }
-    end
-
-    def config
-      {
-        :items => [{:class_name => "Widget::GridPanel", :title => "Blah1", :model => "User"}, {:title => "Blah2", :html => "Testik"}]
-      }.deep_merge(super)
-    end
-    
+    # def config
+    #   {
+    #     :items => [{:class_name => "Widget::GridPanel", :title => "Blah1", :model => "User"}, {:title => "Blah2", :html => "Testik"}]
+    #   }.deep_merge(super)
+    # end
   end
 end
