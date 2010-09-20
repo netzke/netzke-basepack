@@ -42,7 +42,7 @@ module Netzke::Widget
     end
 
     def default_bbar
-      [js_action(:apply)]
+      [:apply.ext_action]
     end
     
     # Extra javascripts

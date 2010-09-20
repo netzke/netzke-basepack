@@ -218,15 +218,15 @@ module Netzke::Widget
     end
     
     def default_bbar
-      res = %w{ add edit apply del }.map{ |action| js_action(action) }
-      res << "-" << js_action(:add_in_form) << js_action(:edit_in_form) if config[:enable_edit_in_form]
-      res << "-" << js_action(:search) if config[:enable_extended_search]
+      res = %w{ add edit apply del }.map(&:to_sym).map(&:ext_action)
+      res << "-" << :add_in_form.ext_action << :edit_in_form.ext_action if config[:enable_edit_in_form]
+      res << "-" << :search.ext_action if config[:enable_extended_search]
       res
     end
     
     def default_context_menu
-      res = %w{ edit del }.map{ |action| js_action(action) }
-      res << "-" << js_action(:edit_in_form) if config[:enable_edit_in_form]
+      res = %w{ edit del }.map(&:to_sym).map(&:ext_action)
+      res << "-" << :edit_in_form.ext_action if config[:enable_edit_in_form]
       res
     end
     
