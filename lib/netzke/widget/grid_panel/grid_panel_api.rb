@@ -164,7 +164,7 @@ module Netzke::Widget
           @search ||= begin
             # make params coming from Ext grid filters understandable by searchlogic
             search_params = normalize_params(params)
-
+            
             # merge with conditions coming from the config
             search_params[:conditions].deep_merge!(config[:conditions] || {})
 
@@ -173,20 +173,27 @@ module Netzke::Widget
               normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
             ) if params[:extra_conditions]
                                      
-            puts "search: #{data_class.name}.where(#{search_params.inspect})"
             search = data_class.where(search_params[:conditions])
-      
-            # applying scopes
-            scopes.each do |s|
-              if s.is_a?(Array)
-                scope_name, *args = s   
-                search.where(scope_name.to_sym => args.first) if args.first != nil
+            
+            query = config[:query]
+            
+            if query
+              case query.class.name
+              when "Symbol" # scope
+                search.send(query)
+              when "String" # MySQL query
+                search.where(query)
+              when "Hash"   # conditions hash
+                search.where(query)
+              when "Proc"   # anything, should return ActiveRecord::Relation, or something similar, so that pagination works
+                query.call(data_class)
               else
-                search.where(s.to_sym => true)
+                raise "Unknown query parameter for GridPanel #{global_id}"
               end
+            else
+              search
             end
-      
-            search
+            
           end
         end
 

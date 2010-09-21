@@ -4,7 +4,8 @@ module Netzke
       {
         :mode => :config,
         :model => "User",
-        :title => "Users"
+        :title => "Users",
+        :query => lambda{ |klass| klass.where(:id =>  8) },
       }.deep_merge super
     end
   end
