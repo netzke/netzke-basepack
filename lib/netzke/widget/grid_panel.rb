@@ -276,16 +276,17 @@ module Netzke::Widget
       actions
     end
 
-    def initial_late_aggregatees
+    def aggregatees
       res = {}
       
       # Edit in form
       res.merge!({
         :add_form => {
+          :late_aggregation => true,
           :class_name => "Widget::GridPanel::RecordFormWindow",
           :title => "Add #{data_class.table_name.singularize.humanize}",
           :button_align => "right",
-          :item => {
+          :items => [{
             :class_name => "Widget::FormPanel",
             :model => config[:model],
             :items => default_fields_for_forms,
@@ -296,14 +297,15 @@ module Netzke::Widget
             :header => false,
             :mode => config[:mode],
             :record => data_class.new
-          }.deep_merge(config[:add_form_config] || {})
+          }.deep_merge(config[:add_form_config] || {})]
         }.deep_merge(config[:add_form_window_config] || {}),
         
         :edit_form => {
+          :late_aggregation => true,
           :class_name => "Widget::GridPanel::RecordFormWindow",
           :title => "Edit #{data_class.table_name.singularize.humanize}",
           :button_align => "right",
-          :item => {
+          :items => [{
             :class_name => "Widget::FormPanel",
             :model => config[:model],
             :fields => default_fields_for_forms,
@@ -311,14 +313,15 @@ module Netzke::Widget
             :bbar => false,
             :header => false,
             :mode => config[:mode]
-          }.deep_merge(config[:edit_form_config] || {})
+          }.deep_merge(config[:edit_form_config] || {})]
         }.deep_merge(config[:edit_form_window_config] || {}),
         
         :multi_edit_form => {
+          :late_aggregation => true,
           :class_name => "Widget::GridPanel::RecordFormWindow",
           :title => "Edit #{data_class.table_name.humanize}",
           :button_align => "right",
-          :item => {
+          :items => [{
             :class_name => "Widget::GridPanel::MultiEditForm",
             :model => config[:model],
             :fields => default_fields_for_forms,
@@ -326,13 +329,14 @@ module Netzke::Widget
             :bbar => false,
             :header => false,
             :mode => config[:mode]
-          }.deep_merge(config[:multi_edit_form_config] || {})
+          }.deep_merge(config[:multi_edit_form_config] || {})]
         }.deep_merge(config[:multi_edit_form_window_config] || {})
       }) if config[:enable_edit_in_form]
       
       # Extended search
       res.merge!({
         :search_panel => {
+          :late_aggregation => true,
           :class_name => "Widget::SearchPanel",
           :fields => default_fields_for_forms,
           :search_class_name => config[:model],

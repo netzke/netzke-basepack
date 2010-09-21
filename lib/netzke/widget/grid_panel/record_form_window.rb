@@ -2,14 +2,13 @@ module Netzke
   module Widget
     class GridPanel < Base
       class RecordFormWindow < Window
+        
         def initial_config
           super.deep_merge({
-            :ext_config => {
-              :modal => true,
-              :width => "60%",
-              :height => "90%",
-              :fbar => [:ok, :cancel]
-            }
+            :modal => true,
+            :width => "60%",
+            :height => "90%",
+            :fbar => [:ok.ext_action, :cancel.ext_action]
           })
         end
     
@@ -37,13 +36,6 @@ module Netzke
                 this.close();
               }
             END_OF_JAVASCRIPT
-          
-            :on_test => <<-END_OF_JAVASCRIPT.l,
-              function(){
-                console.info("this.parent: ", this.getParent());
-              }
-            END_OF_JAVASCRIPT
-          
           }
         end
       end

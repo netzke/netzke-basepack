@@ -15,13 +15,6 @@ module Netzke
       "Ext.Window"
     end
     
-    # Set the passed item as the only aggregatee
-    def initial_aggregatees
-      res = {}
-      res.merge!(:item => config[:item]) if config[:item]
-      res
-    end
-    
     # Extends the JavaScript class
     def self.js_properties
       {
