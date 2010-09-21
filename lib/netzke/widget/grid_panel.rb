@@ -42,12 +42,18 @@ module Netzke::Widget
   # The following config options are available:
   # * <tt>:model</tt> - name of the ActiveRecord model that provides data to this GridPanel.
   # * <tt>:strong_default_attrs</tt> - a hash of attributes to be merged atop of every created/updated record.
-  # * <tt>:scopes</tt> - an array of named scopes to filter grid data, e.g.:
+  # * <tt>:query</tt> - specifies how the data should be filtered.
+  #   When it's a symbol, it's used as a scope name. 
+  #   When it's a string, it's a SQL statement (passed directly to +where+). 
+  #   When it's a hash, it's a conditions hash (passed directly to +where+). 
+  #   When it's an array, it's expanded into SQL statement with arguments (passed directly to +where+), e.g.:
+  #   
+  #     :query => ["id > ?", 100])
+  # 
+  #   When it's a Proc, it's passed the model class, and is expected to return a ActiveRecord::Relation, e.g.:
+  # 
+  #     :query => { |klass| klass.where(:id.gt => 100).order(:created_at) }  
   #     
-  #     [["user_id_not", 100], ["name_like", "Peter"], :recent]
-  # 
-  # In the <tt>:ext_config</tt> hash (see Netzke::Widget::Base) the following GridPanel specific options are available:
-  # 
   # * <tt>:enable_column_filters</tt> - enable filters in column's context menu
   # * <tt>:enable_edit_in_form</tt> - provide buttons into the toolbar that activate editing/adding records via a form
   # * <tt>:enable_extended_search</tt> - provide a button into the toolbar that shows configurable search form

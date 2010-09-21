@@ -185,6 +185,8 @@ module Netzke::Widget
                 search.where(query)
               when "Hash"   # conditions hash
                 search.where(query)
+              when "Array"  # SQL query with params
+                search.where(query)
               when "Proc"   # anything, should return ActiveRecord::Relation, or something similar, so that pagination works
                 query.call(data_class)
               else
