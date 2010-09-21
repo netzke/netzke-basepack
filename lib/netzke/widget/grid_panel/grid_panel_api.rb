@@ -144,6 +144,81 @@ module Netzke::Widget
       end
       
       protected
+        
+        def get_records(params)
+          
+          # Restore params from widget_session if requested
+          if params[:with_last_params]
+            params = widget_session[:last_params]
+          else
+            # remember the last params
+            widget_session[:last_params] = params
+          end
+      
+          # build initial relation based on passed params
+          relation = get_relation(params)
+      
+          # apply sorting if needed
+          if params[:sort]
+            assoc, method = params[:sort].split('__')
+            dir = params[:dir].downcase
+            relation = if method.nil?
+              relation.order(assoc.to_sym.send(dir))
+            else
+              relation.order(assoc.tableize.to_sym => method.to_sym.send(dir)).joins(assoc.to_sym)
+            end
+          end
+          
+          # apply pagination if needed
+          if config[:enable_pagination]
+            per_page = config[:rows_per_page]
+            page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
+            relation.paginate(:per_page => per_page, :page => page)
+          else
+            relation.all
+          end
+        end
+    
+        # Returns searchlogic's search with all the conditions
+        def get_relation(params)
+          # make params coming from Ext grid filters understandable by meta_where
+          # search_params = normalize_params(params)
+          conditions = params[:filter] && convert_filters(params[:filter]) || {}
+          
+          # merge with conditions coming from the config
+          # search_params[:conditions].deep_merge!(config[:conditions] || {})
+
+          # merge with extra conditions (in searchlogic format, come from the extended search form)
+          conditions.deep_merge!(
+            normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
+          ) if params[:extra_conditions]
+                                   
+          search = data_class.where(conditions)
+          
+          query = config[:query]
+          
+          if query
+            case query.class.name
+            when "Symbol" # scope
+              search.send(query)
+            when "String" # MySQL query
+              search.where(query)
+            when "Hash"   # conditions hash
+              search.where(query)
+            when "Array"  # SQL query with params
+              search.where(query)
+            when "Proc"   # anything, should return ActiveRecord::Relation, or something similar, so that pagination works
+              query.call(data_class)
+            else
+              raise "Unknown query parameter for GridPanel #{global_id}"
+            end
+          else
+            search
+          end
+        end
+
+        
+      
         # Override this method to react on each operation that caused changing of data
         def on_data_changed; end
     
@@ -157,46 +232,6 @@ module Netzke::Widget
             end
           end
           norm_index
-        end
-
-        # Returns searchlogic's search with all the conditions
-        def get_search(params)
-          @search ||= begin
-            # make params coming from Ext grid filters understandable by searchlogic
-            search_params = normalize_params(params)
-            
-            # merge with conditions coming from the config
-            search_params[:conditions].deep_merge!(config[:conditions] || {})
-
-            # merge with extra conditions (in searchlogic format, come from the extended search form)
-            search_params[:conditions].deep_merge!(
-              normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
-            ) if params[:extra_conditions]
-                                     
-            search = data_class.where(search_params[:conditions])
-            
-            query = config[:query]
-            
-            if query
-              case query.class.name
-              when "Symbol" # scope
-                search.send(query)
-              when "String" # MySQL query
-                search.where(query)
-              when "Hash"   # conditions hash
-                search.where(query)
-              when "Array"  # SQL query with params
-                search.where(query)
-              when "Proc"   # anything, should return ActiveRecord::Relation, or something similar, so that pagination works
-                query.call(data_class)
-              else
-                raise "Unknown query parameter for GridPanel #{global_id}"
-              end
-            else
-              search
-            end
-            
-          end
         end
 
         # Params: 
@@ -247,39 +282,6 @@ module Netzke::Widget
           mod_records
         end
 
-        # get records
-        def get_records(params)
-          # Restore params from widget_session if requested
-          if params[:with_last_params]
-            params = widget_session[:last_params]
-          else
-            # remember the last params
-            widget_session[:last_params] = params
-          end
-      
-          search = get_search(params)
-      
-          # sorting
-          if params[:sort]
-            assoc, method = params[:sort].split('__')
-            dir = params[:dir].downcase
-            search = if method.nil?
-              search.order(assoc.to_sym.send(dir))
-            else
-              search.order(assoc.tableize.to_sym => method.to_sym.send(dir)).joins(assoc.to_sym)
-            end
-          end
-          
-          # pagination
-          if config[:enable_pagination]
-            per_page = config[:rows_per_page]
-            page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
-            search.paginate(:per_page => per_page, :page => page)
-          else
-            search.all
-          end
-        end
-    
         # When providing the edit_form aggregatee, fill in the form with the requested record
         def load_aggregatee_with_cache(params)
           if params[:id] == 'editForm'
@@ -333,6 +335,7 @@ module Netzke::Widget
         end
 
         def normalize_extra_conditions(conditions)
+          Rails.logger.debug "***** conditions: #{conditions.inspect}\n"
           conditions.deep_convert_keys{|k| get_key(k)}
         end
 
@@ -343,14 +346,17 @@ module Netzke::Widget
         # make params understandable to searchlogic
         def normalize_params(params)
           # filters
-          conditions = params[:filter] && convert_filters(params[:filter])
+          conditions = params[:filter] && convert_filters(params[:filter]) || {}
         
-          normalized_conditions = {}
-          conditions && conditions.each_pair do |k, v|
-            normalized_conditions.merge!(get_key(k) => v)
-          end
-  
-          {:conditions => normalized_conditions}
+          Rails.logger.debug "***** conditions: #{conditions.inspect}\n"
+        
+          # normalized_conditions = {}
+          # conditions && conditions.each_pair do |k, v|
+          #   normalized_conditions.merge!(get_key(k) => v)
+          # end
+          # 
+          # {:conditions => normalized_conditions}
+          {:conditions => conditions}
         end
     
         # def check_for_positive_result(res)

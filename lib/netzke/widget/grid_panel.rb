@@ -153,27 +153,26 @@ module Netzke::Widget
       # Optional extended search functionality
       res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/advanced_search.js" if config[:extended_search_available]
       
+      ext_examples = Netzke::Widget::Base.config[:ext_location].join("examples")
+      
       # Checkcolumn
-      # TODO: 2010-09-14
-      # ext_examples = Netzke::Widget::Base.config[:ext_location] + "/examples/"
-      # res << ext_examples + "ux/CheckColumn.js"
+      res << ext_examples.join("ux/CheckColumn.js")
       
       # Filters
-      # if config[:column_filters_available]
-      #   ext_examples = Netzke::Widget::Base.config[:ext_location] + "/examples/"
-      #   res << ext_examples + "ux/gridfilters/menu/ListMenu.js"
-      #   res << ext_examples + "ux/gridfilters/menu/RangeMenu.js"
-      #   res << ext_examples + "ux/gridfilters/GridFilters.js"
-      # 
-      #   %w{Boolean Date List Numeric String}.unshift("").each do |f|
-      #     res << ext_examples + "ux/gridfilters/filter/#{f}Filter.js"
-      #   end
-      # end
+      if config[:column_filters_available]
+        res << ext_examples + "ux/gridfilters/menu/ListMenu.js"
+        res << ext_examples + "ux/gridfilters/menu/RangeMenu.js"
+        res << ext_examples + "ux/gridfilters/GridFilters.js"
       
-      # # DD
-      # if config[:rows_reordering_available]
-      #   res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"
-      # end
+        %w{Boolean Date List Numeric String}.unshift("").each do |f|
+          res << ext_examples + "ux/gridfilters/filter/#{f}Filter.js"
+        end
+      end
+      
+      # DD
+      if config[:rows_reordering_available]
+        res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"
+      end
 
       res
     end
