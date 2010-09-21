@@ -77,10 +77,11 @@ module Netzke::Widget
 
       # Returns choices for a column
       def get_combobox_options(params)
-        column = params[:column]
+        column = columns.detect{ |c| c[:name] == params[:column] }.try(:to_options!)
+        scopes = (column[:editor].is_a?(Hash) && column[:editor] || {}).to_options[:scopes]
         query = params[:query]
-        {:data => data_class.options_for(column, query).map{|s| [s]}}
-        # {:data => data_class.options_for(column, query).map{|s| [s]}}
+        
+        {:data => combobox_options_for_column(column, :query => query, :scopes => scopes)}
       end
 
       def move_rows(params)

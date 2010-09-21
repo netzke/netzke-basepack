@@ -26,19 +26,19 @@ class ActiveRecordBasepackTest < ActiveSupport::TestCase
   # end
   
   test "choices for column" do
-    cities = City.options_for("name")
+    cities = City.netzke_combo_options_for("name")
     assert_equal(3, cities.size)
     assert(cities.include?('Cordoba') && cities.include?('Buenos Aires'))
 
-    countries = City.options_for("country__name")
+    countries = City.netzke_combo_options_for("country__name")
     assert_equal(2, countries.size)
     assert(countries.include?('Spain') && countries.include?('Argentina'))
     
-    continents = City.options_for("country__continent__name")
+    continents = City.netzke_combo_options_for("country__continent__name")
     assert_equal(2, continents.size)
     assert(continents.include?('Europe') && continents.include?('South America'))
     
-    cities = City.options_for("name", "Co")
+    cities = City.netzke_combo_options_for("name", "Co")
     assert_equal(2, cities.size)
     assert(cities.include?('Cordoba') && cities.include?('Concordia'))
   end
