@@ -10,7 +10,7 @@ module Netzke::Widget
       def get_data(params = {})
         if !config[:prohibit_read]
           records = get_records(params)
-          {:data => records.map{|r| r.to_array(columns, self)}, :total => config[:enable_pagination] && records.total_entries}
+          {:data => records.map{|r| r.to_array(columns)}, :total => config[:enable_pagination] && records.total_entries}
         else
           flash :error => "You don't have permissions to read data"
           {:feedback => @flash}
@@ -228,7 +228,7 @@ module Netzke::Widget
         
               # try to save
               # modified_records += 1 if success && record.save
-              mod_records[id] = record.to_array(columns, self) if success && record.save
+              mod_records[id] = record.to_array(columns) if success && record.save
               # mod_record_ids << id if success && record.save
 
               # flash eventual errors

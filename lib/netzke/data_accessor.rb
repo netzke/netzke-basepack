@@ -3,13 +3,6 @@
 module Netzke
   # This module is included into such data-driven widgets as GridPanel, FormPanel, etc.
   module DataAccessor
-    # This method should be called from the constructor of the widget.
-    def apply_helpers
-      # Generic extensions to the data model
-      if data_class # because some widgets, like FormPanel, may have it optional
-        data_class.send(:include, Netzke::ActiveRecord::DataAccessor) if !data_class.include?(Netzke::ActiveRecord::DataAccessor)
-      end
-    end
     
     # Returns options for comboboxes in grids/forms
     def combobox_options_for_column(column, method_options = {})
