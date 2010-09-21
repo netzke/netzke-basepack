@@ -58,11 +58,6 @@ module Netzke::Widget
 
     attr_accessor :record
     
-    def initialize(*args)
-      super
-      apply_helpers
-    end
-    
     # Model class
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class

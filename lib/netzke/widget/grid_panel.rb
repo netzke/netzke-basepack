@@ -203,11 +203,6 @@ module Netzke::Widget
       end
     end
 
-    def initialize(config = {}, parent = nil)
-      super
-      apply_helpers
-    end
-
     # Fields to be displayed in the "General" tab of the configuration panel
     def self.property_fields
       [
