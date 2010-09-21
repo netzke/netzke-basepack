@@ -45,7 +45,7 @@ module Netzke
         
         else
           # Options for a non-association attribute
-          data_class.options_for(column[:name], method_options[:query]).map{|s| [s]}
+          data_class.netzke_combo_options_for(column[:name], method_options)
         end
       end
     end

@@ -64,7 +64,7 @@ module Netzke::Widget
         scopes = column.to_options[:scopes]
         query = params[:query]
 
-        {:data => combobox_options_for_column(column, :query => query, :scopes => scopes)}
+        {:data => combobox_options_for_column(column, :query => query, :scopes => scopes, :record_id => params[:id])}
       end
   
       def configuration_panel__fields__get_combobox_options(params)

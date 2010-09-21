@@ -36,6 +36,10 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
     this.on('specialkey', function(cb, event){
       if (event.getKey() == 9 || event.getKey() == 13) {cb.setValue(cb.getRawValue());}
     });
+    
+    store.on('beforeload',function(store, options){
+      options.params.id = Ext.getCmp(this.parentId).getSelectionModel().getSelected().get('id');
+    },this)
   }
 });
 
