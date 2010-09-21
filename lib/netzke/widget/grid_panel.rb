@@ -350,7 +350,7 @@ module Netzke::Widget
       res
     end
 
-    include Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window
+    include ::Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window
  
   end
 end
