@@ -3,7 +3,7 @@ require 'active_record'
 require 'meta_where'
 require 'will_paginate'
 
-module Netzke::Widget
+module Netzke::Component
   class GridPanel < Base
     module GridPanelApi
       
@@ -99,12 +99,12 @@ module Netzke::Widget
       end
       
       #
-      # Some aggregatees' overridden API 
+      # Some components' overridden API 
       # 
     
       ## Edit in form specific API
       def add_form__item__netzke_submit(params)
-        res = aggregatee_instance(:add_form__item).netzke_submit(params)
+        res = component_instance(:add_form__item).netzke_submit(params)
       
         if res[:set_form_values]
           # successful creation
@@ -115,7 +115,7 @@ module Netzke::Widget
       end
 
       def edit_form__item__netzke_submit(params)
-        res = aggregatee_instance(:edit_form__item).netzke_submit(params)
+        res = component_instance(:edit_form__item).netzke_submit(params)
 
         if res[:set_form_values]
           on_data_changed
@@ -147,12 +147,12 @@ module Netzke::Widget
         
         def get_records(params)
           
-          # Restore params from widget_session if requested
+          # Restore params from component_session if requested
           if params[:with_last_params]
-            params = widget_session[:last_params]
+            params = component_session[:last_params]
           else
             # remember the last params
-            widget_session[:last_params] = params
+            component_session[:last_params] = params
           end
       
           # build initial relation based on passed params
@@ -282,11 +282,11 @@ module Netzke::Widget
           mod_records
         end
 
-        # When providing the edit_form aggregatee, fill in the form with the requested record
-        def load_aggregatee_with_cache(params)
+        # When providing the edit_form component, fill in the form with the requested record
+        def load_component_with_cache(params)
           if params[:id] == 'editForm'
             Rails.logger.debug "!!! params[:record_id]: #{params[:record_id].inspect}\n"
-            aggregatees[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i)
+            components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i)
           end
       
           super

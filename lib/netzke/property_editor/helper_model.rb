@@ -1,12 +1,12 @@
 module Netzke
   class PropertyEditor < FormPanel
     class HelperModel
-      def self.widget=(w)
-        @@widget = w
+      def self.component=(w)
+        @@component = w
       end
       
-      def self.widget
-        @@widget ||= raise RuntimeError, "No widget specified for PropertyEditor::HelperModel"
+      def self.component
+        @@component ||= raise RuntimeError, "No component specified for PropertyEditor::HelperModel"
       end
       
       def self.reflect_on_all_associations
@@ -18,8 +18,8 @@ module Netzke
       end
       
       def self.netzke_exposed_attributes
-        preferences = self.widget.flat_default_config
-        # preferences = NetzkePreference.find_all_for_widget(widget.name)
+        preferences = self.component.flat_default_config
+        # preferences = NetzkePreference.find_all_for_component(component.name)
         preferences.each { |p| p.reject!{ |k,v| k == :value}.merge!(:field_label => p[:name].to_s.gsub('__', "/").humanize) }
         preferences
       end
@@ -76,9 +76,9 @@ module Netzke
         res
       end
 
-      # somewhat sofisticated code to convert all NetzkePreferences for current widget into a hash ("un-flatten")
+      # somewhat sofisticated code to convert all NetzkePreferences for current component into a hash ("un-flatten")
       def attributes
-        prefs = NetzkePreference.find_all_for_widget(self.class.widget.global_id)
+        prefs = NetzkePreference.find_all_for_component(self.class.component.global_id)
         res = {}
         prefs.each do |p|
           tmp_res = {}
@@ -95,10 +95,10 @@ module Netzke
       def method_missing(method_name, *args)
         method_name = method_name.to_s
         method_name_without_equal_sign = method_name.sub(/=$/, '')
-        NetzkePreference.widget_name = self.class.widget.global_id
+        NetzkePreference.component_name = self.class.component.global_id
 
         if method_name =~ /=$/
-          current_value = self.class.widget.flat_independent_config(method_name_without_equal_sign)
+          current_value = self.class.component.flat_independent_config(method_name_without_equal_sign)
           
           begin
             new_value = ActiveSupport::JSON.decode(args.first) # TODO: provide feedback about this error
@@ -106,12 +106,12 @@ module Netzke
             new_value = current_value
           end
           
-          initial_value = self.class.widget.flat_initial_config(method_name_without_equal_sign)
+          initial_value = self.class.component.flat_initial_config(method_name_without_equal_sign)
       
           new_value = nil if new_value == initial_value
           NetzkePreference[method_name_without_equal_sign] = new_value
         else
-          res = self.class.widget.flat_independent_config(method_name_without_equal_sign)
+          res = self.class.component.flat_independent_config(method_name_without_equal_sign)
           res = ActiveSupport::JSON.encode(res) if res.is_a?(Array) || res.is_a?(Hash)
           res
         end

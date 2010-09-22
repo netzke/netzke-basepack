@@ -1,4 +1,4 @@
-module Netzke::Widget
+module Netzke::Component
   class GridPanel < Base
     module GridPanelColumns
       module ClassMethods
@@ -84,7 +84,7 @@ module Netzke::Widget
           end
           columns_for_create = columns_from_config
         else
-          # we didn't have columns configured in widget's config, so, use the columns from the data class
+          # we didn't have columns configured in component's config, so, use the columns from the data class
           columns_for_create = default_columns
         end
         

@@ -2,9 +2,9 @@ module Netzke
   # TabPanel
   # 
   # Features:
-  # * Dynamically loads widgets for the tabs that get activated for the first time
-  # * Is loaded along with the active widget - saves a request to the server
-  # * Provides the method markTabsOutdated to mark all inactive tabs as 'outdated', and calls "update" method on widgets in tabs when they get activated
+  # * Dynamically loads components for the tabs that get activated for the first time
+  # * Is loaded along with the active component - saves a request to the server
+  # * Provides the method markTabsOutdated to mark all inactive tabs as 'outdated', and calls "update" method on components in tabs when they get activated
   #
   # TODO:
   # * Stores the last active tab in persistent_config
@@ -29,9 +29,9 @@ module Netzke
             // We do this all in +render+ because only at this moment the activeTab is actually activated
             var activeTab = this.getActiveTab();
             
-            // Insert (render) preloaded widgets into their respective tabs
+            // Insert (render) preloaded components into their respective tabs
             this.items.each(function(fitPanel){
-              var preloadedItemConfig = this[fitPanel.widget.camelize(true)+"Config"];
+              var preloadedItemConfig = this[fitPanel.component.camelize(true)+"Config"];
               if (preloadedItemConfig){
                 var klass = this.classifyScopedName(preloadedItemConfig.scopedClassName);
                 fitPanel.add(new klass(preloadedItemConfig));
@@ -44,10 +44,10 @@ module Netzke
           }
         END_OF_JAVASCRIPT
         
-        # loads widget from the server
-        :load_widget_into => <<-END_OF_JAVASCRIPT.l,
+        # loads component from the server
+        :load_component_into => <<-END_OF_JAVASCRIPT.l,
           function(fitPanel){
-            this.loadAggregatee({id:fitPanel.widget, container:fitPanel.id});
+            this.loadComponent({id:fitPanel.component, container:fitPanel.id});
           }
         END_OF_JAVASCRIPT
         
@@ -64,7 +64,7 @@ module Netzke
         # bulkExecute in active tab
         :execute_in_active_tab => <<-END_OF_JAVASCRIPT.l,
           function(commands){
-            this.getActiveTab().getWidget().bulkExecute(commands);
+            this.getActiveTab().getComponent().bulkExecute(commands);
           }
         END_OF_JAVASCRIPT
         
@@ -72,7 +72,7 @@ module Netzke
           function(){
             var res = [];
             this.items.each(function(tab){
-              var kid = tab.getWidget();
+              var kid = tab.getComponent();
               if (kid) { res.push(kid) }
             }, this);
             return res;
@@ -81,19 +81,19 @@ module Netzke
         
         :on_tab_change => <<-END_OF_JAVASCRIPT.l
           function(self, tab) {
-            // load widget into the panel from the server if it's not there yet
-            if (!tab.getWidget()) {
-              this.loadWidgetInto(tab);
+            // load component into the panel from the server if it's not there yet
+            if (!tab.getComponent()) {
+              this.loadComponentInto(tab);
             }
             
             // inform the server about active tab change
-            this.apiActivateTab({tab:tab.widget});
+            this.apiActivateTab({tab:tab.component});
             
-            // call "update" on the widget
+            // call "update" on the component
             if (tab.outdated) {
               tab.outdated = false;
-              var widget = tab.getWidget();
-              if (widget && widget.update) {widget.update.call(widget)};
+              var component = tab.getComponent();
+              if (component && component.update) {component.update.call(component)};
             }
           }
         END_OF_JAVASCRIPT
@@ -135,27 +135,27 @@ module Netzke
       # the first tab is forced to become active, if none was configured as active
       items.first[:active] = true and first_active = items.first.name if first_active.nil?
       
-      widget_session[:active_tab] = first_active
+      component_session[:active_tab] = first_active
     end
     
-    # the items are late aggregatees, besides the one that is configured active
-    def initial_aggregatees
+    # the items are late components, besides the one that is configured active
+    def initial_components
       res = {}
       items.each_with_index do |item, i|
-        item[:late_aggregation] = !item[:active] && !item[:preloaded]
+        item[:lazy_loading] = !item[:active] && !item[:preloaded]
         res.merge!(item[:name].to_sym => item)
       end
       res
     end
 
-    # "Fit panels" - Panels with layout 'fit' that serve as containers for (dynamically) loaded widgets
+    # "Fit panels" - Panels with layout 'fit' that serve as containers for (dynamically) loaded components
     def fit_panels
       res = []
       items.each_with_index do |item, i|
         item_config = {
           :id => item[:active] && global_id + '_active',
           :title => item[:title] || (item[:name] && item[:name].humanize),
-          :widget => item[:name] # to know which fit-panel will load which widget
+          :component => item[:name] # to know which fit-panel will load which component
         }
         res << item_config
       end
@@ -163,12 +163,12 @@ module Netzke
     end
     
     def api_activate_tab(params)
-      widget_session[:active_tab] = params[:tab]
+      component_session[:active_tab] = params[:tab]
       {}
     end
     
     def get_active_tab
-      aggregatee_instance(widget_session[:active_tab])
+      component_instance(component_session[:active_tab])
     end
   end
 end

@@ -1,4 +1,4 @@
-module Netzke::Widget
+module Netzke::Component
   class FormPanel < Base
     module FormPanelJs
       # TODO: automatically add the primary hidden field (if not yet there)

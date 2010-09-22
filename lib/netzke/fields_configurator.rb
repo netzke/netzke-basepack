@@ -2,7 +2,7 @@ module Netzke
   # == FieldsConfigurator
   # Provides dynamic configuring columns/fields for GridPanel and FormPanel.
   # Configuration parameters:
-  # * <tt>:widget</tt> - widget to configure columns/fields for
+  # * <tt>:component</tt> - component to configure columns/fields for
   class FieldsConfigurator < JsonArrayEditor
     api :load_defaults
 
@@ -22,7 +22,7 @@ module Netzke
     
     def actions
       super.merge(
-        :defaults => {:text => 'Restore defaults', :icon => Netzke::Widget::Base.config[:with_icons] && (Netzke::Widget::Base.config[:icons_uri] + "wand.png")}
+        :defaults => {:text => 'Restore defaults', :icon => Netzke::Component::Base.config[:with_icons] && (Netzke::Component::Base.config[:icons_uri] + "wand.png")}
       )
     end
     

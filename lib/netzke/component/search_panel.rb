@@ -1,7 +1,7 @@
-module Netzke::Widget
+module Netzke::Component
   # SearchPanel
   # 
-  # FormPanel-based widget that allows create configurable searchlogic-compatible searches. 
+  # FormPanel-based component that allows create configurable searchlogic-compatible searches. 
   # Pretty much work in progress.
   class SearchPanel < FormPanel
     
@@ -36,8 +36,8 @@ module Netzke::Widget
     
     def actions
       super.merge(
-        :save => {:text => "Save", :icon => Netzke::Widget::Base.config[:with_icons] && (Netzke::Widget::Base.config[:icons_uri] + "disk.png")},
-        :del => {:text => "Delete", :icon => Netzke::Widget::Base.config[:with_icons] && (Netzke::Widget::Base.config[:icons_uri] + "delete.png")}
+        :save => {:text => "Save", :icon => Netzke::Component::Base.config[:with_icons] && (Netzke::Component::Base.config[:icons_uri] + "disk.png")},
+        :del => {:text => "Delete", :icon => Netzke::Component::Base.config[:with_icons] && (Netzke::Component::Base.config[:icons_uri] + "delete.png")}
       )
     end
     

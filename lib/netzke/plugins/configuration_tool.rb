@@ -1,7 +1,7 @@
 module Netzke::Plugins
-  # Include this module into any widget where you want a "gear" tool button in the top toolbar 
+  # Include this module into any component where you want a "gear" tool button in the top toolbar 
   # which will triggger a modal window, which will load the ConfigurationPanel TabPanel-based 
-  # widget, which in its turn will contain all the aggregatees specified in widget's "configuration_widgets" 
+  # component, which in its turn will contain all the components specified in component's "configuration_components" 
   # method (which *must* be defined)
   module ConfigurationTool
     def self.included(base)
@@ -9,7 +9,7 @@ module Netzke::Plugins
       
       base.class_eval do
         # replacing instance methods
-        [:config, :initial_aggregatees, :js_config].each{ |m| alias_method_chain m, :config_tool }
+        [:config, :initial_components, :js_config].each{ |m| alias_method_chain m, :config_tool }
         
         # replacing class methods
         class << self
@@ -20,9 +20,9 @@ module Netzke::Plugins
         api :commit
       end
 
-      # if you include ConfigurationTool, you are supposed to provide configuration_widgets method which will returns an array of arrgeratees
+      # if you include ConfigurationTool, you are supposed to provide configuration_components method which will returns an array of arrgeratees
       # that will be included in the property window (each in its own tab or accordion pane)
-      raise "configuration_widgets method undefined" unless base.instance_methods.map(&:to_sym).include?(:configuration_widgets)
+      raise "configuration_components method undefined" unless base.instance_methods.map(&:to_sym).include?(:configuration_components)
     end
 
     module ClassMethods
@@ -56,12 +56,12 @@ module Netzke::Plugins
               });
 
               w.show(null, function(){
-                this.loadAggregatee({id:"configuration_panel", container:w.id});
+                this.loadComponent({id:"configuration_panel", container:w.id});
               }, this);
 
               w.on('close', function(){
                 if (w.closeRes == 'OK'){
-                  var configurationPanel = this.getChildWidget('configuration_panel');
+                  var configurationPanel = this.getChildComponent('configuration_panel');
                   var panels = configurationPanel.getLoadedChildren();
                   var commitData = {};
                   Ext.each(panels, function(p){
@@ -87,15 +87,15 @@ module Netzke::Plugins
       })
     end
 
-    def initial_aggregatees_with_config_tool
-      res = initial_aggregatees_without_config_tool
+    def initial_components_with_config_tool
+      res = initial_components_without_config_tool
       
-      # Add the ConfigurationPanel as aggregatee, which in its turn aggregates widgets from the 
-      # configuration_widgets method
+      # Add the ConfigurationPanel as component, which in its turn is a composite of components from the 
+      # configuration_components method
       res.merge!(:configuration_panel => {
         :class_name => 'ConfigurationPanel', 
-        :items => configuration_widgets,
-        :late_aggregation => true
+        :items => configuration_components,
+        :lazy_loading => true
       }) if config_tool_needed?
       
       res

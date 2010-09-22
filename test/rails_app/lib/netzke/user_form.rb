@@ -1,5 +1,5 @@
 module Netzke
-  class UserForm < Widget::FormPanel
+  class UserForm < Component::FormPanel
     def config
       {
         :model => 'User',

@@ -3,8 +3,8 @@ begin
   Jeweler::Tasks.new do |gemspec|
     gemspec.version = "0.5.14"
     gemspec.name = "netzke-basepack"
-    gemspec.summary = "Pre-built Rails + ExtJS widgets for your RIA"
-    gemspec.description = "A set of full-featured extendible Netzke widgets (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
+    gemspec.summary = "Pre-built Rails + ExtJS components for your RIA"
+    gemspec.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
     gemspec.email = "sergei@playcode.nl"
     gemspec.homepage = "http://github.com/skozlov/netzke-basepack"
     gemspec.rubyforge_project = "netzke-basepack"

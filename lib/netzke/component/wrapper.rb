@@ -1,12 +1,12 @@
-module Netzke::Widget
+module Netzke::Component
   # = Wrapper
   # 
-  # Simple Ext.Panel with layout 'fit' that wraps up another Netzke widget. Can be useful in HTML pages where
-  # a widget should be dynamically configured, to not reload the entire page after configuration (Wrapper 
-  # will reload the widget automatically).
+  # Simple Ext.Panel with layout 'fit' that wraps up another Netzke component. Can be useful in HTML pages where
+  # a component should be dynamically configured, to not reload the entire page after configuration (Wrapper 
+  # will reload the component automatically).
   # 
   # == Configuration
-  # * <tt>:item</tt> - configuration hash for wrapped widget
+  # * <tt>:item</tt> - configuration hash for wrapped component
   # 
   # Example:
   # 

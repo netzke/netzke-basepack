@@ -1,4 +1,4 @@
-module Netzke::Widget
+module Netzke::Component
   class FormPanel < Base
     module FormPanelFields
       module ClassMethods
@@ -47,10 +47,10 @@ module Netzke::Widget
           end
           fields_for_create = fields_from_config
         elsif default_fields
-          # we didn't have fields configured in widget's config, so, use the fields from the data class
+          # we didn't have fields configured in component's config, so, use the fields from the data class
           fields_for_create = default_fields
         else
-          raise ArgumentError, "No fields specified for widget '#{global_id}'"
+          raise ArgumentError, "No fields specified for component '#{global_id}'"
         end
         
         fields_for_create.reject!{ |c| c[:included] == false }

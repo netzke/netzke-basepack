@@ -1,5 +1,5 @@
 module Netzke
-  module Widget
+  module Component
     class GridPanel < Base
       class RecordFormWindow < Window
         
@@ -19,13 +19,13 @@ module Netzke
             :init_component => <<-END_OF_JAVASCRIPT.l,
               function(){
                 #{js_full_class_name}.superclass.initComponent.call(this);
-                this.getWidget().on("submitsuccess", function(){this.closeRes = "ok"; this.close();}, this);
+                this.getComponent().on("submitsuccess", function(){this.closeRes = "ok"; this.close();}, this);
               }
             END_OF_JAVASCRIPT
         
             :on_ok => <<-END_OF_JAVASCRIPT.l,
               function(){
-                this.getWidget().onApply();
+                this.getComponent().onApply();
                 // this.closeRes = "ok",
                 // this.close();
               }

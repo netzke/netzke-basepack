@@ -1,6 +1,6 @@
 module Netzke
-  module Widget
-    class Panel < Widget::Base
+  module Component
+    class Panel < Component::Base
 
       def self.js_properties
         {

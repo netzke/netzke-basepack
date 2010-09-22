@@ -1,10 +1,10 @@
 module Netzke
-  class SomeBorderLayout < Widget::BorderLayoutPanel
+  class SomeBorderLayout < Component::BorderLayoutPanel
     def config
       {
         :items => [
-          {:title => "Who", :class_name => "Widget::GridPanel", :region => :center, :model => "User"},
-          {:title => "Item Two", :class_name => "Widget::GridPanel", :region => :west, :width => 500, :split => true, :model => "Role"}
+          {:title => "Who", :class_name => "Component::GridPanel", :region => :center, :model => "User"},
+          {:title => "Item Two", :class_name => "Component::GridPanel", :region => :west, :width => 500, :split => true, :model => "Role"}
         ],
         :bbar => [:update_west_region.ext_action, :update_center_region.ext_action]
       }.deep_merge(super)
@@ -21,13 +21,13 @@ module Netzke
       {
         :on_update_west_region => <<-END_OF_JAVASCRIPT.l,
           function(){
-            this.getWestWidget().body.update('Updated West Region Content');
+            this.getWestComponent().body.update('Updated West Region Content');
           }
         END_OF_JAVASCRIPT
         
         :on_update_center_region => <<-END_OF_JAVASCRIPT.l,
           function(){
-            this.getCenterWidget().body.update('Updated Center Region Content');
+            this.getCenterComponent().body.update('Updated Center Region Content');
           }
         END_OF_JAVASCRIPT
         

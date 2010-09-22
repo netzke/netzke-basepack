@@ -11,10 +11,10 @@ class TabPanelTest < ActiveSupport::TestCase
       :class_name => "Panel", :name => "second_panel", :active => true
     }])
         
-    assert_equal(2, tab_panel.initial_aggregatees.keys.size)
-    assert_equal("item0", tab_panel.aggregatees[:item0][:name])
-    assert_equal("second_panel", tab_panel.aggregatees[:second_panel][:name])
-    assert(tab_panel.aggregatees[:second_panel][:active])
+    assert_equal(2, tab_panel.initial_components.keys.size)
+    assert_equal("item0", tab_panel.components[:item0][:name])
+    assert_equal("second_panel", tab_panel.components[:second_panel][:name])
+    assert(tab_panel.components[:second_panel][:active])
     assert_equal("Panel", tab_panel.js_config[:second_panel_config][:scoped_class_name])
   end
 

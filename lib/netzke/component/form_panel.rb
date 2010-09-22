@@ -4,7 +4,7 @@
 # require "netzke/plugins/configuration_tool"
 # require "netzke/data_accessor"
 
-module Netzke::Widget
+module Netzke::Component
   # = FormPanel
   # 
   # Represents Ext.form.FormPanel
@@ -21,7 +21,7 @@ module Netzke::Widget
     include FormPanelJs  # javascript (client-side)
     include FormPanelApi # API (server-side)
     include FormPanelFields # fields
-    include Netzke::DataAccessor # some code shared between GridPanel, FormPanel, and other widgets that use database attributes
+    include Netzke::DataAccessor # some code shared between GridPanel, FormPanel, and other components that use database attributes
 
     # Class-level configuration with defaults
     def self.config
@@ -49,7 +49,7 @@ module Netzke::Widget
     def self.include_js
       [
         # "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js",
-        # Netzke::Widget::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
+        # Netzke::Component::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
         # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
       ]
     end
@@ -62,7 +62,7 @@ module Netzke::Widget
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
       @data_class ||= begin
-        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_widget_class_name}".constantize rescue nil
+        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}".constantize rescue nil
         klass || original_data_class
       end
     end
@@ -80,7 +80,7 @@ module Netzke::Widget
       @record ||= config[:record] || config[:record_id] && data_class && data_class.find(:first, :conditions  => {data_class.primary_key => config[:record_id]})
     end
     
-    def configuration_widgets
+    def configuration_components
       res = []
       
       res << {
@@ -94,7 +94,7 @@ module Netzke::Widget
       res << {
         :name               => 'general',
         :class_name  => "PropertyEditor",
-        :widget             => self,
+        :component             => self,
         :title => false
       }
       
@@ -106,8 +106,8 @@ module Netzke::Widget
         :apply => {:text => 'Apply'}
       }
       
-      if Netzke::Widget::Base.config[:with_icons]
-        icons_uri = Netzke::Widget::Base.config[:icons_uri]
+      if Netzke::Component::Base.config[:with_icons]
+        icons_uri = Netzke::Component::Base.config[:icons_uri]
         actions.deep_merge!(
           :apply => {:icon => icons_uri + "tick.png"}
         )

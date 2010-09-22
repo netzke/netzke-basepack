@@ -1,7 +1,7 @@
 module Netzke
   # == TableEditor CURRENTLY NOT SUPPORTED AND MAY BE BROKEN. Instead, use GridPanel's adding/editing records in form.
   # 
-  # A widget used for editing a DB table. It contains a grid and a form which may display different DB fields,
+  # A component used for editing a DB table. It contains a grid and a form which may display different DB fields,
   # configured by grid_columns and form_fields configuration options respectively
   class TableEditor < BorderLayoutPanel
     
@@ -11,12 +11,12 @@ module Netzke
           function(){
             #{js_full_class_name}.superclass.initComponent.call(this);
 
-            var setCentralWidgetEvents = function(){
-              this.getCenterWidget().on('addclick', function(){
-                this.getFormWidget().getForm().reset();
+            var setCentralComponentEvents = function(){
+              this.getCenterComponent().on('addclick', function(){
+                this.getFormComponent().getForm().reset();
 
                 var firstEditableField = null;
-                this.getFormWidget().getForm().items.each(function(f){
+                this.getFormComponent().getForm().items.each(function(f){
                   if (!f.hidden && !f.disabled){
                     firstEditableField = f;
                     return false; // break the loop
@@ -24,26 +24,26 @@ module Netzke
                 })
                 if (firstEditableField) firstEditableField.focus();
 
-                this.getFormWidget().ownerCt.expand();
+                this.getFormComponent().ownerCt.expand();
 
-                this.getCenterWidget().getSelectionModel().clearSelections();
+                this.getCenterComponent().getSelectionModel().clearSelections();
                 this.lastSelectedRow = null;
                 return false;
               }, this)
 
-              this.getCenterWidget().on('rowclick', this.onRowClick, this);
+              this.getCenterComponent().on('rowclick', this.onRowClick, this);
             };
 
-            this.getCenterWidget().ownerCt.on('add', setCentralWidgetEvents, this);
-            setCentralWidgetEvents.call(this);
+            this.getCenterComponent().ownerCt.on('add', setCentralComponentEvents, this);
+            setCentralComponentEvents.call(this);
             
           }
         END_OF_JAVASCRIPT
         
         
-        :get_form_widget => <<-END_OF_JAVASCRIPT.l,
+        :get_form_component => <<-END_OF_JAVASCRIPT.l,
           function(){
-            return this.getRegionWidget(this.region);
+            return this.getRegionComponent(this.region);
           }
         END_OF_JAVASCRIPT
         
@@ -55,17 +55,17 @@ module Netzke
         		this.lastSelectedRow = index;
         		
         		// get id of the record
-            var recordId = this.getCenterWidget().getStore().getAt(index).get('id');
+            var recordId = this.getCenterComponent().getStore().getAt(index).get('id');
             
             // load the form with the record id
-            this.getRegionWidget(this.region).loadRecord(recordId);
+            this.getRegionComponent(this.region).loadRecord(recordId);
           }
         END_OF_JAVASCRIPT
         
         # after the form is submitted, reload the grid
         :on_form_actioncomplete => <<-END_OF_JAVASCRIPT.l
           function(grid, index, e){
-            this.getRegionWidget('center').store.load()
+            this.getRegionComponent('center').store.load()
           }
         END_OF_JAVASCRIPT
       }
@@ -77,13 +77,13 @@ module Netzke
     end
 
     def js_config
-      # the client side of the widget wants to know which region it uses
+      # the client side of the component wants to know which region it uses
       super.merge({
         :region => config[:split_region]
       })
     end
 
-    def initial_aggregatees
+    def initial_components
       split_region  = config[:split_region] || :east
       split_size    = config[:split_size] || 200
       {

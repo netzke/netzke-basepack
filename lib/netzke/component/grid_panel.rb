@@ -4,7 +4,7 @@
 # require "netzke/plugins/configuration_tool"
 # require "data_accessor"
 
-module Netzke::Widget
+module Netzke::Component
   # == GridPanel
   # Ext.grid.EditorGridPanel + server-side code
   #
@@ -27,7 +27,7 @@ module Netzke::Widget
   #     Netzke::GridPanel.configure :column_filters_available, false
   #     Netzke::GridPanel.configure :default_config => {:ext_config => {:enable_config_tool => false}}
   # 
-  # Most of these options directly influence the amount of JavaScript code that is generated for this widget's class.
+  # Most of these options directly influence the amount of JavaScript code that is generated for this component's class.
   # The less functionality is enabled, the less code is generated.
   # 
   # The following configuration options are available:
@@ -35,7 +35,7 @@ module Netzke::Widget
   # * <tt>:config_tool_available</tt> - (default is true) include code for the configuration tool that launches the configuration panel
   # * <tt>:edit_in_form_available</tt> - (defaults to true) include code for (multi-record) editing and adding records through a form
   # * <tt>:extended_search_available</tt> - (defaults to true) include code for extended configurable search
-  # * <tt>:default_config</tt> - a hash of default configuration options for each instance of the GridPanel widget.
+  # * <tt>:default_config</tt> - a hash of default configuration options for each instance of the GridPanel component.
   # See the "Instance configuration" section below.
   # 
   # == Instance configuration
@@ -66,7 +66,7 @@ module Netzke::Widget
   # * <tt>:add/edit/multi_edit/search_form_config</tt> - additional configuration for add/edit/multi_edit/search form panel
   # * <tt>:add/edit/multi_edit_form_window_config</tt> - additional configuration for the window that wrapps up add/edit/multi_edit form panel
   # 
-  # Additionally supports Netzke::Widget::Base config options.
+  # Additionally supports Netzke::Component::Base config options.
   # 
   # == Columns
   # Here's how the GridPanel decides which columns in which sequence and with which configuration to display.
@@ -81,7 +81,7 @@ module Netzke::Widget
   #   :columns => [{:name => :created_at, :sortable => false}]
   # 
   # ... which in its turn overrides the defaults provided by persistent storage managed by the AttributesConfigurator
-  # that provides *model-level* (as opposed to a widget-level) configuration of a database model 
+  # that provides *model-level* (as opposed to a component-level) configuration of a database model 
   # (which is used by both grids and forms in Netzke).
   # And lastly, the defaults for AttributesConfigurator are calculated from the database model itself (extended by Netzke).
   # For example, in the model you can specify virtual attributes and their types that will be picked up by Netzke, the default
@@ -103,7 +103,7 @@ module Netzke::Widget
     # Columns
     include GridPanelColumns
     
-    # Code shared between GridPanel, FormPanel, and other widgets that serve as interface to database tables
+    # Code shared between GridPanel, FormPanel, and other components that serve as interface to database tables
     include Netzke::DataAccessor
 
     # TODO: 2010-09-14
@@ -114,7 +114,7 @@ module Netzke::Widget
     end
 
     # Class-level configuration. This options directly influence the amount of generated
-    # javascript code for this widget's class. For example, if you don't want filters for the grid, 
+    # javascript code for this component's class. For example, if you don't want filters for the grid, 
     # set :column_filters_available to false, and the javascript for the filters won't be included at all.
     def self.config
       set_default_config({
@@ -153,7 +153,7 @@ module Netzke::Widget
       # Optional extended search functionality
       res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/advanced_search.js" if config[:extended_search_available]
       
-      ext_examples = Netzke::Widget::Base.config[:ext_location].join("examples")
+      ext_examples = Netzke::Component::Base.config[:ext_location].join("examples")
       
       # Checkcolumn
       res << ext_examples.join("ux/CheckColumn.js")
@@ -188,7 +188,7 @@ module Netzke::Widget
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
       @data_class ||= begin
-        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_widget_class_name}".constantize rescue nil
+        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}".constantize rescue nil
         klass || original_data_class
       end
     end
@@ -198,7 +198,7 @@ module Netzke::Widget
       @original_data_class ||= begin
         ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
         model_name = config[:model] || config[:data_class_name]
-        model_name.nil? ? raise(ArgumentError, "No model specified for widget #{global_id}") : model_name.constantize
+        model_name.nil? ? raise(ArgumentError, "No model specified for component #{global_id}") : model_name.constantize
       end
     end
 
@@ -230,7 +230,7 @@ module Netzke::Widget
       res
     end
     
-    def configuration_widgets
+    def configuration_components
       res = []
       res << {
         :persistent_config => true,
@@ -242,7 +242,7 @@ module Netzke::Widget
       res << {
         :name               => 'general',
         :class_name  => "PropertyEditor",
-        :widget             => self,
+        :component             => self,
         :title => false
       }
       res
@@ -260,8 +260,8 @@ module Netzke::Widget
         :search       => {:text => 'Search',       :disabled => !config[:enable_extended_search], :checked => true}
       }
       
-      if Netzke::Widget::Base.config[:with_icons]
-        icons_uri = Netzke::Widget::Base.config[:icons_uri]
+      if Netzke::Component::Base.config[:with_icons]
+        icons_uri = Netzke::Component::Base.config[:icons_uri]
         actions.deep_merge!(
           :add => {:icon => icons_uri + "add.png"},
           :edit => {:icon => icons_uri + "table_edit.png"},
@@ -276,18 +276,18 @@ module Netzke::Widget
       actions
     end
 
-    def aggregatees
+    def components
       res = {}
       
       # Edit in form
       res.merge!({
         :add_form => {
-          :late_aggregation => true,
-          :class_name => "Widget::GridPanel::RecordFormWindow",
+          :lazy_loading => true,
+          :class_name => "Component::GridPanel::RecordFormWindow",
           :title => "Add #{data_class.table_name.singularize.humanize}",
           :button_align => "right",
           :items => [{
-            :class_name => "Widget::FormPanel",
+            :class_name => "Component::FormPanel",
             :model => config[:model],
             :items => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
@@ -301,12 +301,12 @@ module Netzke::Widget
         }.deep_merge(config[:add_form_window_config] || {}),
         
         :edit_form => {
-          :late_aggregation => true,
-          :class_name => "Widget::GridPanel::RecordFormWindow",
+          :lazy_loading => true,
+          :class_name => "Component::GridPanel::RecordFormWindow",
           :title => "Edit #{data_class.table_name.singularize.humanize}",
           :button_align => "right",
           :items => [{
-            :class_name => "Widget::FormPanel",
+            :class_name => "Component::FormPanel",
             :model => config[:model],
             :fields => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
@@ -317,12 +317,12 @@ module Netzke::Widget
         }.deep_merge(config[:edit_form_window_config] || {}),
         
         :multi_edit_form => {
-          :late_aggregation => true,
-          :class_name => "Widget::GridPanel::RecordFormWindow",
+          :lazy_loading => true,
+          :class_name => "Component::GridPanel::RecordFormWindow",
           :title => "Edit #{data_class.table_name.humanize}",
           :button_align => "right",
           :items => [{
-            :class_name => "Widget::GridPanel::MultiEditForm",
+            :class_name => "Component::GridPanel::MultiEditForm",
             :model => config[:model],
             :fields => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
@@ -336,8 +336,8 @@ module Netzke::Widget
       # Extended search
       res.merge!({
         :search_panel => {
-          :late_aggregation => true,
-          :class_name => "Widget::SearchPanel",
+          :lazy_loading => true,
+          :class_name => "Component::SearchPanel",
           :fields => default_fields_for_forms,
           :search_class_name => config[:model],
           :persistent_config => config[:persistent_config],

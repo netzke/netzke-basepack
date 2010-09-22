@@ -1,5 +1,5 @@
 = netzke-basepack
-A pack of basic Rails/ExtJS widgets as a part of the Netzke framework. Live demo/tutorials on http://blog.writelesscode.com. Introduction to the Netzke framework and the Wiki: http://github.com/skozlov/netzke
+A pack of basic Rails/ExtJS components as a part of the Netzke framework. Live demo/tutorials on http://blog.writelesscode.com. Introduction to the Netzke framework and the Wiki: http://github.com/skozlov/netzke
 
 == Prerequisites
 1. Rails >= 2.2
@@ -41,7 +41,7 @@ Run the generators (some assets and a migration for dynamically configured colum
     
     ./script/generate netzke_basepack
 
-To be able to use persistent on-the-fly configuration of widgets, run netzke-core generators:
+To be able to use persistent on-the-fly configuration of components, run netzke-core generators:
 
     ./script/generate netzke_core
     
@@ -49,20 +49,20 @@ To be able to use persistent on-the-fly configuration of widgets, run netzke-cor
 
     rake db:migrate
 
-== Embedding widgets into Rails' view
-To enable Netzke widgets in Rails' views, you need to add the following helper into your layout template, inside the "head" tag:
+== Embedding components into Rails' view
+To enable Netzke components in Rails' views, you need to add the following helper into your layout template, inside the "head" tag:
 
     <%= netzke_init %>
     
 This will include both ExtJS-related files (JavaScript and styles), and Netzke-related files.
 
-Now let's embed a widget into a view. The following example will provide you with a grid-based scaffold for ActiveRecord-model called Book. You may generate it like this:
+Now let's embed a component into a view. The following example will provide you with a grid-based scaffold for ActiveRecord-model called Book. You may generate it like this:
 
     ./script/generate model Book title:string amount:integer
 
 (don't forget to re-run the migrations after it)
 
-Now embed a widget into a view like this:
+Now embed a component into a view like this:
 
   <%= netzke :books, :class_name => 'GridPanel', :model => 'Book' %>
 

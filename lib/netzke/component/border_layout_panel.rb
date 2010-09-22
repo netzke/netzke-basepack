@@ -1,11 +1,11 @@
 module Netzke
-  module Widget
+  module Component
     # Panel with border layout
     # == Example configuration:
     # 
     #     :items => [
-    #       {:title => "Item One", :class_name => "Widget::Panel", :region => :center},
-    #       {:title => "Item Two", :class_name => "Widget::Panel", :region => :west, :width => 300, :split => true}
+    #       {:title => "Item One", :class_name => "Component::Panel", :region => :center},
+    #       {:title => "Item Two", :class_name => "Component::Panel", :region => :west, :width => 300, :split => true}
     #     ]
     class BorderLayoutPanel < Base
       
@@ -15,11 +15,11 @@ module Netzke
           :init_component => <<-END_OF_JAVASCRIPT.l,
             function(){
               Ext.each(['center', 'west', 'east', 'south', 'north'], function(r){
-                // A function to access a region widget (even if the widget gets reloaded, the function will work).
-                // E.g.: getEastWidget()
-                var methodName = 'get'+r.capitalize()+'Widget';
+                // A function to access a region component (even if the component gets reloaded, the function will work).
+                // E.g.: getEastComponent()
+                var methodName = 'get'+r.capitalize()+'Component';
                 this[methodName] = function(){
-                  Netzke.deprecationWarning("Instead of '" + methodName + "' use getAggregatee(aggregateeName).");
+                  Netzke.deprecationWarning("Instead of '" + methodName + "' use getComponent(componentName).");
                   return this.find('region', r)[0];
                 }.createDelegate(this);
               }, this);

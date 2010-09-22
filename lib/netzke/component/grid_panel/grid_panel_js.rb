@@ -1,4 +1,4 @@
-module Netzke::Widget
+module Netzke::Component
   class GridPanel < Base
     # (Dynamic) JavaScript for GridPanel
     module GridPanelJs

@@ -5,7 +5,7 @@ module Netzke
     
     def initialize(*args)
       super
-      @widget = @passed_config[:widget]
+      @component = @passed_config[:component]
     end
     
     def default_bbar
@@ -17,10 +17,10 @@ module Netzke
     end
 
     def fields
-      fields = @widget.class.property_fields
+      fields = @component.class.property_fields
 
       for f in fields
-        f[:value] = @widget.flat_config(f[:name]).nil? ? f[:default] : @widget.flat_config(f[:name])
+        f[:value] = @component.flat_config(f[:name]).nil? ? f[:default] : @component.flat_config(f[:name])
         f[:xtype] = xtype_for_attr_type(f[:type])
         f[:field_label] = f[:name].to_s.gsub("__", "/").humanize
       end
@@ -62,10 +62,10 @@ module Netzke
     def restore_defaults(params)
       values = []
       columns.each do |c|
-        init_config = @widget.flat_initial_config.detect{ |ic| ic[:name] == c[:name] }
+        init_config = @component.flat_initial_config.detect{ |ic| ic[:name] == c[:name] }
         
         if init_config.nil?
-          property_fields ||= @widget.class.property_fields
+          property_fields ||= @component.class.property_fields
           values << property_fields.detect{ |f| f[:name] == c[:name] }[:default]
         else
           values << init_config[:value]
@@ -76,19 +76,19 @@ module Netzke
     end
     
     def commit(data)
-      fields = @widget.class.property_fields
+      fields = @component.class.property_fields
       data.each_pair do |property, value|
         field = fields.detect{ |f| f[:name] == property.to_sym }
-        default = @widget.flat_initial_config(property).nil? ? field[:default] : @widget.flat_initial_config(property)
+        default = @component.flat_initial_config(property).nil? ? field[:default] : @component.flat_initial_config(property)
 
         new_value = normalize_form_value(value, field)
 
        # Only store the value in persistent config when it's different from the default one
         if field[:type] == :boolean
           # handle boolean type separately
-          @widget.persistent_config[property] = new_value ^ default ? new_value : nil
+          @component.persistent_config[property] = new_value ^ default ? new_value : nil
         else 
-          @widget.persistent_config[property] = default == new_value ? nil : new_value
+          @component.persistent_config[property] = default == new_value ? nil : new_value
         end
       end
       {}

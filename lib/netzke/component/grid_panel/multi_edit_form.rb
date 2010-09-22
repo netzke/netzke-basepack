@@ -1,5 +1,5 @@
 module Netzke
-  module Widget
+  module Component
     class GridPanel < Base
       class MultiEditForm < FormPanel
       

@@ -1,5 +1,5 @@
 module Netzke
-  # Represents the Ext.Panel with layout 'border'. May serve as parent class for compound widgets.
+  # Represents the Ext.Panel with layout 'border'. May serve as parent class for compound components.
   # 
   # == Features:
   # * Responds to region resizing, storing the sizes in persistent config
@@ -8,13 +8,13 @@ module Netzke
   # * Stores expand/collapse state in the persistent config
   # 
   # == Non-functional features:
-  # * (JavaScript) Creates convinient methods to access aggregatees inside the regions, like
-  # <tt>getCenterWidget()</tt>, <tt>getWestWidget()</tt>, etc
+  # * (JavaScript) Creates convinient methods to access components inside the regions, like
+  # <tt>getCenterComponent()</tt>, <tt>getWestComponent()</tt>, etc
   # 
   # == Configuration:
   # <tt>:regions</tt> - a hash in form:
   #       
-  #     {:center => {<netzke widget config>}, :east => {<another netzke widget config>}, ...}
+  #     {:center => {<netzke component config>}, :east => {<another netzke component config>}, ...}
   # 
   # <tt>:regions => :center/:west/:etc => :region_config</tt> - configuration options for
   # Ext.layout.BorderLayout.SplitRegion.
@@ -32,7 +32,7 @@ module Netzke
   #         }
   #       }
   #     }
-  class BorderLayoutPanel < Widget::Base
+  class BorderLayoutPanel < Component::Base
     REGIONS = %w(center west east south north).map(&:to_sym)
 
     # JavaScript part
@@ -53,10 +53,10 @@ module Netzke
                 regionConfig.items = [new klass(this[configName])]
                 this.items.push(regionConfig);
 
-                // A function to access a region widget (even if the widget gets reloaded, the function will work).
-                // E.g.: getEastWidget()
-                this['get'+r.capitalize()+'Widget'] = function(){
-                  return this.find('region', r)[0].getWidget()
+                // A function to access a region component (even if the component gets reloaded, the function will work).
+                // E.g.: getEastComponent()
+                this['get'+r.capitalize()+'Component'] = function(){
+                  return this.find('region', r)[0].getComponent()
                 }.createDelegate(this);
               };
             }, this);
@@ -69,9 +69,9 @@ module Netzke
           }
         END_OF_JAVASCRIPT
         
-        :get_region_widget => <<-END_OF_JAVASCRIPT.l,
+        :get_region_component => <<-END_OF_JAVASCRIPT.l,
           function(region){
-            return this.find('region', region)[0].getWidget();
+            return this.find('region', region)[0].getComponent();
           }
         END_OF_JAVASCRIPT
         
@@ -99,18 +99,18 @@ module Netzke
     }
     end
 
-    def initial_aggregatees
+    def initial_components
       config[:regions] || {}
     end
     
-    def region_aggregatees
-      aggregatees.reject{ |k,v| !REGIONS.include?(k) }
+    def region_components
+      components.reject{ |k,v| !REGIONS.include?(k) }
     end
     
     def js_config
       regions = {}
       REGIONS.each do |r|
-        if region_aggr = aggregatees[r]
+        if region_aggr = components[r]
           regions.merge!(r => region_aggr[:region_config] || {})
         end
       end
@@ -120,7 +120,7 @@ module Netzke
     # API
     api :resize_region # handles regions resize
     def resize_region(params)
-      # Write to persistent_config such way that these settings are automatically picked up by region widgets
+      # Write to persistent_config such way that these settings are automatically picked up by region components
       persistent_config["regions__#{params["region_name"]}__region_config__width"] = params["new_width"].to_i if params["new_width"]
       persistent_config["regions__#{params["region_name"]}__region_config__height"] = params["new_height"].to_i if params["new_height"]
       {}

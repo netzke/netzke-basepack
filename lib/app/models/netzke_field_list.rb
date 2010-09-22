@@ -158,7 +158,7 @@ class NetzkeFieldList < ActiveRecord::Base
       end
     end
   
-    # Overwrite pref_to_read, pref_to_write methods, and find_all_for_widget if you want a different way of 
+    # Overwrite pref_to_read, pref_to_write methods, and find_all_for_component if you want a different way of 
     # identifying the proper preference based on your own authorization strategy.
     #
     # The default strategy is:

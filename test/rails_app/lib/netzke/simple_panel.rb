@@ -1,5 +1,5 @@
 module Netzke
-  class SimplePanel < Widget::Panel
+  class SimplePanel < Component::Panel
     def config
       {
         :title => "SimplePanel",

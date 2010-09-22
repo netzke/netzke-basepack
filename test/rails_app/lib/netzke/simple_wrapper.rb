@@ -1,8 +1,8 @@
 module Netzke
-  class SimpleWrapper < Widget::Wrapper
+  class SimpleWrapper < Component::Wrapper
     def config
       {
-        :items => [{:class_name => "Widget::Panel", :html => "A Panel wrapped into the (invisible) wrapper", :title => "Wrapped Panel"}]
+        :items => [{:class_name => "Component::Panel", :html => "A Panel wrapped into the (invisible) wrapper", :title => "Wrapped Panel"}]
       }
     end
   end

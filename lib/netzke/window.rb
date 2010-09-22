@@ -1,15 +1,15 @@
 module Netzke
   # == Window
-  # Ext.Window-based widget able to nest other Netzke widgets
+  # Ext.Window-based component able to nest other Netzke components
   # 
   # == Features
   # * Persistent position and dimensions
   # 
   # == Instance configuration
-  # <tt>:item</tt> - nested Netzke widget, e.g.:
+  # <tt>:item</tt> - nested Netzke component, e.g.:
   #     
   #     netzke :window, :item => {:class_name => "GridPanel", :model => "User"}
-  class Window < Widget::Base
+  class Window < Component::Base
     # Based on Ext.Window, naturally
     def self.js_base_class
       "Ext.Window"
@@ -18,7 +18,7 @@ module Netzke
     # Extends the JavaScript class
     def self.js_properties
       {
-        # we nest widget inside the "fit" layout
+        # we nest component inside the "fit" layout
         :layout => "fit",
         
         # default width and height
@@ -36,7 +36,7 @@ module Netzke
               this.on("resize", this.onMoveResize, this);
             }, this);
 
-            // instantiate the aggregatee
+            // instantiate the component
             if (this.itemConfig){
               this.instantiateChild(this.itemConfig);
             }

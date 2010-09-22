@@ -3,17 +3,17 @@ module Netzke
   # Basis for a Ext.Viewport-based application
   #
   # Features:
-  # * dynamic loading of widgets
+  # * dynamic loading of components
   # * authentification support
-  # * browser history support (press the "Back"-button to go to the previously loaded widget)
+  # * browser history support (press the "Back"-button to go to the previously loaded component)
   # * FeedbackGhost-powered feedback
-  # * aggregation of widget's own menus
+  # * handling component's own menus
   # * masquerade support
   # * AJAX activity indicator
   class BasicApp < Base
     def self.include_js
       res = []
-      ext_examples = Netzke::Widget::Base.config[:ext_location] + "/examples/"
+      ext_examples = Netzke::Component::Base.config[:ext_location] + "/examples/"
       res << ext_examples + "ux/statusbar/StatusBar.js"
       res << "#{File.dirname(__FILE__)}/basic_app/statusbar_ext.js"
     end
@@ -32,7 +32,7 @@ module Netzke
     
     # def self.include_css
     #   res = []
-    #   res << Netzke::Widget::Base.config[:ext_location] + "/examples/ux/css/StatusBar.css"
+    #   res << Netzke::Component::Base.config[:ext_location] + "/examples/ux/css/StatusBar.css"
     #   res
     # end
     
@@ -81,12 +81,12 @@ module Netzke
             
             #{js_full_class_name}.superclass.initComponent.call(this);
 
-            // If we are given a token, load the corresponding widget, otherwise load the last loaded widget
+            // If we are given a token, load the corresponding component, otherwise load the last loaded component
             var currentToken = Ext.History.getToken();
             if (currentToken != "") {
               this.processHistory(currentToken);
             } else {
-              var lastLoaded = this.initialConfig.widgetToLoad; // passed from the server
+              var lastLoaded = this.initialConfig.componentToLoad; // passed from the server
               if (lastLoaded) Ext.History.add(lastLoaded);
             }
 
@@ -149,30 +149,30 @@ module Netzke
         :process_history => <<-END_OF_JAVASCRIPT.l,
           function(token){
             if (token){
-              this.loadAggregatee({id:token, container:'main-panel'});
+              this.loadComponent({id:token, container:'main-panel'});
             } else {
               Ext.getCmp('main-panel').removeChild();
             }
           }
         END_OF_JAVASCRIPT
         
-        :instantiate_aggregatee => <<-END_OF_JAVASCRIPT.l,
+        :instantiate_component => <<-END_OF_JAVASCRIPT.l,
           function(config){
             this.findById('main-panel').instantiateChild(config);
           }
         END_OF_JAVASCRIPT
         
-        # Loads widget by name
-        :app_load_widget => <<-END_OF_JAVASCRIPT.l,
+        # Loads component by name
+        :app_load_component => <<-END_OF_JAVASCRIPT.l,
           function(name){
             Ext.History.add(name);
           }
         END_OF_JAVASCRIPT
 
-        # Loads widget by action
-        :load_widget_by_action => <<-END_OF_JAVASCRIPT.l,
+        # Loads component by action
+        :load_component_by_action => <<-END_OF_JAVASCRIPT.l,
           function(action){
-            this.appLoadWidget(action.widget || action.name);
+            this.appLoadComponent(action.component || action.name);
           }
         END_OF_JAVASCRIPT
         
@@ -232,7 +232,7 @@ module Netzke
               buttons: [{
                 text: 'Select',
                 handler : function(){
-                  if (role = w.getWidget().masquerade.role) {
+                  if (role = w.getComponent().masquerade.role) {
                     Ext.Msg.confirm("Masquerading as a role", "Individual preferences for all users with this role will get overwritten as you make changes. Continue?", function(btn){
                       if (btn === 'yes') {
                         w.close();
@@ -269,12 +269,12 @@ module Netzke
                 scope:this
               }],
               listeners : {close: {fn: function(){
-                this.masqueradeAs(this.masquerade || w.getWidget().masquerade || {});
+                this.masqueradeAs(this.masquerade || w.getComponent().masquerade || {});
               }, scope: this}}
       			});
 
       			w.show(null, function(){
-      			  this.loadAggregatee({id:"masqueradeSelector", container:w.id})
+      			  this.loadComponent({id:"masqueradeSelector", container:w.id})
       			}, this);
 
           }
@@ -328,7 +328,7 @@ module Netzke
     
     
     # Html required for Ext.History to work
-    def js_widget_html
+    def js_component_html
       super << %Q{
 <form id="history-form" class="x-hidden">
     <input type="hidden" id="x-history-field" />

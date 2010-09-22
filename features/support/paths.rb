@@ -23,11 +23,11 @@ module NavigationHelpers
     when /the server caller page/
       '/panel/server_caller'
 
-    when /the aggregatee loader page/
-      '/panel/aggregatee_loader'
+    when /the component loader page/
+      '/panel/component_loader'
 
     when /the (.*) test page/
-      widgets_path(:widget => $1)
+      components_path(:component => $1)
 
     else
       begin

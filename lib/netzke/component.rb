@@ -1,4 +1,4 @@
 module Netzke
-  module Widget
+  module Component
   end
 end

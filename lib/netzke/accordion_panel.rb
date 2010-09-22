@@ -2,8 +2,8 @@ module Netzke
   # == AccordionPanel
   # 
   # == Features:
-  # * Dynamically loads widgets for the panels that get expanded for the first time
-  # * Is loaded along with the active widget - saves a request to the server
+  # * Dynamically loads components for the panels that get expanded for the first time
+  # * Is loaded along with the active component - saves a request to the server
   #
   # Future features:
   # * Stores the last active panel in persistent_config
@@ -21,11 +21,11 @@ module Netzke
             // Set events
             this.items.each(function(i){
               // Set the expand event
-              i.on('expand', this.loadItemWidget, this);
+              i.on('expand', this.loadItemComponent, this);
               
-              // If not collapsed, add the active aggregatee (item) into it
+              // If not collapsed, add the active component (item) into it
               if (!i.collapsed) {
-                var preloadedItemConfig = this[i.widget.camelize(true) + "Config"];
+                var preloadedItemConfig = this[i.component.camelize(true) + "Config"];
                 var klass = this.classifyScopedName(preloadedItemConfig.scopedClassName);
                 i.add(new klass(preloadedItemConfig));
                 i.doLayout(); // always needed after adding a component
@@ -34,20 +34,20 @@ module Netzke
           }
         END_OF_JAVASCRIPT
         
-        # Loads widget into the panel if it wasn't loaded yet
-        :load_item_widget => <<-END_OF_JAVASCRIPT.l,
+        # Loads component into the panel if it wasn't loaded yet
+        :load_item_component => <<-END_OF_JAVASCRIPT.l,
           function(panel) {
-            // if (!panel.getWidget()) panel.loadWidget(this.id + "__" + panel.widget + "__get_widget");
-            var preloadedItemConfig = this[panel.widget.camelize(true) + "Config"];
+            // if (!panel.getComponent()) panel.loadComponent(this.id + "__" + panel.component + "__get_component");
+            var preloadedItemConfig = this[panel.component.camelize(true) + "Config"];
             
             if (preloadedItemConfig){
-              // preloaded widget only needs to be instantiated, as its class and configuration have already been loaded
+              // preloaded component only needs to be instantiated, as its class and configuration have already been loaded
               var klass = this.classifyScopedName(preloadedItemConfig.scopedClassName);
               panel.add(new klass(preloadedItemConfig));
               panel.doLayout(); // always needed after adding a component
             } else {
-              // load the widget from the server
-              this.loadAggregatee({id:panel.widget, container:panel.id});
+              // load the component from the server
+              this.loadComponent({id:panel.component, container:panel.id});
             }
             
           }
@@ -86,25 +86,25 @@ module Netzke
       })
     end
 
-    # "Fit-panels" - panels of layout 'fit' (effectively the accordion panels) that will contain the widgets ("items")
+    # "Fit-panels" - panels of layout 'fit' (effectively the accordion panels) that will contain the components ("items")
     def fit_panels
       res = []
       config[:items].each_with_index do |item, i|
         res << {
-          # :id => item[:active] && global_id + '_active', # to mark the fit-panel which will contain the active widget
+          # :id => item[:active] && global_id + '_active', # to mark the fit-panel which will contain the active component
           :title => item[:title] || (item[:name] && item[:name].to_s.humanize),
-          :widget => item[:name], # to know which fit panel will load which widget
+          :component => item[:name], # to know which fit panel will load which component
           :collapsed => !(item[:active] || false)
         }
       end
       res
     end
 
-    # All items become *late* aggregatees, besides the ones that are marked "active"
-    def initial_aggregatees
+    # All items become *late* components, besides the ones that are marked "active"
+    def initial_components
       res = {}
       config[:items].each_with_index do |item, i|
-        item[:late_aggregation] = !item[:active] && !item[:preloaded]
+        item[:lazy_loading] = !item[:active] && !item[:preloaded]
         res.merge!(item[:name].to_sym => item)
       end
       res

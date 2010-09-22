@@ -1,7 +1,7 @@
 # require "netzke/active_record/data_accessor"
 
 module Netzke
-  # This module is included into such data-driven widgets as GridPanel, FormPanel, etc.
+  # This module is included into such data-driven components as GridPanel, FormPanel, etc.
   module DataAccessor
     
     # Returns options for comboboxes in grids/forms
