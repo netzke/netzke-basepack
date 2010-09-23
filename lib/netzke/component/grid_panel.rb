@@ -1,7 +1,5 @@
 # require "netzke/grid_panel/grid_panel_js"
-require "netzke/component/grid_panel/columns"
-require "netzke/component/grid_panel/api"
-require "netzke/component/grid_panel/javascript"
+# require "netzke/grid_panel/grid_panel_api"
 # require "netzke/grid_panel/grid_panel_columns"
 # require "netzke/plugins/configuration_tool"
 # require "data_accessor"
@@ -97,13 +95,13 @@ module Netzke::Component
   #   database columns + (eventually) virtual attributes specified with netzke_attribute
   class GridPanel < Base
     # javascript (client-side)
-    # include GridPanelJs
+    include GridPanelJs
     
     # API (server-side)
-    # include Api
+    include GridPanelApi
     
     # Columns
-    # include GridPanelColumns
+    include GridPanelColumns
     
     # Code shared between GridPanel, FormPanel, and other components that serve as interface to database tables
     include Netzke::DataAccessor
