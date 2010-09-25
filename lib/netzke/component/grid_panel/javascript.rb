@@ -1,7 +1,7 @@
 module Netzke::Component
   class GridPanel < Base
     # (Dynamic) JavaScript for GridPanel
-    module GridPanelJs
+    module Javascript
       extend ActiveSupport::Concern
       
       included do

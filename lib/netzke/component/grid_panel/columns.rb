@@ -1,6 +1,6 @@
 module Netzke::Component
   class GridPanel < Base
-    module GridPanelColumns
+    module Columns
       module ClassMethods
         # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
         # option for each column in the grid.

@@ -126,14 +126,11 @@ module Netzke::Component
       })
     end
     
-    # javascript (client-side)
-    include GridPanelJs
+    include GridPanel::Javascript
     
-    # API (server-side)
     include GridPanel::Api
     
-    # Columns
-    include GridPanelColumns
+    include GridPanel::Columns
     
     # Code shared between GridPanel, FormPanel, and other components that serve as interface to database tables
     include Netzke::DataAccessor
