@@ -23,8 +23,9 @@ module Netzke
           #   }],
           #   :active_tab => 0
           # },
-          { :xtype => 'fieldset', :checkbox_toggle => false, :title => "Fieldset", :items => [{:name => :first_name}, {:name => :last_name}]
-        }]
+          { :xtype => 'fieldset', :checkbox_toggle => false, :title => "Fieldset", :items => [{:name => :first_name}, {:name => :last_name}]},
+          { :name => :created_at }
+        ]
       }.deep_merge super
     end
   end

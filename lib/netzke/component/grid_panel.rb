@@ -277,77 +277,80 @@ module Netzke::Component
     end
 
     def components
-      res = {}
-      
-      # Edit in form
-      res.merge!({
-        :add_form => {
-          :lazy_loading => true,
-          :class_name => "Component::GridPanel::RecordFormWindow",
-          :title => "Add #{data_class.table_name.singularize.humanize}",
-          :button_align => "right",
-          :items => [{
-            :class_name => "Component::FormPanel",
-            :model => config[:model],
-            :items => default_fields_for_forms,
-            :persistent_config => config[:persistent_config],
-            :strong_default_attrs => config[:strong_default_attrs],
-            :border => true,
-            :bbar => false,
-            :header => false,
-            :mode => config[:mode],
-            :record => data_class.new
-          }.deep_merge(config[:add_form_config] || {})]
-        }.deep_merge(config[:add_form_window_config] || {}),
+      @_components ||= begin
+        res = {}
         
-        :edit_form => {
-          :lazy_loading => true,
-          :class_name => "Component::GridPanel::RecordFormWindow",
-          :title => "Edit #{data_class.table_name.singularize.humanize}",
-          :button_align => "right",
-          :items => [{
-            :class_name => "Component::FormPanel",
-            :model => config[:model],
-            :fields => default_fields_for_forms,
-            :persistent_config => config[:persistent_config],
-            :bbar => false,
-            :header => false,
-            :mode => config[:mode]
-          }.deep_merge(config[:edit_form_config] || {})]
-        }.deep_merge(config[:edit_form_window_config] || {}),
+        # Edit in form
+        res.merge!({
+          :add_form => {
+            :lazy_loading => true,
+            :class_name => "Component::GridPanel::RecordFormWindow",
+            :title => "Add #{data_class.table_name.singularize.humanize}",
+            :button_align => "right",
+            :items => [{
+              :class_name => "Component::FormPanel",
+              :model => config[:model],
+              :items => default_fields_for_forms,
+              :persistent_config => config[:persistent_config],
+              :strong_default_attrs => config[:strong_default_attrs],
+              :border => true,
+              :bbar => false,
+              :header => false,
+              :mode => config[:mode],
+              :record => data_class.new
+            }.deep_merge(config[:add_form_config] || {})]
+          }.deep_merge(config[:add_form_window_config] || {}),
         
-        :multi_edit_form => {
-          :lazy_loading => true,
-          :class_name => "Component::GridPanel::RecordFormWindow",
-          :title => "Edit #{data_class.table_name.humanize}",
-          :button_align => "right",
-          :items => [{
-            :class_name => "Component::GridPanel::MultiEditForm",
-            :model => config[:model],
+          :edit_form => {
+            :lazy_loading => true,
+            :class_name => "Component::GridPanel::RecordFormWindow",
+            :title => "Edit #{data_class.table_name.singularize.humanize}",
+            :button_align => "right",
+            :items => [{
+              :class_name => "Component::FormPanel",
+              :model => config[:model],
+              :fields => default_fields_for_forms,
+              :persistent_config => config[:persistent_config],
+              :bbar => false,
+              :header => false,
+              :mode => config[:mode]
+              # :record_id gets assigned by load_component_with_cache at the moment of loading
+            }.deep_merge(config[:edit_form_config] || {})]
+          }.deep_merge(config[:edit_form_window_config] || {}),
+        
+          :multi_edit_form => {
+            :lazy_loading => true,
+            :class_name => "Component::GridPanel::RecordFormWindow",
+            :title => "Edit #{data_class.table_name.humanize}",
+            :button_align => "right",
+            :items => [{
+              :class_name => "Component::GridPanel::MultiEditForm",
+              :model => config[:model],
+              :fields => default_fields_for_forms,
+              :persistent_config => config[:persistent_config],
+              :bbar => false,
+              :header => false,
+              :mode => config[:mode]
+            }.deep_merge(config[:multi_edit_form_config] || {})]
+          }.deep_merge(config[:multi_edit_form_window_config] || {})
+        }) if config[:enable_edit_in_form]
+      
+        # Extended search
+        res.merge!({
+          :search_panel => {
+            :lazy_loading => true,
+            :class_name => "Component::SearchPanel",
             :fields => default_fields_for_forms,
+            :search_class_name => config[:model],
             :persistent_config => config[:persistent_config],
-            :bbar => false,
-            :header => false,
+            :header => false, 
+            :bbar => false, 
             :mode => config[:mode]
-          }.deep_merge(config[:multi_edit_form_config] || {})]
-        }.deep_merge(config[:multi_edit_form_window_config] || {})
-      }) if config[:enable_edit_in_form]
+          }.deep_merge(config[:search_form_config] || {})
+        }) if config[:enable_extended_search]
       
-      # Extended search
-      res.merge!({
-        :search_panel => {
-          :lazy_loading => true,
-          :class_name => "Component::SearchPanel",
-          :fields => default_fields_for_forms,
-          :search_class_name => config[:model],
-          :persistent_config => config[:persistent_config],
-          :header => false, 
-          :bbar => false, 
-          :mode => config[:mode]
-        }.deep_merge(config[:search_form_config] || {})
-      }) if config[:enable_extended_search]
-      
-      res
+        res
+      end
     end
 
     include ::Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window

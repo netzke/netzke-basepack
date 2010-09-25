@@ -19,11 +19,13 @@ module Netzke::Component
           flds = load_fields
           reverse_merge_equally_named_fields(flds, initial_fields) if flds
           flds ||= initial_fields
-          
-          flds.map! do |c|
-            value = record.send(c[:name])
-            value.nil? ? c : c.merge(:value => value)
-          end if record
+
+          if record
+            record_data = record.to_array(flds)
+            flds.each_with_index do |c, i|
+              c.merge!(:value => record_data[i]) if !record_data[i].nil?
+            end
+          end
           
           flds
         end

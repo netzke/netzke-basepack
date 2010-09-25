@@ -284,10 +284,7 @@ module Netzke::Component
 
         # When providing the edit_form component, fill in the form with the requested record
         def load_component_with_cache(params)
-          if params[:id] == 'editForm'
-            Rails.logger.debug "!!! params[:record_id]: #{params[:record_id].inspect}\n"
-            components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i)
-          end
+          components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:id] == 'editForm'
       
           super
         end
