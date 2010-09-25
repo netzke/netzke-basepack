@@ -18,11 +18,6 @@ module Netzke::Component
   # 
   # * <tt>:mode</tt> - when set to <tt>:config</tt>, FormPanel loads in configuration mode
   class FormPanel < Base
-    include FormPanelJs  # javascript (client-side)
-    include FormPanelApi # API (server-side)
-    include FormPanelFields # fields
-    include Netzke::DataAccessor # some code shared between GridPanel, FormPanel, and other components that use database attributes
-
     # Class-level configuration with defaults
     def self.config
       set_default_config({
@@ -34,6 +29,11 @@ module Netzke::Component
         }
       })
     end
+    
+    include FormPanelJs  # javascript (client-side)
+    include FormPanelApi # API (server-side)
+    include FormPanelFields # fields
+    include Netzke::DataAccessor # some code shared between GridPanel, FormPanel, and other components that use database attributes
     
     def initial_config
       res = super

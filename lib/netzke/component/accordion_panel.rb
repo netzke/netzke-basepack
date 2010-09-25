@@ -1,4 +1,4 @@
-module Netzke
+module Netzke::Component
   # == AccordionPanel
   # 
   # == Features:
@@ -56,35 +56,35 @@ module Netzke
     end
 
     # Some normalization of config
-    def initialize(*args)
-      super
-
-      seen_active = false
-      
-      config[:items].each_with_index do |item, i|
-        # if some items are provided without names, give them generated names
-        item[:name] ||= "item#{i}"
-      
-        # remove duplucated :active configuration
-        if item[:active]
-          item[:active] = nil if seen_active
-          seen_active ||= true
-        end
-      end
-    end
+    # def initialize(*args)
+    #   super
+    # 
+    #   seen_active = false
+    #   
+    #   config[:items].each_with_index do |item, i|
+    #     # if some items are provided without names, give them generated names
+    #     item[:name] ||= "item#{i}"
+    #   
+    #     # remove duplucated :active configuration
+    #     if item[:active]
+    #       item[:active] = nil if seen_active
+    #       seen_active ||= true
+    #     end
+    #   end
+    # end
     
     # Returns items configs
-    def items
-      @items ||= config[:items]
-    end
+    # def items
+    #   @items ||= config[:items]
+    # end
 
     # Provides configs for fit panels (which will effectively be accordion panels)
-    def js_config
-      super.merge({
-        # these "items" are not related to the "items" of the config, rather these are the items required by the the accordion panel
-        :items => fit_panels
-      })
-    end
+    # def js_config
+    #   super.merge({
+    #     # these "items" are not related to the "items" of the config, rather these are the items required by the the accordion panel
+    #     :items => fit_panels
+    #   })
+    # end
 
     # "Fit-panels" - panels of layout 'fit' (effectively the accordion panels) that will contain the components ("items")
     def fit_panels

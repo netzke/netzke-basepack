@@ -5,7 +5,7 @@ require 'will_paginate'
 
 module Netzke::Component
   class GridPanel < Base
-    module GridPanelApi
+    module Api
       
       def get_data(params = {})
         if !config[:prohibit_read]

@@ -94,29 +94,12 @@ module Netzke::Component
   #   netzke_expose_attributes in the database model
   #   database columns + (eventually) virtual attributes specified with netzke_attribute
   class GridPanel < Base
-    # javascript (client-side)
-    include GridPanelJs
-    
-    # API (server-side)
-    include GridPanelApi
-    
-    # Columns
-    include GridPanelColumns
-    
-    # Code shared between GridPanel, FormPanel, and other components that serve as interface to database tables
-    include Netzke::DataAccessor
-
-    # TODO: 2010-09-14
-    def self.enforce_config_consistency
-      # config[:default_config][:ext_config][:enable_edit_in_form]    &&= config[:edit_in_form_available]
-      # config[:default_config][:ext_config][:enable_extended_search] &&= config[:extended_search_available]
-      # config[:default_config][:ext_config][:enable_rows_reordering] &&= config[:rows_reordering_available]
-    end
-
     # Class-level configuration. This options directly influence the amount of generated
     # javascript code for this component's class. For example, if you don't want filters for the grid, 
     # set :column_filters_available to false, and the javascript for the filters won't be included at all.
     def self.config
+      # Btw, this method must be on top of the class, because the code below can be using it at the very moment of defining the class.
+      
       set_default_config({
         
         :column_filters_available     => true,
@@ -142,6 +125,26 @@ module Netzke::Component
         }
       })
     end
+    
+    # javascript (client-side)
+    include GridPanelJs
+    
+    # API (server-side)
+    include GridPanel::Api
+    
+    # Columns
+    include GridPanelColumns
+    
+    # Code shared between GridPanel, FormPanel, and other components that serve as interface to database tables
+    include Netzke::DataAccessor
+
+    # TODO: 2010-09-14
+    def self.enforce_config_consistency
+      # config[:default_config][:ext_config][:enable_edit_in_form]    &&= config[:edit_in_form_available]
+      # config[:default_config][:ext_config][:enable_extended_search] &&= config[:extended_search_available]
+      # config[:default_config][:ext_config][:enable_rows_reordering] &&= config[:rows_reordering_available]
+    end
+
 
     # Include extra javascript that we depend on
     def self.include_js
@@ -178,7 +181,7 @@ module Netzke::Component
     end
     
     # Define connection points between client side and server side of GridPanel. 
-    # See implementation of equally named methods in the GridPanelApi module.
+    # See implementation of equally named methods in the Api module.
     api :get_data, :post_data, :delete_data, :resize_column, :move_column, :hide_column, :get_combobox_options, :move_rows
     
     # Edit in form
