@@ -1,6 +1,6 @@
 module Netzke::Component
   class FormPanel < Base
-    module FormPanelFields
+    module Fields
       module ClassMethods
         # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
         # option for each field in the form.

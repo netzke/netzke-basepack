@@ -30,9 +30,9 @@ module Netzke::Component
       })
     end
     
-    include FormPanelJs  # javascript (client-side)
-    include FormPanelApi # API (server-side)
-    include FormPanelFields # fields
+    include Javascript  # javascript (client-side)
+    include Api # API (server-side)
+    include Fields # fields
     include Netzke::DataAccessor # some code shared between GridPanel, FormPanel, and other components that use database attributes
     
     def initial_config

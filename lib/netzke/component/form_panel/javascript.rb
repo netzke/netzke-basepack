@@ -1,6 +1,6 @@
 module Netzke::Component
   class FormPanel < Base
-    module FormPanelJs
+    module Javascript
       # TODO: automatically add the primary hidden field (if not yet there)
       def js_config
         res = super

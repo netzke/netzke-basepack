@@ -75,9 +75,14 @@ module Netzke::Component
       def initial_columns(only_included = true)
         # Normalize here, as from the config we can get symbols (names) instead of hashes
         columns_from_config = config[:columns] && normalize_attr_config(config[:columns])
-
+        
+        
         if columns_from_config
-          # reverse-merge each column hash from config with each column hash from exposed_attributes (columns from config have higher priority)
+          # automatically add a column that reflects the primary key (unless specified in the config)
+          columns_from_config.insert(0, {:name => data_class.primary_key}) unless columns_from_config.any?{ |c| c[:name] == data_class.primary_key }
+          
+          # reverse-merge each column hash from config with each column hash from exposed_attributes 
+          # (columns from config have higher priority)
           for c in columns_from_config
             corresponding_default_column = default_columns.find{ |k| k[:name] == c[:name] }
             c.reverse_merge!(corresponding_default_column) if corresponding_default_column

@@ -1,6 +1,6 @@
 module Netzke::Component
   class FormPanel < Base
-    module FormPanelApi
+    module Api
       # API handling form submission
       def netzke_submit(params)
         success = create_or_update_record(params)
