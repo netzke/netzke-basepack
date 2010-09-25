@@ -232,7 +232,7 @@ module Netzke
               buttons: [{
                 text: 'Select',
                 handler : function(){
-                  if (role = w.getComponent().masquerade.role) {
+                  if (role = w.getNetzkeComponent().masquerade.role) {
                     Ext.Msg.confirm("Masquerading as a role", "Individual preferences for all users with this role will get overwritten as you make changes. Continue?", function(btn){
                       if (btn === 'yes') {
                         w.close();
@@ -269,7 +269,7 @@ module Netzke
                 scope:this
               }],
               listeners : {close: {fn: function(){
-                this.masqueradeAs(this.masquerade || w.getComponent().masquerade || {});
+                this.masqueradeAs(this.masquerade || w.getNetzkeComponent().masquerade || {});
               }, scope: this}}
       			});
 

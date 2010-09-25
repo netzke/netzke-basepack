@@ -56,7 +56,7 @@ module Netzke
                 // A function to access a region component (even if the component gets reloaded, the function will work).
                 // E.g.: getEastComponent()
                 this['get'+r.capitalize()+'Component'] = function(){
-                  return this.find('region', r)[0].getComponent()
+                  return this.find('region', r)[0].getNetzkeComponent()
                 }.createDelegate(this);
               };
             }, this);
@@ -71,7 +71,7 @@ module Netzke
         
         :get_region_component => <<-END_OF_JAVASCRIPT.l,
           function(region){
-            return this.find('region', region)[0].getComponent();
+            return this.find('region', region)[0].getNetzkeComponent();
           }
         END_OF_JAVASCRIPT
         

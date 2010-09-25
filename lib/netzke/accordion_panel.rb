@@ -37,7 +37,7 @@ module Netzke
         # Loads component into the panel if it wasn't loaded yet
         :load_item_component => <<-END_OF_JAVASCRIPT.l,
           function(panel) {
-            // if (!panel.getComponent()) panel.loadComponent(this.id + "__" + panel.component + "__get_component");
+            // if (!panel.getNetzkeComponent()) panel.loadComponent(this.id + "__" + panel.component + "__get_component");
             var preloadedItemConfig = this[panel.component.camelize(true) + "Config"];
             
             if (preloadedItemConfig){

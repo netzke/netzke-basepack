@@ -64,7 +64,7 @@ module Netzke
         # bulkExecute in active tab
         :execute_in_active_tab => <<-END_OF_JAVASCRIPT.l,
           function(commands){
-            this.getActiveTab().getComponent().bulkExecute(commands);
+            this.getActiveTab().getNetzkeComponent().bulkExecute(commands);
           }
         END_OF_JAVASCRIPT
         
@@ -72,7 +72,7 @@ module Netzke
           function(){
             var res = [];
             this.items.each(function(tab){
-              var kid = tab.getComponent();
+              var kid = tab.getNetzkeComponent();
               if (kid) { res.push(kid) }
             }, this);
             return res;
@@ -82,7 +82,7 @@ module Netzke
         :on_tab_change => <<-END_OF_JAVASCRIPT.l
           function(self, tab) {
             // load component into the panel from the server if it's not there yet
-            if (!tab.getComponent()) {
+            if (!tab.getNetzkeComponent()) {
               this.loadComponentInto(tab);
             }
             
@@ -92,7 +92,7 @@ module Netzke
             // call "update" on the component
             if (tab.outdated) {
               tab.outdated = false;
-              var component = tab.getComponent();
+              var component = tab.getNetzkeComponent();
               if (component && component.update) {component.update.call(component)};
             }
           }

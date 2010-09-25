@@ -19,7 +19,7 @@ module Netzke
                 // E.g.: getEastComponent()
                 var methodName = 'get'+r.capitalize()+'Component';
                 this[methodName] = function(){
-                  Netzke.deprecationWarning("Instead of '" + methodName + "' use getComponent(componentName).");
+                  Netzke.deprecationWarning("Instead of '" + methodName + "' use getChildComponent('" + r + "').");
                   return this.find('region', r)[0];
                 }.createDelegate(this);
               }, this);

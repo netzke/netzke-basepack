@@ -1,5 +1,6 @@
 module Netzke
   class UserGrid < Component::GridPanel
+    
     def config
       {
         :mode => :config,
