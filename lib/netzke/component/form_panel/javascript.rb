@@ -39,8 +39,8 @@ module Netzke::Component
                       if (field.name == this.pri) this.primaryPresent = true;
                       
                       if (!this.autoFieldLayout) {
-                        // Apply corresponding config from this.fields (which take precedence, thus overriding what's originally
-                        // in the code!)
+                        // Apply corresponding config from this.fields (which take precedence, 
+                        // thus overriding what's originally in the code!)
                         // This is where, for example, the field values get set.
                         Ext.apply(field, this.fieldsObject[field.name]);
                       }
@@ -86,9 +86,10 @@ module Netzke::Component
                   this.autoFieldLayout = true;
                   this.items = this.fields;
                 }
-                  
+                
                 this.detectFields(this.items);
                 
+                // If the primary key field is not mentioned in items, add it automatically as a hidden field
                 if (!this.primaryPresent) {
                   this.recordFields.push({name: this.pri, mapping: this.recordIndex++});
                   this.items.push({hidden: true, name: this.pri, value: this.fieldsObject[this.pri].value});

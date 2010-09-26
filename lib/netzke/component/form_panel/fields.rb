@@ -35,11 +35,31 @@ module Netzke::Component
         @default_fields ||= load_model_level_attrs || (data_class && data_class.netzke_attributes) || []
       end
 
+      def fields_from_config
+        @_fields_from_config ||= begin
+          config[:items] && normalize_attr_config(collect_fields_from_array(config[:items])) ||
+          (config[:columns] || config[:fields]) && normalize_attr_config(config[:columns] || config[:fields])
+        end
+      end
+
+      def collect_fields_from_array(items)
+        @fields ||= []
+        items.each_with_index do |item, i|
+          if item.is_a?(String) || item.is_a?(Symbol) || (item.is_a?(Hash) && item[:name])
+            @fields << item
+          elsif item.is_a?(Hash)
+            item[:items].is_a?(Array) && collect_fields_from_array(item[:items])
+          else
+            raise ArgumentError, %{Arrays cannot contain arrays as elements inside "items" config}
+          end
+        end
+      end
+
       def initial_fields(only_included = true)
         ::ActiveSupport::Deprecation.warn("The :columns option for FormPanel is deprecated. Use :fields instead", caller) if config[:columns]
         
         # Normalize here, as from the config we can get symbols (names) instead of hashes
-        fields_from_config = (config[:columns] || config[:fields]) && normalize_attr_config(config[:columns] || config[:fields])
+        # fields_from_config = (config[:columns] || config[:fields]) && normalize_attr_config(config[:columns] || config[:fields])
 
         if fields_from_config
           # automatically add a field that reflects the primary key (unless specified in the config)

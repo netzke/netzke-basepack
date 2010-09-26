@@ -5,7 +5,8 @@ module Netzke
         :model => 'User',
         :title => 'Users',
         :record_id => User.first.id,
-        :items => [
+        # :items => [{:name => :first_name}, {:name => :last_name}]
+        # :items => [
           # {:name => :first_name, :disabled => true}, {:name => :last_name}, 
           # { 
           #   :xtype => 'tabpanel', :items => [{
@@ -23,10 +24,11 @@ module Netzke
           #   }],
           #   :active_tab => 0
           # },
-          { :xtype => 'fieldset', :checkbox_toggle => false, :title => "Fieldset", :items => [{:name => :first_name}, {:name => :last_name}]},
-          { :name => :created_at }
-        ]
+        #   { :xtype => 'fieldset', :checkbox_toggle => false, :title => "Fieldset", :items => [{:name => :first_name}, {:name => :last_name}]},
+        #   { :name => :created_at }
+        # ]
       }.deep_merge super
     end
+    
   end
 end
