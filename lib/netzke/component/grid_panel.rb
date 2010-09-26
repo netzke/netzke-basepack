@@ -126,13 +126,11 @@ module Netzke::Component
       })
     end
     
-    include GridPanel::Javascript
+    # Be specific about inclusion, because base class also may have similar modules
+    include self::Javascript
+    include self::Api
+    include self::Columns
     
-    include GridPanel::Api
-    
-    include GridPanel::Columns
-    
-    # Code shared between GridPanel, FormPanel, and other components that serve as interface to database tables
     include Netzke::DataAccessor
 
     # TODO: 2010-09-14

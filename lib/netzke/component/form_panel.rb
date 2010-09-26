@@ -30,10 +30,12 @@ module Netzke::Component
       })
     end
     
-    include Javascript  # javascript (client-side)
-    include Api # API (server-side)
-    include Fields # fields
-    include Netzke::DataAccessor # some code shared between GridPanel, FormPanel, and other components that use database attributes
+    # Be specific about inclusion, because base class also may have similar modules
+    include self::Javascript # javascript (client-side)
+    include self::Api # API (server-side)
+    include self::Fields # fields
+    
+    include Netzke::DataAccessor 
     
     def initial_config
       res = super
@@ -129,9 +131,9 @@ module Netzke::Component
     private
       
       def self.server_side_config_options
-        [:record]
+        super + [:record]
       end
  
-    include ::Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
+    # include ::Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
   end
 end
