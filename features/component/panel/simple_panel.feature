@@ -6,7 +6,7 @@ Feature: Panel
   @selenium
   Scenario: The SimplePanel component should be able to update its body's HTML from the server
     When I go to the SimplePanel test page
-    When I should see "Original HTML"
+    Then I should see "Original HTML"
     When I press "Update html"
     Then I should see "HTML received from server"
   

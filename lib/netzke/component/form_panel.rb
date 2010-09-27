@@ -31,11 +31,12 @@ module Netzke::Component
     end
     
     # Be specific about inclusion, because base class also may have similar modules
-    include self::Javascript # javascript (client-side)
-    include self::Api # API (server-side)
+    include self::Services # server-side
     include self::Fields # fields
     
     include Netzke::DataAccessor 
+    
+    js_base_class "Netzke.pre.FormPanel"
     
     def initial_config
       res = super
@@ -50,14 +51,20 @@ module Netzke::Component
     # Extra javascripts
     def self.include_js
       [
+        "#{File.dirname(__FILE__)}/form_panel/javascripts/pre.js"
         # "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js",
         # Netzke::Component::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
         # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
       ]
     end
     
-    api :netzke_submit, :netzke_load, :get_combobox_options
-
+    def js_config
+      res = super
+      res.merge!(:fields => fields)
+      res.merge!(:pri    => data_class.primary_key) if data_class
+      res
+    end
+    
     attr_accessor :record
     
     # Model class
