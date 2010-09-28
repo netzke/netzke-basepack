@@ -126,6 +126,23 @@ module Netzke::ActiveRecord::Attributes
     res
   end
   
+  def to_hash(attributes)
+    res = {}
+    for a in attributes
+      begin
+        next if a[:included] == false
+        v = send(a[:name])
+        # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
+        v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
+        res[a[:name]] = v
+      rescue NoMethodError
+        # So that we don't crash at a badly configured column
+        res << "UNDEF"
+      end
+    end
+    res
+  end
+  
   def self.included(receiver)
     receiver.extend         ClassMethods
   end

@@ -5,11 +5,14 @@ module Netzke::Component
       
       included do
         
+        #
+        # Endpoints
+        # 
         endpoint :netzke_submit do |params|
           success = create_or_update_record(params)
 
           if success
-            {:set_form_values => array_of_values, :set_result => "ok"}
+            {:set_form_values => @record.to_hash(fields), :set_result => "ok"}
           else
             # flash eventual errors
             @record.errors.each_full do |msg|
@@ -24,7 +27,7 @@ module Netzke::Component
           {:set_form_values => array_of_values}
         end
         
-        # API that returns options for a combobox
+        # Returns options for a combobox
         endpoint :get_combobox_options do |params|
           column = params[:column]
           query = params[:query]
@@ -84,6 +87,7 @@ module Netzke::Component
         def array_of_values
           @record && @record.to_array(fields)
         end
+        
     end
   end
 end
