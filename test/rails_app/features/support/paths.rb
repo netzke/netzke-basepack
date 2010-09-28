@@ -11,12 +11,6 @@ module NavigationHelpers
     when /the home\s?page/
       '/'
 
-    # Add more mappings here.
-    # Here is an example that pulls values out of the Regexp:
-    #
-    #   when /^(.*)'s profile page$/i
-    #     user_profile_path(User.find_by_login($1))
-
     # the following are examples using path_to_pickle
 
     when /^#{capture_model}(?:'s)? page$/                           # eg. the forum's page
@@ -31,17 +25,11 @@ module NavigationHelpers
     when /^#{capture_model}(?:'s)? (.+?) page$/                     # eg. the forum's posts page
       path_to_pickle $1, :extra => $2                               #  or the forum's edit page
 
-    when /the simple panel page/
-      '/panel/simple'
-
-    when /the server caller page/
-      '/panel/server_caller'
-
-    when /the component loader page/
-      '/panel/component_loader'
-
-    when /the (.*) test page/
-      components_path(:component => $1)
+    # Add more mappings here.
+    # Here is an example that pulls values out of the Regexp:
+    #
+    #   when /^(.*)'s profile page$/i
+    #     user_profile_path(User.find_by_login($1))
 
     else
       begin

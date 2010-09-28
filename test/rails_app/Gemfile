@@ -10,7 +10,6 @@ gem 'meta_where'
 # and rake tasks are available in development mode:
 group :development, :test do
   gem 'capybara'
-  gem 'database_cleaner'
   gem 'cucumber-rails'
   gem 'cucumber'
   gem 'rspec-rails', ">= 2.0.0.beta.22"
@@ -25,4 +24,6 @@ end
 
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'pickle'
+  gem 'database_cleaner', :git => 'http://github.com/bmabey/database_cleaner.git'
 end
