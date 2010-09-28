@@ -19,7 +19,7 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
   initComponent : function(){
     var row = Ext.data.Record.create([{name:'id'}]);
     var store = new Ext.data.Store({
-      proxy         : new Ext.data.HttpProxy({url: Ext.getCmp(this.parentId).buildApiUrl("get_combobox_options"), jsonData:{column:this.name}}),
+      proxy         : new Ext.data.HttpProxy({url: Ext.getCmp(this.parentId).endpointUrl("get_combobox_options"), jsonData:{column:this.name}}),
       reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
     });
   
