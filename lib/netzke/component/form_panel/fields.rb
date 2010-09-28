@@ -63,7 +63,7 @@ module Netzke::Component
 
         if fields_from_config
           # automatically add a field that reflects the primary key (unless specified in the config)
-          # fields_from_config.insert(0, {:name => data_class.primary_key}) unless fields_from_config.any?{ |c| c[:name] == data_class.primary_key }
+          fields_from_config.insert(0, {:name => data_class.primary_key}) unless fields_from_config.any?{ |c| c[:name] == data_class.primary_key }
           
           # reverse-merge each column hash from config with each column hash from exposed_attributes (fields from config have higher priority)
           for c in fields_from_config
