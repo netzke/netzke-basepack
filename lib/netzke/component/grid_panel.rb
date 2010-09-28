@@ -259,7 +259,7 @@ module Netzke::Component
       }
       
       if Netzke::Component::Base.config[:with_icons]
-        icons_uri = Netzke::Component::Base.config[:icons_uri]
+        icons_uri = Netzke::Component::Base.config[:icons_uri] + "/"
         actions.deep_merge!(
           :add => {:icon => icons_uri + "add.png"},
           :edit => {:icon => icons_uri + "table_edit.png"},

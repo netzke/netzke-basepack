@@ -15,29 +15,29 @@ module Netzke::Component
       })
     end
     
-    def independent_config
-      super.deep_merge(
+    def config
+      orig = super
+      {
         :tbar => [
-          # TODO: 2010-09-14
-          # "Presets:", 
-          # {
-          #   :xtype => "combo", 
-          #   :fieldLabel => "Presets",
-          #   :triggerAction => "all",
-          #   :store => (persistent_config[:saved_searches] || []).map{ |s| s["name"] },
-          #   :id => "presets-combo",
-          #   :listeners => {:before_select => {
-          #     :fn => "function(combo, record){Ext.getCmp('#{global_id}').selectPreset(record.data.field1);}".l
-          #   }}
-          # }, 
-          :save, :del]
-      )
+          "Presets:", 
+          {
+            :xtype => "combo", 
+            :fieldLabel => "Presets",
+            :triggerAction => "all",
+            :store => (orig[:saved_searches] || []).map{ |s| s["name"] },
+            :id => "presets-combo",
+            :listeners => {:before_select => {
+              :fn => "function(combo, record){Ext.getCmp('#{global_id}').selectPreset(record.data.field1);}".l
+            }}
+          }, 
+          :save.ext_action, :del.ext_action]
+      }.deep_merge orig
     end
     
     def actions
       super.merge(
-        :save => {:text => "Save", :icon => Netzke::Component::Base.config[:with_icons] && (Netzke::Component::Base.config[:icons_uri] + "disk.png")},
-        :del => {:text => "Delete", :icon => Netzke::Component::Base.config[:with_icons] && (Netzke::Component::Base.config[:icons_uri] + "delete.png")}
+        :save => {:text => "Save", :icon => Netzke::Component::Base.config[:with_icons] && (Netzke::Component::Base.config[:icons_uri] + "/disk.png")},
+        :del => {:text => "Delete", :icon => Netzke::Component::Base.config[:with_icons] && (Netzke::Component::Base.config[:icons_uri] + "/delete.png")}
       )
     end
     

@@ -5,7 +5,7 @@ module Netzke
         :model => 'User',
         :title => 'Users',
         :record_id => User.first.id,
-        # :items => [{:name => :id}, {:name => :first_name}, {:name => :last_name}]
+        :items => [{:name => :id}, {:name => :first_name}, {:name => :last_name}]
         # :items => [
           # {:name => :first_name, :disabled => true}, {:name => :last_name}, 
           # { 
