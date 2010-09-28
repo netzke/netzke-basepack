@@ -24,7 +24,7 @@ module Netzke::Component
         
         endpoint :netzke_load do |params|
           @record = data_class && data_class.find_by_id(params[:id])
-          {:set_form_values => array_of_values}
+          {:set_form_values => @record.to_hash(fields)}
         end
         
         # Returns options for a combobox
