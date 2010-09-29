@@ -6,34 +6,28 @@ module Netzke
     
     # Returns options for comboboxes in grids/forms
     def combobox_options_for_column(column, method_options = {})
+      query = method_options[:query]
+      
       # First, check if we have options for this column defined in persistent storage
       options = column[:combobox_options] && column[:combobox_options].split("\n")
       if options
-        (method_options[:query].nil? ? options : options.select{ |o| o.index(/^#{method_options[:query]}/) }).map{ |el| [el] }
+        query ? options.select{ |o| o.index(/^#{query}/) }.map{ |el| [el] } : options
       else      
         assoc, assoc_method = assoc_and_assoc_method_for_column(column)
       
         if assoc
           # Options for an asssociation attribute
-        
-          search = assoc.klass.searchlogic
-      
-          # apply scopes
-          method_options[:scopes] && method_options[:scopes].each do |s|
-            if s.is_a?(Array)
-              scope_name, *args = s
-              search.send(scope_name, *args)
-            else
-              search.send(s, true)
-            end
-          end
+          
+          relation = assoc.klass.where({})
+          
+          relation = relation.extend_with(method_options[:scope]) if method_options[:scope]
         
           if assoc.klass.column_names.include?(assoc_method)
             # apply query
-            search.send("#{assoc_method}_like", "#{method_options[:query]}%") if method_options[:query]
-            search.all.map{ |r| [r.send(assoc_method)] }
+            relation = relation.where(:"#{assoc_method}".like => "#{query}%") if query.present?
+            relation.all.map{ |r| [r.send(assoc_method)] }
           else
-            search.all.map{ |r| r.send(assoc_method) }.select{ |value| value =~ /^#{method_options[:query]}/  }.map{ |v| [v] }
+            relation.all.map{ |r| r.send(assoc_method) }.select{ |value| value =~ /^#{query}/  }.map{ |v| [v] }
           end
         
         else

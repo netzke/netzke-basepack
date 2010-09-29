@@ -6,7 +6,7 @@ module Netzke
         :mode => :config,
         :model => "User",
         :title => "Users",
-        :columns => [:first_name, :last_name]
+        :columns => [:first_name, :last_name, :role__name]
       }.deep_merge super
     end
   end

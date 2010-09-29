@@ -13,3 +13,7 @@ ActiveRecord::Base.class_eval do
   include ::Netzke::ActiveRecord::Attributes
   include ::Netzke::ActiveRecord::ComboboxOptions
 end
+
+ActiveRecord::Relation.class_eval do
+  include ::Netzke::ActiveRecord::RelationExtensions
+end

@@ -82,10 +82,10 @@ module Netzke::Component
         # Returns choices for a column
         endpoint :get_combobox_options do |params|
           column = columns.detect{ |c| c[:name] == params[:column] }.try(:to_options!)
-          scopes = (column[:editor].is_a?(Hash) && column[:editor] || {}).to_options[:scopes]
+          query = (column[:editor].is_a?(Hash) && column[:editor] || {}).to_options[:query]
           query = params[:query]
         
-          {:data => combobox_options_for_column(column, :query => query, :scopes => scopes)}
+          {:data => combobox_options_for_column(column, :query => query, :query => query)}
         end
 
         endpoint :move_rows do |params|
@@ -198,28 +198,11 @@ module Netzke::Component
             normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
           ) if params[:extra_conditions]
                                    
-          search = data_class.where(conditions)
+          relation = data_class.where(conditions)
           
-          query = config[:query]
+          relation = relation.extend_with(config[:scope]) if config[:scope]
           
-          if query
-            case query.class.name
-            when "Symbol" # scope
-              search.send(query)
-            when "String" # MySQL query
-              search.where(query)
-            when "Hash"   # conditions hash
-              search.where(query)
-            when "Array"  # SQL query with params
-              search.where(query)
-            when "Proc"   # anything, should return ActiveRecord::Relation, or something similar, so that pagination works
-              query.call(data_class)
-            else
-              raise "Unknown query parameter for GridPanel #{global_id}"
-            end
-          else
-            search
-          end
+          relation
         end
       
         # Override this method to react on each operation that caused changing of data

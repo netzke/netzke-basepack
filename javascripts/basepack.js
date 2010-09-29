@@ -37,8 +37,14 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
       if (event.getKey() == 9 || event.getKey() == 13) {cb.setValue(cb.getRawValue());}
     });
     
+    // Not-so clean approach to submit the current record id
     store.on('beforeload',function(store, options){
-      options.params.id = Ext.getCmp(this.parentId).getSelectionModel().getSelected().get('id');
+      var parent = Ext.getCmp(this.parentId);
+      if (parent.isXType('grid')) {
+        options.params.id = parent.getSelectionModel().getSelected().get('id');
+      } else {
+        // TODO: also for the FormPanel
+      }
     },this)
   }
 });
