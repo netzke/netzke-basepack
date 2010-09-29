@@ -12,7 +12,7 @@ module Netzke::Component
           success = create_or_update_record(params)
 
           if success
-            {:set_form_values => hash_of_values, :set_result => "ok"}
+            {:set_form_values => values, :set_result => "ok"}
           else
             # flash eventual errors
             @record.errors.each_full do |msg|
@@ -52,7 +52,7 @@ module Netzke::Component
       #   @record && @record.to_array(fields)
       # end
       
-      def hash_of_values
+      def values
         @record && @record.to_hash(fields)
       end
   
