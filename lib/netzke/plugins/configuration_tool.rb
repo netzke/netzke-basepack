@@ -109,7 +109,7 @@ module Netzke::Plugins
     end
   
     def js_config_with_config_tool
-      js_config_without_config_tool.merge(:configurable => persistent_config_enabled?)
+      js_config_without_config_tool.merge(:configurable => persistence_enabled?)
     end
   
     def config_tool_needed?
