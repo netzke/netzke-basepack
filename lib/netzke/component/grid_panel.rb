@@ -128,7 +128,7 @@ module Netzke::Component
     
     # Be specific about inclusion, because base class also may have similar modules
     include self::Javascript
-    include self::Api
+    include self::Services
     include self::Columns
     
     include Netzke::DataAccessor
@@ -175,13 +175,6 @@ module Netzke::Component
       res
     end
     
-    # Define connection points between client side and server side of GridPanel. 
-    # See implementation of equally named methods in the Api module.
-    api :get_data, :post_data, :delete_data, :resize_column, :move_column, :hide_column, :get_combobox_options, :move_rows
-    
-    # Edit in form
-    api :create_new_record if config[:edit_in_form_available]
-
     # Model class
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class

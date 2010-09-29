@@ -5,99 +5,104 @@ require 'will_paginate'
 
 module Netzke::Component
   class GridPanel < Base
-    module Api
+    module Services
+      extend ActiveSupport::Concern
       
-      def get_data(params = {})
-        if !config[:prohibit_read]
-          records = get_records(params)
-          {:data => records.map{|r| r.to_array(columns)}, :total => config[:enable_pagination] && records.total_entries}
-        else
-          flash :error => "You don't have permissions to read data"
-          {:feedback => @flash}
-        end
-      end
-
-      def post_data(params)
-        mod_records = {}
-        [:create, :update].each do |operation|
-          data = ActiveSupport::JSON.decode(params["#{operation}d_records"]) if params["#{operation}d_records"]
-          if !data.nil? && !data.empty? # data may be nil for one of the operations
-            mod_records[operation] = process_data(data, operation)
-            mod_records[operation] = nil if mod_records[operation].empty?
+      included do
+      
+        endpoint :get_data do |*args|
+          params = args.first || {} # params are optional
+          if !config[:prohibit_read]
+            records = get_records(params)
+            {:data => records.map{|r| r.to_array(columns)}, :total => config[:enable_pagination] && records.total_entries}
+          else
+            flash :error => "You don't have permissions to read data"
+            {:feedback => @flash}
           end
         end
-        
-        on_data_changed
-        
-        {
-          :update_new_records => mod_records[:create], 
-          :update_mod_records => mod_records[:update] || {},
-          :feedback => @flash
-        }
-      end
 
-      def delete_data(params)
-        if !config[:prohibit_delete]
-          record_ids = ActiveSupport::JSON.decode(params[:records])
-          data_class.destroy(record_ids)
-          on_data_changed
-          {:feedback => "Deleted #{record_ids.size} record(s)", :load_store_data => get_data}
-        else
-          {:feedback => "You don't have permissions to delete data"}
-        end
-      end
-
-      def resize_column(params)
-        raise "Called api_resize_column while not configured to do so" if config[:enable_column_resize] == false
-        columns[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
-        save_columns!
-        {}
-      end
-
-      def move_column(params)
-        raise "Called api_move_column while not configured to do so" if config[:enable_column_move] == false
-        remove_from = normalize_index(params[:old_index].to_i)
-        insert_to = normalize_index(params[:new_index].to_i)
-        column_to_move = columns.delete_at(remove_from)
-        columns.insert(insert_to, column_to_move)
-        save_columns!
-
-        # reorder the columns on the client side (still not sure if it's not an overkill)
-        # {:reorder_columns => columns.map(&:name)} # Well, I think it IS an overkill - commented out 
-        # until proven to be necessary
-        {}
-      end
-
-      def hide_column(params)
-        raise "Called api_hide_column while not configured to do so" if config[:enable_column_hide] == false
-        columns[normalize_index(params[:index].to_i)][:hidden] = params[:hidden].to_b
-        save_columns!
-        {}
-      end
-
-      # Returns choices for a column
-      def get_combobox_options(params)
-        column = columns.detect{ |c| c[:name] == params[:column] }.try(:to_options!)
-        scopes = (column[:editor].is_a?(Hash) && column[:editor] || {}).to_options[:scopes]
-        query = params[:query]
-        
-        {:data => combobox_options_for_column(column, :query => query, :scopes => scopes)}
-      end
-
-      def move_rows(params)
-        if defined?(ActsAsList) && data_class.ancestors.include?(ActsAsList::InstanceMethods)
-          ids = JSON.parse(params[:ids]).reverse
-          ids.each_with_index do |id, i|
-            r = data_class.find(id)
-            r.insert_at(params[:new_index].to_i + i + 1)
+        endpoint :post_data do |params|
+          mod_records = {}
+          [:create, :update].each do |operation|
+            data = ActiveSupport::JSON.decode(params["#{operation}d_records"]) if params["#{operation}d_records"]
+            if !data.nil? && !data.empty? # data may be nil for one of the operations
+              mod_records[operation] = process_data(data, operation)
+              mod_records[operation] = nil if mod_records[operation].empty?
+            end
           end
+        
           on_data_changed
-        else
-          raise RuntimeError, "Data class should 'acts_as_list' to support moving rows"
+        
+          {
+            :update_new_records => mod_records[:create], 
+            :update_mod_records => mod_records[:update] || {},
+            :feedback => @flash
+          }
         end
-        {}
+
+        endpoint :delete_data do |params|
+          if !config[:prohibit_delete]
+            record_ids = ActiveSupport::JSON.decode(params[:records])
+            data_class.destroy(record_ids)
+            on_data_changed
+            {:feedback => "Deleted #{record_ids.size} record(s)", :load_store_data => get_data}
+          else
+            {:feedback => "You don't have permissions to delete data"}
+          end
+        end
+
+        endpoint :resize_column do |params|
+          raise "Called api_resize_column while not configured to do so" if config[:enable_column_resize] == false
+          columns[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
+          save_columns!
+          {}
+        end
+
+        endpoint :move_column do |params|
+          raise "Called api_move_column while not configured to do so" if config[:enable_column_move] == false
+          remove_from = normalize_index(params[:old_index].to_i)
+          insert_to = normalize_index(params[:new_index].to_i)
+          column_to_move = columns.delete_at(remove_from)
+          columns.insert(insert_to, column_to_move)
+          save_columns!
+
+          # reorder the columns on the client side (still not sure if it's not an overkill)
+          # {:reorder_columns => columns.map(&:name)} # Well, I think it IS an overkill - commented out 
+          # until proven to be necessary
+          {}
+        end
+
+        endpoint :hide_column do |params|
+          raise "Called api_hide_column while not configured to do so" if config[:enable_column_hide] == false
+          columns[normalize_index(params[:index].to_i)][:hidden] = params[:hidden].to_b
+          save_columns!
+          {}
+        end
+
+        # Returns choices for a column
+        endpoint :get_combobox_options do |params|
+          column = columns.detect{ |c| c[:name] == params[:column] }.try(:to_options!)
+          scopes = (column[:editor].is_a?(Hash) && column[:editor] || {}).to_options[:scopes]
+          query = params[:query]
+        
+          {:data => combobox_options_for_column(column, :query => query, :scopes => scopes)}
+        end
+
+        endpoint :move_rows do |params|
+          if defined?(ActsAsList) && data_class.ancestors.include?(ActsAsList::InstanceMethods)
+            ids = JSON.parse(params[:ids]).reverse
+            ids.each_with_index do |id, i|
+              r = data_class.find(id)
+              r.insert_at(params[:new_index].to_i + i + 1)
+            end
+            on_data_changed
+          else
+            raise RuntimeError, "Data class should 'acts_as_list' to support moving rows"
+          end
+          {}
+        end
+        
       end
-      
       #
       # Some components' overridden API 
       # 
@@ -216,8 +221,6 @@ module Netzke::Component
             search
           end
         end
-
-        
       
         # Override this method to react on each operation that caused changing of data
         def on_data_changed; end
