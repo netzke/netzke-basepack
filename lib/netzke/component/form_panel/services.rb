@@ -12,7 +12,7 @@ module Netzke::Component
           success = create_or_update_record(params)
 
           if success
-            {:set_form_values => @record.to_hash(fields), :set_result => "ok"}
+            {:set_form_values => hash_of_values, :set_result => "ok"}
           else
             # flash eventual errors
             @record.errors.each_full do |msg|
@@ -45,6 +45,15 @@ module Netzke::Component
       def configuration_panel__fields__get_combobox_options(params)
         query = params[:query]
         {:data => (default_columns.map{ |c| c[:name].to_s }).grep(/^#{query}/).map{ |n| [n] }}.to_nifty_json
+      end
+      
+      # Returns array of form values according to the configured columns
+      # def array_of_values
+      #   @record && @record.to_array(fields)
+      # end
+      
+      def hash_of_values
+        @record && @record.to_hash(fields)
       end
   
       private
@@ -82,11 +91,6 @@ module Netzke::Component
         #   end
         #   {:data => [array_of_values]}
         # end
-  
-        # Returns array of form values according to the configured columns
-        def array_of_values
-          @record && @record.to_array(fields)
-        end
         
     end
   end
