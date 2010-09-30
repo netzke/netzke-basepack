@@ -16,7 +16,7 @@ module Netzke::Component
         super.merge({
           :bbar => config.has_key?(:bbar) ? config[:bbar] : default_bbar,
           :context_menu => config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu,
-          :clmns => columns, # columns
+          :columns => columns, # columns
           :model => config[:model], # the model name
           :inline_data => (get_data if config[:load_inline_data]), # inline data (loaded along with the grid panel)
           :pri => data_class.primary_key # table primary key name
