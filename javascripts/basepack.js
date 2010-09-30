@@ -40,7 +40,7 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
     // Not-so clean approach to submit the current record id
     store.on('beforeload',function(store, options){
       var parent = Ext.getCmp(this.parentId);
-      if (parent.isXType('grid')) {
+      if (parent.getSelectionModel) {
         options.params.id = parent.getSelectionModel().getSelected().get('id');
       } else {
         // TODO: also for the FormPanel
