@@ -29,14 +29,13 @@ module Netzke::Component
         
         # Returns options for a combobox
         endpoint :get_combobox_options do |params|
-          column = params[:column]
           query = params[:query]
 
-          column = fields.detect{ |c| c[:name] == params[:column] }.try(:to_options!)
-          scopes = column.to_options[:scopes]
+          field = fields.detect{ |c| c[:name] == params[:column] }
+          scope = field.to_options[:scope]
           query = params[:query]
 
-          {:data => combobox_options_for_column(column, :query => query, :scopes => scopes, :record_id => params[:id])}
+          {:data => combobox_options_for_column(field, :query => query, :scope => scope, :record_id => params[:id])}
         end
         
       end
