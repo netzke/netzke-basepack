@@ -1,6 +1,8 @@
 module Netzke::Component
   class FormPanel < Base
     module Fields
+      extend ActiveSupport::Concern
+      
       module ClassMethods
         # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
         # option for each field in the form.
@@ -14,9 +16,10 @@ module Netzke::Component
         end
       end
       
+      # Fully configured field array passed to the JS side (see js_config)
       def fields
         @fields ||= begin
-          flds = load_fields
+          flds = load_persistent_fields
           reverse_merge_equally_named_fields(flds, initial_fields) if flds
           flds ||= initial_fields
 
@@ -31,37 +34,23 @@ module Netzke::Component
         end
       end
 
+      # Fields used when no :items are provided in the configuration
       def default_fields
-        @default_fields ||= load_model_level_attrs || (data_class && data_class.netzke_attributes) || []
+        @_default_fields ||= load_model_level_attrs || (data_class && data_class.netzke_attributes) || []
       end
 
+      # Array of normalized field configs extracted from :items
       def fields_from_config
-        @_fields_from_config ||= begin
-          config[:items] && normalize_attr_config(collect_fields_from_array(config[:items])) ||
-          (config[:columns] || config[:fields]) && normalize_attr_config(config[:columns] || config[:fields])
-        end
+        @_fields_from_config ||= config[:items] && normalize_items_and_collect_fields(config[:items])
       end
 
-      def collect_fields_from_array(items)
-        @fields ||= []
-        items.each_with_index do |item, i|
-          if item.is_a?(String) || item.is_a?(Symbol) || (item.is_a?(Hash) && item[:name])
-            @fields << item
-          elsif item.is_a?(Hash)
-            item[:items].is_a?(Array) && collect_fields_from_array(item[:items])
-          else
-            raise ArgumentError, %{Arrays cannot contain arrays as elements inside "items" config}
-          end
-        end
-      end
-
+      # Full 
       def initial_fields(only_included = true)
-        ::ActiveSupport::Deprecation.warn("The :columns option for FormPanel is deprecated. Use :fields instead", caller) if config[:columns]
-        
         # Normalize here, as from the config we can get symbols (names) instead of hashes
-        # fields_from_config = (config[:columns] || config[:fields]) && normalize_attr_config(config[:columns] || config[:fields])
+        # fields_from_config = (config[:columns] || config[:fields]) && normalize_attrs(config[:columns] || config[:fields])
 
         if fields_from_config
+          Rails.logger.debug "!!! fields_from_config: #{fields_from_config.inspect}\n"
           # automatically add a field that reflects the primary key, unless specified in the config; it should be added to the end
           fields_from_config.push({:name => data_class.primary_key}) if data_class && !fields_from_config.any?{ |c| c[:name] == data_class.primary_key }
           
@@ -111,7 +100,7 @@ module Netzke::Component
         #   NetzkeFieldList.update_list_for_current_authority(global_id, fields, data_class.name)
         # end
       
-        def load_fields
+        def load_persistent_fields
           # NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
         end
         
@@ -160,15 +149,33 @@ module Netzke::Component
         def reverse_merge_equally_named_fields(dest, source)
           dest.each{ |dc| dc.reverse_merge!(source.detect{ |sc| sc[:name] == dc[:name] } || {}) }
         end
-        
-      
-      def self.included(receiver)
-        receiver.extend         ClassMethods
 
-        receiver.class_eval do
-          alias :initial_columns :initial_fields
+        # Normalize config[:items] and extract fields out of them
+        def process_items_config
+          super
+          normalize_items_and_collect_fields(@js_items)
         end
-      end
+        
+        # Recursively extracts fields configuration from :items
+        def normalize_items_and_collect_fields(items)
+          items.each_with_index.inject([]) do |r, (item, i)|
+            items[i] = item = normalize_item(item)
+            if is_a_field?(item)
+              r + [item]
+            elsif item.is_a?(Hash)
+              item[:items].is_a?(Array) ? r + normalize_items_and_collect_fields(item[:items]) : r
+            end
+          end
+        end
+
+        def is_a_field?(item)
+          item[:name] && !item[:class_name] # TODO: delegate it to Base#is_a_component? method
+        end
+
+        def normalize_item(item)
+          item.is_a?(String) || item.is_a?(Symbol) ? {:name => item.to_s} : item.is_a?(Hash) && item[:name] ? item.merge(:name => item[:name].to_s) : item
+        end
+        
     end
   end
 end

@@ -37,12 +37,18 @@ module Netzke
       end
     end
     
+    # Normalize array of attributes
     # [:col1, "col2", {:name => :col3}] =>
     #   [{:name => "col1"}, {:name => "col2"}, {:name => "col3"}]
-    def normalize_attr_config(cols)
-      cols.map do |c|
-        c.is_a?(Symbol) || c.is_a?(String) ? {:name => c.to_s} : c.merge(:name => c[:name].to_s)
-      end
+    def normalize_attrs(attrs)
+      attrs.map{ |a| normalize_attr(a) }
+    end
+    
+    # Normalize an attribute, e.g.:
+    # :first_name => 
+    #   {:name => "first_name"}
+    def normalize_attr(a)
+      a.is_a?(Symbol) || a.is_a?(String) ? {:name => a.to_s} : a.merge(:name => a[:name].to_s)
     end
     
     # Returns association and association method for a column

@@ -146,27 +146,27 @@ module Netzke::Component
       {:set_values => the_search["values"].to_json}
     end
     
-    def initial_fields(only_included = true)
-      res = super
-
-      res.reject!{ |f| f[:virtual] }
-      
-      res.each do |f|
-        f.merge!(:condition => "like", :default_value => nil)
-        f.merge!(:xtype => xtype_for_attr_type(:string), :attr_type => "string") if f[:name].to_s.index("__")
-        f.merge!(:condition => "greater_than") if [:datetime, :integer, :date].include?(f[:attr_type])
-        f.merge!(:condition => "equals") if f[:attr_type] == :boolean
-      end
-
-      res
-    end
+    # def initial_fields(only_included = true)
+    #   res = super
+    # 
+    #   res.reject!{ |f| f[:virtual] }
+    #   
+    #   res.each do |f|
+    #     f.merge!(:operator => "like", :default_value => nil)
+    #     f.merge!(:xtype => xtype_for_attr_type(:string), :attr_type => "string") if f[:name].to_s.index("__")
+    #     f.merge!(:operator => "gt") if [:datetime, :integer, :date].include?(f[:attr_type])
+    #     f.merge!(:operator => "eq") if f[:attr_type] == :boolean
+    #   end
+    # 
+    #   res
+    # end
     
     # columns to be displayed by the FieldConfigurator (which is GridPanel-based)
     def self.meta_columns
       [                                         
         {:name => "hidden",      :attr_type => :boolean, :editor => :checkbox, :width => 50},
         {:name => "name",        :attr_type => :string,  :editor => :combobox},
-        {:name => "condition",   :attr_type => :string,  :editor => {:xtype => :combo, :store => CONDITIONS}},
+        {:name => "operator",   :attr_type => :string,  :editor => {:xtype => :combo, :store => CONDITIONS}},
         {:name => "field_label", :attr_type => :string},
         {:name => "xtype",       :attr_type => :string},
         {:name => "value",       :attr_type => :string},
@@ -177,8 +177,8 @@ module Netzke::Component
     def js_config
       super.merge({
         :items => fields.map{ |c| c.merge({
-          :label => "#{c[:label] || c[:name]} #{c[:condition]}".humanize,
-          :name => "#{c[:name]}_#{c[:condition]}"
+          :label => "#{c[:label] || c[:name]} #{c[:operator]}".humanize,
+          :name => "#{c[:name]}__#{c[:operator]}"
         })}
       })
     end

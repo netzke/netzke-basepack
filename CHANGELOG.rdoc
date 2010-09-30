@@ -3,6 +3,9 @@
 * enhancements
   * if omitted in config, a column that reflects the primary key is automatically added by GridPanel
   * FormPanel now allows arbitrary layout of the fields
+  
+* API incompatibilities
+  * in FormPanel, define the fields layout directly in :items, not in :fields or :columns
 
 = v0.5.14 - 2010-09-08
 * bug fix
