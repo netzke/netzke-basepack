@@ -140,7 +140,6 @@ module Netzke::Component
       # config[:default_config][:ext_config][:enable_rows_reordering] &&= config[:rows_reordering_available]
     end
 
-
     # Include extra javascript that we depend on
     def self.include_js
       res = ["#{File.dirname(__FILE__)}/grid_panel/javascripts/grid_panel_pre.js"]

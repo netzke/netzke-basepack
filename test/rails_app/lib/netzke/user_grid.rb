@@ -6,7 +6,7 @@ module Netzke
         :mode => :config,
         :model => "User",
         :title => "Users",
-        :columns => [:first_name, :last_name, :role__name]
+        # :columns => [:first_name, :last_name, {:name => :role__name, :editor => {:xtype => 'combobox'}}]
       }.deep_merge super
     end
   end
