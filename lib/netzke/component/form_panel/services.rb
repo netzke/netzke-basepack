@@ -9,7 +9,8 @@ module Netzke::Component
         # Endpoints
         # 
         endpoint :netzke_submit do |params|
-          success = create_or_update_record(params)
+          data = ActiveSupport::JSON.decode(params[:data])
+          success = create_or_update_record(data)
 
           if success
             {:set_form_values => values, :set_result => "ok"}
@@ -59,8 +60,7 @@ module Netzke::Component
       private
       
         # Creates/updates a record from hash
-        def create_or_update_record(params)
-          hsh = ActiveSupport::JSON.decode(params[:data])
+        def create_or_update_record(hsh)
           hsh.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
           @record ||= data_class.find(:first, :conditions => {data_class.primary_key => hsh.delete(data_class.primary_key)}) # only pick up the record specified in the params if it was not provided in the configuration
           success = true
