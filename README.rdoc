@@ -24,7 +24,7 @@ To use netzke-core as a plugin (for the "edge" stuff, recommended):
 
 For the "edge" stuff, install as plugin (recommended):
 
-    rails plugin install git://github.com/skozlov/netzke-core.git -r rails3
+    rails plugin install git://github.com/skozlov/netzke-basepack.git -r rails3
 
 Or to use it as a gem:
 
