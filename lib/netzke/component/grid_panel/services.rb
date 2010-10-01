@@ -168,12 +168,17 @@ module Netzke::Component
           # apply sorting if needed
           if params[:sort]
             assoc, method = params[:sort].split('__')
-            dir = params[:dir].downcase
-            relation = if method.nil?
-              relation.order(assoc.to_sym.send(dir))
-            else
-              relation.order(assoc.tableize.to_sym => method.to_sym.send(dir)).joins(assoc.to_sym)
-            end
+
+						# Only try to sort if the model reponds to :assoc. If it does, it is probably a column or an association
+						if data_class.respond_to? assoc.to_sym
+	            dir = params[:dir].downcase
+	            relation = if method.nil?
+	              relation.order(assoc.to_sym.send(dir))
+	            else
+	              relation.order(assoc.tableize.to_sym => method.to_sym.send(dir)).joins(assoc.to_sym)
+	            end
+						end
+
           end
           
           # apply pagination if needed
