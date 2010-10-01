@@ -32,7 +32,15 @@ module Netzke
         
         else
           # Options for a non-association attribute
-          data_class.netzke_combo_options_for(column[:name], method_options)
+          res=data_class.netzke_combo_options_for(column[:name], method_options)
+					
+					# ensure it is an array-in-array, as Ext will fail otherwise
+					raise RuntimeError, "netzke_combo_options_for should return an Array" unless res.kind_of? Array
+					return [[]] if res.empty?
+					return [res] unless res.first.kind_of? Array
+					return res
+					
+					
         end
       end
     end
