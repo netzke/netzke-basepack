@@ -81,11 +81,13 @@ module Netzke::Component
 
         # Returns choices for a column
         endpoint :get_combobox_options do |params|
-          column = columns.detect{ |c| c[:name] == params[:column] }.try(:to_options!)
-          query = (column[:editor].is_a?(Hash) && column[:editor] || {}).to_options[:query]
           query = params[:query]
-        
-          {:data => combobox_options_for_column(column, :query => query, :query => query)}
+
+          column = columns.detect{ |c| c[:name] == params[:column] }
+          scope = column.to_options[:scope]
+          query = params[:query]
+
+          {:data => combobox_options_for_column(column, :query => query, :scope => scope, :record_id => params[:id])}
         end
 
         endpoint :move_rows do |params|
@@ -270,8 +272,7 @@ module Netzke::Component
 
         # When providing the edit_form component, fill in the form with the requested record
         def load_component_with_cache(params)
-          components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:id] == 'editForm'
-      
+          components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:name] == 'editForm'
           super
         end
     

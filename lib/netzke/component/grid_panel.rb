@@ -326,21 +326,22 @@ module Netzke::Component
         }) if config[:enable_edit_in_form]
       
         # Extended search
-        res.merge!({
-          :search_panel => {
-            :lazy_loading => true,
-            :class_name => "Component::SearchPanel",
-            :fields => default_fields_for_forms,
-            :search_class_name => config[:model],
-            :persistent_config => config[:persistent_config],
-            :header => false, 
-            :bbar => false, 
-            :mode => config[:mode]
-          }.deep_merge(config[:search_form_config] || {})
-        }) if config[:enable_extended_search]
+        res.merge!(:search_panel => search_panel.merge(:lazy_loading => true).deep_merge(config[:search_form_config] || {})) if config[:enable_extended_search]
       
         res
       end
+    end
+    
+    def search_panel
+      {
+        :class_name => "Component::SearchPanel",
+        # :fields => default_fields_for_forms,
+        :search_class_name => config[:model],
+        :persistent_config => config[:persistent_config],
+        :header => false, 
+        :bbar => false, 
+        :mode => config[:mode]
+      }
     end
 
     include ::Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window

@@ -59,10 +59,10 @@ module Netzke::Component
     end
     
     def js_config
-      res = super
-      res.merge!(:fields => fields)
-      res.merge!(:pri    => data_class.primary_key) if data_class
-      res
+      super.merge(
+        :fields => fields,
+        :pri    => data_class && data_class.primary_key
+      )
     end
     
     attr_accessor :record

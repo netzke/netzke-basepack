@@ -74,7 +74,7 @@ module Netzke::Component
       # Columns that represent a smart merge of default_columns and columns passed during the configuration.
       def initial_columns(only_included = true)
         # Normalize here, as from the config we can get symbols (names) instead of hashes
-        columns_from_config = config[:columns] && normalize_attr_config(config[:columns])
+        columns_from_config = config[:columns] && normalize_attrs(config[:columns])
         
         
         if columns_from_config
