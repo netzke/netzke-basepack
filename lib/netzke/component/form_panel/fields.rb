@@ -153,7 +153,7 @@ module Netzke::Component
         # Normalize config[:items] and extract fields out of them
         def process_items_config
           super
-          normalize_items_and_collect_fields(@js_items)
+          normalize_items_and_collect_fields(@js_items) if @js_items
         end
         
         # Recursively extracts fields configuration from :items
