@@ -50,7 +50,7 @@ This will include both ExtJS-related files (JavaScript and styles), and Netzke-r
 
 To embed a component into a view, use the +netzke+ helper, e.g.:
 
-  <%= netzke :books, :class_name => 'GridPanel', :model => 'Book' %>
+  <%= netzke :books, :class_name => 'Component::GridPanel', :model => 'Book' %>
   
 (assuming the existence of model 'Book')
 
