@@ -1,87 +1,82 @@
 = netzke-basepack
-A pack of basic Rails/ExtJS components as a part of the Netzke framework. Live demo/tutorials on http://blog.writelesscode.com. Introduction to the Netzke framework and the Wiki: http://github.com/skozlov/netzke
+
+A pack of pre-built Netzke components, such as grid, form, tab panel, etc.
+Learn about Netzke on http://netzke.org.
 
 == Prerequisites
-1. Rails >= 2.2
-2. Netzke assumes that your ExtJS library is in public/extjs, which may be a symbolic link, e.g:
 
-    cd public && ln -s ~/Developer/extjs/ext-3.1.1 extjs
+1. Rails >= 3.0, Ext JS >= 3.2.1
+2. Netzke assumes that your ExtJS library is in public/extjs, which may be a symbolic link, e.g (from your app root):
+
+    ln -s ~/code/sencha/extjs/ext-3.2.1 public/extjs
 
 3. acts_as_list plugin: 
 
     ./script/plugin install git://github.com/rails/acts_as_list.git
 
-4. netzke-core gem or plugin. Gem:
-  
-    gem install netzke-core
-    
-Plugin (for the "edge" stuff, recommended):
+4. netzke-core gem or plugin.
 
-    ./script/plugin install git://github.com/skozlov/netzke-core.git
+To use netzke-core as a plugin (for the "edge" stuff, recommended):
+
+    rails plugin install git://github.com/skozlov/netzke-core.git -r rails3
 
 = Installation
+
 For the "edge" stuff, install as plugin (recommended):
 
-    ./script/plugin install git://github.com/skozlov/netzke-basepack.git
+    rails plugin install git://github.com/skozlov/netzke-core.git -r rails3
 
-Or install as gem:
+Or to use it as a gem:
 
-    gem install netzke-basepack
+    gem 'netzke-basepack'
 
 == Usage
-If using as gem, include it into environment.rb:
 
-    config.gem "netzke-basepack"
+Add Netzke routes (in routes.rb):
 
-Include mapping for Netzke controller providing Netzke javascripts and styles (in routes.rb):
-
-    map.netzke
-
-Run the generators (some assets and a migration for dynamically configured columns/fields):
-    
-    ./script/generate netzke_basepack
-
-To be able to use persistent on-the-fly configuration of components, run netzke-core generators:
-
-    ./script/generate netzke_core
-    
-... then run the migrations:
-
-    rake db:migrate
+    # in routes.rb
+    RailsApp::Application.routes.draw do
+      netzke
+      ...
+    end
 
 == Embedding components into Rails' view
-To enable Netzke components in Rails' views, you need to add the following helper into your layout template, inside the "head" tag:
+
+Before you can use Netzke components in Rails' views, you need to add the following helper into your layout template, inside the "head" tag:
 
     <%= netzke_init %>
     
 This will include both ExtJS-related files (JavaScript and styles), and Netzke-related files.
 
-Now let's embed a component into a view. The following example will provide you with a grid-based scaffold for ActiveRecord-model called Book. You may generate it like this:
-
-    ./script/generate model Book title:string amount:integer
-
-(don't forget to re-run the migrations after it)
-
-Now embed a component into a view like this:
+To embed a component into a view, use the +netzke+ helper, e.g.:
 
   <%= netzke :books, :class_name => 'GridPanel', :model => 'Book' %>
+  
+(assuming the existence of model 'Book')
 
-For more examples, see http://netzke-demo.writelesscode.com
+For more examples, see http://demo.netzke.com, and look into test/rails_app
 
+== Running tests
+
+Netzke-basepack is bundled with automated tests. To run them, you need to set up test/rails_app a similar way as you did with your own Rails app that is using Netzke, i.e.: 1) link Ext JS into the "public" folder, 2) link netzke-core into vendor/plugins, 3) run migrations and clone the development database structure into the test database.
+
+After this you may run (*from the netzke-basepack folder*):
+
+    cucumber features
+    
+and
+
+    rspec spec
+    
 == Icons support
-Netzke-basepack supports FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable it, download it and put the "icons" folder into your app's public/images folder. Then restart your application.
+Netzke-basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.
 
 == More info
-Introduction to Netzke framework and wiki: http://github.com/skozlov/netzke
+Official project site: http://netzke.org
 
-Twitter: http://twitter.com/skozlov
+Twitter (I try to only tweet about useful stuff): http://twitter.com/skozlov
 
-Tutorials: http://blog.writelesscode.com
-
-Live-demo with sample code: http://netzke-demo.writelesscode.com
-
-= Credentials
-Testing done with the help of http://github.com/pluginaweek/plugin_test_helper
+Many (if a bit outdated) tutorials: http://blog.writelesscode.com
 
 ---
 Copyright (c) 2008-2010 Sergei Kozlov, released under the MIT license

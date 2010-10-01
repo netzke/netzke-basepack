@@ -1,8 +1,7 @@
 = v0.6.0 - EDGE
 * netzke-core 0.6.x compatibility
 * enhancements
-  * if omitted in config, a column that reflects the primary key is automatically added by GridPanel
-  * FormPanel now allows arbitrary layout of the fields
+  * if omitted in config, a column for the primary key is automatically added to Grid/FormPanel
   
 * API incompatibilities
   * in FormPanel, define the fields layout directly in :items, not in :fields or :columns
