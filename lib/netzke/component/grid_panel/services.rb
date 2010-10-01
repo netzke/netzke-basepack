@@ -150,6 +150,12 @@ module Netzke::Component
         end
       end
       
+      # When providing the edit_form component, fill in the form with the requested record
+      def load_component_with_cache(params)
+        components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:name] == 'edit_form'
+        super
+      end
+      
       protected
         
         def get_records(params)
@@ -270,12 +276,6 @@ module Netzke::Component
           mod_records
         end
 
-        # When providing the edit_form component, fill in the form with the requested record
-        def load_component_with_cache(params)
-          components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:name] == 'editForm'
-          super
-        end
-    
         # Search scopes, in searchlogic format
         def scopes
           @scopes ||= config[:scopes] || []
@@ -319,7 +319,6 @@ module Netzke::Component
         end
 
         def normalize_extra_conditions(conditions)
-          Rails.logger.debug "***** conditions: #{conditions.inspect}\n"
           conditions.deep_convert_keys{|k| get_key(k)}
         end
 

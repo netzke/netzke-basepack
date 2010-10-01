@@ -142,7 +142,7 @@ module Netzke::Component
 
     # Include extra javascript that we depend on
     def self.include_js
-      res = ["#{File.dirname(__FILE__)}/grid_panel/javascripts/grid_panel_pre.js"]
+      res = ["#{File.dirname(__FILE__)}/grid_panel/javascripts/pre.js"]
       
       # Optional edit in form functionality
       res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/edit_in_form.js" if config[:edit_in_form_available]
