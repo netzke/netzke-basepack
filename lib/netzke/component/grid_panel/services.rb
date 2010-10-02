@@ -192,7 +192,7 @@ module Netzke::Component
           end
         end
     
-        # Returns searchlogic's search with all the conditions
+        # Returns ActiveRecord::Relation instance encapsulating all the necessary conditions
         def get_relation(params)
           # make params coming from Ext grid filters understandable by meta_where
           # search_params = normalize_params(params)
@@ -201,7 +201,7 @@ module Netzke::Component
           # merge with conditions coming from the config
           # search_params[:conditions].deep_merge!(config[:conditions] || {})
 
-          # merge with extra conditions (in searchlogic format, come from the extended search form)
+          # merge with extra conditions (in MetaWhere format, come from the extended search form)
           conditions.deep_merge!(
             normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
           ) if params[:extra_conditions]
@@ -274,11 +274,6 @@ module Netzke::Component
             flash :error => "You don't have permissions to #{operation} data"
           end
           mod_records
-        end
-
-        # Search scopes, in searchlogic format
-        def scopes
-          @scopes ||= config[:scopes] || []
         end
 
         # Converts Ext.ux.grid.GridFilters filters to searchlogic conditions, e.g.
