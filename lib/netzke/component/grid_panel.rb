@@ -140,12 +140,12 @@ module Netzke::Component
       # config[:default_config][:ext_config][:enable_rows_reordering] &&= config[:rows_reordering_available]
     end
     
-    def initialize(*args)
-      # Deprecations
-      config[:scopes] && ActiveSupport::Deprecation.warn(":scopes option is not effective any longer for GridPanel. Use :scope instead.")
-      
-      super
-    end
+    # def initialize(*args)
+    #   # Deprecations
+    #   config[:scopes] && ActiveSupport::Deprecation.warn(":scopes option is not effective any longer for GridPanel. Use :scope instead.")
+    #   
+    #   super(*args)
+    # end
 
     # Include extra javascript that we depend on
     def self.include_js
