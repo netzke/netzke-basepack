@@ -181,23 +181,7 @@ module Netzke::Component
       res
     end
     
-    # Model class
-    # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
-    def data_class
-      @data_class ||= begin
-        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}".constantize rescue nil
-        klass || original_data_class
-      end
-    end
     
-    # Model class before model extensions are taken into account
-    def original_data_class
-      @original_data_class ||= begin
-        ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
-        model_name = config[:model] || config[:data_class_name]
-        model_name.nil? ? raise(ArgumentError, "No model specified for component #{global_id}") : model_name.constantize
-      end
-    end
 
     # Fields to be displayed in the "General" tab of the configuration panel
     def self.property_fields

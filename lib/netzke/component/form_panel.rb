@@ -67,24 +67,6 @@ module Netzke::Component
     
     attr_accessor :record
     
-    # Model class
-    # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
-    def data_class
-      @data_class ||= begin
-        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}".constantize rescue nil
-        klass || original_data_class
-      end
-    end
-    
-    # Model class before model extensions are taken into account
-    def original_data_class
-      @original_data_class ||= begin
-        ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
-        model_name = config[:model] || config[:data_class_name]
-        model_name && model_name.constantize
-      end
-    end
-    
     def record
       @record ||= config[:record] || config[:record_id] && data_class && data_class.find(:first, :conditions  => {data_class.primary_key => config[:record_id]})
     end
