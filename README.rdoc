@@ -24,7 +24,7 @@ To use netzke-core as a plugin (for the "edge" stuff, recommended):
 
 For the "edge" stuff, install as plugin (recommended):
 
-    rails plugin install git://github.com/skozlov/netzke-core.git -r rails3
+    rails plugin install git://github.com/skozlov/netzke-basepack.git -r rails3
 
 Or to use it as a gem:
 
@@ -50,7 +50,7 @@ This will include both ExtJS-related files (JavaScript and styles), and Netzke-r
 
 To embed a component into a view, use the +netzke+ helper, e.g.:
 
-  <%= netzke :books, :class_name => 'GridPanel', :model => 'Book' %>
+  <%= netzke :books, :class_name => 'Component::GridPanel', :model => 'Book' %>
   
 (assuming the existence of model 'Book')
 
@@ -67,6 +67,16 @@ After this you may run (*from the netzke-basepack folder*):
 and
 
     rspec spec
+
+== Testing playground
+
+The test/rails_app application is also a convenient playground, as it may be run as independent Rails 3 app. After starting it, access any of the lib/netzke widgets by using the following url:
+
+    http://localhost:3000/components/<name of the component class>
+    
+e.g.:
+
+    http://localhost:3000/components/UserGrid
     
 == Icons support
 Netzke-basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.

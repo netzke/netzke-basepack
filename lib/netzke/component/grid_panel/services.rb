@@ -150,6 +150,12 @@ module Netzke::Component
         end
       end
       
+      # When providing the edit_form component, fill in the form with the requested record
+      def load_component_with_cache(params)
+        components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:name] == 'edit_form'
+        super
+      end
+      
       protected
         
         def get_records(params)
@@ -191,7 +197,7 @@ module Netzke::Component
           end
         end
     
-        # Returns searchlogic's search with all the conditions
+        # Returns ActiveRecord::Relation instance encapsulating all the necessary conditions
         def get_relation(params)
           # make params coming from Ext grid filters understandable by meta_where
           # search_params = normalize_params(params)
@@ -200,7 +206,7 @@ module Netzke::Component
           # merge with conditions coming from the config
           # search_params[:conditions].deep_merge!(config[:conditions] || {})
 
-          # merge with extra conditions (in searchlogic format, come from the extended search form)
+          # merge with extra conditions (in MetaWhere format, come from the extended search form)
           conditions.deep_merge!(
             normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
           ) if params[:extra_conditions]
@@ -275,17 +281,6 @@ module Netzke::Component
           mod_records
         end
 
-        # When providing the edit_form component, fill in the form with the requested record
-        def load_component_with_cache(params)
-          components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:name] == 'editForm'
-          super
-        end
-    
-        # Search scopes, in searchlogic format
-        def scopes
-          @scopes ||= config[:scopes] || []
-        end
-
         # Converts Ext.ux.grid.GridFilters filters to searchlogic conditions, e.g.
         #     {"0" => {
         #       "data" => {
@@ -324,7 +319,6 @@ module Netzke::Component
         end
 
         def normalize_extra_conditions(conditions)
-          Rails.logger.debug "***** conditions: #{conditions.inspect}\n"
           conditions.deep_convert_keys{|k| get_key(k)}
         end
 
