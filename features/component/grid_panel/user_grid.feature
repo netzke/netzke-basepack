@@ -3,20 +3,21 @@ Feature: User grid
   As a role
   I want feature
 
-@javascript
-Scenario: UserGrid should not fail to open its windows 
+Scenario: UserGrid should render properly
   Given a user exists with first_name: "Carlos", last_name: "Castaneda"
+  And a user exists with first_name: "Taisha", last_name: "Abelar"
   When I go to the UserGrid test page
   Then I should see "Carlos"
   And  I should see "Castaneda"
-  And  I press "Add in form"
-  Then I should see "Add User"
+  And  I should see "Taisha"
+  And  I should see "Abelar"
   
 @javascript
 Scenario: Adding a record via "Add in form"
   Given I am on the UserGrid test page
   When I press "Add in form"
-  And I fill in "First name:" with "Herman"
+  Then I should see "Add User"
+  When I fill in "First name:" with "Herman"
   And I fill in "Last name:" with "Hesse"
   And I press "Ok"
   Then I should see "Herman"
@@ -43,7 +44,6 @@ Scenario: Deleting a record
   And I select all rows in the grid
   And I press "Delete"
   And I press "Yes"
+  Then I should see "Deleted 2 record(s)"
   Then a user should not exist with first_name: "Anton"
   And a user should not exist with first_name: "Maxim"
-
-
