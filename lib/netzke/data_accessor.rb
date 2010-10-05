@@ -1,4 +1,4 @@
-# require "netzke/active_record/data_accessor"
+require 'netzke/active_record'
 
 module Netzke
   # This module is included into such data-driven components as GridPanel, FormPanel, etc.

@@ -1,5 +1,5 @@
 module Netzke
-  class SimplePanel < Component::Panel
+  class SimplePanel < Basepack::Panel
     def config
       {
         :title => "SimplePanel",
@@ -8,7 +8,7 @@ module Netzke
       }.deep_merge(super)
     end
   
-    endpoint :update_html_from_server |params|
+    endpoint :update_html_from_server do |params|
       {:update_body_html => "HTML received from server"}
     end
   
