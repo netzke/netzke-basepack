@@ -7,20 +7,16 @@ module Netzke
         :bbar => [:update_html.ext_action]
       }.deep_merge(super)
     end
-    
+  
     api :update_html_from_server
     def update_html_from_server(params)
       {:update_body_html => "HTML received from server"}
     end
-    
-    def self.js_properties
-      {
-        :on_update_html => <<-END_OF_JAVASCRIPT.l,
-          function(){
-            this.updateHtmlFromServer();
-          }
-        END_OF_JAVASCRIPT
+  
+    js_method :on_update_html, <<-JS
+      function(){
+        this.updateHtmlFromServer();
       }
-    end
+    JS
   end
 end

@@ -1,6 +1,6 @@
 module Netzke
   class UserGrid < Component::GridPanel
-    
+  
     def config
       {
         :mode => :config,
@@ -9,7 +9,7 @@ module Netzke
         # :columns => [:first_name, :last_name, {:name => :role__name, :editor => {:xtype => 'combobox'}}]
       }.deep_merge super
     end
-    
+  
     def search_panel
       {
         :class_name => "Component::FormPanel",
