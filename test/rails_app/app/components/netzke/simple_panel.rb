@@ -8,8 +8,7 @@ module Netzke
       }.deep_merge(super)
     end
   
-    api :update_html_from_server
-    def update_html_from_server(params)
+    endpoint :update_html_from_server |params|
       {:update_body_html => "HTML received from server"}
     end
   

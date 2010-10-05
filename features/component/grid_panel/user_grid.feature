@@ -37,13 +37,13 @@ Scenario: Updating a record via "Edit in form"
 
 @javascript
 Scenario: Deleting a record
-  Given a user exists with first_name: "Carlos", last_name: "Castaneda"
+  Given a user exists with first_name: "Anton", last_name: "Chekhov"
   And a user exists with first_name: "Maxim", last_name: "Osminogov"
   When I go to the UserGrid test page
   And I select all rows in the grid
   And I press "Delete"
   And I press "Yes"
-  Then a user should not exist with first_name: "Carlos"
+  Then a user should not exist with first_name: "Anton"
   And a user should not exist with first_name: "Maxim"
 
 
