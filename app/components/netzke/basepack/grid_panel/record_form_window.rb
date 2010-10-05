@@ -1,6 +1,6 @@
 module Netzke
-  module Component
-    class GridPanel < Base
+  module Basepack
+    class GridPanel < Netzke::Base
       class RecordFormWindow < Window
         
         def initial_config

@@ -1,5 +1,5 @@
 module Netzke
-  class SimpleAccordion < Component::AccordionPanel
+  class SimpleAccordion < Basepack::AccordionPanel
     def config
       {
         :items => [{

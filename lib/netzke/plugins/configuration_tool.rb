@@ -4,25 +4,22 @@ module Netzke::Plugins
   # component, which in its turn will contain all the components specified in component's "configuration_components" 
   # method (which *must* be defined)
   module ConfigurationTool
-    def self.included(base)
-      base.extend ClassMethods
+    extend ActiveSupport::Concern
+    
+    included do
+      # replacing instance methods
+      [:config, :components, :js_config].each{ |m| alias_method_chain m, :config_tool }
       
-      base.class_eval do
-        # replacing instance methods
-        [:config, :initial_components, :js_config].each{ |m| alias_method_chain m, :config_tool }
-        
-        # replacing class methods
-        class << self
-          alias_method_chain :js_properties, :config_tool
-        end
-
-        # API to commit the changes
-        api :commit
+      # replacing class methods
+      class << self
+        alias_method_chain :js_properties, :config_tool
       end
-
+      
+      endpoint :commit
+      
       # if you include ConfigurationTool, you are supposed to provide configuration_components method which will returns an array of arrgeratees
       # that will be included in the property window (each in its own tab or accordion pane)
-      raise "configuration_components method undefined" unless base.instance_methods.map(&:to_sym).include?(:configuration_components)
+      raise "configuration_components method undefined" unless instance_methods.map(&:to_sym).include?(:configuration_components)
     end
 
     module ClassMethods
@@ -80,15 +77,13 @@ module Netzke::Plugins
       orig_config = config_without_config_tool
       return orig_config unless config_tool_needed?
       orig_config.deep_merge({
-        :ext_config => {
-          :tools => orig_config[:ext_config][:tools].clone << "gear",
-          :header => true
-        }
+        :tools => orig_config[:tools].clone << "gear",
+        :header => true
       })
     end
 
-    def initial_components_with_config_tool
-      res = initial_components_without_config_tool
+    def components_with_config_tool
+      res = components_without_config_tool
       
       # Add the ConfigurationPanel as component, which in its turn is a composite of components from the 
       # configuration_components method
