@@ -22,7 +22,7 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
       proxy         : new Ext.data.HttpProxy({url: Ext.getCmp(this.parentId).endpointUrl("get_combobox_options"), jsonData:{column:this.name}}),
       reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
     });
-  
+  		
     Ext.apply(this, {
       store : store
     });
@@ -36,11 +36,18 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
     this.on('specialkey', function(cb, event){
       if (event.getKey() == 9 || event.getKey() == 13) {cb.setValue(cb.getRawValue());}
     });
-    
+
+    var parent = Ext.getCmp(this.parentId);
+		// Is parent a grid?
+		if (parent.getSelectionModel) {
+			this.on('beforequery',function(qe) {			
+				delete qe.combo.lastQuery;			
+			},this);			
+		}
+				
     // Not-so clean approach to submit the current record id
     store.on('beforeload',function(store, options){
-      var parent = Ext.getCmp(this.parentId);
-      if (parent.isXType('grid')) {
+      if (parent.getSelectionModel) {
         options.params.id = parent.getSelectionModel().getSelected().get('id');
       } else {
         // TODO: also for the FormPanel
