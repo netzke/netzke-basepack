@@ -289,7 +289,7 @@ module Netzke
               :items => [{
                 :class_name => "Basepack::FormPanel",
                 :model => config[:model],
-                :fields => default_fields_for_forms,
+                :items => default_fields_for_forms,
                 :persistent_config => config[:persistent_config],
                 :bbar => false,
                 :header => false,
@@ -306,7 +306,7 @@ module Netzke
               :items => [{
                 :class_name => "Basepack::GridPanel::MultiEditForm",
                 :model => config[:model],
-                :fields => default_fields_for_forms,
+                :items => default_fields_for_forms,
                 :persistent_config => config[:persistent_config],
                 :bbar => false,
                 :header => false,
@@ -325,7 +325,7 @@ module Netzke
       def search_panel
         {
           :class_name => "Basepack::SearchPanel",
-          # :fields => default_fields_for_forms,
+          # :items => default_fields_for_forms,
           :search_class_name => config[:model],
           :persistent_config => config[:persistent_config],
           :header => false, 
