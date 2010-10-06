@@ -10,25 +10,15 @@ Learn about Netzke on http://netzke.org.
 
     ln -s ~/code/sencha/extjs/ext-3.2.1 public/extjs
 
-3. acts_as_list plugin: 
-
-    ./script/plugin install git://github.com/rails/acts_as_list.git
-
-4. netzke-core gem or plugin.
-
-To use netzke-core as a plugin (for the "edge" stuff, recommended):
-
-    rails plugin install git://github.com/skozlov/netzke-core.git -r rails3
-
 = Installation
 
-For the "edge" stuff, install as plugin (recommended):
+For the latest ("edge") stuff, install as plugin:
 
     rails plugin install git://github.com/skozlov/netzke-basepack.git -r rails3
+    
+Or tell bundler to get the gem straight from github:
 
-Or to use it as a gem:
-
-    gem 'netzke-basepack'
+    gem 'netzke-basepack', :git => "git@github.com:skozlov/netzke-basepack.git", :branch => "rails3"
 
 == Usage
 
