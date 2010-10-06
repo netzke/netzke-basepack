@@ -4,7 +4,7 @@ module Netzke
       {
         :title => "SimplePanel",
         :html => "Original HTML",
-        :bbar => [:update_html.ext_action]
+        :bbar => [:update_html.action]
       }.deep_merge(super)
     end
   

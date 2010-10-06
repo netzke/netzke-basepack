@@ -8,7 +8,7 @@ module Netzke
             :modal => true,
             :width => "60%",
             :height => "90%",
-            :fbar => [:ok.ext_action, :cancel.ext_action]
+            :fbar => [:ok.action, :cancel.action]
           })
         end
     

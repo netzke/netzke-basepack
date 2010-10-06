@@ -44,7 +44,7 @@ module Netzke
       end
 
       def default_bbar
-        [:apply.ext_action]
+        [:apply.action]
       end
     
       # Extra javascripts

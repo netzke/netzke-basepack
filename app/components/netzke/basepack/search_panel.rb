@@ -31,7 +31,7 @@ module Netzke
                 :fn => "function(combo, record){Ext.getCmp('#{global_id}').selectPreset(record.data.field1);}".l
               }}
             }, 
-            :save.ext_action, :del.ext_action]
+            :save.action, :del.action]
         }.deep_merge orig
       end
     

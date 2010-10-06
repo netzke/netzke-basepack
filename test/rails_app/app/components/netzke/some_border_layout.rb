@@ -6,7 +6,7 @@ module Netzke
           {:title => "Who", :class_name => "Basepack::GridPanel", :region => :center, :model => "User", :name => :user_grid},
           {:title => "Item Two", :class_name => "Basepack::GridPanel", :region => :west, :width => 500, :split => true, :model => "Role", :name => :role_grid}
         ],
-        :bbar => [:update_center_region.ext_action, :update_west_region.ext_action]
+        :bbar => [:update_center_region.action, :update_west_region.action]
       }.deep_merge(super)
     end
     
