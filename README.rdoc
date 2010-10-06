@@ -1,4 +1,6 @@
 = netzke-basepack
+*For Rails 3-compatible version check out the rails3 branch (work in progress)*
+
 A pack of basic Rails/ExtJS widgets as a part of the Netzke framework. Live demo/tutorials on http://blog.writelesscode.com. Introduction to the Netzke framework and the Wiki: http://github.com/skozlov/netzke
 
 == Prerequisites
