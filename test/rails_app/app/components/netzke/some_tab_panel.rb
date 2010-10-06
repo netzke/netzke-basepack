@@ -1,5 +1,5 @@
 module Netzke
-  class SomeTabPanel < Component::TabPanel
+  class SomeTabPanel < Basepack::TabPanel
     def config
       {
         :active_tab => 0,

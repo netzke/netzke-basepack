@@ -1,5 +1,5 @@
 module Netzke
-  class SomeSearchPanel < Component::SearchPanel
+  class SomeSearchPanel < Basepack::SearchPanel
     def config
       orig = super
       {

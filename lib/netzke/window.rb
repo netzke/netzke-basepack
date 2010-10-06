@@ -9,7 +9,7 @@ module Netzke
   # <tt>:item</tt> - nested Netzke component, e.g.:
   #     
   #     netzke :window, :item => {:class_name => "GridPanel", :model => "User"}
-  class Window < Component::Base
+  class Window < Netzke::Base
     # Based on Ext.Window, naturally
     def self.js_base_class
       "Ext.Window"
@@ -61,8 +61,7 @@ module Netzke
     end
     
     # Processing API calls from client
-    api :set_size_and_position
-    def set_size_and_position(params)
+    endpoint :set_size_and_position do |params|
       Rails.logger.debug "!!! IMPLEMENT ME (set_size_and_position)\n"
       # update_persistent_ext_config(
       #   :x => params[:x].to_i, 

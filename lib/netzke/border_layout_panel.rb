@@ -32,7 +32,7 @@ module Netzke
   #         }
   #       }
   #     }
-  class BorderLayoutPanel < Component::Base
+  class BorderLayoutPanel < Netzke::Base
     REGIONS = %w(center west east south north).map(&:to_sym)
 
     # JavaScript part

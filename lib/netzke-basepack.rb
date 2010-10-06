@@ -41,9 +41,9 @@ end
 # from Netzke.
 
 # Used by FormPanel (file upload field)
-# Netzke::Component::Base.config[:external_css] << "/extjs/examples/ux/fileuploadfield/css/fileuploadfield"
+# Netzke::Base.config[:external_css] << "/extjs/examples/ux/fileuploadfield/css/fileuploadfield"
 
 # Used by GridPanel
-# Netzke::Component::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/RangeMenu"
-# Netzke::Component::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/GridFilters"
+# Netzke::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/RangeMenu"
+# Netzke::Base.config[:external_css] << "/extjs/examples/ux/gridfilters/css/GridFilters"
 

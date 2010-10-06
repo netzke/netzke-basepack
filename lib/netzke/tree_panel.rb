@@ -1,4 +1,4 @@
-class Netzke::TreePanel < Netzke::Component::Base
+class Netzke::TreePanel < Netzke::Base
   api :get_children
   
   def self.js_base_class

@@ -1,10 +1,10 @@
 module Netzke
-  class SomeBorderLayout < Component::BorderLayoutPanel
+  class SomeBorderLayout < Basepack::BorderLayoutPanel
     def config
       {
         :items => [
-          {:title => "Who", :class_name => "Component::GridPanel", :region => :center, :model => "User", :name => :user_grid},
-          {:title => "Item Two", :class_name => "Component::GridPanel", :region => :west, :width => 500, :split => true, :model => "Role", :name => :role_grid}
+          {:title => "Who", :class_name => "Basepack::GridPanel", :region => :center, :model => "User", :name => :user_grid},
+          {:title => "Item Two", :class_name => "Basepack::GridPanel", :region => :west, :width => 500, :split => true, :model => "Role", :name => :role_grid}
         ],
         :bbar => [:update_center_region.ext_action, :update_west_region.ext_action]
       }.deep_merge(super)
