@@ -4,8 +4,8 @@ module Netzke
     # == Example configuration:
     # 
     #     :items => [
-    #       {:title => "Item One", :class_name => "Component::Panel", :region => :center},
-    #       {:title => "Item Two", :class_name => "Component::Panel", :region => :west, :width => 300, :split => true}
+    #       {:title => "Item One", :class_name => "Basepack::Panel", :region => :center},
+    #       {:title => "Item Two", :class_name => "Basepack::Panel", :region => :west, :width => 300, :split => true}
     #     ]
     class BorderLayoutPanel < Base
       
