@@ -179,7 +179,7 @@ Netzke.pre.GridPanel = Ext.extend(Ext.grid.EditorGridPanel, {
     }
 
     // Context menu
-    if (this.enableContextMenu) {
+    if (this.contextMenu) {
       this.on('rowcontextmenu', this.onRowContextMenu, this);
     }
 

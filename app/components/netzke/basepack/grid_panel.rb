@@ -114,7 +114,6 @@ module Netzke
             :enable_extended_search => true,
             :enable_column_filters  => true,
             :load_inline_data       => true,
-            :enable_context_menu    => true,
             :enable_rows_reordering => false, # column drag n drop
             :enable_pagination      => true,
             :rows_per_page          => 25,
