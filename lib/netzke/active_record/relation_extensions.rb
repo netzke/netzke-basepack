@@ -1,10 +1,10 @@
 module Netzke
   module ActiveRecord
     module RelationExtensions
-      def extend_with(scope)
+      def extend_with(scope, *params)
         case scope.class.name
         when "Symbol" # model's scope
-          self.send(scope)
+          self.send(scope, *params)
         when "String" # MySQL query
           self.where(scope)
         when "Hash"   # conditions hash
