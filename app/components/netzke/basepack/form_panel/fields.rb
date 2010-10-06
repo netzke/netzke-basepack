@@ -51,7 +51,6 @@ module Netzke
           # fields_from_config = (config[:columns] || config[:fields]) && normalize_attrs(config[:columns] || config[:fields])
 
           if fields_from_config
-            Rails.logger.debug "!!! fields_from_config: #{fields_from_config.inspect}\n"
             # automatically add a field that reflects the primary key, unless specified in the config; it should be added to the end
             fields_from_config.push({:name => data_class.primary_key}) if data_class && !fields_from_config.any?{ |c| c[:name] == data_class.primary_key }
           
@@ -110,7 +109,7 @@ module Netzke
           end
         
           def set_default_field_label(c)
-            c[:label] ||= c[:name].humanize
+            c[:label] ||= c[:name].humanize.sub(/\s+/, " ") # multiple spaces get replaced with one
           end
       
           def attr_type_to_xtype_map
