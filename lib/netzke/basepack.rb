@@ -1,3 +1,5 @@
+require 'netzke/active_record'
+
 module Netzke
   module Basepack
     class << self
