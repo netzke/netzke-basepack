@@ -18,7 +18,7 @@ For the latest ("edge") stuff, install as plugin:
     
 Or tell bundler to get the gem straight from github:
 
-    gem 'netzke-basepack', :git => "git@github.com:skozlov/netzke-basepack.git", :branch => "rails3"
+    gem 'netzke-basepack', :git => "git://github.com/skozlov/netzke-basepack.git", :branch => "rails3"
 
 == Usage
 
