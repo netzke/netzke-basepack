@@ -231,13 +231,34 @@ module Netzke
       def actions
         # Defaults
         actions = {                                     
-          :add          => {:text => 'Add',          :disabled => config[:prohibit_create]},
-          :edit         => {:text => 'Edit',         :disabled => true},
-          :del          => {:text => 'Delete',       :disabled => true},
-          :apply        => {:text => 'Apply',        :disabled => config[:prohibit_update] && config[:prohibit_create]},
-          :add_in_form  => {:text => 'Add in form',  :disabled => !config[:enable_edit_in_form]},
-          :edit_in_form => {:text => 'Edit in form', :disabled => true},
-          :search       => {:text => 'Search',       :disabled => !config[:enable_extended_search], :checked => true}
+          :add          => {
+            :text => I18n.t('netzke.basepack.grid_panel.add', :default => "Add"),
+            :disabled => config[:prohibit_create]
+          },
+          :edit         => {
+            :text => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
+            :disabled => true
+          },
+          :del          => {
+            :text => I18n.t('netzke.basepack.grid_panel.delete', :default => "Delete"),
+            :disabled => true
+          },
+          :apply        => {
+            :text => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
+            :disabled => config[:prohibit_update] && config[:prohibit_create]
+          },
+          :add_in_form  => {
+            :text => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),
+            :disabled => !config[:enable_edit_in_form]
+          },
+          :edit_in_form => {
+            :text => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
+            :disabled => true
+          },
+          :search       => {
+            :text => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
+            :disabled => !config[:enable_extended_search]
+          }
         }
       
         if Netzke::Basepack.with_icons

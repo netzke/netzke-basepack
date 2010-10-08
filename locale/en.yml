@@ -1,0 +1,16 @@
+en:
+  netzke:
+    basepack:
+      grid_panel:
+        add: Add
+        edit: Edit
+        delete: Delete
+        apply: Apply
+        add_in_form: Add in form
+        edit_in_form: Edit in form
+        search: Search
+        
+    formats:
+      date: Y-m-d
+      datetime: Y-m-d H:i:s
+      time: H:i:s
