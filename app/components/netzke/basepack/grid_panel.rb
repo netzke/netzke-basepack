@@ -156,7 +156,7 @@ module Netzke
         # Optional extended search functionality
         res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/advanced_search.js" if config[:extended_search_available]
       
-        ext_examples = Netzke::Base.config[:ext_location].join("examples")
+        ext_examples = Netzke::Core.ext_location.join("examples")
       
         # Checkcolumn
         res << ext_examples.join("ux/CheckColumn.js")
@@ -240,8 +240,8 @@ module Netzke
           :search       => {:text => 'Search',       :disabled => !config[:enable_extended_search], :checked => true}
         }
       
-        if Netzke::Base.config[:with_icons]
-          icons_uri = Netzke::Base.config[:icons_uri] + "/"
+        if Netzke::Basepack.with_icons
+          icons_uri = Netzke::Basepack.icons_uri + "/"
           actions.deep_merge!(
             :add => {:icon => icons_uri + "add.png"},
             :edit => {:icon => icons_uri + "table_edit.png"},

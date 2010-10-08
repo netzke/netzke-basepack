@@ -37,8 +37,8 @@ module Netzke
     
       def actions
         super.merge(
-          :save => {:text => "Save", :icon => Netzke::Base.config[:with_icons] && (Netzke::Base.config[:icons_uri] + "/disk.png")},
-          :del => {:text => "Delete", :icon => Netzke::Base.config[:with_icons] && (Netzke::Base.config[:icons_uri] + "/delete.png")}
+          :save => {:text => "Save", :icon => Netzke::Basepack.with_icons && (Netzke::Basepack.icons_uri + "/disk.png")},
+          :del => {:text => "Delete", :icon => Netzke::Basepack.with_icons && (Netzke::Basepack.icons_uri + "/delete.png")}
         )
       end
     

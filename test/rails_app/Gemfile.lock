@@ -78,6 +78,8 @@ GEM
       arel (~> 1.0.1)
     mime-types (1.16)
     mysql2 (0.2.3)
+    netzke-core (0.6.0)
+      activesupport (>= 3.0.0)
     nokogiri (1.4.3.1)
     pickle (0.4.2)
       cucumber (>= 0.8)
@@ -145,6 +147,7 @@ DEPENDENCIES
   launchy
   meta_where
   mysql2
+  netzke-core (~> 0.6.0)
   pickle
   rails (= 3.0.0)
   rspec-rails (>= 2.0.0.beta.22)

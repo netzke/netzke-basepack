@@ -96,8 +96,8 @@ module Netzke
           :apply => {:text => 'Apply'}
         }
       
-        if Netzke::Base.config[:with_icons]
-          icons_uri = Netzke::Base.config[:icons_uri] + "/"
+        if Netzke::Basepack.with_icons
+          icons_uri = Netzke::Basepack.icons_uri + "/"
           actions.deep_merge!(
             :apply => {:icon => icons_uri + "tick.png"}
           )

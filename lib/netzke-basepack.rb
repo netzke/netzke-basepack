@@ -1,4 +1,5 @@
 # External dependencies
+require 'netzke-core'
 require 'active_support/dependencies'
 
 # path = File.dirname(__FILE__)
@@ -12,13 +13,21 @@ require 'netzke/basepack'
 module Netzke
   autoload :Ext, 'ext'
   
-  class Engine < Rails::Engine
-    config.before_initialize do
-      require 'netzke-core'
-      Netzke::Basepack.initialize
+  module Basepack
+    class Engine < Rails::Engine
+      config.after_initialize do
+        Netzke::Basepack.icons_uri ||= "/images/icons"
+        Netzke::Basepack.with_icons = File.exists?("#{Rails.root}/public#{Netzke::Basepack.icons_uri}") if Netzke::Basepack.with_icons.nil? && defined?(Rails)
+      end
     end
   end
+  
 end
+
+Netzke::Basepack.init
+
+# Netzke::Core.javascripts << "#{File.dirname(__FILE__)}/../../javascripts/basepack.js"
+# Netzke::Core.stylesheets << "#{File.dirname(__FILE__)}/../../stylesheets/basepack.css"
 
 # Make this plugin auto-reloadable for easier development
 # ActiveSupport::Dependencies.autoload_once_paths.delete(path)
