@@ -208,7 +208,7 @@ module Netzke
                                    
             relation = data_class.where(conditions)
           
-            relation = relation.extend_with(*config[:scope]) if config[:scope]
+            relation = relation.extend_with(config[:scope]) if config[:scope]
           
             relation
           end
