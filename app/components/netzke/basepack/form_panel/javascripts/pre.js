@@ -145,7 +145,11 @@ Netzke.pre.FormPanel = Ext.extend(Ext.form.FormPanel, {
   },
   
   setFormValues   : function(values){
-    this.getForm().setValues(values);
+    var normValues = {};
+    for (var key in values) {
+      normValues[key.underscore()] = values[key];
+    }
+    this.getForm().setValues(normValues);
   }
   
 });
