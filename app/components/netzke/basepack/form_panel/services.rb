@@ -55,7 +55,7 @@ module Netzke
         # end
     
         def values
-          @record && @record.to_hash(fields)
+          record && record.to_hash(fields).merge("created_at" => Time.now.to_datetime.to_s(:db), "first_name" => "Blah")
         end
 
         private
