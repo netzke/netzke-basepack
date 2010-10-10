@@ -34,7 +34,7 @@ module Netzke
             on_data_changed
         
             {
-              :update_new_records => mod_records[:create], 
+              :update_new_records => mod_records[:create],
               :update_mod_records => mod_records[:update] || {},
               :feedback => @flash
             }
@@ -67,7 +67,7 @@ module Netzke
             save_columns!
 
             # reorder the columns on the client side (still not sure if it's not an overkill)
-            # {:reorder_columns => columns.map(&:name)} # Well, I think it IS an overkill - commented out 
+            # {:reorder_columns => columns.map(&:name)} # Well, I think it IS an overkill - commented out
             # until proven to be necessary
             {}
           end
@@ -106,8 +106,8 @@ module Netzke
         
         end
         #
-        # Some components' overridden API 
-        # 
+        # Some components' overridden API
+        #
     
         ## Edit in form specific API
         def add_form__item__netzke_submit(params)
@@ -184,7 +184,8 @@ module Netzke
               relation = if method.nil?
                 relation.order(assoc.to_sym.send(dir))
               else
-                relation.order(assoc.tableize.to_sym => method.to_sym.send(dir)).joins(assoc.to_sym)
+                assoc = data_class.reflect_on_association(assoc.to_sym)
+                relation.order(assoc.klass.table_name.to_sym => method.to_sym.send(dir)).joins(assoc.name)
               end
             end
           
@@ -227,14 +228,14 @@ module Netzke
             norm_index = 0
             index.times do
               while true do
-                norm_index += 1 
+                norm_index += 1
                 break unless columns[norm_index][:included] == false
               end
             end
             norm_index
           end
 
-          # Params: 
+          # Params:
           # <tt>:operation</tt>: :update or :create
           def process_data(data, operation)
             success = true
@@ -285,11 +286,11 @@ module Netzke
           # Converts Ext.ux.grid.GridFilters filters to searchlogic conditions, e.g.
           #     {"0" => {
           #       "data" => {
-          #         "type" => "numeric", 
-          #         "comparison" => "gt", 
-          #         "value" => 10 }, 
+          #         "type" => "numeric",
+          #         "comparison" => "gt",
+          #         "value" => 10 },
           #       "field" => "id"
-          #     }, 
+          #     },
           #     "1" => {
           #       "data" => {
           #         "type" => "string",
@@ -297,9 +298,9 @@ module Netzke
           #       },
           #       "field" => "food_name"
           #     }}
-          #     
-          #      => 
-          #             
+          #
+          #      =>
+          #
           #  metawhere:   :id.gt => 100, :food_name.matches => '%pizza%'
           def convert_filters(column_filter)
             res = {}
@@ -313,7 +314,7 @@ module Netzke
                 value = "%#{value}%"
               when "numeric", "date"
                 field = field.send :"#{v['data']['comparison']}"
-              end                      
+              end
               res.merge!({field => value})
             end
             res
@@ -324,7 +325,7 @@ module Netzke
           end
 
           def get_key(k)
-            k.gsub("__", "").to_sym          
+            k.gsub("__", "").to_sym
           end
 
           # make params understandable to searchlogic
@@ -338,7 +339,7 @@ module Netzke
             # conditions && conditions.each_pair do |k, v|
             #   normalized_conditions.merge!(get_key(k) => v)
             # end
-            # 
+            #
             # {:conditions => normalized_conditions}
             {:conditions => conditions}
           end
