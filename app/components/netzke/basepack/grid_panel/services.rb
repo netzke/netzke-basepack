@@ -305,8 +305,14 @@ module Netzke
           def convert_filters(column_filter)
             res = {}
             column_filter.each_pair do |k,v|
-              field = v["field"].dup.to_sym
-            
+              assoc, method = v["field"].split('__')
+              if method
+                assoc = data_class.reflect_on_association(assoc.to_sym)
+                field = [assoc.klass.table_name, method].join('.').to_sym
+              else 
+                field = assoc.to_sym
+              end
+              
               value = v["data"]["value"]
               case v["data"]["type"]
               when "string"
