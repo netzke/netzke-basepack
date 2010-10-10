@@ -131,11 +131,6 @@ module Netzke
             # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled?
           end
         
-          # whether a column is bound to the primary_key
-          def reflects_primary_key?(c)
-            c[:name] == data_class.primary_key
-          end
-      
           def set_default_header(c)
             c[:label] ||= c[:name].humanize
           end
@@ -151,11 +146,11 @@ module Netzke
           end
         
           def set_default_hidden(c)
-            c[:hidden] = true if reflects_primary_key?(c) && c[:hidden].nil?
+            c[:hidden] = true if primary_key_attr?(c) && c[:hidden].nil?
           end
         
           def set_default_editable(c)
-            c[:editable] = c[:read_only].nil? ? !(reflects_primary_key?(c) || c[:virtual]) : !c[:read_only]
+            c[:editable] = c[:read_only].nil? ? !(primary_key_attr?(c) || c[:virtual]) : !c[:read_only]
             c.delete(:read_only)
           end
         

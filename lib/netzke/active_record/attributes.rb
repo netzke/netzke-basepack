@@ -1,6 +1,7 @@
 module Netzke::ActiveRecord::Attributes
+  extend ActiveSupport::Concern
+  
   module ClassMethods
-    
     # Define or configure an attribute.
     # Example:
     #   netzke_attribute :recent, :type => :boolean, :read_only => true
@@ -13,7 +14,13 @@ module Netzke::ActiveRecord::Attributes
       if existing
         existing.merge!(options)
       else
-        declared_attrs << {:name => name}.merge(options)
+        attr_config = {:name => name}.merge(options)
+        # if primary_key, insert in front, otherwise append
+        if name == self.primary_key
+          declared_attrs.insert(0, attr_config)
+        else
+          declared_attrs << {:name => name}.merge(options)
+        end
       end
       write_inheritable_attribute(:netzke_declared_attributes, declared_attrs)
     end
@@ -37,8 +44,18 @@ module Netzke::ActiveRecord::Attributes
     
     # Returns the attributes that will be picked up by grids and forms.
     def netzke_attributes
-      exposed = read_inheritable_attribute(:netzke_exposed_attributes)
+      exposed = netzke_exposed_attributes
       exposed ? netzke_attrs_in_forced_order(exposed) : netzke_attrs_in_natural_order
+    end
+    
+    def netzke_exposed_attributes
+      exposed = read_inheritable_attribute(:netzke_exposed_attributes)
+      if exposed && !exposed.include?(self.primary_key)
+        # automatically declare primary key as a netzke attribute
+        netzke_attribute(self.primary_key)
+        exposed.insert(0, self.primary_key)
+      end
+      exposed
     end
     
     private
@@ -76,6 +93,7 @@ module Netzke::ActiveRecord::Attributes
       def netzke_attrs_in_natural_order
         (
           declared_attrs = netzke_declared_attributes
+          
           column_names.map do |name|
             c = {:name => name, :attr_type => columns_hash[name].type}
             
@@ -126,24 +144,26 @@ module Netzke::ActiveRecord::Attributes
     res
   end
   
+  # Accepts both hash and array of attributes
   def to_hash(attributes)
     res = {}
-    for a in attributes
-      begin
-        next if a[:included] == false
-        v = send(a[:name])
-        # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
-        v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
-        res[a[:name]] = v
-      rescue NoMethodError
-        # So that we don't crash at a badly configured column
-        res << "UNDEF"
-      end
+    for a in (attributes.is_a?(Hash) ? attributes.values : attributes)
+      next if a[:included] == false
+      res[a[:name].to_sym] = self.value_for_attribute(a)
     end
     res
   end
   
-  def self.included(receiver)
-    receiver.extend         ClassMethods
+  def value_for_attribute(a)
+    begin
+      v = send(a[:name])
+      # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
+      v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
+      v
+    rescue NoMethodError
+      # So that we don't crash at a badly configured column
+      "UNDEF"
+    end
   end
+  
 end

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-10-08}
+  s.date = %q{2010-10-09}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -96,10 +96,12 @@ Gem::Specification.new do |s|
      "lib/netzke/table_editor.rb",
      "lib/netzke/tree_panel.rb",
      "lib/tasks/netzke_basepack_tasks.rake",
+     "locale/en.yml",
      "netzke-basepack.gemspec",
+     "spec/active_record/relation_extensions_spec.rb",
+     "spec/components/grid_panel_spec.rb",
      "spec/factories.rb",
      "spec/spec_helper.rb",
-     "spec/widget/grid_panel_spec.rb",
      "stylesheets/basepack.css",
      "test/console_with_fixtures.rb",
      "test/fixtures/books.yml",
@@ -147,7 +149,7 @@ Gem::Specification.new do |s|
      "test/rails_app/config/initializers/netzke.rb",
      "test/rails_app/config/initializers/secret_token.rb",
      "test/rails_app/config/initializers/session_store.rb",
-     "test/rails_app/config/locales/en.yml",
+     "test/rails_app/config/locales/es.yml",
      "test/rails_app/config/routes.rb",
      "test/rails_app/db/development_structure.sql",
      "test/rails_app/db/migrate/20100905214933_create_netzke_preferences.rb",
@@ -208,9 +210,10 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Pre-built Rails + ExtJS components for your RIA}
   s.test_files = [
-    "spec/factories.rb",
+    "spec/active_record/relation_extensions_spec.rb",
+     "spec/components/grid_panel_spec.rb",
+     "spec/factories.rb",
      "spec/spec_helper.rb",
-     "spec/widget/grid_panel_spec.rb",
      "test/console_with_fixtures.rb",
      "test/rails_app/app/components/generic_user_form.rb",
      "test/rails_app/app/components/simple_accordion.rb",

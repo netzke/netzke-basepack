@@ -88,5 +88,10 @@ module Netzke
       end
     end
 
+    # whether a column is bound to the primary_key
+    def primary_key_attr?(a)
+      data_class && a[:name].to_s == data_class.primary_key
+    end
+
   end
 end

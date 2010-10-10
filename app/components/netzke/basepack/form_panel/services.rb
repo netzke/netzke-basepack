@@ -10,9 +10,8 @@ module Netzke
           # Endpoints
           # 
           endpoint :netzke_submit do |params|
-			data = ActiveSupport::JSON.decode(params[:data])
-			success = create_or_update_record(data)
-            
+            data = ActiveSupport::JSON.decode(params[:data])
+            success = create_or_update_record(data)
 
             if success
               {:set_form_values => values, :set_result => "ok"}
@@ -34,7 +33,7 @@ module Netzke
           endpoint :get_combobox_options do |params|
             query = params[:query]
 
-            field = fields.detect{ |c| c[:name] == params[:column] }
+            field = fields[params[:column].to_sym]
             scope = field.to_options[:scope]
             query = params[:query]
 

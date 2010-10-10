@@ -59,68 +59,66 @@ module Netzke
     
       def js_config
         super.merge(
-          :fields => fields,
+          # :fields => fields,
           :pri    => data_class && data_class.primary_key
         )
       end
     
-      attr_accessor :record
-    
-    def record
-      @record ||= config[:record] || config[:record_id] && data_class && data_class.find(:first, :conditions  => {data_class.primary_key => config[:record_id]})
-    end
-    
-    def configuration_components
-      res = []
-      
-        res << {
-          :name              => 'fields',
-          :class_name => "FieldsConfigurator",
-          :active            => true,
-          :owner             => self,
-          :persistent_config => true
-        }
-
-        res << {
-          :name               => 'general',
-          :class_name  => "PropertyEditor",
-          :component             => self,
-          :title => false
-        }
-      
-        res
+      def record
+        @record ||= config[:record] || config[:record_id] && data_class && data_class.where(data_class.primary_key => config[:record_id]).first
       end
-
-      def actions
-        actions = {
-          :apply => {:text => 'Apply'}
-        }
+    
+      def configuration_components
+        res = []
       
-        if Netzke::Basepack.with_icons
-          icons_uri = Netzke::Basepack.icons_uri + "/"
-          actions.deep_merge!(
-            :apply => {:icon => icons_uri + "tick.png"}
-          )
+          res << {
+            :name              => 'fields',
+            :class_name => "FieldsConfigurator",
+            :active            => true,
+            :owner             => self,
+            :persistent_config => true
+          }
+
+          res << {
+            :name               => 'general',
+            :class_name  => "PropertyEditor",
+            :component             => self,
+            :title => false
+          }
+      
+          res
         end
+
+        def actions
+          actions = {
+            :apply => {:text => 'Apply'}
+          }
       
-        actions
-      end
+          if Netzke::Basepack.with_icons
+            icons_uri = Netzke::Basepack.icons_uri + "/"
+            actions.deep_merge!(
+              :apply => {:icon => icons_uri + "tick.png"}
+            )
+          end
+      
+          actions
+        end
     
-      def self.property_fields
-        res = [
-          # {:name => "ext_config__title",               :attr_type => :string},
-          # {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
-          # {:name => "ext_config__bbar",              :attr_type => :json}
-        ]
+        def self.property_fields
+          res = [
+            # {:name => "ext_config__title",               :attr_type => :string},
+            # {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
+            # {:name => "ext_config__bbar",              :attr_type => :json}
+          ]
       
-        res
-      end
+          res
+        end
  
-      private
+        private
       
-        def self.server_side_config_options
-          super + [:record]
-        end
+          def self.server_side_config_options
+            super + [:record]
+          end
  
       # include ::Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
     end

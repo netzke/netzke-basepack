@@ -1,9 +1,65 @@
 module Netzke
   module Basepack
     class FormPanel < Netzke::Base
+      # Because FormPanel allows for arbitrary layout of fields, we need to have all fields configured in one place (the +fields+ method), and then have references to those fields from +items+.
       module Fields
         extend ActiveSupport::Concern
       
+        # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render
+        # a field)
+        def items
+          @items ||= begin
+            res = items_with_normalized_fields(super)
+          
+            # if primary key isn't there, insert it as first
+            if data_class && @fields_from_config[data_class.primary_key.to_sym].nil?
+              primary_key_item = normalize_field(data_class.primary_key.to_sym)
+              @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
+              res.insert(0, primary_key_item)
+            end
+            
+            res
+          end
+        end
+        
+        # Hash of fully configured fields, that are referenced in the items. E.g.:
+        #   {
+        #     :role__name => {:xtype => 'combobox', :disabled => true, :value => "admin"},
+        #     :created_at => {:xtype => 'datetime', :disabled => true, :value => "2010-10-10 10:10"}
+        #   }
+        def fields
+          @fields ||= begin
+            if static_layout?
+              # extract incomplete field configs from +config+
+              flds = fields_from_config
+              # and merged them with fields from the model
+              deep_merge_existing_fields(flds, fields_from_model)
+            else
+              # extract flds configs from the model
+              flds = fields_from_model
+            end
+            flds
+          end
+        end
+      
+        # The array of fields as specified on the model level (using +netzke_attribute+ and alike)
+        def fields_array_from_model
+          data_class && data_class.netzke_attributes
+        end
+        
+        # Hash of fields as specified on the model level
+        def fields_from_model
+          @fields_from_model ||= fields_array_from_model && fields_array_from_model.inject({}){ |hsh, f| hsh.merge(f[:name].to_sym => f) }
+        end
+      
+        # Hash of normalized field configs extracted from :items, e.g.:
+        # 
+        #     {:role__name => {:xtype => "combobox"}, :password => {:xtype => "passwordfield"}}
+        def fields_from_config
+          items if @fields_from_config.nil? # by calling +items+ we initiate building of @fields_from_config
+          @fields_from_config ||= {}
+        end
+
         module ClassMethods
           # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
           # option for each field in the form.
@@ -16,90 +72,8 @@ module Netzke
             ]
           end
         end
-      
-        # Fully configured field array passed to the JS side (see js_config)
-        def fields
-          @fields ||= begin
-            flds = load_persistent_fields
-            reverse_merge_equally_named_fields(flds, initial_fields) if flds
-            flds ||= initial_fields
-
-            if record
-              record_data = record.to_array(flds)
-              flds.each_with_index do |c, i|
-                c.merge!(:value => record_data[i]) if !record_data[i].nil?
-              end
-            end
-          
-            flds
-          end
-        end
-
-        # Fields used when no :items are provided in the configuration
-        def default_fields
-          @_default_fields ||= load_model_level_attrs || (data_class && data_class.netzke_attributes) || []
-        end
-
-        # Array of normalized field configs extracted from :items
-        def fields_from_config
-          @_fields_from_config ||= config[:items] && normalize_items_and_collect_fields(config[:items])
-        end
-
-        # Full 
-        def initial_fields(only_included = true)
-          # Normalize here, as from the config we can get symbols (names) instead of hashes
-          # fields_from_config = (config[:columns] || config[:fields]) && normalize_attrs(config[:columns] || config[:fields])
-
-          if fields_from_config
-            # automatically add a field that reflects the primary key, unless specified in the config; it should be added to the end
-            fields_from_config.push({:name => data_class.primary_key}) if data_class && !fields_from_config.any?{ |c| c[:name] == data_class.primary_key }
-          
-            # reverse-merge each column hash from config with each column hash from exposed_attributes (fields from config have higher priority)
-            for c in fields_from_config
-              corresponding_exposed_column = default_fields.find{ |k| k[:name] == c[:name] }
-              c.reverse_merge!(corresponding_exposed_column) if corresponding_exposed_column
-            end
-            fields_for_create = fields_from_config
-          elsif default_fields
-            # we didn't have fields configured in component's config, so, use the fields from the data class
-            fields_for_create = default_fields
-          else
-            raise ArgumentError, "No fields specified for component '#{global_id}'"
-          end
         
-          fields_for_create.reject!{ |c| c[:included] == false }
-        
-          fields_for_create.map! do |c|
-            if data_class
-
-              detect_association_with_method(c)
-            
-              # detect association column (e.g. :category_id)
-              if assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
-                c[:xtype] ||= xtype_for_association
-                assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
-                c[:name] = "#{assoc.name}__#{assoc_method}"
-              end
-
-              c[:hidden] = true if c[:name] == data_class.primary_key && c[:hidden].nil? # hide ID column by default
-            end
-
-            set_default_field_label(c)
-          
-            c[:xtype] ||= xtype_for_attr_type(c[:attr_type]) # unless xtype_map[type].nil?
-            c
-          end
-
-          fields_for_create
-
-        end
-      
         private
-          # Stores modified fields in persistent storage (not used in forms, as we can't modify them on the fly, only via FieldsConfigurator)
-          # def save_fields!
-          #   NetzkeFieldList.update_list_for_current_authority(global_id, fields, data_class.name)
-          # end
-      
           def load_persistent_fields
             # NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
           end
@@ -107,31 +81,38 @@ module Netzke
           def load_model_level_attrs
             # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
           end
-        
-          def set_default_field_label(c)
-            c[:label] ||= c[:name].humanize.sub(/\s+/, " ") # multiple spaces get replaced with one
+
+          # This is where we expand our basic field config with all the default and eventual value
+          def normalize_field(field)
+            # field can only be a string, a symbol, or a hash
+            if field.is_a?(Hash)
+              field = field.dup # we don't want to modify original hash
+              field[:name] = field[:name].to_s if field[:name] # all names should be strings
+            else
+              field = {:name => field.to_s}
+            end
+            
+            field.merge!(fields_from_model[field[:name].to_sym]) unless fields_from_model[field[:name].to_sym].nil?
+            
+            detect_association_with_method(field) # xtype for an association field
+
+            set_default_field_label(field)
+
+            set_default_field_xtype(field) if field[:xtype].nil?
+            
+            set_default_field_value(field) if self.record
+            
+            # provide our special combobox with our id
+            field[:parent_id] = self.global_id if field[:xtype] == :combobox
+            
+            field[:hidden] = field[:hide_label] = true if field[:hidden].nil? && primary_key_attr?(field)
+            
+            field[:checked] = field[:value] if field[:attr_type] == "boolean"
+            
+            field
           end
-      
-          def attr_type_to_xtype_map
-            {
-              :integer => :numberfield,
-              :boolean => :xcheckbox,
-              :date => :datefield,
-              :datetime => :xdatetime,
-              :text => :textarea,
-              :json => :jsonfield
-              # :string => :textfield
-            }
-          end
-        
-          def xtype_for_attr_type(type)
-            attr_type_to_xtype_map[type]
-          end
-        
-          def xtype_for_association
-            :combobox
-          end
-        
+          
+          # Sets the proper xtype of an asociation field
           def detect_association_with_method(c)
             if c[:name].to_s.index('__')
               assoc_name, method = c[:name].split('__').map(&:to_sym)
@@ -139,43 +120,86 @@ module Netzke
                 assoc_column = assoc.klass.columns_hash[method.to_s]
                 assoc_method_type = assoc_column.try(:type)
                 if assoc_method_type
-                  c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : :combobox
+                  c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
                 end
               end
-            end
-          end
-
-          # Receives 2 arrays of columns. Merges the missing config from the +source+ into +dest+, matching columns by name
-          def reverse_merge_equally_named_fields(dest, source)
-            dest.each{ |dc| dc.reverse_merge!(source.detect{ |sc| sc[:name] == dc[:name] } || {}) }
-          end
-
-          # Normalize config[:items] and extract fields out of them
-          def process_items_config
-            super
-            normalize_items_and_collect_fields(@js_items) if @js_items
-          end
-        
-          # Recursively extracts fields configuration from :items
-          def normalize_items_and_collect_fields(items)
-            items.each_with_index.inject([]) do |r, (item, i)|
-              items[i] = item = normalize_item(item)
-              if is_a_field?(item)
-                r + [item]
-              elsif item.is_a?(Hash)
-                item[:items].is_a?(Array) ? r + normalize_items_and_collect_fields(item[:items]) : r
+            else
+              # are we reflecting some association's foreign key (e.g. :category_id)?
+              if assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
+                c[:xtype] ||= xtype_for_association
+                assoc_method = (%w{name title label} << assoc.primary_key_name).detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
+                c[:name] = "#{assoc.name}__#{assoc_method}"
               end
             end
           end
 
-          def is_a_field?(item)
-            item[:name] && !item[:class_name] # TODO: delegate it to Base#is_a_component? method
-          end
-
-          def normalize_item(item)
-            item.is_a?(String) || item.is_a?(Symbol) ? {:name => item.to_s} : item.is_a?(Hash) && item[:name] ? item.merge(:name => item[:name].to_s) : item
+          # RECURSIVELY extracts fields configuration from :items
+          def items_with_normalized_fields(items)
+            @fields_from_config ||= {}
+            items.map do |item|
+              # at this moment, item is a hash or a symbol
+              if is_field_config?(item)
+                item = normalize_field(item)
+                @fields_from_config[item[:name].to_sym] = item
+                item #.reject{ |k,v| k == :name } # do we really need to remove the :name key?
+              elsif item.is_a?(Hash)
+                item = item.dup # we don't want to modify original hash
+                item[:items].is_a?(Array) ? item.merge(:items => items_with_normalized_fields(item[:items])) : item
+              else
+                item
+              end
+            end
           end
         
+          def is_field_config?(item)
+            items.is_a?(String) || item.is_a?(Symbol) || item[:name] && !is_component_config?(item)
+          end
+          
+          def set_default_field_label(c)
+            c[:field_label] ||= c[:name].humanize.sub(/\s+/, " ") # multiple spaces get replaced with one
+          end
+      
+          def set_default_field_value(field)
+            value = record.value_for_attribute(field)
+            field[:value] ||= value unless value.nil?
+          end
+   
+          # Deeply merges only those key/values at the top level that are already there
+          def deep_merge_existing_fields(dest, src)
+            dest.each_pair do |k,v|
+              v.deep_merge!(src[k] || {})
+            end
+          end
+     
+          def set_default_field_xtype(field)
+            field[:xtype] = xtype_for_attr_type(field[:attr_type]) unless xtype_for_attr_type(field[:attr_type]).nil?
+          end
+       
+          def attr_type_to_xtype_map
+            {
+              :integer => :numberfield,
+              :boolean => :xcheckbox,
+              :date => :datefield,
+              :datetime => :xdatetime,
+              :text => :textarea,
+              :json => :jsonfield,
+              :string => :textfield
+            }
+          end
+          
+          def xtype_for_attr_type(type)
+            attr_type_to_xtype_map[type]
+          end
+        
+          def xtype_for_association
+            :combobox
+          end
+   
+          # Are we provided with a static field layout?
+          def static_layout?
+            !!config[:items]
+          end
+    
       end
     end
   end
