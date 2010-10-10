@@ -171,11 +171,11 @@ module Netzke
             # build initial relation based on passed params
             relation = get_relation(params)
                         
-            # lazy load associations for all columns in associated tables if specified
+            # addressing the n+1 query problem
             columns.each do |c|
               assoc, method = c[:name].split('__')
               relation = relation.includes(assoc.to_sym) if method
-            end if config[:lazy_load_associations]
+            end
 
             # apply sorting if needed
             if params[:sort]
