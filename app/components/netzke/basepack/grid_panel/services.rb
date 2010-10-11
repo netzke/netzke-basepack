@@ -181,14 +181,21 @@ module Netzke
             if params[:sort]
               assoc, method = params[:sort].split('__')
               dir = params[:dir].downcase
-              relation = if method.nil?
-                relation.order(assoc.to_sym.send(dir))
-              else
-                assoc = data_class.reflect_on_association(assoc.to_sym)
-                relation.order(assoc.klass.table_name.to_sym => method.to_sym.send(dir)).joins(assoc.name)
+
+              # if a sorting scope is set, call the scope with the given direction
+              column = columns.detect { |c| c[:name] == params[:sort] }
+              if column.has_key?(:sorting_scope)
+  	            relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
+  	          else
+                relation = if method.nil?
+                  relation.order(assoc.to_sym.send(dir))
+                else
+                  assoc = data_class.reflect_on_association(assoc.to_sym)
+                  relation.order(assoc.klass.table_name.to_sym => method.to_sym.send(dir)).joins(assoc.name)
+                end
               end
             end
-          
+
             # apply pagination if needed
             if config[:enable_pagination]
               per_page = config[:rows_per_page]
