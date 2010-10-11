@@ -87,6 +87,16 @@ module Netzke
     # And lastly, the defaults for AttributesConfigurator are calculated from the database model itself (extended by Netzke).
     # For example, in the model you can specify virtual attributes and their types that will be picked up by Netzke, the default
     # order of columns, or excluded columns. For details see <tt>Netzke::ActiveRecord::Attributes</tt>.
+    #
+    # Each column supports the option :sorting_scope, which defines a scope used for sorting the column. This option would be
+    # useful for virtual columns for example. The scope will get one parameter which contains the direction (:asc or :desc)
+    # Example:
+    # { :name => complete_user_name, :sorting_scope => :sort_user_by_full_name }
+    # class User < ActiveRecord::Base
+    #     scope :sort_user_by_full_name, lambda { |dir|
+    #         order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}")
+    #     }
+    # end
     # 
     # The columns are displayed in the order specified by what's found first in the following sequence:
     #   GridPanel instance's persistent storage
