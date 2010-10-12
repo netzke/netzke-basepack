@@ -141,6 +141,8 @@ module Netzke
       include self::Columns
     
       include Netzke::DataAccessor
+      
+      action :search, {:text => "Search"}
 
       # TODO: 2010-09-14
       def self.enforce_config_consistency
@@ -207,10 +209,16 @@ module Netzke
         ]
       end
     
+    
       def default_bbar
         res = %w{ add edit apply del }.map(&:to_sym).map(&:action)
         res << "-" << :add_in_form.action << :edit_in_form.action if config[:enable_edit_in_form]
-        res << "-" << :search.action if config[:enable_extended_search]
+        config[:enable_extended_search] && res << "-" << {
+          :text => "Search", 
+          :handler => :on_search, 
+          :enable_toggle => true, 
+          :icon => Netzke::Basepack.with_icons && "#{Netzke::Basepack.icons_uri}/find.png"
+        }
         res
       end
     
@@ -265,10 +273,10 @@ module Netzke
             :text => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
             :disabled => true
           },
-          :search       => {
-            :text => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
-            :disabled => !config[:enable_extended_search]
-          }
+          # :search       => {
+          #   :text => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
+          #   :disabled => !config[:enable_extended_search]
+          # }
         }
       
         if Netzke::Basepack.with_icons
@@ -280,11 +288,11 @@ module Netzke
             :apply => {:icon => icons_uri + "tick.png"},
             :add_in_form => {:icon => icons_uri + "application_form_add.png"},
             :edit_in_form => {:icon => icons_uri + "application_form_edit.png"},
-            :search => {:icon => icons_uri + "find.png"}
+            # :search => {:icon => icons_uri + "find.png"}
           )
         end
       
-        actions
+        actions.merge(super)
       end
 
       def components
@@ -346,24 +354,31 @@ module Netzke
             }.deep_merge(config[:multi_edit_form_window_config] || {})
           }) if config[:enable_edit_in_form]
       
+          res.merge!(:search_panel => {
+            :lazy_loading => true,
+            :class_name => "Basepack::GridPanel::SearchWindow",
+            :model => config[:model]
+          })
+      
           # Extended search
-          res.merge!(:search_panel => search_panel.merge(:lazy_loading => true).deep_merge(config[:search_form_config] || {})) if config[:enable_extended_search]
+          # res.merge!(:search_panel => search_panel.merge(:lazy_loading => true).deep_merge(config[:search_form_config] || {})) if config[:enable_extended_search]
       
           res
         end
       end
     
-      def search_panel
-        {
-          :class_name => "Basepack::SearchPanel",
-          # :items => default_fields_for_forms,
-          :search_class_name => config[:model],
-          :persistent_config => config[:persistent_config],
-          :header => false, 
-          :bbar => false, 
-          :mode => config[:mode]
-        }
-      end
+      # def search_panel
+      #   {
+      #     :class_name => "Basepack::FormPanel",
+      #     :model => "User",
+      #     # :items => default_fields_for_forms,
+      #     # :search_class_name => cronfig[:model],
+      #     # :persistent_config => config[:persistent_config],
+      #     :header => false,
+      #     :bbar => false,
+      #     # :mode => config[:mode]
+      #   }
+      # end
 
       include ::Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window
  

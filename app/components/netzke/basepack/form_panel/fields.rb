@@ -9,7 +9,7 @@ module Netzke
         # a field)
         def items
           @items ||= begin
-            res = items_with_normalized_fields(super)
+            res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # take netzke_attributes as default items
           
             # if primary key isn't there, insert it as first
             if data_class && @fields_from_config[data_class.primary_key.to_sym].nil?
@@ -134,7 +134,7 @@ module Netzke
           end
 
           # RECURSIVELY extracts fields configuration from :items
-          def items_with_normalized_fields(items)
+          def normalize_fields(items)
             @fields_from_config ||= {}
             items.map do |item|
               # at this moment, item is a hash or a symbol
@@ -144,7 +144,7 @@ module Netzke
                 item #.reject{ |k,v| k == :name } # do we really need to remove the :name key?
               elsif item.is_a?(Hash)
                 item = item.dup # we don't want to modify original hash
-                item[:items].is_a?(Array) ? item.merge(:items => items_with_normalized_fields(item[:items])) : item
+                item[:items].is_a?(Array) ? item.merge(:items => normalize_fields(item[:items])) : item
               else
                 item
               end
@@ -152,7 +152,7 @@ module Netzke
           end
         
           def is_field_config?(item)
-            items.is_a?(String) || item.is_a?(Symbol) || item[:name] && !is_component_config?(item)
+            item.is_a?(String) || item.is_a?(Symbol) || item[:name] && !is_component_config?(item)
           end
           
           def set_default_field_label(c)

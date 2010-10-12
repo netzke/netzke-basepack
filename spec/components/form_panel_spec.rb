@@ -15,7 +15,7 @@ describe Netzke::Basepack::FormPanel do
   it "should set correct xtype for columns" do
     form = Netzke::Basepack::FormPanel.new(:model => 'User', :items => [:first_name, :created_at, :role__name])
     
-    form.fields[:first_name].has_key?(:xtype).should == false # because defaults to textfield at the JS side
+    form.fields[:first_name][:xtype].should == :textfield
     form.fields[:created_at][:xtype].should == :xdatetime
     form.fields[:role__name][:xtype].should == :combobox
   end
@@ -23,9 +23,9 @@ describe Netzke::Basepack::FormPanel do
   it "should set correct default field labels" do
     form = Netzke::Basepack::FormPanel.new(:model => 'User', :items => [:first_name, :created_at, :role__name])
     
-    form.fields[:first_name][:label].should == "First name"
-    form.fields[:created_at][:label].should == "Created at"
-    form.fields[:role__name][:label].should == "Role name"
+    form.fields[:first_name][:field_label].should == "First name"
+    form.fields[:created_at][:field_label].should == "Created at"
+    form.fields[:role__name][:field_label].should == "Role name"
   end
   
   it "should set correct field values" do

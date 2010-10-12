@@ -26,4 +26,19 @@ describe Netzke::ActiveRecord::RelationExtensions do
     # User.where({}).extend_with("select * from users where role_id > 6").all.size.should == 3
     
   end
+  
+  it "should be extendable with extend_with_netzke_conditions" do
+    # Preparations
+    roles = [Factory(:role, :name => "admin"), Factory(:role, :name => "user"), Factory(:role, :name => "superadmin")]
+    
+    # 3 users of each role
+    9.times do |i|
+      Factory(:user, :role_id => roles[i%3].id)
+    end
+
+    # Tests
+    User.where({}).extend_with_netzke_conditions(:role_id__eq => roles.last.id).count.should == 3
+    User.where({}).extend_with_netzke_conditions(:role__name__eq => "admin").count.should == 3
+    User.where({}).extend_with_netzke_conditions(:role__name__like => "%admin%").count.should == 6
+  end
 end

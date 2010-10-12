@@ -1,4 +1,4 @@
-class SomeSearchPanel < Netzke::Basepack::SearchPanel
+class SomeSearchPanel < Netzke::Basepack::FormPanel
   def config
     orig = super
     {
@@ -8,21 +8,23 @@ class SomeSearchPanel < Netzke::Basepack::SearchPanel
     }.deep_merge orig
   end
 
-  def normalize_attr(a)
-    if a.is_a?(Symbol) || a.is_a?(String) 
-      a.merge(:name => a.to_s, :operator => default_operator)
+  def normalize_field(f)
+    f = if f.is_a?(Symbol) || f.is_a?(String) 
+      {:name => f.to_s, :operator => default_operator}
     else 
-      value = a[:name]
-      if value.is_a?(MetaWhere::Column)
-        a.merge(:name => value.column, :operator => value.method)
+      search_condition = f[:name]
+      if search_condition.is_a?(MetaWhere::Column)
+        {:name => search_condition.column, :operator => search_condition.method}
       else
-        a.merge(:name => value.to_s, :operator => default_operator)
+        {:name => search_condition.to_s, :operator => default_operator}
       end
     end
-  end
-  
-  def normalize_item(item)
-    item.is_a?(String) || item.is_a?(Symbol) ? {:name => item.to_s, :operator => default_operator} : item.is_a?(Hash) && item[:name].is_a?(MetaWhere::Column) ? item.merge(:name => item[:name].column, :operator => item[:name].method) : item
+    
+    f[:disabled] = primary_key_attr?(f)
+    
+    f = super(f)
+
+    f.merge(:name => [f[:name], "__", f[:operator]].join)
   end
   
   private

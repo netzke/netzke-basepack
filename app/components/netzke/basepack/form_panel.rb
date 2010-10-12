@@ -37,15 +37,17 @@ module Netzke
     
       js_base_class "Netzke.pre.FormPanel"
     
-      def initial_config
-        res = super
-        res[:bbar] = default_bbar if res[:bbar].nil?
-        res
-      end
-
-      def default_bbar
-        [:apply.action]
-      end
+      js_property :bbar, [:apply.action]
+    
+      # def initial_config
+      #   res = super
+      #   res[:bbar] = default_bbar if res[:bbar].nil?
+      #   res
+      # end
+      # 
+      # def default_bbar
+      #   [:apply.action]
+      # end
     
       # Extra javascripts
       def self.include_js

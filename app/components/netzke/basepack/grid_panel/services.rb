@@ -206,21 +206,17 @@ module Netzke
             end
           end
     
-          # Returns ActiveRecord::Relation instance encapsulating all the necessary conditions
+          # An ActiveRecord::Relation instance encapsulating all the necessary conditions
           def get_relation(params)
             # make params coming from Ext grid filters understandable by meta_where
-            # search_params = normalize_params(params)
             conditions = params[:filter] && convert_filters(params[:filter]) || {}
           
-            # merge with conditions coming from the config
-            # search_params[:conditions].deep_merge!(config[:conditions] || {})
-
-            # merge with extra conditions (in MetaWhere format, come from the extended search form)
-            conditions.deep_merge!(
-              normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
-            ) if params[:extra_conditions]
-                                   
             relation = data_class.where(conditions)
+            
+            if params[:extra_conditions]
+              extra_conditions = normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
+              relation = relation.extend_with_netzke_conditions(extra_conditions) if params[:extra_conditions]
+            end
           
             relation = relation.extend_with(config[:scope]) if config[:scope]
           
@@ -334,11 +330,9 @@ module Netzke
           end
 
           def normalize_extra_conditions(conditions)
-            conditions.deep_convert_keys{|k| get_key(k)}
-          end
-
-          def get_key(k)
-            k.gsub("__", "").to_sym
+            conditions.each_pair do |k,v|
+              conditions[k] = "%#{v}%" if ["like", "matches"].include?(k.to_s.split("__").last)
+            end
           end
 
           # make params understandable to searchlogic
