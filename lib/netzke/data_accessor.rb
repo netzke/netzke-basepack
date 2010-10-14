@@ -39,9 +39,9 @@ module Netzke
 					return [[]] if res.empty?
 					
 					unless res.first.kind_of? Array
-						res=res.map() lambda { |v|
+						res=res.map do |v|
 							[v]
-						} 
+						end
 					end
 					return res
 					
