@@ -37,7 +37,12 @@ module Netzke
 					# ensure it is an array-in-array, as Ext will fail otherwise
 					raise RuntimeError, "netzke_combo_options_for should return an Array" unless res.kind_of? Array
 					return [[]] if res.empty?
-					return [res] unless res.first.kind_of? Array
+					
+					unless res.first.kind_of? Array
+						res=res.map() (v)->{
+							[v]
+						} 
+					end
 					return res
 					
 					
