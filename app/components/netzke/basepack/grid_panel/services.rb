@@ -151,7 +151,7 @@ module Netzke
         end
       
         # When providing the edit_form component, fill in the form with the requested record
-        def load_component_with_cache(params)
+        def deliver_component(params)
           components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:name] == 'edit_form'
           super
         end

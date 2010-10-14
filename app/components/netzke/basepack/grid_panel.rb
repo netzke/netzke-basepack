@@ -333,7 +333,7 @@ module Netzke
                 :bbar => false,
                 :header => false,
                 :mode => config[:mode]
-                # :record_id gets assigned by load_component_with_cache at the moment of loading
+                # :record_id gets assigned by deliver_component at the moment of loading
               }.deep_merge(config[:edit_form_config] || {})]
             }.deep_merge(config[:edit_form_window_config] || {}),
         
