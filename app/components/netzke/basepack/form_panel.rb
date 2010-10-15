@@ -91,21 +91,8 @@ module Netzke
           res
         end
 
-        def actions
-          actions = {
-            :apply => {:text => 'Apply'}
-          }
-      
-          if Netzke::Basepack.with_icons
-            icons_uri = Netzke::Basepack.icons_uri + "/"
-            actions.deep_merge!(
-              :apply => {:icon => icons_uri + "tick.png"}
-            )
-          end
-      
-          actions
-        end
-    
+        action :apply, :text => 'Apply!', :icon => :tick
+
         def self.property_fields
           res = [
             # {:name => "ext_config__title",               :attr_type => :string},

@@ -20,14 +20,10 @@ module Netzke
       })
     end
     
-    def actions
-      super.merge(
-        :defaults => {:text => 'Restore defaults', :icon => Netzke::Basepack.with_icons && (Netzke::Basepack.icons_uri + "wand.png")}
-      )
-    end
+    action :defaults, {:text => 'Restore defaults', :icon => :wand} 
     
     def default_bbar
-      %w{ add edit apply del - defaults }
+      %w{ add edit apply del }.map(&:action) + "-" + [:defaults.action]
     end
         
     # Default columns for the configurator

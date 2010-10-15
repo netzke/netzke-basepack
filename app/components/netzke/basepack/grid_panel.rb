@@ -211,12 +211,13 @@ module Netzke
       def default_bbar
         res = %w{ add edit apply del }.map(&:to_sym).map(&:action)
         res << "-" << :add_in_form.action << :edit_in_form.action if config[:enable_edit_in_form]
-        config[:enable_extended_search] && res << "-" << {
-          :text => "Search", 
-          :handler => :on_search, 
-          :enable_toggle => true, 
-          :icon => Netzke::Basepack.with_icons && "#{Netzke::Basepack.icons_uri}/find.png"
-        }
+        res << "-" << :search.action if config[:enable_extended_search]
+        # config[:enable_extended_search] && res << "-" << {
+        #   :text => "Search", 
+        #   :handler => :on_search, 
+        #   :enable_toggle => true, 
+        #   :icon => :find
+        # }
         res
       end
     
@@ -244,55 +245,47 @@ module Netzke
         res
       end
 
-      def actions
-        # Defaults
-        actions = {                                     
-          :add          => {
-            :text => I18n.t('netzke.basepack.grid_panel.add', :default => "Add"),
-            :disabled => config[:prohibit_create]
-          },
-          :edit         => {
-            :text => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
-            :disabled => true
-          },
-          :del          => {
-            :text => I18n.t('netzke.basepack.grid_panel.delete', :default => "Delete"),
-            :disabled => true
-          },
-          :apply        => {
-            :text => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
-            :disabled => config[:prohibit_update] && config[:prohibit_create]
-          },
-          :add_in_form  => {
-            :text => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),
-            :disabled => !config[:enable_edit_in_form]
-          },
-          :edit_in_form => {
-            :text => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
-            :disabled => true
-          },
-          # :search       => {
-          #   :text => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
-          #   :disabled => !config[:enable_extended_search]
-          # }
-        }
+      action :add, {
+        :text => I18n.t('netzke.basepack.grid_panel.add', :default => "Add"),
+        :disabled => config[:prohibit_create],
+        :icon => :add
+      }
       
-        if Netzke::Basepack.with_icons
-          icons_uri = Netzke::Basepack.icons_uri + "/"
-          actions.deep_merge!(
-            :add => {:icon => icons_uri + "add.png"},
-            :edit => {:icon => icons_uri + "table_edit.png"},
-            :del => {:icon => icons_uri + "table_row_delete.png"},
-            :apply => {:icon => icons_uri + "tick.png"},
-            :add_in_form => {:icon => icons_uri + "application_form_add.png"},
-            :edit_in_form => {:icon => icons_uri + "application_form_edit.png"},
-            # :search => {:icon => icons_uri + "find.png"}
-          )
-        end
+      action :edit, {
+        :text => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
+        :disabled => true,
+        :icon => :table_edit
+      }
       
-        actions.merge(super)
-      end
-
+      action :del, {
+        :text => I18n.t('netzke.basepack.grid_panel.delete', :default => "Delete"),
+        :disabled => true,
+        :icon => :table_row_delete
+      }
+      
+      action :apply, {
+        :text => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
+        :disabled => config[:prohibit_update] && config[:prohibit_create],
+        :icon => :tick
+      }
+      
+      action :add_in_form, {
+        :text => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),
+        :icon => :application_form_add
+      }
+      
+      action :edit_in_form, {
+        :text => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
+        :disabled => true,
+        :icon => :application_form_edit
+      }
+      
+      action :search, {
+        :text => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
+        :enable_toggle => true, 
+        :icon => :find
+      }
+      
       component :add_form do
         {
           :lazy_loading => true,
