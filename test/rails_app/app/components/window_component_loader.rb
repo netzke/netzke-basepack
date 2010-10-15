@@ -4,6 +4,8 @@ class WindowComponentLoader < Netzke::Base
     :title => "Some Window Component",
     :lazy_loading => true
   }
+
+  action :load_window
   
   js_property :bbar, [:load_window.action]
   

@@ -11,6 +11,9 @@ module Netzke
             :fbar => [:ok.action, :cancel.action]
           })
         end
+        
+        action :ok
+        action :cancel
     
         def self.js_properties
           {

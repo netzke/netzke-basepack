@@ -1,4 +1,6 @@
 class SimplePanel < Netzke::Basepack::Panel
+  action :update_html
+  
   def config
     {
       :title => "SimplePanel",

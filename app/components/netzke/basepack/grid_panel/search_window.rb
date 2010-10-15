@@ -2,6 +2,10 @@ module Netzke
   module Basepack
     class GridPanel < Netzke::Base
       class SearchWindow < Netzke::Basepack::Window
+
+        action :search
+        action :cancel
+        action :clear
         
         js_properties :title => "Advanced Search", 
                       :width => "Ext.lib.Dom.getViewWidth() *0.9".l,
@@ -15,7 +19,8 @@ module Netzke
           orig.merge(
             :items => [{
               :class_name => "Basepack::SearchPanel", 
-              :model => orig[:model]
+              :model => orig[:model],
+              :items => orig[:fields]
             }]
           )
         end

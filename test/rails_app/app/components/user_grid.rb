@@ -8,10 +8,4 @@ class UserGrid < Netzke::Basepack::GridPanel
     }.deep_merge super
   end
 
-  def search_panel
-    {
-      :class_name => "Basepack::FormPanel",
-      :items => [{:name => :first_name.gt}]
-    }
-  end
 end
