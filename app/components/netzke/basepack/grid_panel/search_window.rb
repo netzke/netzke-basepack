@@ -5,7 +5,7 @@ module Netzke
 
         action :search
         action :cancel
-        action :clear
+        action :clear, :icon => Netzke::Basepack.with_icons && (Netzke::Basepack.icons_uri + "/application_form.png")
         
         js_properties :title => "Advanced Search", 
                       :width => "Ext.lib.Dom.getViewWidth() *0.9".l,
