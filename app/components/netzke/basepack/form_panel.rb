@@ -91,7 +91,7 @@ module Netzke
           res
         end
 
-        action :apply, :text => 'Apply!', :icon => :tick
+        action :apply, :text => 'Apply', :icon => :tick
 
         def self.property_fields
           res = [
