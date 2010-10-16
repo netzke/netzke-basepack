@@ -1,14 +1,15 @@
 begin
   require 'jeweler'
+  require './lib/netzke/basepack/version'
   Jeweler::Tasks.new do |gemspec|
-    gemspec.version = "0.6.0"
+    gemspec.version = Netzke::Basepack::Version::STRING
     gemspec.name = "netzke-basepack"
     gemspec.summary = "Pre-built Rails + ExtJS components for your RIA"
     gemspec.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
     gemspec.email = "sergei@playcode.nl"
     gemspec.homepage = "http://github.com/skozlov/netzke-basepack"
     gemspec.authors = ["Sergei Kozlov"]
-    gemspec.add_dependency("netzke-core", "~>0.6.0")
+    gemspec.add_dependency("netzke-core", "~>0.6.0.beta")
     gemspec.add_dependency("meta_where", ">=0.9.3")
     gemspec.add_dependency("will_paginate", "~>3.0.pre2")
     gemspec.add_dependency("acts_as_list")

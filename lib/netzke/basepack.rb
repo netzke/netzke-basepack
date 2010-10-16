@@ -1,3 +1,4 @@
+require 'netzke/basepack/version'
 require 'netzke/active_record'
 
 module Netzke

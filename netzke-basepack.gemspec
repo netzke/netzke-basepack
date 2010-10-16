@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{netzke-basepack}
-  s.version = "0.6.0"
+  s.version = "0.6.0.beta"
 
-  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-10-09}
+  s.date = %q{2010-10-16}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -41,9 +41,11 @@ Gem::Specification.new do |s|
      "app/components/netzke/basepack/grid_panel/javascripts/rows-dd.js",
      "app/components/netzke/basepack/grid_panel/multi_edit_form.rb",
      "app/components/netzke/basepack/grid_panel/record_form_window.rb",
+     "app/components/netzke/basepack/grid_panel/search_window.rb",
      "app/components/netzke/basepack/grid_panel/services.rb",
      "app/components/netzke/basepack/panel.rb",
      "app/components/netzke/basepack/search_panel.rb",
+     "app/components/netzke/basepack/search_panel_OLD.rb",
      "app/components/netzke/basepack/tab_panel.rb",
      "app/components/netzke/basepack/window.rb",
      "app/components/netzke/basepack/wrapper.rb",
@@ -57,6 +59,7 @@ Gem::Specification.new do |s|
      "features/component/grid_panel/user_grid.feature",
      "features/component/panel/simple_panel.feature",
      "features/component/window/window_component_loader.feature",
+     "features/search_in_grid.feature",
      "features/step_definitions/generic_steps.rb",
      "features/step_definitions/grid_panel_steps.rb",
      "features/step_definitions/pickle_steps.rb",
@@ -80,6 +83,7 @@ Gem::Specification.new do |s|
      "lib/netzke/active_record/relation_extensions.rb",
      "lib/netzke/attributes_configurator.rb",
      "lib/netzke/basepack.rb",
+     "lib/netzke/basepack/version.rb",
      "lib/netzke/basic_app.rb",
      "lib/netzke/basic_app/statusbar_ext.js",
      "lib/netzke/border_layout_panel.rb",
@@ -98,7 +102,9 @@ Gem::Specification.new do |s|
      "lib/tasks/netzke_basepack_tasks.rake",
      "locale/en.yml",
      "netzke-basepack.gemspec",
+     "spec/active_record/attributes_spec.rb",
      "spec/active_record/relation_extensions_spec.rb",
+     "spec/components/form_panel_spec.rb",
      "spec/components/grid_panel_spec.rb",
      "spec/factories.rb",
      "spec/spec_helper.rb",
@@ -210,7 +216,9 @@ Gem::Specification.new do |s|
   s.rubygems_version = %q{1.3.7}
   s.summary = %q{Pre-built Rails + ExtJS components for your RIA}
   s.test_files = [
-    "spec/active_record/relation_extensions_spec.rb",
+    "spec/active_record/attributes_spec.rb",
+     "spec/active_record/relation_extensions_spec.rb",
+     "spec/components/form_panel_spec.rb",
      "spec/components/grid_panel_spec.rb",
      "spec/factories.rb",
      "spec/spec_helper.rb",
@@ -270,18 +278,18 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<netzke-core>, ["~> 0.6.0"])
+      s.add_runtime_dependency(%q<netzke-core>, ["~> 0.6.0.beta"])
       s.add_runtime_dependency(%q<meta_where>, [">= 0.9.3"])
       s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
       s.add_runtime_dependency(%q<acts_as_list>, [">= 0"])
     else
-      s.add_dependency(%q<netzke-core>, ["~> 0.6.0"])
+      s.add_dependency(%q<netzke-core>, ["~> 0.6.0.beta"])
       s.add_dependency(%q<meta_where>, [">= 0.9.3"])
       s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
       s.add_dependency(%q<acts_as_list>, [">= 0"])
     end
   else
-    s.add_dependency(%q<netzke-core>, ["~> 0.6.0"])
+    s.add_dependency(%q<netzke-core>, ["~> 0.6.0.beta"])
     s.add_dependency(%q<meta_where>, [">= 0.9.3"])
     s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
     s.add_dependency(%q<acts_as_list>, [">= 0"])
