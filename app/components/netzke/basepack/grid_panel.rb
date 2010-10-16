@@ -25,8 +25,8 @@ module Netzke
     # Configuration on this level is effective during the life-time of the application. They can be put into a .rb file
     # inside of config/initializers like this:
     # 
-    #     Netzke::GridPanel.configure :column_filters_available, false
-    #     Netzke::GridPanel.configure :default_config => {:ext_config => {:enable_config_tool => false}}
+    #     Netzke::GridPanel.column_filters_available = false
+    #     Netzke::GridPanel.default_config = {:enable_config_tool => false}
     # 
     # Most of these options directly influence the amount of JavaScript code that is generated for this component's class.
     # The less functionality is enabled, the less code is generated.
@@ -105,51 +105,47 @@ module Netzke
     #   netzke_expose_attributes in the database model
     #   database columns + (eventually) virtual attributes specified with netzke_attribute
     class GridPanel < Netzke::Base
-      # Class-level configuration. This options directly influence the amount of generated
+      # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid, 
-      # set :column_filters_available to false, and the javascript for the filters won't be included at all.
-      def self.config
-        # Btw, this method must be on top of the class, because the code below can be using it at the very moment of defining the class.
-      
-        set_default_config({
-        
-          :column_filters_available     => true,
-          :config_tool_available        => true,
-          :edit_in_form_available       => true,
-          :extended_search_available    => true,
-          :rows_reordering_available    => true,
-        
-          :default_config => {
-            :enable_edit_in_form    => true,
-            :enable_extended_search => true,
-            :enable_column_filters  => true,
-            :load_inline_data       => true,
-            :enable_rows_reordering => false, # column drag n drop
-            :enable_pagination      => true,
-            :rows_per_page          => 25,
-            :tools                  => %w{ refresh },
-          
-            :mode                   => :normal, # when set to :config, :configuration button is enabled
-            :persistent_config      => true
-          
-          }
-        })
-      end
+      # set column_filters_available to false, and the javascript for the filters won't be included at all.
+      class_attribute :column_filters_available
+      self.column_filters_available = true
     
+      class_attribute :config_tool_available
+      self.config_tool_available = true
+      
+      class_attribute :edit_in_form_available
+      self.edit_in_form_available = true
+    
+      class_attribute :extended_search_available
+      self.extended_search_available = true
+    
+      class_attribute :rows_reordering_available
+      self.rows_reordering_available = true
+    
+      class_attribute :default_config
+      self.default_config = {
+        :enable_edit_in_form    => true,
+        :enable_extended_search => true,
+        :enable_column_filters  => true,
+        :load_inline_data       => true,
+        :enable_rows_reordering => false, # column drag n drop
+        :enable_pagination      => true,
+        :rows_per_page          => 25,
+        :tools                  => %w{ refresh },
+      }
+      
       include self::Javascript
       include self::Services
       include self::Columns
     
       include Netzke::DataAccessor
       
-      action :search, {:text => "Search"}
-
-      # TODO: 2010-09-14
-      def self.enforce_config_consistency
-        # config[:default_config][:ext_config][:enable_edit_in_form]    &&= config[:edit_in_form_available]
-        # config[:default_config][:ext_config][:enable_extended_search] &&= config[:extended_search_available]
-        # config[:default_config][:ext_config][:enable_rows_reordering] &&= config[:rows_reordering_available]
-      end
+      # def self.enforce_config_consistency
+      #   default_config[:enable_edit_in_form]    &&= edit_in_form_available
+      #   default_config[:enable_extended_search] &&= extended_search_available
+      #   default_config[:enable_rows_reordering] &&= rows_reordering_available
+      # end
     
       # def initialize(*args)
       #   # Deprecations
@@ -163,10 +159,10 @@ module Netzke
         res = ["#{File.dirname(__FILE__)}/grid_panel/javascripts/pre.js"]
       
         # Optional edit in form functionality
-        res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/edit_in_form.js" if config[:edit_in_form_available]
+        res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/edit_in_form.js" if edit_in_form_available
       
         # Optional extended search functionality
-        res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/advanced_search.js" if config[:extended_search_available]
+        res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/advanced_search.js" if extended_search_available
       
         ext_examples = Netzke::Core.ext_location.join("examples")
       
@@ -174,7 +170,7 @@ module Netzke
         res << ext_examples.join("ux/CheckColumn.js")
       
         # Filters
-        if config[:column_filters_available]
+        if column_filters_available
           res << ext_examples + "ux/gridfilters/menu/ListMenu.js"
           res << ext_examples + "ux/gridfilters/menu/RangeMenu.js"
           res << ext_examples + "ux/gridfilters/GridFilters.js"
@@ -185,7 +181,7 @@ module Netzke
         end
       
         # DD
-        if config[:rows_reordering_available]
+        if rows_reordering_available
           res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"
         end
 
@@ -367,7 +363,7 @@ module Netzke
       #   }
       # end
 
-      include ::Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window
+      # include ::Netzke::Plugins::ConfigurationTool if config_tool_available # it will load ConfigurationPanel into a modal window
  
     end
   end

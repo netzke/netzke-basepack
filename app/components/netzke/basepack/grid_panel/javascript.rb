@@ -32,7 +32,7 @@ module Netzke
             # Ext.Component#initComponent, built up from pices (dependent on class-level configuration)
             def js_init_component
               # Optional "edit in form"-related events
-              edit_in_form_events = <<-END_OF_JAVASCRIPT if config[:edit_in_form_available]
+              edit_in_form_events = <<-END_OF_JAVASCRIPT if edit_in_form_available
                 if (this.enableEditInForm) {
                   this.getSelectionModel().on('selectionchange', function(selModel){
                     var disabled;

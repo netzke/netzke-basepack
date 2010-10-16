@@ -13,22 +13,13 @@ module Netzke
     # * <tt>:model</tt> - name of the ActiveRecord model that provides data to this GridPanel.
     # * <tt>:record</tt> - record to be displayd in the form. Takes precedence over <tt>:record_id</tt>
     # * <tt>:record_id</tt> - id of the record to be displayd in the form. Also see <tt>:record</tt>
-    # 
-    # In the <tt>:ext_config</tt> hash (see Netzke::Base) the following FormPanel specific options are available:
-    # 
-    # * <tt>:mode</tt> - when set to <tt>:config</tt>, FormPanel loads in configuration mode
     class FormPanel < Netzke::Base
-      # Class-level configuration with defaults
-      def self.config
-        set_default_config({
-          :config_tool_available       => true,
-        
-          :default_config => {
-            :persistent_config => true,
-            :tools => []
-          }
-        })
-      end
+      # Class-level configuration
+      class_attribute :config_tool_available
+      self.config_tool_available = true
+      
+      class_attribute :default_config
+      self.default_config = {} # To be filled in
     
       include self::Services
       include self::Fields
@@ -109,7 +100,7 @@ module Netzke
             super + [:record]
           end
  
-      # include ::Netzke::Plugins::ConfigurationTool if config[:config_tool_available] # it will load ConfigurationPanel into a modal window      
+      # include ::Netzke::Plugins::ConfigurationTool if config_tool_available # it will load ConfigurationPanel into a modal window      
     end
   end
 end

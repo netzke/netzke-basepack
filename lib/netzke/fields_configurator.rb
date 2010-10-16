@@ -14,7 +14,7 @@ module Netzke
           :header => false,
           :enable_extended_search => false,
           :enable_edit_in_form => false,
-          :enable_rows_reordering => GridPanel.config[:rows_reordering_available],
+          :enable_rows_reordering => GridPanel.rows_reordering_available,
           :enable_pagination => false
         }
       })

@@ -5,7 +5,6 @@ GIT
     database_cleaner (0.6.0.rc.3)
 
 GEM
-  remote: http://rubygems.org/
   specs:
     abstract (1.0.0)
     actionmailer (3.0.0)
