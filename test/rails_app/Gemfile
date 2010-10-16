@@ -1,8 +1,6 @@
-source 'http://rubygems.org'
-
 gem 'rails', '3.0.0'
 
-gem 'netzke-core', '~>0.6.0'
+gem 'netzke-core', '~>0.6.0.beta'
 
 gem 'will_paginate', '3.0.pre2'
 gem 'meta_where'
