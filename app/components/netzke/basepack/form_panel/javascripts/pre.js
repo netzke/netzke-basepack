@@ -7,6 +7,7 @@ Netzke.pre.FormPanel = Ext.extend(Ext.form.FormPanel, {
   labelWidth    : 150,
   
   defaults       : {
+    msgTarget    : 'side',  
     anchor       : '-20', // to leave some space for the scrollbar
     listeners    : {
       // On "return" key, submit the form
