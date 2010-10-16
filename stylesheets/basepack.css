@@ -70,3 +70,6 @@ left: -24px;
 .x-checkbox-undef.x-item-disabled .x-form-tscheckbox {
 	background-position:-39px -26px;
 }
+.x-form-invalid, .x-form-inner-invalid, textarea.x-form-invalid {
+  background-image:none;
+}
