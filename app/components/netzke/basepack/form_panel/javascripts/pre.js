@@ -39,7 +39,7 @@ Netzke.pre.FormPanel = Ext.extend(Ext.form.FormPanel, {
       // do not send values from disabled fields and empty values
       for (var fieldName in values) {
         var field = this.getForm().findField(fieldName);
-        if (!field || field.disabled || values[fieldName] == "") delete values[fieldName];
+        if (!field || field.disabled) delete values[fieldName];
       }
       
       if (this.fileUpload) {
