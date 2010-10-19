@@ -241,11 +241,13 @@ module Netzke
         res
       end
 
-      action :add, {
-        :text => I18n.t('netzke.basepack.grid_panel.add', :default => "Add"),
-        :disabled => config[:prohibit_create],
-        :icon => :add
-      }
+      action :add do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.add', :default => "Add"),
+          :disabled => config[:prohibit_create],
+          :icon => :add
+        }
+      end
       
       action :edit, {
         :text => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
@@ -259,11 +261,13 @@ module Netzke
         :icon => :table_row_delete
       }
       
-      action :apply, {
-        :text => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
-        :disabled => config[:prohibit_update] && config[:prohibit_create],
-        :icon => :tick
-      }
+      action :apply do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
+          :disabled => config[:prohibit_update] && config[:prohibit_create],
+          :icon => :tick
+        }
+      end
       
       action :add_in_form, {
         :text => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),

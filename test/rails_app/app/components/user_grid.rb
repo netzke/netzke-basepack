@@ -1,11 +1,10 @@
 class UserGrid < Netzke::Basepack::GridPanel
 
   def config
-    {
-      :mode => :config,
+    super.merge({
       :model => "User",
       :title => "Users"
-    }.deep_merge super
+    })
   end
 
 end

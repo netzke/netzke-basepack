@@ -25,7 +25,7 @@ Ext.override(Netzke.pre.GridPanel, {
             }
           }
           el.toggle(filtered); // toggle based on the state
-          this.getStore().baseParams = {extra_conditions: Ext.encode(win.conditions)};
+          this.getStore().baseParams.extra_conditions = Ext.encode(win.conditions);
           this.getStore().load();
         }
       }, this);
