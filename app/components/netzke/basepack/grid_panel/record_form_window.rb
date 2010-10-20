@@ -5,8 +5,8 @@ module Netzke
         js_properties :button_align => "right"
         
         config :modal => true,
-              :width => "60%",
-              # :height => "90%",
+              :width => "50%",
+              :auto_height => true,
               :fbar => [:ok.action, :cancel.action]
         
         action :ok, :text => 'OK'

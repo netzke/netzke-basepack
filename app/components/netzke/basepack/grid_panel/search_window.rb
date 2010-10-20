@@ -8,9 +8,8 @@ module Netzke
         action :clear, :icon => :application_form
         
         js_properties :title => "Advanced Search", 
-                      :width => "Ext.lib.Dom.getViewWidth() *0.9".l,
+                      :width => "50%",
                       :auto_height => true,
-                      # :height => "Ext.lib.Dom.getViewHeight() *0.9".l,
                       :buttons => [:search.action, :cancel.action],
                       :tbar => [:clear.action]
         
