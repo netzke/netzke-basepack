@@ -2,45 +2,34 @@ module Netzke
   module Basepack
     class GridPanel < Netzke::Base
       class RecordFormWindow < Window
+        js_properties :button_align => "right"
         
-        def initial_config
-          super.deep_merge({
-            :modal => true,
-            :width => "60%",
-            :height => "90%",
-            :fbar => [:ok.action, :cancel.action]
-          })
-        end
+        config :modal => true,
+              :width => "60%",
+              # :height => "90%",
+              :fbar => [:ok.action, :cancel.action]
         
-        action :ok
+        action :ok, :text => 'OK'
         action :cancel
-    
-        def self.js_properties
-          {
-            :button_align => "right",
-        
-            :init_component => <<-END_OF_JAVASCRIPT.l,
-              function(){
-                #{js_full_class_name}.superclass.initComponent.call(this);
-                this.getNetzkeComponent().on("submitsuccess", function(){this.closeRes = "ok"; this.close();}, this);
-              }
-            END_OF_JAVASCRIPT
-        
-            :on_ok => <<-END_OF_JAVASCRIPT.l,
-              function(){
-                this.getNetzkeComponent().onApply();
-                // this.closeRes = "ok",
-                // this.close();
-              }
-            END_OF_JAVASCRIPT
-        
-            :on_cancel => <<-END_OF_JAVASCRIPT.l,
-              function(){
-                this.close();
-              }
-            END_OF_JAVASCRIPT
+
+        js_method :init_component, <<-JS
+          function(params){
+            #{js_full_class_name}.superclass.initComponent.call(this);
+            this.getNetzkeComponent().on("submitsuccess", function(){this.closeRes = "ok"; this.close();}, this);
           }
-        end
+        JS
+
+        js_method :on_ok, <<-JS
+          function(params){
+            this.getNetzkeComponent().onApply();
+          }
+        JS
+        
+        js_method :on_cancel, <<-JS
+          function(params){
+            this.close();
+          }
+        JS
       end
     end
   end

@@ -8,16 +8,19 @@ module Netzke
         # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render
         # a field)
         def items
-          res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # take netzke_attributes as default items
-      
-          # if primary key isn't there, insert it as first
-          if data_class && res.first[:name] != [data_class.primary_key]
-            primary_key_item = normalize_field(data_class.primary_key.to_sym)
-            @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
-            res.insert(0, primary_key_item)
+          @form_panel_items ||= begin
+            res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # take netzke_attributes as default items
+          
+            # if primary key isn't there, insert it as first
+            if data_class && res.first && res.first[:name] != [data_class.primary_key]
+              primary_key_item = normalize_field(data_class.primary_key.to_sym)
+              @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
+              res.insert(0, primary_key_item)
+            end
+            
+            Rails.logger.debug "!!! res: #{res.inspect}\n"
+            res
           end
-        
-          res
         end
         
         # Hash of fully configured fields, that are referenced in the items. E.g.:

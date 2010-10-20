@@ -1,10 +1,12 @@
 class GenericUserForm < Netzke::Basepack::FormPanel
-  def config
+  
+  config do
     {
-      :model => 'Forms::GenericUser',
+      :model => 'User',
       :title => 'Users',
-      :record_id => User.first.id
-    }.deep_merge super
+      :record_id => User.first.id,
+      :items => [:id, :first_name]
+    }
   end
   
 end

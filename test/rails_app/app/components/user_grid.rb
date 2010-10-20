@@ -1,10 +1,4 @@
 class UserGrid < Netzke::Basepack::GridPanel
-
-  def config
-    super.merge({
-      :model => "User",
-      :title => "Users"
-    })
-  end
-
+  js_property :title, "Users"
+  config :model => "User"
 end

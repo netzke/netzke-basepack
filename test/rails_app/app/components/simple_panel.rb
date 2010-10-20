@@ -1,13 +1,9 @@
 class SimplePanel < Netzke::Basepack::Panel
   action :update_html
   
-  def config
-    {
-      :title => "SimplePanel",
-      :html => "Original HTML",
-      :bbar => [:update_html.action]
-    }.deep_merge(super)
-  end
+  js_properties :title  => "SimplePanel",
+                :html => "Original HTML",
+                :bbar => [:update_html.action]
 
   endpoint :update_html_from_server do |params|
     {:update_body_html => "HTML received from server"}

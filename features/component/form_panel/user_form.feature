@@ -30,3 +30,11 @@ Scenario: Editing the record
   And I should not see "Osminogov"
   And I should not see "musician"
   
+Scenario: UserFormWithDefaultFields should render properly
+  Given a role exists with name: "writer"
+  And a user exists with first_name: "Carlos", last_name: "Castaneda", role: that role
+  When I go to the UserFormWithDefaultFields test page
+  Then I should see "Carlos"
+  And I should see "Castaneda"
+  And I should see "writer"
+

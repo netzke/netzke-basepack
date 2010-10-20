@@ -1,5 +1,5 @@
 /* 
-  Static part of GridPanel's JavaScript class.
+  Static part of FormPanel's JavaScript class.
 */
 Netzke.pre.FormPanel = Ext.extend(Ext.form.FormPanel, {
   bodyStyle     : 'padding:5px 5px 0',

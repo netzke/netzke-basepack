@@ -2,7 +2,7 @@ Ext.override(Netzke.pre.GridPanel, {
   onSearch: function(el){
     el.toggle(el.toggled); // do not toggle immediately
     
-    this.loadComponent({name: 'search_panel', callback: function(win){
+    this.loadComponent({name: 'search_form', callback: function(win){
       var currentConditionsString = this.getStore().baseParams.extra_conditions;
       if (currentConditionsString) {
         win.items.first().getForm().setValues(Ext.decode(currentConditionsString));

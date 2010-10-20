@@ -9,20 +9,19 @@ module Netzke
         
         js_properties :title => "Advanced Search", 
                       :width => "Ext.lib.Dom.getViewWidth() *0.9".l,
-                      :height => "Ext.lib.Dom.getViewHeight() *0.9".l,
+                      :auto_height => true,
+                      # :height => "Ext.lib.Dom.getViewHeight() *0.9".l,
                       :buttons => [:search.action, :cancel.action],
                       :tbar => [:clear.action]
         
-        def config
-          orig = super
-          
-          orig.merge(
-            :items => [{
-              :class_name => "Basepack::SearchPanel", 
-              :model => orig[:model],
-              :items => orig[:fields]
-            }]
-          )
+        config :items => [js_component(:search_panel)]
+        
+        component :search_panel do
+          {
+            :class_name => "Basepack::SearchPanel", 
+            :model => config[:model],
+            :items => config[:fields]
+          }
         end
 
         js_method :on_clear, <<-JS

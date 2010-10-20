@@ -21,8 +21,8 @@ module Netzke
         :layout => "fit",
       
         # default width and height
-        :width => 300, 
-        :height => 200
+        # :width => 300, 
+        # :height => 200
       )
     
       js_method :init_component, <<-END_OF_JAVASCRIPT

@@ -344,7 +344,7 @@ module Netzke
         }.deep_merge(config[:multi_edit_form_window_config] || {})
       end
 
-      component :search_panel do
+      component :search_form do
         {
           :lazy_loading => true,
           :class_name => "Basepack::GridPanel::SearchWindow",
