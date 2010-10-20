@@ -43,8 +43,8 @@ module Netzke
       # Extra javascripts
       def self.include_js
         [
-          "#{File.dirname(__FILE__)}/form_panel/javascripts/pre.js"
-          # "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js",
+          "#{File.dirname(__FILE__)}/form_panel/javascripts/pre.js",
+          "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js"
           # Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
           # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
         ]
