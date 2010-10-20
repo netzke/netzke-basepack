@@ -45,10 +45,11 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
 			},this);			
 		}
 				
-    // Not-so clean approach to submit the current record id
+    // A not-so-clean approach to submit the current record id
     store.on('beforeload',function(store, options){
       if (parent.getSelectionModel) {
-        options.params.id = parent.getSelectionModel().getSelected().get('id');
+        var selected = parent.getSelectionModel().getSelected();
+        if (selected) options.params.id = selected.get('id');
       } else {
         // TODO: also for the FormPanel
       }

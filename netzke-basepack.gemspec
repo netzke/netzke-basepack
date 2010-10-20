@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-10-16}
+  s.date = %q{2010-10-20}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -56,7 +56,6 @@ Gem::Specification.new do |s|
      "config/database.yml",
      "features/component/accordion_panel/simple_accordion_panel.rb",
      "features/component/form_panel/user_form.feature",
-     "features/component/grid_panel/user_grid.feature",
      "features/component/panel/simple_panel.feature",
      "features/component/window/window_component_loader.feature",
      "features/search_in_grid.feature",
@@ -67,6 +66,7 @@ Gem::Specification.new do |s|
      "features/support/env.rb",
      "features/support/paths.rb",
      "features/support/pickle.rb",
+     "features/user_grid.feature",
      "from_05_to_06.rdoc",
      "generators/netzke_basepack/netzke_basepack_generator.rb",
      "generators/netzke_basepack/templates/create_netzke_field_lists.rb",
@@ -131,6 +131,7 @@ Gem::Specification.new do |s|
      "test/rails_app/app/components/some_search_panel.rb",
      "test/rails_app/app/components/some_tab_panel.rb",
      "test/rails_app/app/components/user_form.rb",
+     "test/rails_app/app/components/user_form_with_default_fields.rb",
      "test/rails_app/app/components/user_grid.rb",
      "test/rails_app/app/components/window_component_loader.rb",
      "test/rails_app/app/controllers/application_controller.rb",
@@ -231,6 +232,7 @@ Gem::Specification.new do |s|
      "test/rails_app/app/components/some_search_panel.rb",
      "test/rails_app/app/components/some_tab_panel.rb",
      "test/rails_app/app/components/user_form.rb",
+     "test/rails_app/app/components/user_form_with_default_fields.rb",
      "test/rails_app/app/components/user_grid.rb",
      "test/rails_app/app/components/window_component_loader.rb",
      "test/rails_app/app/controllers/application_controller.rb",
