@@ -10,7 +10,7 @@ module Netzke
   # * Stores the last active tab in persistent_config
   # * Introduce a second or two delay before informing the server about a tab switched
   # 
-  class TabPanel < Base
+  class TabPanelOld < Base
     api :api_activate_tab
     
     def self.js_base_class
