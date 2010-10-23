@@ -1,5 +1,16 @@
 module Netzke
   module Basepack
+    # A Panel with the 'accordion' layout. Can lazily load its nested components. For example:
+    # 
+    #     netzke :my_accordion, :items => [{
+    #         :html => "I'm a simple Ext.Panel",
+    #         :title => "Panel One"
+    #       },{
+    #         :class_name => "SimplePanel",
+    #         :update_text => "Update for Panel Two",
+    #         :title => "Panel Two",
+    #         :lazy_loading => true
+    #       }]
     class AccordionPanel < Netzke::Base
       js_property :layout, 'accordion'
     
@@ -7,6 +18,8 @@ module Netzke
         orig = super.dup
         orig.each do |item|
           wrapped_component = components[item[:component]]
+          # When a nested component with lazy loading is detected, it gets replaced with a 'fit' panel,
+          # into which later the component itself is dynamically loaded on request.
           if wrapped_component && wrapped_component[:lazy_loading]
             item.replace({
               :layout => 'fit',
