@@ -11,6 +11,7 @@ class SimpleBasicApp < Netzke::Basepack::BasicApp
   component :simple_accordion
   component :simple_tab_panel, :active_tab => 0
   
+  # Wrapping up original layout into a border-layout with the north panel being a fancy header
   def final_config
     orig = super
     orig.merge(:items => [{

@@ -3,20 +3,13 @@
 * On grid refresh, reset the dirty fields, so that the "Apply" button doesn't do anything
 * DataAccessor#to_array should not rescue exceptions, but rather check the availability of the attributes; `respond_to_with_basepack?` should be extended to also return true for association columns
 * GridPanel's read_only vs editable (doesn't work now) options
-* Inclusion of css in a stand-alone component
 * Find a way to print the grid nicely (along with the column and rows that don't fit on the screen)
-* Auto-include the ID column into GridPanel by default
 
 == Foolproof
-* Should not be possible delete the "ID" field from grids/forms
 * Should not be possible to put the "ID" field on any place but first for grids (otherwise record ID is not correct)
 
 == Optimizations
 * Check persistent_config-related queries (aren't they too many?)
 
-== Code design
-* Replace <tt>initial_late_components</tt> method with a set of methods for each component, so that more logic would be possible at the moment of on-demand component loading.
-
 == One day
 * Replace xcheckbox with checkbox in FormPanel
-* Rename FormPanel to Form, GridPanel to Grid
