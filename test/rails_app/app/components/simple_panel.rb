@@ -6,7 +6,7 @@ class SimplePanel < Netzke::Basepack::Panel
                 :bbar => [:update_html.action]
 
   endpoint :update_html_from_server do |params|
-    {:update_body_html => "HTML received from server"}
+    {:update_body_html => config[:update_text] || "HTML received from server"}
   end
 
   js_method :on_update_html, <<-JS

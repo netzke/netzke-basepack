@@ -7,7 +7,7 @@ module Netzke
   #
   # Future features:
   # * Stores the last active panel in persistent_config
-  class AccordionPanel < Base
+  class AccordionPanelOrig < Base
     
     # JavaScript part
     def self.js_properties

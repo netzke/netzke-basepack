@@ -21,7 +21,7 @@ Feature: Search
     When I go to the UserGrid test page
     Then the grid should show 4 records
     
-    And I press "Search"
+    When I press "Search"
     And I fill in "First name like:" with "ai"
     And I press "Search" within "#user_grid__search_form"
     And I sleep 1 second

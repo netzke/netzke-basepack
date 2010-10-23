@@ -1,13 +1,11 @@
 class SimpleAccordion < Netzke::Basepack::AccordionPanel
-  def config
-    {
-      :items => [{
-        :title => "Panel One",
-        :html => "Content of first panel",
-      },{
-        :title => "Panel Two",
-        :html => "Content of second panel"
-      }]
-    }.deep_merge super
-  end
+  config  :items => [{
+            :html => "I'm a simple Ext.Panel",
+            :title => "Panel One"
+          },{
+            :class_name => "SimplePanel",
+            :update_text => "Update for Panel Two",
+            :title => "Panel Two",
+            :lazy_loading => true
+          }]
 end
