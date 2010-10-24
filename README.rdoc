@@ -5,20 +5,20 @@ Learn about Netzke on http://netzke.org.
 
 == Prerequisites
 
-1. Rails >= 3.0, Ext JS >= 3.2.1
+1. Rails >= 3.0, Ext JS >= 3.3.0
 2. Netzke assumes that your ExtJS library is in public/extjs, which may be a symbolic link, e.g (from your app root):
 
-    ln -s ~/code/sencha/extjs/ext-3.2.1 public/extjs
+    ln -s ~/code/sencha/extjs/ext-3.3.0 public/extjs
 
 = Installation
 
 For the latest ("edge") stuff, install as plugin:
 
-    rails plugin install git://github.com/skozlov/netzke-basepack.git -r rails3
+    rails plugin install git://github.com/skozlov/netzke-basepack.git
     
 Or tell bundler to get the gem straight from github:
 
-    gem 'netzke-basepack', :git => "git://github.com/skozlov/netzke-basepack.git", :branch => "rails3"
+    gem 'netzke-basepack', :git => "git://github.com/skozlov/netzke-basepack.git"
 
 == Usage
 
