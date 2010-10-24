@@ -17,8 +17,7 @@ module Netzke
               @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
               res.insert(0, primary_key_item)
             end
-            
-            Rails.logger.debug "!!! res: #{res.inspect}\n"
+
             res
           end
         end
