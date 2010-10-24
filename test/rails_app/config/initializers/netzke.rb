@@ -3,5 +3,5 @@ Netzke::Basepack.setup do |config|
 end
 
 Netzke::Core.setup do |config|
-  # config.javascript_on_main_page = false
+  config.javascript_on_main_page = true
 end

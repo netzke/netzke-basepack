@@ -21,7 +21,7 @@ module Netzke
         
         # invisible
         :header => false,
-        :border => false,
+        :border => false
       )
     end
   end

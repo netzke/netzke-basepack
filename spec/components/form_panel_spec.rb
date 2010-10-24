@@ -3,13 +3,13 @@ require File.dirname(__FILE__) + '/../spec_helper'
 describe Netzke::Basepack::FormPanel do
   it "should have correct fields" do
     form = Netzke::Basepack::FormPanel.new(:model => 'User')
-    form.fields_from_model.keys.sort.should == [:created_at, :first_name, :id, :last_name, :role__name, :updated_at]
+    form.fields_from_model.keys.map(&:to_s).sort.should == %w(created_at first_name id last_name role__name updated_at)
   end
   
   it "should extract fields from config" do
     form = Netzke::Basepack::FormPanel.new(:model => 'User', :items => [{:xtype => 'fieldset', :items => [:first_name, {:name => "last_name"}]}, :created_at, {:name => :updated_at}])
     
-    form.fields_from_config.keys.sort.should == [:created_at, :first_name, :id, :last_name, :updated_at]
+    form.fields_from_config.keys.map(&:to_s).sort.should == %w(created_at first_name id last_name updated_at)
   end
   
   it "should set correct xtype for columns" do

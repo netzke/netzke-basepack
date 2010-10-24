@@ -41,15 +41,11 @@ module Netzke
       # end
     
       # Extra javascripts
-      def self.include_js
-        [
-          "#{File.dirname(__FILE__)}/form_panel/javascripts/pre.js",
-          "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js"
+      js_include "#{File.dirname(__FILE__)}/form_panel/javascripts/pre.js",
+                  "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js"
           # Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
           # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
-        ]
-      end
-    
+                  
       def js_config
         super.merge(
           # :fields => fields,

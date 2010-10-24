@@ -18,7 +18,7 @@ module Netzke
     
       js_properties(
         # we nest component inside the "fit" layout
-        :layout => "fit",
+        :layout => "fit"
       
         # default width and height
         # :width => 300, 
