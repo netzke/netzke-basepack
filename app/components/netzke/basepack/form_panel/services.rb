@@ -17,7 +17,7 @@ module Netzke
               {:set_form_values => values, :set_result => "ok"}
             else
               # flash eventual errors
-              @record.errors.each_full do |msg|
+              @record.errors.to_a.each do |msg|
                 flash :error => msg
               end
               {:feedback => @flash}

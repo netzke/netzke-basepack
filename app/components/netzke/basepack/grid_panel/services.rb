@@ -273,7 +273,7 @@ module Netzke
                 # flash eventual errors
                 if !record.errors.empty?
                   success = false
-                  record.errors.each_full do |msg|
+                  record.errors.to_a.each do |msg|
                     flash :error => msg
                   end
                 end
