@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{netzke-basepack}
-  s.version = "0.6.0.beta"
+  s.version = "0.6.0"
 
-  s.required_rubygems_version = Gem::Requirement.new("> 1.3.1") if s.respond_to? :required_rubygems_version=
+  s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-10-23}
+  s.date = %q{2010-10-24}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -57,6 +57,8 @@ Gem::Specification.new do |s|
      "config/database.yml",
      "features/accordion_panel.feature",
      "features/basic_app.feature",
+     "features/form_panel.feature",
+     "features/grid_panel.feature",
      "features/search_in_grid.feature",
      "features/simple_panel.feature",
      "features/step_definitions/accordion_steps.rb",
@@ -68,8 +70,6 @@ Gem::Specification.new do |s|
      "features/support/paths.rb",
      "features/support/pickle.rb",
      "features/tab_panel.feature",
-     "features/user_form.feature",
-     "features/user_grid.feature",
      "features/window.feature",
      "from_05_to_06.rdoc",
      "generators/netzke_basepack/netzke_basepack_generator.rb",
@@ -278,18 +278,18 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<netzke-core>, ["~> 0.6.0.beta"])
+      s.add_runtime_dependency(%q<netzke-core>, ["~> 0.6.0"])
       s.add_runtime_dependency(%q<meta_where>, [">= 0.9.3"])
       s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
       s.add_runtime_dependency(%q<acts_as_list>, [">= 0"])
     else
-      s.add_dependency(%q<netzke-core>, ["~> 0.6.0.beta"])
+      s.add_dependency(%q<netzke-core>, ["~> 0.6.0"])
       s.add_dependency(%q<meta_where>, [">= 0.9.3"])
       s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
       s.add_dependency(%q<acts_as_list>, [">= 0"])
     end
   else
-    s.add_dependency(%q<netzke-core>, ["~> 0.6.0.beta"])
+    s.add_dependency(%q<netzke-core>, ["~> 0.6.0"])
     s.add_dependency(%q<meta_where>, [">= 0.9.3"])
     s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
     s.add_dependency(%q<acts_as_list>, [">= 0"])
