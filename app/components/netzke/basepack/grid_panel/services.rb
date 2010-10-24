@@ -110,8 +110,8 @@ module Netzke
         #
     
         ## Edit in form specific API
-        def add_form__item__netzke_submit(params)
-          res = component_instance(:add_form__item).netzke_submit(params)
+        def add_form__form_panel0__netzke_submit(params)
+          res = component_instance(:add_form__form_panel0).netzke_submit(params)
       
           if res[:set_form_values]
             # successful creation
@@ -121,8 +121,8 @@ module Netzke
           res.to_nifty_json
         end
 
-        def edit_form__item__netzke_submit(params)
-          res = component_instance(:edit_form__item).netzke_submit(params)
+        def edit_form__form_panel0__netzke_submit(params)
+          res = component_instance(:edit_form__form_panel0).netzke_submit(params)
 
           if res[:set_form_values]
             on_data_changed
@@ -132,9 +132,11 @@ module Netzke
           res.to_nifty_json
         end
 
-        def multi_edit_form__item__netzke_submit(params)
+        def multi_edit_form__multi_edit_form0__netzke_submit(params)
           ids = ActiveSupport::JSON.decode(params.delete(:ids))
           data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
+          
+          data.map!{|el| el.delete_if{ |k,v| v.blank? }} # only interested in set values
         
           mod_records_count = process_data(data, :update).count
         
@@ -335,22 +337,6 @@ module Netzke
             end
           end
 
-          # make params understandable to searchlogic
-          def normalize_params(params)
-            # filters
-            conditions = params[:filter] && convert_filters(params[:filter]) || {}
-        
-            Rails.logger.debug "***** conditions: #{conditions.inspect}\n"
-        
-            # normalized_conditions = {}
-            # conditions && conditions.each_pair do |k, v|
-            #   normalized_conditions.merge!(get_key(k) => v)
-            # end
-            #
-            # {:conditions => normalized_conditions}
-            {:conditions => conditions}
-          end
-    
           # def check_for_positive_result(res)
           #   if res[:set_form_values]
           #     # successful creation

@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.0'
 
-gem 'netzke-core', '~>0.6.0.beta'
+gem 'netzke-core', '~>0.6.0.beta', :git => "git@github.com:skozlov/netzke-core.git", :branch => "rails3"
 
 gem 'will_paginate', '3.0.pre2'
 gem 'meta_where'
@@ -15,7 +15,7 @@ group :development, :test do
   gem 'capybara'
   gem 'cucumber-rails'
   gem 'cucumber'
-  gem 'rspec-rails', ">= 2.0.0.beta.22"
+  gem 'rspec-rails', "~> 2.0.0"
   gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
   gem 'factory_girl'

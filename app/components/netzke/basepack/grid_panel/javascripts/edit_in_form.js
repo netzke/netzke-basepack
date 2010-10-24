@@ -12,7 +12,8 @@ Ext.override(Netzke.pre.GridPanel, {
             selModel.each(function(r){
               ids.push(r.id);
             });
-            form.baseParams = {ids: Ext.encode(ids)}
+            if (!form.baseParams) form.baseParams = {};
+            form.baseParams.ids = Ext.encode(ids);
           }, this);
           
           w.on('close', function(){

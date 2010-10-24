@@ -1,4 +1,4 @@
-Feature: User grid
+Feature: Grid panel
   In order to value
   As a role
   I want feature
@@ -47,3 +47,16 @@ Scenario: Deleting a record
   Then I should see "Deleted 2 record(s)"
   Then a user should not exist with first_name: "Anton"
   And a user should not exist with first_name: "Maxim"
+
+@javascript
+Scenario: Multi-editing records
+  Given a user exists with first_name: "Carlos", last_name: "Castaneda"
+  And a user exists with first_name: "Herman", last_name: "Hesse"
+  When I go to the UserGrid test page
+  And I select all rows in the grid
+  And I press "Edit in form"
+  And I fill in "First name:" with "Maxim"
+  And I press "OK"
+  Then a user should exist with first_name: "Maxim", last_name: "Castaneda"
+  And a user should exist with first_name: "Maxim", last_name: "Hesse"
+  But a user should not exist with first_name: "Carlos"

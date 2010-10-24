@@ -1,4 +1,12 @@
 GIT
+  remote: git@github.com:skozlov/netzke-core.git
+  revision: b3ffaf6
+  branch: rails3
+  specs:
+    netzke-core (0.6.0.beta)
+      activesupport (>= 3.0.0)
+
+GIT
   remote: http://github.com/bmabey/database_cleaner.git
   revision: 474b226
   specs:
@@ -85,8 +93,6 @@ GEM
       arel (~> 1.0.1)
     mime-types (1.16)
     mysql2 (0.2.6)
-    netzke-core (0.6.0.beta)
-      activesupport (>= 3.0.0)
     nokogiri (1.4.3.1)
     pickle (0.4.2)
       cucumber (>= 0.8)
@@ -156,10 +162,10 @@ DEPENDENCIES
   launchy
   meta_where
   mysql2
-  netzke-core (~> 0.6.0.beta)
+  netzke-core (~> 0.6.0.beta)!
   pickle
   rails (= 3.0.0)
-  rspec-rails (>= 2.0.0.beta.22)
+  rspec-rails (~> 2.0.0)
   spork
   sqlite3-ruby
   will_paginate (= 3.0.pre2)
