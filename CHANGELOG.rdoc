@@ -1,3 +1,5 @@
+= EDGE
+
 = v0.6.0 - 2010-10-24
 * netzke-core 0.6.0 compatibility, thorough refactoring
 * Much more thorough testing (cucumber and rspec)
