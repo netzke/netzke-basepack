@@ -244,6 +244,7 @@ module Netzke
       action :add do
         {
           :text => I18n.t('netzke.basepack.grid_panel.add', :default => "Add"),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.add', :default => "Add"),
           :disabled => config[:prohibit_create],
           :icon => :add
         }
@@ -251,12 +252,14 @@ module Netzke
       
       action :edit, {
         :text => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
         :disabled => true,
         :icon => :table_edit
       }
       
       action :del, {
         :text => I18n.t('netzke.basepack.grid_panel.delete', :default => "Delete"),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.delete', :default => "Delete"),
         :disabled => true,
         :icon => :table_row_delete
       }
@@ -264,6 +267,7 @@ module Netzke
       action :apply do
         {
           :text => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
           :disabled => config[:prohibit_update] && config[:prohibit_create],
           :icon => :tick
         }
@@ -271,17 +275,20 @@ module Netzke
       
       action :add_in_form, {
         :text => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),
         :icon => :application_form_add
       }
       
       action :edit_in_form, {
         :text => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
         :disabled => true,
         :icon => :application_form_edit
       }
       
       action :search, {
         :text => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
         :enable_toggle => true, 
         :icon => :find
       }
