@@ -24,7 +24,7 @@ module Netzke
           #{js_full_class_name}.superclass.initComponent.call(this);
           this.items.each(function(item){
             item.on('expand', function(i){
-              if (i.wrappedComponent && !i.items.first()) {
+              if (i && i.wrappedComponent && !i.items.first()) {
                 this.loadComponent({name: i.wrappedComponent, container: i.id});
               }
             }, this);

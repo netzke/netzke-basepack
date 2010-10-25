@@ -20,7 +20,7 @@ module Netzke
         function(params){
           #{js_full_class_name}.superclass.initComponent.call(this);
           this.on('tabchange', function(self, i){
-            if (i.wrappedComponent && !i.items.first()) {
+            if (i && i.wrappedComponent && !i.items.first()) {
               this.loadComponent({name: i.wrappedComponent, container: i.id});
             }
           }, this);
