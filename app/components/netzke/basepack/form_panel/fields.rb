@@ -114,21 +114,14 @@ module Netzke
           
           # Sets the proper xtype of an asociation field
           def detect_association_with_method(c)
-            if c[:name].to_s.index('__')
+            if c[:name].index('__')
               assoc_name, method = c[:name].split('__').map(&:to_sym)
-              if assoc = data_class.reflect_on_association(assoc_name)
+              if method && assoc = data_class.reflect_on_association(assoc_name)
                 assoc_column = assoc.klass.columns_hash[method.to_s]
                 assoc_method_type = assoc_column.try(:type)
                 if assoc_method_type
                   c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
                 end
-              end
-            else
-              # are we reflecting some association's foreign key (e.g. :category_id)?
-              if assoc = data_class.reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
-                c[:xtype] ||= xtype_for_association
-                assoc_method = (%w{name title label} << assoc.primary_key_name).detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
-                c[:name] = "#{assoc.name}__#{assoc_method}"
               end
             end
           end

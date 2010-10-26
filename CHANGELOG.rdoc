@@ -1,4 +1,6 @@
-= EDGE
+= v0.6.1 - EDGE
+* bug fix
+  * auto-detection of association's method when the latter is virtual was broken in 1.9.2
 
 = v0.6.0 - 2010-10-24
 * netzke-core 0.6.0 compatibility, thorough refactoring

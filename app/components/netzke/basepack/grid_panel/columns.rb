@@ -188,9 +188,7 @@ module Netzke
             # double-underscore notation? surely an association column
             if c[:name].index('__')
               assoc_name, assoc_method = c[:name].split('__')
-              assoc = data_class.reflect_on_association(assoc_name.to_sym)
-          
-              if assoc && assoc_method
+              if assoc_method && assoc = data_class.reflect_on_association(assoc_name.to_sym)
                 assoc_column = assoc.klass.columns_hash[assoc_method]
                 assoc_method_type = assoc_column.try(:type)
             

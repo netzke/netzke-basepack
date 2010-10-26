@@ -61,10 +61,4 @@ describe Netzke::Basepack::FormPanel do
     form.items[3][:name].should == "updated_at"
   end
   
-  it "should detect association column" do
-    form = Netzke::Basepack::FormPanel.new(:model => 'User', :items => [:role_id])
-    
-    form.items[1][:name].should == "role__name"
-  end
-  
 end

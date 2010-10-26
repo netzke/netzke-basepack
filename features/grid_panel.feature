@@ -57,6 +57,18 @@ Scenario: Multi-editing records
   And I press "Edit in form"
   And I fill in "First name:" with "Maxim"
   And I press "OK"
-  Then a user should exist with first_name: "Maxim", last_name: "Castaneda"
-  And a user should exist with first_name: "Maxim", last_name: "Hesse"
+  Then the following users should exist:
+  | first_name | last_name |
+  | Maxim | Castaneda |
+  | Maxim | Hesse |
   But a user should not exist with first_name: "Carlos"
+
+@javascript
+Scenario: Filling out association column with association's virtual method
+  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
+  And a book exists with title: "Lolita", author: that author
+  When I go to the BookGrid test page
+  Then I should see "Nabokov, Vladimir"
+  And I should see "Lolita"
+
+

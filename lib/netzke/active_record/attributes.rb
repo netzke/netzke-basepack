@@ -101,9 +101,10 @@ module Netzke::ActiveRecord::Attributes
             assoc = reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
 
             if assoc && !assoc.options[:polymorphic]
-              assoc_method = %w{name title label id}.detect{|m| (assoc.klass.instance_methods + assoc.klass.column_names).include?(m) } || assoc.klass.primary_key
+              candidates = %w{name title label} << assoc.primary_key_name
+              assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
               c[:name] = "#{assoc.name}__#{assoc_method}"
-              c[:attr_type] = assoc.klass.columns_hash[assoc_method].type
+              c[:attr_type] = assoc.klass.columns_hash[assoc_method].try(:type) || :string # when it's an instance method rather than a column, fall back to :string
             end
             
             # auto set up the default value from the column settings
