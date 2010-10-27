@@ -6,10 +6,10 @@ require "netzke/basepack/grid_panel/javascript"
 
 module Netzke
   module Basepack
-    # == GridPanel
-    # Ext.grid.EditorGridPanel + server-side code
-    #
-    # == Features:
+    # = GridPanel
+    # 
+    # Ext.grid.EditorGridPanel-based component with the following features:
+    # 
     # * multi-line CRUD operations - get, post, delete, create
     # * (multe-record) editing and adding records through a form
     # * column resize, move and hide
@@ -17,23 +17,24 @@ module Netzke
     # * sorting
     # * pagination
     # * filtering
-    # * extended configurable search
-    # * rows reordering (drag-n-drop)
-    # * dynamic configuration of properties and columns
+    # * extended search
+    # * (TODO) rows reordering (drag-n-drop)
+    # * (TODO) dynamic configuration of properties and columns
     #
     # == Class configuration
-    # Configuration on this level is effective during the life-time of the application. They can be put into a .rb file
-    # inside of config/initializers like this:
+    # 
+    # Configuration on this level is effective during the life-time of the application. The right place for setting these options are in
+    # config/initializers, e.g.:
     # 
     #     Netzke::GridPanel.column_filters_available = false
     #     Netzke::GridPanel.default_config = {:enable_config_tool => false}
     # 
-    # Most of these options directly influence the amount of JavaScript code that is generated for this component's class.
-    # The less functionality is enabled, the less code is generated.
+    # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the way that
+    # the less functionality is enabled, the less code is generated.
     # 
     # The following configuration options are available:
     # * <tt>:column_filters_available</tt> - (default is true) include code for the filters in the column's context menu
-    # * <tt>:config_tool_available</tt> - (default is true) include code for the configuration tool that launches the configuration panel
+    # * (TODO)<tt>:config_tool_available</tt> - (default is true) include code for the configuration tool that launches the configuration panel
     # * <tt>:edit_in_form_available</tt> - (defaults to true) include code for (multi-record) editing and adding records through a form
     # * <tt>:extended_search_available</tt> - (defaults to true) include code for extended configurable search
     # * <tt>:default_config</tt> - a hash of default configuration options for each instance of the GridPanel component.
@@ -43,11 +44,11 @@ module Netzke
     # The following config options are available:
     # * <tt>:model</tt> - name of the ActiveRecord model that provides data to this GridPanel.
     # * <tt>:strong_default_attrs</tt> - a hash of attributes to be merged atop of every created/updated record.
-    # * <tt>:query</tt> - specifies how the data should be filtered.
+    # * <tt>:scope</tt> - specifies how the data should be filtered.
     #   When it's a symbol, it's used as a scope name. 
     #   When it's a string, it's a SQL statement (passed directly to +where+). 
     #   When it's a hash, it's a conditions hash (passed directly to +where+). 
-    #   When it's an array, it's expanded into SQL statement with arguments (passed directly to +where+), e.g.:
+    #   When it's an array, it's expanded into an SQL statement with arguments (passed directly to +where+), e.g.:
     #   
     #     :query => ["id > ?", 100])
     # 
@@ -63,47 +64,21 @@ module Netzke
     # * <tt>:enable_pagination</tt> - enable pagination; defaults to <tt>true</tt>
     # * <tt>:rows_per_page</tt> - number of rows per page (ignored when <tt>:enable_pagination</tt> is set to <tt>false</tt>)
     # * <tt>:load_inline_data</tt> - load initial data into the grid right after its instantiation (saves a request to server); defaults to <tt>true</tt>
-    # * <tt>:mode</tt> - when set to <tt>:config</tt>, GridPanel loads in configuration mode
+    # * (TODO) <tt>:mode</tt> - when set to <tt>:config</tt>, GridPanel loads in configuration mode
     # * <tt>:add/edit/multi_edit/search_form_config</tt> - additional configuration for add/edit/multi_edit/search form panel
     # * <tt>:add/edit/multi_edit_form_window_config</tt> - additional configuration for the window that wrapps up add/edit/multi_edit form panel
-    # 
-    # Additionally supports Netzke::Base config options.
+    # * <tt>:columns</tt> - an array of columns to be displayed in the grid; each column may be represented by a symbol (representing the model's attribute name), or a hash (when extra configuration is needed)
     # 
     # == Columns
-    # Here's how the GridPanel decides which columns in which sequence and with which configuration to display.
-    # First, the column configs are aquired from this GridPanel's persistent storage, as an array of hashes, each 
-    # representing a column configuration, such as:
-    #
-    #   {:name => :created_at, :header => "Created", :tooltip => "When the record was created"}
-    # 
-    # This hash *overrides* (deep_merge) the hard-coded configuration, an example of which can be specifying 
-    # columns for a GridPanel instance, e.g.:
-    # 
-    #   :columns => [{:name => :created_at, :sortable => false}]
-    # 
-    # ... which in its turn overrides the defaults provided by persistent storage managed by the AttributesConfigurator
-    # that provides *model-level* (as opposed to a component-level) configuration of a database model 
-    # (which is used by both grids and forms in Netzke).
-    # And lastly, the defaults for AttributesConfigurator are calculated from the database model itself (extended by Netzke).
-    # For example, in the model you can specify virtual attributes and their types that will be picked up by Netzke, the default
-    # order of columns, or excluded columns. For details see <tt>Netzke::ActiveRecord::Attributes</tt>.
-    #
     # Each column supports the option :sorting_scope, which defines a scope used for sorting the column. This option would be
     # useful for virtual columns for example. The scope will get one parameter which contains the direction (:asc or :desc)
     # Example:
-    # { :name => complete_user_name, :sorting_scope => :sort_user_by_full_name }
+    # { :name => "complete_user_name", :sorting_scope => :sort_user_by_full_name }
     # class User < ActiveRecord::Base
     #     scope :sort_user_by_full_name, lambda { |dir|
     #         order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}")
     #     }
     # end
-    # 
-    # The columns are displayed in the order specified by what's found first in the following sequence:
-    #   GridPanel instance's persistent storage
-    #   hardcoded config
-    #   AttributesConfigurator persistent storage
-    #   netzke_expose_attributes in the database model
-    #   database columns + (eventually) virtual attributes specified with netzke_attribute
     class GridPanel < Netzke::Base
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid, 
