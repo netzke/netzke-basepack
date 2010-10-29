@@ -7,9 +7,9 @@ require "netzke/basepack/grid_panel/javascript"
 module Netzke
   module Basepack
     # = GridPanel
-    # 
+    #
     # Ext.grid.EditorGridPanel-based component with the following features:
-    # 
+    #
     # * multi-line CRUD operations - get, post, delete, create
     # * (multe-record) editing and adding records through a form
     # * column resize, move and hide
@@ -22,16 +22,16 @@ module Netzke
     # * (TODO) dynamic configuration of properties and columns
     #
     # == Class configuration
-    # 
+    #
     # Configuration on this level is effective during the life-time of the application. The right place for setting these options are in
     # config/initializers, e.g.:
-    # 
+    #
     #     Netzke::GridPanel.column_filters_available = false
     #     Netzke::GridPanel.default_config = {:enable_config_tool => false}
-    # 
+    #
     # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the way that
     # the less functionality is enabled, the less code is generated.
-    # 
+    #
     # The following configuration options are available:
     # * <tt>:column_filters_available</tt> - (default is true) include code for the filters in the column's context menu
     # * (TODO)<tt>:config_tool_available</tt> - (default is true) include code for the configuration tool that launches the configuration panel
@@ -39,23 +39,23 @@ module Netzke
     # * <tt>:extended_search_available</tt> - (defaults to true) include code for extended configurable search
     # * <tt>:default_config</tt> - a hash of default configuration options for each instance of the GridPanel component.
     # See the "Instance configuration" section below.
-    # 
+    #
     # == Instance configuration
     # The following config options are available:
     # * <tt>:model</tt> - name of the ActiveRecord model that provides data to this GridPanel.
     # * <tt>:strong_default_attrs</tt> - a hash of attributes to be merged atop of every created/updated record.
     # * <tt>:scope</tt> - specifies how the data should be filtered.
-    #   When it's a symbol, it's used as a scope name. 
-    #   When it's a string, it's a SQL statement (passed directly to +where+). 
-    #   When it's a hash, it's a conditions hash (passed directly to +where+). 
+    #   When it's a symbol, it's used as a scope name.
+    #   When it's a string, it's a SQL statement (passed directly to +where+).
+    #   When it's a hash, it's a conditions hash (passed directly to +where+).
     #   When it's an array, it's expanded into an SQL statement with arguments (passed directly to +where+), e.g.:
-    #   
+    #
     #     :query => ["id > ?", 100])
-    # 
+    #
     #   When it's a Proc, it's passed the model class, and is expected to return a ActiveRecord::Relation, e.g.:
-    # 
-    #     :query => { |klass| klass.where(:id.gt => 100).order(:created_at) }  
-    #     
+    #
+    #     :query => { |klass| klass.where(:id.gt => 100).order(:created_at) }
+    #
     # * <tt>:enable_column_filters</tt> - enable filters in column's context menu
     # * <tt>:enable_edit_in_form</tt> - provide buttons into the toolbar that activate editing/adding records via a form
     # * <tt>:enable_extended_search</tt> - provide a button into the toolbar that shows configurable search form
@@ -68,7 +68,7 @@ module Netzke
     # * <tt>:add/edit/multi_edit/search_form_config</tt> - additional configuration for add/edit/multi_edit/search form panel
     # * <tt>:add/edit/multi_edit_form_window_config</tt> - additional configuration for the window that wrapps up add/edit/multi_edit form panel
     # * <tt>:columns</tt> - an array of columns to be displayed in the grid; each column may be represented by a symbol (representing the model's attribute name), or a hash (when extra configuration is needed)
-    # 
+    #
     # == Columns
     # Each column supports the option :sorting_scope, which defines a scope used for sorting the column. This option would be
     # useful for virtual columns for example. The scope will get one parameter which contains the direction (:asc or :desc)
@@ -81,23 +81,23 @@ module Netzke
     # end
     class GridPanel < Netzke::Base
       # Class-level configuration. These options directly influence the amount of generated
-      # javascript code for this component's class. For example, if you don't want filters for the grid, 
+      # javascript code for this component's class. For example, if you don't want filters for the grid,
       # set column_filters_available to false, and the javascript for the filters won't be included at all.
       class_attribute :column_filters_available
       self.column_filters_available = true
-    
+
       class_attribute :config_tool_available
       self.config_tool_available = true
-      
+
       class_attribute :edit_in_form_available
       self.edit_in_form_available = true
-    
+
       class_attribute :extended_search_available
       self.extended_search_available = true
-    
+
       class_attribute :rows_reordering_available
       self.rows_reordering_available = true
-    
+
       class_attribute :default_config
       self.default_config = {
         :enable_edit_in_form    => true,
@@ -109,52 +109,52 @@ module Netzke
         :rows_per_page          => 25,
         :tools                  => %w{ refresh },
       }
-      
+
       include self::Javascript
       include self::Services
       include self::Columns
-    
+
       include Netzke::DataAccessor
-      
+
       # def self.enforce_config_consistency
       #   default_config[:enable_edit_in_form]    &&= edit_in_form_available
       #   default_config[:enable_extended_search] &&= extended_search_available
       #   default_config[:enable_rows_reordering] &&= rows_reordering_available
       # end
-    
+
       # def initialize(*args)
       #   # Deprecations
       #   config[:scopes] && ActiveSupport::Deprecation.warn(":scopes option is not effective any longer for GridPanel. Use :scope instead.")
-      #   
+      #
       #   super(*args)
       # end
 
       # Include extra javascript that we depend on
       def self.include_js
         res = ["#{File.dirname(__FILE__)}/grid_panel/javascripts/pre.js"]
-      
+
         # Optional edit in form functionality
         res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/edit_in_form.js" if edit_in_form_available
-      
+
         # Optional extended search functionality
         res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/advanced_search.js" if extended_search_available
-      
+
         ext_examples = Netzke::Core.ext_location.join("examples")
-      
+
         # Checkcolumn
         res << ext_examples.join("ux/CheckColumn.js")
-      
+
         # Filters
         if column_filters_available
           res << ext_examples + "ux/gridfilters/menu/ListMenu.js"
           res << ext_examples + "ux/gridfilters/menu/RangeMenu.js"
           res << ext_examples + "ux/gridfilters/GridFilters.js"
-      
+
           %w{Boolean Date List Numeric String}.unshift("").each do |f|
             res << ext_examples + "ux/gridfilters/filter/#{f}Filter.js"
           end
         end
-      
+
         # DD
         if rows_reordering_available
           res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"
@@ -177,27 +177,27 @@ module Netzke
           # {:name => :ext_config__prohibit_read,       :attr_type => :boolean}
         ]
       end
-    
-    
+
+
       def default_bbar
         res = %w{ add edit apply del }.map(&:to_sym).map(&:action)
         res << "-" << :add_in_form.action << :edit_in_form.action if config[:enable_edit_in_form]
         res << "-" << :search.action if config[:enable_extended_search]
         # config[:enable_extended_search] && res << "-" << {
-        #   :text => "Search", 
-        #   :handler => :on_search, 
-        #   :enable_toggle => true, 
+        #   :text => "Search",
+        #   :handler => :on_search,
+        #   :enable_toggle => true,
         #   :icon => :find
         # }
         res
       end
-    
+
       def default_context_menu
         res = %w{ edit del }.map(&:to_sym).map(&:action)
         res << "-" << :edit_in_form.action if config[:enable_edit_in_form]
         res
       end
-    
+
       def configuration_components
         res = []
         res << {
@@ -224,21 +224,21 @@ module Netzke
           :icon => :add
         }
       end
-      
+
       action :edit, {
         :text => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
         :tooltip => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
         :disabled => true,
         :icon => :table_edit
       }
-      
+
       action :del, {
         :text => I18n.t('netzke.basepack.grid_panel.delete', :default => "Delete"),
         :tooltip => I18n.t('netzke.basepack.grid_panel.delete', :default => "Delete"),
         :disabled => true,
         :icon => :table_row_delete
       }
-      
+
       action :apply do
         {
           :text => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
@@ -247,27 +247,27 @@ module Netzke
           :icon => :tick
         }
       end
-      
+
       action :add_in_form, {
         :text => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),
         :tooltip => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),
         :icon => :application_form_add
       }
-      
+
       action :edit_in_form, {
         :text => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
         :tooltip => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
         :disabled => true,
         :icon => :application_form_edit
       }
-      
+
       action :search, {
         :text => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
         :tooltip => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
-        :enable_toggle => true, 
+        :enable_toggle => true,
         :icon => :find
       }
-      
+
       component :add_form do
         {
           :lazy_loading => true,
@@ -307,7 +307,7 @@ module Netzke
           }.deep_merge(config[:edit_form_config] || {})]
         }.deep_merge(config[:edit_form_window_config] || {})
       end
-      
+
       component :multi_edit_form do
         {
           :lazy_loading => true,
@@ -334,8 +334,8 @@ module Netzke
           :fields => default_fields_for_forms
         }
       end
-      
-    
+
+
       # def search_panel
       #   {
       #     :class_name => "Basepack::FormPanel",
@@ -350,7 +350,7 @@ module Netzke
       # end
 
       # include ::Netzke::Plugins::ConfigurationTool if config_tool_available # it will load ConfigurationPanel into a modal window
- 
+
     end
   end
 end

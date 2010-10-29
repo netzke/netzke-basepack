@@ -1,6 +1,6 @@
 class SimplePanel < Netzke::Basepack::Panel
   action :update_html
-  
+
   js_properties :title  => "SimplePanel",
                 :html => "Original HTML",
                 :bbar => [:update_html.action]

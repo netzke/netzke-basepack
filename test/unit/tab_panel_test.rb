@@ -3,14 +3,14 @@ require 'rubygems'
 require 'netzke-core'
 
 class TabPanelTest < ActiveSupport::TestCase
-  
+
   test "active item" do
     tab_panel = Netzke::TabPanel.new(:items => [{
       :class_name => "Panel"
     },{
       :class_name => "Panel", :name => "second_panel", :active => true
     }])
-        
+
     assert_equal(2, tab_panel.initial_components.keys.size)
     assert_equal("item0", tab_panel.components[:item0][:name])
     assert_equal("second_panel", tab_panel.components[:second_panel][:name])

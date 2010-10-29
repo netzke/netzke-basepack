@@ -1,6 +1,6 @@
 module Netzke::ActiveRecord::Attributes
   extend ActiveSupport::Concern
-  
+
   module ClassMethods
     # Define or configure an attribute.
     # Example:
@@ -24,7 +24,7 @@ module Netzke::ActiveRecord::Attributes
       end
       write_inheritable_attribute(:netzke_declared_attributes, declared_attrs)
     end
-    
+
     # Exclude attributes from being picked up by grids and forms.
     # Accepts an array of attribute names (as symbols).
     # Example:
@@ -32,7 +32,7 @@ module Netzke::ActiveRecord::Attributes
     def netzke_exclude_attributes(*args)
       write_inheritable_attribute(:netzke_excluded_attributes, args.map(&:to_s))
     end
-    
+
     # Explicitly expose attributes that should be picked up by grids and forms.
     # Accepts an array of attribute names (as symbols).
     # Takes precedence over <tt>netzke_exclude_attributes</tt>.
@@ -41,13 +41,13 @@ module Netzke::ActiveRecord::Attributes
     def netzke_expose_attributes(*args)
       write_inheritable_attribute(:netzke_exposed_attributes, args.map(&:to_s))
     end
-    
+
     # Returns the attributes that will be picked up by grids and forms.
     def netzke_attributes
       exposed = netzke_exposed_attributes
       exposed ? netzke_attrs_in_forced_order(exposed) : netzke_attrs_in_natural_order
     end
-    
+
     def netzke_exposed_attributes
       exposed = read_inheritable_attribute(:netzke_exposed_attributes)
       if exposed && !exposed.include?(self.primary_key)
@@ -57,12 +57,12 @@ module Netzke::ActiveRecord::Attributes
       end
       exposed
     end
-    
+
     private
       def netzke_declared_attributes
         read_inheritable_attribute(:netzke_declared_attributes) || []
       end
-    
+
       def netzke_excluded_attributes
         read_inheritable_attribute(:netzke_excluded_attributes) || []
       end
@@ -78,25 +78,25 @@ module Netzke::ActiveRecord::Attributes
             # .. otherwise merge with what's declared
             merged = in_columns_hash.merge(declared)
           end
-          
+
           # We didn't find it among declared, nor among the model columns, nor does it seem association attribute
           merged[:name].nil? && raise(ArgumentError, "Unknown attribute '#{attr_name}' for model #{self.name}", caller)
-          
+
           merged
         end
       end
-      
+
       # Returns netzke attributes in the order of columns in the table, followed by extra declared attributes
       # Detects one-to-many association columns and replaces the name of the column with association column name (Netzke style), e.g.:
-      # 
+      #
       #   role_id => role__name
       def netzke_attrs_in_natural_order
         (
           declared_attrs = netzke_declared_attributes
-          
+
           column_names.map do |name|
             c = {:name => name, :attr_type => columns_hash[name].type}
-            
+
             # If it's named as foreign key of some association, then it's an association column
             assoc = reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
 
@@ -106,10 +106,10 @@ module Netzke::ActiveRecord::Attributes
               c[:name] = "#{assoc.name}__#{assoc_method}"
               c[:attr_type] = assoc.klass.columns_hash[assoc_method].try(:type) || :string # when it's an instance method rather than a column, fall back to :string
             end
-            
+
             # auto set up the default value from the column settings
             c.merge!(:default_value => columns_hash[name].default) if columns_hash[name].default
-            
+
             # if there's a declared attr with the same name, simply merge it with what's taken from the model's columns
             if declared = declared_attrs.detect{ |va| va[:name] == c[:name] }
               c.merge!(declared)
@@ -120,13 +120,13 @@ module Netzke::ActiveRecord::Attributes
           declared_attrs
         ).reject { |attr| netzke_excluded_attributes.include?(attr[:name]) }
       end
-      
+
       def association_attr?(attr_name)
         !!attr_name.index("__") # probably we can't do much better than this, as we don't know at this moment if the associated model has a specific attribute, and we don't really want to find it out
       end
-      
+
   end
-  
+
   # Transforms a record to array of values according to the passed attributes
   def to_array(attributes)
     res = []
@@ -144,7 +144,7 @@ module Netzke::ActiveRecord::Attributes
     end
     res
   end
-  
+
   # Accepts both hash and array of attributes
   def to_hash(attributes)
     res = {}
@@ -154,7 +154,7 @@ module Netzke::ActiveRecord::Attributes
     end
     res
   end
-  
+
   def value_for_attribute(a)
     begin
       v = send(a[:name])
@@ -166,5 +166,5 @@ module Netzke::ActiveRecord::Attributes
       "UNDEF"
     end
   end
-  
+
 end

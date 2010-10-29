@@ -4,7 +4,7 @@
 # require 'netzke/active_record/data_accessor'
 
 module Netzke::ActiveRecord
-  
+
 end
 
 # Extend ActiveRecord

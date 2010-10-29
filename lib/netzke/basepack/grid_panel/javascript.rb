@@ -4,12 +4,12 @@ module Netzke
       # (Dynamic) JavaScript for GridPanel
       module Javascript
         extend ActiveSupport::Concern
-      
+
         included do
           js_base_class "Netzke.pre.GridPanel"
           js_method :init_component, js_init_component
         end
-      
+
         module InstanceMethods
           # The result of this method (a hash) is converted to a JSON object and passed as the configuration parameter
           # to the constructor of our JavaScript class. Override it when you want to pass any extra configuration
@@ -28,7 +28,7 @@ module Netzke
 
         module ClassMethods
           private
-        
+
             # Ext.Component#initComponent, built up from pices (dependent on class-level configuration)
             def js_init_component
               # Optional "edit in form"-related events
@@ -48,7 +48,7 @@ module Netzke
                   }, this);
                 }
               END_OF_JAVASCRIPT
-        
+
               # Result
               <<-END_OF_JAVASCRIPT
                 function(){
@@ -56,13 +56,13 @@ module Netzke
                   #{js_full_class_name}.superclass.initComponent.call(this);
                   #{edit_in_form_events}
                 }
-          
+
               END_OF_JAVASCRIPT
             end
-            
+
           # end private
         end
-      
+
       end
     end
   end

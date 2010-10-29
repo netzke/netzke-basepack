@@ -10,9 +10,9 @@ module Netzke
     # * (TODO) authentification support
     # * (TODO) masquerade support
     class BasicApp < Base
-      
+
       js_base_class "Ext.Viewport"
-      
+
       js_property :layout, :border
 
       def self.include_js
@@ -36,7 +36,7 @@ module Netzke
         elsif session[:masq_world]
           masq = %Q{World}
         end
-              
+
         {
           :items => [{
             :id => 'main-panel',
@@ -75,29 +75,29 @@ module Netzke
           }
 
           Ext.History.on('change', this.processHistory, this);
-        
+
           // Setting the "busy" indicator for Ajax requests
           Ext.Ajax.on('beforerequest', function(){this.findById('main-statusbar').showBusy()}, this);
           Ext.Ajax.on('requestcomplete', function(){this.findById('main-statusbar').hideBusy()}, this);
           Ext.Ajax.on('requestexception', function(){this.findById('main-statusbar').hideBusy()}, this);
-        
+
           // Initialize history
           Ext.History.init();
         }
       JS
-    
+
       js_method :on_login, <<-JS
         function(){
           window.location = "/login"
         }
       JS
-    
+
       js_method :on_logout, <<-JS
         function(){
           window.location = "#{logout_url}"
         }
       JS
-    
+
       js_method :process_history, <<-JS
         function(token){
           if (token){
@@ -107,13 +107,13 @@ module Netzke
           }
         }
       JS
-    
+
       js_method :instantiate_component, <<-JS
         function(config){
           this.findById('main-panel').instantiateChild(config);
         }
       JS
-    
+
       js_method :app_load_component, <<-JS
         function(name){
           Ext.History.add(name);
@@ -131,7 +131,7 @@ module Netzke
           this.toggleConfigMode();
         }
       JS
-    
+
       js_method :show_masquerade_selector, <<-JS
         function(){
           var w = new Ext.Window({
@@ -223,18 +223,18 @@ module Netzke
 
         strong_children_config.deep_merge!(:mode => :config) if session[:config_mode]
       end
-    
-    
+
+
       action :masquerade_selector, :text => "Masquerade as ...", :handler => :show_masquerade_selector
-      
-      action :toggle_config_mode do 
+
+      action :toggle_config_mode do
         {:text => "#{session[:config_mode] ? "Leave" : "Enter"} config mode"}
       end
-      
+
       action :login, :icon => :door_in
-      
+
       action :logout, :icon => :door_out
-    
+
       # Html required for Ext.History to work
       def js_component_html
         super << %Q{

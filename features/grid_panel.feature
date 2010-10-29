@@ -11,7 +11,7 @@ Scenario: UserGrid should render properly
   And  I should see "Castaneda"
   And  I should see "Taisha"
   And  I should see "Abelar"
-  
+
 @javascript
 Scenario: Adding a record via "Add in form"
   Given I am on the UserGrid test page

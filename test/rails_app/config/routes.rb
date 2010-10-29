@@ -58,8 +58,8 @@ RailsApp::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
 
   match 'components/:component' => 'components#show', :as => "components"
-  
+
   match ':controller(/:action(/:id(.:format)))'
-  
+
   netzke
 end

@@ -1,5 +1,5 @@
 class GenericUserForm < Netzke::Basepack::FormPanel
-  
+
   config do
     {
       :model => 'User',
@@ -8,5 +8,5 @@ class GenericUserForm < Netzke::Basepack::FormPanel
       :items => [:id, :first_name]
     }
   end
-  
+
 end

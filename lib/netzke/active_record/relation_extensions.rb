@@ -1,7 +1,7 @@
 module Netzke
   module ActiveRecord
     module RelationExtensions
-      
+
       def extend_with(*params)
         scope = params.shift
         case scope.class.name
@@ -19,8 +19,8 @@ module Netzke
           raise ArgumentError, "Wrong parameter type for ActiveRecord::Relation#extend_with"
         end
       end
-      
-      # Non-destructively extends itself whith a hash of double-underscore'd conditions, 
+
+      # Non-destructively extends itself whith a hash of double-underscore'd conditions,
       # where the last part "__" is MetaWhere operator (which is required), e.g.:
       #     {:role__name__like => "%admin"}
       def extend_with_netzke_conditions(cond)
@@ -29,7 +29,7 @@ module Netzke
           operator.empty? ? r.where(assoc.to_sym.send(method) => v) : r.where(assoc.to_sym => {method.to_sym.send(operator.last) => v}).joins(assoc.to_sym)
         end
       end
-      
+
     end
   end
 end

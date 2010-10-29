@@ -10,12 +10,12 @@
 
 * enhancements
   * if omitted in config, a column for the primary key is automatically added to Grid/FormPanel
-  
+
 * API incompatibilities
   * in FormPanel, define the fields layout directly in :items, not in :fields or :columns
-  
+
 * new
-  * FormPanel allows for arbitrary layout of fields  
+  * FormPanel allows for arbitrary layout of fields
 
 = v0.5.14 - 2010-09-08
 * bug fix
@@ -35,11 +35,11 @@
 = v0.5.13 - 2010-08-11
 * regression
   * combobox options configuration again has effect
-  
+
 * bug fix
   * when a TabPanel was used as a standalone widget, the first tab was rendered empty
   * Grid/FormPanel: dynamically changing of columns doesn't erase those column settings that are not configurable via GUI, but which were specified in the code
-  
+
 * enhancements
   * scopes can now be specified for an association combobox in Grid/FormPanels
   * GridPanel: you can now configure add/edit/multi_edit/search panels (e.g. to override the fields) and corresponding windows (e.g. to override the title)
@@ -308,7 +308,7 @@
 * Column resize & move functionality enabled by default
 * Column filters added
 
-= v0.1.0.1 
+= v0.1.0.1
 * Meta work: replacing underscore with dash in the name
 
 = v0.1.0 - 2008-12-20

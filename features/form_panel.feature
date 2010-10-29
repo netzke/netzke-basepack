@@ -25,11 +25,11 @@ Scenario: Editing the record
   Then I should see "Salvador"
   And I should see "Dali"
   And I should see "painter"
-  
+
   But I should not see "Maxim"
   And I should not see "Osminogov"
   And I should not see "musician"
-  
+
 Scenario: UserFormWithDefaultFields should render properly
   Given a role exists with name: "writer"
   And a user exists with first_name: "Carlos", last_name: "Castaneda", role: that role

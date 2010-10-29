@@ -6,9 +6,9 @@ class WindowComponentLoader < Netzke::Base
   }
 
   action :load_window
-  
+
   js_property :bbar, [:load_window.action]
-  
+
   js_method :on_load_window, <<-JS
     function(params){
       this.loadComponent({name: "some_window"});

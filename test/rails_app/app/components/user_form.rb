@@ -1,6 +1,6 @@
 class UserForm < Netzke::Basepack::FormPanel
   js_property :title, "User"
-  
+
   config do
     {
       :model => 'User',

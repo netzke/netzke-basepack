@@ -1,9 +1,9 @@
 module Netzke
   module Basepack
     # = AccordionPanel
-    # 
+    #
     # A panel with the 'accordion' layout. Can lazily load its nested components. For example:
-    # 
+    #
     #     netzke :my_accordion, :items => [{
     #         :html => "I'm a simple Ext.Panel",
     #         :title => "Panel One"
@@ -14,11 +14,11 @@ module Netzke
     #         :lazy_loading => true
     #       }]
     class AccordionPanel < Netzke::Base
-      
+
       include WrapLazyLoaded
-      
+
       js_property :layout, 'accordion'
-    
+
       js_method :init_component, <<-JS
         function(params){
           #{js_full_class_name}.superclass.initComponent.call(this);
@@ -31,7 +31,7 @@ module Netzke
           }, this);
         }
       JS
-      
+
     end
   end
 end

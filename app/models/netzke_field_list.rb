@@ -20,7 +20,7 @@ class NetzkeFieldList < ActiveRecord::Base
     end
     update_attribute(:value, list.to_json)
   end
-  
+
   def append_attr(attr_hash)
     list = ActiveSupport::JSON.decode(self.value)
     list << attr_hash
@@ -41,7 +41,7 @@ class NetzkeFieldList < ActiveRecord::Base
       []
     end
   end
-  
+
   def self.find_all_lists_under_current_authority(model_name)
     authority_level, authority_id = Netzke::Base.authority_level
     case authority_level
@@ -59,11 +59,11 @@ class NetzkeFieldList < ActiveRecord::Base
     else
       []
     end
-    
+
   end
-  
-  
-  # Replaces the list with the data - only for the list found for the current authority. 
+
+
+  # Replaces the list with the data - only for the list found for the current authority.
   # If the list is not found, it's created.
   def self.update_list_for_current_authority(pref_name, data, model_name = nil)
     pref = find_or_create_pref_to_read(pref_name)
@@ -71,21 +71,21 @@ class NetzkeFieldList < ActiveRecord::Base
     pref.model_name = model_name
     pref.save!
   end
-  
+
 
   # If the <tt>model</tt> param is provided, then this preference will be assigned a parent preference
   # that configures the attributes for that model. This way we can track all preferences related to a model.
   def self.write_list(name, list, model = nil)
     pref_to_store_the_list = self.pref_to_write(name)
     pref_to_store_the_list.try(:update_attribute, :value, list.to_json)
-    
+
     # link this preference to the parent that contains default attributes for the same model
     if model
       model_level_attrs_pref = self.pref_to_read("#{model.tableize}_model_attrs")
       model_level_attrs_pref.children << pref_to_store_the_list if model_level_attrs_pref && pref_to_store_the_list
     end
   end
-  
+
   def self.read_list(name)
     json_encoded_value = self.pref_to_read(name).try(:value)
     ActiveSupport::JSON.decode(json_encoded_value).map(&:symbolize_keys) if json_encoded_value
@@ -96,26 +96,26 @@ class NetzkeFieldList < ActiveRecord::Base
   #   read_list(model_name)
   #   # read_list("#{model.tableize}_model_attrs")
   # end
-  
+
   # Write model-level attrs
   # def self.write_attrs_for_model(model_name, data)
   #   # write_list("#{model_name.tableize}_model_attrs", data)
   #   write_list(model_name, data)
   # end
-  
+
   # Options:
   # :attr - attribute to propagate. If not specified, all attrs found in configuration for the model
   # will be propagated.
   def self.update_children_on_attr(model, options = {})
     attr_name = options[:attr].try(:to_s)
-    
+
     parent_pref = pref_to_read("#{model.tableize}_model_attrs")
-    
+
     if parent_pref
       parent_list = ActiveSupport::JSON.decode(parent_pref.value)
       parent_pref.children.each do |ch|
         child_list = ActiveSupport::JSON.decode(ch.value)
-        
+
         if attr_name
           # propagate a certain attribute
           propagate_attr(attr_name, parent_list, child_list)
@@ -124,12 +124,12 @@ class NetzkeFieldList < ActiveRecord::Base
           all_attrs = parent_list.first.try(:keys)
           all_attrs && all_attrs.each{ |attr_name| propagate_attr(attr_name, parent_list, child_list) }
         end
-        
+
         ch.update_attribute(:value, child_list.to_json)
       end
     end
   end
-  
+
   # meta_attrs:
   #   {"city"=>{"included"=>true}, "building_number"=>{"default_value"=>100}}
   def self.update_children(model, meta_attrs)
@@ -139,26 +139,26 @@ class NetzkeFieldList < ActiveRecord::Base
     if parent_pref
       parent_pref.children.each do |ch|
         child_list = ActiveSupport::JSON.decode(ch.value)
-        
+
         meta_attrs.each_pair do |k,v|
           child_list.detect{ |child_attr| child_attr["name"] == k }.try(:merge!, v)
         end
-        
+
         ch.update_attribute(:value, child_list.to_json)
       end
     end
   end
 
   private
-  
+
     def self.propagate_attr(attr_name, src_list, dest_list)
       for src_field in src_list
         dest_field = dest_list.detect{ |df| df["name"] == src_field["name"] }
         dest_field[attr_name] = src_field[attr_name] if dest_field && src_field[attr_name]
       end
     end
-  
-    # Overwrite pref_to_read, pref_to_write methods, and find_all_for_component if you want a different way of 
+
+    # Overwrite pref_to_read, pref_to_write methods, and find_all_for_component if you want a different way of
     # identifying the proper preference based on your own authorization strategy.
     #
     # The default strategy is:
@@ -168,12 +168,12 @@ class NetzkeFieldList < ActiveRecord::Base
     #   2) if masq_user or masq_role is defined
     #     pref_to_read and pref_to_write will always take the masquerade into account, e.g. reads/writes will go to
     #     the user/role specified
-    #   
+    #
     def self.pref_to_read(name)
       name = name.to_s
       session = Netzke::Base.session
       cond = {:name => name}
-    
+
       if session[:masq_user]
         # first, get the prefs for this user it they exist
         res = self.find(:first, :conditions => cond.merge({:user_id => session[:masq_user]}))
@@ -200,17 +200,17 @@ class NetzkeFieldList < ActiveRecord::Base
       else
         res = self.find(:first, :conditions => cond)
       end
-    
-      res      
+
+      res
     end
-    
+
     def self.find_or_create_pref_to_read(name)
       name = name.to_s
       attrs = {:name => name}
       extend_attrs_for_current_authority(attrs)
       self.first(:conditions => attrs) || self.new(attrs)
     end
-    
+
     def self.extend_attrs_for_current_authority(hsh)
       authority_level, authority_id = Netzke::Base.authority_level
       case authority_level
@@ -224,12 +224,12 @@ class NetzkeFieldList < ActiveRecord::Base
         hsh.merge!(:user_id => authority_id)
       end
     end
-  
+
     def self.pref_to_write(name)
       name = name.to_s
       session = Netzke::Base.session
       cond = {:name => name}
-    
+
       if session[:masq_user]
         cond.merge!({:user_id => session[:masq_user]})
         # first, try to find the preference for masq_user

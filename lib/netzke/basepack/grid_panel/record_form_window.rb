@@ -3,12 +3,12 @@ module Netzke
     class GridPanel < Netzke::Base
       class RecordFormWindow < Window
         js_properties :button_align => "right"
-        
+
         config :modal => true,
               :width => "50%",
               :auto_height => true,
               :fbar => [:ok.action, :cancel.action]
-        
+
         action :ok, :text => 'OK'
         action :cancel
 
@@ -24,7 +24,7 @@ module Netzke
             this.getNetzkeComponent().onApply();
           }
         JS
-        
+
         js_method :on_cancel, <<-JS
           function(params){
             this.close();

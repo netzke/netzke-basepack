@@ -18,8 +18,8 @@ begin
 ========================================================================
 
            Thanks for installing Netzke Basepack!
-           
-  Don't forget to run "./script/generate netzke_basepack" for each 
+
+  Don't forget to run "./script/generate netzke_basepack" for each
   Rails app that will be using this gem.
 
   Netzke home page:     http://netzke.org
@@ -29,7 +29,7 @@ begin
 ========================================================================
 
     MESSAGE
-    
+
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError

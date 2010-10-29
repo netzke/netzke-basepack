@@ -7,9 +7,9 @@ module Netzke
     class GridPanel < Netzke::Base
       module Services
         extend ActiveSupport::Concern
-      
+
         included do
-      
+
           endpoint :get_data do |*args|
             params = args.first || {} # params are optional
             if !config[:prohibit_read]
@@ -30,9 +30,9 @@ module Netzke
                 mod_records[operation] = nil if mod_records[operation].empty?
               end
             end
-        
+
             on_data_changed
-        
+
             {
               :update_new_records => mod_records[:create],
               :update_mod_records => mod_records[:update] || {},
@@ -103,16 +103,16 @@ module Netzke
             end
             {}
           end
-        
+
         end
         #
         # Some components' overridden API
         #
-    
+
         ## Edit in form specific API
         def add_form__form_panel0__netzke_submit(params)
           res = component_instance(:add_form__form_panel0).netzke_submit(params)
-      
+
           if res[:set_form_values]
             # successful creation
             on_data_changed
@@ -128,21 +128,21 @@ module Netzke
             on_data_changed
             res[:set_form_values] = nil
           end
-      
+
           res.to_nifty_json
         end
 
         def multi_edit_form__multi_edit_form0__netzke_submit(params)
           ids = ActiveSupport::JSON.decode(params.delete(:ids))
           data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
-          
+
           data.map!{|el| el.delete_if{ |k,v| v.blank? }} # only interested in set values
-        
+
           mod_records_count = process_data(data, :update).count
-        
+
           # remove duplicated flash messages
           @flash = @flash.inject([]){ |r,hsh| r.include?(hsh) ? r : r.push(hsh) }
-        
+
           if mod_records_count > 0
             on_data_changed
             flash :notice => "Updated #{mod_records_count} records."
@@ -151,17 +151,17 @@ module Netzke
             {:feedback => @flash}.to_nifty_json
           end
         end
-      
+
         # When providing the edit_form component, fill in the form with the requested record
         def deliver_component(params)
           components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:name] == 'edit_form'
           super
         end
-      
+
         protected
-        
+
           def get_records(params)
-          
+
             # Restore params from component_session if requested
             if params[:with_last_params]
               params = component_session[:last_params]
@@ -169,10 +169,10 @@ module Netzke
               # remember the last params
               component_session[:last_params] = params
             end
-      
+
             # build initial relation based on passed params
             relation = get_relation(params)
-                        
+
             # addressing the n+1 query problem
             columns.each do |c|
               assoc, method = c[:name].split('__')
@@ -207,27 +207,27 @@ module Netzke
               relation.all
             end
           end
-    
+
           # An ActiveRecord::Relation instance encapsulating all the necessary conditions
           def get_relation(params)
             # make params coming from Ext grid filters understandable by meta_where
             conditions = params[:filter] && convert_filters(params[:filter]) || {}
-          
+
             relation = data_class.where(conditions)
-            
+
             if params[:extra_conditions]
               extra_conditions = normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
               relation = relation.extend_with_netzke_conditions(extra_conditions) if params[:extra_conditions]
             end
-          
+
             relation = relation.extend_with(config[:scope]) if config[:scope]
-          
+
             relation
           end
-      
+
           # Override this method to react on each operation that caused changing of data
           def on_data_changed; end
-    
+
           # Given an index of a column among enabled (non-excluded) columns, provides the index (position) in the table
           def normalize_index(index)
             norm_index = 0
@@ -266,7 +266,7 @@ module Netzke
                     break
                   end
                 end
-        
+
                 # try to save
                 # modified_records += 1 if success && record.save
                 mod_records[id] = record.to_array(columns) if success && record.save
@@ -314,10 +314,10 @@ module Netzke
               if method
                 assoc = data_class.reflect_on_association(assoc.to_sym)
                 field = [assoc.klass.table_name, method].join('.').to_sym
-              else 
+              else
                 field = assoc.to_sym
               end
-              
+
               value = v["data"]["value"]
               case v["data"]["type"]
               when "string"

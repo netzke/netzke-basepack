@@ -3,12 +3,12 @@ module Netzke
     class FormPanel < Netzke::Base
       module Services
         extend ActiveSupport::Concern
-    
+
         included do
-      
+
           #
           # Endpoints
-          # 
+          #
           endpoint :netzke_submit do |params|
             data = ActiveSupport::JSON.decode(params[:data])
             success = create_or_update_record(data)
@@ -23,12 +23,12 @@ module Netzke
               {:feedback => @flash}
             end
           end
-      
+
           endpoint :netzke_load do |params|
             @record = data_class && data_class.find_by_id(params[:id])
             {:set_form_values => @record.to_hash(fields)}
           end
-      
+
           # Returns options for a combobox
           endpoint :get_combobox_options do |params|
             query = params[:query]
@@ -39,7 +39,7 @@ module Netzke
 
             {:data => combobox_options_for_column(field, :query => query, :scope => scope, :record_id => params[:id])}
           end
-      
+
         end
 
         # Overriding configuration_panel's get_combobox_options endpoint call
@@ -47,18 +47,18 @@ module Netzke
           query = params[:query]
           {:data => (default_columns.map{ |c| c[:name].to_s }).grep(/^#{query}/).map{ |n| [n] }}.to_nifty_json
         end
-    
+
         # Returns array of form values according to the configured columns
         # def array_of_values
         #   @record && @record.to_array(fields)
         # end
-    
+
         def values
           record && record.to_hash(fields)
         end
 
         private
-    
+
           # Creates/updates a record from hash
           def create_or_update_record(hsh)
 
@@ -77,7 +77,7 @@ module Netzke
                 break
               end
             end
-  
+
             # did we have complete success?
             success && @record.save
           end
@@ -92,7 +92,7 @@ module Netzke
           #   end
           #   {:data => [array_of_values]}
           # end
-      
+
       end
     end
   end

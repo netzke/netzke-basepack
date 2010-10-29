@@ -9,9 +9,9 @@ class SomeSearchPanel < Netzke::Basepack::FormPanel
   end
 
   def normalize_field(f)
-    f = if f.is_a?(Symbol) || f.is_a?(String) 
+    f = if f.is_a?(Symbol) || f.is_a?(String)
       {:name => f.to_s, :operator => default_operator}
-    else 
+    else
       search_condition = f[:name]
       if search_condition.is_a?(MetaWhere::Column)
         {:name => search_condition.column, :operator => search_condition.method}
@@ -19,14 +19,14 @@ class SomeSearchPanel < Netzke::Basepack::FormPanel
         {:name => search_condition.to_s, :operator => default_operator}
       end
     end
-    
+
     f[:disabled] = primary_key_attr?(f)
-    
+
     f = super(f)
 
     f.merge(:name => [f[:name], "__", f[:operator]].join)
   end
-  
+
   private
     def default_operator
       "gt"

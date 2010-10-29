@@ -4,13 +4,13 @@ module Netzke
       # Because FormPanel allows for arbitrary layout of fields, we need to have all fields configured in one place (the +fields+ method), and then have references to those fields from +items+.
       module Fields
         extend ActiveSupport::Concern
-      
+
         # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render
         # a field)
         def items
           @form_panel_items ||= begin
             res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # take netzke_attributes as default items
-          
+
             # if primary key isn't there, insert it as first
             if data_class && res.first && res.first[:name] != [data_class.primary_key]
               primary_key_item = normalize_field(data_class.primary_key.to_sym)
@@ -21,7 +21,7 @@ module Netzke
             res
           end
         end
-        
+
         # Hash of fully configured fields, that are referenced in the items. E.g.:
         #   {
         #     :role__name => {:xtype => 'combobox', :disabled => true, :value => "admin"},
@@ -41,19 +41,19 @@ module Netzke
             flds
           end
         end
-      
+
         # The array of fields as specified on the model level (using +netzke_attribute+ and alike)
         def fields_array_from_model
           data_class && data_class.netzke_attributes
         end
-        
+
         # Hash of fields as specified on the model level
         def fields_from_model
           @fields_from_model ||= fields_array_from_model && fields_array_from_model.inject({}){ |hsh, f| hsh.merge(f[:name].to_sym => f) }
         end
-      
+
         # Hash of normalized field configs extracted from :items, e.g.:
-        # 
+        #
         #     {:role__name => {:xtype => "combobox"}, :password => {:xtype => "passwordfield"}}
         def fields_from_config
           items if @fields_from_config.nil? # by calling +items+ we initiate building of @fields_from_config
@@ -72,12 +72,12 @@ module Netzke
             ]
           end
         end
-        
+
         private
           def load_persistent_fields
             # NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
           end
-        
+
           def load_model_level_attrs
             # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
           end
@@ -91,27 +91,27 @@ module Netzke
             else
               field = {:name => field.to_s}
             end
-            
+
             field.merge!(fields_from_model[field[:name].to_sym]) unless fields_from_model[field[:name].to_sym].nil?
-            
+
             detect_association_with_method(field) # xtype for an association field
 
             set_default_field_label(field)
 
             set_default_field_xtype(field) if field[:xtype].nil?
-            
+
             set_default_field_value(field) if self.record
-            
+
             # provide our special combobox with our id
             field[:parent_id] = self.global_id if field[:xtype] == :combobox
-            
+
             field[:hidden] = field[:hide_label] = true if field[:hidden].nil? && primary_key_attr?(field)
-            
+
             field[:checked] = field[:value] if field[:attr_type] == "boolean"
-            
+
             field
           end
-          
+
           # Sets the proper xtype of an asociation field
           def detect_association_with_method(c)
             if c[:name].index('__')
@@ -143,31 +143,31 @@ module Netzke
               end
             end
           end
-        
+
           def is_field_config?(item)
             item.is_a?(String) || item.is_a?(Symbol) || item[:name] # && !is_component_config?(item)
           end
-          
+
           def set_default_field_label(c)
             c[:field_label] ||= c[:name].humanize.sub(/\s+/, " ") # multiple spaces get replaced with one
           end
-      
+
           def set_default_field_value(field)
             value = record.value_for_attribute(field)
             field[:value] ||= value unless value.nil?
           end
-   
+
           # Deeply merges only those key/values at the top level that are already there
           def deep_merge_existing_fields(dest, src)
             dest.each_pair do |k,v|
               v.deep_merge!(src[k] || {})
             end
           end
-     
+
           def set_default_field_xtype(field)
             field[:xtype] = xtype_for_attr_type(field[:attr_type]) unless xtype_for_attr_type(field[:attr_type]).nil?
           end
-       
+
           def attr_type_to_xtype_map
             {
               :integer => :numberfield,
@@ -179,20 +179,20 @@ module Netzke
               :string => :textfield
             }
           end
-          
+
           def xtype_for_attr_type(type)
             attr_type_to_xtype_map[type]
           end
-        
+
           def xtype_for_association
             :combobox
           end
-   
+
           # Are we provided with a static field layout?
           def static_layout?
             !!config[:items]
           end
-    
+
       end
     end
   end

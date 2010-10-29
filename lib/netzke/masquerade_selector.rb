@@ -1,6 +1,6 @@
 module Netzke
   class MasqueradeSelector < TabPanel
-    
+
     def items
       @items ||= [{
           :name              => "roles",
@@ -15,8 +15,8 @@ module Netzke
         },{
           :name                 => "users",
           :preloaded            => true,
-          :class_name    => "GridPanel", 
-          :model      => 'User', 
+          :class_name    => "GridPanel",
+          :model      => 'User',
           :ext_config           => {
             :header        => false,
             :rows_per_page => 10,
@@ -37,7 +37,7 @@ module Netzke
             }, this);
           }
         END_OF_JAVASCRIPT
-        
+
         :rowclick_handler => <<-END_OF_JAVASCRIPT.l
           function(grid, rowIndex, e){
             var mode = grid.id.split("__").pop();
@@ -48,6 +48,6 @@ module Netzke
         END_OF_JAVASCRIPT
       }
     end
-    
+
   end
 end

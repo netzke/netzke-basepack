@@ -12,7 +12,7 @@ require 'netzke/basepack'
 
 module Netzke
   autoload :Ext, 'ext'
-  
+
   module Basepack
     class Engine < Rails::Engine
       config.after_initialize do
@@ -20,7 +20,7 @@ module Netzke
       end
     end
   end
-  
+
 end
 
 Netzke::Basepack.init
@@ -39,13 +39,13 @@ Netzke::Basepack.init
 #   ActiveSupport::Dependencies.autoload_once_paths.delete(path)
 # end
 
-# Include javascript & styles required by all basepack components. 
+# Include javascript & styles required by all basepack components.
 # These files will get loaded at the initial load of the framework (along with Ext and Netzke-core).
 
 
-# FIXME: The following stylesheet inclusion doesn't *really* belong here, being component-specific, 
+# FIXME: The following stylesheet inclusion doesn't *really* belong here, being component-specific,
 # but I don't see any other solution for now. The problem is that these stylesheets come straight from
-# Ext JS, having *relative* URLs to the images, which doesn't allow us to include them all together as those stylesheets 
+# Ext JS, having *relative* URLs to the images, which doesn't allow us to include them all together as those stylesheets
 # from Netzke.
 
 # Used by FormPanel (file upload field)

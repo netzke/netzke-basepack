@@ -2,13 +2,13 @@ module Netzke
   module Basepack
     # Panel with border layout
     # == Example configuration:
-    # 
+    #
     #     :items => [
     #       {:title => "Item One", :class_name => "Basepack::Panel", :region => :center},
     #       {:title => "Item Two", :class_name => "Basepack::Panel", :region => :west, :width => 300, :split => true}
     #     ]
     class BorderLayoutPanel < Netzke::Base
-      
+
       def self.js_properties
         {
           :layout => 'border',

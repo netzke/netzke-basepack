@@ -15,24 +15,24 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
   valueField    : 'id',
   triggerAction : 'all',
   typeAhead     : true,
-  
+
   initComponent : function(){
     var row = Ext.data.Record.create([{name:'id'}]);
     var store = new Ext.data.Store({
       proxy         : new Ext.data.HttpProxy({url: Ext.getCmp(this.parentId).endpointUrl("get_combobox_options"), jsonData:{column:this.name}}),
       reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
     });
-  		
+
     Ext.apply(this, {
       store : store
     });
-    
+
     Ext.netzke.ComboBox.superclass.initComponent.apply(this, arguments);
-    
+
     this.on('blur', function(cb){
       cb.setValue(cb.getRawValue());
     });
-  
+
     this.on('specialkey', function(cb, event){
       if (event.getKey() == 9 || event.getKey() == 13) {cb.setValue(cb.getRawValue());}
     });
@@ -40,11 +40,11 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
     var parent = Ext.getCmp(this.parentId);
 		// Is parent a grid?
 		if (parent.getSelectionModel) {
-			this.on('beforequery',function(qe) {			
-				delete qe.combo.lastQuery;			
-			},this);			
+			this.on('beforequery',function(qe) {
+				delete qe.combo.lastQuery;
+			},this);
 		}
-				
+
     // A not-so-clean approach to submit the current record id
     store.on('beforeload',function(store, options){
       if (parent.getSelectionModel) {
@@ -131,11 +131,11 @@ Ext.netzke.JsonField = Ext.extend(Ext.form.TextField, {
       return "Invalid JSON"
     }
   }
-  
+
   ,setValue: function(value) {
     this.setRawValue(Ext.encode(value));
   }
-  
+
 });
 
 Ext.reg('jsonfield', Ext.netzke.JsonField);
@@ -155,7 +155,7 @@ Ext.reg('jsonfield', Ext.netzke.JsonField);
  * the Open Source LGPL 3.0 license.  Commercial use is permitted to the extent
  * that the code/component(s) do NOT become part of another Open Source or Commercially
  * licensed development library or toolkit without explicit permission.
- * 
+ *
  * <p>License details: <a href="http://www.gnu.org/licenses/lgpl.html"
  * target="_blank">http://www.gnu.org/licenses/lgpl.html</a></p>
  *
@@ -369,7 +369,7 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
     // {{{
     /**
      * @private
-     * called from Component::destroy. 
+     * called from Component::destroy.
      * Destroys all elements and removes all listeners we've created.
      */
     ,beforeDestroy:function() {
@@ -463,14 +463,14 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
     // {{{
     /**
      * Returns true if this component is visible
-     * @return {boolean} 
+     * @return {boolean}
      */
     ,isVisible : function(){
         return this.df.rendered && this.df.getActionEl().isVisible();
     } // eo function isVisible
     // }}}
     // {{{
-    /** 
+    /**
      * @private Handles blur event
      */
     ,onBlur:function(f) {
@@ -560,7 +560,7 @@ Ext.ux.form.DateTime = Ext.extend(Ext.form.Field, {
     } // eo function setDate
     // }}}
     // {{{
-    /** 
+    /**
      * @private Sets the value of TimeField
      */
     ,setTime:function(date) {
@@ -868,7 +868,7 @@ Ext.override(Ext.Panel, {
 Ext.ns('Ext.ux.form');
 Ext.ux.form.TriCheckbox = Ext.extend(Ext.form.Checkbox, {
 	checked: null,
-	valueList: [null, false, true],	
+	valueList: [null, false, true],
 	stateClassList: ['x-checkbox-undef', null, 'x-checkbox-checked'],
 	overClass: 'x-form-check-over',
 	clickClass: 'x-form-check-down',
@@ -893,33 +893,33 @@ Ext.ux.form.TriCheckbox = Ext.extend(Ext.form.Checkbox, {
 	},
 	onRender : function(ct, position){
 		Ext.form.Checkbox.superclass.onRender.call(this, ct, position);
-		
+
 		this.innerWrap = this.el.wrap({tag: 'span', cls: 'x-form-check-innerwrap'});
 		this.wrap = this.innerWrap.wrap({cls: 'x-form-check-wrap'});
-		
+
 		this.currCls = this.getCls(this.value);
 		this.wrap.addClass(this.currCls);
 		if(this.clickClass && !this.disabled && !this.readOnly)
 			this.innerWrap.addClassOnClick(this.clickClass);
 		if(this.overClass && !this.disabled && !this.readOnly)
 			this.innerWrap.addClassOnOver(this.overClass);
-		
+
 		this.imageEl = this.innerWrap.createChild({
 			tag: 'img',
 			src: Ext.BLANK_IMAGE_URL,
 			cls: 'x-form-tscheckbox'
 		}, this.el);
 		if(this.fieldClass) this.imageEl.addClass(this.fieldClass);
-		
+
 		if(this.boxLabel){
 			this.innerWrap.createChild({
-				tag: 'label', 
-				htmlFor: this.el.id, 
-				cls: 'x-form-cb-label', 
+				tag: 'label',
+				htmlFor: this.el.id,
+				cls: 'x-form-cb-label',
 				html: this.boxLabel
 			});
 		}
-		
+
 		// Need to repaint for IE, otherwise positioning is broken
 		if(Ext.isIE){
 			this.wrap.repaint();
@@ -960,7 +960,7 @@ Ext.ux.form.TriCheckbox = Ext.extend(Ext.form.Checkbox, {
 		return this;
 	},
 	normalizeValue: function(v) {
-		return (v === null || v === undefined) && this.triState ? null : 
+		return (v === null || v === undefined) && this.triState ? null :
 			(v === true || (['true', 'yes', 'on', '1']).indexOf(String(v).toLowerCase()) != -1);
 	},
 	getCls: function(v) {
@@ -970,9 +970,9 @@ Ext.ux.form.TriCheckbox = Ext.extend(Ext.form.Checkbox, {
 	updateView: function() {
 		var cls = this.getCls(this.value);
 		if (!this.wrap || cls === undefined) return;
-		
+
 		this.wrap.replaceClass(this.currCls, cls);
 		this.currCls = cls;
 	}
 });
-Ext.reg('tricheckbox', Ext.ux.form.TriCheckbox);  
+Ext.reg('tricheckbox', Ext.ux.form.TriCheckbox);

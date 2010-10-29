@@ -9,21 +9,21 @@ module Netzke::ActiveRecord
     module InstanceMethods
       # Allow nested association access (assocs separated by "." or "__"), e.g.: proxy_service.asset__gui_folder__name
       # Example:
-      # 
+      #
       #   Book.first.genre__name = 'Fantasy'
-      # 
+      #
       # is the same as:
-      # 
+      #
       #   Book.first.genre = Genre.find_by_name('Fantasy')
       #
       # The result - easier forms and grids that handle nested models: simply specify column/field name as "genre__name".
       def method_missing_with_basepack(method, *args, &block)
         # if refering to a column, just pass it to the original method_missing
         return method_missing_without_basepack(method, *args, &block) if self.class.column_names.include?(method.to_s)
-    
+
         split = method.to_s.split(/\.|__/)
         if split.size > 1
-          if split.last =~ /=$/ 
+          if split.last =~ /=$/
             if split.size == 2
               # search for association and assign it to self
               assoc = self.class.reflect_on_association(split.first.to_sym)
@@ -61,12 +61,12 @@ module Netzke::ActiveRecord
           method_missing_without_basepack(method, *args, &block)
         end
       end
-    
+
       # Make respond_to? return true for association assignment method, like "genre__name="
       def respond_to_with_basepack?(method, include_private = false)
         split = method.to_s.split(/__/)
         if split.size > 1
-          if split.last =~ /=$/ 
+          if split.last =~ /=$/
             if split.size == 2
               # search for association and assign it to self
               assoc = self.class.reflect_on_association(split.first.to_sym)
@@ -91,12 +91,12 @@ module Netzke::ActiveRecord
 
     def self.included(receiver)
       receiver.extend ClassMethods
-      
+
       receiver.send :include, InstanceMethods
       receiver.alias_method_chain :method_missing, :basepack
       receiver.alias_method_chain :respond_to?, :basepack
     end
-    
+
   end
 end
 
