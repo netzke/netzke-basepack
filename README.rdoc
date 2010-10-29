@@ -3,46 +3,31 @@
 A pack of pre-built Netzke components, such as grid, form, tab panel, etc.
 Learn about Netzke on http://netzke.org.
 
-== Prerequisites
+== Requirements
 
-1. Rails >= 3.0, Ext JS >= 3.3.0
-2. Netzke assumes that your ExtJS library is in public/extjs, which may be a symbolic link, e.g (from your app root):
+* Ruby 1.9.2 (1.8.7 may work, too)
+* Rails >= 3.0.0
+* Ext JS >= 3.3.0
 
-    ln -s ~/code/sencha/extjs/ext-3.3.0 public/extjs
+== Installation
 
-= Installation
+In your Gemfile:
 
-For the latest ("edge") stuff, install as plugin:
+    gem 'netzke-basepack'
 
-    rails plugin install git://github.com/skozlov/netzke-basepack.git
-    
-Or tell bundler to get the gem straight from github:
+For the "edge" stuff, tell bundler to get the gem straight from GitHub:
 
     gem 'netzke-basepack', :git => "git://github.com/skozlov/netzke-basepack.git"
 
 == Usage
 
-Add Netzke routes (in routes.rb):
+Read the "Embedding components into Rails views" section on http://github.com/skozlov/netzke-core
 
-    # in routes.rb
-    RailsApp::Application.routes.draw do
-      netzke
-      ...
-    end
-
-== Embedding components into Rails' view
-
-Before you can use Netzke components in Rails' views, you need to add the following helper into your layout template, inside the "head" tag:
-
-    <%= netzke_init %>
-    
-This will include both ExtJS-related files (JavaScript and styles), and Netzke-related files.
-
-To embed a component into a view, use the +netzke+ helper, e.g.:
+Embed a basepack component into a view as any other Netzke component, e.g.:
 
   <%= netzke :books, :class_name => 'Basepack::GridPanel', :model => 'Book' %>
-  
-(assuming the existence of model 'Book')
+
+(assuming model 'Book' exists)
 
 For more examples, see http://demo.netzke.com, and look into test/rails_app
 
@@ -53,7 +38,7 @@ Netzke-basepack is bundled with automated tests. To run them, you need to set up
 After this you may run (*from the netzke-basepack folder*):
 
     cucumber features
-    
+
 and
 
     rspec spec
@@ -63,18 +48,18 @@ and
 The test/rails_app application is also a convenient playground, as it may be run as independent Rails 3 app. After starting it, access any of the lib/netzke widgets by using the following url:
 
     http://localhost:3000/components/<name of the component class>
-    
+
 e.g.:
 
     http://localhost:3000/components/UserGrid
-    
+
 == Icons support
 Netzke-basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.
 
 == More info
 Official project site: http://netzke.org
 
-Twitter (I try to only tweet about useful stuff): http://twitter.com/skozlov
+Twitter (latest news about Netzke): http://twitter.com/skozlov
 
 Many (if a bit outdated) tutorials: http://blog.writelesscode.com
 

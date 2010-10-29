@@ -36,23 +36,29 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  if File.exist?('VERSION')
-    version = File.read('VERSION')
-  else
-    version = ""
-  end
-
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "netzke-basepack #{version}"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
-
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
   test.pattern = 'test/**/*_test.rb'
   test.verbose = true
+end
+
+require 'rake/rdoctask'
+Rake::RDocTask.new do |rdoc|
+  require './lib/netzke/basepack/version'
+  version = Netzke::Basepack::Version::STRING
+
+  rdoc.rdoc_dir = 'rdoc'
+  rdoc.title = "netzke-basepack #{version}"
+  # rdoc.main = "README.rdoc"
+  rdoc.rdoc_files.include('README*')
+  rdoc.rdoc_files.include('CHANGELOG*')
+  rdoc.rdoc_files.include('lib/**/*.rb')
+end
+
+namespace :rdoc do
+  desc "Publish rdocs"
+  task :publish => :rdoc do
+    `scp -r rdoc/* fl:www/api.netzke.org/basepack`
+  end
 end
