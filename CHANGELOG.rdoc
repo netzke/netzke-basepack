@@ -1,6 +1,7 @@
-= v0.6.1 - EDGE
+= v0.6.1 - 2010-11-04
 * enhancements
   * BorderLayoutPanel persistence: remembers region sizes and collapsed/expanded states
+  * tooltips for grid buttons
   
 * bug fix
   * auto-detection of association's method when the latter is virtual was broken in 1.9.2
