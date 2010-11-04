@@ -2,7 +2,8 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.1'
 
-gem 'netzke-core', :git => "git://github.com/skozlov/netzke-core.git"
+gem 'netzke-core'#, :git => "~/code/netzke/netzke-core"
+gem 'netzke-persistence'#, :git => "~/code/netzke/netzke-persistence"
 
 gem 'will_paginate', '3.0.pre2'
 gem 'meta_where'
@@ -28,5 +29,5 @@ end
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
   gem 'pickle'
-  gem 'database_cleaner', :git => 'http://github.com/bmabey/database_cleaner.git'
+  gem 'database_cleaner'#, :git => 'http://github.com/bmabey/database_cleaner.git'
 end
