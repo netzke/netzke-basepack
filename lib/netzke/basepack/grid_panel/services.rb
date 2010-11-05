@@ -104,7 +104,6 @@ module Netzke
 
         ## Edit in form specific API
         def add_form__form_panel0__netzke_submit(params)
-          Rails.logger.debug "!!! here!\n"
           res = component_instance(:add_form__form_panel0).netzke_submit(params)
 
           if res[:set_form_values]
