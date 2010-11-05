@@ -10,18 +10,7 @@ module Netzke
           # Endpoints
           #
           endpoint :netzke_submit do |params|
-            data = ActiveSupport::JSON.decode(params[:data])
-            success = create_or_update_record(data)
-
-            if success
-              {:set_form_values => values, :set_result => "ok"}
-            else
-              # flash eventual errors
-              @record.errors.to_a.each do |msg|
-                flash :error => msg
-              end
-              {:feedback => @flash}
-            end
+            netzke_submit(params)
           end
 
           endpoint :netzke_load do |params|
@@ -55,6 +44,22 @@ module Netzke
 
         def values
           record && record.to_hash(fields)
+        end
+
+        # Implementation for the "netzke_submit" endpoint (for backward compatibility)
+        def netzke_submit(params)
+          data = ActiveSupport::JSON.decode(params[:data])
+          success = create_or_update_record(data)
+
+          if success
+            {:set_form_values => values, :set_result => "ok"}
+          else
+            # flash eventual errors
+            @record.errors.to_a.each do |msg|
+              flash :error => msg
+            end
+            {:feedback => @flash}
+          end
         end
 
         private

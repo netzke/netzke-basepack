@@ -10,15 +10,8 @@ module Netzke
 
         included do
 
-          endpoint :get_data do |*args|
-            params = args.first || {} # params are optional
-            if !config[:prohibit_read]
-              records = get_records(params)
-              {:data => records.map{|r| r.to_array(columns)}, :total => config[:enable_pagination] && records.total_entries}
-            else
-              flash :error => "You don't have permissions to read data"
-              {:feedback => @flash}
-            end
+          endpoint :get_data do |params|
+            get_data(params)
           end
 
           endpoint :post_data do |params|
@@ -111,6 +104,7 @@ module Netzke
 
         ## Edit in form specific API
         def add_form__form_panel0__netzke_submit(params)
+          Rails.logger.debug "!!! here!\n"
           res = component_instance(:add_form__form_panel0).netzke_submit(params)
 
           if res[:set_form_values]
@@ -153,9 +147,21 @@ module Netzke
         end
 
         # When providing the edit_form component, fill in the form with the requested record
-        def deliver_component(params)
+        def deliver_component_endpoint(params)
           components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:name] == 'edit_form'
           super
+        end
+
+        # Implementation for the "get_data" endpoint
+        def get_data(*args)
+          params = args.first || {} # params are optional!
+          if !config[:prohibit_read]
+            records = get_records(params)
+            {:data => records.map{|r| r.to_array(columns)}, :total => config[:enable_pagination] && records.total_entries}
+          else
+            flash :error => "You don't have permissions to read data"
+            {:feedback => @flash}
+          end
         end
 
         protected
