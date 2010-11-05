@@ -17,10 +17,7 @@ begin
 
 ========================================================================
 
-           Thanks for installing Netzke Basepack!
-
-  Don't forget to run "./script/generate netzke_basepack" for each
-  Rails app that will be using this gem.
+           Thanks for installing netzke-basepack!
 
   Netzke home page:     http://netzke.org
   Netzke Google Groups: http://groups.google.com/group/netzke
