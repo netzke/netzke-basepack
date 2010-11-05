@@ -16,9 +16,9 @@ module Netzke
             updated_items.each do |item|
               region = item[:region] || components[item[:component]][:region]
               item.merge!({
-                :width => state["#{region}_region_width"],
-                :height => state["#{region}_region_height"],
-                :collapsed => state["#{region}_region_collapsed"]
+                :width => state[:"#{region}_region_width"],
+                :height => state[:"#{region}_region_height"],
+                :collapsed => state[:"#{region}_region_collapsed"]
               })
             end
           end
@@ -83,8 +83,8 @@ module Netzke
 
       endpoint :region_resized do |params|
         size_state_hash = {}
-        size_state_hash[:"#{params[:region]}_region_width"] = params[:width] if params[:width]
-        size_state_hash[:"#{params[:region]}_region_height"] = params[:height] if params[:height]
+        size_state_hash[:"#{params[:region]}_region_width"] = params[:width].to_i if params[:width]
+        size_state_hash[:"#{params[:region]}_region_height"] = params[:height].to_i if params[:height]
         update_state(size_state_hash)
       end
 
