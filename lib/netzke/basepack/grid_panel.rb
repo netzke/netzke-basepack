@@ -1,6 +1,5 @@
 require "netzke/basepack/grid_panel/columns"
 require "netzke/basepack/grid_panel/services"
-require "netzke/basepack/grid_panel/javascript"
 # require "netzke/basepack/plugins/configuration_tool"
 # require "data_accessor"
 
@@ -110,7 +109,6 @@ module Netzke
         :tools                  => %w{ refresh },
       }
 
-      include self::Javascript
       include self::Services
       include self::Columns
 
@@ -129,16 +127,14 @@ module Netzke
       #   super(*args)
       # end
 
+      js_base_class "Ext.grid.EditorGridPanel"
+      js_mixin :pre
+      js_mixin :advanced_search if extended_search_available
+      js_mixin :edit_in_form if edit_in_form_available
+
       # Include extra javascript that we depend on
       def self.include_js
-        res = ["#{File.dirname(__FILE__)}/grid_panel/javascripts/pre.js"]
-
-        # Optional edit in form functionality
-        res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/edit_in_form.js" if edit_in_form_available
-
-        # Optional extended search functionality
-        res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/advanced_search.js" if extended_search_available
-
+        res = []
         ext_examples = Netzke::Core.ext_location.join("examples")
 
         # Checkcolumn
@@ -178,6 +174,20 @@ module Netzke
         ]
       end
 
+
+      # The result of this method (a hash) is converted to a JSON object and passed as the configuration parameter
+      # to the constructor of our JavaScript class. Override it when you want to pass any extra configuration
+      # to the JavaScript side.
+      def js_config
+        super.merge({
+          :bbar => config.has_key?(:bbar) ? config[:bbar] : default_bbar,
+          :context_menu => config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu,
+          :columns => columns, # columns
+          :model => config[:model], # the model name
+          :inline_data => (get_data if config[:load_inline_data]), # inline data (loaded along with the grid panel)
+          :pri => data_class.primary_key # table primary key name
+        })
+      end
 
       def default_bbar
         res = %w{ add edit apply del }.map(&:to_sym).map(&:action)

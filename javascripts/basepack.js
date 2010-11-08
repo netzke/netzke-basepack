@@ -1,4 +1,5 @@
 Ext.ns("Netzke.pre");
+Ext.ns("Netzke.pre.Basepack");
 Ext.ns("Ext.ux.grid");
 
 Ext.apply(Ext.History, new Ext.util.Observable());

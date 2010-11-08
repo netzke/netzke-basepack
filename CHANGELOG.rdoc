@@ -1,3 +1,8 @@
+= v0.6.3 - EDGE
+* compatibility with netzke-core 0.6.5
+* refactoring
+	* GridPanel code restructured, using the new +js_mixin+ method
+
 = v0.6.2 - 2010-11-05
 * compatibility with netzke-core 0.6.4
 * bug fix

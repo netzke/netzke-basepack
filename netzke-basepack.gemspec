@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{netzke-basepack}
-  s.version = "0.6.2"
+  s.version = "0.6.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-11-05}
+  s.date = %q{2010-11-09}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -70,7 +70,6 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/form_panel/services.rb",
     "lib/netzke/basepack/grid_panel.rb",
     "lib/netzke/basepack/grid_panel/columns.rb",
-    "lib/netzke/basepack/grid_panel/javascript.rb",
     "lib/netzke/basepack/grid_panel/javascripts/advanced_search.js",
     "lib/netzke/basepack/grid_panel/javascripts/edit_in_form.js",
     "lib/netzke/basepack/grid_panel/javascripts/pre.js",
