@@ -14,7 +14,7 @@ module Netzke
   autoload :Ext, 'ext'
 
   module Basepack
-    class Engine < Rails::Engine
+    class Engine < ::Rails::Engine
       config.after_initialize do
         I18n.load_path << File.dirname(__FILE__) + '/../locale/en.yml'
       end

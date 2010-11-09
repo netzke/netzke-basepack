@@ -83,8 +83,7 @@ GEM
     mysql2 (0.2.6)
     netzke-core (0.6.5)
       activesupport (>= 3.0.1)
-    netzke-persistence (0.1.0)
-      netzke-persistence
+    netzke-persistence (0.1.1)
     nokogiri (1.4.3.1)
     pickle (0.4.3)
       cucumber (>= 0.8)
