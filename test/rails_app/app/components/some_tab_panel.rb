@@ -1,15 +1,19 @@
 class SomeTabPanel < Netzke::Basepack::TabPanel
-  def config
+  config do
     {
       :active_tab => 0,
-      :items => [{
-        :title => "User form",
-        :class_name => "UserForm",
-        :record_id => User.first.id
-      },{
-        :title => "User grid",
-        :class_name => "UserGrid"
-      }]
-    }.deep_merge super
+      :items => [:tab_one.component,:tab_two.component]
+    }
   end
+
+  component :tab_one, {
+    :title => "First Tab",
+    :class_name => "Basepack::Panel"
+  }
+
+  component :tab_two, {
+    :title => "Second Tab",
+    :class_name => "Basepack::Panel",
+    :lazy_loading => true # Dynamically loaded when the tab gets open
+  }
 end

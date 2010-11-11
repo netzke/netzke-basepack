@@ -16,17 +16,7 @@ module Netzke
 
       js_base_class "Ext.TabPanel"
 
-      js_method :init_component, <<-JS
-        function(params){
-          #{js_full_class_name}.superclass.initComponent.call(this);
-          this.on('tabchange', function(self, i){
-            if (i && i.wrappedComponent && !i.items.first()) {
-              this.loadComponent({name: i.wrappedComponent, container: i.id});
-            }
-          }, this);
-        }
-      JS
-
+      js_mixin :main
     end
   end
 end
