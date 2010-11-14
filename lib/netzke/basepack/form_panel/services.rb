@@ -74,14 +74,18 @@ module Netzke
             @record = data_class.new if @record.nil?
 
             hsh.each_pair do |k,v|
-              begin
-                @record.send("#{k}=",v)
-              rescue StandardError => exc
-                flash :error => exc.message
-                success = false
-                break
-              end
+              @record.set_value_for_attribute(fields[k.to_sym], v)
             end
+
+            #hsh.each_pair do |k,v|
+              #begin
+                #@record.send("#{k}=",v)
+              #rescue StandardError => exc
+                #flash :error => exc.message
+                #success = false
+                #break
+              #end
+            #end
 
             # did we have complete success?
             success && @record.save

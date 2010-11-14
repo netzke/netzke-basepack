@@ -1,7 +1,12 @@
 = v0.6.3 - EDGE
 * compatibility with netzke-core 0.6.5
+
 * refactoring
 	* GridPanel code restructured, using the new +js_mixin+ method
+
+* enhancements
+	* new +getter+ config option for columns/fields, a lambda receiving the record as parameter
+	* new +setter+ config option for columns/fields, a lambda receiving the record as first parameter, new value as the second
 
 = v0.6.2 - 2010-11-05
 * compatibility with netzke-core 0.6.4

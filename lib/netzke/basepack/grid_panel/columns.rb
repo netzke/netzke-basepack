@@ -66,6 +66,11 @@ module Netzke
           end
         end
 
+        # Columns as a hash, for easier access to a specific column
+        def columns_hash
+          @columns_hash ||= columns.inject({}){|r,c| r.merge(c[:name].to_sym => c)}
+        end
+
         # Columns that we fall back to when neither persistent columns, nor configured columns are present.
         # If there's a model-level field configuration, it's being used.
         # Otherwise the defaults straight from the ActiveRecord model ("netzke_attributes").
@@ -150,8 +155,15 @@ module Netzke
           end
 
           def set_default_editable(c)
-            c[:editable] = c[:read_only].nil? ? !(primary_key_attr?(c) || c[:virtual]) : !c[:read_only]
-            c.delete(:read_only)
+            not_editable_if = primary_key_attr?(c)
+            not_editable_if ||= c[:virtual]
+            not_editable_if ||= c.delete(:read_only)
+
+            editable_if = data_class.column_names.include?(c[:name])
+            editable_if ||= data_class.instance_methods.map(&:to_s).include?("#{c[:name]}=")
+            editable_if ||= association_attr?(c[:name])
+
+            c[:editable] = editable_if && !not_editable_if if c[:editable].nil?
           end
 
           def set_default_sortable(c)
@@ -164,7 +176,7 @@ module Netzke
 
           # Returns editor's xtype for a column type
           def editor_for_attr_type(type)
-            attr_type_to_editor_map[type]
+            attr_type_to_editor_map[type] || :textfield
           end
 
           def editor_for_association

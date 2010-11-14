@@ -7,3 +7,6 @@ Factory.define :user do |f|
   f.last_name "Pan"
   f.association :role
 end
+
+Factory.define :book do |f|
+end

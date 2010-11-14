@@ -249,7 +249,6 @@ module Netzke
           # <tt>:operation</tt>: :update or :create
           def process_data(data, operation)
             success = true
-            # mod_record_ids = []
             mod_records = {}
             if !config[:"prohibit_#{operation}"]
               modified_records = 0
@@ -258,19 +257,23 @@ module Netzke
                 record = operation == :create ? data_class.new : data_class.find(id)
                 success = true
 
-                # merge with strong default attirbutes
-                record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
+                record_hash.each_pair do |k,v|
+                  record.set_value_for_attribute(columns_hash[k.to_sym], v)
+                end
 
                 # process all attirubutes for this record
-                record_hash.each_pair do |k,v|
-                  begin
-                    record.send("#{k}=",v)
-                  rescue ArgumentError => exc
-                    flash :error => exc.message
-                    success = false
-                    break
-                  end
-                end
+                #record_hash.each_pair do |k,v|
+                  #begin
+                    #record.send("#{k}=",v)
+                  #rescue ArgumentError => exc
+                    #flash :error => exc.message
+                    #success = false
+                    #break
+                  #end
+                #end
+
+                # merge with strong default attirbutes
+                record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
 
                 # try to save
                 # modified_records += 1 if success && record.save

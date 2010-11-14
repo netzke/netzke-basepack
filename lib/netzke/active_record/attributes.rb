@@ -127,20 +127,19 @@ module Netzke::ActiveRecord::Attributes
 
   end
 
+  # Updates the record from an attributes hash (such as {:first_name => {:value => "Victor", ...}, ...})
+  #def update_from_attributes_hash(attributes)
+    #attributes.each_pair do |k,v|
+      #set_value_for_attribute(v,v[:value])
+    #end
+  #end
+
   # Transforms a record to array of values according to the passed attributes
   def to_array(attributes)
     res = []
     for a in attributes
-      begin
-        next if a[:included] == false
-        v = send(a[:name])
-        # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
-        v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
-        res << v
-      rescue NoMethodError
-        # So that we don't crash at a badly configured column
-        res << "UNDEF"
-      end
+      next if a[:included] == false
+      res << value_for_attribute(a)
     end
     res
   end
@@ -156,15 +155,20 @@ module Netzke::ActiveRecord::Attributes
   end
 
   def value_for_attribute(a)
-    begin
-      v = send(a[:name])
-      # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
-      v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
-      v
-    rescue NoMethodError
-      # So that we don't crash at a badly configured column
-      "UNDEF"
-    end
+    v = a[:getter] ? a[:getter].call(self) : send(a[:name])
+    # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
+    v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
+    v
+  #rescue NoMethodError
+    # So that we don't crash at a badly configured column
+    #"UNDEF"
   end
 
+  def set_value_for_attribute(a, v)
+    if a[:setter]
+      a[:setter].call(self, v)
+    elsif respond_to?("#{a[:name]}=")
+      send("#{a[:name]}=", v)
+    end
+  end
 end

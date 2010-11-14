@@ -69,15 +69,25 @@ module Netzke
     # * <tt>:columns</tt> - an array of columns to be displayed in the grid; each column may be represented by a symbol (representing the model's attribute name), or a hash (when extra configuration is needed)
     #
     # == Columns
-    # Each column supports the option :sorting_scope, which defines a scope used for sorting the column. This option would be
-    # useful for virtual columns for example. The scope will get one parameter which contains the direction (:asc or :desc)
-    # Example:
-    # { :name => "complete_user_name", :sorting_scope => :sort_user_by_full_name }
-    # class User < ActiveRecord::Base
-    #     scope :sort_user_by_full_name, lambda { |dir|
+    # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name of model's (virtual) attribute, or a column configuration hash.
+    # The column configuration hash recognizes the following options:
+    #
+    # * +name+ - name of the column, that may correspond to model's (virtual) attribute
+    # * +read_only+ - a boolean that defines if the cells in the column should be editable
+    # * +editable+ - same as +read_only+, but in reverse (takes precedence over +read_only+)
+    # * +getter+ - a lambda that receives a record as a parameter, and is expected to return a string that will be printed in the cell (can be HTML code)
+    # * +setter+ - a lambda that receives a record as first parameter, and the value passed from the cell as the second parameter, and is expected to modify the record accordingly
+    #
+    # * +sorting_scope+ - the name of the scope used for sorting the column. This can be useful for virtual columns for example. The scope will get one parameter specifying the direction (:asc or :desc). Example:
+    #
+    #     columns => [{ :name => "complete_user_name", :sorting_scope => :sort_user_by_full_name }, ...]
+    #
+    #     class User < ActiveRecord::Base
+    #       scope :sort_user_by_full_name, lambda { |dir|
     #         order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}")
-    #     }
-    # end
+    #       }
+    #     end
+    # Besides these options, a column can receive any meaningful config option understood by Ext.grid.Column (http://dev.sencha.com/deploy/dev/docs/?class=Ext.grid.Column)
     class GridPanel < Netzke::Base
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,
@@ -128,7 +138,7 @@ module Netzke
       # end
 
       js_base_class "Ext.grid.EditorGridPanel"
-      js_mixin :pre
+      js_mixin :main
       js_mixin :advanced_search if extended_search_available
       js_mixin :edit_in_form if edit_in_form_available
 

@@ -95,18 +95,15 @@ module Netzke
             field.merge!(fields_from_model[field[:name].to_sym]) unless fields_from_model[field[:name].to_sym].nil?
 
             detect_association_with_method(field) # xtype for an association field
-
             set_default_field_label(field)
-
             set_default_field_xtype(field) if field[:xtype].nil?
-
             set_default_field_value(field) if self.record
+            set_default_read_only(field)
 
             # provide our special combobox with our id
             field[:parent_id] = self.global_id if field[:xtype] == :combobox
 
             field[:hidden] = field[:hide_label] = true if field[:hidden].nil? && primary_key_attr?(field)
-
             field[:checked] = field[:value] if field[:attr_type] == "boolean"
 
             field
@@ -168,6 +165,15 @@ module Netzke
             field[:xtype] = xtype_for_attr_type(field[:attr_type]) unless xtype_for_attr_type(field[:attr_type]).nil?
           end
 
+          def set_default_read_only(field)
+            enabled_if = data_class.column_names.include?(field[:name])
+            enabled_if ||= data_class.instance_methods.map(&:to_s).include?("#{field[:name]}=")
+            enabled_if ||= record && record.respond_to?("#{field[:name]}=")
+            enabled_if ||= association_attr?(field[:name])
+
+            field[:read_only] = !enabled_if if field[:read_only].nil?
+          end
+
           def attr_type_to_xtype_map
             {
               :integer => :numberfield,
@@ -181,7 +187,7 @@ module Netzke
           end
 
           def xtype_for_attr_type(type)
-            attr_type_to_xtype_map[type]
+            attr_type_to_xtype_map[type] || :textfield
           end
 
           def xtype_for_association
