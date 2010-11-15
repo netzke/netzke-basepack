@@ -22,6 +22,9 @@ module Netzke
         res << "#{File.dirname(__FILE__)}/basic_app/statusbar_ext.js"
       end
 
+      class_attribute :login_url
+      self.login_url = "/login"
+
       class_attribute :logout_url
       self.logout_url = "/logout"
 
@@ -88,7 +91,7 @@ module Netzke
 
       js_method :on_login, <<-JS
         function(){
-          window.location = "/login"
+          window.location = "#{login_url}"
         }
       JS
 
