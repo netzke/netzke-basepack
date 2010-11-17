@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-11-15}
+  s.date = %q{2010-11-17}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -146,9 +146,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/models/role.rb",
     "test/rails_app/app/models/user.rb",
     "test/rails_app/app/presenters/forms/generic_user.rb",
-    "test/rails_app/app/views/embedded_components/index.html.erb",
     "test/rails_app/app/views/layouts/application.html.erb",
-    "test/rails_app/app/views/layouts/embedded_netzke.html.erb",
     "test/rails_app/config.ru",
     "test/rails_app/config/application.rb",
     "test/rails_app/config/boot.rb",
