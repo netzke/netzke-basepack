@@ -9,3 +9,19 @@ es:
         add_in_form: Aggregar en forma
         edit_in_form: Editar en forma
         search: Buscar
+      form_panel:
+        apply: Aplicar
+  activerecord:
+    models:
+      book: Libro
+    attributes:
+      book:
+        author__name: "Autor"
+        author__first_name: "Autor"
+        in_abundance: "En abundancia"
+        title: "Título"
+        exemplars: "Ejemplares"
+        digitized: "Digitalizado"
+        notes: "Notas"
+        created_at: "Creado en"
+        updated_at: "Actualizado en"

@@ -137,7 +137,7 @@ module Netzke
           end
 
           def set_default_header(c)
-            c[:label] ||= c[:name].humanize
+            c[:label] ||= data_class.human_attribute_name(c[:name])
           end
 
           def set_default_editor(c)

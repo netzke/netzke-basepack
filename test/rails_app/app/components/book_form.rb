@@ -1,5 +1,5 @@
 class BookForm < Netzke::Basepack::FormPanel
-  js_property :title, "Books"
+  js_property :title, Book.model_name.human
 
   include BookPresentation
 

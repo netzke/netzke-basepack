@@ -1,5 +1,5 @@
 class UserForm < Netzke::Basepack::FormPanel
-  js_property :title, "User"
+  js_property :title, User.model_name.human
 
   config do
     {

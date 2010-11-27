@@ -146,7 +146,7 @@ module Netzke
           end
 
           def set_default_field_label(c)
-            c[:field_label] ||= c[:name].humanize.sub(/\s+/, " ") # multiple spaces get replaced with one
+            c[:field_label] ||= data_class.human_attribute_name(c[:name]).sub(/\s+/, " ") # multiple spaces (in case of association attrs) get replaced with one
           end
 
           def set_default_field_value(field)

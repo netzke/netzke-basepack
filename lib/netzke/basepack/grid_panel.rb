@@ -292,7 +292,7 @@ module Netzke
         {
           :lazy_loading => true,
           :class_name => "Basepack::GridPanel::RecordFormWindow",
-          :title => "Add #{data_class.table_name.singularize.humanize}",
+          :title => "Add #{data_class.model_name.human}",
           :button_align => "right",
           :items => [{
             :class_name => "Basepack::FormPanel",
@@ -313,7 +313,7 @@ module Netzke
         {
           :lazy_loading => true,
           :class_name => "Basepack::GridPanel::RecordFormWindow",
-          :title => "Edit #{data_class.table_name.singularize.humanize}",
+          :title => "Edit #{data_class.model_name.human}",
           :button_align => "right",
           :items => [{
             :class_name => "Basepack::FormPanel",
@@ -332,7 +332,7 @@ module Netzke
         {
           :lazy_loading => true,
           :class_name => "Basepack::GridPanel::RecordFormWindow",
-          :title => "Edit #{data_class.table_name.humanize}",
+          :title => "Edit #{data_class.model_name.human.pluralize}",
           :button_align => "right",
           :items => [{
             :class_name => "Basepack::GridPanel::MultiEditForm",
