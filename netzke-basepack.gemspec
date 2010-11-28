@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-11-27}
+  s.date = %q{2010-11-28}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -118,10 +118,12 @@ Gem::Specification.new do |s|
     "test/rails_app/Gemfile.lock",
     "test/rails_app/README",
     "test/rails_app/Rakefile",
+    "test/rails_app/app/components/author_grid.rb",
     "test/rails_app/app/components/book_form.rb",
     "test/rails_app/app/components/book_grid.rb",
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_presentation.rb",
+    "test/rails_app/app/components/books_bound_to_author.rb",
     "test/rails_app/app/components/generic_user_form.rb",
     "test/rails_app/app/components/simple_accordion.rb",
     "test/rails_app/app/components/simple_basic_app.rb",
@@ -236,10 +238,12 @@ Gem::Specification.new do |s|
     "spec/factories.rb",
     "spec/spec_helper.rb",
     "test/console_with_fixtures.rb",
+    "test/rails_app/app/components/author_grid.rb",
     "test/rails_app/app/components/book_form.rb",
     "test/rails_app/app/components/book_grid.rb",
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_presentation.rb",
+    "test/rails_app/app/components/books_bound_to_author.rb",
     "test/rails_app/app/components/generic_user_form.rb",
     "test/rails_app/app/components/simple_accordion.rb",
     "test/rails_app/app/components/simple_basic_app.rb",

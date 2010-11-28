@@ -72,4 +72,16 @@ Scenario: Filling out association column with association's virtual method
   Then I should see "Nabokov, Vladimir"
   And I should see "Lolita"
 
+@javascript
+Scenario: Grid with strong_default_attrs
+  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
+  And a book exists with title: "Lolita", author: that author
+  And a book exists with title: "Unknown"
+  When I go to the BooksBoundToAuthor test page
+  And I press "Add in form"
+  And I fill in "Title:" with "The Luzhin Defence"
+  And I press "OK"
+  And I should see "The Luzhin Defence"
+  And I should see "Lolita"
+  But I should not see "Unknown"
 

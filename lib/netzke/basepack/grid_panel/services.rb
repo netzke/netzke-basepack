@@ -257,8 +257,11 @@ module Netzke
                 record = operation == :create ? data_class.new : data_class.find(id)
                 success = true
 
+                # merge with strong default attirbutes
+                record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
+
                 record_hash.each_pair do |k,v|
-                  record.set_value_for_attribute(columns_hash[k.to_sym], v)
+                  record.set_value_for_attribute(columns_hash[k.to_sym].nil? ? {:name => k} : columns_hash[k.to_sym], v)
                 end
 
                 # process all attirubutes for this record
@@ -271,9 +274,6 @@ module Netzke
                     #break
                   #end
                 #end
-
-                # merge with strong default attirbutes
-                record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
 
                 # try to save
                 # modified_records += 1 if success && record.save
