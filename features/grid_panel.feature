@@ -85,3 +85,10 @@ Scenario: Grid with strong_default_attrs
   And I should see "Lolita"
   But I should not see "Unknown"
 
+@javascript
+Scenario: Grid with columns with default values
+  Given I am on the BookGridWithDefaultValues test page
+  When I press "Add in form"
+  And I press "OK"
+  Then a book should exist with title: "Lolita", exemplars: 100
+

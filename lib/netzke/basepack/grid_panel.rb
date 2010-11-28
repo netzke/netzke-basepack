@@ -297,7 +297,7 @@ module Netzke
           :items => [{
             :class_name => "Basepack::FormPanel",
             :model => config[:model],
-            :items => default_fields_for_forms,
+            :items => default_fields_for_forms_with_default_values,
             :persistent_config => config[:persistent_config],
             :strong_default_attrs => config[:strong_default_attrs],
             :border => true,
