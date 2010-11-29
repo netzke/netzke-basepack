@@ -90,5 +90,6 @@ Scenario: Grid with columns with default values
   Given I am on the BookGridWithDefaultValues test page
   When I press "Add in form"
   And I press "OK"
+  And I sleep 1 second
   Then a book should exist with title: "Lolita", exemplars: 100
 

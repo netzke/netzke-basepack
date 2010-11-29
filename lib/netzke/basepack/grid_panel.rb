@@ -142,6 +142,12 @@ module Netzke
       js_mixin :advanced_search if extended_search_available
       js_mixin :edit_in_form if edit_in_form_available
 
+      # I18n used in JavaScript
+      js_property :i18n, {
+        :are_you_sure => I18n.translate("netzke.basepack.generic.are_you_sure"),
+        :confirm => I18n.translate("netzke.basepack.generic.confirm")
+      }
+
       # Include extra javascript that we depend on
       def self.include_js
         res = []

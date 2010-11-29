@@ -1,6 +1,9 @@
 en:
   netzke:
     basepack:
+      generic:
+        confirm: Confirm
+        are_you_sure: Are you sure?
       grid_panel:
         add: Add
         edit: Edit
