@@ -89,7 +89,7 @@ module Netzke
       @original_data_class ||= begin
         ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
         model_name = config[:model] || config[:data_class_name]
-        model_name.nil? ? raise(ArgumentError, "No model specified for component #{global_id}") : model_name.constantize
+        model_name && model_name.constantize
       end
     end
 
