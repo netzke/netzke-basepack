@@ -78,10 +78,7 @@ module Netzke
 	# Model class
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
-      @data_class ||= begin
-        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}".constantize rescue nil
-        klass || original_data_class
-      end
+      @data_class ||= self.class.constantize_class_name_or_nil("Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}") || original_data_class
     end
 
     # Model class before model extensions are taken into account
@@ -89,7 +86,7 @@ module Netzke
       @original_data_class ||= begin
         ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
         model_name = config[:model] || config[:data_class_name]
-        model_name.nil? ? raise(ArgumentError, "No model specified for component #{global_id}") : model_name.constantize
+        model_name.nil? ? raise(ArgumentError, "No model specified for component #{global_id}") : self.class.constantize_class_name_or_nil(model_name)
       end
     end
 

@@ -213,8 +213,8 @@ module Netzke
           # Default fields that will be displayed in the Add/Edit/Search forms
           # You don't need to return normalized fields when overriding this method (for example, see BookGridWithVirtualAttributes)
           def default_fields_for_forms
-            form_klass = "Netzke::ModelExtensions::#{config[:model]}ForFormPanel".constantize rescue nil
-            form_klass ||= original_data_class
+	
+            form_klass = self.class.constantize_class_name_or_nil("Netzke::ModelExtensions::#{config[:model]}ForFormPanel")|| original_data_class
 
             # Select only those fields that are known to the form_klass
             selected_columns = columns.select do |c|
