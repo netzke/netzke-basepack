@@ -15,7 +15,9 @@ module Netzke
             item.replace({
               :layout => 'fit',
               :wrapped_component => wrapped_component[:name],
-              :title => wrapped_component[:title] || wrapped_component[:name]
+              :title => wrapped_component[:title] || wrapped_component[:name],
+              :icon_cls => wrapped_component[:icon_cls],
+              :disabled => wrapped_component[:disabled]
             })
           end
         end

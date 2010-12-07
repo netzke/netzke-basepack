@@ -9,7 +9,7 @@ module Netzke
         # a field)
         def items
           @form_panel_items ||= begin
-            res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # take netzke_attributes as default items
+            res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # netzke_attributes as default items
 
             # if primary key isn't there, insert it as first
             if data_class && res.first && res.first[:name] != [data_class.primary_key]
@@ -82,7 +82,7 @@ module Netzke
             # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
           end
 
-          # This is where we expand our basic field config with all the default and eventual value
+          # This is where we expand our basic field config with all the defaults
           def normalize_field(field)
             # field can only be a string, a symbol, or a hash
             if field.is_a?(Hash)
@@ -92,7 +92,9 @@ module Netzke
               field = {:name => field.to_s}
             end
 
-            field.merge!(fields_from_model[field[:name].to_sym]) unless fields_from_model[field[:name].to_sym].nil?
+            field_from_model = fields_from_model && fields_from_model[field[:name].to_sym]
+
+            field_from_model && field.merge!(field_from_model)
 
             detect_association_with_method(field) # xtype for an association field
             set_default_field_label(field)
@@ -146,7 +148,9 @@ module Netzke
           end
 
           def set_default_field_label(c)
-            c[:field_label] ||= data_class.human_attribute_name(c[:name]).sub(/\s+/, " ") # multiple spaces (in case of association attrs) get replaced with one
+            # multiple spaces (in case of association attrs) get replaced with one
+            c[:field_label] ||= data_class ? data_class.human_attribute_name(c[:name]) : c[:name].humanize
+            c[:field_label].gsub!(/\s+/, " ")
           end
 
           def set_default_field_value(field)
@@ -166,7 +170,7 @@ module Netzke
           end
 
           def set_default_read_only(field)
-            enabled_if = data_class.column_names.include?(field[:name])
+            enabled_if = !data_class || data_class.column_names.include?(field[:name])
             enabled_if ||= data_class.instance_methods.map(&:to_s).include?("#{field[:name]}=")
             enabled_if ||= record && record.respond_to?("#{field[:name]}=")
             enabled_if ||= association_attr?(field[:name])
