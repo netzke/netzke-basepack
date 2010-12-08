@@ -236,7 +236,8 @@ module Netzke
           def default_fields_for_forms_with_default_values
             default_fields_for_forms.map do |f|
               norm_attr = normalize_attr(f)
-              norm_attr.merge(:value => columns_hash[norm_attr[:name].to_sym][:default_value])
+              attr_name = norm_attr[:name].to_sym
+              norm_attr.merge(:value => norm_attr[:default_value] || columns_hash[attr_name].try(:fetch, :default_value, nil) || data_class.netzke_attribute_hash[attr_name].try(:fetch, :default_value, nil))
             end
           end
 
