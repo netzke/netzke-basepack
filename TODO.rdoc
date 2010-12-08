@@ -10,6 +10,3 @@
 
 == Optimizations
 * Check persistent_config-related queries (aren't they too many?)
-
-== One day
-* Replace xcheckbox with checkbox in FormPanel

@@ -106,7 +106,10 @@ module Netzke
             field[:parent_id] = self.global_id if field[:xtype] == :combobox
 
             field[:hidden] = field[:hide_label] = true if field[:hidden].nil? && primary_key_attr?(field)
-            field[:checked] = field[:value] if field[:attr_type] == "boolean"
+
+            # checkbox setup
+            field[:checked] = field[:value] if field[:attr_type] == :boolean
+            field[:input_value] = true if field[:attr_type] == :boolean
 
             field
           end
@@ -181,7 +184,7 @@ module Netzke
           def attr_type_to_xtype_map
             {
               :integer => :numberfield,
-              :boolean => :xcheckbox,
+              :boolean => :checkbox,
               :date => :datefield,
               :datetime => :xdatetime,
               :text => :textarea,
