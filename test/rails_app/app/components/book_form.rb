@@ -10,8 +10,9 @@ class BookForm < Netzke::Basepack::FormPanel
       :items => [
         :title,
         {:name => :author__first_name, :setter => author_first_name_setter},
+        :digitized,
         :exemplars,
-        {:name => :in_abundance, :getter => in_abundance_getter}
+        {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield}
       ]
     )
   end

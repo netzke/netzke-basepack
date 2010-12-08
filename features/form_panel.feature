@@ -49,3 +49,15 @@ Scenario: FormPanel should be functional without model provided
   Then I should see "Text field: Some text"
   And I should see "Number field: 42"
   And I should see "Boolean field: true"
+
+@javascript
+Scenario: Checkbox field should work properly
+  Given an author exists with first_name: "Carlos"
+  And a book exists with author: that author, digitized: false, exemplars: 2
+  When I go to the BookForm test page
+  And I fill in "Exemplars:" with "4"
+  And I check "Digitized:"
+  And I press "Apply"
+  Then I should see "YES"
+  And a book should exist with digitized: true, author: that author, exemplars: 4
+  And a book should not exist with digitized: false, author: that author

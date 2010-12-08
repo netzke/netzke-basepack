@@ -26,7 +26,7 @@ module Netzke
 
       include Netzke::DataAccessor
 
-      js_base_class "Netzke.pre.FormPanel"
+      js_base_class "Ext.form.FormPanel"
 
       js_property :bbar, [:apply.action]
 
@@ -41,8 +41,8 @@ module Netzke
       # end
 
       # Extra javascripts
-      js_include "#{File.dirname(__FILE__)}/form_panel/javascripts/pre.js",
-                  "#{File.dirname(__FILE__)}/form_panel/javascripts/xcheckbox.js"
+      js_mixin :main
+
           # Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
           # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
 
