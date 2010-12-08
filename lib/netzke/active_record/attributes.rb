@@ -7,7 +7,7 @@ module Netzke::ActiveRecord::Attributes
     #   netzke_attribute :recent, :type => :boolean, :read_only => true
     def netzke_attribute(name, options = {})
       name = name.to_s
-      options[:attr_type] = options.delete(:type) || :string
+      options[:attr_type] = options.delete(:type) || options.delete(:attr_type) || :string
       declared_attrs = read_inheritable_attribute(:netzke_declared_attributes) || []
       # if the attr was declared already, simply merge it with the new options
       existing = declared_attrs.detect{ |va| va[:name] == name }
@@ -46,6 +46,10 @@ module Netzke::ActiveRecord::Attributes
     def netzke_attributes
       exposed = netzke_exposed_attributes
       exposed ? netzke_attrs_in_forced_order(exposed) : netzke_attrs_in_natural_order
+    end
+
+    def netzke_attribute_hash
+      netzke_attributes.inject({}){ |r,a| r.merge(a[:name].to_sym => a) }
     end
 
     def netzke_exposed_attributes
