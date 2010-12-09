@@ -38,9 +38,9 @@ module Netzke
               record_ids = ActiveSupport::JSON.decode(params[:records])
               data_class.destroy(record_ids)
               on_data_changed
-              {:feedback => "Deleted #{record_ids.size} record(s)", :load_store_data => get_data}
+              {:feedback => I18n.t('netzke.basepack.grid_panel.deleted_x_records', :x => record_ids.size), :load_store_data => get_data}
             else
-              {:feedback => "You don't have permissions to delete data"}
+              {:feedback => I18n.t('netzke.basepack.grid_panel.cannot_delete')}
             end
           end
 
@@ -192,8 +192,8 @@ module Netzke
               # if a sorting scope is set, call the scope with the given direction
               column = columns.detect { |c| c[:name] == params[:sort] }
               if column.has_key?(:sorting_scope)
-  	            relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
-  	          else
+                relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
+              else
                 relation = if method.nil?
                   relation.order(assoc.to_sym.send(dir))
                 else
