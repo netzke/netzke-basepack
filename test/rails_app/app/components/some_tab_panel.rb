@@ -16,4 +16,5 @@ class SomeTabPanel < Netzke::Basepack::TabPanel
     :class_name => "Basepack::Panel",
     :lazy_loading => true # Dynamically loaded when the tab gets open
   }
+
 end
