@@ -18,14 +18,16 @@ module Netzke
       include WrapLazyLoaded
 
       js_property :layout, 'accordion'
+      js_property :component_load_mask, {:msg => null} # due to a probable bug in Ext's Accordion Layout (mask message is mis-layed-out), disabling mask message
 
       js_method :init_component, <<-JS
         function(params){
           #{js_full_class_name}.superclass.initComponent.call(this);
           this.items.each(function(item){
             item.on('expand', function(i){
-              if (i && i.wrappedComponent && !i.items.first()) {
-                this.loadComponent({name: i.wrappedComponent, container: i.id});
+              if (i && i.wrappedComponent && !i.items.first() && !i.beingLoaded) {
+                i.beingLoaded = true; // prevent more than one request per panel in case of fast clicking
+                this.loadComponent({name: i.wrappedComponent, container: i.id}, function(){i.beingLoaded = false});
               }
             }, this);
           }, this);

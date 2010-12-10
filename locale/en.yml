@@ -2,7 +2,7 @@ en:
   netzke:
     basepack:
       generic:
-        confirm: Confirm
+        confirm: Confirmation
         are_you_sure: Are you sure?
       grid_panel:
         add: Add
@@ -12,7 +12,7 @@ en:
         add_in_form: Add in form
         edit_in_form: Edit in form
         search: Search
-        deleted_x_records: 'Deleted {{x}} record(s)'
+        deleted_n_records: "Deleted %{n} record(s)"
         cannot_delete: "You don't have permissions to delete data"
 
     formats:

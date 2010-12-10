@@ -1,9 +1,9 @@
 class SomeTabPanel < Netzke::Basepack::TabPanel
-  config do
-    {
+  def configuration
+    super.merge(
       :active_tab => 0,
       :items => [:tab_one.component,:tab_two.component]
-    }
+    )
   end
 
   component :tab_one, {
@@ -16,4 +16,5 @@ class SomeTabPanel < Netzke::Basepack::TabPanel
     :class_name => "Basepack::Panel",
     :lazy_loading => true # Dynamically loaded when the tab gets open
   }
+
 end

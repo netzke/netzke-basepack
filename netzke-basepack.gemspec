@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-12-09}
+  s.date = %q{2010-12-10}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -132,6 +132,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/simple_tab_panel.rb",
     "test/rails_app/app/components/simple_window.rb",
     "test/rails_app/app/components/simple_wrapper.rb",
+    "test/rails_app/app/components/some_accordion_panel.rb",
     "test/rails_app/app/components/some_border_layout.rb",
     "test/rails_app/app/components/some_search_panel.rb",
     "test/rails_app/app/components/some_tab_panel.rb",
@@ -254,6 +255,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/simple_tab_panel.rb",
     "test/rails_app/app/components/simple_window.rb",
     "test/rails_app/app/components/simple_wrapper.rb",
+    "test/rails_app/app/components/some_accordion_panel.rb",
     "test/rails_app/app/components/some_border_layout.rb",
     "test/rails_app/app/components/some_search_panel.rb",
     "test/rails_app/app/components/some_tab_panel.rb",

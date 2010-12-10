@@ -2,16 +2,17 @@
 * compatibility with netzke-core 0.6.5
 
 * refactoring
-	* GridPanel code restructured, using the new +js_mixin+ method
+  * GridPanel code restructured, using the new +js_mixin+ method
 
 * bug fix
   * GridPanel respects strong_default_attrs
+  * TabPanel doesn't fire multiple load requests per tab in case of lazy-loaded tabs and fast clicking
 
 * enhancements
-	* new +getter+ config option for columns/fields, a lambda receiving the record as parameter
-	* new +setter+ config option for columns/fields, a lambda receiving the record as first parameter, new value as the second
-	* GridPanel passes columns' default values to the "Add in form" form
-	* FormPanel can now be used without specifying a model
+  * new +getter+ config option for columns/fields, a lambda receiving the record as parameter
+  * new +setter+ config option for columns/fields, a lambda receiving the record as first parameter, new value as the second
+  * GridPanel passes columns' default values to the "Add in form" form
+  * FormPanel can now be used without specifying a model
 
 = v0.6.2 - 2010-11-05
 * compatibility with netzke-core 0.6.4
@@ -22,7 +23,7 @@
 * enhancements
   * BorderLayoutPanel persistence: remembers region sizes and collapsed/expanded states
   * tooltips for grid buttons
-  
+
 * bug fix
   * auto-detection of association's method when the latter is virtual was broken in 1.9.2
 
