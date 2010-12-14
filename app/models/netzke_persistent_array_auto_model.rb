@@ -41,7 +41,6 @@ class NetzkePersistentArrayAutoModel < ActiveRecord::Base
     # only select those attributes that were provided to us as columns. The rest is ignored.
     column_names = config[:columns].map{ |c| c[:name] }
     clean_data = data.collect{ |c| c.reject{ |k,v| !column_names.include?(k.to_s) } }
-    Rails.logger.debug "!!! clean_data: #{clean_data.inspect}\n"
     self.delete_all
     self.create(clean_data)
   end

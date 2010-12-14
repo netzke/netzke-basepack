@@ -59,7 +59,7 @@ module Netzke
 
       # Processing API calls from client
       endpoint :set_size_and_position do |params|
-        Rails.logger.debug "!!! IMPLEMENT ME (set_size_and_position)\n"
+        ::Rails.logger.debug "!!! IMPLEMENT ME (set_size_and_position)\n"
         # update_persistent_ext_config(
         #   :x => params[:x].to_i,
         #   :y => params[:y].to_i,
