@@ -5,8 +5,7 @@ module Netzke
       module Fields
         extend ActiveSupport::Concern
 
-        # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render
-        # a field)
+        # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render a field)
         def items
           @form_panel_items ||= begin
             res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # netzke_attributes as default items

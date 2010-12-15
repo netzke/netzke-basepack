@@ -119,6 +119,7 @@ module Netzke
         end
 
         private
+
           def filter_out_excluded_columns(cols)
             cols.reject!{ |c| c[:included] == false }
           end
@@ -211,7 +212,7 @@ module Netzke
           end
 
           # Default fields that will be displayed in the Add/Edit/Search forms
-          # You don't need to return normalized fields when overriding this method (for example, see BookGridWithVirtualAttributes)
+          # When overriding this method, keep in mind that the fields inside the layout must be expanded (each field represented by a hash, not just a symbol)
           def default_fields_for_forms
             form_klass = "Netzke::ModelExtensions::#{config[:model]}ForFormPanel".constantize rescue nil
             form_klass ||= original_data_class
@@ -233,11 +234,23 @@ module Netzke
             end
           end
 
+          # default_fields_for_forms extended with default values (for new-record form)
           def default_fields_for_forms_with_default_values
-            default_fields_for_forms.map do |f|
-              norm_attr = normalize_attr(f)
-              attr_name = norm_attr[:name].to_sym
-              norm_attr.merge(:value => norm_attr[:default_value] || columns_hash[attr_name].try(:fetch, :default_value, nil) || data_class.netzke_attribute_hash[attr_name].try(:fetch, :default_value, nil))
+            res = default_fields_for_forms.dup
+            each_attr_in(res) do |a|
+              attr_name = a[:name].to_sym
+              a[:value] = a[:default_value] || columns_hash[attr_name].try(:fetch, :default_value, nil) || data_class.netzke_attribute_hash[attr_name].try(:fetch, :default_value, nil)
+            end
+            res
+          end
+
+          # Recursively traversess items (an array) and yields each found field (a hash with :name set)
+          def each_attr_in(items)
+            items.each do |item|
+              if item.is_a?(Hash)
+                each_attr_in(item[:items]) if item[:items].is_a?(Array)
+                yield(item) if item[:name]
+              end
             end
           end
 
