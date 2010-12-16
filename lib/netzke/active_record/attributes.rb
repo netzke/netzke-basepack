@@ -168,6 +168,13 @@ module Netzke::ActiveRecord::Attributes
   def set_value_for_attribute(a, v)
     if a[:setter]
       a[:setter].call(self, v)
+    elsif a[:nested_attribute] && a[:name].to_s.index("__")
+      # We want:
+      #     set_value_for_attribute({:name => :assoc_1__assoc_2__method, :nested_attribute => true}, 100)
+      # ~>
+      #     self.assoc_1.assoc_2.method = 100
+      split = a[:name].to_s.split(/\.|__/)
+      split.inject(self) { |r,m| m == split.last ? (r && r.send("#{m}=", v) && r.save) : r.send(m) }
     elsif respond_to?("#{a[:name]}=")
       send("#{a[:name]}=", v)
     end

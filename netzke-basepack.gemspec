@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-12-18}
+  s.date = %q{2010-12-19}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
     "features/form_panel.feature",
     "features/grid_panel.feature",
     "features/i18n.feature",
+    "features/nested_attributes.feature",
     "features/search_in_grid.feature",
     "features/simple_app.feature",
     "features/simple_panel.feature",
@@ -125,6 +126,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/book_form.rb",
     "test/rails_app/app/components/book_grid.rb",
     "test/rails_app/app/components/book_grid_with_default_values.rb",
+    "test/rails_app/app/components/book_grid_with_nested_attributes.rb",
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_presentation.rb",
     "test/rails_app/app/components/books_bound_to_author.rb",
@@ -249,6 +251,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/book_form.rb",
     "test/rails_app/app/components/book_grid.rb",
     "test/rails_app/app/components/book_grid_with_default_values.rb",
+    "test/rails_app/app/components/book_grid_with_nested_attributes.rb",
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_presentation.rb",
     "test/rails_app/app/components/books_bound_to_author.rb",

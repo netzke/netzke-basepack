@@ -122,7 +122,11 @@ module Netzke
                 assoc_column = assoc.klass.columns_hash[method.to_s]
                 assoc_method_type = assoc_column.try(:type)
                 if assoc_method_type
-                  c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
+                  if c[:nested_attribute]
+                    c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
+                  else
+                    c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
+                  end
                 end
               end
             end
