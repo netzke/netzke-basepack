@@ -163,9 +163,6 @@ module Netzke::ActiveRecord::Attributes
     # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
     v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
     v
-  #rescue NoMethodError
-    # So that we don't crash at a badly configured column
-    #"UNDEF"
   end
 
   def set_value_for_attribute(a, v)
