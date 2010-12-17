@@ -13,6 +13,7 @@
   * new +setter+ config option for columns/fields, a lambda receiving the record as first parameter, new value as the second
   * GridPanel passes columns' default values to the "Add in form" form
   * FormPanel can now be used without specifying a model
+  * New 'commalistcbg' form field for checkboxes serialized into comma-separate string
 
 = v0.6.2 - 2010-11-05
 * compatibility with netzke-core 0.6.4

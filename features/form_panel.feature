@@ -61,3 +61,15 @@ Scenario: Checkbox field should work properly
   Then I should see "YES"
   And a book should exist with digitized: true, author: that author, exemplars: 4
   And a book should not exist with digitized: false, author: that author
+
+@javascript
+Scenario: Checkbox group for tags should work properly
+  Given a book exists
+  When I go to the BookForm test page
+  And I check "recommend"
+  And I check "cool"
+  And I press "Apply"
+  Then the "cool" checkbox should be checked
+  And the "recommend" checkbox should be checked
+  But the "read" checkbox should not be checked
+  And a book should exist with tags: "cool,recommend"
