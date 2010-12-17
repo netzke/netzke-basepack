@@ -13,7 +13,8 @@ class BookForm < Netzke::Basepack::FormPanel
         :digitized,
         :exemplars,
         {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
-        {:name => :tags, :xtype => :commalistcbg, :options => %w(read cool recommend buy)}
+        {:name => :tags, :xtype => :commalistcbg, :options => %w(read cool recommend buy)},
+        {:name => :rating, :xtype => :nradiogroup, :options => %w(Good Average Poor)}
       ]
     )
   end

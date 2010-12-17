@@ -13,7 +13,9 @@
   * new +setter+ config option for columns/fields, a lambda receiving the record as first parameter, new value as the second
   * GridPanel passes columns' default values to the "Add in form" form
   * FormPanel can now be used without specifying a model
-  * New 'commalistcbg' form field for checkboxes serialized into comma-separate string
+  * New +commalistcbg+ form field for checkboxes, where boxLabels of selected checkboxes are serialized into comma-separated string (the separator is configurable)
+  * New +nradiogroup+ form field for radio buttons, where the value is defined by the boxLabel of the selected radio button
+  * New +no_binding+ option for configuring a form field. Set it to "true" when you don't want Netzke to expand the field configuration based on the +name+ property. May be needed in some cases, e.g. when using checkboxes/radio buttons in the form.
 
 = v0.6.2 - 2010-11-05
 * compatibility with netzke-core 0.6.4

@@ -69,6 +69,7 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/form_panel/fields.rb",
     "lib/netzke/basepack/form_panel/javascripts/comma_list_cbg.js",
     "lib/netzke/basepack/form_panel/javascripts/main.js",
+    "lib/netzke/basepack/form_panel/javascripts/n_radio_group.js",
     "lib/netzke/basepack/form_panel/javascripts/netzkefileupload.js",
     "lib/netzke/basepack/form_panel/services.rb",
     "lib/netzke/basepack/grid_panel.rb",

@@ -918,6 +918,8 @@ Ext.reg('tricheckbox', Ext.ux.form.TriCheckbox);
       // call the original onRender() function
       origCheckboxRender.apply(this, arguments);
 
+      if (this.getXType() === 'radio') return;
+
       // Handle initial case based on this.checked
       if (this.checked == false) {
         this.noValEl = Ext.DomHelper.insertAfter(this.el, {
@@ -934,6 +936,8 @@ Ext.reg('tricheckbox', Ext.ux.form.TriCheckbox);
     setValue: function() {
       // call original setValue() function
       origCheckboxSetValue.apply(this, arguments);
+
+      if (this.getXType() === 'radio') return;
 
       if (this.checked) {
         if (this.noValEl != null) {
