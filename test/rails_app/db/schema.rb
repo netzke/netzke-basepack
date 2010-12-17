@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20101026190021) do
     t.boolean  "digitized"
     t.text     "notes"
     t.string   "tags"
+    t.string   "rating"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -37,6 +38,9 @@ ActiveRecord::Schema.define(:version => 20101026190021) do
     t.integer  "role_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "netzke_temp_table", :force => true do |t|
   end
 
   create_table "roles", :force => true do |t|

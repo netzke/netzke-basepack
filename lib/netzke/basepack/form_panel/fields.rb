@@ -86,6 +86,7 @@ module Netzke
             # field can only be a string, a symbol, or a hash
             if field.is_a?(Hash)
               field = field.dup # we don't want to modify original hash
+              return field if field[:no_binding] # stop here if no normalization is needed
               field[:name] = field[:name].to_s if field[:name] # all names should be strings
             else
               field = {:name => field.to_s}

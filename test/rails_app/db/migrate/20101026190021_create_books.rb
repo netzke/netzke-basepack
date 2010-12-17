@@ -7,6 +7,7 @@ class CreateBooks < ActiveRecord::Migration
       t.boolean :digitized
       t.text :notes
       t.string :tags
+      t.string :rating
 
       t.timestamps
     end
