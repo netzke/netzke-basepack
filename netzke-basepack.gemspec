@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-12-17}
+  s.date = %q{2010-12-18}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -62,8 +62,7 @@ Gem::Specification.new do |s|
     "lib/netzke/active_record/relation_extensions.rb",
     "lib/netzke/basepack.rb",
     "lib/netzke/basepack/accordion_panel.rb",
-    "lib/netzke/basepack/basic_app.rb",
-    "lib/netzke/basepack/basic_app/statusbar_ext.js",
+    "lib/netzke/basepack/auth_app.rb",
     "lib/netzke/basepack/border_layout_panel.rb",
     "lib/netzke/basepack/form_panel.rb",
     "lib/netzke/basepack/form_panel/fields.rb",
@@ -84,6 +83,9 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/grid_panel/services.rb",
     "lib/netzke/basepack/panel.rb",
     "lib/netzke/basepack/search_panel.rb",
+    "lib/netzke/basepack/simple_app.rb",
+    "lib/netzke/basepack/simple_app/javascripts/main.js",
+    "lib/netzke/basepack/simple_app/javascripts/statusbar_ext.js",
     "lib/netzke/basepack/tab_panel.rb",
     "lib/netzke/basepack/tab_panel/javascripts/main.js",
     "lib/netzke/basepack/version.rb",
@@ -129,7 +131,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/form_without_model.rb",
     "test/rails_app/app/components/generic_user_form.rb",
     "test/rails_app/app/components/simple_accordion.rb",
-    "test/rails_app/app/components/simple_basic_app.rb",
+    "test/rails_app/app/components/simple_auth_app.rb",
     "test/rails_app/app/components/simple_panel.rb",
     "test/rails_app/app/components/simple_tab_panel.rb",
     "test/rails_app/app/components/simple_window.rb",
@@ -137,6 +139,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/some_accordion_panel.rb",
     "test/rails_app/app/components/some_border_layout.rb",
     "test/rails_app/app/components/some_search_panel.rb",
+    "test/rails_app/app/components/some_simple_app.rb",
     "test/rails_app/app/components/some_tab_panel.rb",
     "test/rails_app/app/components/user_form.rb",
     "test/rails_app/app/components/user_form_with_default_fields.rb",
@@ -252,7 +255,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/form_without_model.rb",
     "test/rails_app/app/components/generic_user_form.rb",
     "test/rails_app/app/components/simple_accordion.rb",
-    "test/rails_app/app/components/simple_basic_app.rb",
+    "test/rails_app/app/components/simple_auth_app.rb",
     "test/rails_app/app/components/simple_panel.rb",
     "test/rails_app/app/components/simple_tab_panel.rb",
     "test/rails_app/app/components/simple_window.rb",
@@ -260,6 +263,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/some_accordion_panel.rb",
     "test/rails_app/app/components/some_border_layout.rb",
     "test/rails_app/app/components/some_search_panel.rb",
+    "test/rails_app/app/components/some_simple_app.rb",
     "test/rails_app/app/components/some_tab_panel.rb",
     "test/rails_app/app/components/user_form.rb",
     "test/rails_app/app/components/user_form_with_default_fields.rb",

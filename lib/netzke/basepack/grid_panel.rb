@@ -209,12 +209,6 @@ module Netzke
         res = %w{ add edit apply del }.map(&:to_sym).map(&:action)
         res << "-" << :add_in_form.action << :edit_in_form.action if config[:enable_edit_in_form]
         res << "-" << :search.action if config[:enable_extended_search]
-        # config[:enable_extended_search] && res << "-" << {
-        #   :text => "Search",
-        #   :handler => :on_search,
-        #   :enable_toggle => true,
-        #   :icon => :find
-        # }
         res
       end
 
