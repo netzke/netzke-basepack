@@ -102,6 +102,8 @@ module Netzke
             set_default_field_value(field) if self.record
             set_default_read_only(field)
 
+            field[:display_mode] = config[:display_mode] if config[:display_mode]
+
             # provide our special combobox with our id
             field[:parent_id] = self.global_id if field[:xtype] == :combobox
 

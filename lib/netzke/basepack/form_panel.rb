@@ -1,19 +1,25 @@
 require "netzke/basepack/form_panel/fields"
 require "netzke/basepack/form_panel/services"
+require "netzke/data_accessor"
 # require "netzke/plugins/configuration_tool"
-# require "netzke/data_accessor"
 
 module Netzke
   module Basepack
-    # = FormPanel
-    #
-    # Represents Ext.form.FormPanel
+    # Ext.form.FormPanel-based component with different goodies
     #
     # == Configuration
-    # * <tt>:model</tt> - name of the ActiveRecord model that provides data to this GridPanel.
-    # * <tt>:record</tt> - record to be displayd in the form. Takes precedence over <tt>:record_id</tt>
-    # * <tt>:record_id</tt> - id of the record to be displayd in the form. Also see <tt>:record</tt>
+    # Besides all the standard +Ext.form.FormPanel+ config options, accepts:
+    # * +model+ - name of the ActiveRecord model that provides data to this GridPanel.
+    # * +record+ - record to be displayd in the form. Takes precedence over +:record_id+
+    # * +record_id+ - id of the record to be displayd in the form. Also see +:record+
+    # * +mode+ - render mode, accepted options:
+    #   * +lockable+ - makes the form panel load initially in "display mode", then lets "unlock" it, change the values, and "lock" it again, while updating the values on the server
+    # * +updateMask+ - +Ext.LoadMask+ config options for the mask shown while the form is submitting its values
+    #
+    # === Layout configuration
+    # The layout of the form is configured by supplying the +item+ config option, same way it would be configured in Ext (thus allowing for complex form layouts). FormPanel will expand fields by looking at their names (unless +no_binding+ set to +true+ is specified for a specific field).
     class FormPanel < Netzke::Base
+
       # Class-level configuration
       class_attribute :config_tool_available
       self.config_tool_available = true
@@ -23,34 +29,36 @@ module Netzke
 
       include self::Services
       include self::Fields
-
       include Netzke::DataAccessor
 
       js_base_class "Ext.form.FormPanel"
 
-      js_property :bbar, [:apply.action]
+      def bbar(config)
+        config[:mode] == :lockable ? nil : [:apply.action]
+      end
 
-      # def initial_config
-      #   res = super
-      #   res[:bbar] = default_bbar if res[:bbar].nil?
-      #   res
-      # end
-      #
-      # def default_bbar
-      #   [:apply.action]
-      # end
+      action :apply, :text => I18n.t('netzke.basepack.form_panel.apply', :default => "Apply"), :icon => :tick
+      action :edit, :text => I18n.t('netzke.basepack.form_panel.edit', :default => "Edit"), :icon => :pencil
+      action :cancel, :text => I18n.t('netzke.basepack.form_panel.cancel', :default => "Cancel"), :icon => :cancel
+
+      def configuration
+        sup = super
+
+        sup.merge(
+          :bbar => sup[:bbar] || bbar(sup),
+          :locked => sup[:locked].nil? ? (sup[:mode] == :lockable) : sup[:locked]
+        )
+      end
 
       # Extra javascripts
       js_mixin :main
       js_include :comma_list_cbg
-      js_include :n_radio_group
-
-          # Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
-          # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
+      js_include :n_radio_group, :display_mode
+      # Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
+      # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
 
       def js_config
         super.merge(
-          # :fields => fields,
           :pri    => data_class && data_class.primary_key
         )
       end
@@ -79,8 +87,6 @@ module Netzke
 
           res
         end
-
-        action :apply, :text => I18n.t('netzke.basepack.form_panel.apply', :default => "Apply"), :icon => :tick
 
         def self.property_fields
           res = [
