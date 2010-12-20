@@ -1,4 +1,4 @@
-class SimpleBasicApp < Netzke::Basepack::BasicApp
+class SimpleAuthApp < Netzke::Basepack::AuthApp
   def menu
     [:simple_accordion.action, :user_grid.action, :simple_tab_panel.action] + super
   end
@@ -12,7 +12,7 @@ class SimpleBasicApp < Netzke::Basepack::BasicApp
   component :simple_tab_panel, :active_tab => 0
 
   # Wrapping up original layout into a border-layout with the north panel being a fancy header
-  def final_config
+  def configuration
     orig = super
     orig.merge(:items => [{
       :region => :north,
@@ -25,7 +25,7 @@ class SimpleBasicApp < Netzke::Basepack::BasicApp
       :bodyStyle => {"background" => "#FFF url(\"/images/header-deco.gif\") top left repeat-x"}
     },{
       :region => :center,
-      :layout => 'border',
+      :layout => :border,
       :items => orig[:items]
     }])
   end
