@@ -3,7 +3,7 @@ class BookForm < Netzke::Basepack::FormPanel
 
   include BookPresentation
 
-  def default_config
+  def configuration
     super.merge(
       :model => "Book",
       :record => Book.first,
@@ -18,5 +18,7 @@ class BookForm < Netzke::Basepack::FormPanel
       ]
     )
   end
+
+
 
 end

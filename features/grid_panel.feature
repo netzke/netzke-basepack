@@ -92,4 +92,3 @@ Scenario: Grid with columns with default values
   And I press "OK"
   And I sleep 1 second
   Then a book should exist with title: "Lolita", exemplars: 100
-

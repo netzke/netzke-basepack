@@ -206,7 +206,11 @@ module Netzke
                 assoc_method_type = assoc_column.try(:type)
 
                 # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
-                c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
+                if c[:nested_attribute]
+                  c[:editor] ||= editor_for_attr_type(assoc_method_type)
+                else
+                  c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
+                end
               end
             end
           end

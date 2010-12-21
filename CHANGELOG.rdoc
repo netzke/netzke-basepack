@@ -16,6 +16,9 @@
   * New +commalistcbg+ form field for checkboxes, where boxLabels of selected checkboxes are serialized into comma-separated string (the separator is configurable)
   * New +nradiogroup+ form field for radio buttons, where the value is defined by the boxLabel of the selected radio button
   * New +no_binding+ option for configuring a form field. Set it to "true" when you don't want Netzke to expand the field configuration based on the +name+ property. May be needed in some cases, e.g. when using checkboxes/radio buttons in the form.
+  * New +nested_attribute+ option for configuring data attributes (thus applicable for a column, a field, or a +netzke_attribute+ in the model). When set to true for an association attribute (e.g. author__name), assigning a value to it will change the association's attribute, *not* trying to find an association by name and reassign it if found (default behavior).
+  * FormPanel shows the "Updating..." mask while sending values to the server (configurable with updateMask option/property)
+  * FormPanel now can be used in the "lockable" mode (:config => :lockable), which makes it load initially in "display mode", then "unlock" it, change the values, and "lock" it again (updating the values on the server)
 
 = v0.6.2 - 2010-11-05
 * compatibility with netzke-core 0.6.4
