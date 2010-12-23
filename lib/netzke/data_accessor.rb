@@ -34,16 +34,16 @@ module Netzke
           # Options for a non-association attribute
           res=data_class.netzke_combo_options_for(column[:name], method_options)
 
-					# ensure it is an array-in-array, as Ext will fail otherwise
-					raise RuntimeError, "netzke_combo_options_for should return an Array" unless res.kind_of? Array
-					return [[]] if res.empty?
+          # ensure it is an array-in-array, as Ext will fail otherwise
+          raise RuntimeError, "netzke_combo_options_for should return an Array" unless res.kind_of? Array
+          return [[]] if res.empty?
 
-					unless res.first.kind_of? Array
-						res=res.map do |v|
-							[v]
-						end
-					end
-					return res
+          unless res.first.kind_of? Array
+            res=res.map do |v|
+              [v]
+            end
+          end
+          return res
 
 
         end
@@ -75,12 +75,11 @@ module Netzke
       !!name.to_s.index("__")
     end
 
-	# Model class
+  # Model class
     # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
     def data_class
       @data_class ||= begin
-        klass = "Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}".constantize rescue nil
-        klass || original_data_class
+        klass = constantize_class_name("Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}") || original_data_class
       end
     end
 
@@ -89,7 +88,7 @@ module Netzke
       @original_data_class ||= begin
         ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
         model_name = config[:model] || config[:data_class_name]
-        model_name && model_name.constantize
+        model_name && constantize_class_name(model_name)
       end
     end
 
