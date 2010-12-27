@@ -271,6 +271,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/some_accordion_panel.rb",
     "test/rails_app/app/components/some_auth_app.rb",
     "test/rails_app/app/components/some_border_layout.rb",
+    "test/rails_app/app/components/some_paging_form_panel.rb",
     "test/rails_app/app/components/some_search_panel.rb",
     "test/rails_app/app/components/some_simple_app.rb",
     "test/rails_app/app/components/some_tab_panel.rb",
