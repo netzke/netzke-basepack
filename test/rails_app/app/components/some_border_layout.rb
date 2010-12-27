@@ -1,14 +1,17 @@
 class SomeBorderLayout < Netzke::Basepack::BorderLayoutPanel
-  config :items => [
-            {:title => "Who", :class_name => "Basepack::GridPanel", :region => :center, :model => "User", :name => :user_grid},
-            {:title => "Item Two", :class_name => "Basepack::GridPanel", :region => :west, :width => 500, :split => true, :collapsible => true, :model => "Role", :name => :role_grid}
-          ],
-          :bbar => [:update_center_region.action, :update_west_region.action]
+  def configuration
+    super.merge(
+      :items => [
+        {:title => "Who", :class_name => "Basepack::GridPanel", :region => :center, :model => "User", :name => :user_grid},
+        {:title => "Item Two", :class_name => "Basepack::GridPanel", :region => :west, :width => 500, :split => true, :collapsible => true, :model => "Role", :name => :role_grid}
+      ]
+    )
+  end
+
+  js_property :bbar, [:update_center_region.action, :update_west_region.action]
 
   action :update_center_region
   action :update_west_region
-  
-  # config :default, :persistence => true
 
   js_method :on_update_west_region, <<-JS
     function(){

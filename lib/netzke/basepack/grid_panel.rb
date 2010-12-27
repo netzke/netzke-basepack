@@ -291,11 +291,11 @@ module Netzke
       component :add_form do
         {
           :lazy_loading => true,
-          :class_name => "Basepack::GridPanel::RecordFormWindow",
+          :class_name => "Netzke::Basepack::GridPanel::RecordFormWindow",
           :title => "Add #{data_class.model_name.human}",
           :button_align => "right",
           :items => [{
-            :class_name => "Basepack::FormPanel",
+            :class_name => "Netzke::Basepack::FormPanel",
             :model => config[:model],
             :items => default_fields_for_forms_with_default_values,
             :persistent_config => config[:persistent_config],
@@ -312,11 +312,11 @@ module Netzke
       component :edit_form do
         {
           :lazy_loading => true,
-          :class_name => "Basepack::GridPanel::RecordFormWindow",
+          :class_name => "Netzke::Basepack::GridPanel::RecordFormWindow",
           :title => "Edit #{data_class.model_name.human}",
           :button_align => "right",
           :items => [{
-            :class_name => "Basepack::FormPanel",
+            :class_name => "Netzke::Basepack::FormPanel",
             :model => config[:model],
             :items => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
@@ -331,11 +331,11 @@ module Netzke
       component :multi_edit_form do
         {
           :lazy_loading => true,
-          :class_name => "Basepack::GridPanel::RecordFormWindow",
+          :class_name => "Netzke::Basepack::GridPanel::RecordFormWindow",
           :title => "Edit #{data_class.model_name.human.pluralize}",
           :button_align => "right",
           :items => [{
-            :class_name => "Basepack::GridPanel::MultiEditForm",
+            :class_name => "Netzke::Basepack::GridPanel::MultiEditForm",
             :model => config[:model],
             :items => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
@@ -349,7 +349,7 @@ module Netzke
       component :search_form do
         {
           :lazy_loading => true,
-          :class_name => "Basepack::GridPanel::SearchWindow",
+          :class_name => "Netzke::Basepack::GridPanel::SearchWindow",
           :model => config[:model],
           :fields => default_fields_for_forms
         }
@@ -358,7 +358,7 @@ module Netzke
 
       # def search_panel
       #   {
-      #     :class_name => "Basepack::FormPanel",
+      #     :class_name => "Netzke::Basepack::FormPanel",
       #     :model => "User",
       #     # :items => default_fields_for_forms,
       #     # :search_class_name => cronfig[:model],

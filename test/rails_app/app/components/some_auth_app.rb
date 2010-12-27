@@ -1,4 +1,4 @@
-class SimpleAuthApp < Netzke::Basepack::AuthApp
+class SomeAuthApp < Netzke::Basepack::AuthApp
   def menu
     [:simple_accordion.action, :user_grid.action, :simple_tab_panel.action] + super
   end

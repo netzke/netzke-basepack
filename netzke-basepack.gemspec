@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-12-21}
+  s.date = %q{2010-12-24}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -64,6 +64,7 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack.rb",
     "lib/netzke/basepack/accordion_panel.rb",
     "lib/netzke/basepack/auth_app.rb",
+    "lib/netzke/basepack/basic_app.rb",
     "lib/netzke/basepack/border_layout_panel.rb",
     "lib/netzke/basepack/form_panel.rb",
     "lib/netzke/basepack/form_panel/fields.rb",
@@ -136,12 +137,12 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/lockable_book_form.rb",
     "test/rails_app/app/components/lockable_user_form.rb",
     "test/rails_app/app/components/simple_accordion.rb",
-    "test/rails_app/app/components/simple_auth_app.rb",
     "test/rails_app/app/components/simple_panel.rb",
     "test/rails_app/app/components/simple_tab_panel.rb",
     "test/rails_app/app/components/simple_window.rb",
     "test/rails_app/app/components/simple_wrapper.rb",
     "test/rails_app/app/components/some_accordion_panel.rb",
+    "test/rails_app/app/components/some_auth_app.rb",
     "test/rails_app/app/components/some_border_layout.rb",
     "test/rails_app/app/components/some_search_panel.rb",
     "test/rails_app/app/components/some_simple_app.rb",
@@ -263,12 +264,12 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/lockable_book_form.rb",
     "test/rails_app/app/components/lockable_user_form.rb",
     "test/rails_app/app/components/simple_accordion.rb",
-    "test/rails_app/app/components/simple_auth_app.rb",
     "test/rails_app/app/components/simple_panel.rb",
     "test/rails_app/app/components/simple_tab_panel.rb",
     "test/rails_app/app/components/simple_window.rb",
     "test/rails_app/app/components/simple_wrapper.rb",
     "test/rails_app/app/components/some_accordion_panel.rb",
+    "test/rails_app/app/components/some_auth_app.rb",
     "test/rails_app/app/components/some_border_layout.rb",
     "test/rails_app/app/components/some_search_panel.rb",
     "test/rails_app/app/components/some_simple_app.rb",

@@ -41,7 +41,6 @@ module Netzke
         )
       end
 
-      # Set the Logout button if Netzke::Base.user is set
       def menu
         []
       end
