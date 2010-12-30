@@ -9,4 +9,5 @@ Factory.define :user do |f|
 end
 
 Factory.define :book do |f|
+  f.title "Life can be something different"
 end
