@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2010-12-30}
+  s.date = %q{2011-01-02}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -57,7 +57,6 @@ Gem::Specification.new do |s|
     "javascripts/basepack.js",
     "lib/netzke-basepack.rb",
     "lib/netzke/active_record.rb",
-    "lib/netzke/active_record/association_attributes.rb",
     "lib/netzke/active_record/attributes.rb",
     "lib/netzke/active_record/combobox_options.rb",
     "lib/netzke/active_record/relation_extensions.rb",
@@ -157,6 +156,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/controllers/welcome_controller.rb",
     "test/rails_app/app/helpers/application_helper.rb",
     "test/rails_app/app/helpers/embedded_components_helper.rb",
+    "test/rails_app/app/models/address.rb",
     "test/rails_app/app/models/author.rb",
     "test/rails_app/app/models/book.rb",
     "test/rails_app/app/models/role.rb",
@@ -187,6 +187,7 @@ Gem::Specification.new do |s|
     "test/rails_app/db/migrate/20100914104236_create_roles.rb",
     "test/rails_app/db/migrate/20101026185816_create_authors.rb",
     "test/rails_app/db/migrate/20101026190021_create_books.rb",
+    "test/rails_app/db/migrate/20110101143818_create_addresses.rb",
     "test/rails_app/db/schema.rb",
     "test/rails_app/db/seeds.rb",
     "test/rails_app/features/support/paths.rb",
@@ -208,6 +209,7 @@ Gem::Specification.new do |s|
     "test/rails_app/script/rails",
     "test/rails_app/spec/controllers/embedded_components_controller_spec.rb",
     "test/rails_app/spec/helpers/embedded_components_helper_spec.rb",
+    "test/rails_app/spec/models/address_spec.rb",
     "test/rails_app/spec/models/author_spec.rb",
     "test/rails_app/spec/models/book_spec.rb",
     "test/rails_app/spec/models/role_spec.rb",
@@ -284,6 +286,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/controllers/welcome_controller.rb",
     "test/rails_app/app/helpers/application_helper.rb",
     "test/rails_app/app/helpers/embedded_components_helper.rb",
+    "test/rails_app/app/models/address.rb",
     "test/rails_app/app/models/author.rb",
     "test/rails_app/app/models/book.rb",
     "test/rails_app/app/models/role.rb",
@@ -307,11 +310,13 @@ Gem::Specification.new do |s|
     "test/rails_app/db/migrate/20100914104236_create_roles.rb",
     "test/rails_app/db/migrate/20101026185816_create_authors.rb",
     "test/rails_app/db/migrate/20101026190021_create_books.rb",
+    "test/rails_app/db/migrate/20110101143818_create_addresses.rb",
     "test/rails_app/db/schema.rb",
     "test/rails_app/db/seeds.rb",
     "test/rails_app/features/support/paths.rb",
     "test/rails_app/spec/controllers/embedded_components_controller_spec.rb",
     "test/rails_app/spec/helpers/embedded_components_helper_spec.rb",
+    "test/rails_app/spec/models/address_spec.rb",
     "test/rails_app/spec/models/author_spec.rb",
     "test/rails_app/spec/models/book_spec.rb",
     "test/rails_app/spec/models/role_spec.rb",

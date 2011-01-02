@@ -6,17 +6,17 @@ Feature: Search
   @javascript
   Scenario: Search via Search window
     Given the following roles exist:
-    | name |
-    | admin |
-    | superadmin |
-    | user |
+    | id | name       |
+    | 1  | admin      |
+    | 2  | superadmin |
+    | 3  | user       |
 
     And the following users exist:
-    | first_name | last_name | role__name |
-    | Paul | Bley | admin |
-    | Dalai | Lama | user |
-    | Taisha | Abelar | superadmin |
-    | Florinda | Donner | admin |
+    | first_name | last_name | role_id |
+    | Paul       | Bley      | 1       |
+    | Dalai      | Lama      | 3       |
+    | Taisha     | Abelar    | 2       |
+    | Florinda   | Donner    | 1       |
 
     When I go to the UserGrid test page
     Then the grid should show 4 records

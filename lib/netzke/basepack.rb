@@ -17,7 +17,7 @@ module Netzke
       # Use it to confirure Basepack in the initializers, e.g.:
       #
       #     Netzke::Basepack.setup do |config|
-      #      config.icons_uri = "/images/famfamfam/icons"
+      #       config.icons_uri = "/images/famfamfam/icons"
       #     end
       def setup
         yield self
