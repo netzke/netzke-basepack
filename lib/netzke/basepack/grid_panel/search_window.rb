@@ -13,13 +13,20 @@ module Netzke
                       :buttons => [:search.action, :cancel.action],
                       :tbar => [:clear.action]
 
-        config :items => [js_component(:search_panel)]
+        def configuration
+          super.merge(:items => [:search_panel.component])
+        end
 
         component :search_panel do
           {
-            :class_name => "Basepack::SearchPanel",
+            :class_name => "Netzke::Basepack::NewSearchPanel",
             :model => config[:model],
-            :items => config[:fields]
+            :query => [
+              {:attr => "title", :attr_type => :string, :operator => "contains", :value => "Lol"},
+              {:attr => "digitized", :attr_type => :boolean, :operator => "is_true"},
+              {:attr => "exemplars", :attr_type => :integer, :operator => "lt", :value => 100}
+            ]
+            # :items => config[:fields]
           }
         end
 
@@ -31,12 +38,14 @@ module Netzke
 
         js_method :on_search, <<-JS
           function(){
-            this.conditions = this.items.first().getForm().getValues();
+            // this.conditions = this.items.first().getForm().getValues();
 
             // do not send values of empty values
-            for (var cond in this.conditions) {
-              if (this.conditions[cond] == "") delete this.conditions[cond];
-            }
+            // for (var cond in this.conditions) {
+            //   if (this.conditions[cond] == "") delete this.conditions[cond];
+            // }
+
+            this.query = this.items.first().getQuery();
 
             this.closeRes = 'OK';
             this.close();
