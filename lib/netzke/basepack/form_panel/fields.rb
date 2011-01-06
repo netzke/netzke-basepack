@@ -31,7 +31,7 @@ module Netzke
               # extract incomplete field configs from +config+
               flds = fields_from_config
               # and merged them with fields from the model
-              deep_merge_existing_fields(flds, fields_from_model)
+              deep_merge_existing_fields(flds, fields_from_model) if data_class
             else
               # extract flds configs from the model
               flds = fields_from_model
