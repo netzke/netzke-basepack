@@ -50,7 +50,7 @@ module Netzke
             data: {records: [this.record], total: this.totalRecords}
           });
 
-          store.on('beforeload', function(st, r){
+          store.on('beforeload', function(){
             if (!this.loadMaskCmp) this.loadMaskCmp = new Ext.LoadMask(this.bwrap, this.applyMask);
             this.loadMaskCmp.show();
           }, this);
@@ -76,12 +76,12 @@ module Netzke
         # Returns ActiveRecord::Relation for the data
         def get_relation
           relation = data_class.scoped
-          relation.extend_with(config[:scope]) if config[:scope]
+          relation = relation.extend_with(config[:scope]) if config[:scope]
           relation
         end
 
         def total_records
-          get_relation.count
+          @total_records ||= get_relation.count
         end
 
     end
