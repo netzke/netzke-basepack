@@ -9,9 +9,8 @@ module Netzke
         def items
           @form_panel_items ||= begin
             res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # netzke_attributes as default items
-
             # if primary key isn't there, insert it as first
-            if data_class && res.first && res.first[:name] != [data_class.primary_key]
+            if data_class && !res.detect{ |f| f[:name] == data_class.primary_key}
               primary_key_item = normalize_field(data_class.primary_key.to_sym)
               @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
               res.insert(0, primary_key_item)
@@ -32,7 +31,7 @@ module Netzke
               # extract incomplete field configs from +config+
               flds = fields_from_config
               # and merged them with fields from the model
-              deep_merge_existing_fields(flds, fields_from_model)
+              deep_merge_existing_fields(flds, fields_from_model) if data_class
             else
               # extract flds configs from the model
               flds = fields_from_model

@@ -18,7 +18,7 @@ module Netzke
         if assoc
           # Options for an asssociation attribute
 
-          relation = assoc.klass.where({})
+          relation = assoc.klass.scoped
 
           relation = relation.extend_with(method_options[:scope]) if method_options[:scope]
 

@@ -53,7 +53,7 @@ Scenario: FormPanel should be functional without model provided
 @javascript
 Scenario: Checkbox field should work properly
   Given an author exists with first_name: "Carlos"
-  And a book exists with author: that author, digitized: false, exemplars: 2
+  And a book exists with author: that author, digitized: false, exemplars: 2, title: "Some Title"
   When I go to the BookForm test page
   And I fill in "Exemplars:" with "4"
   And I check "Digitized:"
@@ -64,7 +64,7 @@ Scenario: Checkbox field should work properly
 
 @javascript
 Scenario: Checkbox group for tags should work properly
-  Given a book exists
+  Given a book exists with title: "Some Title"
   When I go to the BookForm test page
   And I check "recommend"
   And I check "cool"
@@ -73,3 +73,17 @@ Scenario: Checkbox group for tags should work properly
   And the "recommend" checkbox should be checked
   But the "read" checkbox should not be checked
   And a book should exist with tags: "cool,recommend"
+
+# Needs cleaner check whether AJAX request was completed
+# @javascript
+# Scenario: Validations
+#   Given a book exists with title: "Some Title"
+#   When I go to the BookForm test page
+#   And I fill in "Title:" with ""
+#   And I press "Apply"
+#   And I sleep 1 second
+#   Then I should see "Title can't be blank"
+#   When I fill in "Title:" with ""
+#   And I press "Apply"
+#   And I sleep 1 second
+#   Then I should not see "Title can't be blank"

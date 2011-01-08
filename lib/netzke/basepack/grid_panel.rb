@@ -49,11 +49,11 @@ module Netzke
     #   When it's a hash, it's a conditions hash (passed directly to +where+).
     #   When it's an array, it's expanded into an SQL statement with arguments (passed directly to +where+), e.g.:
     #
-    #     :query => ["id > ?", 100])
+    #     :scope => ["id > ?", 100])
     #
     #   When it's a Proc, it's passed the model class, and is expected to return a ActiveRecord::Relation, e.g.:
     #
-    #     :query => { |klass| klass.where(:id.gt => 100).order(:created_at) }
+    #     :scope => { |rel| rel.where(:id.gt => 100).order(:created_at) }
     #
     # * <tt>:enable_column_filters</tt> - enable filters in column's context menu
     # * <tt>:enable_edit_in_form</tt> - provide buttons into the toolbar that activate editing/adding records via a form

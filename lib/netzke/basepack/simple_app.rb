@@ -18,31 +18,43 @@ module Netzke
 
       def configuration
         super.merge(
-          :items => [{
-            :id => 'main-panel',
-            :region => 'center',
-            :layout => 'fit'
-          },{
-            :id => 'main-toolbar',
-            :xtype => 'toolbar',
-            :region => 'north',
-            :height => 28,
-            :items => menu
-          },{
-            :id => 'main-statusbar',
-            :xtype => 'statusbar',
-            :region => 'south',
-            :height => 22,
-            :statusAlign => 'right',
-            :busyText => 'Busy...',
-            :default_text => "Ready",
-            :default_icon_cls => ""
-          }]
+          :items => [main_panel_config, menu_bar_config, status_bar_config]
         )
       end
 
       def menu
         []
+      end
+
+      def main_panel_config(overrides = {})
+        {
+          :id => 'main-panel',
+          :region => 'center',
+          :layout => 'fit'
+        }.merge(overrides)
+      end
+
+      def status_bar_config(overrides = {})
+        {
+          :id => 'main-statusbar',
+          :xtype => 'statusbar',
+          :region => 'south',
+          :height => 22,
+          :statusAlign => 'right',
+          :busyText => 'Busy...',
+          :default_text => "Ready",
+          :default_icon_cls => ""
+        }.merge(overrides)
+      end
+
+      def menu_bar_config(overrides = {})
+        {
+          :id => 'main-toolbar',
+          :xtype => 'toolbar',
+          :region => 'north',
+          :height => 28,
+          :items => menu
+        }.merge(overrides)
       end
 
       # Html required for Ext.History to work

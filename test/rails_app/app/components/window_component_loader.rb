@@ -1,5 +1,6 @@
 class WindowComponentLoader < Netzke::Base
   component :some_window, {
+    :persistence => true,
     :class_name => "Basepack::Window",
     :title => "Some Window Component",
     :lazy_loading => true
