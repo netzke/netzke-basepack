@@ -225,12 +225,19 @@ module Netzke
               relation = relation.extend_with_netzke_conditions(extra_conditions) if params[:extra_conditions]
             end
 
-            ::Rails.logger.debug "!!! params[:query]: #{params[:query].inspect}\n"
             if params[:query]
               query = ActiveSupport::JSON.decode(params[:query])
-              ::Rails.logger.debug "!!! query: #{query.inspect}\n"
               query.each do |q|
-                relation = relation.where(q["attr"].to_sym.send(q["operator"]) => q["value"])
+                case q["operator"]
+                when "contains"
+                  relation = relation.where(q["attr"].to_sym.matches => %Q{%#{q["value"]}%})
+                when "is_true"
+                  relation = relation.where(q["attr"] => true)
+                when "is_false"
+                  relation = relation.where(q["attr"] => false)
+                else
+                  relation = relation.where(q["attr"].to_sym.send(q["operator"]) => q["value"])
+                end
               end
             end
 

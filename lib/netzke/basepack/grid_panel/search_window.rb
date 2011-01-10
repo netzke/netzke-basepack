@@ -20,13 +20,7 @@ module Netzke
         component :search_panel do
           {
             :class_name => "Netzke::Basepack::NewSearchPanel",
-            :model => config[:model],
-            :query => [
-              {:attr => "title", :attr_type => :string, :operator => "contains", :value => "Lol"},
-              {:attr => "digitized", :attr_type => :boolean, :operator => "is_true"},
-              {:attr => "exemplars", :attr_type => :integer, :operator => "lt", :value => 100}
-            ]
-            # :items => config[:fields]
+            :model => config[:model]
           }
         end
 
@@ -45,17 +39,17 @@ module Netzke
             //   if (this.conditions[cond] == "") delete this.conditions[cond];
             // }
 
-            this.query = this.items.first().getQuery();
+            this.query = Ext.encode(this.items.first().getQuery());
 
             this.closeRes = 'OK';
-            this.close();
+            this.hide();
           }
         JS
 
         js_method :on_cancel, <<-JS
           function(){
             this.closeRes = 'cancel';
-            this.close();
+            this.hide();
           }
         JS
 

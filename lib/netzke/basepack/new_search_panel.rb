@@ -13,14 +13,15 @@ module Netzke
 
       js_mixin :main
 
-      # Todo: i18n
+      # TODO: i18n
       js_property :attribute_operators_map, {
         :integer => [
           ["gt", "Greater than"],
           ["lt", "Less than"]
         ],
         :string => [
-          ["matches", "Contains"]
+          ["contains", "Contains"], # same as matches => %string%
+          ["matches", "Matches"]
         ],
         :boolean => [
           ["is_true", "Yes"],
@@ -36,15 +37,13 @@ module Netzke
       action :add_condition, :icon => :add
       action :serialize, :icon => :information
 
-      # def default_config
-      #   super.merge(
-      #     :query => [
-      #       {:attr => "title", :attr_type => :string, :operator => "contains", :value => "Lol"},
-      #       {:attr => "digitized", :attr_type => :boolean, :operator => "is_true"},
-      #       {:attr => "exemplars", :attr_type => :integer, :operator => "lt", :value => 100}
-      #     ]
-      #   )
-      # end
+      def default_query
+        data_class.column_names.map do |c|
+          column_type = data_class.columns_hash[c].type
+          operator = (self.class.js_property(:attribute_operators_map)[column_type] || []).first.try(:fetch, 0) || "matches"
+          {:attr => c, :attr_type => column_type, :operator => operator}
+        end
+      end
 
       def configuration
         super.merge({
@@ -53,13 +52,14 @@ module Netzke
       end
 
       def data_class
-        config[:model].constantize
+        @data_class ||= config[:model].constantize
       end
 
       def js_config
         super.merge(
           :attrs => data_class.column_names,
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
+          :query => config[:query] || default_query
         )
       end
 
@@ -121,13 +121,11 @@ module Netzke
         function(){
           var query = [];
           this.items.each(function(f){
-            var fieldValues = {};
-            f.items.each(function(i){
-              if (i.value) fieldValues[i.name] = i.value;
-            });
-            if (fieldValues.attr && fieldValues.operator) query.push(fieldValues);
+            if (f.valueIsSet()) {
+              query.push(f.buildValue());
+            }
           });
-          return Ext.encode(query);
+          return query;
         }
       JS
 
