@@ -56,7 +56,7 @@ module Netzke
           :attrs => data_class.column_names,
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
           :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || default_query,
-          :bbar => [:add_condition.action, :clear_all.action, "-",
+          :bbar => [:add_condition.action, :clear_all.action, "->",
             "Presets:",
             {
               :xtype => "combo",
