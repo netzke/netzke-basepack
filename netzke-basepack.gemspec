@@ -78,6 +78,7 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/grid_panel/javascripts/advanced_search.js",
     "lib/netzke/basepack/grid_panel/javascripts/edit_in_form.js",
     "lib/netzke/basepack/grid_panel/javascripts/main.js",
+    "lib/netzke/basepack/grid_panel/javascripts/misc.js",
     "lib/netzke/basepack/grid_panel/javascripts/rows-dd.js",
     "lib/netzke/basepack/grid_panel/multi_edit_form.rb",
     "lib/netzke/basepack/grid_panel/record_form_window.rb",

@@ -165,6 +165,9 @@ module Netzke
           %w{Boolean Date List Numeric String}.unshift("").each do |f|
             res << ext_examples + "ux/gridfilters/filter/#{f}Filter.js"
           end
+
+          # Fix
+          res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/misc.js"
         end
 
         # DD
