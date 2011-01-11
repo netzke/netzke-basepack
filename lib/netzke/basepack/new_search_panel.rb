@@ -35,7 +35,6 @@ module Netzke
 
       action :clear_all, :icon => :cross
       action :add_condition, :icon => :add
-      action :serialize, :icon => :information
 
       action :save_preset, :icon => :disk
       action :delete_preset, :icon => :cross
@@ -48,17 +47,24 @@ module Netzke
         end
       end
 
-      def configuration
-        super.merge({
-          :bbar => [:add_condition.action, :clear_all.action, "-", :serialize.action, "-",
+      def data_class
+        @data_class ||= config[:model].constantize
+      end
+
+      def js_config
+        super.merge(
+          :attrs => data_class.column_names,
+          :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
+          :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || default_query,
+          :bbar => [:add_condition.action, :clear_all.action, "-",
             "Presets:",
             {
               :xtype => "combo",
               :fieldLabel => "Presets",
               :triggerAction => "all",
               :value => super[:load_last_preset] && last_preset.try(:fetch, "name"),
-              :store => (state[:presets] || []).map{ |s| [s["query"], s["name"]] },
-              :id => "presets-combo",
+              :store => state[:presets].blank? ? [[[], ""]] : state[:presets].map{ |s| [s["query"], s["name"]] },
+              :ref => "../presetsCombo",
               :listeners => {:before_select => {
                 :fn => "function(combo, record){
                   var form = Ext.getCmp('#{global_id}');
@@ -68,18 +74,6 @@ module Netzke
               }}
             }, :save_preset.action, :delete_preset.action
           ]
-        })
-      end
-
-      def data_class
-        @data_class ||= config[:model].constantize
-      end
-
-      def js_config
-        super.merge(
-          :attrs => data_class.column_names,
-          :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
-          :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || default_query
         )
       end
 
@@ -115,12 +109,6 @@ module Netzke
       js_method :on_clear_all, <<-JS
         function(){
           this.removeAll();
-        }
-      JS
-
-      js_method :on_serialize, <<-JS
-        function(){
-          console.info("this.getQuery(): ", this.getQuery());
         }
       JS
 

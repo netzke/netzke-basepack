@@ -5,13 +5,11 @@ module Netzke
 
         action :search
         action :cancel
-        action :clear, :icon => :application_form
 
         js_properties :title => "Advanced Search",
                       :width => "50%",
                       :auto_height => true,
-                      :buttons => [:search.action, :cancel.action],
-                      :tbar => [:clear.action]
+                      :buttons => [:search.action, :cancel.action]
 
         def configuration
           super.merge(:items => [:search_panel.component])
@@ -23,12 +21,6 @@ module Netzke
             :model => config[:model]
           }
         end
-
-        js_method :on_clear, <<-JS
-          function(){
-            this.items.first().getForm().reset();
-          }
-        JS
 
         js_method :on_search, <<-JS
           function(){
