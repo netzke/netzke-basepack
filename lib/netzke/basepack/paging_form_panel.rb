@@ -32,16 +32,18 @@ module Netzke
 
       endpoint :get_data do |params|
         record = get_relation.offset(params[:start].to_i).limit(1).first
-        {:records => record && [record.to_hash(fields)] || [], :total => total_records}
+        record_hash = record && record.to_hash(fields).each_pair.inject({}){ |r,(k,v)| r.merge(k.l => v) }
+        {:records => record_hash && [record_hash] || [], :total => total_records}
       end
 
       js_method :init_component, <<-JS
         function(){
 
+          // extract field names from items
           var fieldNames = [];
-          for (var f in this.fields) {
-            fieldNames.push(f);
-          }
+          Ext.each(this.items, function(f){
+            if (f.name) {fieldNames.push(f.name);}
+          });
 
           var store = new Ext.data.JsonStore({
             url: this.endpointUrl('get_data'),

@@ -59,8 +59,7 @@ module Netzke
 
       def js_config
         super.merge(
-          :pri    => data_class && data_class.primary_key,
-          :fields => fields
+          :pri    => data_class && data_class.primary_key
         )
       end
 

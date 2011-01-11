@@ -13,7 +13,7 @@ class UserForm < Netzke::Basepack::FormPanel
         ]},
         {:xtype => 'fieldset', :title => "Timestamps", :items => [
           {:name => :created_at, :disabled => true},
-          {:name => :updated_at, :disabled => true}
+          {:name => :updated_at, :disabled => false}
         ]},
         :role__name
       ]
