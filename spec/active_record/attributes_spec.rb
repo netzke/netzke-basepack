@@ -13,7 +13,9 @@ describe Netzke::ActiveRecord::Attributes do
   end
 
   it "should return Netzke attributes including an association attribute represented by a virtual method" do
-    Book.netzke_attributes.map{ |a| a[:name] }.should == %w(id author__name title exemplars digitized notes created_at updated_at tags rating)
+    p Book.netzke_attributes.map{ |a| a[:name] }
+    p %w(id author__name title exemplars digitized notes created_at updated_at tags rating)
+    Book.netzke_attributes.map{ |a| a[:name] }.sort!.should == %w(id author__name title exemplars digitized notes created_at updated_at tags rating).sort!
     Book.netzke_attributes.detect{ |a| a[:name] == "author__name" }[:attr_type].should == :string
   end
 
