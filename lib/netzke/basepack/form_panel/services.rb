@@ -73,7 +73,7 @@ module Netzke
             @record = data_class.new if @record.nil?
 
             hsh.each_pair do |k,v|
-              @record.set_value_for_attribute(fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v)
+              @record.set_value_for_attribute(fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v) if fields.has_key?(k.to_sym)
             end
 
             #hsh.each_pair do |k,v|
