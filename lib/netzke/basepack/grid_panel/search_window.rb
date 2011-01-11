@@ -17,7 +17,7 @@ module Netzke
 
         component :search_panel do
           {
-            :class_name => "Netzke::Basepack::NewSearchPanel",
+            :class_name => "Netzke::Basepack::SearchPanel",
             :model => config[:model]
           }
         end
