@@ -106,6 +106,7 @@ module Netzke
           # Make the column config complete with the defaults
           columns_for_create.each do |c|
             detect_association(c)
+            set_default_virtual(c)
             set_default_header(c)
             set_default_editor(c)
             set_default_width(c)
@@ -135,6 +136,18 @@ module Netzke
 
           def load_model_level_attrs
             # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled?
+          end
+
+          # Mark a column as "virtual" by default, when it doesn't reflect a model column, or a model column of an association
+          def set_default_virtual(c)
+            if c[:virtual].nil? # sometimes at maybe handy to mark a column as non-virtual forcefully
+              assoc, assoc_method = get_assoc_and_method(c)
+              if assoc
+                c[:virtual] = true if !assoc.klass.column_names.map(&:to_sym).include?(assoc_method.to_sym)
+              else
+                c[:virtual] = true if !data_class.column_names.map(&:to_sym).include?(c[:name].to_sym)
+              end
+            end
           end
 
           def set_default_header(c)
@@ -198,20 +211,27 @@ module Netzke
 
           # Detects an association column and sets up the proper editor.
           def detect_association(c)
-            # double-underscore notation? surely an association column
-            if c[:name].index('__')
-              assoc_name, assoc_method = c[:name].split('__')
-              if assoc_method && assoc = data_class.reflect_on_association(assoc_name.to_sym)
-                assoc_column = assoc.klass.columns_hash[assoc_method]
-                assoc_method_type = assoc_column.try(:type)
+            assoc, assoc_method = get_assoc_and_method(c)
+            if assoc
+              assoc_column = assoc.klass.columns_hash[assoc_method]
+              assoc_method_type = assoc_column.try(:type)
 
-                # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
-                if c[:nested_attribute]
-                  c[:editor] ||= editor_for_attr_type(assoc_method_type)
-                else
-                  c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
-                end
+              # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
+              if c[:nested_attribute]
+                c[:editor] ||= editor_for_attr_type(assoc_method_type)
+              else
+                c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
               end
+            end
+          end
+
+          def get_assoc_and_method(c)
+            if c[:name].index("__")
+              assoc_name, assoc_method = c[:name].split('__')
+              assoc = data_class.reflect_on_association(assoc_name.to_sym)
+              [assoc, assoc_method]
+            else
+              [nil, nil]
             end
           end
 

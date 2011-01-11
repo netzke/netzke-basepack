@@ -7,6 +7,7 @@
 * bug fix
   * GridPanel respects strong_default_attrs
   * TabPanel doesn't fire multiple load requests per tab in case of lazy-loaded tabs and fast clicking
+  * Filtering/sorting on virtual columns disabled by default
 
 * enhancements
   * new +getter+ config option for columns/fields, a lambda receiving the record as parameter
