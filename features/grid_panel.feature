@@ -92,3 +92,14 @@ Scenario: Grid with columns with default values
   And I press "OK"
   And I sleep 1 second
   Then a book should exist with title: "Lolita", exemplars: 100
+
+@javascript
+Scenario: Inline editing
+  Given a book exists with title: "Magus", exemplars: 100
+  When I go to the BookGrid test page
+  And I edit row 1 of the grid with title: "Collector", exemplars: 200
+  And I press "Apply"
+  And I sleep 1 second
+  Then the grid should have 0 modified records
+  And a book should exist with title: "Collector", exemplars: 200
+  But a book should not exist with title: "Magus"

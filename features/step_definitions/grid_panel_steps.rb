@@ -24,3 +24,26 @@ Then /^the grid should show (\d+) records$/ do |arg1|
     return grid.getStore().getCount();
   JS
 end
+
+When /^I edit row (\d+) of the grid with #{capture_fields}$/ do |rowIndex, fields|
+  fields = ActiveSupport::JSON.decode("{#{fields}}")
+  js_set_fields = fields.each_pair.map do |k,v|
+    "r.set('#{k}', '#{v}');"
+  end.join
+  page.driver.browser.execute_script <<-JS
+    var components = [];
+    for (var cmp in Netzke.page) { components.push(cmp); }
+    var grid = Netzke.page[components[0]];
+    var r = grid.getStore().getAt(#{rowIndex.to_i-1});
+    #{js_set_fields}
+  JS
+end
+
+Then /^the grid should have (\d+) modified records$/ do |n|
+  page.driver.browser.execute_script(<<-JS).should == n.to_i
+    var components = [];
+    for (var cmp in Netzke.page) { components.push(cmp); }
+    var grid = Netzke.page[components[0]];
+    return grid.getStore().getModifiedRecords().length;
+  JS
+end
