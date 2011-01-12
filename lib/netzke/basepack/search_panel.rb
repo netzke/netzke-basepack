@@ -1,5 +1,7 @@
 module Netzke
   module Basepack
+    # == Configuration
+    # +load_last_preset+ - on load, tries to load the latest saved preset
     class SearchPanel < Base
 
       js_base_class "Ext.form.FormPanel"
@@ -9,27 +11,29 @@ module Netzke
         :padding => 5
       )
 
-      js_include :init, :condition_field
+      js_include :condition_field
 
       js_mixin :main
 
-      # TODO: i18n
       js_property :attribute_operators_map, {
         :integer => [
-          ["gt", "Greater than"],
-          ["lt", "Less than"]
+          ["eq", I18n.t('netzke.basepack.search_panel.equals')],
+          ["gt", I18n.t('netzke.basepack.search_panel.greater_than')],
+          ["lt", I18n.t('netzke.basepack.search_panel.less_than')]
         ],
         :string => [
-          ["contains", "Contains"], # same as matches => %string%
-          ["matches", "Matches"]
+          ["contains", I18n.t('netzke.basepack.search_panel.contains')], # same as matches => %string%
+          ["matches", I18n.t('netzke.basepack.search_panel.matches')]
         ],
         :boolean => [
-          ["is_true", "Yes"],
-          ["is_false", "No"]
+          # TODO: add ["any", "Any"],
+          ["is_true", I18n.t('netzke.basepack.search_panel.yes')],
+          ["is_false", I18n.t('netzke.basepack.search_panel.no')]
         ],
         :datetime => [
-          ["gt", "After"],
-          ["lt", "Before"]
+          ["eq", I18n.t('netzke.basepack.search_panel.on')],
+          ["gt", I18n.t('netzke.basepack.search_panel.after')],
+          ["lt", I18n.t('netzke.basepack.search_panel.before')]
         ]
       }
 
@@ -57,10 +61,9 @@ module Netzke
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
           :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || default_query,
           :bbar => [:add_condition.action, :clear_all.action, "->",
-            "Presets:",
+            I18n.t('netzke.basepack.search_panel.presets'),
             {
               :xtype => "combo",
-              :fieldLabel => "Presets",
               :triggerAction => "all",
               :value => super[:load_last_preset] && last_preset.try(:fetch, "name"),
               :store => state[:presets].blank? ? [[[], ""]] : state[:presets].map{ |s| [s["query"], s["name"]] },
@@ -136,14 +139,14 @@ module Netzke
           saved_searches << {"name" => params[:name], "query" => query}
         end
         update_state(:presets, saved_searches)
-        {:feedback => "Preset successfully saved"} # TODO: I18n
+        {:feedback => I18n.t('netzke.basepack.search_panel.preset_saved')}
       end
 
       endpoint :delete_preset do |params|
         saved_searches = state[:presets]
         saved_searches.delete_if{ |s| s["name"] == params[:name] }
         update_state(:presets, saved_searches)
-        {:feedback => "Preset successfully deleted"}
+        {:feedback => I18n.t('netzke.basepack.search_panel.preset_deleted')}
       end
 
     end

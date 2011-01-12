@@ -5,8 +5,6 @@ require "netzke/basepack/grid_panel/services"
 
 module Netzke
   module Basepack
-    # = GridPanel
-    #
     # Ext.grid.EditorGridPanel-based component with the following features:
     #
     # * multi-line CRUD operations - get, post, delete, create
