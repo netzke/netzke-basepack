@@ -88,6 +88,17 @@ module Netzke
     #       }
     #     end
     # Besides these options, a column can receive any meaningful config option understood by Ext.grid.Column (http://dev.sencha.com/deploy/dev/docs/?class=Ext.grid.Column)
+    #
+    # == Actions
+    # You can override GridPanel's actions to change their text, icons, and tooltips (see http://api.netzke.org/core/Netzke/Actions.html). You can also use these actions when configuring menus and toolbars.
+    # GridPanel implements the following actions:
+    # * +add+
+    # * +del+
+    # * +edit+
+    # * +apply+
+    # * +add_in_form+
+    # * +edit_in_form+
+    # * +search+
     class GridPanel < Netzke::Base
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,
@@ -241,52 +252,52 @@ module Netzke
 
       action :add do
         {
-          :text => I18n.t('netzke.basepack.grid_panel.add', :default => "Add"),
-          :tooltip => I18n.t('netzke.basepack.grid_panel.add', :default => "Add"),
+          :text => I18n.t('netzke.basepack.grid_panel.actions.add'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add'),
           :disabled => config[:prohibit_create],
           :icon => :add
         }
       end
 
       action :edit, {
-        :text => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.edit', :default => "Edit"),
+        :text => I18n.t('netzke.basepack.grid_panel.actions.edit'),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit'),
         :disabled => true,
         :icon => :table_edit
       }
 
       action :del, {
-        :text => I18n.t('netzke.basepack.grid_panel.delete', :default => "Delete"),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.delete', :default => "Delete"),
+        :text => I18n.t('netzke.basepack.grid_panel.actions.del'),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.del'),
         :disabled => true,
         :icon => :table_row_delete
       }
 
       action :apply do
         {
-          :text => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
-          :tooltip => I18n.t('netzke.basepack.grid_panel.apply', :default => "Apply"),
+          :text => I18n.t('netzke.basepack.grid_panel.actions.apply'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.apply'),
           :disabled => config[:prohibit_update] && config[:prohibit_create],
           :icon => :tick
         }
       end
 
       action :add_in_form, {
-        :text => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.add_in_form', :default => "Add in form"),
+        :text => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
         :icon => :application_form_add
       }
 
       action :edit_in_form, {
-        :text => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.edit_in_form', :default => "Edit in form"),
+        :text => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
         :disabled => true,
         :icon => :application_form_edit
       }
 
       action :search, {
-        :text => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.search', :default => "Search"),
+        :text => I18n.t('netzke.basepack.grid_panel.actions.search'),
+        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.search'),
         :enable_toggle => true,
         :icon => :find
       }

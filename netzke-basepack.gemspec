@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-01-11}
+  s.date = %q{2011-01-12}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -102,7 +102,7 @@ Gem::Specification.new do |s|
     "lib/netzke/json_array_editor.rb",
     "lib/netzke/masquerade_selector.rb",
     "lib/tasks/netzke_basepack_tasks.rake",
-    "locale/en.yml",
+    "locales/en.yml",
     "netzke-basepack.gemspec",
     "spec/active_record/attributes_spec.rb",
     "spec/active_record/relation_extensions_spec.rb",

@@ -15,8 +15,8 @@ module Netzke
 
   module Basepack
     class Engine < ::Rails::Engine
-      config.after_initialize do
-        I18n.load_path << File.dirname(__FILE__) + '/../locale/en.yml'
+      config.before_initialize do
+        I18n.load_path << File.dirname(__FILE__) + '/../locales/en.yml'
       end
     end
   end
