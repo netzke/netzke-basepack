@@ -27,11 +27,11 @@ module Netzke
         ],
         :boolean => [
           # TODO: add ["any", "Any"],
-          ["is_true", I18n.t('netzke.basepack.search_panel.yes')],
-          ["is_false", I18n.t('netzke.basepack.search_panel.no')]
+          ["is_true", I18n.t('netzke.basepack.search_panel.is_true')],
+          ["is_false", I18n.t('netzke.basepack.search_panel.is_false')]
         ],
         :datetime => [
-          ["eq", I18n.t('netzke.basepack.search_panel.on')],
+          ["eq", I18n.t('netzke.basepack.search_panel.date_equals')],
           ["gt", I18n.t('netzke.basepack.search_panel.after')],
           ["lt", I18n.t('netzke.basepack.search_panel.before')]
         ]
