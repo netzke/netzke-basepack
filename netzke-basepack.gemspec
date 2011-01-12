@@ -186,6 +186,7 @@ Gem::Specification.new do |s|
     "test/rails_app/config/initializers/netzke.rb",
     "test/rails_app/config/initializers/secret_token.rb",
     "test/rails_app/config/initializers/session_store.rb",
+    "test/rails_app/config/locales/de.yml",
     "test/rails_app/config/locales/es.yml",
     "test/rails_app/config/routes.rb",
     "test/rails_app/db/development_structure.sql",
