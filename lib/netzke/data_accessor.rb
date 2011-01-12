@@ -97,5 +97,17 @@ module Netzke
       data_class && a[:name].to_s == data_class.primary_key
     end
 
+    # Mark an attribute as "virtual" by default, when it doesn't reflect a model column, or a model column of an association
+    def set_default_virtual(c)
+      if c[:virtual].nil? # sometimes at maybe handy to mark a column as non-virtual forcefully
+        assoc, assoc_method = get_assoc_and_method(c)
+        if assoc
+          c[:virtual] = true if !assoc.klass.column_names.map(&:to_sym).include?(assoc_method.to_sym)
+        else
+          c[:virtual] = true if !data_class.column_names.map(&:to_sym).include?(c[:name].to_sym)
+        end
+      end
+    end
+
   end
 end
