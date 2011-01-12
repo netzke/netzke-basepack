@@ -261,7 +261,9 @@ module Netzke
                 record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
 
                 record_hash.each_pair do |k,v|
-                  record.set_value_for_attribute(columns_hash[k.to_sym].nil? ? {:name => k} : columns_hash[k.to_sym], v) if columns_hash.has_key?(k.to_sym)
+                  if columns_hash.merge(config[:strong_default_attrs] || {}).has_key?(k.to_sym)
+                    record.set_value_for_attribute(columns_hash[k.to_sym].nil? ? {:name => k} : columns_hash[k.to_sym], v)
+                  end
                 end
 
                 # process all attirubutes for this record
