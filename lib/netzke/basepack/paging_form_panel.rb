@@ -19,7 +19,7 @@ module Netzke
 
       # override
       def record
-        get_relation.first
+        @record ||= get_relation.first
       end
 
       # Pass total records amount and the first record to the JS constructor
