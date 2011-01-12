@@ -58,7 +58,7 @@ module Netzke
           }, this);
 
           store.on('load', function(st, r){
-            this.getForm().setValues(r[0].data);
+            this.setFormValues(r[0].data);
             if (this.loadMaskCmp) this.loadMaskCmp.hide();
           }, this);
 
