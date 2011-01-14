@@ -1,4 +1,4 @@
-= v0.6.3 - EDGE
+= v0.6.3 - 2011-01-14
 * compatibility with netzke-core 0.6.5
 
 * refactoring
