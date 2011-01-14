@@ -39,11 +39,12 @@ module Netzke
       js_method :init_component, <<-JS
         function(){
 
-          // extract field names from items
-          var fieldNames = [];
-          Ext.each(this.items, function(f){
-            if (f.name) {fieldNames.push(f.name);}
-          });
+          // Extract field names from items recursively. We have to do it before calling superclass.initComponent,
+          // because we need to build the store for PagingToolbar that cannot be created after superclass.initComponent
+          // Otherwise, the things would be simpler, because this.getForm().items would already has all the fields in one place for us
+          this.fieldNames = [];
+          this.extractFields(this.items);
+          var fieldNames = this.fieldNames;
 
           var store = new Ext.data.JsonStore({
             url: this.endpointUrl('get_data'),
