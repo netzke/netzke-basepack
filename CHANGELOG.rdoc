@@ -1,3 +1,5 @@
+= v0.6.4 - to be released
+
 = v0.6.3 - 2011-01-14
 * compatibility with netzke-core 0.6.5
 
