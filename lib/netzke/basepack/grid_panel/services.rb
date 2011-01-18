@@ -232,9 +232,9 @@ module Netzke
                 when "contains"
                   relation = relation.where(q["attr"].to_sym.matches => %Q{%#{q["value"]}%})
                 when "is_true"
-                  relation = relation.where(q["attr"] => true)
+                  relation = relation.where(q["attr"] => 1)
                 when "is_false"
-                  relation = relation.where(q["attr"] => false)
+                  relation = relation.where(q["attr"] => 0)
                 else
                   relation = relation.where(q["attr"].to_sym.send(q["operator"]) => q["value"])
                 end
