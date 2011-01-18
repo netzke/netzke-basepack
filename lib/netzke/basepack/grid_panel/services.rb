@@ -77,7 +77,7 @@ module Netzke
             query = params[:query]
 
             column = columns.detect{ |c| c[:name] == params[:column] }
-            scope = column.to_options[:scope] || column.to_options[:editor].try(:fetch, :scope)
+            scope = column.to_options[:scope] || column.to_options[:editor].try(:fetch, :scope, nil)
             query = params[:query]
 
             {:data => combobox_options_for_column(column, :query => query, :scope => scope, :record_id => params[:id])}
