@@ -130,6 +130,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/author_grid.rb",
     "test/rails_app/app/components/book_form.rb",
     "test/rails_app/app/components/book_grid.rb",
+    "test/rails_app/app/components/book_grid_with_custom_columns.rb",
     "test/rails_app/app/components/book_grid_with_default_values.rb",
     "test/rails_app/app/components/book_grid_with_nested_attributes.rb",
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
