@@ -347,6 +347,8 @@ module Netzke
               when "string"
                 field = field.send :matches
                 value = "%#{value}%"
+              when "boolean"
+                value = value == "true"
               when "numeric", "date"
                 field = field.send :"#{v['data']['comparison']}"
               end

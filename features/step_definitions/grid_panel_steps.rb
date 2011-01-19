@@ -47,3 +47,23 @@ Then /^the grid should have (\d+) modified records$/ do |n|
     return grid.getStore().getModifiedRecords().length;
   JS
 end
+
+When /^I enable filter on column "([^"]*)" with value "([^"]*)"$/ do |column, value|
+  page.driver.browser.execute_script <<-JS
+    var components = [];
+    for (var cmp in Netzke.page) { components.push(cmp); }
+    var grid = Netzke.page[components[0]];
+    var filter = grid.filters.getFilter(grid.getColumnModel().getDataIndex(grid.getColumnModel().findColumnIndex('#{column}')));
+    filter.setValue(#{value});
+    filter.setActive(true);
+  JS
+end
+
+When /^I clear all filters in the grid$/ do
+  page.driver.browser.execute_script <<-JS
+    var components = [];
+    for (var cmp in Netzke.page) { components.push(cmp); }
+    var grid = Netzke.page[components[0]];
+    grid.filters.clearFilters();
+  JS
+end
