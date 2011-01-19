@@ -8,7 +8,6 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
         :author__first_name,
         :title,
         {
-          :getter => lambda{ |r| r.rating.blank? ? nil : r.rating.to_i },
           :name => :rating,
           :editor => {
             :trigger_action => :all,
