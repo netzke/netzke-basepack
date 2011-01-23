@@ -1,4 +1,5 @@
 class Author < ActiveRecord::Base
+  has_many :books
 
   # virtual attribute
   def name

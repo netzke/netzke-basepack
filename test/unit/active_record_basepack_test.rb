@@ -19,7 +19,7 @@ class ActiveRecordBasepackTest < ActiveSupport::TestCase
   #
   #   cc = Book.default_column_config(:genre_id)
   #   assert_equal("genre__name", cc[:name])
-  #   assert_equal(:combobox, cc[:editor])
+  #   assert_equal(:netzkeremotecombo, cc[:editor])
   #
   #   cc = Book.default_column_config(:genre__popular)
   #   assert_equal(:checkbox, cc[:editor])

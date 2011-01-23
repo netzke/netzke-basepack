@@ -6,6 +6,8 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
       :model => "Book",
       :columns => [
         :author__first_name,
+        :author__last_name,
+        :author__name,
         :title,
         {
           :name => :rating,

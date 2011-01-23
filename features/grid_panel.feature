@@ -90,7 +90,7 @@ Scenario: Grid with columns with default values
   Given I am on the BookGridWithDefaultValues test page
   When I press "Add in form"
   And I press "OK"
-  And I sleep 1 second
+  And I wait for the response from the server
   Then a book should exist with title: "Lolita", exemplars: 100
 
 @javascript
@@ -99,7 +99,7 @@ Scenario: Inline editing
   When I go to the BookGrid test page
   And I edit row 1 of the grid with title: "Collector", exemplars: 200
   And I press "Apply"
-  And I sleep 1 second
+  And I wait for the response from the server
   Then the grid should have 0 modified records
   And a book should exist with title: "Collector", exemplars: 200
   But a book should not exist with title: "Magus"

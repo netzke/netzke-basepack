@@ -19,7 +19,8 @@ Scenario: Editing the record
   When I go to the UserForm test page
   And I fill in "First name:" with "Salvador"
   And I fill in "Last name:" with "Dali"
-  And I fill in "Role name:" with "painter"
+  And I expand combobox "Role name"
+  And I select "painter" from combobox "Role name"
   And I press "Apply"
   And I go to the UserForm test page
   Then I should see "Salvador"

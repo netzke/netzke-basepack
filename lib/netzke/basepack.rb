@@ -26,5 +26,6 @@ module Netzke
         yield self
       end
     end
+
   end
 end

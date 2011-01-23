@@ -1,9 +1,10 @@
 class BookPagingFormPanel < Netzke::Basepack::PagingFormPanel
   def default_config
     super.merge({
+      :title => "Digitized books",
       :model => "Book",
       :scope => {:digitized => true},
-      :mode => :lockable,
+      # :mode => :lockable,
       :items => [{:layout => :hbox, :label_align => :top, :border => false, :defaults => {:border => false}, :items => [{
         :flex => 2,
         :layout => :form,

@@ -25,9 +25,9 @@ module Netzke
           if assoc.klass.column_names.include?(assoc_method)
             # apply query
             relation = relation.where(:"#{assoc_method}".like => "#{query}%") if query.present?
-            relation.all.map{ |r| [r.send(assoc_method)] }
+            relation.all.map{ |r| [r.id, r.send(assoc_method)] }
           else
-            relation.all.map{ |r| r.send(assoc_method) }.select{ |value| value =~ /^#{query}/  }.map{ |v| [v] }
+            relation.all.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value =~ /^#{query}/ }
           end
 
         else

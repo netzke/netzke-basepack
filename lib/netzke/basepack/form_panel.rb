@@ -58,9 +58,15 @@ module Netzke
       # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
 
       def js_config
-        super.merge(
-          :pri    => data_class && data_class.primary_key
-        )
+        super.tap do |res|
+          res[:pri] = data_class && data_class.primary_key
+          res[:record] = js_record_data if record
+        end
+      end
+
+      # A hash of record data including the meta field
+      def js_record_data
+        record.to_hash(fields).merge(:_meta => meta_field).literalize_keys
       end
 
       def record
@@ -102,6 +108,20 @@ module Netzke
 
           def self.server_side_config_options
             super + [:record]
+          end
+
+          def meta_field
+            {}.tap do |res|
+              assoc_values = get_association_values
+              res[:association_values] = assoc_values.literalize_keys if record && !assoc_values.empty?
+            end
+          end
+
+          def get_association_values
+            fields_that_need_associated_values = fields.select{ |k,v| k.to_s.index("__") && !fields[k][:nested_attribute] }
+            fields_that_need_associated_values.each_pair.inject({}) do |r,(k,v)|
+              r.merge(k => record.value_for_attribute(fields_that_need_associated_values[k], true))
+            end
           end
 
       # include ::Netzke::Plugins::ConfigurationTool if config_tool_available # it will load ConfigurationPanel into a modal window

@@ -155,15 +155,36 @@ module Netzke
         def get_data(*args)
           params = args.first || {} # params are optional!
           if !config[:prohibit_read]
-            records = get_records(params)
-            {:data => records.map{|r| r.to_array(columns)}, :total => config[:enable_pagination] && records.total_entries}
+            {}.tap do |res|
+              records = get_records(params)
+              res[:data] = records.map{|r| r.to_array(columns)}
+              res[:total] = records.total_entries if config[:enable_pagination]
+
+              # provide association values for all records at once
+              assoc_values = get_association_values(records, columns)
+              res[:set_association_values] = assoc_values.literalize_keys if assoc_values.present?
+            end
           else
             flash :error => "You don't have permissions to read data"
-            {:feedback => @flash}
+            { :feedback => @flash }
           end
         end
 
         protected
+
+          # Returns all values for association columns, per column, per associated record id, e.g.:
+          # {
+          #   :author__first_name => {1 => "Vladimir", 2 => "Herman"},
+          #   :author__last_name => {1 => "Nabokov", 2 => "Hesse"}
+          # }
+          # This is used to display the association by the specified method instead by the foreign key
+          def get_association_values(records, columns)
+            columns.select{ |c| c[:name].index("__") }.each.inject({}) do |r,c|
+              column_values = {}
+              records.each{ |r| column_values[r.value_for_attribute(c)] = r.value_for_attribute(c, true) }
+              r.merge(c[:name] => column_values)
+            end
+          end
 
           def get_records(params)
 

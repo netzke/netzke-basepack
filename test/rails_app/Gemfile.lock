@@ -79,7 +79,7 @@ GEM
       arel (~> 2.0.2)
     mime-types (1.16)
     mysql2 (0.2.6)
-    netzke-core (0.6.5)
+    netzke-core (0.6.6)
       activesupport (>= 3.0.1)
     netzke-persistence (0.1.1)
     nokogiri (1.4.4)

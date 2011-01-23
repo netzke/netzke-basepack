@@ -51,7 +51,7 @@ module Netzke
           success = create_or_update_record(data)
 
           if success
-            {:set_form_values => values.each_pair.inject({}){ |r,(k,v)| r.merge(k.l => v) }, :set_result => "ok"}
+            {:set_form_values => js_record_data, :set_result => "ok"}
           else
             # flash eventual errors
             @record.errors.to_a.each do |msg|

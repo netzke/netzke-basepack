@@ -25,14 +25,14 @@ module Netzke
       # Pass total records amount and the first record to the JS constructor
       def js_config
         super.merge({
-          :total_records => total_records,
-          :record => record.to_hash(fields)
+          :total_records => total_records
+          # :record => record.to_hash(fields)
         })
       end
 
       endpoint :get_data do |params|
-        record = get_relation.offset(params[:start].to_i).limit(1).first
-        record_hash = record && record.to_hash(fields).each_pair.inject({}){ |r,(k,v)| r.merge(k.l => v) }
+        @record = get_relation.offset(params[:start].to_i).limit(1).first
+        record_hash = @record && js_record_data
         {:records => record_hash && [record_hash] || [], :total => total_records}
       end
 
@@ -44,12 +44,11 @@ module Netzke
           // Otherwise, the things would be simpler, because this.getForm().items would already has all the fields in one place for us
           this.fieldNames = [];
           this.extractFields(this.items);
-          var fieldNames = this.fieldNames;
 
           var store = new Ext.data.JsonStore({
             url: this.endpointUrl('get_data'),
             root: 'records',
-            fields: fieldNames,
+            fields: this.fieldNames.concat('_meta'),
             data: {records: [this.record], total: this.totalRecords}
           });
 

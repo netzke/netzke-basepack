@@ -1,6 +1,8 @@
 = v0.6.4 - to be released
 * enhancements
   * New, improved SearchPanel
+  * Slightly optimized selenium tests (no artificial sleeping any more)
+  * One-to-many association support in Form/GridPanel reworked to use the foreign id instead of a string. This leaves us with more flexibility about what to display in the association column/field, and also provides for performance improvements (no more need to search for the associated record based on the value provided from the column/field).
 
 = v0.6.3 - 2011-01-14
 * compatibility with netzke-core 0.6.5
