@@ -67,3 +67,37 @@ When /^I clear all filters in the grid$/ do
     grid.filters.clearFilters();
   JS
 end
+
+When /^I expand combobox "([^"]*)" in row (\d+) of the grid$/ do |field, row|
+  page.driver.browser.execute_script <<-JS
+    var components = [];
+    for (var cmp in Netzke.page) { components.push(cmp); }
+    var grid = Netzke.page[components[0]];
+    var colId = grid.getColumnModel().findColumnIndex("#{field}");
+    var col = grid.getColumnModel().getColumnById(colId);
+    grid.startEditing(#{row.to_i - 1}, colId);
+    col.editor.onTriggerClick();
+  JS
+end
+
+When /^I select "([^"]*)" in combobox "([^"]*)" in row (\d+) of the grid$/ do |value, field, row|
+  page.driver.browser.execute_script <<-JS
+    var components = [];
+    for (var cmp in Netzke.page) { components.push(cmp); }
+    var grid = Netzke.page[components[0]];
+    var colId = grid.getColumnModel().findColumnIndex("#{field}");
+    var col = grid.getColumnModel().getColumnById(colId);
+    var index = col.editor.getStore().find('name', '#{value}');
+    col.editor.setValue(col.editor.getStore().getAt(index).get('id'));
+    col.editor.onTriggerClick();
+  JS
+end
+
+When /^I stop editing the grid$/ do
+  page.driver.browser.execute_script <<-JS
+    var components = [];
+    for (var cmp in Netzke.page) { components.push(cmp); }
+    var grid = Netzke.page[components[0]];
+    grid.stopEditing();
+  JS
+end

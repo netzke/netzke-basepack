@@ -210,11 +210,17 @@ module Netzke
         super.merge({
           :bbar => config.has_key?(:bbar) ? config[:bbar] : default_bbar,
           :context_menu => config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu,
-          :columns => columns, # columns
+          :columns => columns(:with_meta => true), # columns
           :model => config[:model], # the model name
           :inline_data => (get_data if config[:load_inline_data]), # inline data (loaded along with the grid panel)
           :pri => data_class.primary_key # table primary key name
         })
+      end
+
+      def get_association_values(record)
+        columns.select{ |c| c[:name].index("__") }.each.inject({}) do |r,c|
+          r.merge(c[:name] => record.value_for_attribute(c, true))
+        end
       end
 
       def default_bbar

@@ -3,6 +3,7 @@ module Netzke
     class GridPanel < Netzke::Base
       module Columns
         extend ActiveSupport::Concern
+        extend ActiveSupport::Memoizable
 
         # module ClassMethods
         #   # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
@@ -54,17 +55,37 @@ module Netzke
 
         # Normalized columns for the grid, e.g.:
         # [{:name => :id, :hidden => true, ...}, {:name => :name, :editable => false, ...}, ...]
-        def columns(only_included = true)
-          @columns ||= begin
-            if cols = load_columns
-              cols.tap do |cols|
-                filter_out_excluded_columns(cols) if only_included
-                reverse_merge_equally_named_columns(cols, initial_columns)
-              end
+        # Possible options:
+        # * +with_excluded+ - when set to true, also excluded columns will be returned (handy for dynamic column configuration)
+        # * +with_meta+ - when set to true, the meta column will be included as the last column
+        def columns(options = {})
+          [].tap do |cols|
+            if loaded_columns = load_columns
+              filter_out_excluded_columns(loaded_columns) unless options[:with_excluded]
+              cols.concat(reverse_merge_equally_named_columns(loaded_columns, initial_columns(options[:with_excluded])))
             else
-              initial_columns(only_included)
+              cols.concat(initial_columns(options[:with_excluded]))
             end
+
+            append_meta_column(cols) if options[:with_meta]
           end
+        end
+
+        memoize :columns
+
+        def append_meta_column(cols)
+          cols << {
+            :name => "_meta",
+            :meta => true,
+            :getter => lambda do |r|
+              meta_data(r)
+            end
+          }
+        end
+
+        # Override it when you need extra meta data to be passed through the meta column
+        def meta_data(r)
+          { :association_values => get_association_values(r).literalize_keys }
         end
 
         # Columns as a hash, for easier access to a specific column
@@ -81,7 +102,7 @@ module Netzke
         end
 
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
-        def initial_columns(only_included = true)
+        def initial_columns(with_excluded = false)
           # Normalize here, as from the config we can get symbols (names) instead of hashes
           columns_from_config = config[:columns] && normalize_attrs(config[:columns])
 
@@ -102,7 +123,7 @@ module Netzke
             columns_for_create = default_columns
           end
 
-          filter_out_excluded_columns(columns_for_create) if only_included
+          filter_out_excluded_columns(columns_for_create) unless with_excluded
 
           # Make the column config complete with the defaults
           columns_for_create.each do |c|

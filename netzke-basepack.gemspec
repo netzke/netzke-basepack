@@ -47,6 +47,7 @@ Gem::Specification.new do |s|
     "features/support/paths.rb",
     "features/support/pickle.rb",
     "features/tab_panel.feature",
+    "features/validations_in_grid.feature",
     "features/virtual_attributes.feature",
     "features/window.feature",
     "from_05_to_06.rdoc",
