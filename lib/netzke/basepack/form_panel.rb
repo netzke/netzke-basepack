@@ -33,21 +33,23 @@ module Netzke
 
       js_base_class "Ext.form.FormPanel"
 
-      def bbar(config)
-        config[:mode] == :lockable ? nil : [:apply.action]
-      end
-
       action :apply, :text => I18n.t('netzke.basepack.form_panel.apply', :default => "Apply"), :icon => :tick
       action :edit, :text => I18n.t('netzke.basepack.form_panel.edit', :default => "Edit"), :icon => :pencil
       action :cancel, :text => I18n.t('netzke.basepack.form_panel.cancel', :default => "Cancel"), :icon => :cancel
 
       def configuration
-        sup = super
+        super.tap do |sup|
+          configure_locked(sup)
+          configure_bbar(sup)
+        end
+      end
 
-        sup.merge(
-          :bbar => sup[:bbar] || bbar(sup),
-          :locked => sup[:locked].nil? ? (sup[:mode] == :lockable) : sup[:locked]
-        )
+      def configure_locked(c)
+        c[:locked] = c[:locked].nil? ? (c[:mode] == :lockable) : c[:locked]
+      end
+
+      def configure_bbar(c)
+        c[:bbar] = [:apply.action] if c[:bbar].nil?
       end
 
       # Extra javascripts
