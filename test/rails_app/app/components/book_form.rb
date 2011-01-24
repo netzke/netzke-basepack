@@ -19,6 +19,4 @@ class BookForm < Netzke::Basepack::FormPanel
     )
   end
 
-
-
 end
