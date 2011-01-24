@@ -121,9 +121,7 @@ module Netzke
               assoc_name, method = c[:name].split('__').map(&:to_sym)
               if method && assoc = data_class.reflect_on_association(assoc_name)
                 assoc_column = assoc.klass.columns_hash[method.to_s]
-                ::Rails.logger.debug "!!! assoc_column: #{assoc_column.inspect}\n"
                 assoc_method_type = assoc_column.try(:type)
-                ::Rails.logger.debug "!!! assoc_method_type: #{assoc_method_type.inspect}\n"
                 if c[:nested_attribute]
                   c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
                 else
