@@ -30,14 +30,6 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
 
     Ext.netzke.ComboBox.superclass.initComponent.apply(this, arguments);
 
-    // this.on('blur', function(cb){
-    //   cb.setValue(cb.getRawValue());
-    // });
-
-    this.on('specialkey', function(cb, event){
-      if (event.getKey() == 9 || event.getKey() == 13) {cb.setValue(cb.getRawValue());}
-    });
-
     var parent = Ext.getCmp(this.parentId);
     // Is parent a grid?
     if (parent.getSelectionModel) {
