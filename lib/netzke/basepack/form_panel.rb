@@ -121,6 +121,11 @@ module Netzke
 
           def get_association_values
             fields_that_need_associated_values = fields.select{ |k,v| k.to_s.index("__") && !fields[k][:nested_attribute] }
+            # Take care of Ruby 1.8.7
+            if fields_that_need_associated_values.is_a?(Array)
+              fields_that_need_associated_values = fields_that_need_associated_values.inject({}){|r,(k,v)| r.merge(k => v)}
+            end
+
             fields_that_need_associated_values.each_pair.inject({}) do |r,(k,v)|
               r.merge(k => record.value_for_attribute(fields_that_need_associated_values[k], true))
             end
