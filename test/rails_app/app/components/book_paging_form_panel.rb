@@ -3,8 +3,8 @@ class BookPagingFormPanel < Netzke::Basepack::PagingFormPanel
     super.merge({
       :title => "Digitized books",
       :model => "Book",
-      :scope => {:digitized => true},
-      # :mode => :lockable,
+      # :scope => {:digitized => true},
+      :mode => :lockable,
       :items => [{:layout => :hbox, :label_align => :top, :border => false, :defaults => {:border => false}, :items => [{
         :flex => 2,
         :layout => :form,

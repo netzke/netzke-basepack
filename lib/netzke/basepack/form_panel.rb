@@ -55,9 +55,12 @@ module Netzke
       # Extra javascripts
       js_mixin :main
       js_include :comma_list_cbg
-      js_include :n_radio_group, :display_mode
+      js_include :n_radio_group, :display_mode, :readonly_mode
       # Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
       # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
+
+      # Extra CSS
+      css_include :readonly_mode
 
       def js_config
         super.tap do |res|
@@ -109,7 +112,7 @@ module Netzke
         private
 
           def self.server_side_config_options
-            super + [:record]
+            super + [:record, :scope]
           end
 
           def meta_field

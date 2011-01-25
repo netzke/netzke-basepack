@@ -5,8 +5,10 @@ class BookFormWithCustomFields < Netzke::Basepack::FormPanel
     super.merge(
       :model => "Book",
       :record => Book.first,
+      # :mode => :lockable,
       :items => [
         :title,
+        {:name => :notes, :read_only => true},
         :author__first_name,
         :author__last_name,
         :digitized,
