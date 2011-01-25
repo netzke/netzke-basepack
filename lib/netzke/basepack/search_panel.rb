@@ -2,6 +2,9 @@ module Netzke
   module Basepack
     # == Configuration
     # +load_last_preset+ - on load, tries to load the latest saved preset
+    #
+    # == ToDo
+    # * Translation of fields in the attribute field
     class SearchPanel < Base
 
       js_base_class "Ext.form.FormPanel"
@@ -43,6 +46,8 @@ module Netzke
       action :save_preset, :icon => :disk
       action :delete_preset, :icon => :cross
 
+      action :apply, :icon => :accept
+
       def default_query
         data_class.column_names.map do |c|
           column_type = data_class.columns_hash[c].type
@@ -60,7 +65,7 @@ module Netzke
           :attrs => data_class.column_names,
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
           :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || default_query,
-          :bbar => [:add_condition.action, :clear_all.action, "->",
+          :bbar => (config[:bbar] || []) + [:add_condition.action, :clear_all.action, "->",
             I18n.t('netzke.basepack.search_panel.presets'),
             {
               :xtype => "combo",
@@ -88,8 +93,17 @@ module Netzke
         function(){
           Netzke.classes.Basepack.SearchPanel.superclass.initComponent.call(this);
           this.buildFormFromQuery(this.query);
+
+          this.addEvents('conditionsupdate');
         }
       JS
+
+      js_method :on_apply, <<-JS
+        function(){
+          this.fireEvent('conditionsupdate', this.getQuery());
+        }
+      JS
+
 
       js_method :build_form_from_query, <<-JS
         // Will probably need to be performance-optimized in the future, as recreating the fields is expensive

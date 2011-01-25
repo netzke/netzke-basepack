@@ -20,6 +20,7 @@ module Netzke
     # * Clearing search
     # * Search provides no results
     # * DRY out get_relation
+    # * Update the number of records after form submit
     class PagingFormPanel < FormPanel
 
       # override
