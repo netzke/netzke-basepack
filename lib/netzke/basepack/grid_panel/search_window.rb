@@ -9,7 +9,8 @@ module Netzke
         js_properties :title => "Advanced Search",
                       :width => "50%",
                       :auto_height => true,
-                      :buttons => [:search.action, :cancel.action]
+                      :buttons => [:search.action, :cancel.action],
+                      :modal => true
 
         def configuration
           super.merge(:items => [:search_panel.component(:header => false)])
