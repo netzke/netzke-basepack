@@ -94,7 +94,7 @@ module Netzke
           Netzke.classes.Basepack.SearchPanel.superclass.initComponent.call(this);
           this.buildFormFromQuery(this.query);
 
-          this.addEvents('conditionsupdate');
+          this.addEvents('conditionsupdate', 'fieldsnumberchange');
         }
       JS
 
@@ -120,12 +120,14 @@ module Netzke
         function(){
           this.add({xtype: 'netzkebasepacknewsearchpanelconditionfield'});
           this.doLayout();
+          this.fireEvent('fieldsnumberchange');
         }
       JS
 
       js_method :on_clear_all, <<-JS
         function(){
           this.removeAll();
+          this.fireEvent('fieldsnumberchange');
         }
       JS
 
