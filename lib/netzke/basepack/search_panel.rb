@@ -61,7 +61,7 @@ module Netzke
 
       def js_config
         super.merge(
-          :attrs => data_class.column_names,
+          :attrs => attributes,
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
           :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || default_query,
           :bbar => (config[:bbar] || []) + [:add_condition.action, :clear_all.action, "->",
@@ -82,6 +82,12 @@ module Netzke
             }, :save_preset.action, :delete_preset.action
           ]
         )
+      end
+
+      def attributes
+        data_class.column_names.map do |name|
+          [name, data_class.human_attribute_name(name)]
+        end
       end
 
       def last_preset
