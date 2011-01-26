@@ -10,7 +10,6 @@ module Netzke
       js_base_class "Ext.form.FormPanel"
 
       js_properties(
-        :header => false,
         :padding => 5
       )
 

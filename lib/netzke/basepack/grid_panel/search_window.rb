@@ -12,7 +12,7 @@ module Netzke
                       :buttons => [:search.action, :cancel.action]
 
         def configuration
-          super.merge(:items => [:search_panel.component])
+          super.merge(:items => [:search_panel.component(:header => false)])
         end
 
         component :search_panel do
