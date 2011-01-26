@@ -173,3 +173,10 @@ Scenario: Inline adding of records
   And I wait for the response from the server
   Then a book should exist with title: "Lolita", author: author "Nabokov"
   And a book should exist with title: "Demian", author: author "Hesse"
+
+@javascript
+Scenario: Renderers for association columns should take effect
+  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
+  And a book exists with title: "Lolita", author: that author
+  When I go to the BookGridWithCustomColumns test page
+  Then I should see "NABOKOV"

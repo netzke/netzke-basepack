@@ -97,6 +97,9 @@ module Netzke
     # * +add_in_form+
     # * +edit_in_form+
     # * +search+
+    #
+    # == TODO
+    # * When a renderer is provided for an association column, our renderer gets overridden. Find a way to nest them.
     class GridPanel < Netzke::Base
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,
