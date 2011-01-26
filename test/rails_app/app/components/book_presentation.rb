@@ -2,10 +2,10 @@ module BookPresentation
   # A setter that creates an author on the fly
   def author_first_name_setter
     lambda do |r,v|
-      if (author = Author.where(:first_name => v).first).nil?
-        r.author = Author.create(:first_name => v)
+      if v.is_a?(Integer)
+        r.author = Author.find(v)
       else
-        r.author = author
+        r.author = Author.create(:first_name => v)
       end
     end
   end

@@ -4,17 +4,13 @@ Feature: Window component loader
   I want feature
 
   @javascript
-  Scenario: Columns and fields with custom setter/getter methods should work as expected
+  Scenario: Creating an author on the fly with BookGridWithVirtualAttributes
     Given an author exists with first_name: "Victor"
-    And a book exists with title: "Lolita", exemplars: "5", author: that author
+    And a book exists with author: that author, title: "Lolita"
     And I am on the BookGridWithVirtualAttributes test page
     Then I should see "Victor"
-    And I should see "YES"
 
-    When I select first row in the grid
-    And I press "Edit in form"
-    And I fill in "Author first name" with "Vladimir"
-    And I fill in "Exemplars" with "3"
-    And I press "OK"
+    When I edit row 1 of the grid with author__first_name: "Vladimir"
+    And I press "Apply"
+    And I wait for the response from the server
     Then I should see "Vladimir"
-    And I should see "NO"

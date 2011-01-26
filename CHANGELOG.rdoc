@@ -1,4 +1,10 @@
-= v0.6.3 - EDGE
+= v0.6.4 - to be released
+* enhancements
+  * New, improved SearchPanel
+  * Slightly optimized selenium tests (no artificial sleeping whenever possible)
+  * One-to-many association support in Form/GridPanel reworked to use the foreign id instead of a string. This gives us more flexibility about what to display in the association column/field, and also provides for performance improvements (no more need to search for the associated record based on the value provided from the column/field).
+
+= v0.6.3 - 2011-01-14
 * compatibility with netzke-core 0.6.5
 
 * refactoring
@@ -7,8 +13,11 @@
 * bug fix
   * GridPanel respects strong_default_attrs
   * TabPanel doesn't fire multiple load requests per tab in case of lazy-loaded tabs and fast clicking
+  * Filtering/sorting on virtual columns is now disabled by default
+  * Filtering on date columns
 
 * enhancements
+  * I18n for Grid/FormPanel
   * new +getter+ config option for columns/fields, a lambda receiving the record as parameter
   * new +setter+ config option for columns/fields, a lambda receiving the record as first parameter, new value as the second
   * GridPanel passes columns' default values to the "Add in form" form

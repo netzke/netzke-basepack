@@ -1,0 +1,36 @@
+en:
+  netzke:
+    basepack:
+      generic:
+        confirm: Confirmation
+        are_you_sure: Are you sure?
+      grid_panel:
+        actions:
+          add: Add
+          edit: Edit
+          del: Delete
+          apply: Apply
+          add_in_form: Add in form
+          edit_in_form: Edit in form
+          search: Search
+        deleted_n_records: "Deleted %{n} record(s)"
+        cannot_delete: "You don't have permissions to delete data"
+      search_panel:
+        presets: Presets
+        equals: Equals
+        greater_than: Greater than
+        less_than: Less than
+        contains: Contains
+        matches: Matches
+        is_true: "Yes"
+        is_false: "No"
+        date_equals: "On"
+        before: Before
+        after: After
+        preset_saved: Preset successfully saved
+        preset_deleted: Preset successfully deleted
+
+    formats:
+      date: Y-m-d
+      datetime: Y-m-d H:i:s
+      time: H:i:s

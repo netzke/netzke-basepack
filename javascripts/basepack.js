@@ -12,31 +12,23 @@ Ext.reg('passfield', Ext.netzke.PassField);
 
 // ComboBox that gets options from the server (used in both grids and panels)
 Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
-  displayField  : 'id',
+  displayField  : 'name',
   valueField    : 'id',
   triggerAction : 'all',
   typeAhead     : true,
 
   initComponent : function(){
-    var row = Ext.data.Record.create([{name:'id'}]);
+    var row = Ext.data.Record.create(['id', 'name']);
     var store = new Ext.data.Store({
       proxy         : new Ext.data.HttpProxy({url: Ext.getCmp(this.parentId).endpointUrl("get_combobox_options"), jsonData:{column:this.name}}),
       reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
     });
 
-    Ext.apply(this, {
-      store : store
-    });
+    if (this.store) store.loadData({data: this.store});
+
+    this.store = store;
 
     Ext.netzke.ComboBox.superclass.initComponent.apply(this, arguments);
-
-    this.on('blur', function(cb){
-      cb.setValue(cb.getRawValue());
-    });
-
-    this.on('specialkey', function(cb, event){
-      if (event.getKey() == 9 || event.getKey() == 13) {cb.setValue(cb.getRawValue());}
-    });
 
     var parent = Ext.getCmp(this.parentId);
     // Is parent a grid?
@@ -58,7 +50,7 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
   }
 });
 
-Ext.reg('combobox', Ext.netzke.ComboBox);
+Ext.reg('netzkeremotecombo', Ext.netzke.ComboBox);
 
 Ext.util.Format.mask = function(v){
   return "********";

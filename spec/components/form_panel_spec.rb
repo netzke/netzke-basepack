@@ -17,7 +17,7 @@ describe Netzke::Basepack::FormPanel do
 
     form.fields[:first_name][:xtype].should == :textfield
     form.fields[:created_at][:xtype].should == :xdatetime
-    form.fields[:role__name][:xtype].should == :combobox
+    form.fields[:role__name][:xtype].should == :netzkeremotecombo
   end
 
   it "should set correct default field labels" do

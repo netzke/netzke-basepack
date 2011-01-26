@@ -33,21 +33,23 @@ module Netzke
 
       js_base_class "Ext.form.FormPanel"
 
-      def bbar(config)
-        config[:mode] == :lockable ? nil : [:apply.action]
-      end
-
       action :apply, :text => I18n.t('netzke.basepack.form_panel.apply', :default => "Apply"), :icon => :tick
       action :edit, :text => I18n.t('netzke.basepack.form_panel.edit', :default => "Edit"), :icon => :pencil
       action :cancel, :text => I18n.t('netzke.basepack.form_panel.cancel', :default => "Cancel"), :icon => :cancel
 
       def configuration
-        sup = super
+        super.tap do |sup|
+          configure_locked(sup)
+          configure_bbar(sup)
+        end
+      end
 
-        sup.merge(
-          :bbar => sup[:bbar] || bbar(sup),
-          :locked => sup[:locked].nil? ? (sup[:mode] == :lockable) : sup[:locked]
-        )
+      def configure_locked(c)
+        c[:locked] = c[:locked].nil? ? (c[:mode] == :lockable) : c[:locked]
+      end
+
+      def configure_bbar(c)
+        c[:bbar] = [:apply.action] if c[:bbar].nil?
       end
 
       # Extra javascripts
@@ -58,10 +60,15 @@ module Netzke
       # "#{File.dirname(__FILE__)}/form_panel/javascripts/netzkefileupload.js"
 
       def js_config
-        super.merge(
-          :pri    => data_class && data_class.primary_key,
-          :fields => fields
-        )
+        super.tap do |res|
+          res[:pri] = data_class && data_class.primary_key
+          res[:record] = js_record_data if record
+        end
+      end
+
+      # A hash of record data including the meta field
+      def js_record_data
+        record.to_hash(fields).merge(:_meta => meta_field).literalize_keys
       end
 
       def record
@@ -103,6 +110,25 @@ module Netzke
 
           def self.server_side_config_options
             super + [:record]
+          end
+
+          def meta_field
+            {}.tap do |res|
+              assoc_values = get_association_values
+              res[:association_values] = assoc_values.literalize_keys if record && !assoc_values.empty?
+            end
+          end
+
+          def get_association_values
+            fields_that_need_associated_values = fields.select{ |k,v| k.to_s.index("__") && !fields[k][:nested_attribute] }
+            # Take care of Ruby 1.8.7
+            if fields_that_need_associated_values.is_a?(Array)
+              fields_that_need_associated_values = fields_that_need_associated_values.inject({}){|r,(k,v)| r.merge(k => v)}
+            end
+
+            fields_that_need_associated_values.each_pair.inject({}) do |r,(k,v)|
+              r.merge(k => record.value_for_attribute(fields_that_need_associated_values[k], true))
+            end
           end
 
       # include ::Netzke::Plugins::ConfigurationTool if config_tool_available # it will load ConfigurationPanel into a modal window

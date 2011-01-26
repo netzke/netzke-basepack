@@ -32,6 +32,7 @@ Scenario: Updating a record via "Edit in form"
   And I fill in "First name:" with "Maxim"
   And I fill in "Last name:" with "Osminogov"
   And I press "OK"
+  And I wait for the response from the server
   Then I should see "Maxim"
   And I should see "Osminogov"
   And a user should not exist with first_name: "Carlos"
@@ -90,5 +91,85 @@ Scenario: Grid with columns with default values
   Given I am on the BookGridWithDefaultValues test page
   When I press "Add in form"
   And I press "OK"
-  And I sleep 1 second
+  And I wait for the response from the server
   Then a book should exist with title: "Lolita", exemplars: 100
+
+@javascript
+Scenario: Inline editing
+  Given a book exists with title: "Magus", exemplars: 100
+  When I go to the BookGrid test page
+  And I edit row 1 of the grid with title: "Collector", exemplars: 200
+  And I press "Apply"
+  And I wait for the response from the server
+  Then the grid should have 0 modified records
+  And a book should exist with title: "Collector", exemplars: 200
+  But a book should not exist with title: "Magus"
+
+@javascript
+Scenario: Column filters
+  Given the following books exist:
+  | title               | exemplars | digitized | notes        |
+  | Journey to Ixtlan   | 10        | true      | A must-read  |
+  | Lolita              | 5         | false     | To read      |
+  | Getting Things Done | 3         | true      | Productivity |
+  When I go to the BookGrid test page
+  And I enable filter on column "exemplars" with value "{gt:6}"
+  And I sleep 1 second
+  Then the grid should show 1 records
+
+  When I clear all filters in the grid
+  And I enable filter on column "notes" with value "'read'"
+  And I sleep 1 second
+  Then the grid should show 2 records
+
+  When I clear all filters in the grid
+  And I enable filter on column "digitized" with value "false"
+  And I sleep 1 second
+  Then the grid should show 1 records
+
+  When I clear all filters in the grid
+  And I enable filter on column "digitized" with value "true"
+  And I sleep 1 second
+  Then the grid should show 2 records
+
+@javascript
+Scenario: Inline editing of association
+  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
+  And a book exists with title: "Lolita", author: that author
+  And an author exists with first_name: "Herman", last_name: "Hesse"
+  When I go to the BookGrid test page
+  And I expand combobox "author__name" in row 1 of the grid
+  And I wait for the response from the server
+  And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
+  And I edit row 1 of the grid with title: "Demian"
+  And I stop editing the grid
+  Then I should see "Hesse, Herman" within "#book_grid"
+
+  When I press "Apply"
+  And I wait for the response from the server
+  Then a book should exist with title: "Demian", author: that author
+  But a book should not exist with title: "Lolita"
+
+@javascript
+Scenario: Inline adding of records
+  Given an author: "Nabokov" exists with first_name: "Vladimir", last_name: "Nabokov"
+  And an author: "Hesse" exists with first_name: "Herman", last_name: "Hesse"
+  When I go to the BookGrid test page
+
+  And I press "Add"
+  And I expand combobox "author__name" in row 1 of the grid
+  And I wait for the response from the server
+  And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
+  And I edit row 1 of the grid with title: "Demian"
+
+  And I press "Add"
+  And I expand combobox "author__name" in row 2 of the grid
+  And I wait for the response from the server
+  And I select "Nabokov, Vladimir" in combobox "author__name" in row 2 of the grid
+  And I edit row 2 of the grid with title: "Lolita"
+
+  And I stop editing the grid
+  And I press "Apply"
+  And I wait for the response from the server
+  Then a book should exist with title: "Lolita", author: author "Nabokov"
+  And a book should exist with title: "Demian", author: author "Hesse"

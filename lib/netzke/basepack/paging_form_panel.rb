@@ -19,34 +19,36 @@ module Netzke
 
       # override
       def record
-        get_relation.first
+        @record ||= get_relation.first
       end
 
       # Pass total records amount and the first record to the JS constructor
       def js_config
         super.merge({
-          :total_records => total_records,
-          :record => record.to_hash(fields)
+          :total_records => total_records
+          # :record => record.to_hash(fields)
         })
       end
 
       endpoint :get_data do |params|
-        record = get_relation.offset(params[:start].to_i).limit(1).first
-        {:records => record && [record.to_hash(fields)] || [], :total => total_records}
+        @record = get_relation.offset(params[:start].to_i).limit(1).first
+        record_hash = @record && js_record_data
+        {:records => record_hash && [record_hash] || [], :total => total_records}
       end
 
       js_method :init_component, <<-JS
         function(){
 
-          var fieldNames = [];
-          for (var f in this.fields) {
-            fieldNames.push(f);
-          }
+          // Extract field names from items recursively. We have to do it before calling superclass.initComponent,
+          // because we need to build the store for PagingToolbar that cannot be created after superclass.initComponent
+          // Otherwise, the things would be simpler, because this.getForm().items would already has all the fields in one place for us
+          this.fieldNames = [];
+          this.extractFields(this.items);
 
           var store = new Ext.data.JsonStore({
             url: this.endpointUrl('get_data'),
             root: 'records',
-            fields: fieldNames,
+            fields: this.fieldNames.concat('_meta'),
             data: {records: [this.record], total: this.totalRecords}
           });
 
@@ -56,7 +58,7 @@ module Netzke
           }, this);
 
           store.on('load', function(st, r){
-            this.getForm().setValues(r[0].data);
+            this.setFormValues(r[0].data);
             if (this.loadMaskCmp) this.loadMaskCmp.hide();
           }, this);
 

@@ -18,5 +18,4 @@ class BookGridWithVirtualAttributes < Netzke::Basepack::GridPanel
       {:name => :in_abundance, :getter => in_abundance_getter}
     ]
   end
-
 end

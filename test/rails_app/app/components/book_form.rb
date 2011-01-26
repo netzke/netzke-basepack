@@ -14,11 +14,9 @@ class BookForm < Netzke::Basepack::FormPanel
         :exemplars,
         {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
         {:name => :tags, :xtype => :commalistcbg, :options => %w(read cool recommend buy)},
-        {:name => :rating, :xtype => :nradiogroup, :options => %w(Good Average Poor)}
+        {:name => :rating, :xtype => :nradiogroup, :options => [[1, "Good"], [2, "Average"], [3, "Poor"]]}
       ]
     )
   end
-
-
 
 end

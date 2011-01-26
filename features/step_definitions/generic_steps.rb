@@ -13,3 +13,7 @@ end
 When /I sleep (\d+) seconds?/ do |arg1|
   sleep arg1.to_i
 end
+
+When /^I wait for the response from the server$/ do
+  page.wait_until{ page.driver.browser.execute_script("return !Ext.Ajax.isLoading();") }
+end

@@ -138,7 +138,7 @@ module Netzke
         res = []
         for a in attributes
           next if a[:included] == false
-          res << value_for_attribute(a)
+          res << value_for_attribute(a, a[:nested_attribute])
         end
         res
       end
@@ -148,26 +148,33 @@ module Netzke
         res = {}
         for a in (attributes.is_a?(Hash) ? attributes.values : attributes)
           next if a[:included] == false
-          res[a[:name].to_sym] = self.value_for_attribute(a)
+          res[a[:name].to_sym] = self.value_for_attribute(a, a[:nested_attribute])
         end
         res
       end
 
       # Fetches the value specified by an (association) attribute
-      def value_for_attribute(a)
+      # If +through_association+ is true, get the value of the association by provided method, *not* the associated record's id
+      # E.g., author__name with through_association set to true may return "Vladimir Nabokov", while with through_association set to false, it'll return author_id for the current record
+      def value_for_attribute(a, through_association = false)
         v = if a[:getter]
           a[:getter].call(self)
         elsif respond_to?("#{a[:name]}")
           send("#{a[:name]}")
         elsif is_association_attr?(a)
           split = a[:name].to_s.split(/\.|__/)
-          split.inject(self) do |r,m|
-            if r.respond_to?(m)
-              r.send(m)# unless res.nil?
-            else
-              logger.debug "!!! Netzke::Basepack: Wrong attribute name: #{a[:name]}" unless r.nil?
-              nil
+          assoc = self.class.reflect_on_association(split.first.to_sym)
+          if through_association
+            split.inject(self) do |r,m| # TODO: do we really need to descend deeper than 1 level?
+              if r.respond_to?(m)
+                r.send(m)
+              else
+                logger.debug "!!! Netzke::Basepack: Wrong attribute name: #{a[:name]}" unless r.nil?
+                nil
+              end
             end
+          else
+            self.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}")
           end
         end
 
@@ -205,18 +212,7 @@ module Netzke
                     # what should we do in this case?
                   end
                 else
-                  begin
-                    assoc_instance = assoc.klass.send("find_by_#{assoc_method}", v)
-                  rescue NoMethodError
-                    assoc_instance = nil
-                    logger.debug "!!! Netzke::Basepack: No find_by_#{assoc_method} method for class #{assoc.klass.name}\n"
-                  end
-                  if (assoc_instance)
-                    # we found association instance to assign
-                    self.send("#{split.first}=", assoc_instance)
-                  else
-                    logger.debug "!!! Netzke::Basepack: Couldn't find association #{split.first} by #{assoc_method} '#{v}'"
-                  end
+                  self.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}=", v)
                 end
               else
                 logger.debug "!!! Netzke::Basepack: Association #{assoc} is not known for class #{self.class.name}"

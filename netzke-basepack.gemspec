@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{netzke-basepack}
-  s.version = "0.6.3"
+  s.version = "0.6.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-01-08}
+  s.date = %q{2011-01-24}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -38,6 +38,7 @@ Gem::Specification.new do |s|
     "features/simple_app.feature",
     "features/simple_panel.feature",
     "features/step_definitions/accordion_steps.rb",
+    "features/step_definitions/form_panel_steps.rb",
     "features/step_definitions/generic_steps.rb",
     "features/step_definitions/grid_panel_steps.rb",
     "features/step_definitions/pickle_steps.rb",
@@ -46,6 +47,7 @@ Gem::Specification.new do |s|
     "features/support/paths.rb",
     "features/support/pickle.rb",
     "features/tab_panel.feature",
+    "features/validations_in_grid.feature",
     "features/virtual_attributes.feature",
     "features/window.feature",
     "from_05_to_06.rdoc",
@@ -78,6 +80,7 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/grid_panel/javascripts/advanced_search.js",
     "lib/netzke/basepack/grid_panel/javascripts/edit_in_form.js",
     "lib/netzke/basepack/grid_panel/javascripts/main.js",
+    "lib/netzke/basepack/grid_panel/javascripts/misc.js",
     "lib/netzke/basepack/grid_panel/javascripts/rows-dd.js",
     "lib/netzke/basepack/grid_panel/multi_edit_form.rb",
     "lib/netzke/basepack/grid_panel/record_form_window.rb",
@@ -86,6 +89,8 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/paging_form_panel.rb",
     "lib/netzke/basepack/panel.rb",
     "lib/netzke/basepack/search_panel.rb",
+    "lib/netzke/basepack/search_panel/javascripts/condition_field.js",
+    "lib/netzke/basepack/search_panel/javascripts/main.js",
     "lib/netzke/basepack/simple_app.rb",
     "lib/netzke/basepack/simple_app/javascripts/main.js",
     "lib/netzke/basepack/simple_app/javascripts/statusbar_ext.js",
@@ -101,7 +106,7 @@ Gem::Specification.new do |s|
     "lib/netzke/json_array_editor.rb",
     "lib/netzke/masquerade_selector.rb",
     "lib/tasks/netzke_basepack_tasks.rake",
-    "locale/en.yml",
+    "locales/en.yml",
     "netzke-basepack.gemspec",
     "spec/active_record/attributes_spec.rb",
     "spec/active_record/relation_extensions_spec.rb",
@@ -126,12 +131,17 @@ Gem::Specification.new do |s|
     "test/rails_app/Rakefile",
     "test/rails_app/app/components/author_grid.rb",
     "test/rails_app/app/components/book_form.rb",
+    "test/rails_app/app/components/book_form_with_custom_fields.rb",
+    "test/rails_app/app/components/book_form_with_nested_attributes.rb",
     "test/rails_app/app/components/book_grid.rb",
+    "test/rails_app/app/components/book_grid_with_custom_columns.rb",
     "test/rails_app/app/components/book_grid_with_default_values.rb",
     "test/rails_app/app/components/book_grid_with_nested_attributes.rb",
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_paging_form_panel.rb",
     "test/rails_app/app/components/book_presentation.rb",
+    "test/rails_app/app/components/book_search_panel.rb",
+    "test/rails_app/app/components/book_search_panel/javascripts/i18n_de.js",
     "test/rails_app/app/components/books_bound_to_author.rb",
     "test/rails_app/app/components/form_without_model.rb",
     "test/rails_app/app/components/generic_user_form.rb",
@@ -145,7 +155,6 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/some_accordion_panel.rb",
     "test/rails_app/app/components/some_auth_app.rb",
     "test/rails_app/app/components/some_border_layout.rb",
-    "test/rails_app/app/components/some_search_panel.rb",
     "test/rails_app/app/components/some_simple_app.rb",
     "test/rails_app/app/components/some_tab_panel.rb",
     "test/rails_app/app/components/user_form.rb",
@@ -181,6 +190,7 @@ Gem::Specification.new do |s|
     "test/rails_app/config/initializers/netzke.rb",
     "test/rails_app/config/initializers/secret_token.rb",
     "test/rails_app/config/initializers/session_store.rb",
+    "test/rails_app/config/locales/de.yml",
     "test/rails_app/config/locales/es.yml",
     "test/rails_app/config/routes.rb",
     "test/rails_app/db/development_structure.sql",
@@ -257,12 +267,16 @@ Gem::Specification.new do |s|
     "test/console_with_fixtures.rb",
     "test/rails_app/app/components/author_grid.rb",
     "test/rails_app/app/components/book_form.rb",
+    "test/rails_app/app/components/book_form_with_custom_fields.rb",
+    "test/rails_app/app/components/book_form_with_nested_attributes.rb",
     "test/rails_app/app/components/book_grid.rb",
+    "test/rails_app/app/components/book_grid_with_custom_columns.rb",
     "test/rails_app/app/components/book_grid_with_default_values.rb",
     "test/rails_app/app/components/book_grid_with_nested_attributes.rb",
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_paging_form_panel.rb",
     "test/rails_app/app/components/book_presentation.rb",
+    "test/rails_app/app/components/book_search_panel.rb",
     "test/rails_app/app/components/books_bound_to_author.rb",
     "test/rails_app/app/components/form_without_model.rb",
     "test/rails_app/app/components/generic_user_form.rb",
@@ -276,7 +290,6 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/some_accordion_panel.rb",
     "test/rails_app/app/components/some_auth_app.rb",
     "test/rails_app/app/components/some_border_layout.rb",
-    "test/rails_app/app/components/some_search_panel.rb",
     "test/rails_app/app/components/some_simple_app.rb",
     "test/rails_app/app/components/some_tab_panel.rb",
     "test/rails_app/app/components/user_form.rb",

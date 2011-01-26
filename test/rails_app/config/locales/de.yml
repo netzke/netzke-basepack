@@ -1,4 +1,4 @@
-en:
+de:
   netzke:
     basepack:
       generic:
@@ -14,7 +14,20 @@ en:
         search: Search
         deleted_n_records: "Deleted %{n} record(s)"
         cannot_delete: "You don't have permissions to delete data"
-
+      search_panel:
+        presets: Vorlagen
+        equals: Ist gleich
+        greater_than: Ist größer als
+        less_than: Ist kleiner als
+        contains: Enthält
+        matches: Entspricht
+        is_true: "Ja"
+        is_false: "Nein"
+        date_equals: Am
+        before: Vor dem
+        after: Nach dem
+        preset_saved: Vorlage erfolgreich gespeichert
+        preset_deleted: Vorlage erfolgreich gelöscht..
     formats:
       date: Y-m-d
       datetime: Y-m-d H:i:s

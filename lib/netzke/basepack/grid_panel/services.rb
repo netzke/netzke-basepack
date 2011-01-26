@@ -77,7 +77,7 @@ module Netzke
             query = params[:query]
 
             column = columns.detect{ |c| c[:name] == params[:column] }
-            scope = column.to_options[:scope] || column.to_options[:editor].try(:fetch, :scope)
+            scope = column.to_options[:scope] || column.to_options[:editor].try(:fetch, :scope, nil)
             query = params[:query]
 
             {:data => combobox_options_for_column(column, :query => query, :scope => scope, :record_id => params[:id])}
@@ -155,15 +155,36 @@ module Netzke
         def get_data(*args)
           params = args.first || {} # params are optional!
           if !config[:prohibit_read]
-            records = get_records(params)
-            {:data => records.map{|r| r.to_array(columns)}, :total => config[:enable_pagination] && records.total_entries}
+            {}.tap do |res|
+              records = get_records(params)
+              res[:data] = records.map{|r| r.to_array(columns(:with_meta => true))}
+              res[:total] = records.total_entries if config[:enable_pagination]
+
+              # provide association values for all records at once
+              # assoc_values = get_association_values(records, columns)
+              # res[:set_association_values] = assoc_values.literalize_keys if assoc_values.present?
+            end
           else
             flash :error => "You don't have permissions to read data"
-            {:feedback => @flash}
+            { :feedback => @flash }
           end
         end
 
         protected
+
+          # Returns all values for association columns, per column, per associated record id, e.g.:
+          # {
+          #   :author__first_name => {1 => "Vladimir", 2 => "Herman"},
+          #   :author__last_name => {1 => "Nabokov", 2 => "Hesse"}
+          # }
+          # This is used to display the association by the specified method instead by the foreign key
+          # def get_association_values(records, columns)
+          #   columns.select{ |c| c[:name].index("__") }.each.inject({}) do |r,c|
+          #     column_values = {}
+          #     records.each{ |r| column_values[r.value_for_attribute(c)] = r.value_for_attribute(c, true) }
+          #     r.merge(c[:name] => column_values)
+          #   end
+          # end
 
           def get_records(params)
 
@@ -225,6 +246,22 @@ module Netzke
               relation = relation.extend_with_netzke_conditions(extra_conditions) if params[:extra_conditions]
             end
 
+            if params[:query]
+              query = ActiveSupport::JSON.decode(params[:query])
+              query.each do |q|
+                case q["operator"]
+                when "contains"
+                  relation = relation.where(q["attr"].to_sym.matches => %Q{%#{q["value"]}%})
+                when "is_true"
+                  relation = relation.where(q["attr"] => 1)
+                when "is_false"
+                  relation = relation.where(q["attr"] => 0)
+                else
+                  relation = relation.where(q["attr"].to_sym.send(q["operator"]) => q["value"])
+                end
+              end
+            end
+
             relation = relation.extend_with(config[:scope]) if config[:scope]
 
             relation
@@ -277,7 +314,7 @@ module Netzke
 
                 # try to save
                 # modified_records += 1 if success && record.save
-                mod_records[id] = record.to_array(columns) if success && record.save
+                mod_records[id] = record.to_array(columns(:with_meta => true)) if success && record.save
                 # mod_record_ids << id if success && record.save
 
                 # flash eventual errors
@@ -331,6 +368,8 @@ module Netzke
               when "string"
                 field = field.send :matches
                 value = "%#{value}%"
+              when "boolean"
+                value = value == "true"
               when "numeric", "date"
                 field = field.send :"#{v['data']['comparison']}"
               end

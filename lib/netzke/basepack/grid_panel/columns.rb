@@ -3,67 +3,89 @@ module Netzke
     class GridPanel < Netzke::Base
       module Columns
         extend ActiveSupport::Concern
+        extend ActiveSupport::Memoizable
 
-        module ClassMethods
-          # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
-          # option for each column in the grid.
-          def meta_columns
-            [
-              # Whether the column will be present in the grid, also in :hidden or :meta state. The value for this column will
-              # always be sent to/from the JS grid to the server
-              {:name => "included",      :attr_type => :boolean, :width => 40, :header => "Incl", :default_value => true},
-
-              # The name of the column. May be any accessible method or attribute of the data_class.
-              {:name => "name",          :attr_type => :string, :width => 200},
-
-              # The header for the column.
-              {:name => "label",         :attr_type => :string, :width => 200, :header => "Header"},
-
-              # The default value of this column. Is used when a new row in the grid gets created.
-              {:name => "default_value", :attr_type => :string, :width => 200},
-
-              # Options for drop-downs
-              {:name => "combobox_options",       :attr_type => :string, :editor => :textarea, :width => 200},
-
-              # Whether the column is editable in the grid.
-              {:name => "read_only",     :attr_type => :boolean, :header => "R/O", :tooltip => "Read-only"},
-
-              # Whether the column will be in the hidden state (hide/show columns from the column menu, if it's enabled).
-              {:name => "hidden",        :attr_type => :boolean},
-
-              # Whether the column should have "grid filters" enabled
-              # (see here: http://www.extjs.com/deploy/dev/examples/grid-filtering/grid-filter-local.html)
-              {:name => "with_filters",  :attr_type => :boolean, :default_value => true, :header => "Filters"},
-
-              #
-              # Below some rarely used parameters, hidden by default (you can always un-hide them from the column menu).
-              #
-
-              # The column's width
-              {:name => "width",         :attr_type => :integer, :hidden => true},
-
-              # Whether the column should be hideable
-              {:name => "hideable",      :attr_type => :boolean, :default_value => true, :hidden => true},
-
-              # Whether the column should be sortable (why change it? normally it's hardcoded)
-              {:name => "sortable",      :attr_type => :boolean, :default_value => true, :hidden => true},
-            ]
-          end
-
-        end
+        # module ClassMethods
+        #   # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
+        #   # option for each column in the grid.
+        #   def meta_columns
+        #     [
+        #       # Whether the column will be present in the grid, also in :hidden or :meta state. The value for this column will
+        #       # always be sent to/from the JS grid to the server
+        #       {:name => "included",      :attr_type => :boolean, :width => 40, :header => "Incl", :default_value => true},
+        #
+        #       # The name of the column. May be any accessible method or attribute of the data_class.
+        #       {:name => "name",          :attr_type => :string, :width => 200},
+        #
+        #       # The header for the column.
+        #       {:name => "label",         :attr_type => :string, :width => 200, :header => "Header"},
+        #
+        #       # The default value of this column. Is used when a new row in the grid gets created.
+        #       {:name => "default_value", :attr_type => :string, :width => 200},
+        #
+        #       # Options for drop-downs
+        #       {:name => "combobox_options",       :attr_type => :string, :editor => :textarea, :width => 200},
+        #
+        #       # Whether the column is editable in the grid.
+        #       {:name => "read_only",     :attr_type => :boolean, :header => "R/O", :tooltip => "Read-only"},
+        #
+        #       # Whether the column will be in the hidden state (hide/show columns from the column menu, if it's enabled).
+        #       {:name => "hidden",        :attr_type => :boolean},
+        #
+        #       # Whether the column should have "grid filters" enabled
+        #       # (see here: http://www.extjs.com/deploy/dev/examples/grid-filtering/grid-filter-local.html)
+        #       {:name => "with_filters",  :attr_type => :boolean, :default_value => true, :header => "Filters"},
+        #
+        #       #
+        #       # Below some rarely used parameters, hidden by default (you can always un-hide them from the column menu).
+        #       #
+        #
+        #       # The column's width
+        #       {:name => "width",         :attr_type => :integer, :hidden => true},
+        #
+        #       # Whether the column should be hideable
+        #       {:name => "hideable",      :attr_type => :boolean, :default_value => true, :hidden => true},
+        #
+        #       # Whether the column should be sortable (why change it? normally it's hardcoded)
+        #       {:name => "sortable",      :attr_type => :boolean, :default_value => true, :hidden => true},
+        #     ]
+        #   end
+        #
+        # end
 
         # Normalized columns for the grid, e.g.:
         # [{:name => :id, :hidden => true, ...}, {:name => :name, :editable => false, ...}, ...]
-        def columns(only_included = true)
-          @columns ||= begin
-            if cols = load_columns
-              filter_out_excluded_columns(cols) if only_included
-              reverse_merge_equally_named_columns(cols, initial_columns)
-              cols
+        # Possible options:
+        # * +with_excluded+ - when set to true, also excluded columns will be returned (handy for dynamic column configuration)
+        # * +with_meta+ - when set to true, the meta column will be included as the last column
+        def columns(options = {})
+          [].tap do |cols|
+            if loaded_columns = load_columns
+              filter_out_excluded_columns(loaded_columns) unless options[:with_excluded]
+              cols.concat(reverse_merge_equally_named_columns(loaded_columns, initial_columns(options[:with_excluded])))
             else
-              initial_columns(only_included)
+              cols.concat(initial_columns(options[:with_excluded]))
             end
+
+            append_meta_column(cols) if options[:with_meta]
           end
+        end
+
+        memoize :columns
+
+        def append_meta_column(cols)
+          cols << {
+            :name => "_meta",
+            :meta => true,
+            :getter => lambda do |r|
+              meta_data(r)
+            end
+          }
+        end
+
+        # Override it when you need extra meta data to be passed through the meta column
+        def meta_data(r)
+          { :association_values => get_association_values(r).literalize_keys }
         end
 
         # Columns as a hash, for easier access to a specific column
@@ -80,7 +102,7 @@ module Netzke
         end
 
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
-        def initial_columns(only_included = true)
+        def initial_columns(with_excluded = false)
           # Normalize here, as from the config we can get symbols (names) instead of hashes
           columns_from_config = config[:columns] && normalize_attrs(config[:columns])
 
@@ -101,11 +123,12 @@ module Netzke
             columns_for_create = default_columns
           end
 
-          filter_out_excluded_columns(columns_for_create) if only_included
+          filter_out_excluded_columns(columns_for_create) unless with_excluded
 
           # Make the column config complete with the defaults
           columns_for_create.each do |c|
             detect_association(c)
+            set_default_virtual(c)
             set_default_header(c)
             set_default_editor(c)
             set_default_width(c)
@@ -156,19 +179,21 @@ module Netzke
           end
 
           def set_default_editable(c)
-            not_editable_if = primary_key_attr?(c)
-            not_editable_if ||= c[:virtual]
-            not_editable_if ||= c.delete(:read_only)
+            if c[:editable].nil?
+              not_editable_if = primary_key_attr?(c)
+              not_editable_if ||= c[:virtual] && !association_attr?(c[:name])
+              not_editable_if ||= c.delete(:read_only)
 
-            editable_if = data_class.column_names.include?(c[:name])
-            editable_if ||= data_class.instance_methods.map(&:to_s).include?("#{c[:name]}=")
-            editable_if ||= association_attr?(c[:name])
+              editable_if = data_class.column_names.include?(c[:name])
+              editable_if ||= data_class.instance_methods.map(&:to_s).include?("#{c[:name]}=")
+              editable_if ||= association_attr?(c[:name])
 
-            c[:editable] = editable_if && !not_editable_if if c[:editable].nil?
+              c[:editable] = editable_if && !not_editable_if
+            end
           end
 
           def set_default_sortable(c)
-            c[:sortable] = !c[:virtual] if c[:sortable].nil?
+            c[:sortable] = !c[:virtual] if c[:sortable].nil? # TODO: optimize - don't set it to false
           end
 
           def set_default_filterable(c)
@@ -181,7 +206,7 @@ module Netzke
           end
 
           def editor_for_association
-            :combobox
+            :netzkeremotecombo
           end
 
           # Returns a hash that maps a column type to the editor xtype. Override if you want different editors.
@@ -198,20 +223,28 @@ module Netzke
 
           # Detects an association column and sets up the proper editor.
           def detect_association(c)
-            # double-underscore notation? surely an association column
-            if c[:name].index('__')
-              assoc_name, assoc_method = c[:name].split('__')
-              if assoc_method && assoc = data_class.reflect_on_association(assoc_name.to_sym)
-                assoc_column = assoc.klass.columns_hash[assoc_method]
-                assoc_method_type = assoc_column.try(:type)
+            assoc, assoc_method = get_assoc_and_method(c)
+            if assoc
+              assoc_column = assoc.klass.columns_hash[assoc_method]
+              assoc_method_type = assoc_column.try(:type)
 
-                # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
-                if c[:nested_attribute]
-                  c[:editor] ||= editor_for_attr_type(assoc_method_type)
-                else
-                  c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
-                end
+              # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
+              if c[:nested_attribute]
+                c[:editor] ||= editor_for_attr_type(assoc_method_type)
+              else
+                c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
+                c[:assoc] = true
               end
+            end
+          end
+
+          def get_assoc_and_method(c)
+            if c[:name].index("__")
+              assoc_name, assoc_method = c[:name].split('__')
+              assoc = data_class.reflect_on_association(assoc_name.to_sym)
+              [assoc, assoc_method]
+            else
+              [nil, nil]
             end
           end
 

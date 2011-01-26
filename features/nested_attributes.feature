@@ -8,7 +8,10 @@ Scenario: Grid with nested attributes
   Given an author exists with first_name: "Vlad", last_name: "Nabokoff"
   And a book exists with title: "Lola", author: that author
   When I go to the BookGridWithNestedAttributes test page
-  And I select first row in the grid
+  Then I should see "Vlad" within "#book_grid_with_nested_attributes"
+  And I should see "Nabokoff" within "#book_grid_with_nested_attributes"
+
+  When I select first row in the grid
   And I press "Edit in form"
   And I fill in "Author first name:" with "Vladimir"
   And I fill in "Author last name:" with "Nabokov"

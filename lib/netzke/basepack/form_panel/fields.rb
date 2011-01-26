@@ -22,7 +22,7 @@ module Netzke
 
         # Hash of fully configured fields, that are referenced in the items. E.g.:
         #   {
-        #     :role__name => {:xtype => 'combobox', :disabled => true, :value => "admin"},
+        #     :role__name => {:xtype => 'netzkeremotecombo', :disabled => true, :value => "admin"},
         #     :created_at => {:xtype => 'datetime', :disabled => true, :value => "2010-10-10 10:10"}
         #   }
         def fields
@@ -52,7 +52,7 @@ module Netzke
 
         # Hash of normalized field configs extracted from :items, e.g.:
         #
-        #     {:role__name => {:xtype => "combobox"}, :password => {:xtype => "passwordfield"}}
+        #     {:role__name => {:xtype => "netzkeremotecombo"}, :password => {:xtype => "passwordfield"}}
         def fields_from_config
           items if @fields_from_config.nil? # by calling +items+ we initiate building of @fields_from_config
           @fields_from_config ||= {}
@@ -64,7 +64,7 @@ module Netzke
           def meta_columns
             [
               {:name => "included", :attr_type => :boolean, :width => 40, :header => "Incl", :default_value => true},
-              {:name => "name", :attr_type => :string, :editor => :combobox, :width => 200},
+              {:name => "name", :attr_type => :string, :editor => :netzkeremotecombo, :width => 200},
               {:name => "label", :attr_type => :string, :header => "Label"},
               {:name => "default_value", :attr_type => :string}
             ]
@@ -98,13 +98,13 @@ module Netzke
             detect_association_with_method(field) # xtype for an association field
             set_default_field_label(field)
             set_default_field_xtype(field) if field[:xtype].nil?
-            set_default_field_value(field) if self.record
+            # set_default_field_value(field) if self.record
             set_default_read_only(field)
 
             field[:display_mode] = config[:display_mode] if config[:display_mode]
 
             # provide our special combobox with our id
-            field[:parent_id] = self.global_id if field[:xtype] == :combobox
+            field[:parent_id] = self.global_id if field[:xtype] == :netzkeremotecombo
 
             field[:hidden] = field[:hide_label] = true if field[:hidden].nil? && primary_key_attr?(field)
 
@@ -122,12 +122,10 @@ module Netzke
               if method && assoc = data_class.reflect_on_association(assoc_name)
                 assoc_column = assoc.klass.columns_hash[method.to_s]
                 assoc_method_type = assoc_column.try(:type)
-                if assoc_method_type
-                  if c[:nested_attribute]
-                    c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
-                  else
-                    c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
-                  end
+                if c[:nested_attribute]
+                  c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
+                else
+                  c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
                 end
               end
             end
@@ -161,10 +159,10 @@ module Netzke
             c[:field_label].gsub!(/\s+/, " ")
           end
 
-          def set_default_field_value(field)
-            value = record.value_for_attribute(field)
-            field[:value] ||= value unless value.nil?
-          end
+          # def set_default_field_value(field)
+          #   value = record.value_for_attribute(field)
+          #   field[:value] ||= value unless value.nil?
+          # end
 
           # Deeply merges only those key/values at the top level that are already there
           def deep_merge_existing_fields(dest, src)
@@ -203,7 +201,7 @@ module Netzke
           end
 
           def xtype_for_association
-            :combobox
+            :netzkeremotecombo
           end
 
           # Are we provided with a static field layout?

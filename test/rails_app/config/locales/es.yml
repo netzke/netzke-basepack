@@ -11,6 +11,17 @@ es:
         search: Buscar
       form_panel:
         apply: Aplicar
+      search_panel:
+        equals: Es igual a
+        greater_than: Más de
+        less_than: Menos de
+        contains: Contiene
+        matches: Corresponde a
+        yes: Sí
+        no: No
+        before: Antes de
+        after: Después de
+
   activerecord:
     models:
       book: Libro
