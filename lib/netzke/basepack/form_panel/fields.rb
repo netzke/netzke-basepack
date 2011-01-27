@@ -189,7 +189,7 @@ module Netzke
               :integer => :numberfield,
               :boolean => :checkbox,
               :date => :datefield,
-              :datetime => :xdatetime,
+              :datetime => :datetimefield,
               :text => :textarea,
               :json => :jsonfield,
               :string => :textfield

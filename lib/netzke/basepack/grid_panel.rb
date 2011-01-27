@@ -99,7 +99,7 @@ module Netzke
     # * +search+
     #
     # == TODO
-    # * When a renderer is provided for an association column, our renderer gets overridden. Find a way to nest them.
+    # * Make ColumnModel pluggable (e.g. to easily replace it with Ext.ux.grid.LockingColumnModel)
     class GridPanel < Netzke::Base
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,

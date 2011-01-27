@@ -67,7 +67,7 @@ module Netzke
           :integer  => "numberfield",
           :boolean  => "checkbox",
           :decimal  => "numberfield",
-          :datetime => "xdatetime",
+          :datetime => "datetimefield",
           :date     => "datefield",
           :string   => "textfield"
         },

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-01-26}
+  s.date = %q{2011-01-27}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -57,6 +57,7 @@ Gem::Specification.new do |s|
     "init.rb",
     "install.rb",
     "javascripts/basepack.js",
+    "javascripts/datetimefield.js",
     "lib/netzke-basepack.rb",
     "lib/netzke/active_record.rb",
     "lib/netzke/active_record/attributes.rb",
@@ -117,6 +118,7 @@ Gem::Specification.new do |s|
     "spec/factories.rb",
     "spec/spec_helper.rb",
     "stylesheets/basepack.css",
+    "stylesheets/datetimefield.css",
     "test/console_with_fixtures.rb",
     "test/fixtures/books.yml",
     "test/fixtures/categories.yml",

@@ -1,0 +1,54 @@
+.ux-base-time-picker {
+}
+
+.ux-base-time-picker .x-panel-body {
+    padding: 5px;
+}
+.ux-date-time-picker {
+    border: 1px solid #1B376C;
+    overflow: hidden;
+}
+
+.x-menu .ux-date-time-picker {
+    border-color: #A3BAD9;
+}
+
+.x-menu-plain .ux-date-time-picker {
+    border: none;
+}
+
+.ux-date-time-picker-inner {
+    position: relative;
+}
+
+.ux-date-time-picker .x-date-picker {
+    border: none !important;
+}
+
+.ux-date-time-picker-value-ct {
+    border: none;
+}
+
+.ux-date-time-picker-value-ct-value-wrap {
+    white-space: nowrap;
+    font: 12px arial, tahoma, verdana, helvetica;
+}
+
+.ux-date-time-picker-value-ct-value-label {
+    font-weight: normal;
+}
+
+.ux-date-time-picker-value-ct-value {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* menu */
+
+.ext-ie .x-date-time-menu {
+    height: 229px;
+}
+
+.ext-strict .ext-ie7 .x-date-time-menu {
+    height: 225px;
+}

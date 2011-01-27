@@ -1,12 +1,15 @@
 = v0.6.4 - to be released
 * API changes
   * The combo field able to talk to the server, has changed its xtype from combobox to netzkeremotecombo. When getting values from the server via AJAX, it expects a 2-dimensional array now, where the first value is the real value (which gets submitted), and the second value is the display value.
+  * xdatetime is no more. datetimefield is used instead.
 
 * enhancements
   * New, improved SearchPanel
   * Slightly optimized selenium tests (no artificial sleeping whenever possible)
   * One-to-many association support in Form/GridPanel reworked to use the foreign id instead of a string. This gives us more flexibility about what to display in the association column/field, and also provides for performance improvements (no more need to search for the associated record based on the value provided from the column/field).
 
+* bug fix
+  * Long-standing visual issues with datetime columns in grid panel are solved.
 
 = v0.6.3 - 2011-01-14
 * compatibility with netzke-core 0.6.5

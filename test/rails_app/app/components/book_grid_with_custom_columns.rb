@@ -5,10 +5,11 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
     super.merge(
       :model => "Book",
       :columns => [
-        :author__first_name,
+        {:name => :author__first_name, :locked => true},
         {:name => :author__last_name, :renderer => :uppercase},
         :author__name,
         :title,
+        :digitized,
         {
           :name => :rating,
           :editor => {
@@ -17,7 +18,9 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
             :store => [[1, "Good"], [2, "Average"], [3, "Poor"]]
           },
           :renderer => "function(v){return ['', 'Good', 'Average', 'Poor'][v];}"
-        }
+        },
+        :exemplars,
+        :updated_at
       ]
     )
   end
