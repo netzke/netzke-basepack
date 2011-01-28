@@ -2,9 +2,6 @@ module Netzke
   module Basepack
     # == Configuration
     # +load_last_preset+ - on load, tries to load the latest saved preset
-    #
-    # == ToDo
-    # * Translation of fields in the attribute field
     class SearchPanel < Base
 
       js_base_class "Ext.form.FormPanel"
@@ -93,62 +90,6 @@ module Netzke
       def last_preset
         (state[:presets] || []).last
       end
-
-      js_method :init_component, <<-JS
-        function(){
-          Netzke.classes.Basepack.SearchPanel.superclass.initComponent.call(this);
-          this.buildFormFromQuery(this.query);
-
-          this.addEvents('conditionsupdate', 'fieldsnumberchange');
-        }
-      JS
-
-      js_method :on_apply, <<-JS
-        function(){
-          this.fireEvent('conditionsupdate', this.getQuery());
-        }
-      JS
-
-
-      js_method :build_form_from_query, <<-JS
-        // Will probably need to be performance-optimized in the future, as recreating the fields is expensive
-        function(query){
-          Ext.each(query, function(f){
-            this.add(Ext.apply(f, {xtype: 'netzkebasepacknewsearchpanelconditionfield'}));
-          }, this);
-          this.doLayout();
-        }
-      JS
-
-
-      js_method :on_add_condition, <<-JS
-        function(){
-          this.add({xtype: 'netzkebasepacknewsearchpanelconditionfield'});
-          this.doLayout();
-          this.fireEvent('fieldsnumberchange');
-        }
-      JS
-
-      js_method :on_clear_all, <<-JS
-        function(){
-          this.removeAll();
-          this.fireEvent('fieldsnumberchange');
-        }
-      JS
-
-      js_method :get_query, <<-JS
-        function(all){
-          var query = [];
-          this.items.each(function(f){
-            if (f.valueIsSet() || all) {
-              var cond = f.buildValue();
-              if (all) {cond.attrType = f.attrType;}
-              query.push(cond);
-            }
-          });
-          return query;
-        }
-      JS
 
       endpoint :save_preset do |params|
         saved_searches = state[:presets] || []

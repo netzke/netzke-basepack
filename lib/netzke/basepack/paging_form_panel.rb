@@ -17,8 +17,6 @@ module Netzke
     #     :scope => { |rel| rel.where(:id.gt => 100).order(:created_at) }
     #
     # == ToDo
-    # * Clearing search
-    # * Search provides no results
     # * DRY out get_relation
     # * Update the number of records after form submit
     class PagingFormPanel < FormPanel
@@ -42,7 +40,7 @@ module Netzke
         {:records => record_hash && [record_hash] || [], :total => total_records(params)}
       end
 
-      action :search, :icon => :find, :enable_toggle => true
+      action :search, :icon => :find, :select => true
 
       def configure_bbar(c)
         super
@@ -70,18 +68,8 @@ module Netzke
 
               win.on('hide', function(){
                 if (win.closeRes == 'OK'){
-                  // var searchConditions = win.conditions;
-                  var filtered = true;
-                  // check if there's any search condition set
-                  // for (var k in searchConditions) {
-                  //   if (searchConditions[k].length > 0) {
-                  //     filtered = true;
-                  //     break;
-                  //   }
-                  // }
-                  el.toggle(filtered); // toggle based on the state
-                  // this.getStore().baseParams.extra_conditions = Ext.encode(win.conditions);
-                  this.getStore().baseParams.query = win.query;
+                  el.toggle(win.query.length > 0); // toggle based on the state
+                  this.getStore().baseParams.query = Ext.encode(win.query);
                   this.getStore().load();
                 }
               }, this);
