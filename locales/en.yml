@@ -22,8 +22,6 @@ en:
         less_than: Less than
         contains: Contains
         matches: Matches
-        is_true: "Yes"
-        is_false: "No"
         date_equals: "On"
         before: Before
         after: After

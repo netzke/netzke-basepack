@@ -25,7 +25,7 @@ module Netzke
           ["matches", I18n.t('netzke.basepack.search_panel.matches')]
         ],
         :boolean => [
-          # TODO: add ["any", "Any"],
+          ["is_any", I18n.t('netzke.basepack.search_panel.is_true')],
           ["is_true", I18n.t('netzke.basepack.search_panel.is_true')],
           ["is_false", I18n.t('netzke.basepack.search_panel.is_false')]
         ],
@@ -37,6 +37,7 @@ module Netzke
       }
 
       action :clear_all, :icon => :cross
+      action :reset, :icon => :application_form
       action :add_condition, :icon => :add
 
       action :save_preset, :icon => :disk
@@ -61,7 +62,7 @@ module Netzke
           :attrs => attributes,
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
           :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || default_query,
-          :bbar => (config[:bbar] || []) + [:add_condition.action, :clear_all.action, "->",
+          :bbar => (config[:bbar] || []) + [:add_condition.action, :clear_all.action, :reset.action, "->",
             I18n.t('netzke.basepack.search_panel.presets'),
             {
               :xtype => "combo",

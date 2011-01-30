@@ -20,6 +20,8 @@ module Netzke
     # The layout of the form is configured by supplying the +item+ config option, same way it would be configured in Ext (thus allowing for complex form layouts). FormPanel will expand fields by looking at their names (unless +no_binding+ set to +true+ is specified for a specific field).
     class FormPanel < Netzke::Base
 
+      js_base_class "Ext.form.FormPanel"
+
       # Class-level configuration
       class_attribute :config_tool_available
       self.config_tool_available = true
@@ -30,8 +32,6 @@ module Netzke
       include self::Services
       include self::Fields
       include Netzke::DataAccessor
-
-      js_base_class "Ext.form.FormPanel"
 
       action :apply, :text => I18n.t('netzke.basepack.form_panel.apply', :default => "Apply"), :icon => :tick
       action :edit, :text => I18n.t('netzke.basepack.form_panel.edit', :default => "Edit"), :icon => :pencil
