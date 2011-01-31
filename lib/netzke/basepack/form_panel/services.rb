@@ -57,11 +57,37 @@ module Netzke
             @record.errors.to_a.each do |msg|
               flash :error => msg
             end
-            {:feedback => @flash}
+            # {:feedback => @flash}
+            {:feedback => @flash, :apply_form_errors => build_form_errors(record)}
           end
         end
 
         private
+
+          # Builds the form errors
+          def build_form_errors(record)
+            form_errors = {}
+            foreign_keys = {}
+
+            # Build a hash of foreign keys and the associated model
+            data_class.reflect_on_all_associations(:belongs_to).map{ |r|
+              foreign_keys[r.association_foreign_key.to_sym] = r.name
+            }
+
+            record.errors.map{|field, error|
+              # Get the correct field name for the errors on foreign keys
+              if foreign_keys.has_key?(field)
+                fields.each do |k, v|
+                  # Hack to stop to_nifty_json from camalizing model__field
+                  field = k.to_s.gsub('__', '____') if k.to_s.split('__').first == foreign_keys[field].to_s
+                end
+              end
+
+              form_errors[field] ||= []
+              form_errors[field] << error
+            }
+            form_errors
+          end
 
           # Creates/updates a record from hash
           def create_or_update_record(hsh)
