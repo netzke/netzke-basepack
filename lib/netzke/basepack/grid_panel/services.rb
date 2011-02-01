@@ -234,45 +234,6 @@ module Netzke
             end
           end
 
-          # An ActiveRecord::Relation instance encapsulating all the necessary conditions
-          def get_relation(params)
-            # make params coming from Ext grid filters understandable by meta_where
-            conditions = params[:filter] && convert_filters(params[:filter]) || {}
-
-            relation = data_class.where(conditions)
-
-            if params[:extra_conditions]
-              extra_conditions = normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
-              relation = relation.extend_with_netzke_conditions(extra_conditions) if params[:extra_conditions]
-            end
-
-            if params[:query]
-              query = ActiveSupport::JSON.decode(params[:query])
-              query.each do |q|
-                value = q["value"]
-
-                case q["operator"]
-                when "contains"
-                  relation = relation.where(q["attr"].to_sym.matches => %Q{%#{value}%})
-                # when "is_true"
-                #   relation = relation.where(q["attr"] => 1)
-                # when "is_false"
-                #   relation = relation.where(q["attr"] => 0)
-                else
-                  if value == false || value == true
-                    relation = relation.where(q["attr"] => value ? 1 : 0)
-                  else
-                    relation = relation.where(q["attr"].to_sym.send(q["operator"]) => value)
-                  end
-                end
-              end
-            end
-
-            relation = relation.extend_with(config[:scope]) if config[:scope]
-
-            relation
-          end
-
           # Override this method to react on each operation that caused changing of data
           def on_data_changed; end
 

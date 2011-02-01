@@ -17,3 +17,11 @@ end
 When /^I wait for the response from the server$/ do
   page.wait_until{ page.driver.browser.execute_script("return !Ext.Ajax.isLoading();") }
 end
+
+When /^I go forward one page$/ do
+  page.driver.browser.execute_script(<<-JS)
+    var toolbar = Ext.ComponentMgr.all.find(function(c){ return c.getXType() === 'paging'});
+    toolbar.moveNext();
+  JS
+  page.wait_until{ page.driver.browser.execute_script("return !Ext.Ajax.isLoading();") }
+end

@@ -1,7 +1,7 @@
 require 'netzke/active_record'
 
 module Netzke
-  # This module is included into such data-driven components as GridPanel, FormPanel, etc.
+  # This module is included into such data-driven components as GridPanel, FormPanel, PagingFormPanel, etc.
   module DataAccessor
 
     # Returns options for comboboxes in grids/forms
@@ -75,8 +75,7 @@ module Netzke
       !!name.to_s.index("__")
     end
 
-  # Model class
-    # (We can't memoize this method because at some point we extend it, e.g. in Netzke::DataAccessor)
+    # Model class
     def data_class
       @data_class ||= begin
         klass = constantize_class_name("Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}") || original_data_class
@@ -107,6 +106,41 @@ module Netzke
           c[:virtual] = true if !data_class.column_names.map(&:to_sym).include?(c[:name].to_sym)
         end
       end
+    end
+
+    # An ActiveRecord::Relation instance encapsulating all the necessary conditions
+    def get_relation(params = {})
+      # make params coming from Ext grid filters understandable by meta_where
+      conditions = params[:filter] && convert_filters(params[:filter]) || {}
+
+      relation = data_class.where(conditions)
+
+      if params[:extra_conditions]
+        extra_conditions = normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
+        relation = relation.extend_with_netzke_conditions(extra_conditions) if params[:extra_conditions]
+      end
+
+      if params[:query]
+        query = ActiveSupport::JSON.decode(params[:query])
+        query.each do |q|
+          value = q["value"]
+
+          case q["operator"]
+          when "contains"
+            relation = relation.where(q["attr"].to_sym.matches => %Q{%#{value}%})
+          else
+            if value == false || value == true
+              relation = relation.where(q["attr"] => value ? 1 : 0)
+            else
+              relation = relation.where(q["attr"].to_sym.send(q["operator"]) => value)
+            end
+          end
+        end
+      end
+
+      relation = relation.extend_with(config[:scope]) if config[:scope]
+
+      relation
     end
 
   end

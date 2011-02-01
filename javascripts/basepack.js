@@ -20,13 +20,13 @@ Ext.override(Ext.ux.form.DateTimeField, {
 
 // ComboBox that gets options from the server (used in both grids and panels)
 Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
-  displayField  : 'name',
-  valueField    : 'id',
+  valueField    : 'field1',
+  displayField  : 'field2',
   triggerAction : 'all',
   typeAhead     : true,
 
   initComponent : function(){
-    var row = Ext.data.Record.create(['id', 'name']);
+    var row = Ext.data.Record.create(['field1', 'field2']); // defaults for local ComboBox; makes testing easier
     var store = new Ext.data.Store({
       proxy         : new Ext.data.HttpProxy({url: Ext.getCmp(this.parentId).endpointUrl("get_combobox_options"), jsonData:{column:this.name}}),
       reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
@@ -50,7 +50,7 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
     store.on('beforeload',function(store, options){
       if (parent.getSelectionModel) {
         var selected = parent.getSelectionModel().getSelected();
-        if (selected) options.params.id = selected.get('id');
+        if (selected) options.params.id = selected.get('field1');
       } else {
         // TODO: also for the FormPanel
       }
