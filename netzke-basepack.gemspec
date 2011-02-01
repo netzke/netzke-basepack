@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-01-24}
+  s.date = %q{2011-01-31}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -51,12 +51,13 @@ Gem::Specification.new do |s|
     "features/virtual_attributes.feature",
     "features/window.feature",
     "from_05_to_06.rdoc",
-    "generators/netzke_basepack/netzke_basepack_generator.rb",
-    "generators/netzke_basepack/templates/create_netzke_field_lists.rb",
-    "generators/netzke_basepack/templates/public_assets/ts-checkbox.gif",
     "init.rb",
     "install.rb",
     "javascripts/basepack.js",
+    "javascripts/datetimefield.js",
+    "lib/generators/netzke/basepack_generator.rb",
+    "lib/generators/netzke/templates/assets/ts-checkbox.gif",
+    "lib/generators/netzke/templates/create_netzke_field_lists.rb",
     "lib/netzke-basepack.rb",
     "lib/netzke/active_record.rb",
     "lib/netzke/active_record/attributes.rb",
@@ -74,7 +75,9 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/form_panel/javascripts/main.js",
     "lib/netzke/basepack/form_panel/javascripts/n_radio_group.js",
     "lib/netzke/basepack/form_panel/javascripts/netzkefileupload.js",
+    "lib/netzke/basepack/form_panel/javascripts/readonly_mode.js",
     "lib/netzke/basepack/form_panel/services.rb",
+    "lib/netzke/basepack/form_panel/stylesheets/readonly_mode.css",
     "lib/netzke/basepack/grid_panel.rb",
     "lib/netzke/basepack/grid_panel/columns.rb",
     "lib/netzke/basepack/grid_panel/javascripts/advanced_search.js",
@@ -115,6 +118,7 @@ Gem::Specification.new do |s|
     "spec/factories.rb",
     "spec/spec_helper.rb",
     "stylesheets/basepack.css",
+    "stylesheets/datetimefield.css",
     "test/console_with_fixtures.rb",
     "test/fixtures/books.yml",
     "test/fixtures/categories.yml",
@@ -147,6 +151,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/generic_user_form.rb",
     "test/rails_app/app/components/lockable_book_form.rb",
     "test/rails_app/app/components/lockable_user_form.rb",
+    "test/rails_app/app/components/paging_form_with_search.rb",
     "test/rails_app/app/components/simple_accordion.rb",
     "test/rails_app/app/components/simple_panel.rb",
     "test/rails_app/app/components/simple_tab_panel.rb",
@@ -216,6 +221,7 @@ Gem::Specification.new do |s|
     "test/rails_app/public/javascripts/effects.js",
     "test/rails_app/public/javascripts/prototype.js",
     "test/rails_app/public/javascripts/rails.js",
+    "test/rails_app/public/netzke/basepack/ts-checkbox.gif",
     "test/rails_app/public/robots.txt",
     "test/rails_app/public/stylesheets/.gitkeep",
     "test/rails_app/script/rails",
@@ -282,6 +288,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/generic_user_form.rb",
     "test/rails_app/app/components/lockable_book_form.rb",
     "test/rails_app/app/components/lockable_user_form.rb",
+    "test/rails_app/app/components/paging_form_with_search.rb",
     "test/rails_app/app/components/simple_accordion.rb",
     "test/rails_app/app/components/simple_panel.rb",
     "test/rails_app/app/components/simple_tab_panel.rb",

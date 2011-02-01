@@ -24,7 +24,7 @@ Feature: Search
     When I press "Search"
     And I fill in "first_name_value" with "ai"
     And I press "Search" within "#user_grid__search_form"
-    And I wait for the response from the server
+    And I sleep 1 second
     Then the grid should show 2 records
 
     # Search on association column not supported yet

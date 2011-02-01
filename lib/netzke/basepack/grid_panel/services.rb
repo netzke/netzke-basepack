@@ -249,15 +249,21 @@ module Netzke
             if params[:query]
               query = ActiveSupport::JSON.decode(params[:query])
               query.each do |q|
+                value = q["value"]
+
                 case q["operator"]
                 when "contains"
-                  relation = relation.where(q["attr"].to_sym.matches => %Q{%#{q["value"]}%})
-                when "is_true"
-                  relation = relation.where(q["attr"] => 1)
-                when "is_false"
-                  relation = relation.where(q["attr"] => 0)
+                  relation = relation.where(q["attr"].to_sym.matches => %Q{%#{value}%})
+                # when "is_true"
+                #   relation = relation.where(q["attr"] => 1)
+                # when "is_false"
+                #   relation = relation.where(q["attr"] => 0)
                 else
-                  relation = relation.where(q["attr"].to_sym.send(q["operator"]) => q["value"])
+                  if value == false || value == true
+                    relation = relation.where(q["attr"] => value ? 1 : 0)
+                  else
+                    relation = relation.where(q["attr"].to_sym.send(q["operator"]) => value)
+                  end
                 end
               end
             end

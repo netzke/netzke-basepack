@@ -7,7 +7,6 @@ module Netzke
       js_base_class "Ext.form.FormPanel"
 
       js_properties(
-        :header => false,
         :padding => 5
       )
 
@@ -26,7 +25,7 @@ module Netzke
           ["matches", I18n.t('netzke.basepack.search_panel.matches')]
         ],
         :boolean => [
-          # TODO: add ["any", "Any"],
+          ["is_any", I18n.t('netzke.basepack.search_panel.is_true')],
           ["is_true", I18n.t('netzke.basepack.search_panel.is_true')],
           ["is_false", I18n.t('netzke.basepack.search_panel.is_false')]
         ],
@@ -38,10 +37,13 @@ module Netzke
       }
 
       action :clear_all, :icon => :cross
+      action :reset, :icon => :application_form
       action :add_condition, :icon => :add
 
       action :save_preset, :icon => :disk
       action :delete_preset, :icon => :cross
+
+      action :apply, :icon => :accept
 
       def default_query
         data_class.column_names.map do |c|
@@ -57,10 +59,10 @@ module Netzke
 
       def js_config
         super.merge(
-          :attrs => data_class.column_names,
+          :attrs => attributes,
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
           :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || default_query,
-          :bbar => [:add_condition.action, :clear_all.action, "->",
+          :bbar => (config[:bbar] || []) + [:add_condition.action, :clear_all.action, :reset.action, "->",
             I18n.t('netzke.basepack.search_panel.presets'),
             {
               :xtype => "combo",
@@ -80,54 +82,15 @@ module Netzke
         )
       end
 
+      def attributes
+        data_class.column_names.map do |name|
+          [name, data_class.human_attribute_name(name)]
+        end
+      end
+
       def last_preset
         (state[:presets] || []).last
       end
-
-      js_method :init_component, <<-JS
-        function(){
-          Netzke.classes.Basepack.SearchPanel.superclass.initComponent.call(this);
-          this.buildFormFromQuery(this.query);
-        }
-      JS
-
-      js_method :build_form_from_query, <<-JS
-        // Will probably need to be performance-optimized in the future, as recreating the fields is expensive
-        function(query){
-          Ext.each(query, function(f){
-            this.add(Ext.apply(f, {xtype: 'netzkebasepacknewsearchpanelconditionfield'}));
-          }, this);
-          this.doLayout();
-        }
-      JS
-
-
-      js_method :on_add_condition, <<-JS
-        function(){
-          this.add({xtype: 'netzkebasepacknewsearchpanelconditionfield'});
-          this.doLayout();
-        }
-      JS
-
-      js_method :on_clear_all, <<-JS
-        function(){
-          this.removeAll();
-        }
-      JS
-
-      js_method :get_query, <<-JS
-        function(all){
-          var query = [];
-          this.items.each(function(f){
-            if (f.valueIsSet() || all) {
-              var cond = f.buildValue();
-              if (all) {cond.attrType = f.attrType;}
-              query.push(cond);
-            }
-          });
-          return query;
-        }
-      JS
 
       endpoint :save_preset do |params|
         saved_searches = state[:presets] || []

@@ -165,7 +165,7 @@ module Netzke
           end
 
           def set_default_editor(c)
-            c[:editor] ||= editor_for_attr_type(c[:attr_type])
+            # c[:editor] ||= editor_for_attr_type(c[:attr_type]) # This is done in JS!
             c[:editor] = {:xtype => c[:editor]} if c[:editor].is_a?(Symbol)
           end
 
@@ -215,7 +215,7 @@ module Netzke
               :integer => :numberfield,
               :boolean => :checkbox,
               :date => :datefield,
-              :datetime => :xdatetime,
+              :datetime => :datetimefield,
               :text => :textarea,
               :string => :textfield
             }

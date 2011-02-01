@@ -9,10 +9,11 @@ module Netzke
         js_properties :title => "Advanced Search",
                       :width => "50%",
                       :auto_height => true,
-                      :buttons => [:search.action, :cancel.action]
+                      :buttons => [:search.action, :cancel.action],
+                      :modal => true
 
         def configuration
-          super.merge(:items => [:search_panel.component])
+          super.merge(:items => [:search_panel.component(:header => false)])
         end
 
         component :search_panel do
@@ -24,14 +25,7 @@ module Netzke
 
         js_method :on_search, <<-JS
           function(){
-            // this.conditions = this.items.first().getForm().getValues();
-
-            // do not send values of empty values
-            // for (var cond in this.conditions) {
-            //   if (this.conditions[cond] == "") delete this.conditions[cond];
-            // }
-
-            this.query = Ext.encode(this.items.first().getQuery());
+            this.query = this.items.first().getQuery();
 
             this.closeRes = 'OK';
             this.hide();
