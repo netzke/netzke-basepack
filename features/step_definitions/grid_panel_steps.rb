@@ -87,8 +87,8 @@ When /^I select "([^"]*)" in combobox "([^"]*)" in row (\d+) of the grid$/ do |v
     var grid = Netzke.page[components[0]];
     var colId = grid.getColumnModel().findColumnIndex("#{field}");
     var col = grid.getColumnModel().getColumnById(colId);
-    var index = col.editor.getStore().find('name', '#{value}');
-    col.editor.setValue(col.editor.getStore().getAt(index).get('id'));
+    var index = col.editor.getStore().find('field2', '#{value}');
+    col.editor.setValue(col.editor.getStore().getAt(index).get('field1'));
     col.editor.onTriggerClick();
   JS
 end

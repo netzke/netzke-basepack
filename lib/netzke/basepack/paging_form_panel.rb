@@ -23,7 +23,7 @@ module Netzke
 
       # override
       def record
-        @record ||= get_relation().first
+        @record ||= get_relation.first
       end
 
       # Pass total records amount and the first record to the JS constructor
@@ -139,30 +139,6 @@ module Netzke
       end
 
       protected
-
-        # Returns ActiveRecord::Relation for the data
-        def get_relation(params = {})
-          relation = data_class.scoped
-
-          if params[:query]
-            query = ActiveSupport::JSON.decode(params[:query])
-            query.each do |q|
-              case q["operator"]
-              when "contains"
-                relation = relation.where(q["attr"].to_sym.matches => %Q{%#{q["value"]}%})
-              when "is_true"
-                relation = relation.where(q["attr"] => 1)
-              when "is_false"
-                relation = relation.where(q["attr"] => 0)
-              else
-                relation = relation.where(q["attr"].to_sym.send(q["operator"]) => q["value"])
-              end
-            end
-          end
-
-          relation = relation.extend_with(config[:scope]) if config[:scope]
-          relation
-        end
 
         def total_records(params = {})
           @total_records ||= get_relation(params).count
