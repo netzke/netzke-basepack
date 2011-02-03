@@ -320,8 +320,10 @@ module Netzke
           #
           #  metawhere:   :id.gt => 100, :food_name.matches => '%pizza%'
           def convert_filters(column_filter)
+            # these are still JSON-encoded due to the migration to Ext.direct
+            column_filter=JSON.parse(column_filter)
             res = {}
-            column_filter.each_pair do |k,v|
+            column_filter.each do |v|
               assoc, method = v["field"].split('__')
               if method
                 assoc = data_class.reflect_on_association(assoc.to_sym)
@@ -330,15 +332,15 @@ module Netzke
                 field = assoc.to_sym
               end
 
-              value = v["data"]["value"]
-              case v["data"]["type"]
+              value = v["value"]
+              case v["type"]
               when "string"
                 field = field.send :matches
                 value = "%#{value}%"
               when "boolean"
                 value = value == "true"
               when "numeric", "date"
-                field = field.send :"#{v['data']['comparison']}"
+                field = field.send :"#{v['comparison']}"
               end
               res.merge!({field => value})
             end
