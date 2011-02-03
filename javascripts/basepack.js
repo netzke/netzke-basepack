@@ -28,9 +28,12 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
   initComponent : function(){
     var row = Ext.data.Record.create(['field1', 'field2']); // defaults for local ComboBox; makes testing easier
     var store = new Ext.data.Store({
-      proxy         : new Ext.data.HttpProxy({url: Ext.getCmp(this.parentId).endpointUrl("get_combobox_options"), jsonData:{column:this.name}}),
+      proxy         : new Ext.data.DirectProxy({directFn: Netzke.providers[this.parentId].getComboboxOptions}),
       reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
     });
+    store.proxy.on('beforeload', function (self, params) {
+      params.column = this.name;
+    },this);
 
     if (this.store) store.loadData({data: this.store});
 
@@ -50,7 +53,7 @@ Ext.netzke.ComboBox = Ext.extend(Ext.form.ComboBox, {
     store.on('beforeload',function(store, options){
       if (parent.getSelectionModel) {
         var selected = parent.getSelectionModel().getSelected();
-        if (selected) options.params.id = selected.get('field1');
+        if (selected) options.params.id = selected.id;
       } else {
         // TODO: also for the FormPanel
       }

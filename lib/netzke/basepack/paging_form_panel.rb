@@ -102,8 +102,8 @@ module Netzke
           this.fieldNames = [];
           this.extractFields(this.items);
 
-          var store = new Ext.data.JsonStore({
-            url: this.endpointUrl('get_data'),
+          var store = new Ext.data.DirectStore({
+            directFn: Netzke.providers[this.id].getData,
             root: 'records',
             fields: this.fieldNames.concat('_meta'),
             data: {records: [this.record], total: this.totalRecords}
