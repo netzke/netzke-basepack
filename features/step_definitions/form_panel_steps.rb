@@ -13,7 +13,9 @@ When /^I select "([^"]*)" from combobox "([^"]*)"$/ do |value, combo_label|
     var combo = Ext.ComponentMgr.all.filter('fieldLabel', '#{combo_label}').first();
     combo = combo || Ext.ComponentMgr.all.filter('name', '#{combo_label}').first();
     var index = combo.getStore().find('field2', '#{value}');
-    combo.setValue(combo.getStore().getAt(index).get('field1'));
+    combo.select(index);
+    combo.onViewClick(false);
+    // combo.setValue(combo.getStore().getAt(index).get('field1'));
   JS
 end
 

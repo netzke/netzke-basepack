@@ -108,7 +108,8 @@ module Netzke
       end
     end
 
-    # An ActiveRecord::Relation instance encapsulating all the necessary conditions
+    # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
+    # Using the meta_where magic.
     def get_relation(params = {})
       # make params coming from Ext grid filters understandable by meta_where
       conditions = params[:filter] && convert_filters(params[:filter]) || {}
@@ -121,27 +122,43 @@ module Netzke
       end
 
       if params[:query]
+        # array of arrays of conditions that should be joined by OR
         query = ActiveSupport::JSON.decode(params[:query])
-        query.each do |q|
-          value = q["value"]
-
-          case q["operator"]
-          when "contains"
-            relation = relation.where(q["attr"].to_sym.matches => %Q{%#{value}%})
-          else
-            if value == false || value == true
-              relation = relation.where(q["attr"] => value ? 1 : 0)
-            else
-              relation = relation.where(q["attr"].to_sym.send(q["operator"]) => value)
-            end
-          end
+        meta_where = query.map do |conditions|
+          normalize_and_conditions(conditions)
         end
+
+        # join them by OR
+        meta_where = meta_where.inject(meta_where.first){ |r,c| r | c } if meta_where.present?
       end
+
+      relation = relation.where(meta_where)
 
       relation = relation.extend_with(config[:scope]) if config[:scope]
 
       relation
     end
+
+    protected
+
+      def normalize_and_conditions(conditions)
+        and_conditions = conditions.map do |q|
+          value = q["value"]
+          case q["operator"]
+          when "contains"
+            q["attr"].to_sym.matches % %Q{%#{value}%}
+          else
+            if value == false || value == true
+              q["attr"].to_sym.eq % (value ? 1 : 0)
+            else
+              q["attr"].to_sym.send(q["operator"]) % value
+            end
+          end
+        end
+
+        # join them by AND
+        and_conditions.inject(and_conditions.first){ |r,c| r & c } if and_conditions.present?
+      end
 
   end
 end

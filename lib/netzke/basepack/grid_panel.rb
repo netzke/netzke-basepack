@@ -85,6 +85,8 @@ module Netzke
     #         order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}")
     #       }
     #     end
+    # * +filterable+ - set to false to disable filtering on this column
+    #
     # Besides these options, a column can receive any meaningful config option understood by Ext.grid.Column (http://dev.sencha.com/deploy/dev/docs/?class=Ext.grid.Column)
     #
     # == Actions

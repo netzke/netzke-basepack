@@ -3,9 +3,9 @@
 pkg
 doc
 Manifest
-test/rails_app/vendor/plugins/netzke-core
 rdoc
 netzke-basepack-*.gem
 icons
 extjs
 .vimrc
+test/rails_app/vendor/gems/netzke-*

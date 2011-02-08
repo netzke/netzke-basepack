@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-02-01}
+  s.date = %q{2011-02-08}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -92,9 +92,11 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/grid_panel/services.rb",
     "lib/netzke/basepack/paging_form_panel.rb",
     "lib/netzke/basepack/panel.rb",
+    "lib/netzke/basepack/query_builder.rb",
+    "lib/netzke/basepack/query_builder/javascripts/query_builder.js",
     "lib/netzke/basepack/search_panel.rb",
     "lib/netzke/basepack/search_panel/javascripts/condition_field.js",
-    "lib/netzke/basepack/search_panel/javascripts/main.js",
+    "lib/netzke/basepack/search_panel/javascripts/search_panel.js",
     "lib/netzke/basepack/simple_app.rb",
     "lib/netzke/basepack/simple_app/javascripts/main.js",
     "lib/netzke/basepack/simple_app/javascripts/statusbar_ext.js",
@@ -145,6 +147,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_paging_form_panel.rb",
     "test/rails_app/app/components/book_presentation.rb",
+    "test/rails_app/app/components/book_query_builder.rb",
     "test/rails_app/app/components/book_search_panel.rb",
     "test/rails_app/app/components/book_search_panel/javascripts/i18n_de.js",
     "test/rails_app/app/components/books_bound_to_author.rb",
@@ -283,6 +286,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_paging_form_panel.rb",
     "test/rails_app/app/components/book_presentation.rb",
+    "test/rails_app/app/components/book_query_builder.rb",
     "test/rails_app/app/components/book_search_panel.rb",
     "test/rails_app/app/components/books_bound_to_author.rb",
     "test/rails_app/app/components/form_without_model.rb",

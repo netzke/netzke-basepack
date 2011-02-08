@@ -1,3 +1,14 @@
+PATH
+  remote: vendor/gems/netzke-core
+  specs:
+    netzke-core (0.6.6)
+      activesupport (>= 3.0.1)
+
+PATH
+  remote: vendor/gems/netzke-persistence
+  specs:
+    netzke-persistence (0.1.1)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -79,9 +90,6 @@ GEM
       arel (~> 2.0.2)
     mime-types (1.16)
     mysql2 (0.2.6)
-    netzke-core (0.6.6)
-      activesupport (>= 3.0.1)
-    netzke-persistence (0.1.1)
     nokogiri (1.4.4)
     pickle (0.4.4)
       cucumber (>= 0.8)
@@ -154,8 +162,8 @@ DEPENDENCIES
   launchy
   meta_where
   mysql2
-  netzke-core
-  netzke-persistence
+  netzke-core!
+  netzke-persistence!
   pickle
   rails (= 3.0.3)
   rspec-rails

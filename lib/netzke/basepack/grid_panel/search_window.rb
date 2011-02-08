@@ -18,7 +18,7 @@ module Netzke
 
         component :search_panel do
           {
-            :class_name => "Netzke::Basepack::SearchPanel",
+            :class_name => "Netzke::Basepack::QueryBuilder",
             :model => config[:model]
           }
         end

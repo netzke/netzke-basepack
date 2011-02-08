@@ -4,7 +4,7 @@
   * xdatetime is no more. datetimefield is used instead.
 
 * enhancements
-  * New, improved SearchPanel
+  * New, improved advanced search for GridPanel and PagingFormPanel.
   * Slightly optimized selenium tests (no artificial sleeping whenever possible)
   * One-to-many association support in Form/GridPanel reworked to use the foreign id instead of a string. This gives us more flexibility about what to display in the association column/field, and also provides for performance improvements (no more need to search for the associated record based on the value provided from the column/field).
 

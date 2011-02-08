@@ -22,10 +22,22 @@ Feature: Search
     Then the grid should show 4 records
 
     When I press "Search"
+    And I wait for the response from the server
+    And I expand combobox "undefined_attr"
+    And I select "First name" from combobox "undefined_attr"
     And I fill in "first_name_value" with "ai"
     And I press "Search" within "#user_grid__search_form"
     And I sleep 1 second
     Then the grid should show 2 records
+
+    # When I press "Search"
+    # And I follow "+"
+    # And I expand combobox "undefined_attr"
+    # And I select "First name" from combobox "undefined_attr"
+    # And I fill in "first_name_value" with "in"
+    # And I press "Search" within "#user_grid__search_form"
+    # And I sleep 1 second
+    # Then the grid should show 3 records
 
     # Search on association column not supported yet
     # When I press "Search"
