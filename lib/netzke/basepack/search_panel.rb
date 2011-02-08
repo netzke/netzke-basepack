@@ -66,7 +66,7 @@ module Netzke
           :attrs => attributes,
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
           :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || [],
-          :bbar => (config[:bbar] || []) + [:clear_all.action, :reset.action, "->",
+          # :bbar => (config[:bbar] || []) + [:clear_all.action, :reset.action, "->",
             # I18n.t('netzke.basepack.search_panel.presets'),
             # {
             #   :xtype => "combo",
@@ -82,7 +82,7 @@ module Netzke
             #     }".l
             #   }}
             # }, :save_preset.action, :delete_preset.action
-          ]
+          # ]
         )
       end
 
@@ -94,26 +94,6 @@ module Netzke
 
       def last_preset
         (state[:presets] || []).last
-      end
-
-      endpoint :save_preset do |params|
-        saved_searches = state[:presets] || []
-        existing = saved_searches.detect{ |s| s["name"] == params[:name] }
-        query = ActiveSupport::JSON.decode(params[:query])
-        if existing
-          existing["query"].replace(query)
-        else
-          saved_searches << {"name" => params[:name], "query" => query}
-        end
-        update_state(:presets, saved_searches)
-        {:feedback => I18n.t('netzke.basepack.search_panel.preset_saved')}
-      end
-
-      endpoint :delete_preset do |params|
-        saved_searches = state[:presets]
-        saved_searches.delete_if{ |s| s["name"] == params[:name] }
-        update_state(:presets, saved_searches)
-        {:feedback => I18n.t('netzke.basepack.search_panel.preset_deleted')}
       end
 
     end
