@@ -152,7 +152,7 @@ module Netzke
       # end
 
       js_base_class "Ext.grid.EditorGridPanel"
-      js_mixin :main
+      js_mixin :grid_panel
       js_mixin :advanced_search if extended_search_available
       js_mixin :edit_in_form if edit_in_form_available
 

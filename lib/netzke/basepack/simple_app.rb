@@ -14,7 +14,7 @@ module Netzke
 
       js_include Netzke::Core.ext_location.join("examples", "ux/statusbar/StatusBar.js"), :statusbar_ext
 
-      js_mixin :main
+      js_mixin :simple_app
 
       def configuration
         super.merge(

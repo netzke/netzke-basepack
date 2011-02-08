@@ -4,7 +4,6 @@ module Netzke
     #
     # Features:
     # * Dynamically loads components for the tabs that get activated for the first time
-    # * Is loaded along with the active component - saves a request to the server
     # * (TODO) Provides the method markTabsOutdated to mark all inactive tabs as 'outdated', and calls "update" method on components in tabs when they get activated
     # * (TODO) Stores the last active tab in persistent_config
     #
@@ -16,7 +15,7 @@ module Netzke
 
       js_base_class "Ext.TabPanel"
 
-      js_mixin :main
+      js_mixin :tab_panel
     end
   end
 end

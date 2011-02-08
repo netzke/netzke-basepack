@@ -53,7 +53,7 @@ module Netzke
       end
 
       # Extra javascripts
-      js_mixin :main
+      js_mixin :form_panel
       js_include :comma_list_cbg
       js_include :n_radio_group, :display_mode, :readonly_mode
       # Netzke::Base.config[:ext_location] + "/examples/ux/fileuploadfield/FileUploadField.js",
