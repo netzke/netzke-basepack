@@ -49,8 +49,6 @@ module Netzke
 
       js_method :on_search, <<-JS
         function(el){
-          el.toggle(el.toggled); // do not toggle immediately
-
           if (this.searchWindow) {
             this.searchWindow.show();
           } else {
@@ -68,10 +66,10 @@ module Netzke
 
               win.on('hide', function(){
                 if (win.closeRes == 'OK'){
-                  el.toggle(win.query.length > 0); // toggle based on the state
                   this.getStore().baseParams.query = Ext.encode(win.query);
                   this.getStore().load();
                 }
+                el.toggle(win.query.length > 0); // toggle based on the state
               }, this);
             }, scope: this});
           }
