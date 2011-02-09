@@ -65,24 +65,7 @@ module Netzke
         super.merge(
           :attrs => attributes,
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
-          :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || [],
-          # :bbar => (config[:bbar] || []) + [:clear_all.action, :reset.action, "->",
-            # I18n.t('netzke.basepack.search_panel.presets'),
-            # {
-            #   :xtype => "combo",
-            #   :triggerAction => "all",
-            #   :value => super[:load_last_preset] && last_preset.try(:fetch, "name"),
-            #   :store => state[:presets].blank? ? [[[], ""]] : state[:presets].map{ |s| [s["query"], s["name"]] },
-            #   :ref => "../presetsCombo",
-            #   :listeners => {:before_select => {
-            #     :fn => "function(combo, record){
-            #       var form = Ext.getCmp('#{global_id}');
-            #       form.removeAll();
-            #       form.buildFormFromQuery(record.data.field1);
-            #     }".l
-            #   }}
-            # }, :save_preset.action, :delete_preset.action
-          # ]
+          :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || []
         )
       end
 
