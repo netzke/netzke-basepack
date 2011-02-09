@@ -65,11 +65,12 @@ module Netzke
               }, this);
 
               win.on('hide', function(){
-                if (win.closeRes == 'OK'){
-                  this.getStore().baseParams.query = Ext.encode(win.query);
+                var query = win.getQuery();
+                if (win.closeRes == 'search'){
+                  this.getStore().baseParams.query = Ext.encode(query);
                   this.getStore().load();
                 }
-                el.toggle(win.query.length > 0); // toggle based on the state
+                el.toggle(query.length > 0); // toggle based on the state
               }, this);
             }, scope: this});
           }

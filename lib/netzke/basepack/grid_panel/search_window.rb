@@ -9,6 +9,7 @@ module Netzke
         js_properties :title => "Advanced Search",
                       :width => "50%",
                       :auto_height => true,
+                      :close_action => "hide",
                       :buttons => [:search.action, :cancel.action],
                       :modal => true
 
@@ -23,18 +24,31 @@ module Netzke
           }
         end
 
+        js_method :init_component, <<-JS
+          function(){
+            Netzke.classes.Basepack.GridPanel.SearchWindow.superclass.initComponent.call(this);
+
+            this.on('show', function(){
+              this.closeRes = 'cancel';
+            });
+          }
+        JS
+
+        js_method :get_query, <<-JS
+          function(){
+            return this.items.first().getQuery();
+          }
+        JS
+
         js_method :on_search, <<-JS
           function(){
-            this.query = this.items.first().getQuery();
-
-            this.closeRes = 'OK';
+            this.closeRes = 'search';
             this.hide();
           }
         JS
 
         js_method :on_cancel, <<-JS
           function(){
-            this.closeRes = 'cancel';
             this.hide();
           }
         JS
