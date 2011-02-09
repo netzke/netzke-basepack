@@ -7,7 +7,8 @@ module Netzke
       js_base_class "Ext.form.FormPanel"
 
       js_properties(
-        :padding => 5
+        :padding => 5,
+        :auto_scroll => true
       )
 
       js_include :condition_field

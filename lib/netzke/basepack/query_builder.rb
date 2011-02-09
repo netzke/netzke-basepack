@@ -21,6 +21,8 @@ module Netzke
       action :save_preset, :icon => :disk
       action :delete_preset, :icon => :cross
 
+      action :apply, :icon => :accept
+
       def js_config
         super.tap do |s|
           s[:bbar] = (config[:bbar] || []) + [:clear_all.action, :reset.action, "->",
