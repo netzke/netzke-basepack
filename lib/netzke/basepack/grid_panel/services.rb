@@ -333,12 +333,11 @@ module Netzke
               end
 
               value = v["value"]
+
               case v["type"]
               when "string"
                 field = field.send :matches
                 value = "%#{value}%"
-              when "boolean"
-                value = value == "true"
               when "numeric", "date"
                 field = field.send :"#{v['comparison']}"
               end
