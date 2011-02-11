@@ -19,6 +19,9 @@ begin
 
            Thanks for installing netzke-basepack!
 
+  Don't forget to run "rails generate netzke:baspack" to copy necessary
+  assets to your public folder!
+
   Netzke home page:     http://netzke.org
   Netzke Google Groups: http://groups.google.com/group/netzke
   Netzke tutorials:     http://blog.writelesscode.com
