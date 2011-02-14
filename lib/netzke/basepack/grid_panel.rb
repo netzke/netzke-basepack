@@ -1,7 +1,6 @@
 require "netzke/basepack/grid_panel/columns"
 require "netzke/basepack/grid_panel/services"
 # require "netzke/basepack/plugins/configuration_tool"
-# require "data_accessor"
 
 module Netzke
   module Basepack
@@ -136,7 +135,7 @@ module Netzke
       include self::Services
       include self::Columns
 
-      include Netzke::DataAccessor
+      include Netzke::Basepack::DataAccessor
 
       # def self.enforce_config_consistency
       #   default_config[:enable_edit_in_form]    &&= edit_in_form_available
