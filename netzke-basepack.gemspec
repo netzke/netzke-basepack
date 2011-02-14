@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-02-10}
+  s.date = %q{2011-02-14}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -69,6 +69,7 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/auth_app.rb",
     "lib/netzke/basepack/basic_app.rb",
     "lib/netzke/basepack/border_layout_panel.rb",
+    "lib/netzke/basepack/data_accessor.rb",
     "lib/netzke/basepack/form_panel.rb",
     "lib/netzke/basepack/form_panel/fields.rb",
     "lib/netzke/basepack/form_panel/javascripts/comma_list_cbg.js",
@@ -106,11 +107,6 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/window.rb",
     "lib/netzke/basepack/wrap_lazy_loaded.rb",
     "lib/netzke/basepack/wrapper.rb",
-    "lib/netzke/data_accessor.rb",
-    "lib/netzke/ext.rb",
-    "lib/netzke/fields_configurator.rb",
-    "lib/netzke/json_array_editor.rb",
-    "lib/netzke/masquerade_selector.rb",
     "lib/tasks/netzke_basepack_tasks.rake",
     "locales/en.yml",
     "netzke-basepack.gemspec",
@@ -202,13 +198,12 @@ Gem::Specification.new do |s|
     "test/rails_app/config/locales/de.yml",
     "test/rails_app/config/locales/es.yml",
     "test/rails_app/config/routes.rb",
-    "test/rails_app/db/development_structure.sql",
-    "test/rails_app/db/migrate/20100905214933_create_netzke_preferences.rb",
     "test/rails_app/db/migrate/20100914104207_create_users.rb",
     "test/rails_app/db/migrate/20100914104236_create_roles.rb",
     "test/rails_app/db/migrate/20101026185816_create_authors.rb",
     "test/rails_app/db/migrate/20101026190021_create_books.rb",
     "test/rails_app/db/migrate/20110101143818_create_addresses.rb",
+    "test/rails_app/db/migrate/20110213213050_create_netzke_component_states.rb",
     "test/rails_app/db/schema.rb",
     "test/rails_app/db/seeds.rb",
     "test/rails_app/features/support/paths.rb",
@@ -256,6 +251,9 @@ Gem::Specification.new do |s|
 ========================================================================
 
            Thanks for installing netzke-basepack!
+
+  Don't forget to run "rails generate netzke:baspack" to copy necessary
+  assets to your public folder!
 
   Netzke home page:     http://netzke.org
   Netzke Google Groups: http://groups.google.com/group/netzke
@@ -333,12 +331,12 @@ Gem::Specification.new do |s|
     "test/rails_app/config/initializers/secret_token.rb",
     "test/rails_app/config/initializers/session_store.rb",
     "test/rails_app/config/routes.rb",
-    "test/rails_app/db/migrate/20100905214933_create_netzke_preferences.rb",
     "test/rails_app/db/migrate/20100914104207_create_users.rb",
     "test/rails_app/db/migrate/20100914104236_create_roles.rb",
     "test/rails_app/db/migrate/20101026185816_create_authors.rb",
     "test/rails_app/db/migrate/20101026190021_create_books.rb",
     "test/rails_app/db/migrate/20110101143818_create_addresses.rb",
+    "test/rails_app/db/migrate/20110213213050_create_netzke_component_states.rb",
     "test/rails_app/db/schema.rb",
     "test/rails_app/db/seeds.rb",
     "test/rails_app/features/support/paths.rb",

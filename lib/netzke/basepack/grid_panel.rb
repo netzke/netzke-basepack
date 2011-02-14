@@ -1,7 +1,6 @@
 require "netzke/basepack/grid_panel/columns"
 require "netzke/basepack/grid_panel/services"
 # require "netzke/basepack/plugins/configuration_tool"
-# require "data_accessor"
 
 module Netzke
   module Basepack
@@ -136,7 +135,7 @@ module Netzke
       include self::Services
       include self::Columns
 
-      include Netzke::DataAccessor
+      include Netzke::Basepack::DataAccessor
 
       # def self.enforce_config_consistency
       #   default_config[:enable_edit_in_form]    &&= edit_in_form_available
@@ -216,6 +215,7 @@ module Netzke
           :bbar => config.has_key?(:bbar) ? config[:bbar] : default_bbar,
           :context_menu => config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu,
           :columns => columns(:with_meta => true), # columns
+          :columns_order => config[:persistence] && state[:columns_order] || initial_columns_order,
           :model => config[:model], # the model name
           :inline_data => (get_data if config[:load_inline_data]), # inline data (loaded along with the grid panel)
           :pri => data_class.primary_key # table primary key name

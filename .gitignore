@@ -9,3 +9,4 @@ icons
 extjs
 .vimrc
 test/rails_app/vendor/gems/netzke-*
+test/rails_app/db/development_structure.sql

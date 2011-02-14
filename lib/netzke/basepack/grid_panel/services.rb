@@ -45,30 +45,33 @@ module Netzke
           end
 
           endpoint :resize_column do |params|
-            raise "Called api_resize_column while not configured to do so" if config[:enable_column_resize] == false
-            columns[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
-            save_columns!
+            raise "Called api_resize_column while not configured to do so" if !config[:persistence]
+            current_columns_order = state[:columns_order] || initial_columns_order
+            current_columns_order[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
+            update_state(:columns_order, current_columns_order)
             {}
           end
 
           endpoint :move_column do |params|
-            raise "Called api_move_column while not configured to do so" if config[:enable_column_move] == false
+            raise "Called api_move_column while not configured to do so" if !config[:persistence]
             remove_from = normalize_index(params[:old_index].to_i)
             insert_to = normalize_index(params[:new_index].to_i)
-            column_to_move = columns.delete_at(remove_from)
-            columns.insert(insert_to, column_to_move)
-            save_columns!
 
-            # reorder the columns on the client side (still not sure if it's not an overkill)
-            # {:reorder_columns => columns.map(&:name)} # Well, I think it IS an overkill - commented out
-            # until proven to be necessary
+            current_columns_order = state[:columns_order] || initial_columns_order
+
+            column_to_move = current_columns_order.delete_at(remove_from)
+            current_columns_order.insert(insert_to, column_to_move)
+
+            update_state(:columns_order, current_columns_order)
+
             {}
           end
 
           endpoint :hide_column do |params|
-            raise "Called api_hide_column while not configured to do so" if config[:enable_column_hide] == false
-            columns[normalize_index(params[:index].to_i)][:hidden] = params[:hidden].to_b
-            save_columns!
+            raise "Called api_hide_column while not configured to do so" if !config[:persistence]
+            current_columns_order = state[:columns_order] || initial_columns_order
+            current_columns_order[normalize_index(params[:index].to_i)][:hidden] = params[:hidden].to_b
+            update_state(:columns_order, current_columns_order)
             {}
           end
 
@@ -185,7 +188,6 @@ module Netzke
           #     r.merge(c[:name] => column_values)
           #   end
           # end
-
           def get_records(params)
 
             # Restore params from component_session if requested
@@ -349,6 +351,16 @@ module Netzke
           def normalize_extra_conditions(conditions)
             conditions.each_pair do |k,v|
               conditions[k] = "%#{v}%" if ["like", "matches"].include?(k.to_s.split("__").last)
+            end
+          end
+
+          def initial_columns_order
+            columns.map do |c|
+              {
+                :name => c[:name],
+                :width => c[:width],
+                :hidden => c[:hidden]
+              }
             end
           end
 

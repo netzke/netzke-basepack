@@ -1,6 +1,5 @@
 require "netzke/basepack/form_panel/fields"
 require "netzke/basepack/form_panel/services"
-require "netzke/data_accessor"
 # require "netzke/plugins/configuration_tool"
 
 module Netzke
@@ -31,7 +30,7 @@ module Netzke
 
       include self::Services
       include self::Fields
-      include Netzke::DataAccessor
+      include Netzke::Basepack::DataAccessor
 
       action :apply, :text => I18n.t('netzke.basepack.form_panel.apply', :default => "Apply"), :icon => :tick
       action :edit, :text => I18n.t('netzke.basepack.form_panel.edit', :default => "Edit"), :icon => :pencil

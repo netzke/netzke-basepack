@@ -3,7 +3,8 @@ class BookGrid < Netzke::Basepack::GridPanel
 
   def default_config
     super.merge(
-      :model => "Book"
+      :model => "Book",
+      :persistence => true
     )
   end
 end

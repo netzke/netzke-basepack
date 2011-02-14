@@ -180,3 +180,11 @@ Scenario: Renderers for association columns should take effect
   And a book exists with title: "Lolita", author: that author
   When I go to the BookGridWithCustomColumns test page
   Then I should see "NABOKOV"
+
+@javascript
+Scenario: Reloading grid data
+  Given a book exists with title: "Magus"
+  When I go to the BookGrid test page
+  And I reload the grid
+  And I reload the grid
+  Then I should not see "Internal Server Error"
