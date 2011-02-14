@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-02-11}
+  s.date = %q{2011-02-14}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -202,13 +202,12 @@ Gem::Specification.new do |s|
     "test/rails_app/config/locales/de.yml",
     "test/rails_app/config/locales/es.yml",
     "test/rails_app/config/routes.rb",
-    "test/rails_app/db/development_structure.sql",
-    "test/rails_app/db/migrate/20100905214933_create_netzke_preferences.rb",
     "test/rails_app/db/migrate/20100914104207_create_users.rb",
     "test/rails_app/db/migrate/20100914104236_create_roles.rb",
     "test/rails_app/db/migrate/20101026185816_create_authors.rb",
     "test/rails_app/db/migrate/20101026190021_create_books.rb",
     "test/rails_app/db/migrate/20110101143818_create_addresses.rb",
+    "test/rails_app/db/migrate/20110213213050_create_netzke_component_states.rb",
     "test/rails_app/db/schema.rb",
     "test/rails_app/db/seeds.rb",
     "test/rails_app/features/support/paths.rb",
@@ -336,12 +335,12 @@ Gem::Specification.new do |s|
     "test/rails_app/config/initializers/secret_token.rb",
     "test/rails_app/config/initializers/session_store.rb",
     "test/rails_app/config/routes.rb",
-    "test/rails_app/db/migrate/20100905214933_create_netzke_preferences.rb",
     "test/rails_app/db/migrate/20100914104207_create_users.rb",
     "test/rails_app/db/migrate/20100914104236_create_roles.rb",
     "test/rails_app/db/migrate/20101026185816_create_authors.rb",
     "test/rails_app/db/migrate/20101026190021_create_books.rb",
     "test/rails_app/db/migrate/20110101143818_create_addresses.rb",
+    "test/rails_app/db/migrate/20110213213050_create_netzke_component_states.rb",
     "test/rails_app/db/schema.rb",
     "test/rails_app/db/seeds.rb",
     "test/rails_app/features/support/paths.rb",

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110101143818) do
+ActiveRecord::Schema.define(:version => 20110213213050) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -35,15 +35,8 @@ ActiveRecord::Schema.define(:version => 20110101143818) do
     t.integer  "exemplars"
     t.boolean  "digitized"
     t.text     "notes"
-    t.datetime "created_at"
-    t.datetime "updated_at"
     t.string   "tags"
-    t.string   "rating"
-  end
-
-  create_table "localized_models", :force => true do |t|
-    t.string   "attr1"
-    t.integer  "attr2"
+    t.integer  "rating"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
@@ -60,15 +53,6 @@ ActiveRecord::Schema.define(:version => 20110101143818) do
   add_index "netzke_component_states", ["component"], :name => "index_netzke_component_states_on_component"
   add_index "netzke_component_states", ["role_id"], :name => "index_netzke_component_states_on_role_id"
   add_index "netzke_component_states", ["user_id"], :name => "index_netzke_component_states_on_user_id"
-
-  create_table "netzke_preferences", :force => true do |t|
-    t.string   "key"
-    t.text     "value"
-    t.integer  "user_id"
-    t.integer  "role_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
-  end
 
   create_table "roles", :force => true do |t|
     t.string   "name"
