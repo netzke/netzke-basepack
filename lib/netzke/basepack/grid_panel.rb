@@ -156,10 +156,12 @@ module Netzke
       js_mixin :edit_in_form if edit_in_form_available
 
       # I18n used in JavaScript
-      js_property :i18n, {
-        :are_you_sure => I18n.translate("netzke.basepack.generic.are_you_sure"),
-        :confirm => I18n.translate("netzke.basepack.generic.confirm")
-      }
+      # js_property :i18n, {
+      #   :are_you_sure => I18n.translate("netzke.basepack.generic.are_you_sure"),
+      #   :confirm => I18n.translate("netzke.basepack.generic.confirm")
+      # }
+
+      js_translate :are_you_sure, :confirmation, :first_text, :prev_text, :next_text, :last_text, :before_page_text, :after_page_text, :empty_msg, :refresh_text, :display_msg
 
       # Include extra javascript that we depend on
       def self.include_js
@@ -268,19 +270,23 @@ module Netzke
         }
       end
 
-      action :edit, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.edit'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit'),
-        :disabled => true,
-        :icon => :table_edit
-      }
+      action :edit do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.edit'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit'),
+          :disabled => true,
+          :icon => :table_edit
+        }
+      end
 
-      action :del, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.del'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.del'),
-        :disabled => true,
-        :icon => :table_row_delete
-      }
+      action :del do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.del'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.del'),
+          :disabled => true,
+          :icon => :table_row_delete
+        }
+      end
 
       action :apply do
         {
@@ -291,25 +297,31 @@ module Netzke
         }
       end
 
-      action :add_in_form, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
-        :icon => :application_form_add
-      }
+      action :add_in_form do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
+          :icon => :application_form_add
+        }
+      end
 
-      action :edit_in_form, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
-        :disabled => true,
-        :icon => :application_form_edit
-      }
+      action :edit_in_form do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
+          :disabled => true,
+          :icon => :application_form_edit
+        }
+      end
 
-      action :search, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.search'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.search'),
-        :enable_toggle => true,
-        :icon => :find
-      }
+      action :search do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.search'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.search'),
+          :enable_toggle => true,
+          :icon => :find
+        }
+      end
 
       component :add_form do
         {
@@ -372,7 +384,7 @@ module Netzke
       component :search_form do
         {
           :lazy_loading => true,
-          :class_name => "Netzke::Basepack::GridPanel::SearchWindow",
+          :class_name => "Netzke::Basepack::SearchWindow",
           :model => config[:model],
           :fields => default_fields_for_forms
         }

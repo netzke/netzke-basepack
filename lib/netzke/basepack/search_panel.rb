@@ -40,15 +40,6 @@ module Netzke
         ]
       }
 
-      action :clear_all, :icon => :cross
-      action :reset, :icon => :application_form
-      # action :add_condition, :icon => :add
-
-      action :save_preset, :icon => :disk
-      action :delete_preset, :icon => :cross
-
-      action :apply, :icon => :accept
-
       # Builds default query search panel, where each field is presented
       def default_query
         data_class.column_names.map do |c|

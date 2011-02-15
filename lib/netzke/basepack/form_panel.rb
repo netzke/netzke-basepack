@@ -32,9 +32,29 @@ module Netzke
       include self::Fields
       include Netzke::Basepack::DataAccessor
 
-      action :apply, :text => I18n.t('netzke.basepack.form_panel.apply', :default => "Apply"), :icon => :tick
-      action :edit, :text => I18n.t('netzke.basepack.form_panel.edit', :default => "Edit"), :icon => :pencil
-      action :cancel, :text => I18n.t('netzke.basepack.form_panel.cancel', :default => "Cancel"), :icon => :cancel
+      action :apply do
+        {
+          :text => I18n.t('netzke.basepack.form_panel.actions.apply'),
+          :tooltip => I18n.t('netzke.basepack.form_panel.actions.apply_tooltip'),
+          :icon => :tick
+        }
+      end
+
+      action :edit do
+        {
+          :text => I18n.t('netzke.basepack.form_panel.actions.edit'),
+          :tooltip => I18n.t('netzke.basepack.form_panel.actions.edit_tooltip'),
+          :icon => :pencil
+        }
+      end
+
+      action :cancel do
+        {
+          :text => I18n.t('netzke.basepack.form_panel.actions.cancel'),
+          :tooltip => I18n.t('netzke.basepack.form_panel.actions.cancel_tooltip'),
+          :icon => :cancel
+        }
+      end
 
       def configuration
         super.tap do |sup|

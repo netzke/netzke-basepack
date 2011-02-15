@@ -17,7 +17,6 @@ module Netzke
     #     :scope => { |rel| rel.where(:id.gt => 100).order(:created_at) }
     #
     # == ToDo
-    # * DRY out get_relation
     # * Update the number of records after form submit
     class PagingFormPanel < FormPanel
 
@@ -30,7 +29,6 @@ module Netzke
       def js_config
         super.merge({
           :total_records => total_records
-          # :record => record.to_hash(fields)
         })
       end
 
@@ -40,7 +38,14 @@ module Netzke
         {:records => record_hash && [record_hash] || [], :total => total_records(params)}
       end
 
-      action :search, :icon => :find, :select => true
+      action :search do
+        {
+          :text => I18n.t('netzke.basepack.paging_form_panel.actions.search'),
+          :tooltip => I18n.t('netzke.basepack.paging_form_panel.actions.search_tooltip'),
+          :icon => :find,
+          :select => true
+        }
+      end
 
       def configure_bbar(c)
         super
@@ -132,7 +137,7 @@ module Netzke
       component :search_form do
         {
           :lazy_loading => true,
-          :class_name => "Netzke::Basepack::GridPanel::SearchWindow",
+          :class_name => "Netzke::Basepack::SearchWindow",
           :model => config[:model]
         }
       end

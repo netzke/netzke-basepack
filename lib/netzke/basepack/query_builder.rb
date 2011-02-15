@@ -2,7 +2,10 @@ module Netzke
   module Basepack
     class QueryBuilder < Netzke::Base
       js_base_class "Ext.TabPanel"
+
       js_property :active_tab, 0
+
+      js_translate :overwrite_confirm, :overwrite_confirm_title, :delete_confirm, :delete_confirm_title
 
       js_mixin :query_builder
 
@@ -15,18 +18,50 @@ module Netzke
         }
       end
 
-      action :clear_all, :icon => :cross
-      action :reset, :icon => :application_form
+      action :clear_all do
+        {
+          :text => I18n.t('netzke.basepack.query_builder.actions.clear_all'),
+          :tooltip => I18n.t('netzke.basepack.query_builder.actions.clear_all_tooltip'),
+          :icon => :cross
+        }
+      end
 
-      action :save_preset, :icon => :disk
-      action :delete_preset, :icon => :cross
+      action :reset do
+        {
+          :text => I18n.t('netzke.basepack.query_builder.actions.reset'),
+          :tooltip => I18n.t('netzke.basepack.query_builder.actions.reset_tooltip'),
+          :icon => :application_form
+        }
+      end
 
-      action :apply, :icon => :accept
+      action :save_preset do
+        {
+          :text => I18n.t('netzke.basepack.query_builder.actions.save_preset'),
+          :tooltip => I18n.t('netzke.basepack.query_builder.actions.save_preset_tooltip'),
+          :icon => :disk
+        }
+      end
+
+      action :delete_preset do
+        {
+          :text => I18n.t('netzke.basepack.query_builder.actions.delete_preset'),
+          :tooltip => I18n.t('netzke.basepack.query_builder.actions.delete_preset_tooltip'),
+          :icon => :cross
+        }
+      end
+
+      action :apply do
+        {
+          :text => I18n.t('netzke.basepack.query_builder.actions.apply'),
+          :tooltip => I18n.t('netzke.basepack.query_builder.actions.apply_tooltip'),
+          :icon => :accept
+        }
+      end
 
       def js_config
         super.tap do |s|
           s[:bbar] = (config[:bbar] || []) + [:clear_all.action, :reset.action, "->",
-            I18n.t('netzke.basepack.query_builder.presets', :default => "Presets"),
+            I18n.t('netzke.basepack.query_builder.presets'),
             {
               :xtype => "combo",
               :triggerAction => "all",
@@ -54,14 +89,14 @@ module Netzke
           saved_searches << {"name" => params[:name], "query" => query}
         end
         update_state(:presets, saved_searches)
-        {:feedback => I18n.t('netzke.basepack.search_panel.preset_saved')}
+        {:feedback => I18n.t('netzke.basepack.query_builder.preset_saved')}
       end
 
       endpoint :delete_preset do |params|
         saved_searches = state[:presets]
         saved_searches.delete_if{ |s| s["name"] == params[:name] }
         update_state(:presets, saved_searches)
-        {:feedback => I18n.t('netzke.basepack.search_panel.preset_deleted')}
+        {:feedback => I18n.t('netzke.basepack.query_builder.preset_deleted')}
       end
 
 

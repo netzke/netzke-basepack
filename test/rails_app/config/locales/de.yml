@@ -5,13 +5,14 @@ de:
         confirm: Confirmation
         are_you_sure: Are you sure?
       grid_panel:
-        add: Add
-        edit: Edit
-        delete: Delete
-        apply: Apply
-        add_in_form: Add in form
-        edit_in_form: Edit in form
-        search: Search
+        actions:
+          add: Zufügen
+          edit: Verandern
+          del: Delete
+          apply: Apply
+          add_in_form: Add in form
+          edit_in_form: Edit in form
+          search: Search
         deleted_n_records: "Deleted %{n} record(s)"
         cannot_delete: "You don't have permissions to delete data"
       search_panel:
