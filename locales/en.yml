@@ -4,6 +4,7 @@ en:
       generic:
         confirm: Confirmation
         are_you_sure: Are you sure?
+
       grid_panel:
         actions:
           add: Add
@@ -15,6 +16,16 @@ en:
           search: Search
         deleted_n_records: "Deleted %{n} record(s)"
         cannot_delete: "You don't have permissions to delete data"
+
+      form_panel:
+        actions:
+          edit: Edit
+          edit_tooltip: Edit
+          cancel: Cancel
+          cancel_tooltip: Cancel editing
+          apply: Apply
+          apply_tooltip: Apply changes
+
       search_panel:
         presets: Presets
         equals: Equals
@@ -25,8 +36,31 @@ en:
         date_equals: "On"
         before: Before
         after: After
+
+      paging_form_panel:
+        actions:
+          search: Search
+          search_tooltip: Extended search
+
+      query_builder:
+        presets: Presets
         preset_saved: Preset successfully saved
         preset_deleted: Preset successfully deleted
+        overwrite_confirm: "Are you sure you want to overwrite preset '{0}'?"
+        overwrite_confirm_title: "Overwriting preset"
+        delete_confirm: "Are you sure you want to delete preset '{0}'?"
+        delete_confirm_title: "Deleting preset"
+        actions:
+          clear_all: Clear
+          clear_all_tooltip: Clear all conditions
+          reset: Reset
+          reset_tooltip: Reset condition values
+          save_preset: Save preset
+          save_preset_tooltip: Save preset
+          delete_preset: Delete preset
+          delete_preset_tooltip: Delete preset
+          apply: Apply
+          apply_tooltip: Apply updated conditions
 
     formats:
       date: Y-m-d

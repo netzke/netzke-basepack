@@ -11,17 +11,13 @@ ActiveSupport::Dependencies.autoload_paths << File.dirname(__FILE__)
 require 'netzke/basepack'
 
 module Netzke
-  autoload :Ext, 'ext'
-
   module Basepack
-    class Engine < ::Rails::Engine
-      config.before_initialize do
-        I18n.load_path << File.dirname(__FILE__) + '/../locales/en.yml'
-      end
+    class Engine < Rails::Engine
     end
   end
-
 end
+
+I18n.load_path << File.dirname(__FILE__) + '/../locales/en.yml'
 
 Netzke::Basepack.init
 

@@ -268,19 +268,23 @@ module Netzke
         }
       end
 
-      action :edit, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.edit'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit'),
-        :disabled => true,
-        :icon => :table_edit
-      }
+      action :edit do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.edit'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit'),
+          :disabled => true,
+          :icon => :table_edit
+        }
+      end
 
-      action :del, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.del'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.del'),
-        :disabled => true,
-        :icon => :table_row_delete
-      }
+      action :del do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.del'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.del'),
+          :disabled => true,
+          :icon => :table_row_delete
+        }
+      end
 
       action :apply do
         {
@@ -291,25 +295,31 @@ module Netzke
         }
       end
 
-      action :add_in_form, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
-        :icon => :application_form_add
-      }
+      action :add_in_form do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
+          :icon => :application_form_add
+        }
+      end
 
-      action :edit_in_form, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
-        :disabled => true,
-        :icon => :application_form_edit
-      }
+      action :edit_in_form do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
+          :disabled => true,
+          :icon => :application_form_edit
+        }
+      end
 
-      action :search, {
-        :text => I18n.t('netzke.basepack.grid_panel.actions.search'),
-        :tooltip => I18n.t('netzke.basepack.grid_panel.actions.search'),
-        :enable_toggle => true,
-        :icon => :find
-      }
+      action :search do
+        {
+          :text => I18n.t('netzke.basepack.grid_panel.actions.search'),
+          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.search'),
+          :enable_toggle => true,
+          :icon => :find
+        }
+      end
 
       component :add_form do
         {
