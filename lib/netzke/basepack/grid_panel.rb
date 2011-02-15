@@ -156,10 +156,12 @@ module Netzke
       js_mixin :edit_in_form if edit_in_form_available
 
       # I18n used in JavaScript
-      js_property :i18n, {
-        :are_you_sure => I18n.translate("netzke.basepack.generic.are_you_sure"),
-        :confirm => I18n.translate("netzke.basepack.generic.confirm")
-      }
+      # js_property :i18n, {
+      #   :are_you_sure => I18n.translate("netzke.basepack.generic.are_you_sure"),
+      #   :confirm => I18n.translate("netzke.basepack.generic.confirm")
+      # }
+
+      js_translate :are_you_sure, :confirmation, :first_text, :prev_text, :next_text, :last_text, :before_page_text, :after_page_text, :empty_msg, :refresh_text, :display_msg
 
       # Include extra javascript that we depend on
       def self.include_js
@@ -382,7 +384,7 @@ module Netzke
       component :search_form do
         {
           :lazy_loading => true,
-          :class_name => "Netzke::Basepack::GridPanel::SearchWindow",
+          :class_name => "Netzke::Basepack::SearchWindow",
           :model => config[:model],
           :fields => default_fields_for_forms
         }

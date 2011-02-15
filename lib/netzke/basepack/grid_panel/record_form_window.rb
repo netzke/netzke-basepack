@@ -9,8 +9,13 @@ module Netzke
               :auto_height => true,
               :fbar => [:ok.action, :cancel.action]
 
-        action :ok, :text => 'OK'
-        action :cancel
+        action :ok do
+          { :text => I18n.t('netzke.basepack.grid_panel.record_form_window.actions.ok')}
+        end
+
+        action :cancel do
+          { :text => I18n.t('netzke.basepack.grid_panel.record_form_window.actions.cancel')}
+        end
 
         js_method :init_component, <<-JS
           function(params){

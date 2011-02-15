@@ -1,16 +1,11 @@
 module Netzke
   module Basepack
     class QueryBuilder < Netzke::Base
-      # I18n
-      # js_property :i18n, [
-      #   :overwrite_confirm,
-      #   :overwrite_confirm_title,
-      #   :delete_confirm,
-      #   :delete_confirm_title
-      # ].inject({}) { |h,t| h.merge(t => I18n.t("netzke.basepack.query_builder.#{t}")) }
-
       js_base_class "Ext.TabPanel"
+
       js_property :active_tab, 0
+
+      js_translate :overwrite_confirm, :overwrite_confirm_title, :delete_confirm, :delete_confirm_title
 
       js_mixin :query_builder
 

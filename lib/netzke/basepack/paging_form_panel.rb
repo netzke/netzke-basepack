@@ -137,7 +137,7 @@ module Netzke
       component :search_form do
         {
           :lazy_loading => true,
-          :class_name => "Netzke::Basepack::GridPanel::SearchWindow",
+          :class_name => "Netzke::Basepack::SearchWindow",
           :model => config[:model]
         }
       end
