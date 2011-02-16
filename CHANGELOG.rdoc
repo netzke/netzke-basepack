@@ -9,7 +9,7 @@
   * One-to-many association support in Form/GridPanel reworked to use the foreign id instead of a string. This gives us more flexibility about what to display in the association column/field, and also provides for performance improvements (no more need to search for the associated record based on the value provided from the column/field).
   * GridPanel now memorizes its columns visibility, position and size (when :persistence is set to true)
   * I18n for GridPanel
-  *
+  * A default value can now also be assigned to association column/field (must be the associated record's ID)
 
 * bug fix
   * Long-standing visual issues with datetime columns in grid panel are solved.

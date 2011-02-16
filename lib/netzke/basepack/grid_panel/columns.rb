@@ -231,7 +231,7 @@ module Netzke
 
           # Detects an association column and sets up the proper editor.
           def detect_association(c)
-            assoc, assoc_method = get_assoc_and_method(c)
+            assoc, assoc_method = assoc_and_assoc_method_for_column(c)
             if assoc
               assoc_column = assoc.klass.columns_hash[assoc_method]
               assoc_method_type = assoc_column.try(:type)
@@ -243,17 +243,6 @@ module Netzke
                 c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
                 c[:assoc] = true
               end
-            end
-          end
-
-          # TODO: duplicate method (see assoc_and_assoc_method_for_column)
-          def get_assoc_and_method(c)
-            if c[:name].index("__")
-              assoc_name, assoc_method = c[:name].split('__')
-              assoc = data_class.reflect_on_association(assoc_name.to_sym)
-              [assoc, assoc_method]
-            else
-              [nil, nil]
             end
           end
 
