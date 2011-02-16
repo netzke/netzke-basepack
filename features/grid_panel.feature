@@ -88,11 +88,17 @@ Scenario: Grid with strong_default_attrs
 
 @javascript
 Scenario: Grid with columns with default values
-  Given I am on the BookGridWithDefaultValues test page
+  Given an author exists with last_name: "Nabokov"
+  And I am on the BookGridWithDefaultValues test page
+  When I press "Add"
+  Then I should see "Nabokov"
+  And I press "Apply"
+  And I wait for the response from the server
+  Then a book should exist with title: "Lolita", exemplars: 100, digitized: true, author: that author
+
   When I press "Add in form"
   And I press "OK"
-  And I wait for the response from the server
-  Then a book should exist with title: "Lolita", exemplars: 100
+  Then 2 books should exist with title: "Lolita", exemplars: 100, digitized: true, author: that author
 
 @javascript
 Scenario: Inline editing
@@ -154,8 +160,8 @@ Scenario: Inline editing of association
 Scenario: Inline adding of records
   Given an author: "Nabokov" exists with first_name: "Vladimir", last_name: "Nabokov"
   And an author: "Hesse" exists with first_name: "Herman", last_name: "Hesse"
-  When I go to the BookGrid test page
 
+  When I go to the BookGrid test page
   And I press "Add"
   And I expand combobox "author__name" in row 1 of the grid
   And I wait for the response from the server
@@ -173,6 +179,23 @@ Scenario: Inline adding of records
   And I wait for the response from the server
   Then a book should exist with title: "Lolita", author: author "Nabokov"
   And a book should exist with title: "Demian", author: author "Hesse"
+
+@javascript
+Scenario: Inline adding of records in GridPanel with default values
+  Given an author: "Nabokov" exists with first_name: "Vladimir", last_name: "Nabokov"
+  And an author: "Hesse" exists with first_name: "Herman", last_name: "Hesse"
+
+  When I go to the BookGridWithDefaultValues test page
+  And I press "Add"
+  And I expand combobox "author__last_name" in row 1 of the grid
+  And I wait for the response from the server
+  And I select "Hesse" in combobox "author__last_name" in row 1 of the grid
+  And I edit row 1 of the grid with title: "Demian"
+
+  And I stop editing the grid
+  And I press "Apply"
+  And I wait for the response from the server
+  Then a book should exist with title: "Demian", author: author "Hesse"
 
 @javascript
 Scenario: Renderers for association columns should take effect

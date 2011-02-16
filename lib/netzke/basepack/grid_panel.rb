@@ -132,6 +132,8 @@ module Netzke
         :tools                  => %w{ refresh },
       }
 
+      extend ActiveSupport::Memoizable
+
       include self::Services
       include self::Columns
 
@@ -229,6 +231,15 @@ module Netzke
           r.merge(c[:name] => record.value_for_attribute(c, true))
         end
       end
+
+      def get_default_association_values
+        columns.select{ |c| c[:name].index("__") && c[:default_value] }.each.inject({}) do |r,c|
+          assoc, assoc_method = assoc_and_assoc_method_for_column(c)
+          assoc_instance = assoc.klass.find(c[:default_value])
+          r.merge(c[:name] => assoc_instance.send(assoc_method))
+        end
+      end
+      memoize :get_default_association_values
 
       def default_bbar
         res = %w{ add edit apply del }.map(&:to_sym).map(&:action)
@@ -332,14 +343,14 @@ module Netzke
           :items => [{
             :class_name => "Netzke::Basepack::FormPanel",
             :model => config[:model],
-            :items => default_fields_for_forms_with_default_values,
+            :items => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
             :strong_default_attrs => config[:strong_default_attrs],
             :border => true,
             :bbar => false,
             :header => false,
             :mode => config[:mode],
-            :record => data_class.new
+            :record => data_class.new(columns_default_values)
           }.deep_merge(config[:add_form_config] || {})]
         }.deep_merge(config[:add_form_window_config] || {})
       end
@@ -358,7 +369,7 @@ module Netzke
             :bbar => false,
             :header => false,
             :mode => config[:mode]
-            # :record_id gets assigned by deliver_component at the moment of loading
+            # :record_id gets assigned by deliver_component dynamically, at the moment of loading
           }.deep_merge(config[:edit_form_config] || {})]
         }.deep_merge(config[:edit_form_window_config] || {})
       end
@@ -389,20 +400,6 @@ module Netzke
           :fields => default_fields_for_forms
         }
       end
-
-
-      # def search_panel
-      #   {
-      #     :class_name => "Netzke::Basepack::FormPanel",
-      #     :model => "User",
-      #     # :items => default_fields_for_forms,
-      #     # :search_class_name => cronfig[:model],
-      #     # :persistent_config => config[:persistent_config],
-      #     :header => false,
-      #     :bbar => false,
-      #     # :mode => config[:mode]
-      #   }
-      # end
 
       # include ::Netzke::Plugins::ConfigurationTool if config_tool_available # it will load ConfigurationPanel into a modal window
 

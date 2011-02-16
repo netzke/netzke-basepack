@@ -15,7 +15,6 @@ When /^I select "([^"]*)" from combobox "([^"]*)"$/ do |value, combo_label|
     var index = combo.getStore().find('field2', '#{value}');
     combo.select(index);
     combo.onViewClick(false);
-    // combo.setValue(combo.getStore().getAt(index).get('field1'));
   JS
 end
 
