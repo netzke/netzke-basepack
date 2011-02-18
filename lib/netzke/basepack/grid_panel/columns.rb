@@ -74,13 +74,21 @@ module Netzke
         memoize :columns
 
         def append_meta_column(cols)
-          cols << {
-            :name => "_meta",
-            :meta => true,
-            :getter => lambda do |r|
-              meta_data(r)
-            end
-          }
+          cols << {}.tap do |c|
+            c.merge!(
+              :name => "_meta",
+              :meta => true,
+              :getter => lambda do |r|
+                meta_data(r)
+              end
+            )
+            c[:default_value] = meta_default_data if meta_default_data.present?
+          end
+        end
+
+        # default_value for the meta column; used when a new record is being created in the grid
+        def meta_default_data
+          get_default_association_values.present? ? { :association_values => get_default_association_values.literalize_keys } : {}
         end
 
         # Override it when you need extra meta data to be passed through the meta column
@@ -223,7 +231,7 @@ module Netzke
 
           # Detects an association column and sets up the proper editor.
           def detect_association(c)
-            assoc, assoc_method = get_assoc_and_method(c)
+            assoc, assoc_method = assoc_and_assoc_method_for_column(c)
             if assoc
               assoc_column = assoc.klass.columns_hash[assoc_method]
               assoc_method_type = assoc_column.try(:type)
@@ -235,16 +243,6 @@ module Netzke
                 c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
                 c[:assoc] = true
               end
-            end
-          end
-
-          def get_assoc_and_method(c)
-            if c[:name].index("__")
-              assoc_name, assoc_method = c[:name].split('__')
-              assoc = data_class.reflect_on_association(assoc_name.to_sym)
-              [assoc, assoc_method]
-            else
-              [nil, nil]
             end
           end
 
@@ -264,20 +262,35 @@ module Netzke
               field_config = {:name => c[:name]}
 
               # scopes for combobox options
-              field_config[:scopes] = c[:editor].is_a?(Hash) && c[:editor][:scopes]
+              field_config[:scopes] = c[:editor][:scopes] if c[:editor].is_a?(Hash)
 
               field_config
             end
           end
 
           # default_fields_for_forms extended with default values (for new-record form)
-          def default_fields_for_forms_with_default_values
-            res = default_fields_for_forms.dup
-            each_attr_in(res) do |a|
-              attr_name = a[:name].to_sym
-              a[:value] = a[:default_value] || columns_hash[attr_name].try(:fetch, :default_value, nil) || data_class.netzke_attribute_hash[attr_name].try(:fetch, :default_value, nil)
+          # def default_fields_for_forms_with_default_values
+          #   res = default_fields_for_forms.dup
+          #   each_attr_in(res) do |a|
+          #     attr_name = a[:name].to_sym
+          #     a[:value] = a[:default_value] || columns_hash[attr_name].try(:fetch, :default_value, nil) || data_class.netzke_attribute_hash[attr_name].try(:fetch, :default_value, nil)
+          #   end
+          #   res
+          # end
+
+          def columns_default_values
+            columns.inject({}) do |r,c|
+              assoc, assoc_method = assoc_and_assoc_method_for_column(c)
+              if c[:default_value].nil?
+                r
+              else
+                if assoc
+                  r.merge(assoc.options[:foreign_key] || assoc.name.to_s.foreign_key => c[:default_value])
+                else
+                  r.merge(c[:name] => c[:default_value])
+                end
+              end
             end
-            res
           end
 
           # Recursively traversess items (an array) and yields each found field (a hash with :name set)

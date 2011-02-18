@@ -100,7 +100,7 @@ module Netzke
       # Mark an attribute as "virtual" by default, when it doesn't reflect a model column, or a model column of an association
       def set_default_virtual(c)
         if c[:virtual].nil? # sometimes at maybe handy to mark a column as non-virtual forcefully
-          assoc, assoc_method = get_assoc_and_method(c)
+          assoc, assoc_method = assoc_and_assoc_method_for_column(c)
           if assoc
             c[:virtual] = true if !assoc.klass.column_names.map(&:to_sym).include?(assoc_method.to_sym)
           else
