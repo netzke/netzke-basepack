@@ -44,7 +44,8 @@ Scenario: Deleting a record
   When I go to the UserGrid test page
   And I select all rows in the grid
   And I press "Delete"
-  And I press "Yes"
+  Then I should see "Are you sure?"
+  When I press "Yes"
   Then I should see "Deleted 2 record(s)"
   Then a user should not exist with first_name: "Anton"
   And a user should not exist with first_name: "Maxim"
