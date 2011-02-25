@@ -6,41 +6,24 @@ module Netzke
   module Basepack
     # Ext.grid.EditorGridPanel-based component with the following features:
     #
+    # * ActiveRecord-model support with automatic column configuration
     # * multi-line CRUD operations - get, post, delete, create
     # * (multe-record) editing and adding records through a form
-    # * column resize, move and hide
+    # * persistent column resize, move and hide
     # * permissions
     # * sorting
     # * pagination
     # * filtering
-    # * extended search
-    # * rows reordering (drag-n-drop)
+    # * advanced search
+    # * rows reordering by drag-n-drop, requires acts_as_list on the model
+    # * virtual attribute support
     # * (TODO) dynamic configuration of properties and columns
     #
-    # == Class configuration
-    #
-    # Configuration on this level is effective during the life-time of the application. The right place for setting these options are in
-    # config/initializers, e.g.:
-    #
-    #     Netzke::GridPanel.column_filters_available = false
-    #     Netzke::GridPanel.default_config = {:enable_config_tool => false}
-    #
-    # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the way that
-    # the less functionality is enabled, the less code is generated.
-    #
-    # The following configuration options are available:
-    # * <tt>:column_filters_available</tt> - (default is true) include code for the filters in the column's context menu
-    # * (TODO)<tt>:config_tool_available</tt> - (default is true) include code for the configuration tool that launches the configuration panel
-    # * <tt>:edit_in_form_available</tt> - (defaults to true) include code for (multi-record) editing and adding records through a form
-    # * <tt>:extended_search_available</tt> - (defaults to true) include code for extended configurable search
-    # * <tt>:default_config</tt> - a hash of default configuration options for each instance of the GridPanel component.
-    # See the "Instance configuration" section below.
-    #
     # == Instance configuration
-    # The following config options are available:
-    # * <tt>:model</tt> - name of the ActiveRecord model that provides data to this GridPanel.
-    # * <tt>:strong_default_attrs</tt> - a hash of attributes to be merged atop of every created/updated record.
-    # * <tt>:scope</tt> - specifies how the data should be filtered.
+    # The following config options are supported:
+    # * +model+ - name of the ActiveRecord model that provides data to this GridPanel, e.g. "User"
+    # * +columns+ - an array of columns to be displayed in the grid; each column may be represented by a symbol (representing the model's attribute name), or a hash (when extra configuration is needed). See the "Columns" section below.
+    # * +scope+ - specifies how the data should be filtered.
     #   When it's a symbol, it's used as a scope name.
     #   When it's a string, it's a SQL statement (passed directly to +where+).
     #   When it's a hash, it's a conditions hash (passed directly to +where+).
@@ -52,28 +35,33 @@ module Netzke
     #
     #     :scope => { |rel| rel.where(:id.gt => 100).order(:created_at) }
     #
-    # * <tt>:enable_column_filters</tt> - enable filters in column's context menu
-    # * <tt>:enable_edit_in_form</tt> - provide buttons into the toolbar that activate editing/adding records via a form
-    # * <tt>:enable_extended_search</tt> - provide a button into the toolbar that shows configurable search form
-    # * <tt>:enable_context_menu</tt> - enable rows context menu
-    # * <tt>:enable_rows_reordering</tt> - enable reordering of rows with drag-n-drop; underlying model (specified in <tt>:model</tt>) must implement "acts_as_list"-compatible functionality; defaults to <tt>false</tt>
-    # * <tt>:enable_pagination</tt> - enable pagination; defaults to <tt>true</tt>
-    # * <tt>:rows_per_page</tt> - number of rows per page (ignored when <tt>:enable_pagination</tt> is set to <tt>false</tt>)
-    # * <tt>:load_inline_data</tt> - load initial data into the grid right after its instantiation (saves a request to server); defaults to <tt>true</tt>
-    # * (TODO) <tt>:mode</tt> - when set to <tt>:config</tt>, GridPanel loads in configuration mode
-    # * <tt>:add/edit/multi_edit/search_form_config</tt> - additional configuration for add/edit/multi_edit/search form panel
-    # * <tt>:add/edit/multi_edit_form_window_config</tt> - additional configuration for the window that wrapps up add/edit/multi_edit form panel
-    # * <tt>:columns</tt> - an array of columns to be displayed in the grid; each column may be represented by a symbol (representing the model's attribute name), or a hash (when extra configuration is needed)
+    # * +strong_default_attrs+ - (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. {:role_id => 1}
+    # * +enable_column_filters+ - (defaults to true) enable filters in column's context menu
+    # * +enable_edit_in_form+ - (defaults to true) provide buttons into the toolbar that activate editing/adding records via a form
+    # * +enable_extended_search+ - (defaults to true) provide a button into the toolbar that shows configurable search form
+    # * +enable_context_menu+ - (defaults to true) enable rows context menu
+    # * +enable_rows_reordering+ - (defaults to false) enable reordering of rows with drag-n-drop; underlying model (specified in +model+) must implement "acts_as_list"-compatible functionality
+    # * +enable_pagination+ - (defaults to true) enable pagination
+    # * +rows_per_page+ - (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to <tt>false+)
+    # * +load_inline_data+ - (defaults to true) load initial data into the grid right after its instantiation
+    # * (TODO) +mode+ - when set to +config+, GridPanel loads in configuration mode
+    # * +add/edit/multi_edit/search_form_config+ - additional configuration for add/edit/multi_edit/search form panel
+    # * +add/edit/multi_edit_form_window_config+ - additional configuration for the window that wrapps up add/edit/multi_edit form panel
     #
     # == Columns
-    # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name of model's (virtual) attribute, or a column configuration hash.
-    # The column configuration hash recognizes the following options:
+    # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name of model's (virtual) attribute (in which case the configuration will be fully automatic), or a hash that may contain the following configuration options as keys:
     #
-    # * +name+ - name of the column, that may correspond to model's (virtual) attribute
+    # * +name+ - name of the column, that may correspond to the model's (virtual) attribute
     # * +read_only+ - a boolean that defines if the cells in the column should be editable
     # * +editable+ - same as +read_only+, but in reverse (takes precedence over +read_only+)
-    # * +getter+ - a lambda that receives a record as a parameter, and is expected to return a string that will be printed in the cell (can be HTML code)
-    # * +setter+ - a lambda that receives a record as first parameter, and the value passed from the cell as the second parameter, and is expected to modify the record accordingly
+    # * +filterable+ - set to false to disable filtering on this column
+    # * +getter+ - a lambda that receives a record as a parameter, and is expected to return a string that will be sent to the cell (can be HTML code), e.g.:
+    #
+    #     :getter => lambda {|r| [r.first_name, r.last_name].join }
+
+    # * +setter+ - a lambda that receives a record as first parameter, and the value passed from the cell as the second parameter, and is expected to modify the record accordingly, e.g.:
+    #
+    #     :setter => lambda { |r,v| r.first_name, r.last_name = v.split(" ") }
     #
     # * +sorting_scope+ - the name of the scope used for sorting the column. This can be useful for virtual columns for example. The scope will get one parameter specifying the direction (:asc or :desc). Example:
     #
@@ -84,23 +72,38 @@ module Netzke
     #         order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}")
     #       }
     #     end
-    # * +filterable+ - set to false to disable filtering on this column
     #
     # Besides these options, a column can receive any meaningful config option understood by Ext.grid.Column (http://dev.sencha.com/deploy/dev/docs/?class=Ext.grid.Column)
     #
     # == Actions
-    # You can override GridPanel's actions to change their text, icons, and tooltips (see http://api.netzke.org/core/Netzke/Actions.html). You can also use these actions when configuring menus and toolbars.
-    # GridPanel implements the following actions:
-    # * +add+
-    # * +del+
-    # * +edit+
-    # * +apply+
-    # * +add_in_form+
-    # * +edit_in_form+
-    # * +search+
+    # You can override GridPanel's actions to change their text, icons, and tooltips (see http://api.netzke.org/core/Netzke/Actions.html).
     #
-    # == TODO
-    # * Make ColumnModel pluggable (e.g. to easily replace it with Ext.ux.grid.LockingColumnModel)
+    # GridPanel implements the following actions:
+    # * +add+ - inline adding of a record
+    # * +del+ - deletion of records
+    # * +edit+ - inline editing of a record
+    # * +apply+ - applying inline changes
+    # * +add_in_form+ - adding a record in a form
+    # * +edit_in_form+ - (multi-record) editing in a forrm
+    # * +search+ - advanced searching
+    #
+    # == Class configuration
+    #
+    # Configuration on this level is effective during the life-time of the application. One place for setting these options are in application.rb, e.g.:
+    #
+    #     config.netzke.basepack.grid_panel.column_filters_available = false
+    #
+    # These can also be eventually set directly on the component's class:
+    #
+    #     Netzke::Basepack::GridPanel.column_filters_available = false
+    #
+    # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the way that the less functionality is enabled, the less code is generated.
+    #
+    # The following class configuration options are available:
+    # * +column_filters_available+ - (defaults to true) include code for the filters in the column's context menu
+    # * (TODO)+config_tool_available+ - (defaults to true) include code for the configuration tool that launches the configuration panel
+    # * +edit_in_form_available+ - (defaults to true) include code for (multi-record) editing and adding records through a form
+    # * +extended_search_available+ - (defaults to true) include code for extended configurable search
     class GridPanel < Netzke::Base
 
       # Class-level configuration. These options directly influence the amount of generated
