@@ -105,6 +105,7 @@ module Netzke
     # * +edit_in_form_available+ - (defaults to true) include code for (multi-record) editing and adding records through a form
     # * +extended_search_available+ - (defaults to true) include code for extended configurable search
     class GridPanel < Netzke::Base
+      js_base_class "Ext.grid.EditorGridPanel"
 
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,
@@ -120,13 +121,13 @@ module Netzke
       class_config_option :config_tool_available, true
 
       class_config_option :default_instance_config, {
-        :enable_edit_in_form    => true,
-        :enable_extended_search => true,
-        :enable_column_filters  => true,
+        :enable_edit_in_form    => edit_in_form_available,
+        :enable_extended_search => extended_search_available,
+        :enable_column_filters  => column_filters_available,
         :load_inline_data       => true,
         :enable_rows_reordering => false, # column drag n drop
         :enable_pagination      => true,
-        :rows_per_page          => 25,
+        :rows_per_page          => 30,
         :tools                  => %w{ refresh },
       }
 
@@ -134,84 +135,37 @@ module Netzke
 
       include self::Services
       include self::Columns
-
       include Netzke::Basepack::DataAccessor
 
-      # def self.enforce_config_consistency
-      #   default_config[:enable_edit_in_form]    &&= edit_in_form_available
-      #   default_config[:enable_extended_search] &&= extended_search_available
-      #   default_config[:enable_rows_reordering] &&= rows_reordering_available
-      # end
-
-      # def initialize(*args)
-      #   # Deprecations
-      #   config[:scopes] && ActiveSupport::Deprecation.warn(":scopes option is not effective any longer for GridPanel. Use :scope instead.")
-      #
-      #   super(*args)
-      # end
-
-      js_base_class "Ext.grid.EditorGridPanel"
       js_mixin :grid_panel
       js_mixin :advanced_search if extended_search_available
       js_mixin :edit_in_form if edit_in_form_available
 
-      # I18n used in JavaScript
-      # js_property :i18n, {
-      #   :are_you_sure => I18n.translate("netzke.basepack.generic.are_you_sure"),
-      #   :confirm => I18n.translate("netzke.basepack.generic.confirm")
-      # }
+      js_translate %w[are_you_sure confirmation first_text prev_text next_text last_text before_page_text after_page_text empty_msg refresh_text display_msg]
 
-      js_translate :are_you_sure, :confirmation, :first_text, :prev_text, :next_text, :last_text, :before_page_text, :after_page_text, :empty_msg, :refresh_text, :display_msg
+      # JavaScript includes
+      ex = Netzke::Core.ext_location.join("examples")
 
-      # Include extra javascript that we depend on
-      def self.include_js
-        res = []
-        ext_examples = Netzke::Core.ext_location.join("examples")
+      js_include(ex.join("ux/CheckColumn.js"))
 
-        # Checkcolumn
-        res << ext_examples.join("ux/CheckColumn.js")
-
-        # Filters
-        if column_filters_available
-          res << ext_examples + "ux/gridfilters/menu/ListMenu.js"
-          res << ext_examples + "ux/gridfilters/menu/RangeMenu.js"
-          res << ext_examples + "ux/gridfilters/GridFilters.js"
-
-          %w{Boolean Date List Numeric String}.unshift("").each do |f|
-            res << ext_examples + "ux/gridfilters/filter/#{f}Filter.js"
-          end
-
-          # Fix
-          res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/misc.js"
-        end
-
-        # DD
-        if rows_reordering_available
-          res << "#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"
-        end
-
-        res
-      end
-
-      # Fields to be displayed in the "General" tab of the configuration panel
-      def self.property_fields
+      # Includes for column filters
+      if column_filters_available
         [
-          # {:name => :ext_config__title,               :attr_type => :string},
-          # {:name => :ext_config__header,              :attr_type => :boolean, :default => true},
-          # {:name => :ext_config__enable_context_menu, :attr_type => :boolean, :default => true},
-          # {:name => :ext_config__enable_pagination,   :attr_type => :boolean, :default => true},
-          # {:name => :ext_config__rows_per_page,       :attr_type => :integer},
-          # {:name => :ext_config__prohibit_create,     :attr_type => :boolean},
-          # {:name => :ext_config__prohibit_update,     :attr_type => :boolean},
-          # {:name => :ext_config__prohibit_delete,     :attr_type => :boolean},
-          # {:name => :ext_config__prohibit_read,       :attr_type => :boolean}
-        ]
+          "ux/gridfilters/menu/ListMenu.js",
+          "ux/gridfilters/menu/RangeMenu.js",
+          "ux/gridfilters/GridFilters.js"
+        ].each{ |path| js_include(ex.join(path)) }
+
+        %w{Boolean Date List Numeric String}.unshift("").each do |f|
+          js_include(ex.join"ux/gridfilters/filter/#{f}Filter.js")
+        end
       end
 
+      # Includes for rows reordering
+      if rows_reordering_available
+        js_include(ex.join("#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"))
+      end
 
-      # The result of this method (a hash) is converted to a JSON object and passed as the configuration parameter
-      # to the constructor of our JavaScript class. Override it when you want to pass any extra configuration
-      # to the JavaScript side.
       def js_config
         super.merge({
           :bbar => config.has_key?(:bbar) ? config[:bbar] : default_bbar,

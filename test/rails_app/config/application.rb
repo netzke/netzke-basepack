@@ -43,5 +43,8 @@ module RailsApp
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password]
+
+    # config.netzke.basepack.grid_panel.edit_in_form_available = false
+    # config.netzke.basepack.grid_panel.extended_search_available = false
   end
 end
