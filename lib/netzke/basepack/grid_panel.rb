@@ -14,7 +14,7 @@ module Netzke
     # * pagination
     # * filtering
     # * extended search
-    # * (TODO) rows reordering (drag-n-drop)
+    # * rows reordering (drag-n-drop)
     # * (TODO) dynamic configuration of properties and columns
     #
     # == Class configuration
@@ -102,26 +102,21 @@ module Netzke
     # == TODO
     # * Make ColumnModel pluggable (e.g. to easily replace it with Ext.ux.grid.LockingColumnModel)
     class GridPanel < Netzke::Base
+
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,
       # set column_filters_available to false, and the javascript for the filters won't be included at all.
-      class_attribute :column_filters_available
-      self.column_filters_available = true
+      class_config_option :column_filters_available, true
 
-      class_attribute :config_tool_available
-      self.config_tool_available = true
+      class_config_option :extended_search_available, true
 
-      class_attribute :edit_in_form_available
-      self.edit_in_form_available = true
+      class_config_option :edit_in_form_available, true
 
-      class_attribute :extended_search_available
-      self.extended_search_available = true
+      class_config_option :rows_reordering_available, true
 
-      class_attribute :rows_reordering_available
-      self.rows_reordering_available = true
+      class_config_option :config_tool_available, true
 
-      class_attribute :default_config
-      self.default_config = {
+      class_config_option :default_instance_config, {
         :enable_edit_in_form    => true,
         :enable_extended_search => true,
         :enable_column_filters  => true,

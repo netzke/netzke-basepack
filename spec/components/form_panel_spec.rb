@@ -28,17 +28,6 @@ describe Netzke::Basepack::FormPanel do
     form.fields[:role__name][:field_label].should == "Role name"
   end
 
-  it "should set correct field values" do
-    role = Factory(:role, :name => "warrior")
-    user = Factory(:user, :first_name => "Carlos", :last_name => "Castaneda", :role => role)
-
-    form = Netzke::Basepack::FormPanel.new(:model => 'User', :record => user, :items => [:first_name, :last_name, :role__name])
-
-    form.fields[:first_name][:value].should == "Carlos"
-    form.fields[:last_name][:value].should == "Castaneda"
-    form.fields[:role__name][:value].should == "warrior"
-  end
-
   it "should add primary key field automatically when omitted" do
     form = Netzke::Basepack::FormPanel.new(:model => 'User', :items => [:first_name, :last_name, :role__name])
     form.fields[:id].should_not be_nil

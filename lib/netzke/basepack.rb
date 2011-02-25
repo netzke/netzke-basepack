@@ -8,6 +8,7 @@ module Netzke
     mattr_accessor :icons_uri
 
     class << self
+
       # Called from netzke-basepack.rb
       def init
         Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/datetimefield.js"

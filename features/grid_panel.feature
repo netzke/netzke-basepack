@@ -98,6 +98,7 @@ Scenario: Grid with columns with default values
 
   When I press "Add in form"
   And I press "OK"
+  And I wait for the response from the server
   Then 2 books should exist with title: "Lolita", exemplars: 100, digitized: true, author: that author
 
 @javascript

@@ -13,14 +13,14 @@ describe Netzke::ActiveRecord::Attributes do
   end
 
   it "should return Netzke attributes including an association attribute represented by a virtual method" do
-    Book.netzke_attributes.map{ |a| a[:name] }.should == %w(id author__name title exemplars digitized notes created_at updated_at tags rating)
+    Book.netzke_attributes.map{ |a| a[:name] }.should == %w(id author__name title exemplars digitized notes tags rating created_at updated_at)
     Book.netzke_attributes.detect{ |a| a[:name] == "author__name" }[:attr_type].should == :string
   end
 
-  it "should be possible to read author name via a book using association attribute" do
+  it "should be possible to access author's id via a book using association attribute" do
     author = Factory(:author)
     book = Factory(:book, :author => author)
-    book.value_for_attribute({:name => :author__first_name}).should == "Carlos"
+    book.value_for_attribute({:name => :author__first_name}).should == author.id
   end
 
   it "should be possible to assign author's name via a book using association attribute" do
@@ -34,11 +34,11 @@ describe Netzke::ActiveRecord::Attributes do
     author_carlos = Factory(:author, :first_name => "Carlos")
     author_herman = Factory(:author, :first_name => "Herman")
     book = Factory(:book, :author => author_carlos)
-    book.set_value_for_attribute({:name => :author__first_name}, "Herman")
-    book.author.should == author_herman
+    book.set_value_for_attribute({:name => :author__first_name}, author_herman.id)
+    book.author_id.should == author_herman.id
   end
 
-  it "should be possible to change address of a user via association attribute (without specifying :nested_attribute)" do
+  it "should be possible to change address of a user (has_one association) via association attribute without specifying :nested_attribute => true" do
     address = Factory(:address)
     user = Factory(:user, :address => address)
     user.set_value_for_attribute({:name => :address__city}, "Hidden Treasures")
