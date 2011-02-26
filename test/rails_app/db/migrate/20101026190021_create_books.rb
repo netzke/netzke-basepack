@@ -4,7 +4,7 @@ class CreateBooks < ActiveRecord::Migration
       t.integer :author_id
       t.string :title
       t.integer :exemplars
-      t.boolean :digitized
+      t.boolean :digitized, :default => false
       t.text :notes
       t.string :tags
       t.integer :rating

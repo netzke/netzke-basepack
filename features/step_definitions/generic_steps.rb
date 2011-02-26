@@ -25,3 +25,10 @@ When /^I go forward one page$/ do
   JS
   page.wait_until{ page.driver.browser.execute_script("return !Ext.Ajax.isLoading();") }
 end
+
+Then /^the "([^"]*)" component should be hidden$/ do |id|
+  page.driver.browser.execute_script(<<-JS).should be_false
+    var cmp = Ext.ComponentMgr.get("#{id}");
+    return cmp.isVisible();
+  JS
+end

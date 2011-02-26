@@ -213,3 +213,22 @@ Scenario: Reloading grid data
   And I reload the grid
   And I reload the grid
   Then I should not see "Internal Server Error"
+
+@javascript
+Scenario: Advanced search window should be hidable after loading grid panel dynamically second time
+  Given I am on the BookGridLoader test page
+  When I press "Load one"
+  And I wait for the response from the server
+  And I press "Search"
+  And I press "Cancel"
+
+  When I press "Load two"
+  And I wait for the response from the server
+
+  When I press "Load one"
+  And I wait for the response from the server
+
+  And I press "Search" within "#book_grid_loader__book_grid_one"
+  And I wait for the response from the server
+  And I press "Cancel" within "#book_grid_loader__book_grid_one__search_form"
+  Then the "book_grid_loader__book_grid_one__search_form" component should be hidden
