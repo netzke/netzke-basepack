@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{netzke-basepack}
-  s.version = "0.6.4"
+  s.version = "0.6.5"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
@@ -368,18 +368,18 @@ Gem::Specification.new do |s|
     s.specification_version = 3
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
-      s.add_runtime_dependency(%q<netzke-core>, ["~> 0.6.4"])
+      s.add_runtime_dependency(%q<netzke-core>, ["~> 0.6.7"])
       s.add_runtime_dependency(%q<meta_where>, [">= 0.9.3"])
       s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
       s.add_runtime_dependency(%q<acts_as_list>, [">= 0"])
     else
-      s.add_dependency(%q<netzke-core>, ["~> 0.6.4"])
+      s.add_dependency(%q<netzke-core>, ["~> 0.6.7"])
       s.add_dependency(%q<meta_where>, [">= 0.9.3"])
       s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
       s.add_dependency(%q<acts_as_list>, [">= 0"])
     end
   else
-    s.add_dependency(%q<netzke-core>, ["~> 0.6.4"])
+    s.add_dependency(%q<netzke-core>, ["~> 0.6.7"])
     s.add_dependency(%q<meta_where>, [">= 0.9.3"])
     s.add_dependency(%q<will_paginate>, ["~> 3.0.pre2"])
     s.add_dependency(%q<acts_as_list>, [">= 0"])

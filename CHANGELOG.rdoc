@@ -1,3 +1,5 @@
+= v0.6.5 - to be released
+
 = v0.6.4 - 2011-02-26
 * API changes
   * The combo field able to talk to the server has changed its xtype from combobox to netzkeremotecombo. When getting values from the server via AJAX, it expects a 2-dimensional array now, where the first value is the real value (which gets submitted), and the second value is the display value.
