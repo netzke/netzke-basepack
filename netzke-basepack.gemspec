@@ -56,6 +56,7 @@ Gem::Specification.new do |s|
     "install.rb",
     "javascripts/basepack.js",
     "javascripts/datetimefield.js",
+    "javascripts/feedback_ghost.js",
     "lib/generators/netzke/basepack_generator.rb",
     "lib/generators/netzke/templates/assets/ts-checkbox.gif",
     "lib/generators/netzke/templates/create_netzke_field_lists.rb",

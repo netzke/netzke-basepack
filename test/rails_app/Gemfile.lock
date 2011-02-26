@@ -1,7 +1,7 @@
 PATH
   remote: vendor/gems/netzke-core
   specs:
-    netzke-core (0.6.6)
+    netzke-core (0.6.7)
       activesupport (>= 3.0.1)
 
 PATH
