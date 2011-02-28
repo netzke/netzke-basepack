@@ -62,6 +62,8 @@ module Netzke
     #
     #     :setter => lambda { |r,v| r.first_name, r.last_name = v.split(" ") }
     #
+    # * +scope+ - the scope for one-to-many association column. Same syntax applies as for scoping out records for the grid itself. See "One-to-many association support" for details.
+    #
     # * +sorting_scope+ - the name of the scope used for sorting the column. This can be useful for virtual columns for example. The scope will get one parameter specifying the direction (:asc or :desc). Example:
     #
     #     columns => [{ :name => "complete_user_name", :sorting_scope => :sort_user_by_full_name }, ...]
@@ -73,6 +75,17 @@ module Netzke
     #     end
     #
     # Besides these options, a column can receive any meaningful config option understood by Ext.grid.Column (http://dev.sencha.com/deploy/dev/docs/?class=Ext.grid.Column)
+    #
+    # == One-to-many association support
+    # If the model bound to a grid +belongs_to+ another model, GridPanel can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
+    #
+    #     {:name => "author__first_name"}
+    #
+    # GridPanel will detect it to be an association column, and will use the drop-down box for selecting an author, where the list of authors will be represented by the author's first name.
+    #
+    # In order to scope out the records displayed in the drop-down box, the +scope+ column option can be used, e.g.:
+    #
+    #     {:name => "author__first_name", :scope => lambda{|relation| relation.where(:popular => true)}}
     #
     # == Actions
     # You can override GridPanel's actions to change their text, icons, and tooltips (see http://api.netzke.org/core/Netzke/Actions.html).
