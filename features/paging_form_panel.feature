@@ -39,3 +39,15 @@ Scenario: Searching
   And I press "Search" within "#book_paging_form_panel__search_form"
   And I wait for the response from the server
   Then the form should show title: "Getting Things Done"
+
+@javascript
+Scenario: Editing and immediately submitting the form
+  Given an author exists with first_name: "Carlos", last_name: "Castaneda"
+  And a book exists with title: "Journey to Ixtlan", author: that author
+  When I go to the BookPagingFormPanel test page
+  Then the form should show author__name: "Castaneda, Carlos"
+
+  When I press "Edit"
+  And I press "Apply"
+  And I wait for the response from the server
+  Then the form should show author__name: "Castaneda, Carlos"

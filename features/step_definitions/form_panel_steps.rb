@@ -27,7 +27,7 @@ Then /the form should show #{capture_fields}$/ do |fields|
     var result = true;
     var values = #{fields.to_json};
     for (var fieldName in values) {
-      result = form.findField(fieldName).getValue() === values[fieldName];
+      result = form.findField(fieldName).getValue() === values[fieldName] || form.findField(fieldName).getRawValue() === values[fieldName];
       return result;
     }
     return result;

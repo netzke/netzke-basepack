@@ -3,18 +3,19 @@ class BookPagingFormPanel < Netzke::Basepack::PagingFormPanel
     super.merge({
       :title => "Digitized books",
       :model => "Book",
+      :record => Book.first,
       # :scope => {:digitized => true},
       :mode => :lockable,
       :items => [{:layout => :hbox, :label_align => :top, :border => false, :defaults => {:border => false}, :items => [{
         :flex => 2,
         :layout => :form,
         :defaults => {:anchor => "-8"},
-        :items => [:title, :notes]
+        :items => [:title, :notes, :digitized, :created_at, :updated_at]
       },{
         :flex => 1,
         :layout => :form,
         :defaults => {:anchor => "-8"},
-        :items => [:author__name, :exemplars, :digitized, :created_at, {:name => :updated_at, :xtype => :datetimefield}]
+        :items => [:author__name, {:name => :author__first_name, :read_only => true}, :exemplars]
       }]}]
     })
   end

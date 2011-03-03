@@ -1,3 +1,4 @@
+# Warning: this component participates in i18n.feature, careful with adding new fields!
 class BookForm < Netzke::Basepack::FormPanel
   js_property :title, Book.model_name.human
 
@@ -10,6 +11,8 @@ class BookForm < Netzke::Basepack::FormPanel
       :items => [
         :title,
         {:name => :author__first_name, :setter => author_first_name_setter},
+        {:name => :author__last_name, :xtype => :displayfield},
+        {:name => :author__updated_at, :editable => false},
         :digitized,
         :exemplars,
         {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
