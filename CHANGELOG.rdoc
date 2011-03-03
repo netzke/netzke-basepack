@@ -1,4 +1,6 @@
 = v0.6.5 - to be released
+* bug fix
+  * FormPanel with multiple association fields wouldn't submit data correctly
 
 = v0.6.4 - 2011-02-26
 * API changes
