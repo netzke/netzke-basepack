@@ -70,7 +70,7 @@ module Netzke
           endpoint :hide_column do |params|
             raise "Called api_hide_column while not configured to do so" if !config[:persistence]
             current_columns_order = state[:columns_order] || initial_columns_order
-            current_columns_order[normalize_index(params[:index].to_i)][:hidden] = params[:hidden].to_b
+            current_columns_order[normalize_index(params[:index].to_i)][:hidden] = params[:hidden]
             update_state(:columns_order, current_columns_order)
             {}
           end
