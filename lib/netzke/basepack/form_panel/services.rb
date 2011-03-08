@@ -9,7 +9,7 @@ module Netzke
           #
           # Endpoints
           #
-          endpoint :netzke_submit do |params|
+          endpoint :netzke_submit, :pre => true do |params|
             netzke_submit(params)
           end
 
@@ -48,16 +48,23 @@ module Netzke
         # Implementation for the "netzke_submit" endpoint (for backward compatibility)
         def netzke_submit(params)
           data = ActiveSupport::JSON.decode(params[:data])
+
+          # File uploads are in raw params instead of "data" hash, so, mix them in into "data"
+          if config[:file_upload]
+            Netzke::Core.controller.params.each_pair do |k,v|
+              data[k] = v if v.is_a?(ActionDispatch::Http::UploadedFile)
+            end
+          end
+
           success = create_or_update_record(data)
 
           if success
-            {:set_form_values => js_record_data, :set_result => "ok"}
+            {:set_form_values => js_record_data, :set_result => true}
           else
             # flash eventual errors
             @record.errors.to_a.each do |msg|
               flash :error => msg
             end
-            # {:feedback => @flash}
             {:feedback => @flash, :apply_form_errors => build_form_errors(record)}
           end
         end

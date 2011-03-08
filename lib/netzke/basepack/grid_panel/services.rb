@@ -45,7 +45,7 @@ module Netzke
           end
 
           endpoint :resize_column do |params|
-            raise "Called api_resize_column while not configured to do so" if !config[:persistence]
+            raise "Called resize_column endpoint while not configured to do so" if !config[:persistence]
             current_columns_order = state[:columns_order] || initial_columns_order
             current_columns_order[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
             update_state(:columns_order, current_columns_order)
@@ -53,7 +53,7 @@ module Netzke
           end
 
           endpoint :move_column do |params|
-            raise "Called api_move_column while not configured to do so" if !config[:persistence]
+            raise "Called move_column endpoint while not configured to do so" if !config[:persistence]
             remove_from = normalize_index(params[:old_index].to_i)
             insert_to = normalize_index(params[:new_index].to_i)
 
@@ -68,7 +68,7 @@ module Netzke
           end
 
           endpoint :hide_column do |params|
-            raise "Called api_hide_column while not configured to do so" if !config[:persistence]
+            raise "Called hide_column endpoint while not configured to do so" if !config[:persistence]
             current_columns_order = state[:columns_order] || initial_columns_order
             current_columns_order[normalize_index(params[:index].to_i)][:hidden] = params[:hidden]
             update_state(:columns_order, current_columns_order)
@@ -102,11 +102,11 @@ module Netzke
 
         end
         #
-        # Some components' overridden API
+        # Some components' overridden endpoints
         #
 
-        ## Edit in form specific API
-        def add_form__form_panel0__netzke_submit(params)
+        ## Edit in form specific endpoint
+        def add_form__form_panel0__netzke_submit_endpoint(params)
           res = component_instance(:add_form__form_panel0).netzke_submit(params)
 
           if res[:set_form_values]
@@ -117,7 +117,7 @@ module Netzke
           res.to_nifty_json
         end
 
-        def edit_form__form_panel0__netzke_submit(params)
+        def edit_form__form_panel0__netzke_submit_endpoint(params)
           res = component_instance(:edit_form__form_panel0).netzke_submit(params)
 
           if res[:set_form_values]
@@ -128,7 +128,7 @@ module Netzke
           res.to_nifty_json
         end
 
-        def multi_edit_form__multi_edit_form0__netzke_submit(params)
+        def multi_edit_form__multi_edit_form0__netzke_submit_endpoint(params)
           ids = ActiveSupport::JSON.decode(params.delete(:ids))
           data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
 
@@ -363,19 +363,6 @@ module Netzke
               }
             end
           end
-
-          # def check_for_positive_result(res)
-          #   if res[:set_form_values]
-          #     # successful creation
-          #     res[:set_form_values] = nil
-          #     res.merge!({
-          #       :parent => {:on_successfull_edit => true}
-          #     })
-          #     true
-          #   else
-          #     false
-          #   end
-          # end
 
       end
     end

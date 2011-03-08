@@ -44,12 +44,15 @@ Scenario: FormPanel should be functional without model provided
   Given I am on the FormWithoutModel test page
   When I fill in "Text field:" with "Some text"
   And I fill in "Number field:" with "42"
+  And I expand combobox "Combobox field"
+  And I select "Two" from combobox "Combobox field"
   And I check "Boolean field:"
   And I press "Apply"
 
   Then I should see "Text field: Some text"
   And I should see "Number field: 42"
   And I should see "Boolean field: true"
+  And I should see "Combobox field: 2"
 
 @javascript
 Scenario: Checkbox field should work properly
