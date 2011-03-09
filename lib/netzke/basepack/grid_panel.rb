@@ -183,7 +183,7 @@ module Netzke
           :bbar => config.has_key?(:bbar) ? config[:bbar] : default_bbar,
           :context_menu => config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu,
           :columns => columns(:with_meta => true), # columns
-          :columns_order => config[:persistence] && state[:columns_order] || initial_columns_order,
+          :columns_order => columns_order,
           :model => config[:model], # the model name
           :inline_data => (get_data if config[:load_inline_data]), # inline data (loaded along with the grid panel)
           :pri => data_class.primary_key # table primary key name

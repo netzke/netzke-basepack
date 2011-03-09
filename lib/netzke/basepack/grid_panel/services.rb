@@ -354,16 +354,6 @@ module Netzke
             end
           end
 
-          def initial_columns_order
-            columns.map do |c|
-              {
-                :name => c[:name],
-                :width => c[:width],
-                :hidden => c[:hidden]
-              }
-            end
-          end
-
       end
     end
   end

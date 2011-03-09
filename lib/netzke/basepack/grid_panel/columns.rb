@@ -151,6 +151,31 @@ module Netzke
 
         private
 
+          def initial_columns_order
+            columns.map do |c|
+              {
+                :name => c[:name],
+                :width => c[:width],
+                :hidden => c[:hidden]
+              }
+            end
+          end
+
+          def columns_order
+            if config[:persistence]
+              update_state(:columns_order, initial_columns_order) if columns_have_changed?
+              state[:columns_order] || initial_columns_order
+            else
+              initial_columns_order
+            end
+          end
+
+          def columns_have_changed?
+            init_column_names = initial_columns_order.map{ |c| c[:name].to_sym }.sort
+            stored_column_names = (state[:columns_order] || initial_columns_order).map{ |c| c[:name].to_sym }.sort
+            init_column_names != stored_column_names
+          end
+
           def filter_out_excluded_columns(cols)
             cols.reject!{ |c| c[:included] == false }
           end
