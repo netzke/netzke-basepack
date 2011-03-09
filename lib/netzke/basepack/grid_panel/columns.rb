@@ -171,8 +171,8 @@ module Netzke
           end
 
           def columns_have_changed?
-            init_column_names = initial_columns_order.map{ |c| c[:name].to_sym }.sort
-            stored_column_names = (state[:columns_order] || initial_columns_order).map{ |c| c[:name].to_sym }.sort
+            init_column_names = initial_columns_order.map{ |c| c[:name].to_s }.sort
+            stored_column_names = (state[:columns_order] || initial_columns_order).map{ |c| c[:name].to_s }.sort
             init_column_names != stored_column_names
           end
 
