@@ -98,7 +98,6 @@ module Netzke
             detect_association_with_method(field) # xtype for an association field
             set_default_field_label(field)
             set_default_field_xtype(field) if field[:xtype].nil?
-            # set_default_field_value(field) if self.record
             set_default_read_only(field)
 
             # provide our special combobox with our id
@@ -151,22 +150,17 @@ module Netzke
             item.is_a?(String) || item.is_a?(Symbol) || item[:name] # && !is_component_config?(item)
           end
 
-          def set_default_field_label(c)
-            # multiple spaces (in case of association attrs) get replaced with one
-            c[:field_label] ||= data_class ? data_class.human_attribute_name(c[:name]) : c[:name].humanize
-            c[:field_label].gsub!(/\s+/, " ")
-          end
-
-          # def set_default_field_value(field)
-          #   value = record.value_for_attribute(field)
-          #   field[:value] ||= value unless value.nil?
-          # end
-
           # Deeply merges only those key/values at the top level that are already there
           def deep_merge_existing_fields(dest, src)
             dest.each_pair do |k,v|
               v.deep_merge!(src[k] || {})
             end
+          end
+
+          def set_default_field_label(c)
+            # multiple spaces (in case of association attrs) get replaced with one
+            c[:field_label] ||= data_class ? data_class.human_attribute_name(c[:name]) : c[:name].humanize
+            c[:field_label].gsub!(/\s+/, " ")
           end
 
           def set_default_field_xtype(field)
