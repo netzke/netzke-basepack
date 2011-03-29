@@ -87,7 +87,9 @@ Scenario: Validations
   And I press "Apply"
   And I sleep 1 second
   Then I should see "Title can't be blank"
+  But I should not see "Success!"
   When I fill in "Title:" with "Not Blank"
   And I press "Apply"
   And I sleep 1 second
   Then I should not see "Title can't be blank"
+  But I should see "Success!"

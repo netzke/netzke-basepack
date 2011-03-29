@@ -22,4 +22,13 @@ class BookForm < Netzke::Basepack::FormPanel
     )
   end
 
+  js_method :init_component, <<-JS
+    function(){
+      Netzke.classes.BookForm.superclass.initComponent.call(this);
+
+      this.on('submitsuccess', function(){ this.feedback('Suc'+'cess!')}, this);
+    }
+  JS
+
+
 end
