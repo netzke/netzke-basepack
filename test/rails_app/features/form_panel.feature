@@ -73,21 +73,21 @@ Scenario: Checkbox group for tags should work properly
   And I check "recommend"
   And I check "cool"
   And I press "Apply"
+  And I wait for the response from the server
   Then the "cool" checkbox should be checked
   And the "recommend" checkbox should be checked
   But the "read" checkbox should not be checked
   And a book should exist with tags: "cool,recommend"
 
-# Needs cleaner check whether AJAX request was completed
-# @javascript
-# Scenario: Validations
-#   Given a book exists with title: "Some Title"
-#   When I go to the BookForm test page
-#   And I fill in "Title:" with ""
-#   And I press "Apply"
-#   And I sleep 1 second
-#   Then I should see "Title can't be blank"
-#   When I fill in "Title:" with ""
-#   And I press "Apply"
-#   And I sleep 1 second
-#   Then I should not see "Title can't be blank"
+@javascript
+Scenario: Validations
+  Given a book exists with title: "Some Title"
+  When I go to the BookForm test page
+  And I fill in "Title:" with ""
+  And I press "Apply"
+  And I sleep 1 second
+  Then I should see "Title can't be blank"
+  When I fill in "Title:" with "Not Blank"
+  And I press "Apply"
+  And I sleep 1 second
+  Then I should not see "Title can't be blank"

@@ -16,7 +16,7 @@ development:
 #   database: db/test.sqlite3
 #   pool: 5
 #   timeout: 5000
-test:
+test: &test
   adapter: mysql2
   encoding: utf8
   reconnect: false
@@ -35,3 +35,6 @@ production:
   username: root
   password:
   socket: /tmp/mysql.sock
+
+cucumber:
+  <<: *test

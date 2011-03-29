@@ -6,24 +6,25 @@
 
 ENV["RAILS_ENV"] ||= "test"
 # require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
-require File.expand_path(File.dirname(__FILE__) + '/../../test/rails_app/config/environment')
+# require File.expand_path(File.dirname(__FILE__) + '/../../test/rails_app/config/environment')
 # require File.expand_path(File.dirname(__FILE__) + '/../../lib/netzke-core')
 
 # Each time recreate test database with migrations
-db_file = File.dirname(__FILE__) + "/../../test/rails_app/db/test.sqlite3"
-File.delete(db_file) if File.exists?(db_file)
-ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + "/../test/rails_app/db/migrate")
+# db_file = File.dirname(__FILE__) + "/../../test/rails_app/db/test.sqlite3"
+# File.delete(db_file) if File.exists?(db_file)
+# ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + "/../test/rails_app/db/migrate")
 
-require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
-require 'cucumber/rails/rspec'
-require 'cucumber/rails/world'
-require 'cucumber/rails/active_record'
-require 'cucumber/web/tableish'
+# require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
+# require 'cucumber/rails/rspec'
+# require 'cucumber/rails/world'
+# require 'cucumber/rails/active_record'
+require 'cucumber/rails'
+# require 'cucumber/web/tableish'
 
 require 'capybara/rails'
 require 'capybara/cucumber'
 require 'capybara/session'
-require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
+# require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
 
 # Capybara.register_driver :selenium do |app|
 #   Capybara::Driver::Selenium.new(app, {:profile => 'selenium' } )

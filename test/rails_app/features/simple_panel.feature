@@ -9,7 +9,3 @@ Feature: Panel
     Then I should see "Original HTML"
     When I press "Update html"
     Then I should see "HTML received from server"
-
-
-
-

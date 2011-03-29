@@ -10,6 +10,3 @@ Scenario: Lazy loading of a component into a panel when the latter gets expanded
   Then I should see "Original HTML"
   When I press "Update html"
   Then I should see "Update for Panel Two"
-
-
-
