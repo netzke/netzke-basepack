@@ -12,7 +12,7 @@ module Netzke
       # Called from netzke-basepack.rb
       def init
         Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/feedback_ghost.js"
-        Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/datetimefield.js"
+        # Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/datetimefield.js"
         Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/basepack.js"
 
         Netzke::Core.ext_stylesheets << "#{File.dirname(__FILE__)}/../../stylesheets/datetimefield.css"
