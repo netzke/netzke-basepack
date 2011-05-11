@@ -19,7 +19,7 @@ module Netzke
     # The layout of the form is configured by supplying the +item+ config option, same way it would be configured in Ext (thus allowing for complex form layouts). FormPanel will expand fields by looking at their names (unless +no_binding+ set to +true+ is specified for a specific field).
     class FormPanel < Netzke::Base
 
-      js_base_class "Ext.form.FormPanel"
+      js_base_class "Ext.form.Panel"
 
       # Class-level configuration
       class_attribute :config_tool_available
@@ -73,14 +73,14 @@ module Netzke
 
       # Extra JavaScripts and stylesheets
       js_mixin :form_panel
-      js_include :comma_list_cbg
-      js_include :n_radio_group, :readonly_mode
-      css_include :readonly_mode
+      # js_include :comma_list_cbg
+      # js_include :n_radio_group, :readonly_mode
+      # css_include :readonly_mode
 
-      js_include Netzke::Core.ext_location.join("examples/ux/fileuploadfield/FileUploadField.js")
-      css_include Netzke::Core.ext_location.join("examples/ux/fileuploadfield/css/fileuploadfield.css")
+      # js_include Netzke::Core.ext_location.join("examples/ux/fileuploadfield/FileUploadField.js")
+      # css_include Netzke::Core.ext_location.join("examples/ux/fileuploadfield/css/fileuploadfield.css")
 
-      js_include :misc
+      # js_include :misc
 
       def js_config
         super.tap do |res|
@@ -121,9 +121,9 @@ module Netzke
 
         def self.property_fields
           res = [
-            # {:name => "ext_config__title",               :attr_type => :string},
-            # {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
-            # {:name => "ext_config__bbar",              :attr_type => :json}
+            {:name => "ext_config__title",               :attr_type => :string},
+            {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
+            {:name => "ext_config__bbar",              :attr_type => :json}
           ]
 
           res

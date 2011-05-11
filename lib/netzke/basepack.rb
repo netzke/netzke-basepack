@@ -18,8 +18,9 @@ module Netzke
         Netzke::Core.ext_stylesheets << "#{File.dirname(__FILE__)}/../../stylesheets/datetimefield.css"
         Netzke::Core.ext_stylesheets << "#{File.dirname(__FILE__)}/../../stylesheets/basepack.css"
 
-        Netzke::Core.external_ext_css << "/extjs/examples/ux/gridfilters/css/RangeMenu"
-        Netzke::Core.external_ext_css << "/extjs/examples/ux/gridfilters/css/GridFilters"
+        # TODO: make ext paths configurable
+        # Netzke::Core.external_ext_css << "/extjs4/examples/ux/gridfilters/css/RangeMenu"
+        # Netzke::Core.external_ext_css << "/extjs4/examples/ux/gridfilters/css/GridFilters"
       end
 
       # Use it to confirure Basepack in the initializers, e.g.:

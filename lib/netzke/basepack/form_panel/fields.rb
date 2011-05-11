@@ -179,7 +179,7 @@ module Netzke
           def attr_type_to_xtype_map
             {
               :integer => :numberfield,
-              :boolean => :checkbox,
+              :boolean => :checkboxfield,
               :date => :datefield,
               :datetime => :datetimefield,
               :text => :textarea,
