@@ -75,7 +75,7 @@ module Netzke
       js_mixin :form_panel
       # js_include :comma_list_cbg
       # js_include :n_radio_group, :readonly_mode
-      # css_include :readonly_mode
+      css_include :readonly_mode
 
       # js_include Netzke::Core.ext_location.join("examples/ux/fileuploadfield/FileUploadField.js")
       # css_include Netzke::Core.ext_location.join("examples/ux/fileuploadfield/css/fileuploadfield.css")
