@@ -181,9 +181,9 @@ module Netzke
               :integer => :numberfield,
               :boolean => :checkboxfield,
               :date => :datefield,
+              # WIP: waiting for datetime.js implementation for ExtJS 4
               # :datetime => :datetimefield,
 
-              :datetime => :textfield,
               :text => :textarea,
               :json => :jsonfield,
               :string => :textfield

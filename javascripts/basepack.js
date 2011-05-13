@@ -25,9 +25,11 @@ Ext.define('Ext.netzke.ComboBox', {
   valueField    : 'field1',
   displayField  : 'field2',
   triggerAction : 'all',
-  typeAhead     : true,
+  // WIP: Breaking - should not be 'true' if combobox is not editable
+  // typeAhead     : true,
 
   initComponent : function(){
+
     var modelName = this.parentId + "_" + this.name;
 
     Ext.define(modelName, {
@@ -286,3 +288,4 @@ Ext.util.Format.mask = function(v){
     }
   });
 })();
+

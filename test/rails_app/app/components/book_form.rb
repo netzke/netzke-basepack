@@ -10,15 +10,16 @@ class BookForm < Netzke::Basepack::FormPanel
       :record => Book.first,
       :items => [
         :title,
-        :author__first_name,
-        # {:name => :author__first_name, :xtype => :textfield},
-        # {:name => :author__first_name, :setter => author_first_name_setter},
-        # {:name => :author__last_name, :xtype => :displayfield},
-        # {:name => :author__updated_at, :editable => false},
+        {:name => :author__first_name, :setter => author_first_name_setter},
+        {:name => :author__last_name, :xtype => :displayfield},
+        {:name => :author__updated_at, :editable => false},
+        # WIP: ruins everything
         # :digitized,
-        # :exemplars,
-        # {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
+        :exemplars,
+        {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
+        # WIP: waiting on commalistcbg
         # {:name => :tags, :xtype => :commalistcbg, :options => %w(read cool recommend buy)},
+        # WIP: waithing on nradiogroup
         # {:name => :rating, :xtype => :nradiogroup, :options => [[1, "Good"], [2, "Average"], [3, "Poor"]]}
       ]
     )
