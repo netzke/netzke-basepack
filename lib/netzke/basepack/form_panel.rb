@@ -77,8 +77,8 @@ module Netzke
       # js_include :n_radio_group, :readonly_mode
       css_include :readonly_mode
 
-      # js_include Netzke::Core.ext_location.join("examples/ux/fileuploadfield/FileUploadField.js")
-      # css_include Netzke::Core.ext_location.join("examples/ux/fileuploadfield/css/fileuploadfield.css")
+      # js_include Netzke::Core.ext_path.join("examples/ux/fileuploadfield/FileUploadField.js")
+      # css_include Netzke::Core.ext_path.join("examples/ux/fileuploadfield/css/fileuploadfield.css")
 
       # js_include :misc
 

@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-05-10}
+  s.date = %q{2011-05-13}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -101,6 +101,7 @@ Gem::Specification.new do |s|
     "test/rails_app/Gemfile.lock",
     "test/rails_app/README",
     "test/rails_app/Rakefile",
+    "test/rails_app/app/components/author_form.rb",
     "test/rails_app/app/components/author_grid.rb",
     "test/rails_app/app/components/book_form.rb",
     "test/rails_app/app/components/book_form_with_custom_fields.rb",
@@ -264,6 +265,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Pre-built Rails + ExtJS components for your RIA}
   s.test_files = [
     "test/console_with_fixtures.rb",
+    "test/rails_app/app/components/author_form.rb",
     "test/rails_app/app/components/author_grid.rb",
     "test/rails_app/app/components/book_form.rb",
     "test/rails_app/app/components/book_form_with_custom_fields.rb",

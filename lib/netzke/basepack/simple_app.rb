@@ -12,7 +12,7 @@ module Netzke
 
       js_property :layout, :border
 
-      js_include Netzke::Core.ext_location.join("examples", "ux/statusbar/StatusBar.js"), :statusbar_ext
+      js_include Netzke::Core.ext_path.join("examples", "ux/statusbar/StatusBar.js"), :statusbar_ext
 
       js_mixin :simple_app
 

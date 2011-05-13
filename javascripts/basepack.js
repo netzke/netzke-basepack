@@ -21,50 +21,63 @@ Ext.apply(Ext.History, new Ext.util.Observable());
 // ComboBox that gets options from the server (used in both grids and panels)
 Ext.define('Ext.netzke.ComboBox', {
   extend        : 'Ext.form.field.ComboBox',
-  alias: 'widget.netzkeremotecombo',
+  alias         : 'widget.netzkeremotecombo',
   valueField    : 'field1',
   displayField  : 'field2',
   triggerAction : 'all',
   typeAhead     : true,
 
   initComponent : function(){
-    //var row = Ext.data.Record.create(['field1', 'field2']); // defaults for local ComboBox; makes testing easier
-    var store = new Ext.data.Store({
-      fields: ['field1', 'field2'],
-      proxy         : new Ext.data.DirectProxy({directFn: Netzke.providers[this.parentId].getComboboxOptions}),
-      // reader        : new Ext.data.ArrayReader({root:'data', id:0}, row)
+    var modelName = this.parentId + "_" + this.name;
+
+    Ext.define(modelName, {
+        extend: 'Ext.data.Model',
+        fields: ['field1', 'field2']
     });
-    store.proxy.on('beforeload', function (self, params) {
-      params.column = this.name;
+
+    var store = new Ext.data.Store({
+      model: modelName,
+      proxy: {
+        type: 'direct',
+        directFn: Netzke.providers[this.parentId].getComboboxOptions,
+        reader: {
+          type: 'array',
+          root: 'data'
+        }
+      }
+    });
+
+    // TODO: find a cleaner way to pass this.name to the server
+    store.on('beforeload', function(self, params) {
+      params.params.column = this.name;
     },this);
 
+    // If inline data was passed
     if (this.store) store.loadData({data: this.store});
 
     this.store = store;
 
-    Ext.netzke.ComboBox.superclass.initComponent.apply(this, arguments);
-    console.debug('parent:' + this.parentId);
-    var parent = Ext.getCmp(this.parentId);
-    // Is parent a grid?
-    if (parent.getSelectionModel) {
-      this.on('beforequery',function(qe) {
-        delete qe.combo.lastQuery;
-      },this);
-    }
+    this.callParent();
 
-    // A not-so-clean approach to submit the current record id
-    store.on('beforeload',function(store, options){
-      if (parent.getSelectionModel) {
-        var selected = parent.getSelectionModel().getSelected();
-        if (selected) options.params.id = selected.id;
-      } else {
-        // TODO: also for the FormPanel
-      }
-    }, this);
+    // var parent = Ext.getCmp(this.parentId);
+    // // Is parent a grid?
+    // if (parent.getSelectionModel) {
+    //   this.on('beforequery',function(qe) {
+    //     delete qe.combo.lastQuery;
+    //   },this);
+    // }
+    //
+    // // A not-so-clean approach to submit the current record id
+    // store.on('beforeload',function(store, options){
+    //   if (parent.getSelectionModel) {
+    //     var selected = parent.getSelectionModel().getSelected();
+    //     if (selected) options.params.id = selected.id;
+    //   } else {
+    //     // TODO: also for the FormPanel
+    //   }
+    // }, this);
   }
 });
-
-// Ext.reg('netzkeremotecombo', Ext.netzke.ComboBox);
 
 Ext.util.Format.mask = function(v){
   return "********";

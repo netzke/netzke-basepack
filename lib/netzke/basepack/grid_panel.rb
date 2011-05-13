@@ -156,7 +156,7 @@ module Netzke
       js_translate *%w[are_you_sure confirmation first_text prev_text next_text last_text before_page_text after_page_text empty_msg refresh_text display_msg]
 
       # JavaScript includes
-      ex = Netzke::Core.ext_location.join("examples")
+      ex = Netzke::Core.ext_path.join("examples")
 
       js_include(ex.join("ux/CheckColumn.js"))
 
