@@ -31,6 +31,10 @@ Embed a basepack component into a view as any other Netzke component, e.g.:
 
 For more examples, see http://demo.netzke.com, and look into test/rails_app
 
+== Configuring test application
+
+Copy test/config/database.yml.sample to test/config/database.yml and edit it according to your database configuration.
+
 == Running tests
 
 Netzke-basepack is bundled with automated tests. To run them, you need to set up test/rails_app a similar way as you did with your own Rails app that is using Netzke, i.e.: 1) link Ext JS into the "public" folder, 2) link your copy of netzke-core and netzke-basepack into vendor/gems, 3) run migrations and clone the development database structure into the test database.

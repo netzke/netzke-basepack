@@ -159,7 +159,7 @@ Gem::Specification.new do |s|
     "test/rails_app/config/application.rb",
     "test/rails_app/config/boot.rb",
     "test/rails_app/config/cucumber.yml",
-    "test/rails_app/config/database.yml",
+    "test/rails_app/config/database.yml.sample",
     "test/rails_app/config/environment.rb",
     "test/rails_app/config/environments/development.rb",
     "test/rails_app/config/environments/production.rb",
