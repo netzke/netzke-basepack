@@ -78,6 +78,10 @@ Ext.define('Ext.netzke.ComboBox', {
     //     // TODO: also for the FormPanel
     //   }
     // }, this);
+  },
+  collapse: function(){
+    // HACK: do not hide dropdown menu while loading items
+    if( !this.store.loading ) this.callParent();
   }
 });
 

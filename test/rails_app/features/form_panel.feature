@@ -46,7 +46,7 @@ Scenario: FormPanel should be functional without model provided
   And I fill in "Number field:" with "42"
   And I expand combobox "Combobox field"
   And I select "Two" from combobox "Combobox field"
-  And I check "Boolean field:"
+  And I check ext checkbox "Boolean field"
   And I press "Apply"
 
   Then I should see "Text field: Some text"
@@ -60,7 +60,7 @@ Scenario: Checkbox field should work properly
   And a book exists with author: that author, digitized: false, exemplars: 2, title: "Some Title"
   When I go to the BookForm test page
   And I fill in "Exemplars:" with "4"
-  And I check "Digitized:"
+  And I check ext checkbox "Digitized"
   And I press "Apply"
   Then I should see "YES"
   And a book should exist with digitized: true, author: that author, exemplars: 4
