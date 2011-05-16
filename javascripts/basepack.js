@@ -237,55 +237,70 @@ Ext.util.Format.mask = function(v){
 // });
 // Ext.reg('tricheckbox', Ext.ux.form.TriCheckbox);
 
-
 // Enabling checkbox submission when unchecked
-(function() {
-  origCheckboxRender = Ext.form.Checkbox.prototype.onRender;
-  origCheckboxSetValue = Ext.form.Checkbox.prototype.setValue;
+// TODO: it would be nice to standardize return values
+//  because currently checkboxes return "on", if checked,
+//  and boolean 'false' otherwise. It's not nice
+//  MAV
+//  TODO: maybe we should simply initialize 'uncheckedValue' somewhere else,
+//  instead
+Ext.override( Ext.form.field.Checkbox, {
+  getSubmitValue: function() {
+    return this.callOverridden() || false; // 'off';
+  }
+});
 
-  Ext.override(Ext.form.Checkbox, {
-    onRender: function() {
-      // call the original onRender() function
-      origCheckboxRender.apply(this, arguments);
+// WIP: we dont need this any longer because we can submit unchecked values
+//  using either Ext.form.field.uncheckedValue = 'off' (for example)
+//  or by means of overriding field's getSubmitValue
+//  MAV
+// (function() {
+//   origCheckboxRender = Ext.form.Checkbox.prototype.onRender;
+//   origCheckboxSetValue = Ext.form.Checkbox.prototype.setValue;
 
-      if (this.getXType() === 'radio') return;
+//   Ext.override(Ext.form.Checkbox, {
+//     onRender: function() {
+//       // call the original onRender() function
+//       origCheckboxRender.apply(this, arguments);
 
-      // Handle initial case based on this.checked
-      if (this.checked == false) {
-        this.noValEl = Ext.DomHelper.insertAfter(this.el, {
-            tag: 'input',
-            type: 'hidden',
-            value: false,
-            name: this.getName()
-        }, true);
-      }
-      else {
-        this.noValEl = null;
-      }
-    },
-    setValue: function() {
-      // call original setValue() function
-      origCheckboxSetValue.apply(this, arguments);
+//       if (this.getXType() === 'radio') return;
 
-      if (this.getXType() === 'radio') return;
+//       // Handle initial case based on this.checked
+//       if (this.checked == false) {
+//         this.noValEl = Ext.DomHelper.insertAfter(this.el, {
+//             tag: 'input',
+//             type: 'hidden',
+//             value: false,
+//             name: this.getName()
+//         }, true);
+//       }
+//       else {
+//         this.noValEl = null;
+//       }
+//     },
+//     setValue: function() {
+//       // call original setValue() function
+//       origCheckboxSetValue.apply(this, arguments);
 
-      if (this.checked) {
-        if (this.noValEl != null) {
-          // Remove the extra hidden element
-          this.noValEl.remove();
-          this.noValEl = null;
-        }
-      }
-      else {
-        // Add our hidden element for (unchecked) value
-        if (this.noValEl == null) this.noValEl = Ext.DomHelper.insertAfter(this.el, {
-            tag: 'input',
-            type: 'hidden',
-            value: false,
-            name: this.getName()
-        }, true);
-      }
-    }
-  });
-})();
+//       if (this.getXType() === 'radio') return;
+
+//       if (this.checked) {
+//         if (this.noValEl != null) {
+//           // Remove the extra hidden element
+//           this.noValEl.remove();
+//           this.noValEl = null;
+//         }
+//       }
+//       else {
+//         // Add our hidden element for (unchecked) value
+//         if (this.noValEl == null) this.noValEl = Ext.DomHelper.insertAfter(this.el, {
+//             tag: 'input',
+//             type: 'hidden',
+//             value: false,
+//             name: this.getName()
+//         }, true);
+//       }
+//     }
+//   });
+// })();
 

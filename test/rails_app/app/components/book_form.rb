@@ -13,8 +13,7 @@ class BookForm < Netzke::Basepack::FormPanel
         {:name => :author__first_name, :setter => author_first_name_setter},
         {:name => :author__last_name, :xtype => :displayfield},
         {:name => :author__updated_at, :editable => false},
-        # WIP: ruins everything
-        # :digitized,
+        :digitized,
         :exemplars,
         {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
         # WIP: waiting on commalistcbg
@@ -27,8 +26,7 @@ class BookForm < Netzke::Basepack::FormPanel
 
   js_method :init_component, <<-JS
     function(){
-      Netzke.classes.BookForm.superclass.initComponent.call(this);
-
+      this.callParent( arguments );
       this.on('submitsuccess', function(){ this.feedback('Suc'+'cess!')}, this);
     }
   JS
