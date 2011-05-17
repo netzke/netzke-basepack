@@ -38,13 +38,11 @@ end
 Then /the form should show #{capture_fields}$/ do |fields|
   fields = ActiveSupport::JSON.decode("{#{fields}}")
   page.driver.browser.execute_script(<<-JS).should == true
-    var components = [];
-    for (var cmp in Netzke.page) { components.push(cmp); }
-    var form = Netzke.page[components[0]].getForm();
+    var form = Ext.ComponentQuery.query('form')[0].getForm();
     var result = true;
     var values = #{fields.to_json};
     for (var fieldName in values) {
-      result = form.findField(fieldName).getValue() === values[fieldName] || form.findField(fieldName).getRawValue() === values[fieldName];
+      result = (form.findField(fieldName).getValue() === values[fieldName]) || (form.findField(fieldName).getRawValue() === values[fieldName]);
       return result;
     }
     return result;
