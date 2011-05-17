@@ -44,7 +44,7 @@ Then /^the grid should have (\d+) modified records$/ do |n|
     var components = [];
     for (var cmp in Netzke.page) { components.push(cmp); }
     var grid = Netzke.page[components[0]];
-    return grid.getStore().getModifiedRecords().length;
+    return grid.getStore().getUpdatedRecords().length;
   JS
 end
 

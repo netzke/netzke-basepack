@@ -243,6 +243,7 @@ module Netzke
           :text => I18n.t('netzke.basepack.grid_panel.actions.add'),
           :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add'),
           :disabled => config[:prohibit_create],
+          :handler => "onAddInline", # not following naming conventions here as Ext 4 grid has its own onAdd method
           :icon => :add
         }
       end
