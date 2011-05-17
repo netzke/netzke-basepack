@@ -126,7 +126,7 @@ module Netzke
 
       class_config_option :extended_search_available, false
 
-      class_config_option :edit_in_form_available, false
+      class_config_option :edit_in_form_available, true
 
       class_config_option :rows_reordering_available, false
 

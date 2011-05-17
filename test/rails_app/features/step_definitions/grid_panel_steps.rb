@@ -107,6 +107,6 @@ When /^I reload the grid$/ do
     var components = [];
     for (var cmp in Netzke.page) { components.push(cmp); }
     var grid = Netzke.page[components[0]];
-    grid.getStore().reload();
+    grid.getStore().load();
   JS
 end
