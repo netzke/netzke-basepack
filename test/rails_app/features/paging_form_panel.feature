@@ -15,9 +15,11 @@ Scenario: Paging through records
   Then I should see "Journey to Ixtlan"
 
   When I go forward one page
+  And  I sleep 1 second
   Then the form should show title: "Lolita"
 
   When I go forward one page
+  And  I sleep 1 second
   Then the form should show title: "Getting Things Done"
 
 @javascript

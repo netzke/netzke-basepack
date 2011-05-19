@@ -117,20 +117,20 @@ module Netzke
     # * +edit_in_form_available+ - (defaults to true) include code for (multi-record) editing and adding records through a form
     # * +extended_search_available+ - (defaults to true) include code for extended configurable search
     class GridPanel < Netzke::Base
-      js_base_class "Ext.grid.EditorGridPanel"
+      js_base_class "Ext.grid.Panel"
 
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,
       # set column_filters_available to false, and the javascript for the filters won't be included at all.
-      class_config_option :column_filters_available, true
+      class_config_option :column_filters_available, false
 
-      class_config_option :extended_search_available, true
+      class_config_option :extended_search_available, false
 
       class_config_option :edit_in_form_available, true
 
-      class_config_option :rows_reordering_available, true
+      class_config_option :rows_reordering_available, false
 
-      class_config_option :config_tool_available, true
+      class_config_option :config_tool_available, false
 
       class_config_option :default_instance_config, {
         :enable_edit_in_form    => edit_in_form_available,
@@ -140,7 +140,7 @@ module Netzke
         :enable_rows_reordering => false, # column drag n drop
         :enable_pagination      => true,
         :rows_per_page          => 30,
-        :tools                  => %w{ refresh },
+        :tools                  => %w{ refresh }
       }
 
       extend ActiveSupport::Memoizable
@@ -156,9 +156,9 @@ module Netzke
       js_translate *%w[are_you_sure confirmation first_text prev_text next_text last_text before_page_text after_page_text empty_msg refresh_text display_msg]
 
       # JavaScript includes
-      ex = Netzke::Core.ext_location.join("examples")
+      ex = Netzke::Core.ext_path.join("examples")
 
-      js_include(ex.join("ux/CheckColumn.js"))
+      # js_include(ex.join("ux/CheckColumn.js"))
 
       # Includes for column filters
       if column_filters_available
@@ -243,6 +243,7 @@ module Netzke
           :text => I18n.t('netzke.basepack.grid_panel.actions.add'),
           :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add'),
           :disabled => config[:prohibit_create],
+          :handler => "onAddInline", # not following naming conventions here as Ext 4 grid has its own onAdd method
           :icon => :add
         }
       end

@@ -248,7 +248,8 @@ module Netzke
               :integer => :numberfield,
               :boolean => :checkbox,
               :date => :datefield,
-              :datetime => :datetimefield,
+              # :datetime => :datetimefield, WIP: waiting for Ext 4 fix
+              :datetime => :datefield,
               :text => :textarea,
               :string => :textfield
             }

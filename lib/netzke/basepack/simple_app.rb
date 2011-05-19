@@ -11,7 +11,8 @@ module Netzke
       js_base_class "Ext.Viewport"
 
       js_property :layout, :border
-      js_include "#{File.dirname(__FILE__)}/../../../../../../public/extjs/examples/ux/statusbar/StatusBar.js"
+      #js_include "#{File.dirname(__FILE__)}/../../../../../../public/extjs/examples/ux/statusbar/StatusBar.js"
+      js_include Netzke::Core.ext_path.join("examples", "ux/statusbar/StatusBar.js"), :statusbar_ext
 
       js_mixin :simple_app
 
