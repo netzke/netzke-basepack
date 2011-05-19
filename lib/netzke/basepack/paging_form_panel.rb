@@ -114,7 +114,8 @@ module Netzke
             directFn: Netzke.providers[this.id].getData,
             root: 'records',
             fields: this.fieldNames.concat('_meta'),
-            data: {records: [this.record], total: this.totalRecords}
+            data: {records: [this.record], total: this.totalRecords},
+            pageSize: 1
           });
 
           store.on('load', function(st, r){
@@ -128,7 +129,6 @@ module Netzke
           this.bbar = new Ext.PagingToolbar({
             beforePageText: "Record",
             store: store,
-            pageSize: 1,
             items: ["-"].concat(this.bbar || [])
           });
 
