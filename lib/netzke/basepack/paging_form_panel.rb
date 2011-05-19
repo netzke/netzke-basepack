@@ -90,9 +90,13 @@ module Netzke
 
       js_method :after_render, <<-JS
         function(){
-          Netzke.classes.Basepack.PagingFormPanel.superclass.afterRender.call(this);
+          this.callParent();
 
-          new Ext.LoadMask(this.bwrap, Ext.apply(this.applyMask, {store: this.store}));
+// WIP: commented out because it produces error otherwise:
+//   el is undefined
+//   http://nbt.local/extjs4/ext-all-debug.js?1305798122
+//   Line 18214"
+//          new Ext.LoadMask(this.bwrap, Ext.apply(this.applyMask, {store: this.store}));
         }
       JS
 
@@ -129,8 +133,7 @@ module Netzke
           });
 
           this.store = store;
-
-          Netzke.classes.Basepack.PagingFormPanel.superclass.initComponent.call(this);
+          this.callParent();
         }
       JS
 
