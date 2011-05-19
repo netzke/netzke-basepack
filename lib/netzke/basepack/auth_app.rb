@@ -27,7 +27,7 @@ module Netzke
           this.toggleConfigMode();
         }
       JS
-
+# WIP: todo - rewrite Ext.lib calls below
       js_method :show_masquerade_selector, <<-JS
         function(){
           var w = new Ext.Window({
