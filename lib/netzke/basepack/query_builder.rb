@@ -13,7 +13,7 @@ module Netzke
         {
           :class_name => "Netzke::Basepack::SearchPanel",
           :model => config[:model],
-          :query => config[:query],
+          :preset_query => config[:query],
           :auto_scroll => config[:auto_scroll]
         }
       end

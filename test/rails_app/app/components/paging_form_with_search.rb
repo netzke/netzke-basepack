@@ -21,13 +21,13 @@ class PagingFormWithSearch < Netzke::Basepack::BorderLayoutPanel
       :class_name => "Netzke::Basepack::SearchPanel",
       :model => config[:model],
       :bbar => [:apply.action],
-      :query => []
+      :preset_query => []
     }
   end
 
   js_method :init_component, <<-JS
     function(){
-      Netzke.classes.PagingFormWithSearch.superclass.initComponent.call(this);
+      this.callParent();
 
       this.getChildComponent('search_panel').on('conditionsupdate', function(query){
         this.getChildComponent('paging_form_panel').getStore().baseParams.query = Ext.encode(query);
