@@ -1,9 +1,6 @@
 When /^I select first row in the grid$/ do
   page.driver.browser.execute_script <<-JS
-    var components = [];
-    for (var cmp in Netzke.page) { components.push(cmp); }
-    var grid = Netzke.page[components[0]];
-    grid.getSelectionModel().selectFirstRow();
+    Ext.ComponentQuery.query('gridpanel')[0].getSelectionModel().select(0);
   JS
 end
 
