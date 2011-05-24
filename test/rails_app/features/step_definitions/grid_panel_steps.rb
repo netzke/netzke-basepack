@@ -38,10 +38,7 @@ end
 
 Then /^the grid should have (\d+) modified records$/ do |n|
   page.driver.browser.execute_script(<<-JS).should == n.to_i
-    var components = [];
-    for (var cmp in Netzke.page) { components.push(cmp); }
-    var grid = Netzke.page[components[0]];
-    return grid.getStore().getUpdatedRecords().length;
+    return Ext.ComponentQuery.query('gridpanel')[0].getStore().getUpdatedRecords().length;
   JS
 end
 

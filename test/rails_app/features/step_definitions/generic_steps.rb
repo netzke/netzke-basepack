@@ -15,6 +15,9 @@ When /I sleep (\d+) seconds?/ do |arg1|
 end
 
 When /^I wait for the response from the server$/ do
+  # HACK: Ext.Ajax.isLoading() without parameter is broken, so he step always returns immediately
+  # applying temporary fix
+  sleep(5);
   page.wait_until{ page.driver.browser.execute_script("return !Ext.Ajax.isLoading();") }
 end
 
