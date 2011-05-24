@@ -51,14 +51,13 @@ end
 
 When /^(?:|I )check ext checkbox "([^"]*)"$/ do |field|
   page.driver.browser.execute_script <<-JS
-    var checkbox = Ext.ComponentQuery.query("checkboxfield[fieldLabel='#{field}']")[0];
-    checkbox.setValue(true);
+    Ext.ComponentQuery.query("checkboxfield[fieldLabel='#{field}']")[0].setValue(true);
   JS
 end
 
 Then /^I should see "([^"]*)" within paging toolbar$/ do |text|
   page.driver.browser.execute_script(<<-JS).should == true
-    Netzke.page.bookPagingFormPanel.child('pagingtoolbar').query('tbtext[text="#{text}"]').length >= 1
+    Ext.ComponentQuery.query('pagingtoolbar')[0].query('tbtext[text="#{text}"]').length >= 1
   JS
 end
 
