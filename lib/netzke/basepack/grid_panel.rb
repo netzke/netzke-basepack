@@ -124,7 +124,7 @@ module Netzke
       # set column_filters_available to false, and the javascript for the filters won't be included at all.
       class_config_option :column_filters_available, false
 
-      class_config_option :extended_search_available, false
+      class_config_option :extended_search_available, true
 
       class_config_option :edit_in_form_available, true
 
