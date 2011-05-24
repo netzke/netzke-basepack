@@ -56,3 +56,9 @@ When /^(?:|I )check ext checkbox "([^"]*)"$/ do |field|
   JS
 end
 
+Then /^I should see "([^"]*)" within paging toolbar$/ do |text|
+  page.driver.browser.execute_script(<<-JS).should == true
+    Netzke.page.bookPagingFormPanel.child('pagingtoolbar').query('tbtext[text="#{text}"]').length >= 1
+  JS
+end
+

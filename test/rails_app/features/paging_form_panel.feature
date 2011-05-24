@@ -53,3 +53,15 @@ Scenario: Editing and immediately submitting the form
   And I press "Apply"
   And I wait for the response from the server
   Then the form should show author__name: "Castaneda, Carlos"
+
+@javascript
+Scenario: I must see total records value
+  Given the following books exist:
+  | title               |
+  | Journey to Ixtlan   |
+  | Lolita              |
+  | Getting Things Done |
+
+  When I go to the BookPagingFormPanel test page
+  Then I should see "of 3" within paging toolbar
+
