@@ -64,35 +64,33 @@ end
 
 When /^I expand combobox "([^"]*)" in row (\d+) of the grid$/ do |field, row|
   page.driver.browser.execute_script <<-JS
-    var components = [];
-    for (var cmp in Netzke.page) { components.push(cmp); }
-    var grid = Netzke.page[components[0]];
-    var colId = grid.getColumnModel().findColumnIndex("#{field}");
-    var col = grid.getColumnModel().getColumnById(colId);
-    grid.startEditing(#{row.to_i - 1}, colId);
-    col.editor.onTriggerClick();
+    var grid = Ext.ComponentQuery.query('gridpanel')[0];
+    var editor = grid.getPlugin('celleditor');
+    editor.startEditByPosition({ row:#{row.to_i-1}, column:grid.headerCt.items.findIndex('name', '#{field}') });
   JS
+  # HACK: test fails w\o this stupid thing
+  sleep 1
+
+  page.driver.browser.execute_script("Ext.ComponentQuery.query('netzkeremotecombo')[0].onTriggerClick();");
 end
 
 When /^I select "([^"]*)" in combobox "([^"]*)" in row (\d+) of the grid$/ do |value, field, row|
   page.driver.browser.execute_script <<-JS
-    var components = [];
-    for (var cmp in Netzke.page) { components.push(cmp); }
-    var grid = Netzke.page[components[0]];
-    var colId = grid.getColumnModel().findColumnIndex("#{field}");
-    var col = grid.getColumnModel().getColumnById(colId);
-    var index = col.editor.getStore().find('field2', '#{value}');
-    col.editor.setValue(col.editor.getStore().getAt(index).get('field1'));
-    col.editor.onTriggerClick();
+    var grid   = Ext.ComponentQuery.query('gridpanel')[0];
+    var col    = Ext.ComponentQuery.query('gridcolumn[name="#{field}"]');
+    var colId  = grid.headerCt.items.findIndex('name', '#{field}');
+    var combo = Ext.ComponentQuery.query('netzkeremotecombo')[0];
+
+
+    combo.setValue( combo.findRecordByDisplay('#{value}') );
+    combo.onTriggerClick();
   JS
 end
 
 When /^I stop editing the grid$/ do
   page.driver.browser.execute_script <<-JS
-    var components = [];
-    for (var cmp in Netzke.page) { components.push(cmp); }
-    var grid = Netzke.page[components[0]];
-    grid.stopEditing();
+    var p;
+    (p = Ext.ComponentQuery.query('gridpanel')[0].getPlugin('celleditor')) && p.completeEdit();
   JS
 end
 
