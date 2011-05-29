@@ -47,7 +47,7 @@ When /^I enable filter on column "([^"]*)" with value "([^"]*)"$/ do |column, va
     var components = [];
     for (var cmp in Netzke.page) { components.push(cmp); }
     var grid = Netzke.page[components[0]];
-    var filter = grid.filters.getFilter(grid.getColumnModel().getDataIndex(grid.getColumnModel().findColumnIndex('#{column}')));
+    var filter = grid.filters.getFilter('#{column}');
     filter.setValue(#{value});
     filter.setActive(true);
   JS
