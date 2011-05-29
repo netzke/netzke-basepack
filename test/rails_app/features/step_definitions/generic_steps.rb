@@ -10,8 +10,8 @@ Then /^button "([^"]*)" should be disabled$/ do |arg1|
   Netzke.should be # PENDING!
 end
 
-When /I sleep|wait (\d+) seconds?/ do |arg1|
-  sleep arg1.to_i
+When /I sleep|wait (\d+) (\w+)/ do |amount, unit|
+  sleep amount.to_i.send(unit)
 end
 
 When /^I wait for the response from the server$/ do
