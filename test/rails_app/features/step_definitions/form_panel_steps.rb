@@ -8,12 +8,13 @@ When /^I expand combobox "([^"]*)"$/ do |combo_label|
   When "I wait for the response from the server"
 end
 
-def loading? (combo_label)
-  page.driver.browser.execute_script <<-JS
-    var combo =  Ext.ComponentQuery.query("combobox[fieldLabel='#{combo_label}']")[0];
-    return combo.store.loading;
-  JS
-end
+# def loading? (combo_label)
+#   page.driver.browser.execute_script <<-JS
+#     var combo =  Ext.ComponentQuery.query("combobox[fieldLabel='#{combo_label}']")[0];
+#     combo = combo || Ext.ComponentQuery.query("combobox[name='#{combo_label}']")[0];
+#     return combo.store.loading;
+#   JS
+# end
 
 When /^I select "([^"]*)" from combobox "([^"]*)"$/ do |value, combo_label|
   page.driver.browser.execute_script <<-JS
@@ -23,15 +24,18 @@ When /^I select "([^"]*)" from combobox "([^"]*)"$/ do |value, combo_label|
   JS
 
   # HACK: this code looks ugly
-  while loading?(combo_label) do
-    sleep(1)
-  end
+  # while loading?(combo_label) do
+  #   sleep(1)
+  # end
+
+  When "I wait for the response from the server"
 
   page.driver.browser.execute_script <<-JS
     var combo = Ext.ComponentQuery.query("combobox[fieldLabel='#{combo_label}']")[0];
     combo = combo || Ext.ComponentQuery.query("combobox[name='#{combo_label}']")[0];
     var rec = combo.findRecordByDisplay('#{value}');
-    combo.select( rec.data.field1 );
+    combo.setValue( rec );
+    combo.fireEvent('select');
   JS
 end
 

@@ -1,7 +1,7 @@
 module Netzke
   module Basepack
     class QueryBuilder < Netzke::Base
-      js_base_class "Ext.TabPanel"
+      js_base_class "Ext.tab.Panel"
 
       js_property :active_tab, 0
 
