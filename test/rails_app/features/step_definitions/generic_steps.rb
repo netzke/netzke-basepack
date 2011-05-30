@@ -15,10 +15,7 @@ When /I sleep|wait (\d+) (\w+)/ do |amount, unit|
 end
 
 When /^I wait for the response from the server$/ do
-  # HACK: Ext.Ajax.isLoading() without parameter is broken, so he step always returns immediately
-  # applying temporary fix
-  sleep(5);
-  page.wait_until{ page.driver.browser.execute_script("return !Ext.Ajax.isLoading();") }
+  page.wait_until{ page.driver.browser.execute_script("return !Netzke.ajaxIsLoading()") }
 end
 
 When /^I go forward one page$/ do
