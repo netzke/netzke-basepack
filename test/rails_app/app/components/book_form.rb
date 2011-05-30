@@ -16,8 +16,7 @@ class BookForm < Netzke::Basepack::FormPanel
         :digitized,
         :exemplars,
         {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
-        # WIP: waiting on commalistcbg
-        # {:name => :tags, :xtype => :commalistcbg, :options => %w(read cool recommend buy)},
+        {:name => :tags, :xtype => :commalistcbg, :options => %w(read cool recommend buy)},
         # WIP: waithing on nradiogroup
         # {:name => :rating, :xtype => :nradiogroup, :options => [[1, "Good"], [2, "Average"], [3, "Poor"]]}
       ]

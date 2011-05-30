@@ -70,13 +70,13 @@ Scenario: Checkbox field should work properly
 Scenario: Checkbox group for tags should work properly
   Given a book exists with title: "Some Title"
   When I go to the BookForm test page
-  And I check "recommend"
-  And I check "cool"
+  And I check ext checkbox "recommend"
+  And I check ext checkbox "cool"
   And I press "Apply"
   And I wait for the response from the server
-  Then the "cool" checkbox should be checked
-  And the "recommend" checkbox should be checked
-  But the "read" checkbox should not be checked
+  Then ext "cool" checkbox should be checked
+  And ext "recommend" checkbox should be checked
+  But ext "read" checkbox should not be checked
   And a book should exist with tags: "cool,recommend"
 
 @javascript
