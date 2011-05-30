@@ -205,6 +205,7 @@ Scenario: Renderers for association columns should take effect
   And a book exists with title: "Lolita", author: that author
   When I go to the BookGridWithCustomColumns test page
   Then I should see "NABOKOV"
+  And I should see "*Vladimir*"
 
 @javascript
 Scenario: Reloading grid data

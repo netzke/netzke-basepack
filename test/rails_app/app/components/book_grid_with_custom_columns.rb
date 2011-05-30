@@ -5,7 +5,7 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
     super.merge(
       :model => "Book",
       :columns => [
-        {:name => :author__first_name},
+        {:name => :author__first_name, :renderer => :my_renderer},
         {:name => :author__last_name, :renderer => :uppercase},
         :author__name,
         :title,
@@ -24,5 +24,12 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
       ]
     )
   end
+
+  js_method :my_renderer, <<-JS
+    function(value){
+      return value ? "*" + value + "*" : "";
+    }
+  JS
+
 
 end
