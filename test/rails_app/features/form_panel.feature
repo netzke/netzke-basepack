@@ -80,16 +80,16 @@ Scenario: Checkbox group for tags should work properly
   And a book should exist with tags: "cool,recommend"
 
 @javascript
-Scenario: Validations
+  Scenario: Validations
   Given a book exists with title: "Some Title"
   When I go to the BookForm test page
   And I fill in "Title:" with ""
   And I press "Apply"
-  And I sleep 1 second
+  And I wait for the response from the server
   Then I should see "Title can't be blank"
   But I should not see "Success!"
   When I fill in "Title:" with "Not Blank"
   And I press "Apply"
-  And I sleep 1 second
+  And I wait for the response from the server
   Then I should not see "Title can't be blank"
   But I should see "Success!"
