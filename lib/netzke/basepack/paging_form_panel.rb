@@ -19,6 +19,7 @@ module Netzke
     # == ToDo
     # * Update the number of records after form submit
     class PagingFormPanel < FormPanel
+      js_mixin :paging_form_panel
 
       # override
       def record
@@ -51,91 +52,6 @@ module Netzke
         super
         c[:bbar] << :search.action
       end
-
-      js_method :on_search, <<-JS
-        function(el){
-          if (this.searchWindow) {
-            this.searchWindow.show();
-          } else {
-            this.loadComponent({name: 'search_form', callback: function(win){
-              this.searchWindow = win;
-              var currentConditionsString = this.getStore().baseParams.extra_conditions;
-              if (currentConditionsString) {
-                win.items.first().getForm().setValues(Ext.decode(currentConditionsString));
-              }
-
-              win.items.first().on('apply', function(){
-                win.onSearch();
-                return false; // do not propagate the 'apply' event
-              }, this);
-
-              win.on('hide', function(){
-                var query = win.getQuery();
-                if (win.closeRes == 'search'){
-                  this.getStore().baseParams.query = Ext.encode(query);
-                  this.getStore().load();
-                }
-                el.toggle(query.length > 0); // toggle based on the state
-              }, this);
-            }, scope: this});
-          }
-        }
-      JS
-
-      js_method :get_store, <<-JS
-        function(){
-          return this.store;
-        }
-      JS
-
-      js_method :after_render, <<-JS
-        function(){
-          this.callParent();
-
-// WIP: commented out because it produces error otherwise:
-//   el is undefined
-//   http://nbt.local/extjs4/ext-all-debug.js?1305798122
-//   Line 18214"
-//          new Ext.LoadMask(this.bwrap, Ext.apply(this.applyMask, {store: this.store}));
-        }
-      JS
-
-
-      js_method :init_component, <<-JS
-        function(){
-
-          // Extract field names from items recursively. We have to do it before calling superclass.initComponent,
-          // because we need to build the store for PagingToolbar that cannot be created after superclass.initComponent
-          // Otherwise, the things would be simpler, because this.getForm().items would already has all the fields in one place for us
-          this.fieldNames = [];
-          this.extractFields(this.items);
-
-          var store = new Ext.data.DirectStore({
-            directFn: Netzke.providers[this.id].getData,
-            root: 'records',
-            fields: this.fieldNames.concat('_meta'),
-            data: {records: [this.record], total: this.totalRecords},
-            pageSize: 1
-          });
-
-          store.on('load', function(st, r){
-            if (r.length == 0) {
-              this.getForm().reset();
-            } else {
-              this.setFormValues(r[0].data);
-            }
-          }, this);
-
-          this.bbar = new Ext.PagingToolbar({
-            beforePageText: "Record",
-            store: store,
-            items: ["-"].concat(this.bbar || [])
-          });
-
-          this.store = store;
-          this.callParent();
-        }
-      JS
 
       component :search_form do
         {

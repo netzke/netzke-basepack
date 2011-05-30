@@ -1,3 +1,4 @@
+# OUTDATED
 class PagingFormWithSearch < Netzke::Basepack::BorderLayoutPanel
   def default_config
     super.tap do |s|

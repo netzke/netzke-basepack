@@ -66,6 +66,7 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/grid_panel/record_form_window.rb",
     "lib/netzke/basepack/grid_panel/services.rb",
     "lib/netzke/basepack/paging_form_panel.rb",
+    "lib/netzke/basepack/paging_form_panel/javascripts/paging_form_panel.js",
     "lib/netzke/basepack/panel.rb",
     "lib/netzke/basepack/query_builder.rb",
     "lib/netzke/basepack/query_builder/javascripts/query_builder.js",
