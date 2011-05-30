@@ -23,8 +23,9 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
         <div style="margin:10px; color:#333; text-align:center; font-family: Helvetica;">
           Simple <span style="color:#B32D15">Netzke</span> app
         </div>
-      },
-      :bodyStyle => {"background" => "#FFF url(\"/images/header-deco.gif\") top left repeat-x"}
+      }
+      # TODO: this has no effect anymore:
+      # :bodyStyle => {:background => "#AAA url(\"/images/header-deco.gif\") top left repeat-x"}
     },{
       :region => :center,
       :layout => 'border',

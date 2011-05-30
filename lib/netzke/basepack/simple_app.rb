@@ -1,14 +1,38 @@
 module Netzke
   module Basepack
-    # Basis for a Ext.Viewport-based one-page application
+    # Basis for a Ext.container.Viewport-based one-page application.
     #
-    # Features:
+    # == Features:
     # * dynamic loading of components
     # * browser history support (press the "Back"-button to go to the previously loaded component)
     # * AJAX activity indicator
+    #
+    # == Extending SimpleApp
+    # You may want to extend SimpleApp to provide a custom layout. Make sure you create three regions with predefined itemId's that will be used by SimpleApp. You can use the following methods defined by SimpleApp: main_panel_config, status_bar_config, and menu_bar_config, e.g.:
+    #
+    #     class MySimpleApp < Netzke::Basepack::SimpleApp
+    #
+    #       def configuration
+    #         super.merge(
+    #           :items => [my_custom_navigation_config, main_panel_config, menu_bar_config, status_bar_config]
+    #         )
+    #       end
+    #
+    #       def my_custom_navigation_config
+    #         {
+    #           :item_id => 'navigation',
+    #           :region => :east,
+    #           :width => 200
+    #         }
+    #       end
+    #
+    #       ...
+    #     end
+    #
+    # The JS side of the component will have those regions referenced as this.mainPanel, this.statusBar, and this.menuBar.
     class SimpleApp < Base
 
-      js_base_class "Ext.Viewport"
+      js_base_class "Ext.container.Viewport"
 
       js_property :layout, :border
 
@@ -22,21 +46,24 @@ module Netzke
         )
       end
 
+      # Override for custom menu
       def menu
         []
       end
 
+      # Config for the main panel, which will contain dynamically loaded components.
       def main_panel_config(overrides = {})
         {
-          :id => 'main-panel',
+          :itemId => 'main_panel',
           :region => 'center',
           :layout => 'fit'
         }.merge(overrides)
       end
 
+      # Config for the status bar
       def status_bar_config(overrides = {})
         {
-          :id => 'main-statusbar',
+          :itemId => 'status_bar',
           :xtype => 'statusbar',
           :region => 'south',
           :height => 22,
@@ -47,9 +74,10 @@ module Netzke
         }.merge(overrides)
       end
 
+      # Config for the menu bar
       def menu_bar_config(overrides = {})
         {
-          :id => 'main-toolbar',
+          :itemId => 'menu_bar',
           :xtype => 'toolbar',
           :region => 'north',
           :height => 28,
