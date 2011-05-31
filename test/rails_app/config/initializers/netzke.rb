@@ -4,4 +4,5 @@ end
 
 Netzke::Core.setup do |config|
   config.ext_uri = "/extjs4"
+  # config.ext3_compat_uri = "/extjs-compatibility"
 end
