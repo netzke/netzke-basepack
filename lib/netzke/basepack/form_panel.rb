@@ -74,8 +74,7 @@ module Netzke
       # Extra JavaScripts and stylesheets
       js_mixin :form_panel
       js_include :comma_list_cbg
-      # WIP
-      # js_include :n_radio_group, :readonly_mode
+      js_include :n_radio_group, :readonly_mode
       css_include :readonly_mode
 
       # WIP

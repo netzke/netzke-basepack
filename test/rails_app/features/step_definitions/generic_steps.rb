@@ -10,11 +10,14 @@ Then /^button "([^"]*)" should be disabled$/ do |arg1|
   Netzke.should be # PENDING!
 end
 
-When /I sleep (\d+) seconds?/ do |arg1|
-  sleep arg1.to_i
+When /I sleep|wait (\d+) (\w+)/ do |amount, unit|
+  sleep amount.to_i.send(unit)
 end
 
 When /^I wait for the response from the server$/ do
+  # HACK: Ext.Ajax.isLoading() without parameter is broken, so he step always returns immediately
+  # applying temporary fix
+  sleep(5);
   page.wait_until{ page.driver.browser.execute_script("return !Ext.Ajax.isLoading();") }
 end
 

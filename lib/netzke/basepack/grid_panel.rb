@@ -122,9 +122,9 @@ module Netzke
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,
       # set column_filters_available to false, and the javascript for the filters won't be included at all.
-      class_config_option :column_filters_available, false
+      class_config_option :column_filters_available, true
 
-      class_config_option :extended_search_available, false
+      class_config_option :extended_search_available, true
 
       class_config_option :edit_in_form_available, true
 
@@ -163,13 +163,13 @@ module Netzke
       # Includes for column filters
       if column_filters_available
         [
-          "ux/gridfilters/menu/ListMenu.js",
-          "ux/gridfilters/menu/RangeMenu.js",
-          "ux/gridfilters/GridFilters.js"
+          "ux/grid/menu/ListMenu.js",
+          "ux/grid/menu/RangeMenu.js",
+          "ux/grid/FiltersFeature.js"
         ].each{ |path| js_include(ex.join(path)) }
 
         %w{Boolean Date List Numeric String}.unshift("").each do |f|
-          js_include(ex.join"ux/gridfilters/filter/#{f}Filter.js")
+          js_include(ex.join"ux/grid/filter/#{f}Filter.js")
         end
       end
 

@@ -57,7 +57,7 @@ module Netzke
         super.merge(
           :attrs => attributes,
           :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
-          :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || []
+          :preset_query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || []
         )
       end
 
