@@ -2,6 +2,8 @@
 Netzke.FeedbackGhost = function(){};
 Ext.apply(Netzke.FeedbackGhost.prototype, {
   showFeedback: function(msg){
+
+
     var createBox = function(s, l){
         return ['<div class="msg">',
                 '<div class="x-box-tl"><div class="x-box-tr"><div class="x-box-tc"></div></div></div>',
@@ -13,9 +15,9 @@ Ext.apply(Netzke.FeedbackGhost.prototype, {
     var showBox = function(msg, lvl){
       if (!lvl) {lvl = 'notice'};
 
-      var msgCt = Ext.get('netzke-feedback') || Ext.DomHelper.insertFirst(document.body, {id: 'netzke-feedback', 'class':'netzke-feedback'}, true);
+      var msgCt = Ext.get('netzke-feedback') || Ext.core.DomHelper.insertFirst(document.body, {id: 'netzke-feedback', 'class':'netzke-feedback'}, true);
 
-      var m = Ext.DomHelper.append(msgCt, {html:createBox(msg,lvl)}, true);
+      var m = Ext.core.DomHelper.append(msgCt, {html:createBox(msg,lvl)}, true);
       m.slideIn('t').pause(2).ghost("b", {remove:true});
     }
 
