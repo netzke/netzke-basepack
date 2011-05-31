@@ -54,31 +54,14 @@ Ext.define('Ext.netzke.ComboBox', {
       params.params.column = this.name;
     },this);
 
-    // If inline data was passed
+    // If inline data was passed (TODO: is this actually working?)
     if (this.store) store.loadData({data: this.store});
 
     this.store = store;
 
     this.callParent();
-
-    // var parent = Ext.getCmp(this.parentId);
-    // // Is parent a grid?
-    // if (parent.getSelectionModel) {
-    //   this.on('beforequery',function(qe) {
-    //     delete qe.combo.lastQuery;
-    //   },this);
-    // }
-    //
-    // // A not-so-clean approach to submit the current record id
-    // store.on('beforeload',function(store, options){
-    //   if (parent.getSelectionModel) {
-    //     var selected = parent.getSelectionModel().getSelected();
-    //     if (selected) options.params.id = selected.id;
-    //   } else {
-    //     // TODO: also for the FormPanel
-    //   }
-    // }, this);
   },
+
   collapse: function(){
     // HACK: do not hide dropdown menu while loading items
     if( !this.store.loading ) this.callParent();
