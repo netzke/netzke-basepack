@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-05-31}
+  s.date = %q{2011-06-01}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -193,6 +193,7 @@ Gem::Specification.new do |s|
     "test/rails_app/features/simple_app.feature",
     "test/rails_app/features/simple_panel.feature",
     "test/rails_app/features/step_definitions/accordion_steps.rb",
+    "test/rails_app/features/step_definitions/ext_steps.rb",
     "test/rails_app/features/step_definitions/form_panel_steps.rb",
     "test/rails_app/features/step_definitions/generic_steps.rb",
     "test/rails_app/features/step_definitions/grid_panel_steps.rb",
@@ -336,6 +337,7 @@ Gem::Specification.new do |s|
     "test/rails_app/db/schema.rb",
     "test/rails_app/db/seeds.rb",
     "test/rails_app/features/step_definitions/accordion_steps.rb",
+    "test/rails_app/features/step_definitions/ext_steps.rb",
     "test/rails_app/features/step_definitions/form_panel_steps.rb",
     "test/rails_app/features/step_definitions/generic_steps.rb",
     "test/rails_app/features/step_definitions/grid_panel_steps.rb",
