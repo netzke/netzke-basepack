@@ -35,14 +35,13 @@ module Netzke
             // A function to access a region component (even if the component gets reloaded, the function will work).
             // E.g.: getEastComponent()
             var methodName = 'get'+r.capitalize()+'Component';
-            this[methodName] = function(){
+            this[methodName] = Ext.Function.bind(function(){
               Netzke.deprecationWarning("Instead of '" + methodName + "' use getChildComponent('<name of your component>').");
               return this.find('region', r)[0];
-            }.createDelegate(this);
+            }, this);
           }, this);
 
-          // Now let Ext.Panel do the rest
-          #{js_full_class_name}.superclass.initComponent.call(this);
+          this.callParent();
 
           // First time on "afterlayout", set resize events
           if (this.persistence) {this.on('afterlayout', this.setRegionEvents, this, {single: true});}
