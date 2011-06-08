@@ -4,21 +4,28 @@ module Netzke
     # ** NOTE: it's WIP **
     class AuthApp < SimpleApp
 
-      class_attribute :login_url
-      self.login_url = "/login"
+      def default_config
+        super.tap do |c|
+          c[:login_url] = "/login"
+          c[:logout_url] = "/logout"
+        end
+      end
 
-      class_attribute :logout_url
-      self.logout_url = "/logout"
+      # class_config_option :login_url, "/login"
+      # # self.login_url = "/login"
+      #
+      # class_attribute :logout_url
+      # self.logout_url = "/logout"
 
       js_method :on_login, <<-JS
         function(){
-          window.location = "#{login_url}"
+          window.location = this.loginUrl;
         }
       JS
 
       js_method :on_logout, <<-JS
         function(){
-          window.location = "#{logout_url}"
+          window.location = this.logoutUrl;
         }
       JS
 
@@ -88,21 +95,21 @@ module Netzke
         }
       JS
 
-      # Set the Logout button if Netzke::Base.user is set
+      # Set the Logout button if Netzke::Core.current_user is set
       def menu
-        res = []
-        user = User.find_by_id(session[:netzke_user_id])
-        if !user.nil?
-          user_name = user.respond_to?(:name) ? user.name : user.login # try to display user's name, fallback to login
-          res << "->" <<
-          {
-            :text => "#{user_name}",
-            :menu => user_menu
-          }
-        else
-          res << "->" << :login.action
+        [].tap do |menu|
+          user = Netzke::Core.current_user
+          if !user.nil?
+            user_name = user.respond_to?(:name) ? user.name : user.email # try to display user's name, fallback to email
+            menu << "->" <<
+            {
+              :text => user_name,
+              :menu => user_menu
+            }
+          else
+            menu << "->" << :login.action
+          end
         end
-        res
       end
 
       def user_menu
