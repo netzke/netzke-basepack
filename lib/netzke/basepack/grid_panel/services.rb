@@ -132,7 +132,7 @@ module Netzke
           ids = ActiveSupport::JSON.decode(params.delete(:ids))
           data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
 
-          data.map!{|el| el.delete_if{ |k,v| v.blank? }} # only interested in set values
+          data.map!{|el| el.delete_if{ |k,v| v.is_a?(String) && v.blank? }} # only interested in set values
 
           mod_records_count = process_data(data, :update).count
 
