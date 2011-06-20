@@ -208,12 +208,12 @@ module Netzke
             end
 
             # apply sorting if needed
-            if params[:sort]
-              assoc, method = params[:sort].split('__')
-              dir = params[:dir].downcase
+            if params[:sort] && sort_params = params[:sort].first
+              assoc, method = sort_params["property"].split('__')
+              dir = sort_params["direction"].downcase
 
               # if a sorting scope is set, call the scope with the given direction
-              column = columns.detect { |c| c[:name] == params[:sort] }
+              column = columns.detect { |c| c[:name] == sort_params["property"] }
               if column.has_key?(:sorting_scope)
                 relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
               else
