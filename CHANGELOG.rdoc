@@ -1,3 +1,8 @@
+= 0.7.0
+* Ext 4 compatibility
+* API changes
+  * [JS] Removed the helper BorderLayoutPanel#get<Region>Component method altogether. Use Ext 4 Container#child instead.
+
 = v0.6.5 - to be released
 * enhancements
   * When columns states are saved in the persistent storage, adding/removing columns (e.g. in the code) will reset the saved states

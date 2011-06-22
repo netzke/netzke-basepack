@@ -1,6 +1,10 @@
 module Netzke
   module Basepack
-    # Panel with border layout
+    # Panel with border layout.
+    #
+    # == Features
+    #   * When persistence enabled, remembers the sizes and collapsed/expanded states of its regions.
+    #
     # == Example configuration:
     #
     #     :items => [
@@ -8,6 +12,8 @@ module Netzke
     #       {:title => "Item Two", :class_name => "Basepack::Panel", :region => :west, :width => 300, :split => true}
     #     ]
     class BorderLayoutPanel < Netzke::Base
+      js_mixin :border_layout_panel
+
       def items
         @border_layout_items ||= begin
           updated_items = super
@@ -22,63 +28,10 @@ module Netzke
               })
             end
           end
-          
+
           updated_items
         end
       end
-      
-      js_property :layout, :border
-      
-      js_method :init_component, <<-JS
-        function(){
-          Ext.each(['center', 'west', 'east', 'south', 'north'], function(r){
-            // A function to access a region component (even if the component gets reloaded, the function will work).
-            // E.g.: getEastComponent()
-            var methodName = 'get'+r.capitalize()+'Component';
-            this[methodName] = Ext.Function.bind(function(){
-              Netzke.deprecationWarning("Instead of '" + methodName + "' use getChildComponent('<name of your component>').");
-              return this.find('region', r)[0];
-            }, this);
-          }, this);
-
-          this.callParent();
-
-          // First time on "afterlayout", set resize events
-          if (this.persistence) {this.on('afterlayout', this.setRegionEvents, this, {single: true});}
-        }
-      JS
-      
-      js_method :set_region_events, <<-JS
-        function(){
-          this.items.each(function(item, index, length){
-            if (!item.oldSize) item.oldSize = item.getSize(); // remember initial size
-              
-            item.on('resize', function(panel, w, h){
-              if (panel.region !== 'center' && w && h) {
-                var params = {region:panel.region};
-              
-                if (panel.oldSize.width != w) {
-                  params.width = w;
-                } else {
-                  params.height = h;
-                }
-              
-                panel.oldSize = panel.getSize();
-                this.regionResized(params);
-              }
-            }, this);
-
-            item.on('collapse', function(panel){
-              this.regionCollapsed({region: panel.region});
-            }, this);
-            
-            item.on('expand', function(panel){
-              this.regionExpanded({region: panel.region});
-            }, this);
-            
-          }, this);
-        }
-      JS
 
       endpoint :region_resized do |params|
         size_state_hash = {}

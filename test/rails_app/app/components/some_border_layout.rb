@@ -15,13 +15,13 @@ class SomeBorderLayout < Netzke::Basepack::BorderLayoutPanel
 
   js_method :on_update_west_region, <<-JS
     function(){
-      this.getChildComponent('user_grid').body.update('Updated West Region Content');
+      this.child('component[name="user_grid"]').body.update('Updated West Region Content');
     }
   JS
 
   js_method :on_update_center_region, <<-JS
     function(){
-      this.getChildComponent('role_grid').body.update('Updated Center Region Content');
+      this.child('component[name="role_grid"]').body.update('Updated Center Region Content');
     }
   JS
 

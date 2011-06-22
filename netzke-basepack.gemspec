@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = %q{2011-06-20}
+  s.date = %q{2011-06-22}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -44,6 +44,7 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/auth_app.rb",
     "lib/netzke/basepack/basic_app.rb",
     "lib/netzke/basepack/border_layout_panel.rb",
+    "lib/netzke/basepack/border_layout_panel/javascripts/border_layout_panel.js",
     "lib/netzke/basepack/data_accessor.rb",
     "lib/netzke/basepack/form_panel.rb",
     "lib/netzke/basepack/form_panel/fields.rb",
@@ -111,6 +112,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/book_grid_with_custom_columns.rb",
     "test/rails_app/app/components/book_grid_with_default_values.rb",
     "test/rails_app/app/components/book_grid_with_nested_attributes.rb",
+    "test/rails_app/app/components/book_grid_with_persistence.rb",
     "test/rails_app/app/components/book_grid_with_scoped_authors.rb",
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_paging_form_panel.rb",
@@ -275,6 +277,7 @@ Gem::Specification.new do |s|
     "test/rails_app/app/components/book_grid_with_custom_columns.rb",
     "test/rails_app/app/components/book_grid_with_default_values.rb",
     "test/rails_app/app/components/book_grid_with_nested_attributes.rb",
+    "test/rails_app/app/components/book_grid_with_persistence.rb",
     "test/rails_app/app/components/book_grid_with_scoped_authors.rb",
     "test/rails_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/rails_app/app/components/book_paging_form_panel.rb",
