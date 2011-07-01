@@ -22,3 +22,7 @@ Factory.define :address do |f|
   f.city "Lost Children"
   f.postcode "1234"
 end
+
+Factory.define :book_with_custom_primary_key do |f|
+  f.title "Book you will write"
+end

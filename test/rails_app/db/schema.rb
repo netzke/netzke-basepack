@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110213213050) do
+ActiveRecord::Schema.define(:version => 20110701070052) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -29,11 +29,18 @@ ActiveRecord::Schema.define(:version => 20110213213050) do
     t.datetime "updated_at"
   end
 
+  create_table "book_with_custom_primary_keys", :primary_key => "uid", :force => true do |t|
+    t.string   "title"
+    t.integer  "author_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
   create_table "books", :force => true do |t|
     t.integer  "author_id"
     t.string   "title"
     t.integer  "exemplars"
-    t.boolean  "digitized"
+    t.boolean  "digitized",  :default => false
     t.text     "notes"
     t.string   "tags"
     t.integer  "rating"
@@ -53,6 +60,9 @@ ActiveRecord::Schema.define(:version => 20110213213050) do
   add_index "netzke_component_states", ["component"], :name => "index_netzke_component_states_on_component"
   add_index "netzke_component_states", ["role_id"], :name => "index_netzke_component_states_on_role_id"
   add_index "netzke_component_states", ["user_id"], :name => "index_netzke_component_states_on_user_id"
+
+  create_table "netzke_temp_table", :force => true do |t|
+  end
 
   create_table "roles", :force => true do |t|
     t.string   "name"
