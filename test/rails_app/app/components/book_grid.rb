@@ -8,6 +8,7 @@ class BookGrid < Netzke::Basepack::GridPanel
       # :rows_per_page => 3
       # :persistence => true
       # :columns => [{:name => :author__first_name}]
+      # :columns => [:title, :exemplars, :digitized, :notes]
     )
   end
 end

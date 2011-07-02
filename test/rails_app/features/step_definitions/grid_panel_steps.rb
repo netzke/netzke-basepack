@@ -44,13 +44,16 @@ end
 
 When /^I enable filter on column "([^"]*)" with value "([^"]*)"$/ do |column, value|
   page.driver.browser.execute_script <<-JS
-    var components = [];
-    for (var cmp in Netzke.page) { components.push(cmp); }
-    var grid = Netzke.page[components[0]];
-    var filter = grid.filters.getFilter('#{column}');
+    var grid = Ext.ComponentQuery.query('gridpanel')[0],
+        filter;
+    while (!(filter = grid.filters.getFilter('#{column}'))) {
+      // Need to show the menu once, as only then the filters get created
+      grid.headerCt.getMenu().showBy(grid.headerCt.items.first());
+    }
     filter.setValue(#{value});
     filter.setActive(true);
   JS
+  sleep 0.6
 end
 
 When /^I clear all filters in the grid$/ do
