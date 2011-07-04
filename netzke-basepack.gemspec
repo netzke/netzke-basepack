@@ -84,7 +84,6 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/wrap_lazy_loaded.rb",
     "lib/netzke/basepack/wrapper.rb",
     "lib/tasks/netzke_basepack_tasks.rake",
-    "locale/de.yml",
     "locales/de.yml",
     "locales/en.yml",
     "netzke-basepack.gemspec",
