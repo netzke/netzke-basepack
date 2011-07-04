@@ -14,7 +14,8 @@ module Netzke
           :class_name => "Netzke::Basepack::SearchPanel",
           :model => config[:model],
           :query => config[:query],
-          :auto_scroll => config[:auto_scroll]
+          :auto_scroll => config[:auto_scroll],
+          :model_columns => config[:model_columns]
         }
       end
 
