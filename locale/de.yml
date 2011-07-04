@@ -1,0 +1,21 @@
+en:
+  netzke:
+    basepack:
+      generic:
+        confirm: Bestätigung
+        are_you_sure: Sind Sie sich sicher?
+      grid_panel:
+        add: Hintzufügen
+        edit: Bearbeiten
+        delete: Löschen
+        apply: Anwenden
+        add_in_form: Hinzufügen in Formular
+        edit_in_form: Bearbeiten in Formular
+        search: Search
+        deleted_n_records: "%{n} Datensätze gelöscht."
+        cannot_delete: "Sie haben keine Berechtigung diesen Datensatz zu löschen."
+
+    formats:
+      date: d-m-Y
+      datetime: d-m-Y H:i:s
+      time: H:i:s
