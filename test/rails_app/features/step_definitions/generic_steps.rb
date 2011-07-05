@@ -32,3 +32,11 @@ Then /^the "([^"]*)" component should be hidden$/ do |id|
     return cmp.isVisible();
   JS
 end
+
+Then /^I should see "([^"]*)" within paging toolbar$/ do |text|
+  Then %Q{I should see "#{text}"}
+  # Not working, as it checks the initial text property, not the actual one
+  # page.driver.browser.execute_script(<<-JS).should == true
+  #   Ext.ComponentQuery.query('pagingtoolbar')[0].query('tbtext[text="#{text}"]').length >= 1
+  # JS
+end

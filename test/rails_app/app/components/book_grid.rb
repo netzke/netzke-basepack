@@ -4,8 +4,7 @@ class BookGrid < Netzke::Basepack::GridPanel
 
   def default_config
     super.merge(
-      :model => "Book",
-      # :rows_per_page => 3
+      :model => "Book"
       # :persistence => true
       # :columns => [{:name => :author__first_name}]
       # :columns => [:title, :exemplars, :digitized, :notes]

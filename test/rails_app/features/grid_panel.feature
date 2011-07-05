@@ -236,3 +236,15 @@ Scenario: Advanced search window should be hidable after loading grid panel dyna
     When I drag "Digitized" column before "Title"
     And I go to the BookGridWithPersistence test page
     Then I should see columns in order: "Author name", "Digitized", "Title"
+
+@javascript
+Scenario: I must see total records value
+  Given the following books exist:
+  | title               |
+  | Journey to Ixtlan   |
+  | Lolita              |
+  | Getting Things Done |
+  | Magus               |
+
+  When I go to the BookGridWithPaging test page
+  Then I should see "of 2" within paging toolbar

@@ -31,11 +31,3 @@ Then /the form should show #{capture_fields}$/ do |fields|
     return result;
   JS
 end
-
-Then /^I should see "([^"]*)" within paging toolbar$/ do |text|
-  page.driver.browser.execute_script(<<-JS).should == true
-    Ext.ComponentQuery.query('pagingtoolbar')[0].query('tbtext[text="#{text}"]').length >= 1
-  JS
-end
-
-
