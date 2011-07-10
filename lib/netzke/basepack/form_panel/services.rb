@@ -59,13 +59,13 @@ module Netzke
           success = create_or_update_record(data)
 
           if success
-            {:set_form_values => js_record_data, :set_result => true}
+            {:set_form_values => js_record_data, :set_result => true, :success => true}
           else
             # flash eventual errors
             @record.errors.to_a.each do |msg|
               flash :error => msg
             end
-            {:feedback => @flash, :apply_form_errors => build_form_errors(record)}
+            {:feedback => @flash, :apply_form_errors => build_form_errors(record), :success => false}
           end
         end
 

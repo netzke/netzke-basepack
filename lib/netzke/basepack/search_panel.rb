@@ -42,7 +42,7 @@ module Netzke
 
       # Builds default query search panel, where each field is presented
       def default_query
-        data_class.column_names.map do |c|
+        model_column_names.map do |c|
           column_type = data_class.columns_hash[c].type
           operator = (self.class.js_property(:attribute_operators_map)[column_type] || []).first.try(:fetch, 0) || "matches"
           {:attr => c, :attr_type => column_type, :operator => operator}
@@ -56,13 +56,13 @@ module Netzke
       def js_config
         super.merge(
           :attrs => attributes,
-          :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
+          :attrs_hash => model_column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
           :query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || []
         )
       end
 
       def attributes
-        data_class.column_names.map do |name|
+        model_column_names.map do |name|
           [name, data_class.human_attribute_name(name)]
         end
       end
@@ -71,6 +71,9 @@ module Netzke
         (state[:presets] || []).last
       end
 
+      def model_column_names
+        @column_names ||= config[:model_columns] || data_class.column_names
+      end
     end
   end
 end

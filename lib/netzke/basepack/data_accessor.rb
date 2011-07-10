@@ -122,15 +122,17 @@ module Netzke
           relation = relation.extend_with_netzke_conditions(extra_conditions) if params[:extra_conditions]
         end
 
+        meta_where = nil
+
         if params[:query]
           # array of arrays of conditions that should be joined by OR
           query = ActiveSupport::JSON.decode(params[:query])
-          meta_where = query.map do |conditions|
-            normalize_and_conditions(conditions)
+          meta_where = query.map do |and_conditions|
+            normalize_and_conditions(and_conditions)
           end
 
           # join them by OR
-          meta_where = meta_where.inject(meta_where.first){ |r,c| r | c } if meta_where.present?
+          meta_where = meta_where.inject { |r, c| r | c } if meta_where.present?
         end
 
         relation = relation.where(meta_where)
@@ -150,7 +152,7 @@ module Netzke
               q["attr"].to_sym.matches % %Q{%#{value}%}
             else
               if value == false || value == true
-                q["attr"].to_sym.eq % (value ? 1 : 0)
+                q["attr"].to_sym.eq % value
               else
                 q["attr"].to_sym.send(q["operator"]) % value
               end
@@ -158,7 +160,7 @@ module Netzke
           end
 
           # join them by AND
-          and_conditions.inject(and_conditions.first){ |r,c| r & c } if and_conditions.present?
+          and_conditions.inject { |r, c| r & c } if and_conditions.present?
         end
 
     end

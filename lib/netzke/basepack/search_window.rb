@@ -3,11 +3,11 @@ module Netzke
     class SearchWindow < Netzke::Basepack::Window
 
       action :search do
-        { :text => I18n.t('netzke.basepack.search_window.action.search') }
+        {:text => I18n.t('netzke.basepack.search_window.actions.search')}
       end
 
       action :cancel do
-        { :text => I18n.t('netzke.basepack.search_window.action.search') }
+        {:text => I18n.t('netzke.basepack.search_window.actions.cancel')}
       end
 
       js_properties :width => "50%",
@@ -25,8 +25,9 @@ module Netzke
 
       component :search_panel do
         {
-          :class_name => "Netzke::Basepack::QueryBuilder",
-          :model => config[:model]
+            :class_name => "Netzke::Basepack::QueryBuilder",
+            :model => config[:model],
+            :model_columns => config[:model_columns]
         }
       end
 
