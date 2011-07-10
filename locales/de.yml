@@ -16,16 +16,6 @@ de:
         confirmation: Bestätigung
         are_you_sure: Bist du sicher?
 
-        empty_msg: Leer
-        first_text: erste Seite
-        prev_text: vorherige Seite
-        next_text: nächste Seite
-        last_text: letzte Seite
-        before_page_text: Seite
-        after_page_text: "von {0}"
-        refresh_text: Aktualisieren
-        display_msg: "Anzeige {0} - {1} von {2}"
-
         record_form_window:
           actions:
             ok: OK

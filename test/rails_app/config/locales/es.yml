@@ -23,16 +23,6 @@ es:
         deleted_n_records: "%{n} entrada(s) borrado"
         cannot_delete: "No se puede borrar"
 
-        empty_msg: Vacio
-        first_text: Primer pagina
-        prev_text: Anterior pagina
-        next_text: Siguiente pagina
-        last_text: Última pagina
-        before_page_text: Pagina
-        after_page_text: "de {0}"
-        refresh_text: Bajar de nuevo
-        display_msg: "Mostrando {0} - {1} de {2}"
-
       search_window:
         title: Busqueda avanzada
         actions:

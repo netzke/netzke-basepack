@@ -16,16 +16,6 @@ en:
         confirmation: Confirmation
         are_you_sure: Are you sure?
 
-        empty_msg: Empty
-        first_text: First page
-        prev_text: Previous page
-        next_text: Next page
-        last_text: Last page
-        before_page_text: Page
-        after_page_text: "of {0}"
-        refresh_text: Refresh
-        display_msg: "Displaying {0} - {1} of {2}"
-
         record_form_window:
           actions:
             ok: OK

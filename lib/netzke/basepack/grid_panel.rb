@@ -153,7 +153,7 @@ module Netzke
       js_mixin :advanced_search if extended_search_available
       js_mixin :edit_in_form if edit_in_form_available
 
-      js_translate *%w[are_you_sure confirmation first_text prev_text next_text last_text before_page_text after_page_text empty_msg refresh_text display_msg]
+      js_translate *%w[are_you_sure confirmation]
 
       # JavaScript includes
       ex = Netzke::Core.ext_path.join("examples")
