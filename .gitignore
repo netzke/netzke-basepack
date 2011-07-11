@@ -10,6 +10,7 @@ extjs
 .vimrc
 test/rails_app/vendor/gems/netzke-*
 test/rails_app/db/development_structure.sql
+test/rails_app/public/extjs*
 test/rails_app/public/netzke/*.js
 test/rails_app/public/netzke/*.css
 test/rails_app/public/javascripts
