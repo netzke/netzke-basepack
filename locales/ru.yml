@@ -1,0 +1,89 @@
+ru:
+  netzke:
+    basepack:
+      grid_panel:
+        actions:
+          add: "Добавить"
+          edit: "Редактировать"
+          apply: "Сохранить"
+          del: "Удалить"
+          add_in_form: "Добавить в окне"
+          edit_in_form: "Редактировать в окне"
+          search: "Искать"
+
+        deleted_n_records: "Записей удалено: %{n}"
+        cannot_delete: "У вас недостаточно прав для удаления"
+        confirmation: "Подтверждение"
+        are_you_sure: "Вы уверены?"
+
+        empty_msg: "Пусто"
+        first_text: "Первая страница"
+        prev_text: "Предыдущая страница"
+        next_text: "Следующая страница"
+        last_text: "Последняя страница"
+        before_page_text: "Страница"
+        after_page_text: "из {0}"
+        refresh_text: "Обновить"
+        display_msg: "Показано {0} - {1} из {2}"
+
+        record_form_window:
+          actions:
+            ok: "Ок"
+            cancel: "Отмена"
+
+      search_window:
+        title: "Расширенный поиск"
+        actions:
+          search: "Искать"
+          cancel: "Отмена"
+
+      form_panel:
+        actions:
+          edit: "Редактировать"
+          edit_tooltip: "Редактировать"
+          cancel: "Отмена"
+          cancel_tooltip: "Отменить редактирование"
+          apply: "Применить"
+          apply_tooltip: "Применить изменения"
+
+      search_panel:
+        presets: "Шаблоны"
+        equals: "Равно"
+        greater_than: "Больше чем"
+        less_than: "Меньше чем"
+        contains: "Содержит"
+        matches: "Совпадает"
+        date_equals: "на дату"
+        before: "Перед"
+        after: "После"
+
+      paging_form_panel:
+        actions:
+          search: "Поиск"
+          search_tooltip: "Расширенный поиск"
+
+      query_builder:
+        presets: "Шаблоны"
+        preset_saved: "Шаблон успешно сохранен"
+        preset_deleted: "Шаблон успешно удален"
+        overwrite_confirm: "Вы действительно хотите перезаписать шаблон '{0}'?"
+        overwrite_confirm_title: "Перезапись шаблона"
+        delete_confirm: "Вы действительно хотите удалить шаблон '{0}'?"
+        delete_confirm_title: "Удаление шаблона"
+        actions:
+          clear_all: "Удалить все"
+          clear_all_tooltip: "Удалить все условия"
+          reset: "Очистить"
+          reset_tooltip: "Очистить все поля"
+          save_preset: "Сохранить шаблон"
+          save_preset_tooltip: "Сохранить шаблон"
+          delete_preset: "Удалить шаблон"
+          delete_preset_tooltip: "Удалить шаблон"
+          apply: "Применить"
+          apply_tooltip: "Применить условия"
+
+
+    formats:
+      date: Y-m-d
+      datetime: Y-m-d H:i:s
+      time: H:i:s
