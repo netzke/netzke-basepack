@@ -338,7 +338,8 @@ module Netzke
 
               case v["type"]
               when "string"
-                field = field.send :matches
+                op = v['comparison'] && (v['comparison'] == 'like' ? :matches : :does_not_match) || :matches
+                field = field.send(op)
                 value = "%#{value}%"
               when "numeric", "date"
                 field = field.send :"#{v['comparison']}"
