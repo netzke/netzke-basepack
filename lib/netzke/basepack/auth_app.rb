@@ -89,7 +89,7 @@ module Netzke
           });
 
           w.show(null, function(){
-            this.loadComponent({id:"masqueradeSelector", container:w.id})
+            this.loadNetzkeComponent({id:"masqueradeSelector", container:w.id})
           }, this);
 
         }

@@ -3,9 +3,9 @@ class SomeAuthApp < Netzke::Basepack::AuthApp
     [:simple_accordion.action, :user_grid.action, :simple_tab_panel.action] + super
   end
 
-  action :simple_accordion, :icon => :application_tile_vertical, :handler => :load_component_by_action
-  action :user_grid, :icon => :table, :handler => :load_component_by_action
-  action :simple_tab_panel, :icon => :table_multiple, :handler => :load_component_by_action
+  action :simple_accordion, :icon => :application_tile_vertical, :handler => :load_netzke_component_by_action
+  action :user_grid, :icon => :table, :handler => :load_netzke_component_by_action
+  action :simple_tab_panel, :icon => :table_multiple, :handler => :load_netzke_component_by_action
 
   component :user_grid
   component :simple_accordion

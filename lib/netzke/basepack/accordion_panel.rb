@@ -27,7 +27,7 @@ module Netzke
             item.on('expand', function(i){
               if (i && i.wrappedComponent && !i.items.first() && !i.beingLoaded) {
                 i.beingLoaded = true; // prevent more than one request per panel in case of fast clicking
-                this.loadComponent({name: i.wrappedComponent, container: i.id}, function(){i.beingLoaded = false});
+                this.loadNetzkeComponent({name: i.wrappedComponent, container: i.id}, function(){i.beingLoaded = false});
               }
             }, this);
           }, this);
