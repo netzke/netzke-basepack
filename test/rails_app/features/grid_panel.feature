@@ -231,11 +231,11 @@ Scenario: Advanced search window should be hidable after loading grid panel dyna
   Then the "book_grid_loader__book_grid_one__search_form" component should be hidden
 
 @javascript
-  Scenario: Column order should be saved across page reloads
-    Given I am on the BookGridWithPersistence test page
-    When I drag "Digitized" column before "Title"
-    And I go to the BookGridWithPersistence test page
-    Then I should see columns in order: "Author name", "Digitized", "Title"
+Scenario: Column order should be saved across page reloads
+  Given I am on the BookGridWithPersistence test page
+  When I drag "Digitized" column before "Title"
+  And I go to the BookGridWithPersistence test page
+  Then I should see columns in order: "Author name", "Digitized", "Title"
 
 @javascript
 Scenario: I must see total records value

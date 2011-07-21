@@ -29,7 +29,6 @@ Ext.define('Ext.netzke.ComboBox', {
   // typeAhead     : true,
 
   initComponent : function(){
-
     var modelName = this.parentId + "_" + this.name;
 
     Ext.define(modelName, {
@@ -135,7 +134,7 @@ Ext.override( Ext.form.field.Checkbox, {
   }
 });
 
-/* We were missing the 'load' event on proxy... */
+/* We were missing the 'load' event on proxy, implementing it ourselves */
 Ext.override(Ext.data.proxy.Server, {
   constructor: function() {
     this.addEvents('load');

@@ -74,7 +74,7 @@ module Netzke
     #       }
     #     end
     #
-    # Besides these options, a column can receive any meaningful config option understood by Ext.grid.Column (http://dev.sencha.com/deploy/dev/docs/?class=Ext.grid.Column)
+    # Besides these options, a column can receive any meaningful config option understood by Ext.grid.column.Column
     #
     # == One-to-many association support
     # If the model bound to a grid +belongs_to+ another model, GridPanel can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
@@ -158,7 +158,8 @@ module Netzke
       # JavaScript includes
       ex = Netzke::Core.ext_path.join("examples")
 
-      # js_include(ex.join("ux/CheckColumn.js"))
+      js_include(ex.join("ux/CheckColumn.js"))
+      js_include :check_column_fix
 
       # Includes for column filters
       if column_filters_available
@@ -198,7 +199,7 @@ module Netzke
 
       def get_default_association_values #:nodoc:
         columns.select{ |c| c[:name].index("__") && c[:default_value] }.each.inject({}) do |r,c|
-          assoc, assoc_method = assoc_and_assoc_method_for_column(c)
+          assoc, assoc_method = assoc_and_assoc_method_for_attr(c)
           assoc_instance = assoc.klass.find(c[:default_value])
           r.merge(c[:name] => assoc_instance.send(assoc_method))
         end

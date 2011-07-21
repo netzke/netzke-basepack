@@ -3,9 +3,9 @@ class BookGrid < Netzke::Basepack::GridPanel
 
   def default_config
     super.merge(
-      :model => "Book"
-      # :columns => [{:name => :author__first_name}]
-      # :columns => [:title, :exemplars, :digitized, :notes]
+      :model => "Book",
+      # :columns => [{:name => :author__first_name, :read_only => true}, :exemplars, {:name => :digitized, :xtype => :checkcolumn, :editable => false}]
+      # :columns => [{:name => :title, :editable => false, :editor => {:xtype => :datefield}}, :exemplars, :digitized, :notes]
     )
   end
 end

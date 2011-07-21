@@ -14,7 +14,7 @@ module Netzke
         if options
           query ? options.select{ |o| o.index(/^#{query}/) }.map{ |el| [el] } : options
         else
-          assoc, assoc_method = assoc_and_assoc_method_for_column(column)
+          assoc, assoc_method = assoc_and_assoc_method_for_attr(column)
 
           if assoc
             # Options for an asssociation attribute
@@ -66,7 +66,7 @@ module Netzke
       end
 
       # Returns association and association method for a column
-      def assoc_and_assoc_method_for_column(c)
+      def assoc_and_assoc_method_for_attr(c)
         assoc_name, assoc_method = c[:name].split('__')
         assoc = data_class.reflect_on_association(assoc_name.to_sym) if assoc_method
         [assoc, assoc_method]
@@ -100,7 +100,7 @@ module Netzke
       # Mark an attribute as "virtual" by default, when it doesn't reflect a model column, or a model column of an association
       def set_default_virtual(c)
         if c[:virtual].nil? # sometimes at maybe handy to mark a column as non-virtual forcefully
-          assoc, assoc_method = assoc_and_assoc_method_for_column(c)
+          assoc, assoc_method = assoc_and_assoc_method_for_attr(c)
           if assoc
             c[:virtual] = true if !assoc.klass.column_names.map(&:to_sym).include?(assoc_method.to_sym)
           else

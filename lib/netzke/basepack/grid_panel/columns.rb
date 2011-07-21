@@ -114,7 +114,6 @@ module Netzke
           # Normalize here, as from the config we can get symbols (names) instead of hashes
           columns_from_config = config[:columns] && normalize_attrs(config[:columns])
 
-
           if columns_from_config
             # automatically add a column that reflects the primary key (unless specified in the config)
             columns_from_config.insert(0, {:name => data_class.primary_key}) unless columns_from_config.any?{ |c| c[:name] == data_class.primary_key }
@@ -133,23 +132,110 @@ module Netzke
 
           filter_out_excluded_columns(columns_for_create) unless with_excluded
 
-          # Make the column config complete with the defaults
-          columns_for_create.each do |c|
-            detect_association(c)
+          # Make the column config complete with the defaults.
+          # Note: dup is needed to avoid modifying original hashes.
+          columns_for_create.map { |c| c.dup.tap { |c| augment_column_config c } }
+        end
+
+        memoize :initial_columns
+
+        private
+
+          # Based on initial column config, e.g.:
+          #
+          #   {:name=>"author__name", :attr_type=>:string}
+          #
+          # augment it with additional configuration params, e.g.:
+          #
+          #   {:name=>"author__name", :attr_type=>:string, :editor=>{:xtype=>:netzkeremotecombo}, :assoc=>true, :virtual=>true, :header=>"Author  name", :editable=>true, :sortable=>false, :filterable=>false}
+          #
+          # It may be handy to override it.
+          def augment_column_config(c)
+            # note: the order of these calls is important, as consequent calls may depend on the result of previous ones
+            set_default_xtype(c)
             set_default_virtual(c)
-            set_default_header(c)
+            set_default_text(c)
             set_default_editor(c)
             set_default_width(c)
             set_default_hidden(c)
             set_default_editable(c)
             set_default_sortable(c)
             set_default_filterable(c)
+            c[:assoc] = association_attr?(c)
           end
 
-          columns_for_create
-        end
+          def set_default_xtype(c)
+            return if c[:renderer] || c[:editor] # if user set those manually, we don't mess with column xtype
+            c[:xtype] ||= attr_type_to_xtype_map[c[:attr_type]]
+          end
 
-        private
+          def set_default_text(c)
+            c[:text] ||= c[:label] || data_class.human_attribute_name(c[:name])
+          end
+
+          def set_default_editor(c)
+            # if shouldn't be editable, don't set any default editor; also, specifying xtype takes care of the editor
+            return if c[:read_only] || c[:editable] == false
+
+            if association_attr?(c)
+              set_default_association_editor(c)
+            else
+              c[:editor] ||= editor_for_attr_type(c[:attr_type])
+            end
+          end
+
+          def set_default_width(c)
+            c[:width] ||= 50 if c[:attr_type] == :boolean
+            c[:width] ||= 150 if c[:attr_type] == :datetime
+          end
+
+          def set_default_hidden(c)
+            c[:hidden] = true if primary_key_attr?(c) && c[:hidden].nil?
+          end
+
+          def set_default_editable(c)
+            if c[:editable].nil?
+              c[:editable] = is_editable_column?(c) || nil
+            end
+          end
+
+          def set_default_sortable(c)
+            c[:sortable] = !c[:virtual] if c[:sortable].nil? # TODO: optimize - don't set it to false
+          end
+
+          def set_default_filterable(c)
+            c[:filterable] = !c[:virtual] if c[:filterable].nil?
+          end
+
+
+          # Detects an association column and sets up the proper editor.
+          def set_default_association_editor(c)
+            assoc, assoc_method = assoc_and_assoc_method_for_attr(c)
+            return unless assoc
+
+            assoc_column = assoc.klass.columns_hash[assoc_method]
+            assoc_method_type = assoc_column.try(:type)
+
+            # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
+            if c[:nested_attribute]
+              c[:editor] ||= editor_for_attr_type(assoc_method_type)
+            else
+              c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
+            end
+          end
+
+          # If the column should be editable
+          def is_editable_column?(c)
+            not_editable_if = primary_key_attr?(c)
+            not_editable_if ||= c[:virtual] && !association_attr?(c[:name])
+            not_editable_if ||= c[:read_only]
+
+            editable_if = data_class.column_names.include?(c[:name])
+            editable_if ||= data_class.instance_methods.map(&:to_s).include?("#{c[:name]}=")
+            editable_if ||= association_attr?(c[:name])
+
+            editable_if && !not_editable_if
+          end
 
           def initial_columns_order
             columns.map do |c|
@@ -193,57 +279,18 @@ module Netzke
             # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled?
           end
 
-          def set_default_header(c)
-            c[:label] ||= data_class.human_attribute_name(c[:name])
-          end
-
-          def set_default_editor(c)
-            # c[:editor] ||= editor_for_attr_type(c[:attr_type]) # This is done in JS!
-            c[:editor] = {:xtype => c[:editor]} if c[:editor].is_a?(Symbol)
-          end
-
-          def set_default_width(c)
-            c[:width] ||= 50 if c[:attr_type] == :boolean
-            c[:width] ||= 150 if c[:attr_type] == :datetime
-          end
-
-          def set_default_hidden(c)
-            c[:hidden] = true if primary_key_attr?(c) && c[:hidden].nil?
-          end
-
-          def set_default_editable(c)
-            if c[:editable].nil?
-              not_editable_if = primary_key_attr?(c)
-              not_editable_if ||= c[:virtual] && !association_attr?(c[:name])
-              not_editable_if ||= c.delete(:read_only)
-
-              editable_if = data_class.column_names.include?(c[:name])
-              editable_if ||= data_class.instance_methods.map(&:to_s).include?("#{c[:name]}=")
-              editable_if ||= association_attr?(c[:name])
-
-              c[:editable] = editable_if && !not_editable_if
-            end
-          end
-
-          def set_default_sortable(c)
-            c[:sortable] = !c[:virtual] if c[:sortable].nil? # TODO: optimize - don't set it to false
-          end
-
-          def set_default_filterable(c)
-            c[:filterable] = !c[:virtual] if c[:filterable].nil?
-          end
-
-          # Returns editor's xtype for a column type
+          # Column editor config for attribute type.
           def editor_for_attr_type(type)
-            attr_type_to_editor_map[type] || :textfield
+            {:xtype => attr_type_to_editor_xtype_map[type] || :textfield}
           end
 
+          # Column editor config for one-to-many association
           def editor_for_association
-            :netzkeremotecombo
+            {:xtype => :netzkeremotecombo}
           end
 
-          # Returns a hash that maps a column type to the editor xtype. Override if you want different editors.
-          def attr_type_to_editor_map
+          # Hash that maps a column type to the editor xtype. Override if you want different editors.
+          def attr_type_to_editor_xtype_map
             {
               :integer => :numberfield,
               :boolean => :checkbox,
@@ -255,21 +302,13 @@ module Netzke
             }
           end
 
-          # Detects an association column and sets up the proper editor.
-          def detect_association(c)
-            assoc, assoc_method = assoc_and_assoc_method_for_column(c)
-            if assoc
-              assoc_column = assoc.klass.columns_hash[assoc_method]
-              assoc_method_type = assoc_column.try(:type)
-
-              # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
-              if c[:nested_attribute]
-                c[:editor] ||= editor_for_attr_type(assoc_method_type)
-              else
-                c[:editor] ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : editor_for_association
-                c[:assoc] = true
-              end
-            end
+          def attr_type_to_xtype_map
+            {
+              # :integer  => :numbercolumn, # don't like the default formatter
+              :boolean  => :checkcolumn,
+              :date     => :datecolumn,
+              :datetime => :datecolumn # TODO: replace with datetimepicker
+            }
           end
 
           # Default fields that will be displayed in the Add/Edit/Search forms
@@ -306,7 +345,7 @@ module Netzke
 
           def columns_default_values
             columns.inject({}) do |r,c|
-              assoc, assoc_method = assoc_and_assoc_method_for_column(c)
+              assoc, assoc_method = assoc_and_assoc_method_for_attr(c)
               if c[:default_value].nil?
                 r
               else

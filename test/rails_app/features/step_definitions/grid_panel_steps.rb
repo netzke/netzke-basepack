@@ -108,7 +108,7 @@ end
 
 When /^I (?:drag|move) "([^"]*)" column before "([^"]*)"$/ do |header1, header2|
   headers=[header1,header2].map {|s| s=s.gsub(/ /, '  ')}
-  indexi =[0,1].map { |i| i=page.driver.browser.execute_script %Q(return Ext.ComponentQuery.query('gridcolumn[label="#{headers[i]}"]')[0].getIndex()) }
+  indexi =[0,1].map { |i| i=page.driver.browser.execute_script %Q(return Ext.ComponentQuery.query('gridcolumn[text="#{headers[i]}"]')[0].getIndex()) }
   page.driver.browser.execute_script <<-JS
     cmp = Ext.ComponentQuery.query('gridpanel')[0];
     cmp.onColumnMove(null, null, #{indexi[0]}, #{indexi[1]});
@@ -118,9 +118,9 @@ end
 Then /^I should see columns in order: "([^"]*)", "([^"]*)", "([^"]*)"$/ do |header1, header2, header3|
   headers=[header1,header2,header3].map {|s| s=s.gsub(/ /, '  ')}
   page.driver.browser.execute_script(<<-JS).should be_true
-    return (Ext.ComponentQuery.query('gridcolumn[label="#{headers[0]}"]')[0].getIndex() == 1) &&
-           (Ext.ComponentQuery.query('gridcolumn[label="#{headers[1]}"]')[0].getIndex() == 2) &&
-           (Ext.ComponentQuery.query('gridcolumn[label="#{headers[2]}"]')[0].getIndex() == 3)
+    return (Ext.ComponentQuery.query('gridcolumn[text="#{headers[0]}"]')[0].getIndex() == 1) &&
+           (Ext.ComponentQuery.query('gridcolumn[text="#{headers[1]}"]')[0].getIndex() == 2) &&
+           (Ext.ComponentQuery.query('gridcolumn[text="#{headers[2]}"]')[0].getIndex() == 3)
   JS
 end
 

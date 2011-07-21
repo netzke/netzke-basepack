@@ -7,9 +7,9 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
       :columns => [
         {:name => :author__first_name, :renderer => :my_renderer},
         {:name => :author__last_name, :renderer => :uppercase},
-        :author__name,
-        :title,
-        :digitized,
+        {:name => :author__name, :flex => 1},
+        {:name => :title, :flex => 1},
+        {:name => :digitized},
         {
           :name => :rating,
           :editor => {
@@ -20,7 +20,7 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
           :renderer => "function(v){return ['', 'Good', 'Average', 'Poor'][v];}"
         },
         :exemplars,
-        :updated_at
+        {:name => :updated_at, :editable => true}
       ]
     )
   end
