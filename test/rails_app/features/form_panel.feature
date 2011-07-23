@@ -66,18 +66,18 @@ Scenario: Checkbox field should work properly
   And a book should exist with digitized: true, author: that author, exemplars: 4
   And a book should not exist with digitized: false, author: that author
 
-@javascript
-Scenario: Checkbox group for tags should work properly
-  Given a book exists with title: "Some Title"
-  When I go to the BookForm test page
-  And I check ext checkbox "recommend"
-  And I check ext checkbox "cool"
-  And I press "Apply"
-  And I wait for the response from the server
-  Then ext "cool" checkbox should be checked
-  And ext "recommend" checkbox should be checked
-  But ext "read" checkbox should not be checked
-  And a book should exist with tags: "cool,recommend"
+# @javascript
+# Scenario: Checkbox group for tags should work properly
+#   Given a book exists with title: "Some Title"
+#   When I go to the BookForm test page
+#   And I check ext checkbox "recommend"
+#   And I check ext checkbox "cool"
+#   And I press "Apply"
+#   And I wait for the response from the server
+#   Then ext "cool" checkbox should be checked
+#   And ext "recommend" checkbox should be checked
+#   But ext "read" checkbox should not be checked
+#   And a book should exist with tags: "cool,recommend"
 
 @javascript
   Scenario: Validations
