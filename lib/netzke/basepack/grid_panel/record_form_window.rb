@@ -19,14 +19,14 @@ module Netzke
 
         js_method :init_component, <<-JS
           function(params){
-            #{js_full_class_name}.superclass.initComponent.call(this);
-            this.getNetzkeComponent().on("submitsuccess", function(){this.closeRes = "ok"; this.close();}, this);
+            this.callParent();
+            this.items.first().on("submitsuccess", function(){this.closeRes = "ok"; this.close();}, this);
           }
         JS
 
         js_method :on_ok, <<-JS
           function(params){
-            this.getNetzkeComponent().onApply();
+            this.items.first().onApply();
           }
         JS
 
