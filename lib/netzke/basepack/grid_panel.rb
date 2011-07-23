@@ -149,7 +149,7 @@ module Netzke
       include self::Columns
       include Netzke::Basepack::DataAccessor
 
-      js_mixin :grid_panel
+      js_mixin :grid_panel, :event_handling
       js_mixin :advanced_search if extended_search_available
       js_mixin :edit_in_form if edit_in_form_available
 
