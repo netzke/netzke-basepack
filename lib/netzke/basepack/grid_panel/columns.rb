@@ -329,6 +329,8 @@ module Netzke
               # scopes for combobox options
               field_config[:scopes] = c[:editor][:scopes] if c[:editor].is_a?(Hash)
 
+              field_config.merge!(c[:editor])
+
               field_config
             end
           end
