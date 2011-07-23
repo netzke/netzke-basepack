@@ -29,7 +29,7 @@ module Netzke
             {
               :update_new_records => mod_records[:create],
               :update_mod_records => mod_records[:update] || {},
-              :feedback => @flash
+              :netzke_feedback => @flash
             }
           end
 
@@ -38,9 +38,9 @@ module Netzke
               record_ids = ActiveSupport::JSON.decode(params[:records])
               data_class.destroy(record_ids)
               on_data_changed
-              {:feedback => I18n.t('netzke.basepack.grid_panel.deleted_n_records', :n => record_ids.size), :load_store_data => get_data}
+              {:netzke_feedback => I18n.t('netzke.basepack.grid_panel.deleted_n_records', :n => record_ids.size), :load_store_data => get_data}
             else
-              {:feedback => I18n.t('netzke.basepack.grid_panel.cannot_delete')}
+              {:netzke_feedback => I18n.t('netzke.basepack.grid_panel.cannot_delete')}
             end
           end
 
@@ -142,9 +142,9 @@ module Netzke
           if mod_records_count > 0
             on_data_changed
             flash :notice => "Updated #{mod_records_count} records."
-            {:set_result => "ok", :feedback => @flash}.to_nifty_json
+            {:set_result => "ok", :netzke_feedback => @flash}.to_nifty_json
           else
-            {:feedback => @flash}.to_nifty_json
+            {:netzke_feedback => @flash}.to_nifty_json
           end
         end
 
@@ -169,7 +169,7 @@ module Netzke
             end
           else
             flash :error => "You don't have permissions to read data"
-            { :feedback => @flash }
+            { :netzke_feedback => @flash }
           end
         end
 

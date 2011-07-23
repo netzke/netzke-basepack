@@ -16,6 +16,6 @@ class FormWithoutModel < Netzke::Basepack::FormPanel
 
   def netzke_submit_endpoint(params)
     data = ActiveSupport::JSON.decode(params[:data])
-    {:feedback => data.each_pair.map{ |k,v| "#{k.humanize}: #{v}" }.join("<br/>")}
+    {:netzke_feedback => data.each_pair.map{ |k,v| "#{k.humanize}: #{v}" }.join("<br/>")}
   end
 end

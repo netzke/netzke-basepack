@@ -20,7 +20,7 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
           :renderer => "function(v){return ['', 'Good', 'Average', 'Poor'][v];}"
         },
         :exemplars,
-        {:name => :updated_at, :editable => true}
+        {:name => :updated_at}
       ]
     )
   end
@@ -30,6 +30,5 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
       return value ? "*" + value + "*" : "";
     }
   JS
-
 
 end

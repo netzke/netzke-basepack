@@ -65,7 +65,7 @@ module Netzke
             @record.errors.to_a.each do |msg|
               flash :error => msg
             end
-            {:feedback => @flash, :apply_form_errors => build_form_errors(record)}
+            {:netzke_feedback => @flash, :apply_form_errors => build_form_errors(record)}
           end
         end
 
