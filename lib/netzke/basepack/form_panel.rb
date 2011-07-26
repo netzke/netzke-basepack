@@ -4,16 +4,17 @@ require "netzke/basepack/form_panel/services"
 
 module Netzke
   module Basepack
-    # Ext.form.FormPanel-based component with different goodies
+    # Ext.form.Panel-based component
     #
     # == Configuration
-    # Besides all the standard +Ext.form.FormPanel+ config options, accepts:
     # * +model+ - name of the ActiveRecord model that provides data to this GridPanel.
     # * +record+ - record to be displayd in the form. Takes precedence over +:record_id+
     # * +record_id+ - id of the record to be displayd in the form. Also see +:record+
+    # * +items+ - the layout of the fields as an array. See "Layout configuration".
     # * +mode+ - render mode, accepted options:
     #   * +lockable+ - makes the form panel load initially in "display mode", then lets "unlock" it, change the values, and "lock" it again, while updating the values on the server
     # * +updateMask+ - +Ext.LoadMask+ config options for the mask shown while the form is submitting its values
+    # Besides, FormPanel can accept any meaninful :
     #
     # === Layout configuration
     # The layout of the form is configured by supplying the +item+ config option, same way it would be configured in Ext (thus allowing for complex form layouts). FormPanel will expand fields by looking at their names (unless +no_binding+ set to +true+ is specified for a specific field).

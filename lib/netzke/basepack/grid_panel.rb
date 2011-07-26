@@ -51,7 +51,7 @@ module Netzke
     # == Columns
     # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name of model's (virtual) attribute (in which case the configuration will be fully automatic), or a hash that may contain the following configuration options as keys:
     #
-    # * +name+ - name of the column, that may correspond to the model's (virtual) attribute
+    # * +name+ - (required) name of the column, that may correspond to the model's (virtual) attribute
     # * +read_only+ - a boolean that defines if the cells in the column should be editable
     # * +editable+ - same as +read_only+, but in reverse (takes precedence over +read_only+)
     # * +filterable+ - set to false to disable filtering on this column
@@ -74,7 +74,7 @@ module Netzke
     #       }
     #     end
     #
-    # Besides these options, a column can receive any meaningful config option understood by Ext.grid.column.Column
+    # Besides these options, a column can receive any meaningful config option understood by Ext.grid.column.Column.
     #
     # == One-to-many association support
     # If the model bound to a grid +belongs_to+ another model, GridPanel can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
@@ -86,6 +86,10 @@ module Netzke
     # In order to scope out the records displayed in the drop-down box, the +scope+ column option can be used, e.g.:
     #
     #     {:name => "author__first_name", :scope => lambda{|relation| relation.where(:popular => true)}}
+    #
+    # == Add/edit/search forms
+    # The forms will by default display the fields that correspond to the configured columns, taking over meaningful configuration options (e.g. +text+ will be converted into +fieldLabel+).
+    # You may override the default fields displayed in the forms by overriding the +default_fields_for_forms+ method, which should return an array understood by the +items+ config property of the +FormPanel+. If you need to use a custom class instead of +FormPanel+, you may need to go an extra mile overriding the corresponding GridPanel's child component (e.g. "add_form" or "edit_form").
     #
     # == Actions
     # You can override GridPanel's actions to change their text, icons, and tooltips (see http://api.netzke.org/core/Netzke/Actions.html).

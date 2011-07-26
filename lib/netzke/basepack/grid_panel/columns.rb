@@ -324,7 +324,10 @@ module Netzke
             end
 
             selected_columns.map do |c|
-              field_config = {:name => c[:name]}
+              field_config = {
+                :name => c[:name],
+                :field_label => c[:text] || c[:header]
+              }
 
               # scopes for combobox options
               field_config[:scopes] = c[:editor][:scopes] if c[:editor].is_a?(Hash)
