@@ -20,7 +20,7 @@ module Netzke
         js_method :init_component, <<-JS
           function(params){
             this.callParent();
-            this.items.first().on("submitsuccess", function(){this.closeRes = "ok"; this.close();}, this);
+            this.items.first().on("submitsuccess", function(){ this.closeRes = "ok"; this.close(); }, this);
           }
         JS
 

@@ -18,7 +18,7 @@ module Netzke
 
       def configuration
         super.tap do |s|
-          s[:items] = [:search_panel.component(:header => false)]
+          s[:items] = [:search_panel.component(:prevent_header => true)]
           s[:title] = I18n.t('netzke.basepack.search_window.title')
         end
       end
@@ -32,7 +32,7 @@ module Netzke
 
       js_method :init_component, <<-JS
         function(){
-          Netzke.classes.Basepack.SearchWindow.superclass.initComponent.call(this);
+          this.callParent();
 
           this.on('show', function(){
             this.closeRes = 'cancel';

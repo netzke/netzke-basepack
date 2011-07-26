@@ -320,7 +320,7 @@ module Netzke
             :strong_default_attrs => config[:strong_default_attrs],
             :border => true,
             :bbar => false,
-            :header => false,
+            :prevent_header => true,
             :mode => config[:mode],
             :record => data_class.new(columns_default_values)
           }.deep_merge(config[:add_form_config] || {})]
@@ -339,7 +339,7 @@ module Netzke
             :items => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
             :bbar => false,
-            :header => false,
+            :prevent_header => true,
             :mode => config[:mode]
             # :record_id gets assigned by deliver_component dynamically, at the moment of loading
           }.deep_merge(config[:edit_form_config] || {})]
@@ -358,7 +358,7 @@ module Netzke
             :items => default_fields_for_forms,
             :persistent_config => config[:persistent_config],
             :bbar => false,
-            :header => false,
+            :prevent_header => true,
             :mode => config[:mode]
           }.deep_merge(config[:multi_edit_form_config] || {})]
         }.deep_merge(config[:multi_edit_form_window_config] || {})
