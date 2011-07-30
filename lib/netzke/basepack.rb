@@ -1,5 +1,8 @@
 require 'netzke/basepack/version'
-require 'netzke/active_record'
+
+if defined? ActiveRecord
+  require 'netzke/active_record'
+end
 
 module Netzke
   module Basepack
