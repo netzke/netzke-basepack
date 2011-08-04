@@ -20,7 +20,7 @@ module Netzke
 
           if config[:persistence]
             updated_items.each do |item|
-              region = item[:region] || components[item[:component]][:region]
+              region = item[:region] || components[item[:netzke_component]][:region]
               item.merge!({
                 :width => state[:"#{region}_region_width"],
                 :height => state[:"#{region}_region_height"],

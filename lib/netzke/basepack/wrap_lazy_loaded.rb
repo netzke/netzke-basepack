@@ -8,7 +8,7 @@ module Netzke
       def items
         orig = super.dup
         orig.each do |item|
-          wrapped_component = components[item[:component]]
+          wrapped_component = components[item[:netzke_component]]
           # When a nested component with lazy loading is detected, it gets replaced with a 'fit' panel,
           # into which later the component itself is dynamically loaded on request.
           if wrapped_component && wrapped_component[:lazy_loading]

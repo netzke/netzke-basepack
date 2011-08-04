@@ -101,61 +101,61 @@ module Netzke
         @record ||= config[:record] || config[:record_id] && data_class && data_class.where(data_class.primary_key => config[:record_id]).first
       end
 
-      def configuration_components
-        res = []
+      # def configuration_components
+      #   res = []
+      #
+      #   res << {
+      #     :name              => 'fields',
+      #     :class_name => "FieldsConfigurator",
+      #     :active            => true,
+      #     :owner             => self,
+      #     :persistent_config => true
+      #   }
+      #
+      #   res << {
+      #     :name               => 'general',
+      #     :class_name  => "PropertyEditor",
+      #     :component             => self,
+      #     :title => false
+      #   }
+      #
+      #   res
+      # end
 
-          res << {
-            :name              => 'fields',
-            :class_name => "FieldsConfigurator",
-            :active            => true,
-            :owner             => self,
-            :persistent_config => true
-          }
+      def self.property_fields
+        res = [
+          {:name => "ext_config__title",               :attr_type => :string},
+          {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
+          {:name => "ext_config__bbar",              :attr_type => :json}
+        ]
 
-          res << {
-            :name               => 'general',
-            :class_name  => "PropertyEditor",
-            :component             => self,
-            :title => false
-          }
+        res
+      end
 
-          res
+      private
+
+        def self.server_side_config_options
+          super + [:record, :scope]
         end
 
-        def self.property_fields
-          res = [
-            {:name => "ext_config__title",               :attr_type => :string},
-            {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
-            {:name => "ext_config__bbar",              :attr_type => :json}
-          ]
-
-          res
+        def meta_field
+          {}.tap do |res|
+            assoc_values = get_association_values
+            res[:association_values] = assoc_values.literalize_keys if record && !assoc_values.empty?
+          end
         end
 
-        private
-
-          def self.server_side_config_options
-            super + [:record, :scope]
+        def get_association_values
+          fields_that_need_associated_values = fields.select{ |k,v| k.to_s.index("__") && !fields[k][:nested_attribute] }
+          # Take care of Ruby 1.8.7
+          if fields_that_need_associated_values.is_a?(Array)
+            fields_that_need_associated_values = fields_that_need_associated_values.inject({}){|r,(k,v)| r.merge(k => v)}
           end
 
-          def meta_field
-            {}.tap do |res|
-              assoc_values = get_association_values
-              res[:association_values] = assoc_values.literalize_keys if record && !assoc_values.empty?
-            end
+          fields_that_need_associated_values.each_pair.inject({}) do |r,(k,v)|
+            r.merge(k => record.value_for_attribute(fields_that_need_associated_values[k], true))
           end
-
-          def get_association_values
-            fields_that_need_associated_values = fields.select{ |k,v| k.to_s.index("__") && !fields[k][:nested_attribute] }
-            # Take care of Ruby 1.8.7
-            if fields_that_need_associated_values.is_a?(Array)
-              fields_that_need_associated_values = fields_that_need_associated_values.inject({}){|r,(k,v)| r.merge(k => v)}
-            end
-
-            fields_that_need_associated_values.each_pair.inject({}) do |r,(k,v)|
-              r.merge(k => record.value_for_attribute(fields_that_need_associated_values[k], true))
-            end
-          end
+        end
 
       # include ::Netzke::Plugins::ConfigurationTool if config_tool_available # it will load ConfigurationPanel into a modal window
     end
