@@ -53,7 +53,7 @@ When /^I enable filter on column "([^"]*)" with value "([^"]*)"$/ do |column, va
     filter.setValue(#{value});
     filter.setActive(true);
   JS
-  sleep 0.6
+  sleep 1
 end
 
 When /^I clear all filters in the grid$/ do
@@ -67,23 +67,23 @@ end
 
 When /^I expand combobox "([^"]*)" in row (\d+) of the grid$/ do |field, row|
   page.driver.browser.execute_script <<-JS
-    var grid = Ext.ComponentQuery.query('gridpanel')[0];
-    var editor = grid.getPlugin('celleditor');
+    var grid    = Ext.ComponentQuery.query('gridpanel')[0],
+        editor  = grid.getPlugin('celleditor');
+
     editor.startEditByPosition({ row:#{row.to_i-1}, column:grid.headerCt.items.findIndex('name', '#{field}') });
   JS
-  # HACK: test fails w\o this stupid thing
-  sleep 1
+
+  sleep 0.5
 
   page.driver.browser.execute_script("Ext.ComponentQuery.query('netzkeremotecombo')[0].onTriggerClick();");
 end
 
 When /^I select "([^"]*)" in combobox "([^"]*)" in row (\d+) of the grid$/ do |value, field, row|
   page.driver.browser.execute_script <<-JS
-    var grid   = Ext.ComponentQuery.query('gridpanel')[0];
-    var col    = Ext.ComponentQuery.query('gridcolumn[name="#{field}"]');
-    var colId  = grid.headerCt.items.findIndex('name', '#{field}');
-    var combo = Ext.ComponentQuery.query('netzkeremotecombo')[0];
-
+    var grid   = Ext.ComponentQuery.query('gridpanel')[0],
+        col    = Ext.ComponentQuery.query('gridcolumn[name="#{field}"]'),
+        colId  = grid.headerCt.items.findIndex('name', '#{field}'),
+        combo  = Ext.ComponentQuery.query('netzkeremotecombo')[0];
 
     combo.setValue( combo.findRecordByDisplay('#{value}') );
     combo.onTriggerClick();
@@ -113,6 +113,7 @@ When /^I (?:drag|move) "([^"]*)" column before "([^"]*)"$/ do |header1, header2|
     cmp = Ext.ComponentQuery.query('gridpanel')[0];
     cmp.onColumnMove(null, null, #{indexi[0]}, #{indexi[1]});
   JS
+  When "I wait for the response from the server"
 end
 
 Then /^I should see columns in order: "([^"]*)", "([^"]*)", "([^"]*)"$/ do |header1, header2, header3|
