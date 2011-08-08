@@ -1,4 +1,3 @@
-require 'active_record'
 require 'meta_where'
 require 'will_paginate'
 

@@ -1,5 +1,3 @@
-require 'netzke/active_record'
-
 module Netzke
   module Basepack
     # This module is included into such data-driven components as GridPanel, FormPanel, PagingFormPanel, etc.
