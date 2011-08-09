@@ -14,13 +14,13 @@ Gem::Specification.new do |s|
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
     "LICENSE",
-    "README.rdoc"
+    "README.md"
   ]
   s.files = [
     ".autotest",
     "CHANGELOG.rdoc",
     "LICENSE",
-    "README.rdoc",
+    "README.md",
     "Rakefile",
     "TODO.rdoc",
     "app/models/netzke_field_list.rb",
