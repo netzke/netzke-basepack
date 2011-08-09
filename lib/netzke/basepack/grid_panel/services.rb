@@ -1,6 +1,3 @@
-require 'meta_where'
-require 'will_paginate'
-
 module Netzke
   module Basepack
     class GridPanel < Netzke::Base

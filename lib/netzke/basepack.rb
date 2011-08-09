@@ -2,7 +2,11 @@ require 'netzke/basepack/version'
 
 if defined? ActiveRecord
   require 'netzke/active_record'
+  require 'meta_where'
 end
+
+# will_paginate supports more than just ActiveRecord
+require 'will_paginate'
 
 module Netzke
   module Basepack
