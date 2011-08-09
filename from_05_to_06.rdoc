@@ -1,2 +1,0 @@
-* Netzke::Base now becomes Netzke::Base
-* Regions in BorderLayout are configured inside :items
