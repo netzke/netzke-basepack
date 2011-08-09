@@ -53,6 +53,7 @@ With Rails 2 (and Ext 3 only), use versions 0.5.x (*not maintained*)
 Official project site: http://netzke.org
 
 Twitter:
+
 * latest news about Netzke: http://twitter.com/netzke
 * author's rambling about osx, productivity and what not:  http://twitter.com/nomadcoder
 
