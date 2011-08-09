@@ -8,14 +8,18 @@ module Netzke
 
           #
           # Endpoints
-          #
+
+          # Called when the form gets submitted (e.g. by pressing the Apply button)
           endpoint :netzke_submit, :pre => true do |params|
             netzke_submit(params)
           end
 
+          # Can be called when the form needs to load a record with given ID. E.g.:
+          #
+          #     someForm.netzkeLoad({id: 100});
           endpoint :netzke_load do |params|
             @record = data_class && data_class.find_by_id(params[:id])
-            {:set_form_values => @record.to_hash(fields)}
+            {:set_form_values => js_record_data}
           end
 
           # Returns options for a combobox

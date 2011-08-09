@@ -6,7 +6,8 @@ module Netzke
   module Basepack
     # Ext.form.Panel-based component
     #
-    # == Configuration
+    # == Netzke-specific config options
+    #
     # * +model+ - name of the ActiveRecord model that provides data to this GridPanel.
     # * +record+ - record to be displayd in the form. Takes precedence over +:record_id+
     # * +record_id+ - id of the record to be displayd in the form. Also see +:record+
@@ -14,10 +15,20 @@ module Netzke
     # * +mode+ - render mode, accepted options:
     #   * +lockable+ - makes the form panel load initially in "display mode", then lets "unlock" it, change the values, and "lock" it again, while updating the values on the server
     # * +updateMask+ - +Ext.LoadMask+ config options for the mask shown while the form is submitting its values
-    # Besides, FormPanel can accept any meaninful :
     #
     # === Layout configuration
+    #
     # The layout of the form is configured by supplying the +item+ config option, same way it would be configured in Ext (thus allowing for complex form layouts). FormPanel will expand fields by looking at their names (unless +no_binding+ set to +true+ is specified for a specific field).
+    #
+    # == Endpoints
+    # FormPanel implements the following endpoints:
+    #
+    # * +netzke_load+ - loads a record with a given id from the server, e.g.:
+    #
+    #     someFormPanel.netzkeLoad({id: 100});
+    #
+    # * +netzke_submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling onApply)
+    # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
     class FormPanel < Netzke::Base
 
       js_base_class "Ext.form.Panel"
