@@ -8,7 +8,7 @@ netzke-basepack-*.gem
 icons
 extjs
 .vimrc
-test/rails_app/config/database.yml.samle
+test/rails_app/config/database.yml
 test/rails_app/vendor/gems/netzke-*
 test/rails_app/db/development_structure.sql
 test/rails_app/public/extjs*
