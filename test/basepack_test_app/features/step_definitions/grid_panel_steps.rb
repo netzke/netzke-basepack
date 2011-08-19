@@ -124,4 +124,3 @@ Then /^I should see columns in order: "([^"]*)", "([^"]*)", "([^"]*)"$/ do |head
            (Ext.ComponentQuery.query('gridcolumn[text="#{headers[2]}"]')[0].getIndex() == 3)
   JS
 end
-

@@ -64,4 +64,3 @@ Scenario: I must see total records value
 
   When I go to the BookPagingFormPanel test page
   Then I should see "of 3" within paging toolbar
-
