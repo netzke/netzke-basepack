@@ -10,7 +10,7 @@
 = v0.6.5 - to be released
 * enhancements
   * When columns states are saved in the persistent storage, adding/removing columns (e.g. in the code) will reset the saved states
-  * Moved features and specs to test/rails_app
+  * Moved features and specs to test/basepack_test_app
 * bug fix
   * FormPanel with multiple association fields wouldn't submit data correctly
   * GridPanel's forms take over the +text+ configuration option for columns as +fieldLabel+ for default fields

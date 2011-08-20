@@ -24,7 +24,7 @@ Embed a basepack component into a view as any other Netzke component, e.g.:
 
   <%= netzke :books, :class_name => 'Netzke::Basepack::GridPanel', :model => 'Book' %>
 
-For more examples, see http://demo.netzke.com, and look into test/rails_app.
+For more examples, see http://demo.netzke.com, and look into test/basepack_test_app.
 
 ## Testing and playing with Netzke Basepack
 
@@ -32,7 +32,7 @@ Netzke Basepack is bundled with Cucumber and RSpec tests. If you would like to c
 
 Besides, the bundled test application is a convenient [playground](https://github.com/skozlov/netzke-core/wiki/Playground) for those who search to experiment with the framework.
 
-After setting up the test application, you can access the test components (from test/rails_app/app/components) like this:
+After setting up the test application, you can access the test components (from test/basepack_test_app/app/components) like this:
 
     http://localhost:3000/components/<name_of_the_test_component_class>
 

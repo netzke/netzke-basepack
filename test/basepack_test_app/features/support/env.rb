@@ -5,14 +5,11 @@
 # files.
 
 ENV["RAILS_ENV"] ||= "test"
-# require File.expand_path(File.dirname(__FILE__) + '/../../config/environment')
-# require File.expand_path(File.dirname(__FILE__) + '/../../test/rails_app/config/environment')
-# require File.expand_path(File.dirname(__FILE__) + '/../../lib/netzke-core')
 
 # Each time recreate test database with migrations
-# db_file = File.dirname(__FILE__) + "/../../test/rails_app/db/test.sqlite3"
+# db_file = File.dirname(__FILE__) + "/../../test/basepack_test_app/db/test.sqlite3"
 # File.delete(db_file) if File.exists?(db_file)
-# ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + "/../test/rails_app/db/migrate")
+# ActiveRecord::Migrator.migrate(File.dirname(__FILE__) + "/../test/basepack_test_app/db/migrate")
 
 # require 'cucumber/formatter/unicode' # Remove this line if you don't want Cucumber Unicode support
 # require 'cucumber/rails/rspec'
