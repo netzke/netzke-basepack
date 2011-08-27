@@ -46,5 +46,9 @@ module RailsApp
 
     # config.netzke.basepack.grid_panel.edit_in_form_available = false
     # config.netzke.basepack.grid_panel.extended_search_available = false
+
+    # to build links to the code on github
+    config.repo_root = "https://github.com/skozlov/netzke-basepack/blob/master"
+
   end
 end

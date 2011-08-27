@@ -1,0 +1,10 @@
+<h1>Test app bundled with Netzke Basepack</h1>
+<h3>Available test components</h3>
+<table>
+<%- for component in @components do -%>
+<tr>
+  <td><%= link_to component.name, components_path(:component => component) %></td>
+  <td><%= link_to_component_code(component) %></td>
+</tr>
+<%- end -%>
+</table>
