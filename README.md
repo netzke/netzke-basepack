@@ -32,13 +32,9 @@ Netzke Basepack is bundled with Cucumber and RSpec tests. If you would like to c
 
 Besides, the bundled test application is a convenient [playground](https://github.com/skozlov/netzke-core/wiki/Playground) for those who search to experiment with the framework.
 
-After setting up the test application, you can access the test components (from test/basepack_test_app/app/components) like this:
+After starting up the test app, you can see the list of functional test components on the index page (along with links to the source code):
 
-    http://localhost:3000/components/<name_of_the_test_component_class>
-
-e.g.:
-
-    http://localhost:3000/components/UserGrid
+    http://localhost:3000/
 
 ## Icons support
 Netzke Basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.
@@ -55,9 +51,10 @@ Official project site: http://netzke.org
 Twitter:
 
 * latest news about Netzke: http://twitter.com/netzke
-* author's rambling about osx, productivity and what not:  http://twitter.com/nomadcoder
+* author's tweets on osx, productivity and what not:  http://twitter.com/nomadcoder
 
 Many (if a bit outdated) tutorials: http://blog.writelesscode.com
 
 ---
 Copyright (c) 2008-2011 NomadCoder, released under the MIT license
+Note, that Ext JS itself is licensed [differently](http://www.sencha.com/products/extjs/license/)
