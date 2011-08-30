@@ -48,7 +48,7 @@ module RailsApp
     # config.netzke.basepack.grid_panel.extended_search_available = false
 
     # to build links to the code on github
-    config.repo_root = "https://github.com/skozlov/netzke-basepack/blob/master"
+    config.repo_root = "https://github.com/skozlov/netzke-basepack/blob/master/test/basepack_test_app"
 
   end
 end
