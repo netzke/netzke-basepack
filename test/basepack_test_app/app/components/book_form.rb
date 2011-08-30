@@ -2,7 +2,7 @@
 class BookForm < Netzke::Basepack::FormPanel
   js_property :title, Book.model_name.human
 
-  include BookPresentation
+  include Extras::BookPresentation
 
   def configuration
     super.merge(

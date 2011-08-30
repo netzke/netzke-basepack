@@ -5,7 +5,7 @@ class UserForm < Netzke::Basepack::FormPanel
     sup = super
     sup.merge({
       :model => 'User',
-      :record_id => User.first.id,
+      :record_id => User.first.try(:id),
       :items => [
         {:xtype => 'fieldset', :title => "Basic Info", :checkboxToggle => true, :items => [
           :first_name,

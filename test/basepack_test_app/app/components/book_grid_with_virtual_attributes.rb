@@ -1,7 +1,7 @@
 class BookGridWithVirtualAttributes < Netzke::Basepack::GridPanel
   js_property :title, "Books"
 
-  include BookPresentation
+  include Extras::BookPresentation
 
   def default_config
     super.merge(
