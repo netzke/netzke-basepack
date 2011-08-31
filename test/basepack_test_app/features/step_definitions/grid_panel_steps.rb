@@ -124,3 +124,26 @@ Then /^I should see columns in order: "([^"]*)", "([^"]*)", "([^"]*)"$/ do |head
            (Ext.ComponentQuery.query('gridcolumn[text="#{headers[2]}"]')[0].getIndex() == 3)
   JS
 end
+
+When /^I click on column "([^"]*)"$/ do |column|
+  el_id = page.driver.browser.execute_script <<-JS
+    var grid   = Ext.ComponentQuery.query('gridpanel')[0],
+        colIx  = grid.headerCt.items.findIndex('name', '#{column}');
+    return grid.headerCt.items.getAt(colIx).id;
+  JS
+
+  find("##{el_id}").click
+end
+
+Then /^the grid should have records sorted by "([^"]*)"\s?(asc|desc)?$/ do |col, dir|
+  dir ||= "asc"
+
+  page.driver.browser.execute_script(<<-JS).should be_true
+    var grid   = Ext.ComponentQuery.query('gridpanel')[0],
+        store  = grid.getStore(),
+        columnValues = [];
+
+    store.each(function(r){ columnValues.#{dir == "asc" ? "push" : "unshift"}(r.get('#{col}')); });
+    return columnValues.toString() === Ext.Array.sort(columnValues).toString();
+  JS
+end
