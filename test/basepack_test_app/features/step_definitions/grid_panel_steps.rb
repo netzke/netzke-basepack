@@ -127,23 +127,26 @@ end
 
 When /^I click on column "([^"]*)"$/ do |column|
   el_id = page.driver.browser.execute_script <<-JS
-    var grid   = Ext.ComponentQuery.query('gridpanel')[0],
-        colIx  = grid.headerCt.items.findIndex('name', '#{column}');
-    return grid.headerCt.items.getAt(colIx).id;
+    return Ext.ComponentQuery.query('gridcolumn[text="#{column}"]')[0].id;
   JS
 
   find("##{el_id}").click
 end
 
-Then /^the grid should have records sorted by "([^"]*)"\s?(asc|desc)?$/ do |col, dir|
+Then /^the grid should have records sorted by "([^"]*)"\s?(asc|desc)?$/ do |column, dir|
   dir ||= "asc"
 
   page.driver.browser.execute_script(<<-JS).should be_true
     var grid   = Ext.ComponentQuery.query('gridpanel')[0],
-        store  = grid.getStore(),
+        column = Ext.ComponentQuery.query('gridcolumn[text="#{column}"]')[0],
+        fieldName = column.name,
         columnValues = [];
 
-    store.each(function(r){ columnValues.#{dir == "asc" ? "push" : "unshift"}(r.get('#{col}')); });
-    return columnValues.toString() === Ext.Array.sort(columnValues).toString();
+    grid.getStore().each(function(r){
+      var value = column.assoc ? r.get('_meta').associationValues[fieldName] : r.get(fieldName);
+      if (value) columnValues.#{dir == "asc" ? "push" : "unshift"}(value);
+    });
+
+    return (columnValues.length > 0) && (columnValues.toString() === Ext.Array.sort(columnValues).toString());
   JS
 end

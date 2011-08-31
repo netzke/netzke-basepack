@@ -217,7 +217,7 @@ module Netzke
                   relation.order("#{assoc} #{dir}")
                 else
                   assoc = data_class.reflect_on_association(assoc.to_sym)
-                  relation.order(assoc.klass.table_name.to_sym => method.to_sym.send(dir)).joins(assoc.name)
+                  relation.joins(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")
                 end
               end
             end
