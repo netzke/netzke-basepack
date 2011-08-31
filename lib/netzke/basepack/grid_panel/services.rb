@@ -298,53 +298,6 @@ module Netzke
             mod_records
           end
 
-          # Converts Ext.ux.grid.GridFilters filters to searchlogic conditions, e.g.
-          #     {"0" => {
-          #       "data" => {
-          #         "type" => "numeric",
-          #         "comparison" => "gt",
-          #         "value" => 10 },
-          #       "field" => "id"
-          #     },
-          #     "1" => {
-          #       "data" => {
-          #         "type" => "string",
-          #         "value" => "pizza"
-          #       },
-          #       "field" => "food_name"
-          #     }}
-          #
-          #      =>
-          #
-          #  metawhere:   :id.gt => 100, :food_name.matches => '%pizza%'
-          def convert_filters(column_filter)
-            # these are still JSON-encoded due to the migration to Ext.direct
-            column_filter=JSON.parse(column_filter)
-            res = {}
-            column_filter.each do |v|
-              assoc, method = v["field"].split('__')
-              if method
-                assoc = data_class.reflect_on_association(assoc.to_sym)
-                field = [assoc.klass.table_name, method].join('.').to_sym
-              else
-                field = assoc.to_sym
-              end
-
-              value = v["value"]
-
-              case v["type"]
-              when "string"
-                op = v['comparison'] && (v['comparison'] == 'like' ? :matches : :does_not_match) || :matches
-                field = field.send(op)
-                value = "%#{value}%"
-              when "numeric", "date"
-                field = field.send :"#{v['comparison']}"
-              end
-              res.merge!({field => value})
-            end
-            res
-          end
-
           def normalize_extra_conditions(conditions)
             conditions.each_pair do |k,v|
               conditions[k] = "%#{v}%" if ["like", "matches"].include?(k.to_s.split("__").last)

@@ -111,9 +111,12 @@ module Netzke
       # Using the meta_where magic.
       def get_relation(params = {})
         # make params coming from Ext grid filters understandable by meta_where
-        conditions = params[:filter] && convert_filters(params[:filter]) || {}
+        # conditions = params[:filter] && convert_filters(params[:filter]) || {}
 
-        relation = data_class.where(conditions)
+        # relation = data_class.where(conditions)
+        relation = data_class.scoped
+
+        relation = apply_column_filters(relation, params[:filter]) if params[:filter]
 
         if params[:extra_conditions]
           extra_conditions = normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
@@ -137,6 +140,62 @@ module Netzke
 
         relation
       end
+
+      # Parses and applies grid column filters, calling consequent "where" methods on the passed relation.
+      # Returns the updated relation.
+      #
+      # Example column grid data:
+      #
+      #     {"0" => {
+      #       "data" => {
+      #         "type" => "numeric",
+      #         "comparison" => "gt",
+      #         "value" => 10 },
+      #       "field" => "id"
+      #     },
+      #     "1" => {
+      #       "data" => {
+      #         "type" => "string",
+      #         "value" => "pizza"
+      #       },
+      #       "field" => "food_name"
+      #     }}
+      #
+      # This will result in:
+      #
+      #      relation.where(["id > ?", 10]).where(["food_name like ?", "%pizza%"])
+      def apply_column_filters(relation, column_filter)
+        res = relation
+        operator_map = {"lt" => "<", "gt" => ">"}
+
+        # these are still JSON-encoded due to the migration to Ext.direct
+        column_filter=JSON.parse(column_filter)
+        column_filter.each do |v|
+          assoc, method = v["field"].split('__')
+          if method
+            assoc = data_class.reflect_on_association(assoc.to_sym)
+            field = [assoc.klass.table_name, method].join('.').to_sym
+          else
+            field = assoc.to_sym
+          end
+
+          value = v["value"]
+
+          op = operator_map[v['comparison']]
+
+          case v["type"]
+          when "string"
+            res = res.where(["#{field} like ?", "%#{value}%"])
+          when "numeric", "date"
+            res = res.where(["#{field} #{op} ?", value])
+          else
+            res = res.where(["#{field} = ?", value])
+          end
+        end
+
+        res
+      end
+
 
       protected
 
