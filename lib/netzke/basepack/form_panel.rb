@@ -105,42 +105,20 @@ module Netzke
 
       # A hash of record data including the meta field
       def js_record_data
-        record.to_hash(fields).merge(:_meta => meta_field).literalize_keys
+        hsh = record.to_hash(fields).merge(:_meta => meta_field).literalize_keys
+
+        # HACK: a dirty hack cutting off the time part from the datetime string to please the form's datefield - until we have a real datetimefield
+        hsh.each_pair do |k,v|
+          if v && [:datetime, :date].include?(fields[k.to_sym].try(:fetch, :attr_type, nil))
+            hsh[k] = v.split.first
+          end
+        end
+
+        hsh
       end
 
       def record
         @record ||= config[:record] || config[:record_id] && data_class && data_class.where(data_class.primary_key => config[:record_id]).first
-      end
-
-      # def configuration_components
-      #   res = []
-      #
-      #   res << {
-      #     :name              => 'fields',
-      #     :class_name => "FieldsConfigurator",
-      #     :active            => true,
-      #     :owner             => self,
-      #     :persistent_config => true
-      #   }
-      #
-      #   res << {
-      #     :name               => 'general',
-      #     :class_name  => "PropertyEditor",
-      #     :component             => self,
-      #     :title => false
-      #   }
-      #
-      #   res
-      # end
-
-      def self.property_fields
-        res = [
-          {:name => "ext_config__title",               :attr_type => :string},
-          {:name => "ext_config__header",              :attr_type => :boolean, :default => true},
-          {:name => "ext_config__bbar",              :attr_type => :json}
-        ]
-
-        res
       end
 
       private

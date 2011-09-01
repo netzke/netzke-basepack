@@ -17,6 +17,7 @@ class BookForm < Netzke::Basepack::FormPanel
         :digitized,
         :exemplars,
         {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
+        {:name => :updated_at}
         # WIP: commalistcbg is kind of broken, giving an Ext error
         # {:name => :tags, :xtype => :commalistcbg, :options => %w(read cool recommend buy)},
         # WIP: waithing on nradiogroup
@@ -28,7 +29,7 @@ class BookForm < Netzke::Basepack::FormPanel
   js_method :init_component, <<-JS
     function(){
       this.callParent();
-      this.on('submitsuccess', function(){ this.feedback('Suc'+'cess!')}, this);
+      this.on('submitsuccess', function(){ this.netzkeFeedback('Suc'+'cess!')}, this);
     }
   JS
 

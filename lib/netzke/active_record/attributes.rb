@@ -169,7 +169,7 @@ module Netzke
               if r.respond_to?(m)
                 r.send(m)
               else
-                logger.debug "!!! Netzke::Basepack: Wrong attribute name: #{a[:name]}" unless r.nil?
+                logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}" unless r.nil?
                 nil
               end
             end
@@ -180,11 +180,14 @@ module Netzke
 
         # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
         v = v.to_datetime.to_s(:db) if v.is_a?(ActiveSupport::TimeWithZone)
+
         v
       end
 
       # Assigns new value to an (association) attribute
       def set_value_for_attribute(a, v)
+        v = v.to_time_in_current_zone if v.is_a?(Date) # convert Date to Time
+
         if a[:setter]
           a[:setter].call(self, v)
         elsif respond_to?("#{a[:name]}=")
@@ -215,10 +218,10 @@ module Netzke
                   self.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}=", v)
                 end
               else
-                logger.debug "!!! Netzke::Basepack: Association #{assoc} is not known for class #{self.class.name}"
+                logger.debug "Netzke::Basepack: Association #{assoc} is not known for class #{self.class.name}"
               end
             else
-              logger.debug "!!! Netzke::Basepack: Wrong attribute name: #{a[:name]}"
+              logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}"
             end
           end
         end

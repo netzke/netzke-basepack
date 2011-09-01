@@ -13,21 +13,18 @@ When /^I select "([^"]*)" from combobox "([^"]*)"$/ do |value, combo_label|
     var combo = Ext.ComponentQuery.query("combobox[fieldLabel='#{combo_label}']")[0];
     combo = combo || Ext.ComponentQuery.query("combobox[name='#{combo_label}']")[0];
     var rec = combo.findRecordByDisplay('#{value}');
-    combo.select( rec );
+    combo.select(rec);
     combo.fireEvent('select', combo, rec );
   JS
 end
 
 Then /the form should show #{capture_fields}$/ do |fields|
-  fields = ActiveSupport::JSON.decode("{#{fields}}")
   page.driver.browser.execute_script(<<-JS).should == true
     var form = Ext.ComponentQuery.query('form')[0].getForm();
-    var result = true;
-    var values = #{fields.to_json};
+    var values = {#{fields}};
     for (var fieldName in values) {
-      result = (form.findField(fieldName).getValue() === values[fieldName]) || (form.findField(fieldName).getRawValue() === values[fieldName]);
-      return result;
+      if ((form.findField(fieldName).getValue() != values[fieldName]) && (form.findField(fieldName).getRawValue() != values[fieldName])) return false;
     }
-    return result;
+    return true;
   JS
 end

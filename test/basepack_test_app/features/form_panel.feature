@@ -12,6 +12,12 @@ Scenario: UserForm should be rendered properly along with the data for the first
   And I should see "writer"
 
 @javascript
+  Scenario: A form should be rendered properly along with the data for the specified record
+    Given a book exists with title: "Great Book", last_read_at: "2005-01-23"
+    When I go to the BookFormWithDefaults test page
+    Then the form should show title: "Great Book", last_read_at: "2005-01-23"
+
+@javascript
 Scenario: Editing the record
   Given a role exists with name: "musician"
   And a user exists with first_name: "Paul", last_name: "Bley", role: that role
@@ -93,3 +99,11 @@ Scenario: Checkbox field should work properly
   And I wait for the response from the server
   Then I should not see "Title can't be blank"
   But I should see "Success!"
+
+@javascript
+  Scenario: Setting date
+    Given a book exists with title: "Some Title"
+    When I go to the BookFormWithDefaults test page
+    Then I fill in "Last read at:" with "2005-01-23"
+    And I press "Apply"
+    Then a book should exist with last_read_at: "2005-01-23"
