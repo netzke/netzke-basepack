@@ -194,6 +194,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/features/form_panel.feature",
     "test/basepack_test_app/features/grid_panel.feature",
     "test/basepack_test_app/features/grid_panel_with_custom_primary_key.feature",
+    "test/basepack_test_app/features/grid_sorting.feature",
     "test/basepack_test_app/features/i18n.feature",
     "test/basepack_test_app/features/nested_attributes.feature",
     "test/basepack_test_app/features/paging_form_panel.feature",
@@ -287,18 +288,15 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<netzke-core>, ["~> 0.7.0"])
-      s.add_runtime_dependency(%q<meta_where>, ["~> 1.0.0"])
       s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.0"])
       s.add_runtime_dependency(%q<acts_as_list>, ["~> 0.1.4"])
     else
       s.add_dependency(%q<netzke-core>, ["~> 0.7.0"])
-      s.add_dependency(%q<meta_where>, ["~> 1.0.0"])
       s.add_dependency(%q<will_paginate>, ["~> 3.0.0"])
       s.add_dependency(%q<acts_as_list>, ["~> 0.1.4"])
     end
   else
     s.add_dependency(%q<netzke-core>, ["~> 0.7.0"])
-    s.add_dependency(%q<meta_where>, ["~> 1.0.0"])
     s.add_dependency(%q<will_paginate>, ["~> 3.0.0"])
     s.add_dependency(%q<acts_as_list>, ["~> 0.1.4"])
   end
