@@ -106,4 +106,5 @@ Scenario: Checkbox field should work properly
     When I go to the BookFormWithDefaults test page
     Then I fill in "Last read at:" with "2005-01-23"
     And I press "Apply"
+    And I wait for the response from the server
     Then a book should exist with last_read_at: "2005-01-23"

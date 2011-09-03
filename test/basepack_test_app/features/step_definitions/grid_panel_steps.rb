@@ -23,7 +23,7 @@ Then /^the grid should show (\d+) records$/ do |arg1|
 end
 
 When /^I edit row (\d+) of the grid with #{capture_fields}$/ do |rowIndex, fields|
-  fields = ActiveSupport::JSON.decode("{#{fields}}")
+  fields = parse_fields(fields)
   js_set_fields = fields.each_pair.map do |k,v|
     "r.set('#{k}', '#{v}');"
   end.join
@@ -46,10 +46,8 @@ When /^I enable filter on column "([^"]*)" with value "([^"]*)"$/ do |column, va
   page.driver.browser.execute_script <<-JS
     var grid = Ext.ComponentQuery.query('gridpanel')[0],
         filter;
-    while (!(filter = grid.filters.getFilter('#{column}'))) {
-      // Need to show the menu once, as only then the filters get created
-      grid.headerCt.getMenu().showBy(grid.headerCt.items.first());
-    }
+    grid.features[0].createFilters();
+    filter = grid.filters.getFilter('#{column}');
     filter.setValue(#{value});
     filter.setActive(true);
   JS

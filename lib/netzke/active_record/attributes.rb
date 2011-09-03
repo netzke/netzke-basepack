@@ -104,10 +104,10 @@ module Netzke
                 c = {:name => name, :attr_type => columns_hash[name].type}
 
                 # If it's named as foreign key of some association, then it's an association column
-                assoc = reflect_on_all_associations.detect{|a| a.primary_key_name == c[:name]}
+                assoc = reflect_on_all_associations.detect{|a| a.foreign_key == c[:name]}
 
                 if assoc && !assoc.options[:polymorphic]
-                  candidates = %w{name title label} << assoc.primary_key_name
+                  candidates = %w{name title label} << assoc.foreign_key
                   assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
                   c[:name] = "#{assoc.name}__#{assoc_method}"
                   c[:attr_type] = assoc.klass.columns_hash[assoc_method].try(:type) || :string # when it's an instance method rather than a column, fall back to :string

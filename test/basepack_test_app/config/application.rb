@@ -50,5 +50,8 @@ module RailsApp
     # to build links to the code on github
     config.repo_root = "https://github.com/skozlov/netzke-basepack/blob/master/test/basepack_test_app"
 
+    # Enable the asset pipeline
+    config.assets.enabled = true
+
   end
 end
