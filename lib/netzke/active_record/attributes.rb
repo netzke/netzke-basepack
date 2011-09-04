@@ -104,10 +104,10 @@ module Netzke
                 c = {:name => name, :attr_type => columns_hash[name].type}
 
                 # If it's named as foreign key of some association, then it's an association column
-                assoc = reflect_on_all_associations.detect{|a| a.foreign_key == c[:name]}
+                assoc = reflect_on_all_associations.detect { |a| foreign_key_for_assoc(a) == c[:name] }
 
                 if assoc && !assoc.options[:polymorphic]
-                  candidates = %w{name title label} << assoc.foreign_key
+                  candidates = %w{name title label} << foreign_key_for_assoc(assoc)
                   assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
                   c[:name] = "#{assoc.name}__#{assoc_method}"
                   c[:attr_type] = assoc.klass.columns_hash[assoc_method].try(:type) || :string # when it's an instance method rather than a column, fall back to :string
@@ -125,6 +125,11 @@ module Netzke
               end +
               declared_attrs
             ).reject { |attr| netzke_excluded_attributes.include?(attr[:name]) }
+          end
+
+          # Returns foreign key for given association (Rails >= 3.0)
+          def foreign_key_for_assoc(assoc)
+            assoc.respond_to?(:foreign_key) ? assoc.foreign_key : assoc.primary_key_name
           end
 
           def association_attr?(attr_name)
