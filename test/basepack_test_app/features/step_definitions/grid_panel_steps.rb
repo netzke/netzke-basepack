@@ -54,6 +54,22 @@ When /^I enable filter on column "([^"]*)" with value "([^"]*)"$/ do |column, va
   sleep 1
 end
 
+# E.g.: And I enable date filter on column "last_read_at" with value "after 04/25/2011" (this date should be in the US format)
+When /^I enable date filter on column "([^"]*)" with value "([^"]*)"$/ do |column, value|
+  operand, date = value.split
+  page.driver.browser.execute_script <<-JS
+    var grid = Ext.ComponentQuery.query('gridpanel')[0],
+        filter, value;
+    grid.features[0].createFilters();
+    filter = grid.filters.getFilter('#{column}');
+    value = filter.getValue();
+    value.#{operand} = new Date('#{date}'); // merge the new value with the current one
+    filter.setValue(value);
+    filter.setActive(true);
+  JS
+  sleep 1
+end
+
 When /^I clear all filters in the grid$/ do
   page.driver.browser.execute_script <<-JS
     var components = [];
