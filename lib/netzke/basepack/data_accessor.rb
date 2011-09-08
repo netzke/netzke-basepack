@@ -164,7 +164,7 @@ module Netzke
       #      relation.where(["id > ?", 10]).where(["food_name like ?", "%pizza%"])
       def apply_column_filters(relation, column_filter)
         res = relation
-        operator_map = {"lt" => "<", "gt" => ">"}
+        operator_map = {"lt" => "<", "gt" => ">", "eq" => "="}
 
         # these are still JSON-encoded due to the migration to Ext.direct
         column_filter=JSON.parse(column_filter)
