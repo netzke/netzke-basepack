@@ -11,7 +11,7 @@ Background:
   | Getting Things Done | 3         | true      | Productivity | 2011-01-11   |
 
 @javascript
-Scenario: Numeric filter
+Scenario: Numeric and text filter
   When I go to the BookGrid test page
   And I enable filter on column "exemplars" with value "{gt:6}"
   Then the grid should show 1 records
@@ -24,9 +24,8 @@ Scenario: Numeric filter
   And I enable filter on column "exemplars" with value "{eq:6}"
   Then the grid should show 0 records
 
-@javascript
-Scenario: Text filter
-  When I go to the BookGrid test page
+  # Due to some mystery, this wouldn't work in a separate scenario
+  When I clear all filters in the grid
   And I enable filter on column "notes" with value "'read'"
   Then the grid should show 2 records
 
