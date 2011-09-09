@@ -1,6 +1,7 @@
 = ?.?.?
 * bug fix
   * filter on a date column
+  * using date column caused FormPanel to crash
 
 = 0.7.1 - 2011-09-04
 * bug fix

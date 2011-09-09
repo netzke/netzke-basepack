@@ -72,6 +72,17 @@ Scenario: Checkbox field should work properly
   And a book should exist with digitized: true, author: that author, exemplars: 4
   And a book should not exist with digitized: false, author: that author
 
+@javascript
+Scenario: Editing and immediately submitting the form
+  Given an author exists with first_name: "Carlos", last_name: "Castaneda"
+  And a book exists with title: "Journey to Ixtlan", author: that author
+  When I go to the BookForm test page
+  Then the form should show author__name: "Castaneda, Carlos"
+
+  When I press "Apply"
+  And I wait for the response from the server
+  Then the form should show author__name: "Castaneda, Carlos"
+
 # @javascript
 # Scenario: Checkbox group for tags should work properly
 #   Given a book exists with title: "Some Title"

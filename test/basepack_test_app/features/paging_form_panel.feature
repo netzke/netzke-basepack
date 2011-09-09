@@ -3,14 +3,15 @@ Feature: Paging form panel
   As a role
   I want feature
 
+Background:
+  Given the following books exist:
+  | title               | exemplars | digitized | notes        | published_on | last_read_at |
+  | Journey to Ixtlan   | 10        | true      | A must-read  | 2001-01-02   | 2011-01-02   |
+  | Lolita              | 5         | false     | To read      | 1988-04-05   | 2011-03-04   |
+  | Getting Things Done | 3         | true      | Productivity | 2005-06-07   | 2011-12-13   |
+
 @javascript
 Scenario: Paging through records
-  Given the following books exist:
-  | title               |
-  | Journey to Ixtlan   |
-  | Lolita              |
-  | Getting Things Done |
-
   When I go to the BookPagingFormPanel test page
   Then I should see "Journey to Ixtlan"
 
@@ -24,12 +25,6 @@ Scenario: Paging through records
 
 @javascript
 Scenario: Searching
-  Given the following books exist:
-  | title               | exemplars | digitized | notes        |
-  | Journey to Ixtlan   | 10        | true      | A must-read  |
-  | Lolita              | 5         | false     | To read      |
-  | Getting Things Done | 3         | true      | Productivity |
-
   When I go to the BookPagingFormPanel test page
   And I press "Search"
   And I wait for the response from the server
@@ -43,24 +38,6 @@ Scenario: Searching
   Then the form should show title: "Getting Things Done"
 
 @javascript
-Scenario: Editing and immediately submitting the form
-  Given an author exists with first_name: "Carlos", last_name: "Castaneda"
-  And a book exists with title: "Journey to Ixtlan", author: that author
-  When I go to the BookPagingFormPanel test page
-  Then the form should show author__name: "Castaneda, Carlos"
-
-  When I press "Edit"
-  And I press "Apply"
-  And I wait for the response from the server
-  Then the form should show author__name: "Castaneda, Carlos"
-
-@javascript
 Scenario: I must see total records value
-  Given the following books exist:
-  | title               |
-  | Journey to Ixtlan   |
-  | Lolita              |
-  | Getting Things Done |
-
   When I go to the BookPagingFormPanel test page
   Then I should see "of 3" within paging toolbar

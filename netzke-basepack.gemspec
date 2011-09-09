@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Sergei Kozlov}]
-  s.date = %q{2011-09-08}
+  s.date = %q{2011-09-09}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -187,6 +187,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/db/migrate/20110213213050_create_netzke_component_states.rb",
     "test/basepack_test_app/db/migrate/20110701070052_create_book_with_custom_primary_keys.rb",
     "test/basepack_test_app/db/migrate/20110901114016_add_last_read_at_to_books.rb",
+    "test/basepack_test_app/db/migrate/20110909071740_add_published_on_to_books.rb",
     "test/basepack_test_app/db/schema.rb",
     "test/basepack_test_app/db/seeds.rb",
     "test/basepack_test_app/features/accordion_panel.feature",

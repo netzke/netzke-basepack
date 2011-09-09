@@ -11,13 +11,16 @@ class BookForm < Netzke::Basepack::FormPanel
       :items => [
         :title,
         {:name => :author__first_name, :setter => author_first_name_setter},
+        :author__name,
         {:name => :author__last_name, :xtype => :displayfield},
         {:name => :rating, :xtype => :combo, :store => [[1, "Good"], [2, "Average"], [3, "Poor"]]},
         {:name => :author__updated_at, :editable => false},
         :digitized,
         :exemplars,
         {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
-        {:name => :updated_at}
+        {:name => :updated_at},
+        :last_read_at,
+        :published_on
         # WIP: commalistcbg is kind of broken, giving an Ext error
         # {:name => :tags, :xtype => :commalistcbg, :options => %w(read cool recommend buy)},
         # WIP: waithing on nradiogroup
