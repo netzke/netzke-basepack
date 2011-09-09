@@ -3,14 +3,15 @@ Feature: Grid panel
   As a role
   I want feature
 
-Scenario: UserGrid should render properly
-  Given a user exists with first_name: "Carlos", last_name: "Castaneda"
-  And a user exists with first_name: "Taisha", last_name: "Abelar"
-  When I go to the UserGrid test page
-  Then I should see "Carlos"
-  And  I should see "Castaneda"
-  And  I should see "Taisha"
-  And  I should see "Abelar"
+@javascript
+Scenario: UserGrid should correctly display data
+  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
+  And a book exists with author: that author, title: "Lolita", last_read_at: "2011-12-13", published_on: "2005-01-30"
+
+  When I go to the BookGrid test page
+  Then I should see "Nabokov, Vladimir"
+  And I should see "12/13/2011"
+  And I should see "01/30/2005"
 
 @javascript
 Scenario: Adding a record via "Add in form"
