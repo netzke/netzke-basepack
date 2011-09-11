@@ -314,12 +314,9 @@ module Netzke
           # Default fields that will be displayed in the Add/Edit/Search forms
           # When overriding this method, keep in mind that the fields inside the layout must be expanded (each field represented by a hash, not just a symbol)
           def default_fields_for_forms
-            form_klass = constantize_class_name("Netzke::ModelExtensions::#{config[:model]}ForFormPanel") || original_data_class
-
-            # Select only those fields that are known to the form_klass
             selected_columns = columns.select do |c|
-              form_klass.column_names.include?(c[:name]) ||
-              form_klass.instance_methods.include?("#{c[:name]}=") ||
+              data_class.column_names.include?(c[:name]) ||
+              data_class.instance_methods.include?("#{c[:name]}=") ||
               association_attr?(c[:name])
             end
 

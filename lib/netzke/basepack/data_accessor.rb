@@ -76,18 +76,7 @@ module Netzke
 
       # Model class
       def data_class
-        @data_class ||= begin
-          klass = constantize_class_name("Netzke::ModelExtensions::#{config[:model]}For#{short_component_class_name}") || original_data_class
-        end
-      end
-
-      # Model class before model extensions are taken into account
-      def original_data_class
-        @original_data_class ||= begin
-          ::ActiveSupport::Deprecation.warn("data_class_name option is deprecated. Use model instead", caller) if config[:data_class_name]
-          model_name = config[:model] || config[:data_class_name]
-          model_name && constantize_class_name(model_name)
-        end
+        @data_class ||= config[:model] && config[:model].constantize
       end
 
       # whether a column is bound to the primary_key
