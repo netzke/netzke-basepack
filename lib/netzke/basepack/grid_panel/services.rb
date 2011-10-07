@@ -183,6 +183,7 @@ module Netzke
           #     r.merge(c[:name] => column_values)
           #   end
           # end
+
           def get_records(params)
 
             # Restore params from component_session if requested
@@ -193,43 +194,10 @@ module Netzke
               component_session[:last_params] = params
             end
 
-            # build initial relation based on passed params
-            relation = get_relation(params)
+            params[:limit] = config[:rows_per_page] if config[:enable_pagination]
+            params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
-            # addressing the n+1 query problem
-            columns.each do |c|
-              assoc, method = c[:name].split('__')
-              relation = relation.includes(assoc.to_sym) if method
-            end
-
-            # apply sorting if needed
-            if params[:sort] && sort_params = params[:sort].first
-              assoc, method = sort_params["property"].split('__')
-              dir = sort_params["direction"].downcase
-
-              # if a sorting scope is set, call the scope with the given direction
-              column = columns.detect { |c| c[:name] == sort_params["property"] }
-              if column.has_key?(:sorting_scope)
-                relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
-                ::Rails.logger.debug "!!! relation: #{relation.inspect}\n"
-              else
-                relation = if method.nil?
-                  relation.order("#{assoc} #{dir}")
-                else
-                  assoc = data_class.reflect_on_association(assoc.to_sym)
-                  relation.joins(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")
-                end
-              end
-            end
-
-            # apply pagination if needed
-            if config[:enable_pagination]
-              per_page = config[:rows_per_page]
-              page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
-              relation.paginate(:per_page => per_page, :page => page)
-            else
-              relation.all
-            end
+            data_adapter.get_records(params, columns)
           end
 
           # Override this method to react on each operation that caused changing of data

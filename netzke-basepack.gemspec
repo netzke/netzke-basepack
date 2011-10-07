@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Sergei Kozlov}]
-  s.date = %q{2011-10-25}
+  s.date = %q{2011-10-07}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -47,6 +47,9 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/border_layout_panel.rb",
     "lib/netzke/basepack/border_layout_panel/javascripts/border_layout_panel.js",
     "lib/netzke/basepack/data_accessor.rb",
+    "lib/netzke/basepack/data_adapters/abstract_adapter.rb",
+    "lib/netzke/basepack/data_adapters/active_record_adapter.rb",
+    "lib/netzke/basepack/data_adapters/data_mapper_adapter.rb",
     "lib/netzke/basepack/form_panel.rb",
     "lib/netzke/basepack/form_panel/fields.rb",
     "lib/netzke/basepack/form_panel/javascripts/comma_list_cbg.js",
