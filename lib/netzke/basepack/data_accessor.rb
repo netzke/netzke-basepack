@@ -76,7 +76,12 @@ module Netzke
 
       # Model class
       def data_class
-        @data_class ||= config[:model] && config[:model].constantize
+        @data_class ||= config[:model].is_a?(String) ? config[:model].constantize : config[:model]
+      end
+
+      # Data adapter responsible for all DB-related operations (WIP)
+      def data_adapter
+        @data_adapter ||= Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(data_class).new(data_class)
       end
 
       # whether a column is bound to the primary_key
@@ -94,38 +99,6 @@ module Netzke
             c[:virtual] = true if !data_class.column_names.map(&:to_sym).include?(c[:name].to_sym)
           end
         end
-      end
-
-      # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
-      def get_relation(params = {})
-        @arel = data_class.arel_table
-
-        relation = data_class.scoped
-
-        relation = apply_column_filters(relation, params[:filter]) if params[:filter]
-
-        if params[:extra_conditions]
-          extra_conditions = normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
-          relation = relation.extend_with_netzke_conditions(extra_conditions) if params[:extra_conditions]
-        end
-
-        query = params[:query] && ActiveSupport::JSON.decode(params[:query])
-
-        if query.present?
-          # array of arrays of conditions that should be joined by OR
-          and_predicates = query.map do |conditions|
-            predicates_for_and_conditions(conditions)
-          end
-
-          # join them by OR
-          predicates = and_predicates[1..-1].inject(and_predicates.first){ |r,c| r.or(c) }
-        end
-
-        relation = relation.where(predicates)
-
-        relation = relation.extend_with(config[:scope]) if config[:scope]
-
-        relation
       end
 
       # Parses and applies grid column filters, calling consequent "where" methods on the passed relation.

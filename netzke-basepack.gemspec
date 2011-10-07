@@ -4,14 +4,14 @@
 # -*- encoding: utf-8 -*-
 
 Gem::Specification.new do |s|
-  s.name = "netzke-basepack"
+  s.name = %q{netzke-basepack}
   s.version = "0.7.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
-  s.authors = ["Sergei Kozlov"]
-  s.date = "2012-01-12"
-  s.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
-  s.email = "sergei@playcode.nl"
+  s.authors = [%q{Sergei Kozlov}]
+  s.date = %q{2011-10-07}
+  s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
+  s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
     "LICENSE",
     "README.md"
@@ -47,6 +47,9 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/border_layout_panel.rb",
     "lib/netzke/basepack/border_layout_panel/javascripts/border_layout_panel.js",
     "lib/netzke/basepack/data_accessor.rb",
+    "lib/netzke/basepack/data_adapters/abstract_adapter.rb",
+    "lib/netzke/basepack/data_adapters/active_record_adapter.rb",
+    "lib/netzke/basepack/data_adapters/data_mapper_adapter.rb",
     "lib/netzke/basepack/form_panel.rb",
     "lib/netzke/basepack/form_panel/fields.rb",
     "lib/netzke/basepack/form_panel/javascripts/comma_list_cbg.js",
@@ -269,11 +272,25 @@ Gem::Specification.new do |s|
     "test/unit/tab_panel_test.rb",
     "uninstall.rb"
   ]
-  s.homepage = "http://netzke.org"
-  s.post_install_message = "\n========================================================================\n\n           Thanks for installing netzke-basepack!\n\n  Don't forget to run \"rails generate netzke:baspack\" to copy necessary\n  assets to your public folder!\n\n  Netzke home page:     http://netzke.org\n  Netzke Google Groups: http://groups.google.com/group/netzke\n  Netzke tutorials:     http://blog.writelesscode.com\n\n========================================================================\n\n"
-  s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.10"
-  s.summary = "Pre-built Rails + ExtJS components for your RIA"
+  s.homepage = %q{http://netzke.org}
+  s.post_install_message = %q{
+========================================================================
+
+           Thanks for installing netzke-basepack!
+
+  Don't forget to run "rails generate netzke:baspack" to copy necessary
+  assets to your public folder!
+
+  Netzke home page:     http://netzke.org
+  Netzke Google Groups: http://groups.google.com/group/netzke
+  Netzke tutorials:     http://blog.writelesscode.com
+
+========================================================================
+
+}
+  s.require_paths = [%q{lib}]
+  s.rubygems_version = %q{1.8.6}
+  s.summary = %q{Pre-built Rails + ExtJS components for your RIA}
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
