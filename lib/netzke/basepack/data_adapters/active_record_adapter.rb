@@ -27,7 +27,7 @@ module Netzke::Basepack::DataAdapters
           relation = if method.nil?
             relation.order("#{assoc} #{dir}")
           else
-            assoc = @data_class.reflect_on_association(assoc.to_sym)
+            assoc = @model_class.reflect_on_association(assoc.to_sym)
             relation.joins(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")
           end
         end
@@ -46,6 +46,8 @@ module Netzke::Basepack::DataAdapters
       page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
       relation.paginate(:per_page => params[:limit], :page => page)
     end
+
+    private
 
     # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
     def get_relation(params = {})
@@ -77,6 +79,65 @@ module Netzke::Basepack::DataAdapters
       relation = relation.extend_with(params[:scope]) if params[:scope]
 
       relation
+    end
+
+    # Parses and applies grid column filters, calling consequent "where" methods on the passed relation.
+    # Returns the updated relation.
+    #
+    # Example column grid data:
+    #
+    #     {"0" => {
+    #       "data" => {
+    #         "type" => "numeric",
+    #         "comparison" => "gt",
+    #         "value" => 10 },
+    #       "field" => "id"
+    #     },
+    #     "1" => {
+    #       "data" => {
+    #         "type" => "string",
+    #         "value" => "pizza"
+    #       },
+    #       "field" => "food_name"
+    #     }}
+    #
+    # This will result in:
+    #
+    #      relation.where(["id > ?", 10]).where(["food_name like ?", "%pizza%"])
+    def apply_column_filters(relation, column_filter)
+      res = relation
+      operator_map = {"lt" => "<", "gt" => ">", "eq" => "="}
+
+      # these are still JSON-encoded due to the migration to Ext.direct
+      column_filter=JSON.parse(column_filter)
+      column_filter.each do |v|
+        assoc, method = v["field"].split('__')
+        if method
+          assoc = @model_class.reflect_on_association(assoc.to_sym)
+          field = [assoc.klass.table_name, method].join('.').to_sym
+        else
+          field = assoc.to_sym
+        end
+
+        value = v["value"]
+
+        op = operator_map[v['comparison']]
+
+        case v["type"]
+        when "string"
+          res = res.where(["#{field} like ?", "%#{value}%"])
+        when "date"
+          # convert value to the DB date
+          value.match /(\d\d)\/(\d\d)\/(\d\d\d\d)/
+          res = res.where("#{field} #{op} ?", "#{$3}-#{$1}-#{$2}")
+        when "numeric"
+          res = res.where(["#{field} #{op} ?", value])
+        else
+          res = res.where(["#{field} = ?", value])
+        end
+      end
+
+      res
     end
 
   end
