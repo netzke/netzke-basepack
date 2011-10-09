@@ -83,16 +83,7 @@ module Netzke
           end
 
           endpoint :move_rows do |params|
-            if defined?(ActsAsList) && data_class.ancestors.include?(ActsAsList::InstanceMethods)
-              ids = JSON.parse(params[:ids]).reverse
-              ids.each_with_index do |id, i|
-                r = data_class.find(id)
-                r.insert_at(params[:new_index].to_i + i + 1)
-              end
-              on_data_changed
-            else
-              raise RuntimeError, "Data class should 'acts_as_list' to support moving rows"
-            end
+            data_adapter.move_records(params)
             {}
           end
 

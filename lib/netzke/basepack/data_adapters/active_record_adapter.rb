@@ -41,6 +41,19 @@ module Netzke::Basepack::DataAdapters
       @model_class.destroy(ids)
     end
 
+    def move_records(params)
+      if defined?(ActsAsList) && @model_class.ancestors.include?(ActsAsList::InstanceMethods)
+        ids = JSON.parse(params[:ids]).reverse
+        ids.each_with_index do |id, i|
+          r = data_class.find(id)
+          r.insert_at(params[:new_index].to_i + i + 1)
+        end
+        on_data_changed
+      else
+        raise RuntimeError, "Model class should implement 'acts_as_list' to support reordering records"
+      end
+    end
+
     # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
     def get_relation(params = {})
       @arel = @model_class.arel_table
