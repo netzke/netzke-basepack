@@ -32,7 +32,7 @@ module Netzke
           endpoint :delete_data do |params|
             if !config[:prohibit_delete]
               record_ids = ActiveSupport::JSON.decode(params[:records])
-              data_class.destroy(record_ids)
+              data_adapter.destroy(record_ids)
               on_data_changed
               {:netzke_feedback => I18n.t('netzke.basepack.grid_panel.deleted_n_records', :n => record_ids.size), :load_store_data => get_data}
             else
@@ -157,10 +157,6 @@ module Netzke
               records = get_records(params)
               res[:data] = records.map{|r| r.to_array(columns(:with_meta => true))}
               res[:total] = records.total_entries if config[:enable_pagination]
-
-              # provide association values for all records at once
-              # assoc_values = get_association_values(records, columns)
-              # res[:set_association_values] = assoc_values.literalize_keys if assoc_values.present?
             end
           else
             flash :error => "You don't have permissions to read data"
@@ -169,20 +165,6 @@ module Netzke
         end
 
         protected
-
-          # Returns all values for association columns, per column, per associated record id, e.g.:
-          # {
-          #   :author__first_name => {1 => "Vladimir", 2 => "Herman"},
-          #   :author__last_name => {1 => "Nabokov", 2 => "Hesse"}
-          # }
-          # This is used to display the association by the specified method instead by the foreign key
-          # def get_association_values(records, columns)
-          #   columns.select{ |c| c[:name].index("__") }.each.inject({}) do |r,c|
-          #     column_values = {}
-          #     records.each{ |r| column_values[r.value_for_attribute(c)] = r.value_for_attribute(c, true) }
-          #     r.merge(c[:name] => column_values)
-          #   end
-          # end
 
           # Returns an array of records.
           def get_records(params)
@@ -235,21 +217,8 @@ module Netzke
                   record.set_value_for_attribute(columns_hash[k.to_sym].nil? ? {:name => k} : columns_hash[k.to_sym], v)
                 end
 
-                # process all attirubutes for this record
-                #record_hash.each_pair do |k,v|
-                  #begin
-                    #record.send("#{k}=",v)
-                  #rescue ArgumentError => exc
-                    #flash :error => exc.message
-                    #success = false
-                    #break
-                  #end
-                #end
-
                 # try to save
-                # modified_records += 1 if success && record.save
                 mod_records[id] = record.to_array(columns(:with_meta => true)) if success && record.save
-                # mod_record_ids << id if success && record.save
 
                 # flash eventual errors
                 if !record.errors.empty?
@@ -259,7 +228,6 @@ module Netzke
                   end
                 end
               end
-              # flash :notice => "#{operation.to_s.capitalize}d #{modified_records} record(s)"
             else
               success = false
               flash :error => "You don't have permissions to #{operation} data"
