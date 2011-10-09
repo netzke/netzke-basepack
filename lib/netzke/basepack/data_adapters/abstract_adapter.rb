@@ -7,7 +7,8 @@ module Netzke::Basepack::DataAdapters
     # * filtering
     # * scopes
     #
-    # Params is a hash that contains the following keys:
+    # `params` is a hash that contains the following keys:
+    #
     # * :sort - sorting params, which is an array of hashes that contain the following keys in their turn:
     #   * :property - the field that is being sorted on
     #   * :diraction - "asc" or "desc"
@@ -23,6 +24,15 @@ module Netzke::Basepack::DataAdapters
 
     # Destroys records with the provided ids
     def destroy(ids)
+    end
+
+    # Changes records position (e.g. when acts_as_list is used in ActiveRecord).
+    #
+    # `params` is a hash with the following keys:
+    #
+    # * :ids - ids of records to move
+    # * :new_index - new starting position for the records to move
+    def move_records(params)
     end
 
     # -- End of methods to override
