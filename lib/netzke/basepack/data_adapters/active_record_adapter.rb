@@ -33,18 +33,12 @@ module Netzke::Basepack::DataAdapters
         end
       end
 
-      # WIP: enable pagination
-      # apply pagination if needed
-      # if config[:enable_pagination]
-      #   per_page = config[:rows_per_page]
-      #   page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
-      #   relation.paginate(:per_page => per_page, :page => page)
-      # else
-      #   relation.all
-      # end
-
       page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
       relation.paginate(:per_page => params[:limit], :page => page)
+    end
+
+    def destroy(ids)
+      @model_class.destroy(ids)
     end
 
     # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
