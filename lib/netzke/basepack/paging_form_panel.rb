@@ -23,7 +23,7 @@ module Netzke
 
       # override
       def record
-        @record ||= get_relation.first
+        @record ||= data_adapter.get_relation.first
       end
 
       # Pass total records amount and the first record to the JS constructor
@@ -34,7 +34,7 @@ module Netzke
       end
 
       endpoint :get_data do |params|
-        @record = get_relation(params).offset(params[:start].to_i).limit(1).first
+        @record = data_adapter.get_relation(params).offset(params[:start].to_i).limit(1).first
         record_hash = @record && js_record_data
         {:records => record_hash && [record_hash] || [], :total => total_records(params)}
       end
@@ -64,7 +64,7 @@ module Netzke
       protected
 
         def total_records(params = {})
-          @total_records ||= get_relation(params).count
+          @total_records ||= data_adapter.get_relation(params).count
         end
 
     end

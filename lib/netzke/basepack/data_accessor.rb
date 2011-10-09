@@ -101,29 +101,6 @@ module Netzke
         end
       end
 
-      protected
-
-        def predicates_for_and_conditions(conditions)
-          return nil if conditions.empty?
-
-          predicates = conditions.map do |q|
-            value = q["value"]
-            case q["operator"]
-            when "contains"
-              @arel[q["attr"]].matches "%#{value}%"
-            else
-              if value == false || value == true
-                @arel[q["attr"]].eq(value ? 1 : 0)
-              else
-                @arel[q["attr"]].send(q["operator"], value)
-              end
-            end
-          end
-
-          # join them by AND
-          predicates[1..-1].inject(predicates.first){ |r,p| r.and(p)  }
-        end
-
     end
   end
 end
