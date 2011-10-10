@@ -198,7 +198,7 @@ module Netzke
               modified_records = 0
               data.each do |record_hash|
                 id = record_hash.delete('id')
-                record = operation == :create ? data_class.new : data_class.find(id)
+                record = operation == :create ? data_adapter.new_record : data_adapter.find_record(id)
                 success = true
 
                 # merge with strong default attirbutes
