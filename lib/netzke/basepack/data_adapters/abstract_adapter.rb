@@ -11,7 +11,7 @@ module Netzke::Basepack::DataAdapters
     #
     # * :sort - sorting params, which is an array of hashes that contain the following keys in their turn:
     #   * :property - the field that is being sorted on
-    #   * :diraction - "asc" or "desc"
+    #   * :direction - "asc" or "desc"
     # * :limit - rows per page in pagination
     # * :start - page number in pagination
     # * :scope - the scope as described in Netzke::Basepack::GridPanel
@@ -35,7 +35,17 @@ module Netzke::Basepack::DataAdapters
     def move_records(params)
     end
 
-    # -- End of methods to override
+    # Returns a new record.
+    def new_record(params = {})
+      @model_class.new(params)
+    end
+
+    # Finds a record by id.
+    def find_record(id)
+      @model_class.find(id)
+    end
+
+    # -- End of overridable methods
 
     # Abstract-adapter specifics
     #
