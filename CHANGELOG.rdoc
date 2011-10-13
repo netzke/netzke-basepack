@@ -5,6 +5,7 @@
 
 * improvements
   * Extra DSL for declaring columns and models in GridPanel
+  * New :override_columns config option for grid allows overriding specified column config (not influencing other columns order/inclusion).
 
 * API changes
   * Skip supporting ModelExtensions. The preferred way is using setters and getters on columns/fields.

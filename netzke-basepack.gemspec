@@ -110,6 +110,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/components/book_grid_with_extra_feedback.rb",
     "test/basepack_test_app/app/components/book_grid_with_extra_filters.rb",
     "test/basepack_test_app/app/components/book_grid_with_nested_attributes.rb",
+    "test/basepack_test_app/app/components/book_grid_with_overridden_columns.rb",
     "test/basepack_test_app/app/components/book_grid_with_paging.rb",
     "test/basepack_test_app/app/components/book_grid_with_persistence.rb",
     "test/basepack_test_app/app/components/book_grid_with_scoped_authors.rb",

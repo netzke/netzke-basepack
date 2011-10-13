@@ -109,6 +109,19 @@ module Netzke
           @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
         end
 
+        # Columns that were overridden with :override_columns config option.
+        def overridden_default_columns
+          if config[:override_columns].present?
+            result = []
+            default_columns.each do |col|
+              result << col.merge(config[:override_columns][col[:name].to_sym] || {})
+            end
+            result
+          else
+            default_columns
+          end
+        end
+
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
         def initial_columns(with_excluded = false)
           # Normalize here, as from the config we can get symbols (names) instead of hashes
@@ -121,13 +134,13 @@ module Netzke
             # reverse-merge each column hash from config with each column hash from exposed_attributes
             # (columns from config have higher priority)
             for c in columns_from_config
-              corresponding_default_column = default_columns.find{ |k| k[:name] == c[:name] }
+              corresponding_default_column = overridden_default_columns.find{ |k| k[:name] == c[:name] }
               c.reverse_merge!(corresponding_default_column) if corresponding_default_column
             end
             columns_for_create = columns_from_config
           else
             # we didn't have columns configured in component's config, so, use the columns from the data class
-            columns_for_create = default_columns
+            columns_for_create = overridden_default_columns
           end
 
           filter_out_excluded_columns(columns_for_create) unless with_excluded

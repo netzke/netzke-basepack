@@ -226,3 +226,11 @@ Scenario: I must see total records value
 
   When I go to the BookGridWithPaging test page
   Then I should see "of 2" within paging toolbar
+
+@javascript
+Scenario: GridPanel with overridden columns
+  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
+  And a book exists with title: "Lolita", author: that author
+  When I go to the BookGridWithOverriddenColumns test page
+  Then I should see "LOLITA"
+  And I should see "Nabokov, Vladimir"
