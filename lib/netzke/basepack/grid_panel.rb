@@ -205,6 +205,12 @@ module Netzke
               columns << config.merge(:name => name.to_s)
               self.write_inheritable_attribute(:columns, columns)
             end
+
+            def override_column(name, config)
+              columns = self.read_inheritable_attribute(:overridden_columns) || {}
+              columns.merge!(name.to_sym => config)
+              self.write_inheritable_attribute(:overridden_columns, columns)
+            end
           end
         end
       end
@@ -213,6 +219,7 @@ module Netzke
         super.tap do |c|
           c.merge!(self.class.read_inheritable_attribute(:grid_panel_default_config) || {})
           c[:columns] = self.class.read_inheritable_attribute(:columns)
+          c[:override_columns] = self.class.read_inheritable_attribute(:overridden_columns)
         end
       end
 
