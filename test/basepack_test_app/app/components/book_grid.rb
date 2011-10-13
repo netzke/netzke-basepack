@@ -5,10 +5,4 @@ class BookGrid < Netzke::Basepack::GridPanel
 
   # column :title
   # column :author__first_name
-
-  # def default_config
-  #   super.merge(
-  #     :prohibit_update => true
-  #   )
-  # end
 end
