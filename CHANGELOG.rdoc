@@ -3,6 +3,9 @@
   * Filter on a date column.
   * Using date column caused FormPanel to crash.
 
+* improvements
+  * Extra DSL for declaring columns and models in GridPanel
+
 * API changes
   * Skip supporting ModelExtensions. The preferred way is using setters and getters on columns/fields.
 
