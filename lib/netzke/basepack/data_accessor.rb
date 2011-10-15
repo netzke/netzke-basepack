@@ -155,6 +155,8 @@ module Netzke
         res = relation
         operator_map = {"lt" => "<", "gt" => ">", "eq" => "="}
 
+        table_name = data_class.table_name
+
         # these are still JSON-encoded due to the migration to Ext.direct
         column_filter=JSON.parse(column_filter)
         column_filter.each do |v|
@@ -172,15 +174,15 @@ module Netzke
 
           case v["type"]
           when "string"
-            res = res.where(["#{field} like ?", "%#{value}%"])
+            res = res.where(["#{table_name}.#{field} like ?", "%#{value}%"])
           when "date"
             # convert value to the DB date
             value.match /(\d\d)\/(\d\d)\/(\d\d\d\d)/
-            res = res.where("#{field} #{op} ?", "#{$3}-#{$1}-#{$2}")
+            res = res.where("#{table_name}.#{field} #{op} ?", "#{$3}-#{$1}-#{$2}")
           when "numeric"
-            res = res.where(["#{field} #{op} ?", value])
+            res = res.where(["#{table_name}.#{field} #{op} ?", value])
           else
-            res = res.where(["#{field} = ?", value])
+            res = res.where(["#{table_name}.#{field} = ?", value])
           end
         end
 
