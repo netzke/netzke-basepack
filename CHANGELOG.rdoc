@@ -1,7 +1,8 @@
 = ?.?.?
 * bug fix
-  * Filter on a date column.
-  * Using date column caused FormPanel to crash.
+  * Filter on a date column
+  * Using date column caused FormPanel to crash
+  * Virtual columns are no longer editable by default
 
 * improvements
   * New DSL method (model) for declaring a model for grids

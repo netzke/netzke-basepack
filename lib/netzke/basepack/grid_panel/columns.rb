@@ -168,10 +168,10 @@ module Netzke
             set_default_xtype(c)
             set_default_virtual(c)
             set_default_text(c)
+            set_default_editable(c)
             set_default_editor(c)
             set_default_width(c)
             set_default_hidden(c)
-            set_default_editable(c)
             set_default_sortable(c)
             set_default_filterable(c)
             c[:assoc] = association_attr?(c)
@@ -195,6 +195,7 @@ module Netzke
             else
               c[:editor] ||= editor_for_attr_type(c[:attr_type])
             end
+
           end
 
           def set_default_width(c)
@@ -208,7 +209,7 @@ module Netzke
 
           def set_default_editable(c)
             if c[:editable].nil?
-              c[:editable] = is_editable_column?(c) || nil
+              c[:editable] = is_editable_column?(c)
             end
           end
 

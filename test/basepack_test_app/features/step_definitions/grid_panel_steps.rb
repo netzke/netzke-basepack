@@ -164,3 +164,11 @@ Then /^the grid should have records sorted by "([^"]*)"\s?(asc|desc)?$/ do |colu
     return (columnValues.length > 0) && (columnValues.toString() === Ext.Array.sort(columnValues).toString());
   JS
 end
+
+Then /^the grid's column "([^"]*)" should not be editable$/ do |column_name|
+  column = column_name.downcase.gsub(' ', '_')
+  page.driver.browser.execute_script(<<-JS).should be_true
+    var col = Ext.ComponentQuery.query('gridcolumn[name="#{column}"]')[0];
+    return typeof col.getEditor() == 'undefined';
+  JS
+end

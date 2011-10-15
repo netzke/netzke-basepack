@@ -234,3 +234,9 @@ Scenario: GridPanel with overridden columns
   When I go to the BookGridWithOverriddenColumns test page
   Then I should see "LOLITA"
   And I should see "Nabokov, Vladimir"
+
+@javascript
+  Scenario: Virtual attributes should not be editable
+    Given a book exists with title: "Some Title"
+    When I go to the BookGridWithVirtualAttributes test page
+    Then the grid's column "In abundance" should not be editable

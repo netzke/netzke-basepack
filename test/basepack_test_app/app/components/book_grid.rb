@@ -4,5 +4,5 @@ class BookGrid < Netzke::Basepack::GridPanel
   model "Book"
 
   # column :title
-  # column :author__first_name
+  # override_column :author__name, :editable => false
 end
