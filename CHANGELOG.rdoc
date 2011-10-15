@@ -9,6 +9,7 @@
   * New :override_columns config option for grid allows overriding specified column config without influencing other columns' order/presence
   * New DSL method (override_column) to override a specific column config without influencing other columns' order/presence.
   * Grid's title is set to model's pluralized name by default.
+  * New :read_only option for FormPanel - makes all fields read-only and removes the "Apply" button.
 
 * API changes
   * Skip supporting ModelExtensions. The preferred way is using setters and getters on columns/fields.

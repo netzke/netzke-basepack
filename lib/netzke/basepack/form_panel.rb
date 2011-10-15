@@ -80,7 +80,7 @@ module Netzke
       end
 
       def configure_bbar(c)
-        c[:bbar] = [:apply.action] if c[:bbar].nil?
+        c[:bbar] = [:apply.action] if c[:bbar].nil? && !c[:read_only]
       end
 
       # Extra JavaScripts and stylesheets

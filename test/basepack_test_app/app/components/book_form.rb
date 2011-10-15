@@ -4,6 +4,10 @@ class BookForm < Netzke::Basepack::FormPanel
 
   include Extras::BookPresentation
 
+  # def default_config
+  #   super.merge(:read_only => true)
+  # end
+
   def configuration
     super.merge(
       :model => "Book",
