@@ -37,12 +37,11 @@ module Netzke
       class_attribute :config_tool_available
       self.config_tool_available = true
 
-      class_attribute :default_config
-      self.default_config = {} # To be filled in
-
       include self::Services
       include self::Fields
       include Netzke::Basepack::DataAccessor
+
+      delegates_to_dsl :model, :items, :record_id
 
       action :apply do
         {
