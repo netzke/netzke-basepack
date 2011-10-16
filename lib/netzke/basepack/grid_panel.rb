@@ -209,10 +209,12 @@ module Netzke
         end
       end
 
-      def default_config
+      def configuration
         super.tap do |c|
-          c[:columns] = self.class.read_inheritable_attribute(:columns)
-          c[:override_columns] = self.class.read_inheritable_attribute(:overridden_columns)
+          c[:columns] ||= self.class.read_inheritable_attribute(:columns)
+
+          # user-passed :override_columns option should get deep_merged with the defaults
+          c[:override_columns] = (self.class.read_inheritable_attribute(:overridden_columns) || {}).deep_merge(c[:override_columns] || {})
         end
       end
 
