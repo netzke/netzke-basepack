@@ -183,23 +183,17 @@ module Netzke
         js_include(ex.join("#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"))
       end
 
-      # class << self
-      #   attr_accessor :columns, :grid_panel_default_config
-      # end
+      # Allows children classes to simply do
       #
-      # self.grid_panel_default_config = {}
+      #     model "User"
+      delegates_to_dsl :model
 
+      # Inject some handy DSL methods into the child classes.
       def self.inherited(base)
         super
 
         base.class_eval do
           class << self
-            def model(class_name)
-              grid_panel_default_config = self.read_inheritable_attribute(:grid_panel_default_config) || {}
-              grid_panel_default_config.merge!(:model => class_name)
-              self.write_inheritable_attribute(:grid_panel_default_config, grid_panel_default_config)
-            end
-
             def column(name, config = {})
               columns = self.read_inheritable_attribute(:columns) || []
               columns << config.merge(:name => name.to_s)
@@ -217,7 +211,6 @@ module Netzke
 
       def default_config
         super.tap do |c|
-          c.merge!(self.class.read_inheritable_attribute(:grid_panel_default_config) || {})
           c[:columns] = self.class.read_inheritable_attribute(:columns)
           c[:override_columns] = self.class.read_inheritable_attribute(:overridden_columns)
         end
