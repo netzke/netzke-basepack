@@ -41,7 +41,7 @@ module Netzke
       include self::Fields
       include Netzke::Basepack::DataAccessor
 
-      delegates_to_dsl :model, :items, :record_id
+      delegates_to_dsl :model, :record_id
 
       action :apply do
         {
