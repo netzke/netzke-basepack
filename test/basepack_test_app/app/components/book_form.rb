@@ -21,6 +21,7 @@ class BookForm < Netzke::Basepack::FormPanel
     {:name => :updated_at},
     :last_read_at,
     :published_on
+
     # WIP: commalistcbg is kind of broken, giving an Ext error
     # {:name => :tags, :xtype => :commalistcbg, :options => %w(read cool recommend buy)},
     # WIP: waithing on nradiogroup

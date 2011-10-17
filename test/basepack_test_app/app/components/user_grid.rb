@@ -4,4 +4,5 @@ class UserGrid < Netzke::Basepack::GridPanel
 
   add_form_config :class_name => "UserForm"
   edit_form_config :class_name => "UserForm"
+  multi_edit_form_config :class_name => "UserForm"
 end

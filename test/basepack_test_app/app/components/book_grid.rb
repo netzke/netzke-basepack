@@ -5,4 +5,5 @@ class BookGrid < Netzke::Basepack::GridPanel
 
   add_form_config :class_name => "BookForm"
   edit_form_config :class_name => "BookForm"
+  multi_edit_form_config :class_name => "BookForm"
 end
