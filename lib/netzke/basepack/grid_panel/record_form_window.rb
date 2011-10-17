@@ -2,12 +2,12 @@ module Netzke
   module Basepack
     class GridPanel < Netzke::Base
       class RecordFormWindow < Window
-        js_properties :button_align => :right
 
-        config :modal => true,
-               :width => 400,
-               :auto_height => true,
-               :fbar => [:ok.action, :cancel.action]
+        js_properties :button_align => :right,
+                      :width => 400,
+                      :auto_height => true,
+                      :modal => true,
+                      :fbar => [:ok.action, :cancel.action]
 
         action :ok do
           { :text => I18n.t('netzke.basepack.grid_panel.record_form_window.actions.ok')}
