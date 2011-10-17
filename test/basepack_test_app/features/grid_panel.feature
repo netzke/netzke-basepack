@@ -60,8 +60,8 @@ Scenario: Multi-editing records
   And I press "Edit in form"
   And I fill in "First name:" with "Maxim"
   And I press "OK"
-  Then I should see "Updated 2 records."
-  And the following users should exist:
+  And I wait for the response from the server
+  Then the following users should exist:
   | first_name | last_name |
   | Maxim | Castaneda |
   | Maxim | Hesse |
