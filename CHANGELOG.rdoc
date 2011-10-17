@@ -12,7 +12,7 @@
   * Grid's title is set to model's pluralized name by default.
   * New :read_only option for FormPanel - makes all fields read-only and removes the "Apply" button.
   * FormPanel implements DSL shortcuts for the following options in default config: :model, :items, :record_id.
-  * GridPanel implements DSL shortcuts for the following options in default config: :model.
+  * GridPanel implements DSL shortcuts for the following options in default config: :model, :add_form_config, :edit_form_config, :multi_edit_form_config.
 
 * API changes
   * Skip supporting ModelExtensions. The preferred way is using setters and getters on columns/fields.

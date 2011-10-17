@@ -3,6 +3,6 @@ class BookGrid < Netzke::Basepack::GridPanel
 
   model "Book"
 
-  # column :title
-  # override_column :author__name, :editable => false
+  add_form_config :class_name => "BookForm"
+  edit_form_config :class_name => "BookForm"
 end
