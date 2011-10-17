@@ -185,7 +185,7 @@ module Netzke
           def attr_type_to_xtype_map
             {
               :integer => :numberfield,
-              :boolean => :checkboxfield,
+              :boolean => config[:multi_edit] ? :tricheckbox : :checkboxfield,
               :date => :datefield,
               # WIP: waiting for datetime.js implementation for ExtJS 4
               # :datetime => :datetimefield,

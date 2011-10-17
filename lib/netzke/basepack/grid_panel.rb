@@ -186,7 +186,7 @@ module Netzke
       # Allows children classes to simply do
       #
       #     model "User"
-      delegates_to_dsl :model, :add_form_config, :edit_form_config, :add_form_window_config, :edit_form_window_config
+      delegates_to_dsl :model, :add_form_config, :add_form_window_config, :edit_form_config, :edit_form_window_config, :multi_edit_form_config, :multi_edit_form_window_config
 
       # Inject some handy DSL methods into the child classes.
       def self.inherited(base)
@@ -393,11 +393,13 @@ module Netzke
 
       component :multi_edit_form do
         form_config = {
-          :class_name => "Netzke::Basepack::GridPanel::MultiEditForm",
+          :class_name => "Netzke::Basepack::FormPanel",
+          :multi_edit => true,
           :model => config[:model],
           :persistent_config => config[:persistent_config],
           :bbar => false,
           :prevent_header => true,
+          :name => "multi_edit_form0", # we detect multi-edit form submission by its name
           :mode => config[:mode]
         }
 

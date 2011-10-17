@@ -137,7 +137,6 @@ module Netzke
 
           if mod_records_count > 0
             on_data_changed
-            flash :notice => "Updated #{mod_records_count} records."
             {:set_result => "ok", :netzke_feedback => @flash}.to_nifty_json
           else
             {:netzke_feedback => @flash}.to_nifty_json
