@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = [%q{Sergei Kozlov}]
-  s.date = %q{2011-10-17}
+  s.date = %q{2011-10-19}
   s.description = %q{A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA}
   s.email = %q{sergei@playcode.nl}
   s.extra_rdoc_files = [
@@ -40,6 +40,8 @@ Gem::Specification.new do |s|
     "lib/netzke/active_record/relation_extensions.rb",
     "lib/netzke/basepack.rb",
     "lib/netzke/basepack/accordion_panel.rb",
+    "lib/netzke/basepack/action_column.rb",
+    "lib/netzke/basepack/action_column/javascripts/action_column.js",
     "lib/netzke/basepack/auth_app.rb",
     "lib/netzke/basepack/basic_app.rb",
     "lib/netzke/basepack/border_layout_panel.rb",
@@ -104,6 +106,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/components/book_form_with_nested_attributes.rb",
     "test/basepack_test_app/app/components/book_grid.rb",
     "test/basepack_test_app/app/components/book_grid_loader.rb",
+    "test/basepack_test_app/app/components/book_grid_with_column_actions.rb",
     "test/basepack_test_app/app/components/book_grid_with_custom_columns.rb",
     "test/basepack_test_app/app/components/book_grid_with_default_values.rb",
     "test/basepack_test_app/app/components/book_grid_with_extra_feedback.rb",

@@ -172,3 +172,7 @@ Then /^the grid's column "([^"]*)" should not be editable$/ do |column_name|
     return typeof col.getEditor() == 'undefined';
   JS
 end
+
+When /^I click the "([^"]*)" action icon$/ do |action_name|
+  find("img[data-qtip='#{action_name}']").click
+end

@@ -240,3 +240,12 @@ Scenario: GridPanel with overridden columns
     Given a book exists with title: "Some Title"
     When I go to the BookGridWithVirtualAttributes test page
     Then the grid's column "In abundance" should not be editable
+
+@javascript
+  Scenario: Delete record via an column action
+    Given a book exists with title: "Some Title"
+    When I go to the BookGridWithColumnActions test page
+    And I click the "Delete row" action icon
+    And I press "Yes"
+    Then I should see "Deleted 1 record(s)"
+    And a book should not exist with title: "Some Title"
