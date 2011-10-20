@@ -1,4 +1,4 @@
-= ?.?.?
+= 0.7.2 - 2011-10-20
 * bug fix
   * Filter on a date column
   * Using date column caused FormPanel to crash
