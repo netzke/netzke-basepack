@@ -163,9 +163,9 @@ module Netzke
           assoc, method = v["field"].split('__')
           if method
             assoc = data_class.reflect_on_association(assoc.to_sym)
-            field = [assoc.klass.table_name, method].join('.').to_sym
+            field = [assoc.klass.table_name, method].join('.')
           else
-            field = assoc.to_sym
+            field = [table_name, assoc].join('.')
           end
 
           value = v["value"]
@@ -174,15 +174,15 @@ module Netzke
 
           case v["type"]
           when "string"
-            res = res.where(["#{table_name}.#{field} like ?", "%#{value}%"])
+            res = res.where(["#{field} like ?", "%#{value}%"])
           when "date"
             # convert value to the DB date
             value.match /(\d\d)\/(\d\d)\/(\d\d\d\d)/
-            res = res.where("#{table_name}.#{field} #{op} ?", "#{$3}-#{$1}-#{$2}")
+            res = res.where("#{field} #{op} ?", "#{$3}-#{$1}-#{$2}")
           when "numeric"
-            res = res.where(["#{table_name}.#{field} #{op} ?", value])
+            res = res.where(["#{field} #{op} ?", value])
           else
-            res = res.where(["#{table_name}.#{field} = ?", value])
+            res = res.where(["#{field} = ?", value])
           end
         end
 

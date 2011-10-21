@@ -4,15 +4,18 @@ Feature: Grid panel filters
   I want feature
 
 Background:
-  Given the following books exist:
-  | title               | exemplars | digitized | notes        | last_read_at |
-  | Journey to Ixtlan   | 10        | true      | A must-read  | 2011-04-25   |
-  | Lolita              | 5         | false     | To read      | 2010-12-23   |
-  | Getting Things Done | 3         | true      | Productivity | 2011-04-26   |
+  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
+  And a book exists with author: that author, title: "Lolita", exemplars: 5, digitized: false, notes: "To read", last_read_at: "2010-12-23"
+
+  And an author exists with first_name: "Carlos", last_name: "Castaneda"
+  And a book exists with author: that author, title: "Journey to Ixtlan", exemplars: 10, digitized: true, notes: "A must-read", last_read_at: "2011-04-25"
+
+  And an author exists with first_name: "David", last_name: "Allen"
+  And a book exists with author: that author, title: "Getting Things Done", exemplars: 3, digitized: true, notes: "Productivity", last_read_at: "2011-04-26"
 
 @javascript
 Scenario: Numeric and text filter
-  When I go to the BookGrid test page
+  When I go to the BookGridFiltering test page
   And I enable filter on column "exemplars" with value "{gt:6}"
   Then the grid should show 1 records
 
@@ -24,10 +27,19 @@ Scenario: Numeric and text filter
   And I enable filter on column "exemplars" with value "{eq:6}"
   Then the grid should show 0 records
 
-  # Due to some mystery, this wouldn't work in a separate scenario (e.g. Text filter)
+  # NOTE: due to some mystery, this wouldn't work in a separate scenario (e.g. "Text filter")
+  # That is, the filter just wouldn't get set.
   When I clear all filters in the grid
   And I enable filter on column "notes" with value "'read'"
   Then the grid should show 2 records
+
+  When I clear all filters in the grid
+  And I enable filter on column "author__first_name" with value "'d'"
+  Then the grid should show 2 records
+
+  When I clear all filters in the grid
+  And I enable filter on column "author__first_name" with value "'carl'"
+  Then the grid should show 1 records
 
   When I clear all filters in the grid
   And I enable date filter on column "last_read_at" with value "on 04/25/2011"
@@ -52,7 +64,7 @@ Scenario: Numeric and text filter
 
 @javascript
 Scenario: Boolean filter
-  When I go to the BookGrid test page
+  When I go to the BookGridFiltering test page
   And I enable filter on column "digitized" with value "false"
   Then the grid should show 1 records
 

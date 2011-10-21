@@ -214,7 +214,7 @@ module Netzke
           end
 
           def set_default_sortable(c)
-            c[:sortable] = !c[:virtual] if c[:sortable].nil? # TODO: optimize - don't set it to false
+            c[:sortable] = !c[:virtual] || c[:sorting_scope] if c[:sortable].nil? # TODO: optimize - don't set it to false
           end
 
           def set_default_filterable(c)

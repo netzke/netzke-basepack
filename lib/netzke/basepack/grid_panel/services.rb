@@ -211,6 +211,7 @@ module Netzke
               column = columns.detect { |c| c[:name] == sort_params["property"] }
               if column.has_key?(:sorting_scope)
                 relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
+                ::Rails.logger.debug "!!! relation: #{relation.inspect}\n"
               else
                 relation = if method.nil?
                   relation.order("#{assoc} #{dir}")
