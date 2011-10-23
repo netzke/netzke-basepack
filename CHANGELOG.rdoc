@@ -1,4 +1,4 @@
-= ?.?.?
+= 0.7.3 - 2011-10-23
 * bug fix
   * :sorting_scope config option for GridPanel is now effective
   * regression: filtering on association column is fix (covered with tests)
