@@ -6,7 +6,7 @@ A pack of pre-built [Netzke](http://netzke.org) components - such as grid, form,
 
 * Ruby 1.9.2 (1.8.7 may work, too)
 * Rails >= 3.0.0
-* Ext JS >= 4.0.0
+* Ext JS = 4.0.2a
 
 ## Installation
 
