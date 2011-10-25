@@ -1,6 +1,10 @@
+= 0.7.4 - ?
+* bug fix
+  * :enable_pagination is now respected in GridPanel
+
 = 0.7.3 - 2011-10-23
 * bug fix
-  * :sorting_scope config option for GridPanel is now effective
+  * :sorting_scope is now respected in GridPanel
   * regression: filtering on association column is fix (covered with tests)
 
 = 0.7.2 - 2011-10-20
