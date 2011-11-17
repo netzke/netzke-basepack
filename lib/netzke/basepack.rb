@@ -2,6 +2,8 @@ require 'netzke/basepack/version'
 
 if defined? ActiveRecord
   require 'netzke/active_record'
+elsif defined? DataMapper
+  require 'netzke/data_mapper'
 end
 
 require 'netzke/basepack/data_adapters/abstract_adapter'
