@@ -4,8 +4,6 @@ branches:
 
 rvm:
   - 1.9.2
-  
-  - DB=postgres
 
 bundler_args: "--without development production profiling"
 before_script: "./config/ci/before-travis.sh"
