@@ -3,7 +3,7 @@ sh -e /etc/init.d/xvfb start
 
 # fetch extjs
 wget http://extjs.cachefly.net/ext-4.0.2a-gpl.zip
-unzip -d test/basepack_test_app/public/ -n ext-4.0.2a-gpl.zip
+unzip -q -d test/basepack_test_app/public/ -n ext-4.0.2a-gpl.zip
 mv test/basepack_test_app/public/ext-4.0.2a test/basepack_test_app/public/extjs
 
 # clone netzke-core and netzke-persistence gems into test project
