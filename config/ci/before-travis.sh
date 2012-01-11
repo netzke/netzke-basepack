@@ -16,4 +16,4 @@ cd ..
 git clone git://github.com/skozlov/netzke-persistence.git
 cd netzke-persistence
 git checkout tags/v0.1.0
-cd ../../..
+cd ../../../../..
