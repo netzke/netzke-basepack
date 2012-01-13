@@ -1,8 +1,25 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
+RAILS_VERSION = '3.1.0'
+DM_VERSION    = '1.2.0'
 
 gem 'mysql2'
+
+case ENV['ORM'].downcase
+when 'dm'
+  # if we are using dm, skip activerecord by specifying everything else
+  gem 'activesupport',      RAILS_VERSION, :require => 'active_support'
+  gem 'actionpack',         RAILS_VERSION, :require => 'action_pack'
+  gem 'actionmailer',       RAILS_VERSION, :require => 'action_mailer'
+  gem 'railties',           RAILS_VERSION, :require => 'rails'
+
+  gem 'dm-rails',           DM_VERSION
+  gem 'dm-mysql-adapter',   DM_VERSION
+else
+  # default case: use ar
+  # get just the rails gem
+  gem 'rails',              RAILS_VERSION
+end
 
 gem 'netzke-core',        :path => File.expand_path('../vendor/gems/netzke-core', __FILE__)
 gem 'netzke-persistence', :path => File.expand_path('../vendor/gems/netzke-persistence', __FILE__)
@@ -29,6 +46,14 @@ end
 
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
+  case ENV['ORM'].downcase
+  when 'dm'
+    # if we are using dm, we need the sqlite adapter
+    gem 'dm-sqlite-adapter', DM_VERSION
+  else
+    # default case: use ar
+    # nothing to do here
+  end
   gem 'pickle'
   gem 'database_cleaner'
 end
