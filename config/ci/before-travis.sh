@@ -10,7 +10,7 @@ mv test/basepack_test_app/public/ext-4.0.2a test/basepack_test_app/public/extjs
 cp test/basepack_test_app/config/database.yml.travis  test/basepack_test_app/config/database.yml
 
 # create mysql database
-"mysql -e 'create database nbt_test;'"
+mysql -e 'create database nbt_test;'
 
 # clone netzke-core and netzke-persistence gems into test project
 mkdir -p test/basepack_test_app/vendor/gems
