@@ -183,6 +183,8 @@ module Netzke
           #     r.merge(c[:name] => column_values)
           #   end
           # end
+
+          # Returns an array of records.
           def get_records(params)
 
             # Restore params from component_session if requested
