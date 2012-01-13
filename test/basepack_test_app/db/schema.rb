@@ -64,9 +64,6 @@ ActiveRecord::Schema.define(:version => 20110909071740) do
   add_index "netzke_component_states", ["role_id"], :name => "index_netzke_component_states_on_role_id"
   add_index "netzke_component_states", ["user_id"], :name => "index_netzke_component_states_on_user_id"
 
-  create_table "netzke_temp_table", :force => true do |t|
-  end
-
   create_table "roles", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
