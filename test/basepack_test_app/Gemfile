@@ -27,7 +27,7 @@ end
 gem 'tzinfo'
 
 gem 'netzke-core',        :path => File.expand_path('../vendor/gems/netzke-core', __FILE__)
-gem 'netzke-persistence', :path => File.expand_path('../vendor/gems/netzke-persistence', __FILE__)
+#gem 'netzke-persistence', :path => File.expand_path('../vendor/gems/netzke-persistence', __FILE__)
 
 # We need to manually include these Basepack dependencies, because we're not including Basepack as a gem
 gem 'will_paginate', '~>3.0'

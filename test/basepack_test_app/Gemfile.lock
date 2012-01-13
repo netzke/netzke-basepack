@@ -4,11 +4,6 @@ PATH
     netzke-core (0.7.4)
       activesupport (>= 3.0.0)
 
-PATH
-  remote: vendor/gems/netzke-persistence
-  specs:
-    netzke-persistence (0.1.0)
-
 GEM
   remote: http://rubygems.org/
   specs:
@@ -168,7 +163,6 @@ DEPENDENCIES
   launchy
   mysql2
   netzke-core!
-  netzke-persistence!
   pickle
   rails (= 3.1.0)
   rspec-rails
