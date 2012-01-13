@@ -157,6 +157,7 @@ module Netzke
 
         protected
 
+          # Returns an array of records.
           def get_records(params)
 
             # Restore params from component_session if requested

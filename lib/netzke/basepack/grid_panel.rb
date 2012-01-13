@@ -40,6 +40,7 @@ module Netzke
     # * +enable_edit_in_form+ - (defaults to true) provide buttons into the toolbar that activate editing/adding records via a form
     # * +enable_extended_search+ - (defaults to true) provide a button into the toolbar that shows configurable search form
     # * +enable_context_menu+ - (defaults to true) enable rows context menu
+    # * +context_menu+ - an array of actions (e.g. [:edit.action, "-", :del.action] - see the Actions section) or +false+ to disable the context menu
     # * +enable_rows_reordering+ - (defaults to false) enable reordering of rows with drag-n-drop; underlying model (specified in +model+) must implement "acts_as_list"-compatible functionality
     # * +enable_pagination+ - (defaults to true) enable pagination
     # * +rows_per_page+ - (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to +false+)
