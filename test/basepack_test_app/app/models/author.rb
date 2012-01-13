@@ -1,3 +1,12 @@
+case (ENV['ORM'] || '').downcase
+when 'dm'
+
+class Author
+
+end
+
+else
+
 class Author < ActiveRecord::Base
   has_many :books
 
@@ -7,4 +16,6 @@ class Author < ActiveRecord::Base
   end
 
   netzke_attribute :name
+end
+
 end
