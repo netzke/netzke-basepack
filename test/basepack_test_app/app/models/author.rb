@@ -2,8 +2,10 @@ case (ENV['ORM'] || '').downcase
 when 'dm'
 
 class Author
-
+  include DataMapper::Resource
+  property :id, Serial
 end
+
 
 else
 
