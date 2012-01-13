@@ -1,9 +1,25 @@
-case (ENV['ORM'] || '').downcase
-when 'dm'
+if defined? DataMapper::Resource
 
 class Book
   include DataMapper::Resource
   property :id, Serial
+  belongs_to :author
+  validates_presence_of :title
+  property :title, String
+  property :exemplars, Integer
+  property :digitized, Boolean
+  property :notes, Text
+  property :tags, String
+  property :rating, Integer
+  property :created_at, DateTime
+  property :updated_at, DateTime
+  property :last_read_at, DateTime
+  property :published_on, Date
+
+  def sorted_by_author_name dir
+    Book.all :order => [(Book.author.last_name.send dir),(Book.author.first_name.send dir)]
+  end
+
 end
 
 else

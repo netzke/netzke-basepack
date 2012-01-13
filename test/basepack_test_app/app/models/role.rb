@@ -1,5 +1,4 @@
-case (ENV['ORM'] || '').downcase
-when 'dm'
+if defined? DataMapper::Resource
 
 class Role
   include DataMapper::Resource
