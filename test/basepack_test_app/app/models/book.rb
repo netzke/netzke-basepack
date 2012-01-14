@@ -16,7 +16,7 @@ class Book
   property :last_read_at, DateTime
   property :published_on, Date
 
-  def sorted_by_author_name dir
+  def self.sorted_by_author_name dir
     Book.all :order => [(Book.author.last_name.send dir),(Book.author.first_name.send dir)]
   end
 
