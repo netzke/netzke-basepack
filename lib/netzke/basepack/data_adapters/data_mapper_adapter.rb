@@ -1,3 +1,5 @@
+require 'will_paginate/data_mapper'
+
 module Netzke::Basepack::DataAdapters
   class DataMapperAdapter < AbstractAdapter
     def self.for_class?(model_class)
@@ -26,11 +28,13 @@ module Netzke::Basepack::DataAdapters
       search_query = search_query.all(:conditions => params[:scope]) if params[:scope]
 
       if with_pagination
-        query[:limit] = params[:limit] if params[:limit]
-        query[:offset] = params[:start] if params[:start]
+        page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
+        query[:per_page]=params[:limit] if params[:limit]
+        query[:page]=page
+        search_query.paginate(query)
+      else
+        search_query.all(query)
       end
-
-      search_query.all(query)
     end
 
     def destroy(ids)
