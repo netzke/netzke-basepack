@@ -5,7 +5,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     # WIP. Introduce filtering, scopes, pagination, etc
-    def get_records(params, columns, with_pagination = true)
+    def get_records(params, columns)
       search_query = @model_class
       query = {}
 
@@ -25,20 +25,15 @@ module Netzke::Basepack::DataAdapters
 
       search_query = search_query.all(:conditions => params[:scope]) if params[:scope]
 
-      if with_pagination
-        page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
-        search_query.all(query).paginate :per_page => params[:limit], :page=> page
-      else
-        search_query.all(query)
+      if params[:limit]
+        query[:limit]=params[:limit]
+        query[:start]=params[:start]
       end
+      search_query.all(query)
     end
 
-    def last
-      @model_class.last
-    end
-
-    def destroy_all
-      @model_class.all.destroy
+    def count_records(params,columns)
+      @model_clas.count()
     end
 
     def destroy(ids)
@@ -49,6 +44,15 @@ module Netzke::Basepack::DataAdapters
       @model_class.all(:id => params[:ids]).each_with_index do |item, index|
         item.move(:to => params[:new_index] + index)
       end
+    end
+
+    # Needed for seed and tests
+    def last
+      @model_class.last
+    end
+
+    def destroy_all
+      @model_class.all.destroy
     end
   end
 end
