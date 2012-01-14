@@ -11,9 +11,6 @@ require 'netzke/basepack/data_adapters/abstract_adapter'
 require 'netzke/basepack/data_adapters/active_record_adapter' if defined? ActiveRecord
 require 'netzke/basepack/data_adapters/data_mapper_adapter' if defined? DataMapper
 
-# will_paginate supports more than just ActiveRecord
-require 'will_paginate'
-
 module Netzke
   module Basepack
     mattr_accessor :with_icons

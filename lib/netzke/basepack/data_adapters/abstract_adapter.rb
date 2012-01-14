@@ -22,6 +22,20 @@ module Netzke::Basepack::DataAdapters
       []
     end
 
+    # Returns record count based on passed params. Implements:
+    # * filtering
+    # * scopes
+    #
+    # `params` is a hash that contains the following keys:
+    #
+    # * :scope - the scope as described in Netzke::Basepack::GridPanel
+    # * :filter - Ext filters
+    #
+    # The `columns` parameter may be used to use joins to address the n+1 query problem, and receives an array of column configurations
+    def count_records(params, columns)
+      0
+    end
+
     # Destroys records with the provided ids
     def destroy(ids)
     end

@@ -34,7 +34,23 @@ module Netzke::Basepack::DataAdapters
       end
 
       page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
-      relation.paginate(:per_page => params[:limit], :page => page)
+      if params[:limit]
+        relation.offset(params[:start]).limit(params[:limit])
+      else
+        relation.all
+      end
+    end
+
+    def count_records(params, columns)
+      # build initial relation based on passed params
+      relation = get_relation(params)
+
+      # addressing the n+1 query problem
+      columns.each do |c|
+        assoc, method = c[:name].split('__')
+        relation = relation.includes(assoc.to_sym) if method
+      end
+      relation.count
     end
 
     def destroy(ids)
