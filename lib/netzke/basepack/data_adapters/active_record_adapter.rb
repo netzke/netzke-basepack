@@ -53,9 +53,9 @@ module Netzke::Basepack::DataAdapters
       relation.count
     end
 
-    def get_assoc_property_type model, assoc_name, property
-      if property && assoc=model.reflect_on_association(assoc_name)
-        assoc_column = assoc.klass.columns_hash[property.to_s]
+    def get_assoc_property_type model, assoc_name, prop_name
+      if prop_name && assoc=model.reflect_on_association(assoc_name)
+        assoc_column = assoc.klass.columns_hash[prop_name.to_s]
         assoc_column.try(:type)
       end
     end

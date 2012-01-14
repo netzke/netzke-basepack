@@ -119,7 +119,7 @@ module Netzke
       end
 
       def record
-        @record ||= config[:record] || config[:record_id] && data_class && data_class.where(data_class.primary_key => config[:record_id]).first
+        @record ||= config[:record] || config[:record_id] && data_class && data_adapter.find_record(config[:record_id])
       end
 
       private

@@ -46,7 +46,7 @@ module Netzke::Basepack::DataAdapters
     # :text
     # :json
     # :string
-    def get_assoc_property_type model, assoc_name, property
+    def get_assoc_property_type model, assoc_name, prop_name
       raise "not implemented"
     end
 

@@ -50,13 +50,18 @@ module Netzke::Basepack::DataAdapters
       }
     end
 
-    def get_assoc_property_type model, assoc_name, property
-      p model, assoc_name, property
-      dm_type_map[model.send(assoc_name).send(property).class]
+    def get_assoc_property_type model, assoc_name, prop_name
+      assoc = model.send(assoc_name)
+      # prop_name could be a virtual column, check it first
+      assoc.respond_to?(prop_name) ? dm_type_map[assoc.send(prop_name)] : nil
     end
 
     def destroy(ids)
       @model_class.destroy(:id => ids)
+    end
+
+    def find_record(id)
+      @model_class.find(id).first
     end
 
     def move_records(params)
