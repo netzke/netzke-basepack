@@ -14,10 +14,6 @@ when 'dm'
   gem 'dm-validations'
   gem 'dm-aggregates' # needed for will_paginate
   gem 'dm-mysql-adapter',   DM_VERSION
-  gem 'dm-is-list'
-else
-  # default case: use ar
-  gem 'acts_as_list'
 end
 
 gem 'netzke-core',        :path => File.expand_path('../vendor/gems/netzke-core', __FILE__)

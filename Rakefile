@@ -10,7 +10,6 @@ begin
     gemspec.homepage = "http://netzke.org"
     gemspec.authors = ["Sergei Kozlov"]
     gemspec.add_dependency("netzke-core",   "~>0.7.4")
-    gemspec.add_dependency("acts_as_list",  "~>0.1.4")
     gemspec.post_install_message = <<-MESSAGE
 
 ========================================================================
