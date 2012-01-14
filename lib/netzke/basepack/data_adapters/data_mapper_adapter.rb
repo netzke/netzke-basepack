@@ -33,14 +33,6 @@ module Netzke::Basepack::DataAdapters
       search_query.all(query)
     end
 
-    def last
-      @model_class.last
-    end
-
-    def destroy_all
-      @model_class.all.destroy
-    end
-
     def destroy(ids)
       @model_class.destroy(:id => ids)
     end
