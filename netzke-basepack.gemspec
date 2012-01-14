@@ -297,16 +297,13 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<netzke-core>, ["~> 0.7.4"])
-      s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.0"])
       s.add_runtime_dependency(%q<acts_as_list>, ["~> 0.1.4"])
     else
       s.add_dependency(%q<netzke-core>, ["~> 0.7.4"])
-      s.add_dependency(%q<will_paginate>, ["~> 3.0.0"])
       s.add_dependency(%q<acts_as_list>, ["~> 0.1.4"])
     end
   else
     s.add_dependency(%q<netzke-core>, ["~> 0.7.4"])
-    s.add_dependency(%q<will_paginate>, ["~> 3.0.0"])
     s.add_dependency(%q<acts_as_list>, ["~> 0.1.4"])
   end
 end
