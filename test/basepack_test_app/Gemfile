@@ -11,6 +11,7 @@ case (ENV['ORM'] || '').downcase
 when 'dm'
   # DataMapper
   gem 'dm-rails',           DM_VERSION
+  gem 'dm-validations'
   gem 'dm-mysql-adapter',   DM_VERSION
   # FIXME: need dm-is-list
 else
