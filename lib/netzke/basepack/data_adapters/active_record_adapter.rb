@@ -64,6 +64,10 @@ module Netzke::Basepack::DataAdapters
       @model_class.destroy(ids)
     end
 
+    def find_record(id)
+      @model_class.find_all_by_id(id).first
+    end
+
     def move_records(params)
       if defined?(ActsAsList) && @model_class.ancestors.include?(ActsAsList::InstanceMethods)
         ids = JSON.parse(params[:ids]).reverse

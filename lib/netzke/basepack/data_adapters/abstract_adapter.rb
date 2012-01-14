@@ -68,7 +68,7 @@ module Netzke::Basepack::DataAdapters
       @model_class.new(params)
     end
 
-    # Finds a record by id.
+    # Finds a record by id, return nil if not found
     def find_record(id)
       @model_class.find(id)
     end

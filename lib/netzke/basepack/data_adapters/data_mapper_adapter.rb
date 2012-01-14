@@ -61,7 +61,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def find_record(id)
-      @model_class.find(id).first
+      @model_class.get(id)
     end
 
     def move_records(params)
