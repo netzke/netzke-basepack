@@ -2,7 +2,11 @@ if defined? DataMapper::Resource
 
 class BookWithCustomPrimaryKey
   include DataMapper::Resource
-  property :id, Serial
+  property :uid, Serial
+  belongs_to :author
+  property :title, String
+  property :created_at, DateTime
+  property :updated_at, DateTime
 end
 
 else

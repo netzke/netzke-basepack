@@ -3,6 +3,12 @@ if defined? DataMapper::Resource
 class User
   include DataMapper::Resource
   property :id, Serial
+  property :first_name, String
+  property :last_name, String
+  belongs_to :role
+  has 1, :address
+  property :created_at, DateTime
+  property :updated_at, DateTime
 end
 
 else
