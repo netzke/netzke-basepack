@@ -15,7 +15,7 @@ When /I (?:sleep|wait) (\d+) (\w+)/ do |amount, unit|
 end
 
 When /^I wait for the response from the server$/ do
-  page.wait_until{ page.driver.browser.execute_script("return !Netzke.ajaxIsLoading()") }
+  page.wait_until{ page.driver.browser.execute_script("return !(Netzke.ajaxIsLoading() || Ext.Ajax.isLoading())") }
 end
 
 When /^I go forward one page$/ do
