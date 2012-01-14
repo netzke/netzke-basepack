@@ -2,7 +2,8 @@ require 'netzke/basepack/version'
 
 if defined? ActiveRecord
   require 'netzke/active_record'
-elsif defined? DataMapper
+end
+if defined? DataMapper
   require 'netzke/data_mapper'
 end
 
