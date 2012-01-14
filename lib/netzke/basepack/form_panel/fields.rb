@@ -121,10 +121,9 @@ module Netzke
           # Sets the proper xtype of an asociation field
           def detect_association_with_method(c)
             if c[:name].index('__')
+              puts c[:name]
               assoc_name, method = c[:name].split('__').map(&:to_sym)
-              if method && assoc = data_class.reflect_on_association(assoc_name)
-                assoc_column = assoc.klass.columns_hash[method.to_s]
-                assoc_method_type = assoc_column.try(:type)
+              if assoc_method_type = data_adapter.get_assoc_property_type(data_class, assoc_name, method)
                 if c[:nested_attribute]
                   c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
                 else

@@ -36,6 +36,20 @@ module Netzke::Basepack::DataAdapters
       0
     end
 
+    # gets the type of a model attribute for xtype mapping
+    # i.e. get_assoc_property_type "Book",:author,:first_name should return :string
+    # Types that are mapped to xtypes:
+    # :integer
+    # :boolean
+    # :date
+    # :datetime
+    # :text
+    # :json
+    # :string
+    def get_assoc_property_type model, assoc_name, property
+      raise "not implemented"
+    end
+
     # Destroys records with the provided ids
     def destroy(ids)
     end

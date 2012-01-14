@@ -36,6 +36,25 @@ module Netzke::Basepack::DataAdapters
       @model_clas.count()
     end
 
+    def dm_type_map
+      {
+        DataMapper::Property::Integer => :integer,
+        DataMapper::Property::Serial => :integer,
+        DataMapper::Property::Boolean => :boolean,
+        DataMapper::Property::Date => :date,
+        DataMapper::Property::DateTime => :datetime,
+        DataMapper::Property::Time => :datetime,
+        DataMapper::Property::Json => :json,
+        DataMapper::Property::String => :string,
+        DataMapper::Property::Text => :text
+      }
+    end
+
+    def get_assoc_property_type model, assoc_name, property
+      p model, assoc_name, property
+      dm_type_map[model.send(assoc_name).send(property).class]
+    end
+
     def destroy(ids)
       @model_class.destroy(:id => ids)
     end
