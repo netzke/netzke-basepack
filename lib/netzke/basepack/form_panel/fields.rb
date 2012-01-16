@@ -100,12 +100,6 @@ module Netzke
             set_default_field_xtype(field) if field[:xtype].nil?
             set_default_read_only(field)
 
-            # temporal datetime setup, while we don't have real datetime field
-            if field[:attr_type] == :datetime || field[:attr_type] == :date
-              field[:format] ||= "Y-m-d" # needed for
-              field[:submit_format] = "Y-m-d"
-            end
-
             # provide our special combobox with our id
             field[:parent_id] = self.global_id if field[:xtype] == :netzkeremotecombo
 
@@ -187,10 +181,7 @@ module Netzke
               :integer => :numberfield,
               :boolean => config[:multi_edit] ? :tricheckbox : :checkboxfield,
               :date => :datefield,
-              # WIP: waiting for datetime.js implementation for ExtJS 4
-              # :datetime => :datetimefield,
-              :datetime => :datefield,
-
+              :datetime => :xdatetime,
               :text => :textarea,
               :json => :jsonfield,
               :string => :textfield

@@ -309,8 +309,7 @@ module Netzke
               :integer => :numberfield,
               :boolean => :checkbox,
               :date => :datefield,
-              # :datetime => :datetimefield, WIP: waiting for Ext 4 fix
-              :datetime => :datefield,
+              :datetime => :xdatetime,
               :text => :textarea,
               :string => :textfield
             }
@@ -321,7 +320,7 @@ module Netzke
               # :integer  => :numbercolumn, # don't like the default formatter
               :boolean  => :checkcolumn,
               :date     => :datecolumn,
-              :datetime => :datecolumn # TODO: replace with datetimepicker
+              #:datetime => :datecolumn # TODO: replace with datetimepicker
             }
           end
 

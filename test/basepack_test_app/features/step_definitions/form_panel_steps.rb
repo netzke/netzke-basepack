@@ -23,7 +23,16 @@ Then /the form should show #{capture_fields}$/ do |fields|
     var form = Ext.ComponentQuery.query('form')[0].getForm();
     var values = {#{fields}};
     for (var fieldName in values) {
-      if ((form.findField(fieldName).getValue() != values[fieldName]) && (form.findField(fieldName).getRawValue() != values[fieldName])) return false;
+      var field = form.findField(fieldName);
+
+      if (field.getXType() == 'xdatetime') {
+        // Treat xdatetime specially
+        var oldValue = field.getValue();
+        field.setValue(values[fieldName]);
+        return oldValue == field.getValue();
+      } else {
+        return field.getValue() == values[fieldName];
+      }
     }
     return true;
   JS
