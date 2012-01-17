@@ -119,3 +119,12 @@ Scenario: Editing and immediately submitting the form
     And I press "Apply"
     And I wait for the response from the server
     Then a book should exist with published_on: "2005-01-23"
+
+@javascript
+  Scenario: Setting datetime
+    Given a book exists with title: "Some Title"
+    When I go to the BookFormWithDefaults test page
+    Then I fill in Ext field "Last read at" with "2005-01-23 11:12:13"
+    And I press "Apply"
+    And I wait for the response from the server
+    Then a book should exist with last_read_at: "2005-01-23 11:12:13"

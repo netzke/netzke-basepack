@@ -100,6 +100,11 @@ module Netzke
             set_default_field_xtype(field) if field[:xtype].nil?
             set_default_read_only(field)
 
+            # temporal datetime setup, while we don't have real datetime field
+            if field[:attr_type] == :date
+              field[:format] ||= "Y-m-d"
+            end
+
             # provide our special combobox with our id
             field[:parent_id] = self.global_id if field[:xtype] == :netzkeremotecombo
 

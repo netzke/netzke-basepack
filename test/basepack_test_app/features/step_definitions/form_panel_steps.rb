@@ -31,9 +31,16 @@ Then /the form should show #{capture_fields}$/ do |fields|
         field.setValue(values[fieldName]);
         return oldValue == field.getValue();
       } else {
-        return field.getValue() == values[fieldName];
+        return (field.getValue() == values[fieldName] || field.getRawValue() == values[fieldName]);
       }
     }
     return true;
+  JS
+end
+
+Then /^I fill in Ext field "([^"]*)" with "([^"]*)"$/ do |field_label, value|
+  page.driver.browser.execute_script <<-JS
+    var field = Ext.ComponentQuery.query("[fieldLabel='#{field_label}']")[0];
+    field.setValue("#{value}");
   JS
 end
