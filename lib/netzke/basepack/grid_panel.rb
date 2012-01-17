@@ -75,7 +75,7 @@ module Netzke
     #       }
     #     end
     #
-    # * +format+ - the format to display data when the column type is set to :datetime. Defaults to 'Y-m-d g:i:s'.
+    # * +format+ - the format to display data in case of date and datetime columns, e.g. 'Y-m-d g:i:s'.
     #
     # Besides these options, a column can receive any meaningful config option understood by Ext.grid.column.Column.
     #
