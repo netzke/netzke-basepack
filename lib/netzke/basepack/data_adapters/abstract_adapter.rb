@@ -38,13 +38,13 @@ module Netzke::Basepack::DataAdapters
 
     # gets the type of a model attribute for xtype mapping
     # i.e. get_assoc_property_type "Book",:author,:first_name should return :string
-    # Types that are mapped to xtypes:
+    # Possible types to return
     # :integer
     # :boolean
     # :date
     # :datetime
+    # :time
     # :text
-    # :json
     # :string
     def get_assoc_property_type model, assoc_name, prop_name
       raise "not implemented"

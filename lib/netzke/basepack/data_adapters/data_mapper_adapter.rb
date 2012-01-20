@@ -56,8 +56,7 @@ module Netzke::Basepack::DataAdapters
         DataMapper::Property::Boolean => :boolean,
         DataMapper::Property::Date => :date,
         DataMapper::Property::DateTime => :datetime,
-        DataMapper::Property::Time => :datetime,
-        DataMapper::Property::Json => :json,
+        DataMapper::Property::Time => :time,
         DataMapper::Property::String => :string,
         DataMapper::Property::Text => :text
       }

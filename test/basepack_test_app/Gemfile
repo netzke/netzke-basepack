@@ -12,7 +12,6 @@ when 'dm'
   # DataMapper
   gem 'dm-rails',           DM_VERSION
   gem 'dm-validations',     DM_VERSION # needed for manual validations
-  gem 'dm-types',           DM_VERSION # needed for json columns
   gem 'dm-mysql-adapter',   DM_VERSION
 end
 
