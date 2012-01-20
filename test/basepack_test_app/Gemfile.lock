@@ -88,6 +88,8 @@ GEM
     dm-sqlite-adapter (1.2.0)
       dm-do-adapter (~> 1.2.0)
       do_sqlite3 (~> 0.10.6)
+    dm-timestamps (1.2.0)
+      dm-core (~> 1.2.0)
     dm-validations (1.2.0)
       dm-core (~> 1.2.0)
     do_mysql (0.10.7)
@@ -217,6 +219,7 @@ DEPENDENCIES
   dm-mysql-adapter (= 1.2.0)
   dm-rails (= 1.2.0)
   dm-sqlite-adapter (= 1.2.0)
+  dm-timestamps (= 1.2.0)
   dm-validations (= 1.2.0)
   factory_girl
   guard (>= 0.6.2)

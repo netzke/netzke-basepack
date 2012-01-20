@@ -69,7 +69,7 @@ module Netzke::Basepack::DataAdapters
           foreign_keys[rel.child_key.first.name]=rel.parent_model.to_s.downcase.to_sym
           foreign_keys
         end
-      end
+      end || {}
     end
 
     def move_records(params)

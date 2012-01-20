@@ -53,6 +53,12 @@ module Netzke
         def netzke_submit(params)
           data = ActiveSupport::JSON.decode(params[:data])
 
+          data.each_pair do |k,v|
+            data[k]=nil if v == "null" # Ext JS tends to return "null" on empty date fields, which gives errors when passed to model (at least in DataMapper)
+          end
+
+          p data
+
           # File uploads are in raw params instead of "data" hash, so, mix them in into "data"
           if config[:file_upload]
             Netzke::Core.controller.params.each_pair do |k,v|
