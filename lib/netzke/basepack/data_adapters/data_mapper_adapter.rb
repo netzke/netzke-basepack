@@ -14,7 +14,7 @@ module Netzke::Basepack::DataAdapters
 
         sort_params.each do |sort_param|
           assoc, method = sort_param["property"].split("__")
-          dir = sort_params["direction"].downcase
+          dir = sort_param["direction"].downcase
 
           # TODO add association sorting
           order << assoc.to_sym.send(dir)
@@ -29,20 +29,6 @@ module Netzke::Basepack::DataAdapters
       query[:offset]=params[:start] if params[:start]
 
       records=search_query.all(query)
-      # Convert DataMapper date fields (DateTime) to ActiveSupport::TimeWithZone, as this is what ActiveRecord is doing
-      records.each_with_index do |record|
-        record.attributes.each do |k,v|
-          record.attributes[k]=v
-        end
-        p record.attributes
-      end
-#      records=records.inject [] do |res, record|
-#        attrs=record.attributes
-#        res << attrs.inject({}) do |attributes, (k,v)|
-#          p attributes,k,v
-#          attributes[k]=v.in_time_zone if v.kind_of? DateTime
-#        end
-#      end
     end
 
     def count_records(params,columns)
