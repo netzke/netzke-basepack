@@ -78,7 +78,7 @@ module Netzke
           # Builds the form errors
           def build_form_errors(record)
             form_errors = {}
-            foreign_keys = data_adpater.hash_fk_model
+            foreign_keys = data_adapter.hash_fk_model
 
             record.errors.map{|field, error|
               # Get the correct field name for the errors on foreign keys
