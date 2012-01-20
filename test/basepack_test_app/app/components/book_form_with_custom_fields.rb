@@ -12,7 +12,8 @@ class BookFormWithCustomFields < Netzke::Basepack::FormPanel
         :author__first_name,
         :author__last_name,
         :digitized,
-        :exemplars
+        :exemplars,
+        :last_read_at
       ]
     )
   end
