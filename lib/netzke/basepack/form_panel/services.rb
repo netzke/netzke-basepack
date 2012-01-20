@@ -18,7 +18,7 @@ module Netzke
           #
           #     someForm.netzkeLoad({id: 100});
           endpoint :netzke_load do |params|
-            @record = data_class && data_class.find_by_id(params[:id])
+            @record = data_class && data_adapter.find_record(params[:id])
             {:set_form_values => js_record_data}
           end
 
@@ -103,7 +103,8 @@ module Netzke
           # Creates/updates a record from hash
           def create_or_update_record(hsh)
             hsh.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
-            @record ||= data_class.find(:first, :conditions => {data_class.primary_key => hsh.delete(data_class.primary_key)}) # only pick up the record specified in the params if it was not provided in the configuration
+            @record ||= data_adapter.find_record hsh.delete(data_class.primary_key) # only pick up the record specified in the params if it was not provided in the configuration
+              #data_class.find(:first, :conditions => {data_class.primary_key => hsh.delete(data_class.primary_key)}) 
             success = true
 
             @record = data_class.new if @record.nil?
