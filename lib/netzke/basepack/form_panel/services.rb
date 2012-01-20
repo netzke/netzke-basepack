@@ -78,12 +78,7 @@ module Netzke
           # Builds the form errors
           def build_form_errors(record)
             form_errors = {}
-            foreign_keys = {}
-
-            # Build a hash of foreign keys and the associated model
-            data_class.reflect_on_all_associations(:belongs_to).map{ |r|
-              foreign_keys[r.association_foreign_key.to_sym] = r.name
-            }
+            foreign_keys = data_adpater.hash_fk_model
 
             record.errors.map{|field, error|
               # Get the correct field name for the errors on foreign keys

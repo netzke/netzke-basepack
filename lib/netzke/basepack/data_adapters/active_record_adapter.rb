@@ -68,6 +68,15 @@ module Netzke::Basepack::DataAdapters
       @model_class.find_all_by_id(id).first
     end
 
+    # Build a hash of foreign keys and the associated model
+    def hash_fk_model
+      foreign_keys = {}
+      @model_class.reflect_on_all_associations(:belongs_to).map{ |r|
+        foreign_keys[r.association_foreign_key.to_sym] = r.name
+      }
+      foreign_keys
+    end
+
     def move_records(params)
       if defined?(ActsAsList) && @model_class.ancestors.include?(ActsAsList::InstanceMethods)
         ids = JSON.parse(params[:ids]).reverse

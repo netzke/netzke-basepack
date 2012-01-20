@@ -62,6 +62,16 @@ module Netzke::Basepack::DataAdapters
       @model_class.get(id)
     end
 
+    # Build a hash of foreign keys and the associated model
+    def hash_fk_model
+      @model_class.relationships.inject({}) do |foreign_keys, rel|
+        if rel.kind_of? DataMapper::Associations::ManyToOne::Relationship
+          foreign_keys[rel.child_key.first.name]=rel.parent_model.to_s.downcase.to_sym
+          foreign_keys
+        end
+      end
+    end
+
     def move_records(params)
       @model_class.all(:id => params[:ids]).each_with_index do |item, index|
         item.move(:to => params[:new_index] + index)

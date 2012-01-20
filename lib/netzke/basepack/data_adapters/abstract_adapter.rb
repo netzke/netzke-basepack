@@ -73,6 +73,11 @@ module Netzke::Basepack::DataAdapters
       @model_class.find(id)
     end
 
+    # Build a hash of foreign keys and the associated model
+    def hash_fk_model
+      raise "not implemented"
+    end
+
     # -- End of overridable methods
 
     # Abstract-adapter specifics
