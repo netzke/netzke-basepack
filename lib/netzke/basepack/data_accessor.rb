@@ -43,8 +43,6 @@ module Netzke
               end
             end
             return res
-
-
           end
         end
       end
