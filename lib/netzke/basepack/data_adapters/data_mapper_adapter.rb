@@ -25,15 +25,28 @@ module Netzke::Basepack::DataAdapters
 
       search_query = search_query.all(:conditions => params[:scope]) if params[:scope]
 
-      if params[:limit]
-        query[:limit]=params[:limit]
-        query[:start]=params[:start]
+      query[:limit]=params[:limit] if params[:limit]
+      query[:offset]=params[:start] if params[:start]
+
+      records=search_query.all(query)
+      # Convert DataMapper date fields (DateTime) to ActiveSupport::TimeWithZone, as this is what ActiveRecord is doing
+      records.each_with_index do |record|
+        record.attributes.each do |k,v|
+          record.attributes[k]=v
+        end
+        p record.attributes
       end
-      search_query.all(query)
+#      records=records.inject [] do |res, record|
+#        attrs=record.attributes
+#        res << attrs.inject({}) do |attributes, (k,v)|
+#          p attributes,k,v
+#          attributes[k]=v.in_time_zone if v.kind_of? DateTime
+#        end
+#      end
     end
 
     def count_records(params,columns)
-      @model_clas.count()
+      @model_class.count()
     end
 
     def dm_type_map
