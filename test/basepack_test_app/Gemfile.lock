@@ -235,6 +235,7 @@ DEPENDENCIES
   pickle
   rails (= 3.1.0)
   rspec-rails
+  selenium-webdriver (>= 2.10.0)
   spork
   sqlite3-ruby
   thin
