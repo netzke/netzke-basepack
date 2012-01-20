@@ -55,7 +55,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def destroy(ids)
-      @model_class.destroy(:id => ids)
+      @model_class.all(:id => ids).destroy
     end
 
     def find_record(id)
