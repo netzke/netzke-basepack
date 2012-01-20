@@ -1,3 +1,5 @@
+if !defined? DataMapper::Resource
+
 require File.dirname(__FILE__) + '/../spec_helper'
 
 describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
@@ -6,5 +8,7 @@ describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
     adapter.hash_fk_model.should == {:author_id => :author}
   end
 
+
+end
 
 end
