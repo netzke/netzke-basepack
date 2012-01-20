@@ -214,7 +214,8 @@ module Netzke
           end
 
           def set_default_sortable(c)
-            c[:sortable] = !c[:virtual] || c[:sorting_scope] if c[:sortable].nil? # TODO: optimize - don't set it to false
+            # this *has* to be set to false if we don't want the column to be sortable (it's sortable by default in Ext)
+            c[:sortable] = !(c[:virtual] && !c[:sorting_scope]) if c[:sortable].nil?
           end
 
           def set_default_filterable(c)

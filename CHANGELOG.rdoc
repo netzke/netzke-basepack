@@ -1,6 +1,8 @@
 = 0.7.4 - ?
 * bug fix
   * :enable_pagination is now respected in GridPanel
+	* Virtual columns are not sortable by default now
+	* Datetime column now works
 
 = 0.7.3 - 2011-10-23
 * bug fix
