@@ -65,6 +65,7 @@ module Netzke::Basepack::DataAdapters
       raise NotImplementedError
     end
 
+    # should return true if column is virtual
     def column_virtual? c
       raise NotImplementedError
     end

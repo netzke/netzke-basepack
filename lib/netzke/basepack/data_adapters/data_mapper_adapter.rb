@@ -37,7 +37,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def map_type type
-      {
+      @typemap ||= {
         DataMapper::Property::Integer => :integer,
         DataMapper::Property::Serial => :integer,
         DataMapper::Property::Boolean => :boolean,
@@ -46,13 +46,27 @@ module Netzke::Basepack::DataAdapters
         DataMapper::Property::Time => :time,
         DataMapper::Property::String => :string,
         DataMapper::Property::Text => :text
-      }[type]
+      }
+      @typemap[type]
     end
 
     def get_assoc_property_type assoc_name, prop_name
       assoc = @model_class.send(assoc_name)
       # prop_name could be a virtual column, check it first, return nil in this case
       assoc.respond_to?(prop_name) ? map_type(assoc.send(prop_name).property.class) : nil
+    end
+
+    def column_virtual? c
+      assoc_name, assoc_method = c[:name].split '__'
+      if assoc_method
+        columns=@model_class.send(assoc_name).model.columns
+        column_name=assoc_method
+      else
+        columns=@model_class.columns
+        column_name=c[:name]
+      end
+      res= columns.none? { |column| column.name == column_name.to_sym }
+      res
     end
 
     def destroy(ids)
