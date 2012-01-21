@@ -49,8 +49,8 @@ module Netzke::Basepack::DataAdapters
       }[type]
     end
 
-    def get_assoc_property_type model, assoc_name, prop_name
-      assoc = model.send(assoc_name)
+    def get_assoc_property_type assoc_name, prop_name
+      assoc = @model_class.send(assoc_name)
       # prop_name could be a virtual column, check it first, return nil in this case
       assoc.respond_to?(prop_name) ? map_type(assoc.send(prop_name).property.class) : nil
     end

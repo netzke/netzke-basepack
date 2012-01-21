@@ -52,7 +52,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     # gets the type of a model attribute for xtype mapping
-    # i.e. get_assoc_property_type "Book",:author,:first_name should return :string
+    # i.e. get_assoc_property_type :author,:first_name should return :string
     # Possible types to return
     # :integer
     # :boolean
@@ -61,8 +61,12 @@ module Netzke::Basepack::DataAdapters
     # :time
     # :text
     # :string
-    def get_assoc_property_type model, assoc_name, prop_name
-      raise "not implemented"
+    def get_assoc_property_type assoc_name, prop_name
+      raise NotImplementedError
+    end
+
+    def column_virtual? c
+      raise NotImplementedError
     end
 
     # Destroys records with the provided ids
@@ -90,7 +94,7 @@ module Netzke::Basepack::DataAdapters
 
     # Build a hash of foreign keys and the associated model
     def hash_fk_model
-      raise "not implemented"
+      raise NotImplementedError
     end
 
 

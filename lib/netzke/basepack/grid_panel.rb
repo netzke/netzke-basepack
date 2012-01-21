@@ -243,7 +243,8 @@ module Netzke
 
       def get_default_association_values #:nodoc:
         columns.select{ |c| c[:name].index("__") && c[:default_value] }.each.inject({}) do |r,c|
-          assoc, assoc_method = assoc_and_assoc_method_for_attr(c)
+          # TODO paul
+          assoc, assoc_method = data_adapter.assoc_and_assoc_method_for_attr(c[:name])
           assoc_instance = assoc.klass.find(c[:default_value])
           r.merge(c[:name] => assoc_instance.send(assoc_method))
         end
