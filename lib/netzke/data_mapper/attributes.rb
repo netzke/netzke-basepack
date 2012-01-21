@@ -101,7 +101,7 @@ module Netzke
         def netzke_attrs_in_forced_order(attrs)
           attrs.collect do |attr_name|
             declared = netzke_declared_attributes.detect { |va| va[:name] == attr_name } || {}
-            in_columns_hash = columns_hash[attr_name] && {:name => attr_name, :attr_type => columns_hash[attr_name].type, :default_value => columns_hash[attr_name].default} || {} # {:virtual => true} # if nothing found in columns, mark it as "virtual" or not?
+            in_columns_hash = columns_hash[attr_name] && {:name => attr_name, :attr_type => data_adapter.map_type(columns_hash[attr_name].class), :default_value => columns_hash[attr_name].default} || {} # {:virtual => true} # if nothing found in columns, mark it as "virtual" or not?
             if in_columns_hash.empty?
               # If not among the model columns, it's either virtual, or an association
               merged = association_attr?(attr_name) ? declared.merge!(:name => attr_name) : declared.merge(:virtual => true)
