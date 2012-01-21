@@ -64,6 +64,7 @@ module Netzke
       # Returns association and association method for a column
       def assoc_and_assoc_method_for_attr(c)
         assoc_name, assoc_method = c[:name].split('__')
+        # TODO paul
         assoc = data_class.reflect_on_association(assoc_name.to_sym) if assoc_method
         [assoc, assoc_method]
       end

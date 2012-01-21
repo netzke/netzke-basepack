@@ -1,6 +1,11 @@
 module Netzke
   module DataMapper
     module Attributes
+
+      def data_adapter
+        Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(self).new(self)
+      end
+
       # Define or configure an attribute.
       # Example:
       #   netzke_attribute :recent, :type => :boolean, :read_only => true
@@ -69,6 +74,17 @@ module Netzke
         properties.map(&:name).map(&:to_s)
       end
 
+      def columns
+        properties
+      end
+
+      def columns_hash
+        properties.inject({}) { |hsh, prop|
+          hsh[prop.name.to_s] = prop
+          hsh
+        }
+      end
+
       def property_with(name)
         properties.find{|p| p.name == name.to_sym}
       end
@@ -110,7 +126,7 @@ module Netzke
             declared_attrs = netzke_declared_attributes
 
             column_names.map do |name|
-              c = {:name => name, :attr_type => property_with(name).primitive.to_s.downcase.to_sym}
+              c = {:name => name, :attr_type => data_adapter.map_type(property_with(name).class)}
 
               # If it's named as foreign key of some association, then it's an association column
               # assoc = reflect_on_all_associations.detect { |a| foreign_key_for_assoc(a) == c[:name] }
@@ -176,7 +192,8 @@ module Netzke
             send("#{a[:name]}")
           elsif is_association_attr?(a)
             split = a[:name].to_s.split(/\.|__/)
-            assoc = self.class.reflect_on_association(split.first.to_sym)
+            assoc = self.class.relationships[split.first.to_sym]
+
             if through_association
               split.inject(self) do |r,m| # TODO: do we really need to descend deeper than 1 level?
                 if r.respond_to?(m)
@@ -187,7 +204,7 @@ module Netzke
                 end
               end
             else
-              self.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}")
+              self.send assoc.child_key.first.name
             end
           end
 
@@ -216,6 +233,7 @@ module Netzke
             else
               if split.size == 2
                 # search for association and assign it to self
+                # TODO paul
                 assoc = self.class.reflect_on_association(split.first.to_sym)
                 assoc_method = split.last
                 if assoc

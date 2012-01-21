@@ -36,6 +36,21 @@ module Netzke::Basepack::DataAdapters
       0
     end
 
+    # Map a ORM type to a type symbol
+    # Possible types to return
+    # :integer
+    # :boolean
+    # :date
+    # :datetime
+    # :time
+    # :text
+    # :string
+    #
+    # Default implementation works for ActiveRecord
+    def map_type type
+      type
+    end
+
     # gets the type of a model attribute for xtype mapping
     # i.e. get_assoc_property_type "Book",:author,:first_name should return :string
     # Possible types to return
@@ -77,6 +92,8 @@ module Netzke::Basepack::DataAdapters
     def hash_fk_model
       raise "not implemented"
     end
+
+
 
     # -- End of overridable methods
 

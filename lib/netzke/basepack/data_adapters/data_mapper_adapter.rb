@@ -36,7 +36,7 @@ module Netzke::Basepack::DataAdapters
       @model_class.count()
     end
 
-    def dm_type_map
+    def map_type type
       {
         DataMapper::Property::Integer => :integer,
         DataMapper::Property::Serial => :integer,
@@ -46,13 +46,13 @@ module Netzke::Basepack::DataAdapters
         DataMapper::Property::Time => :time,
         DataMapper::Property::String => :string,
         DataMapper::Property::Text => :text
-      }
+      }[type]
     end
 
     def get_assoc_property_type model, assoc_name, prop_name
       assoc = model.send(assoc_name)
-      # prop_name could be a virtual column, check it first
-      assoc.respond_to?(prop_name) ? dm_type_map[assoc.send(prop_name)] : nil
+      # prop_name could be a virtual column, check it first, return nil in this case
+      assoc.respond_to?(prop_name) ? map_type(assoc.send(prop_name).property.class) : nil
     end
 
     def destroy(ids)
@@ -145,9 +145,9 @@ module Netzke::Basepack::DataAdapters
           conditions[query_path]=value
         end
       end
-      p conditions
       relation.all conditions
     end
 
   end
+
 end
