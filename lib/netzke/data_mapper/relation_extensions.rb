@@ -6,6 +6,7 @@ module Netzke
         scope = params.shift
         case scope.class.name
         when "Symbol" # model's scope
+          # In DataMapper case this is just a method
           self.send(scope, *params)
         when "String" # SQL query or SQL query with params (e.g. ["created_at < ?", 1.day.ago])
           params.empty? ? self.where(scope) : self.where([scope, *params])
