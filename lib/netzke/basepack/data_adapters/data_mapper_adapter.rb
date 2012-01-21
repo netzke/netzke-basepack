@@ -69,7 +69,6 @@ module Netzke::Basepack::DataAdapters
     end
 
     # Returns options for comboboxes in grids/forms
-    # test: scope, query, assoc and non-assoc
     def combobox_options_for_column(column, method_options = {})
       query = method_options[:query]
 
