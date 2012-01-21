@@ -1,7 +1,11 @@
 require File.dirname(__FILE__) + '/../spec_helper'
 
 if defined? DataMapper::Resource
-  class_under_test=
+
+  # DatabaseCleaner not working in transaction mode for DM
+  DatabaseCleaner.strategy=:truncation
+  DatabaseCleaner.clean!
+
   class User
 
     def self.role_id_gt_7
@@ -21,7 +25,6 @@ if defined? DataMapper::Resource
       end
 
       # Tests
-      User.all.extend_with(["role_id >= ?", 5]).count.should == 5
 
       User.all.extend_with(:role_id_gt_7).count.should == 2
 
@@ -31,10 +34,11 @@ if defined? DataMapper::Resource
 
       User.all.extend_with(:role_id => 5).first.first_name.should == "First Name 5"
 
-      User.all(:role_id.lt => 7).extend_with(lambda{ |relation| relation.where(["role_id > ?", 4]) }).count.should == 2
+      User.all(:role_id.lt => 7).extend_with(lambda{ |relation| relation.all( :role_id.gt => 4)}).count.should == 2
 
-      #User.where({}).extend_with("select * from users where role_id > 6").all.size.should == 3
-
+      #Not supported in DM
+      lambda { User.all.extend_with("select * from users where role_id > 6") }.should raise_error NotImplementedError
+      lambda { User.all.extend_with(["role_id >= ?", 5]).count }.should raise_error NotImplementedError
     end
   end
 
@@ -88,3 +92,4 @@ end
     ## User.where({}).extend_with_netzke_conditions(:role_name__eq => "admin").count.should == 3
     ## User.where({}).extend_with_netzke_conditions(:role__name__like => "%admin%").count.should == 6
   #end
+
