@@ -36,6 +36,24 @@ After starting up the test app, you can see the list of functional test componen
 
     http://localhost:3000/
 
+## Note on testing with DataMapper Support
+To install the test app with DataMapper support run
+
+    # in test/basepack_test_app 
+    ORM=dm bundle install
+
+To run the test app in DataMapper-Mode (will use DataMapper models instead of ActiveRecord models)
+
+    # in test/basepack_test_app 
+    ORM=dm rails s
+
+To run the test suite
+
+    # in test/basepack_test_app 
+    ORM=dm bundle exec rake
+
+etc.
+
 ## Icons support
 Netzke Basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.
 
