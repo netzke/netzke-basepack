@@ -70,6 +70,11 @@ module Netzke::Basepack::DataAdapters
       raise NotImplementedError
     end
 
+    # Returns options for comboboxes in grids/forms
+    def combobox_options_for_column(column, method_options = {})
+      raise NotImplementedError
+    end
+
     # Destroys records with the provided ids
     def destroy(ids)
     end

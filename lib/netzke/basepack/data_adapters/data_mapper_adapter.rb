@@ -11,17 +11,17 @@ module Netzke::Basepack::DataAdapters
       query = {}
 
       if params[:sort] && sort_params = params[:sort]
-        order = []
 
         sort_params.each do |sort_param|
           assoc, method = sort_param["property"].split("__")
           dir = sort_param["direction"].downcase
-
-          # TODO add association sorting
-          order << assoc.to_sym.send(dir)
+          if method
+            search_query = search_query.all(assoc.to_sym => {:order => [method.to_sym.send(dir)]})
+          else
+            search_query = search_query.all(:order => [assoc.to_sym.send(dir)])
+          end
         end
 
-        search_query = search_query.all(:order => order)
       end
 
       search_query = search_query.all(:conditions => params[:scope]) if params[:scope]
@@ -59,14 +59,56 @@ module Netzke::Basepack::DataAdapters
     def column_virtual? c
       assoc_name, assoc_method = c[:name].split '__'
       if assoc_method
-        columns=@model_class.send(assoc_name).model.columns
+        column_names=@model_class.send(assoc_name).model.column_names
         column_name=assoc_method
       else
-        columns=@model_class.columns
+        column_names=@model_class.column_names
         column_name=c[:name]
       end
-      res= columns.none? { |column| column.name == column_name.to_sym }
-      res
+      column_names.include? column_name
+    end
+
+    # Returns options for comboboxes in grids/forms
+    # test: scope, query, assoc and non-assoc
+    def combobox_options_for_column(column, method_options = {})
+      query = method_options[:query]
+
+      # First, check if we have options for this column defined in persistent storage
+      options = column[:combobox_options] && column[:combobox_options].split("\n")
+      if options
+        query ? options.select{ |o| o.index(/^#{query}/) }.map{ |el| [el] } : options
+      else
+        assoc_name, assoc_method = column[:name].split '__'
+
+        if assoc_name
+          # Options for an asssociation attribute
+          relation = @model_class.send(:assoc_name).model
+
+          relation = relation.extend_with(method_options[:scope]) if method_options[:scope]
+
+          if assoc.klass.column_names.include?(assoc_method)
+            # apply query
+            relation = relation.all(assoc_method.to_sym.send(:like) => "%#{query}%") if query.present?
+            relation.all.map{ |r| [r.id, r.send(assoc_method)] }
+          else
+            relation.all.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value =~ /^#{query}/ }
+          end
+        else
+          # Options for a non-association attribute
+          res=@model_class.netzke_combo_options_for(column[:name], method_options)
+
+          # ensure it is an array-in-array, as Ext will fail otherwise
+          raise RuntimeError, "netzke_combo_options_for should return an Array" unless res.kind_of? Array
+          return [[]] if res.empty?
+
+          unless res.first.kind_of? Array
+            res=res.map do |v|
+              [v]
+            end
+          end
+          return res
+        end
+      end
     end
 
     def destroy(ids)

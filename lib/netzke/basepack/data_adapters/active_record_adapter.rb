@@ -76,7 +76,6 @@ module Netzke::Basepack::DataAdapters
       query = method_options[:query]
 
       # First, check if we have options for this column defined in persistent storage
-      # p assoc, assoc_method
       options = column[:combobox_options] && column[:combobox_options].split("\n")
       if options
         query ? options.select{ |o| o.index(/^#{query}/) }.map{ |el| [el] } : options
