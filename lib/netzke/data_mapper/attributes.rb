@@ -130,7 +130,6 @@ module Netzke
 
                # If it's named as foreign key of some association, then it's an association column
                # assoc = reflect_on_all_associations.detect { |a| foreign_key_for_assoc(a) == c[:name] }
-                puts "is #{name} a foreign key?"
                assoc = relationships.detect { |r| r.child_key.first.name.to_s == c[:name] }
                if assoc
                  assoc_class = assoc.parent_model

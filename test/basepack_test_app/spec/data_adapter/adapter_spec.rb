@@ -30,22 +30,15 @@ end
 describe Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(Book) do
 
   before :all do
-    Author.create([
-      {:first_name => "Carlos", :last_name => "Castaneda"},
-      {:first_name => "Herman", :last_name => "Hesse"}
-    ])
+    castaneda = Factory(:author, {:first_name => "Carlos", :last_name => "Castaneda"})
+    hesse = Factory(:author, {:first_name => "Herman", :last_name => "Hesse"})
 
-    hesse = Author.find_by_last_name("Hesse")
-    castaneda = Author.find_by_last_name("Castaneda")
-
-    Book.create([
-      {:title => "Journey to Ixtlan", :author => castaneda},
-      {:title => "The Tales of Power", :author => castaneda},
-      {:title => "The Art of Dreaming", :author => castaneda},
-      {:title => "Steppenwolf", :author => hesse},
-      {:title => "Demian", :author => hesse},
-      {:title => "Narciss and Goldmund", :author => hesse}
-    ])
+    Factory(:book, {:title => "Journey to Ixtlan", :author => castaneda})
+    Factory(:book, {:title => "The Tales of Power", :author => castaneda})
+    Factory(:book, {:title => "The Art of Dreaming", :author => castaneda})
+    Factory(:book, {:title => "Steppenwolf", :author => hesse})
+    Factory(:book, {:title => "Demian", :author => hesse})
+    Factory(:book, {:title => "Narciss and Goldmund", :author => hesse})
 
     @adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(Book).new(Book)
   end
