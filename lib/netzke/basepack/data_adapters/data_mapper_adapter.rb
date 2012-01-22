@@ -4,12 +4,14 @@ module Netzke::Basepack::DataAdapters
       model_class <= DataMapper::Resource
     end
 
-    # TODO: scopes
     def get_records(params, columns)
       search_query = @model_class
-      search_query = apply_column_filters search_query, params[:filter] if params[:filter]
-      query = {}
 
+      # apply filter
+      search_query = apply_column_filters search_query, params[:filter] if params[:filter]
+      query_options = {}
+
+      # apply sorting
       if params[:sort] && sort_params = params[:sort]
 
         sort_params.each do |sort_param|
@@ -24,12 +26,14 @@ module Netzke::Basepack::DataAdapters
 
       end
 
-      search_query = search_query.all(:conditions => params[:scope]) if params[:scope]
+      # apply paging
+      query_options[:limit]=params[:limit] if params[:limit]
+      query_options[:offset]=params[:start] if params[:start]
 
-      query[:limit]=params[:limit] if params[:limit]
-      query[:offset]=params[:start] if params[:start]
+      # apply scope
+      search_query = search_query.extend_with(params[:scope].to_sym) if params[:scope]
 
-      records=search_query.all(query)
+      records=search_query.all(query_options)
     end
 
     def count_records(params,columns)
