@@ -115,6 +115,9 @@ module Netzke::Basepack::DataAdapters
       end
     end
 
+    def foreign_key_for assoc_name
+      @model_class.reflect_on_association(assoc_name.to_sym).foreign_key
+    end
 
     def destroy(ids)
       @model_class.destroy(ids)
