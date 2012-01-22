@@ -365,7 +365,7 @@ module Netzke
                 r
               else
                 if assoc_method
-                  r.merge(assoc.options[:foreign_key] || data_adapter.foreign_key_for(assoc_name) => c[:default_value])
+                  r.merge(data_adapter.foreign_key_for(assoc_name) || data_adapter.foreign_key_for(assoc_name) => c[:default_value])
                 else
                   r.merge(c[:name] => c[:default_value])
                 end

@@ -80,6 +80,11 @@ module Netzke::Basepack::DataAdapters
       raise NotImplementedError
     end
 
+    # Returns the model class for association columns
+    def klass_for assoc_name
+      raise NotImplementedError
+    end
+
     # Destroys records with the provided ids
     def destroy(ids)
     end

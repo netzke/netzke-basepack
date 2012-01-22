@@ -233,12 +233,12 @@ module Netzke
             else
               if split.size == 2
                 # search for association and assign it to self
-                # TODO paul
-                assoc = self.class.reflect_on_association(split.first.to_sym)
-                assoc_method = split.last
-                if assoc
-                  if assoc.macro == :has_one
-                    assoc_instance = self.send(assoc.name)
+                assoc_name, assoc_method = split
+                relationship=self.class.relationships[assoc_name]
+
+                if relationship
+                  if relationship.kind_of? ::DataMapper::Associations::OneToOne::Relationship
+                    assoc_instance=self.send(assoc_name)
                     if assoc_instance
                       assoc_instance.send("#{assoc_method}=", v)
                       assoc_instance.save # what should we do when this fails?..
@@ -246,7 +246,7 @@ module Netzke
                       # what should we do in this case?
                     end
                   else
-                    self.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}=", v)
+                    self.send("#{self.class.data_adapter.foreign_key_for assoc_name}=", v)
                   end
                 else
                   logger.debug "Netzke::Basepack: Association #{assoc} is not known for class #{self.class.name}"

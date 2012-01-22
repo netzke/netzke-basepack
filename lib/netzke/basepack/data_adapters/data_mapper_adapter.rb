@@ -4,7 +4,7 @@ module Netzke::Basepack::DataAdapters
       model_class <= DataMapper::Resource
     end
 
-    # WIP. Introduce filtering, scopes, pagination, etc
+    # TODO: scopes
     def get_records(params, columns)
       search_query = @model_class
       search_query = apply_column_filters search_query, params[:filter] if params[:filter]
@@ -81,11 +81,11 @@ module Netzke::Basepack::DataAdapters
 
         if assoc_name
           # Options for an asssociation attribute
-          relation = @model_class.send(:assoc_name).model
+          relation = @model_class.send(assoc_name).model
 
           relation = relation.extend_with(method_options[:scope]) if method_options[:scope]
 
-          if assoc.klass.column_names.include?(assoc_method)
+          if klass_for(assoc_name).column_names.include?(assoc_method)
             # apply query
             relation = relation.all(assoc_method.to_sym.send(:like) => "%#{query}%") if query.present?
             relation.all.map{ |r| [r.id, r.send(assoc_method)] }
@@ -112,6 +112,11 @@ module Netzke::Basepack::DataAdapters
 
     def foreign_key_for assoc_name
       @model_class.relationships[assoc_name].child_key.first.name.to_s
+    end
+
+    # Returns the model class for association columns
+    def klass_for assoc_name
+      @model_class.send(assoc_name).model
     end
 
     def destroy(ids)

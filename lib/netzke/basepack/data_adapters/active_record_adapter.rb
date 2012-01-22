@@ -119,6 +119,11 @@ module Netzke::Basepack::DataAdapters
       @model_class.reflect_on_association(assoc_name.to_sym).foreign_key
     end
 
+    # Returns the model class for association columns
+    def klass_for assoc_name
+      @model_class.reflect_on_association(assoc_name).klass
+    end
+
     def destroy(ids)
       @model_class.destroy(ids)
     end
