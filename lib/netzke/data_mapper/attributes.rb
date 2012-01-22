@@ -128,15 +128,17 @@ module Netzke
             column_names.map do |name|
               c = {:name => name, :attr_type => data_adapter.map_type(property_with(name).class)}
 
-              # If it's named as foreign key of some association, then it's an association column
-              # assoc = reflect_on_all_associations.detect { |a| foreign_key_for_assoc(a) == c[:name] }
-
-              # if assoc && !assoc.options[:polymorphic]
-              #   candidates = %w{name title label} << foreign_key_for_assoc(assoc)
-              #   assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
-              #   c[:name] = "#{assoc.name}__#{assoc_method}"
-              #   c[:attr_type] = assoc.klass.columns_hash[assoc_method].try(:type) || :string # when it's an instance method rather than a column, fall back to :string
-              # end
+               # If it's named as foreign key of some association, then it's an association column
+               # assoc = reflect_on_all_associations.detect { |a| foreign_key_for_assoc(a) == c[:name] }
+                puts "is #{name} a foreign key?"
+               assoc = relationships.detect { |r| r.child_key.first.name.to_s == c[:name] }
+               if assoc
+                 assoc_class = assoc.parent_model
+                 candidates = %w{name title label} << c[:name]
+                 assoc_method = candidates.detect{|m| (assoc_class.instance_methods.map(&:to_s) + assoc_class.column_names).include?(m) }
+                 c[:name] = "#{assoc.name}__#{assoc_method}"
+                 c[:attr_type] = data_adapter.map_type(columns_hash[assoc_method]).try(:class) || :string # when it's an instance method rather than a column, fall back to :string
+               end
 
               # auto set up the default value from the column settings
               c.merge!(:default_value => property_with(name).default) if property_with(name).default
@@ -150,11 +152,6 @@ module Netzke
             end +
             declared_attrs
           ).reject { |attr| netzke_excluded_attributes.include?(attr[:name]) }
-        end
-
-        # Returns foreign key for given association (Rails >= 3.0)
-        def foreign_key_for_assoc(assoc)
-          assoc.respond_to?(:foreign_key) ? assoc.foreign_key : assoc.primary_key_name
         end
 
         def association_attr?(attr_name)
