@@ -110,6 +110,10 @@ module Netzke::Basepack::DataAdapters
       end
     end
 
+    def foreign_key_for assoc_name
+      @model_class.relationships[assoc_name].child_key.first.name.to_s
+    end
+
     def destroy(ids)
       @model_class.all(:id => ids).destroy
     end

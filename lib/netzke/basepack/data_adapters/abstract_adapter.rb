@@ -75,6 +75,11 @@ module Netzke::Basepack::DataAdapters
       raise NotImplementedError
     end
 
+    # Returns the foreign key name for association columns
+    def foreign_key_for assoc_name
+      raise NotImplementedError
+    end
+
     # Destroys records with the provided ids
     def destroy(ids)
     end

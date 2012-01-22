@@ -360,13 +360,12 @@ module Netzke
 
           def columns_default_values
             columns.inject({}) do |r,c|
-              # TODO paul
-              assoc, assoc_method = data_adapter.assoc_and_assoc_method_for_attr(c[:name])
+              assoc_name, assoc_method = c[:name].split '__'
               if c[:default_value].nil?
                 r
               else
-                if assoc
-                  r.merge(assoc.options[:foreign_key] || assoc.name.to_s.foreign_key => c[:default_value])
+                if assoc_method
+                  r.merge(assoc.options[:foreign_key] || data_adapter.foreign_key_for(assoc_name) => c[:default_value])
                 else
                   r.merge(c[:name] => c[:default_value])
                 end
