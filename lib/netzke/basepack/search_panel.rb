@@ -65,8 +65,8 @@ module Netzke
       end
 
       def attributes
-        data_class.column_names.map do |name|
-          [name, data_class.human_attribute_name(name)]
+        config[:fields].map do |field|
+          [field[:name], field[:field_label]]
         end
       end
 
