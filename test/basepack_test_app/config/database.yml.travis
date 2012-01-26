@@ -1,0 +1,8 @@
+test: &test
+  adapter: mysql2
+  database: nbt_test
+  username: 
+  encoding: utf8
+
+cucumber:
+  <<: *test
