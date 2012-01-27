@@ -11,12 +11,6 @@ module Netzke
 
           # Called when the form gets submitted (e.g. by pressing the Apply button)
           endpoint :netzke_submit, :pre => true do |params|
-            data = ActiveSupport::JSON.decode(params[:data])
-            changed = false
-            data.each do |k,v|
-              data[k] = nil if v.blank?
-            end
-            params[:data]=data.to_json
             netzke_submit(params)
           end
 
@@ -58,9 +52,8 @@ module Netzke
         # Implementation for the "netzke_submit" endpoint (for backward compatibility)
         def netzke_submit(params)
           data = ActiveSupport::JSON.decode(params[:data])
-
           data.each_pair do |k,v|
-            data[k]=nil if v == "null" # Ext JS returns "null" on empty date fields, which gives errors when passed to model (at least in DataMapper)
+            data[k]=nil if v.blank? || v == "null" # Ext JS returns "null" on empty date fields, or "" for not filled optional integer fields, which gives errors when passed to model (at least in DataMapper)
           end
 
           # File uploads are in raw params instead of "data" hash, so, mix them in into "data"
