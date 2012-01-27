@@ -31,7 +31,7 @@ module Netzke::Basepack::DataAdapters
       query_options[:offset]=params[:start] if params[:start]
 
       # apply scope
-      search_query = search_query.extend_with(params[:scope].to_sym) if params[:scope]
+      search_query = search_query.extend_with(params[:scope]) if params[:scope]
 
       records=search_query.all(query_options)
     end
