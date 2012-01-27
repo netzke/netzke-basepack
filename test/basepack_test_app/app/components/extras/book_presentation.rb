@@ -4,7 +4,7 @@ module Extras
     def author_first_name_setter
       lambda do |r,v|
 
-        data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(r.class).new(r.class)
+        data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(Author).new(Author)
 
         if v.is_a?(Integer)
           r.author = data_adapter.find_record(v)
