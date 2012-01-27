@@ -3,6 +3,8 @@ module Netzke
     # This module is included into such data-driven components as GridPanel, FormPanel, PagingFormPanel, etc.
     module DataAccessor
 
+
+
       # Returns options for comboboxes in grids/forms
       def combobox_options_for_column(column, method_options = {})
         data_adapter.combobox_options_for_column column, method_options
