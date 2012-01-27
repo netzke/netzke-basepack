@@ -4,7 +4,7 @@ class Book
   include DataMapper::Resource
   property :id, Serial
   belongs_to :author, :required => false
-  validates_presence_of :title
+  validates_presence_of :title, :message => "Title can't be blank"
   property :title, String
   property :exemplars, Integer
   property :digitized, Boolean

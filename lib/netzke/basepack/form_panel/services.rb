@@ -11,6 +11,12 @@ module Netzke
 
           # Called when the form gets submitted (e.g. by pressing the Apply button)
           endpoint :netzke_submit, :pre => true do |params|
+            data = ActiveSupport::JSON.decode(params[:data])
+            changed = false
+            data.each do |k,v|
+              data[k] = nil if v.blank?
+            end
+            params[:data]=data.to_json
             netzke_submit(params)
           end
 
@@ -71,7 +77,14 @@ module Netzke
           else
             # flash eventual errors
             @record.errors.to_a.each do |msg|
-              flash :error => msg
+              # some ORMs return an array of error messages here
+              if msg.kind_of? Array
+                msg.each do |m|
+                  flash :error => m
+                end
+              else
+                flash :error => msg
+              end
             end
             {:netzke_feedback => @flash, :apply_form_errors => build_form_errors(record)}
           end
@@ -84,7 +97,9 @@ module Netzke
             form_errors = {}
             foreign_keys = data_adapter.hash_fk_model
 
-            record.errors.map{|field, error|
+            record.errors.to_hash.map{|field, error|
+              # some ORM return an array for error
+              error = error.join ', ' if error.kind_of? Array
               # Get the correct field name for the errors on foreign keys
               if foreign_keys.has_key?(field)
                 fields.each do |k, v|
@@ -92,7 +107,6 @@ module Netzke
                   field = k.to_s.gsub('__', '____') if k.to_s.split('__').first == foreign_keys[field].to_s
                 end
               end
-
               form_errors[field] ||= []
               form_errors[field] << error
             }
