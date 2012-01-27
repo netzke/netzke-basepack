@@ -69,7 +69,11 @@ module Netzke::Basepack::DataAdapters
         column_names=@model_class.column_names
         column_name=c[:name]
       end
-      column_names.include? column_name
+      if c[:name] == "in_abundance"
+        p c, column_name, column_names
+
+      end
+      !column_names.include? column_name
     end
 
     # Returns options for comboboxes in grids/forms
