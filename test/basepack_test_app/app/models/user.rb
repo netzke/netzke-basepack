@@ -5,7 +5,7 @@ class User
   property :id, Serial
   property :first_name, String
   property :last_name, String
-  belongs_to :role
+  belongs_to :role, :required => false
   has 1, :address
   property :created_at, DateTime
   property :updated_at, DateTime
