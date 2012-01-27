@@ -3,7 +3,7 @@ if defined? DataMapper::Resource
 class Book
   include DataMapper::Resource
   property :id, Serial
-  belongs_to :author
+  belongs_to :author, :required => false
   validates_presence_of :title
   property :title, String
   property :exemplars, Integer
