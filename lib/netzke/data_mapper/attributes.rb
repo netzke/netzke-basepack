@@ -195,7 +195,7 @@ module Netzke
                 if r.respond_to?(m)
                   r.send(m)
                 else
-                  logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}" unless r.nil?
+                  ::Rails.logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}" unless r.nil?
                   nil
                 end
               end
@@ -245,10 +245,10 @@ module Netzke
                     self.send("#{self.class.data_adapter.foreign_key_for assoc_name}=", v)
                   end
                 else
-                  logger.debug "Netzke::Basepack: Association #{assoc} is not known for class #{self.class.name}"
+                  ::Rails.logger.debug "Netzke::Basepack: Association #{assoc} is not known for class #{self.class.name}"
                 end
               else
-                logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}"
+                ::Rails.logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}"
               end
             end
           end
