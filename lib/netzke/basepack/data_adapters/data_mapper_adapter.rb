@@ -18,16 +18,23 @@ module Netzke::Basepack::DataAdapters
         sort_params.each do |sort_param|
           assoc, method = sort_param["property"].split("__")
           dir = sort_param["direction"].downcase
-          if method
-            order << @model_class.send(assoc).send(method).send(dir)
-            link = @model_class.relationships[assoc.to_sym].inverse
-            links << link unless links.include? link
+
+          # if a sorting scope is set, call the scope with the given direction
+          column = columns.detect { |c| c[:name] == sort_param["property"] }
+          if column.has_key?(:sorting_scope)
+            search_query = search_query.send(column[:sorting_scope].to_sym, dir.to_sym)
           else
-            order << assoc.to_sym.send(dir)
+            if method
+              order << @model_class.send(assoc).send(method).send(dir)
+              link = @model_class.relationships[assoc.to_sym].inverse
+              links << link unless links.include? link
+            else
+              order << assoc.to_sym.send(dir)
+            end
           end
         end
-        search_query = search_query.all(:order => order) unless order.empty?
-        search_query = search_query.all(:links => links) unless links.empty?
+        query_options[:order] = order unless order.empty?
+        query_options[:links] = links unless links.empty?
       end
 
       # apply paging
@@ -37,8 +44,7 @@ module Netzke::Basepack::DataAdapters
       # apply scope
       search_query = search_query.extend_with(params[:scope]) if params[:scope]
 
-      records=search_query.all(query_options)
-
+      search_query.all(query_options)
     end
 
     def count_records(params,columns)
