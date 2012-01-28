@@ -11,9 +11,10 @@ case (ENV['ORM'] || '').downcase
 when 'dm'
   # DataMapper
   gem 'dm-rails',           DM_VERSION
-  gem 'dm-validations',     DM_VERSION # needed for manual validations
   gem 'dm-mysql-adapter',   DM_VERSION
+  gem 'dm-validations',     DM_VERSION # needed for manual validations
   gem 'dm-timestamps',      DM_VERSION # needed for created_at and updated_at
+  gem 'dm-aggregates',      DM_VERSION # needed for efficient count queries, else * will be selected and counted afterwards
 end
 
 gem 'netzke-core',        :path => File.expand_path('../vendor/gems/netzke-core', __FILE__)

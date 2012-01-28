@@ -4,7 +4,7 @@ module Netzke::Basepack::DataAdapters
       model_class <= ActiveRecord::Base
     end
 
-    def get_records(params, columns)
+    def get_records(params, columns=[])
       # build initial relation based on passed params
       relation = get_relation(params)
 
@@ -41,7 +41,7 @@ module Netzke::Basepack::DataAdapters
       end
     end
 
-    def count_records(params, columns)
+    def count_records(params, columns=[])
       # build initial relation based on passed params
       relation = get_relation(params)
 

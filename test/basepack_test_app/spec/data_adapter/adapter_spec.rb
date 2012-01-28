@@ -26,8 +26,8 @@ else
 
 end
 
-
-describe Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(Book) do
+adapter_class=Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(Book)
+describe adapter_class do
 
   before :all do
     castaneda = Factory(:author, {:first_name => "Carlos", :last_name => "Castaneda"})
@@ -40,11 +40,19 @@ describe Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(Book) do
     Factory(:book, {:title => "Demian", :author => hesse})
     Factory(:book, {:title => "Narciss and Goldmund", :author => hesse})
 
-    @adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(Book).new(Book)
+    @adapter = adapter_class.new(Book)
   end
 
   it "should return a hash fk to model" do
     @adapter.hash_fk_model.should == {:author_id => :author}
+  end
+
+  it "should report correct record count when filters are specified" do
+    @adapter.count_records({:filter=>ActiveSupport::JSON.encode([{'field' => 'title', 'value' => 'Journ', 'type' => 'string', 'comparsion' => 'like' }])}).should == 1
+  end
+
+  it "should report correct record count when filters on association columns are specified" do
+    @adapter.count_records({:filter=>ActiveSupport::JSON.encode([{'field' => 'author__last_name', 'value' => 'Cast', 'type' => 'string', 'comparsion' => 'like' }])},[{:name => 'author__last_name'}]).should == 3
   end
 
   # TODO: test scope and query for assoc columns and non-assoc columns

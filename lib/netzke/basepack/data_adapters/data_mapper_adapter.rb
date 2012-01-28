@@ -4,8 +4,20 @@ module Netzke::Basepack::DataAdapters
       model_class <= DataMapper::Resource
     end
 
-    def get_records(params, columns)
+    def get_records(params, columns=[])
       search_query = @model_class
+
+      # used for specifying models to join (for ordering and column selection)
+      links = []
+      # join association models into query if they are specified in query
+      # NOTE: AFAIK, in DataMapper there is no possibility to specify columns to fetch from the joined table, and a second ID IN query will be done after the join query, if you specify i.e. author__first_name columnon :book grid
+      columns.each do |column|
+        if column[:name].index('__')
+          assoc, _ = column[:name].split('__')
+          link = @model_class.relationships[assoc.to_sym].inverse
+          links << link unless links.include? link
+        end
+      end
 
       # apply filter
       search_query = apply_column_filters search_query, params[:filter] if params[:filter]
@@ -14,14 +26,13 @@ module Netzke::Basepack::DataAdapters
       # apply sorting
       if params[:sort] && sort_params = params[:sort]
         order = []
-        links = []
         sort_params.each do |sort_param|
           assoc, method = sort_param["property"].split("__")
           dir = sort_param["direction"].downcase
 
           # if a sorting scope is set, call the scope with the given direction
           column = columns.detect { |c| c[:name] == sort_param["property"] }
-          if column.has_key?(:sorting_scope)
+          if column.try(:'has_key?', :sorting_scope)
             search_query = search_query.send(column[:sorting_scope].to_sym, dir.to_sym)
           else
             if method
@@ -47,8 +58,13 @@ module Netzke::Basepack::DataAdapters
       search_query.all(query_options)
     end
 
-    def count_records(params,columns)
-      @model_class.count()
+    def count_records(params, columns=[])
+      # delete pagig related params, as this would break the query
+      params=params.reject { |k, v|
+        [:start, :limit, :page].include? k.to_sym
+      }
+      # this will NOT do a SELECT *, but a SELECT COUNT(*)
+      get_records(params, columns).count
     end
 
     def map_type type
@@ -168,6 +184,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     private
+
     # Parses and applies grid column filters
     #
     # Example column grid data:
