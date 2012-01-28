@@ -1,1 +1,3 @@
-DataMapper::Logger.new($stdout, :debug) if Rails.env.development?
+if defined?(DataMapper) && Rails.env.development?
+  DataMapper::Logger.new($stdout, :debug)
+end
