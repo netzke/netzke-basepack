@@ -13,17 +13,21 @@ module Netzke::Basepack::DataAdapters
 
       # apply sorting
       if params[:sort] && sort_params = params[:sort]
-
+        order = []
+        links = []
         sort_params.each do |sort_param|
           assoc, method = sort_param["property"].split("__")
           dir = sort_param["direction"].downcase
           if method
-            search_query = search_query.all(assoc.to_sym => {:order => [method.to_sym.send(dir)]})
+            order << @model_class.send(assoc).send(method).send(dir)
+            link = @model_class.relationships[assoc.to_sym].inverse
+            links << link unless links.include? link
           else
-            search_query = search_query.all(:order => [assoc.to_sym.send(dir)])
+            order << assoc.to_sym.send(dir)
           end
         end
-
+        search_query = search_query.all(:order => order) unless order.empty?
+        search_query = search_query.all(:links => links) unless links.empty?
       end
 
       # apply paging
@@ -34,6 +38,7 @@ module Netzke::Basepack::DataAdapters
       search_query = search_query.extend_with(params[:scope]) if params[:scope]
 
       records=search_query.all(query_options)
+
     end
 
     def count_records(params,columns)

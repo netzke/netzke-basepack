@@ -17,7 +17,7 @@ class Book
   property :published_on, Date
 
   def self.sorted_by_author_name dir
-    Book.all :order => [(Book.author.last_name.send dir),(Book.author.first_name.send dir)]
+    all :order => [ author.last_name.send(dir), author.first_name.send(dir) ], :links => [ relationships[:author].inverse ]
   end
 
 end
