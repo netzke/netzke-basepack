@@ -1,1 +1,1 @@
-DataMapper::Logger.new($stdout, :debug) unless Rails.env.production?
+DataMapper::Logger.new($stdout, :debug) if Rails.env.development?
