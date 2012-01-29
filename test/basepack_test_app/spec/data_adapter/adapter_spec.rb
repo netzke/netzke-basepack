@@ -48,11 +48,11 @@ describe adapter_class do
   end
 
   it "should report correct record count when filters are specified" do
-    @adapter.count_records({:filter=>ActiveSupport::JSON.encode([{'field' => 'title', 'value' => 'Journ', 'type' => 'string', 'comparsion' => 'like' }])}).should == 1
+    @adapter.count_records({:filter=>ActiveSupport::JSON.encode([{'field' => 'title', 'value' => 'Journ', 'type' => 'string', 'comparsion' => 'matches' }])}).should == 1
   end
 
   it "should report correct record count when filters on association columns are specified" do
-    @adapter.count_records({:filter=>ActiveSupport::JSON.encode([{'field' => 'author__last_name', 'value' => 'Cast', 'type' => 'string', 'comparsion' => 'like' }])},[{:name => 'author__last_name'}]).should == 3
+    @adapter.count_records({:filter=>ActiveSupport::JSON.encode([{'field' => 'author__last_name', 'value' => 'Cast', 'type' => 'string', 'comparsion' => 'matches' }])},[{:name => 'author__last_name'}]).should == 3
   end
 
   # TODO: test scope and query for assoc columns and non-assoc columns
