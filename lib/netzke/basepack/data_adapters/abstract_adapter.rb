@@ -70,6 +70,11 @@ module Netzke::Basepack::DataAdapters
       raise NotImplementedError
     end
 
+    # like get_assoc_property_type but for non-association columns
+    def get_property_type column
+      column.type
+    end
+ 
     # should return true if column is virtual
     def column_virtual? c
       raise NotImplementedError

@@ -58,7 +58,8 @@ module Netzke
       def js_config
         super.merge(
           :attrs => attributes,
-          :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_adapter.map_type(data_class.columns_hash[c])) },
+          :attrs_hash => data_class.column_names.inject({}){ |hsh,c| 
+            hsh.merge(c => data_adapter.get_property_type(data_class.columns_hash[c])) },
           :preset_query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || []
         )
       end

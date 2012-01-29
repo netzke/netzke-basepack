@@ -87,6 +87,11 @@ module Netzke::Basepack::DataAdapters
       assoc.respond_to?(prop_name) ? map_type(assoc.send(prop_name).property.class) : nil
     end
 
+    # like get_assoc_property_type but for non-association columns
+    def get_property_type column
+      map_type(column.class)
+    end
+
     def column_virtual? c
       assoc_name, assoc_method = c[:name].split '__'
       if assoc_method
