@@ -147,7 +147,7 @@ module Netzke
                 c.merge!(declared)
                 declared_attrs.delete(declared)
               end
-              key
+              c
             end +
             declared_attrs
           ).reject { |attr| netzke_excluded_attributes.include?(attr[:name]) }
