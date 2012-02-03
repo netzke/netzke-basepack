@@ -3,6 +3,8 @@
   * :enable_pagination is now respected in GridPanel
 	* Virtual columns are not sortable by default now
 	* Datetime column now works
+	* Make Window respect persistence: false
+	* Disable persistence for search window in GridPanel
 
 = 0.7.3 - 2011-10-23
 * bug fix
