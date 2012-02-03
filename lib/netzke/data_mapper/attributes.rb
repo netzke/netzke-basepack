@@ -67,7 +67,7 @@ module Netzke
       end
 
       def primary_key
-        key.name.to_s
+        key.first.name.to_s
       end
 
       def column_names
@@ -147,7 +147,7 @@ module Netzke
                 c.merge!(declared)
                 declared_attrs.delete(declared)
               end
-              c
+              key
             end +
             declared_attrs
           ).reject { |attr| netzke_excluded_attributes.include?(attr[:name]) }
