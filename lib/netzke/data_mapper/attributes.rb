@@ -67,7 +67,7 @@ module Netzke
       end
 
       def primary_key
-        serial.name.to_s
+        key.name.to_s
       end
 
       def column_names
