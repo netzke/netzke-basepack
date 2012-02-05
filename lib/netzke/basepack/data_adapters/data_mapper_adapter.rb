@@ -10,14 +10,18 @@ module Netzke::Basepack::DataAdapters
       # used for specifying models to join (for ordering and column selection)
       links = []
       # join association models into query if they are specified in query
-      # NOTE: AFAIK, in DataMapper there is no possibility to specify columns to fetch from the joined table, and a second ID IN query will be done after the join query, if you specify i.e. author__first_name columnon :book grid
-      columns.each do |column|
-        if column[:name].index('__')
-          assoc, _ = column[:name].split('__')
-          link = @model_class.relationships[assoc.to_sym].inverse
-          links << link unless links.include? link
-        end
-      end
+      # NOTE: AFAIK, in DataMapper there is no possibility to do
+      # OUTER JOINs, and inner join is not correct if a foreign key is
+      # nullable, so we don't join at all and instead rely on strategic
+      # eager loading.
+
+      #columns.each do |column|
+        #if column[:name].index('__')
+          #assoc, _ = column[:name].split('__')
+          #link = @model_class.relationships[assoc.to_sym].inverse
+          #links << link unless links.include? link
+        #end
+      #end
 
       # apply filter
       search_query = apply_column_filters search_query, params[:filter] if params[:filter]
