@@ -11,6 +11,12 @@ class Author
 end
 
 
+elsif defined? Sequel::Model
+
+class Author < Sequel::Model
+  one_to_many :books
+end
+
 else
 
 class Author < ActiveRecord::Base
@@ -27,6 +33,6 @@ class Author
     "#{last_name}, #{first_name}"
   end
 
-  netzke_attribute :name
+#  netzke_attribute :name
 
 end

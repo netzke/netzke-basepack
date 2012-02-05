@@ -22,6 +22,21 @@ class Book
 
 end
 
+elsif defined? Sequel::Model
+
+class Book < Sequel::Model
+  many_to_one :author
+
+  def_dataset_method(:sorted_by_author_name) do |dir|
+    eager_graph(:author).order_append(:author__last_name.send(dir), :author__first_name.send(dir))
+  end
+
+  def validate
+    validates_presence :title
+  end
+
+end
+
 else
 
 class Book < ActiveRecord::Base

@@ -9,10 +9,16 @@ class Role
   property :updated_at, DateTime
 end
 
+elsif defined? Sequel::Model
+
+class Role < Sequel::Model
+  one_to_many :users
+end
+
 else
 
 class Role < ActiveRecord::Base
   has_many :users
 end
-
+ 
 end

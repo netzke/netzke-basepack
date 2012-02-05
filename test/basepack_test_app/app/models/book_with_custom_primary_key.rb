@@ -9,6 +9,13 @@ class BookWithCustomPrimaryKey
   property :updated_at, DateTime
 end
 
+elsif defined? Sequel::Model
+
+class BookWithCustomPrimaryKey < Sequel::Model
+  set_primary_key :uid
+  many_to_one :author
+end
+
 else
 
 class BookWithCustomPrimaryKey < ActiveRecord::Base

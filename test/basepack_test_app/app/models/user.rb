@@ -11,6 +11,13 @@ class User
   property :updated_at, DateTime
 end
 
+elsif defined? Sequel::Model
+
+class User < Sequel::Model
+  many_to_one :role
+  one_to_one :address
+end
+
 else
 
 class User < ActiveRecord::Base
