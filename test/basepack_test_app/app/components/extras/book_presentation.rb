@@ -9,7 +9,9 @@ module Extras
         if v.is_a?(Integer)
           r.author = data_adapter.find_record(v)
         else
-          r.author = data_adapter.new_record(:first_name => v).save!
+          author = data_adapter.new_record(:first_name => v)
+          author.save!
+          r.author = author
         end
       end
     end
