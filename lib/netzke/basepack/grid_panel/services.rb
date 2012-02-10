@@ -185,7 +185,7 @@ module Netzke
 
             params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
-            data_adapter.count_records(params, columns)
+            data_adapter.count_records(params)
           end
 
           # Override this method to react on each operation that caused changing of data

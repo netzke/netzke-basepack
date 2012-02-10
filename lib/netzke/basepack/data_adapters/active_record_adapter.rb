@@ -41,15 +41,10 @@ module Netzke::Basepack::DataAdapters
       end
     end
 
-    def count_records(params, columns=[])
+    def count_records(params)
       # build initial relation based on passed params
       relation = get_relation(params)
 
-      # addressing the n+1 query problem
-      columns.each do |c|
-        assoc, method = c[:name].split('__')
-        relation = relation.includes(assoc.to_sym) if method
-      end
       relation.count
     end
 

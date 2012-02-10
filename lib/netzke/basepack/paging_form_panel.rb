@@ -64,7 +64,7 @@ module Netzke
       protected
 
         def total_records(params = {})
-          @total_records ||= data_adapter.count_records(params, {})
+          @total_records ||= data_adapter.count_records(params)
         end
 
     end
