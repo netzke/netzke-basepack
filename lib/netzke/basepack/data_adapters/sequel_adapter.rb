@@ -121,9 +121,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def map_type type
-      @typemap ||= {
-      }
-      @typemap[type]
+      type
     end
 
     def get_assoc_property_type assoc_name, prop_name
@@ -134,6 +132,12 @@ module Netzke::Basepack::DataAdapters
     end
 
     def column_virtual? c
+      assoc, method = c.split '__'
+      if method
+        @model_class.association_reflection(assoc.to_sym)[:class_name].constantize.columns.include? method.to_sym
+      else
+        @model_class.columns.include? method.to_sym
+      end
     end
 
     # Returns options for comboboxes in grids/forms
@@ -141,10 +145,12 @@ module Netzke::Basepack::DataAdapters
     end
 
     def foreign_key_for assoc_name
+      @model_class.association_reflection(:author)[:key].to_s
     end
 
-    # Returns the model class for association columns
+    # Returns the model class for an association
     def klass_for assoc_name
+      @model_class.association_reflection(:author)[:class_name].constantize
     end
 
     def destroy(ids)

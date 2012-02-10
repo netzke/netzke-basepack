@@ -85,7 +85,7 @@ module Netzke::Basepack::DataAdapters
       raise NotImplementedError
     end
 
-    # Returns the foreign key name for association columns
+    # Returns the foreign key name for an association
     def foreign_key_for assoc_name
       raise NotImplementedError
     end

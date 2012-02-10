@@ -57,7 +57,16 @@ To run the test suite
 etc.
 
 NOTE: netzke-basepack is not dependant on neither DataMapper nor Sequel.  It will pick the right DataAdapter for your models automatically.
-You still should include ActiveRecord into your Gemfile, as netzke-persistance (dependency) is using ActiveRecord.
+ActiveRecord is still included in Gemfile of the test app, as netzke-persistance is used which uses ActiveRecord.
+If you don't use netzke-persistence, then you don't need to include ActiveRecord.
+
+## DataMapper support
+DataMapper support is *incomplete*, as I didn't find a good way to sort by an association's column when the association needs a LEFT OUTER JOIN (i.e. nullable foreign key in many_to_one).
+
+## Sequel support
+
+CAVEATS:
+  - you can't use polymorphic associations for the time being, as the sequel_polymorphic plugin is not supported by netzke-basepack
 
 ## Icons support
 Netzke Basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.

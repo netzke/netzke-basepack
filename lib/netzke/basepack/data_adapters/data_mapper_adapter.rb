@@ -154,7 +154,7 @@ module Netzke::Basepack::DataAdapters
       @model_class.relationships[assoc_name].child_key.first.name.to_s
     end
 
-    # Returns the model class for association columns
+    # Returns the model class for an association
     def klass_for assoc_name
       @model_class.send(assoc_name).model
     end

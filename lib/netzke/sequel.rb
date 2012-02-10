@@ -10,8 +10,8 @@ end
 if defined? Sequel
   # Extend Sequel
   Sequel::Model.class_eval do
-    extend ::Netzke::Sequel::Attributes
-    extend ::Netzke::Sequel::ComboboxOptions
+    include ::Netzke::Sequel::Attributes
+    include ::Netzke::Sequel::ComboboxOptions
     include ::Netzke::Sequel::RelationExtensions
   end
 end
