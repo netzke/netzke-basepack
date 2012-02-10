@@ -52,6 +52,7 @@ group :test do
     # default case: use ar
     # nothing to do here
   end
-  gem 'pickle'
+  # pickle branch with sequel support
+  gem 'pickle', :git=>'git://github.com/NZX/pickle.git'
   gem 'database_cleaner'
 end

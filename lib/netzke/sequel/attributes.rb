@@ -222,6 +222,7 @@ module Netzke
             split.inject(self) { |r,m| m == split.last ? (r && r.send("#{m}=", v) && r.save) : r.send(m) }
           else
             if split.size == 2
+              # TODO
               # search for association and assign it to self
               assoc = self.class.reflect_on_association(split.first.to_sym)
               assoc_method = split.last

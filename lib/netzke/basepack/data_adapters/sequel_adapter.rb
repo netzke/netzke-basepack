@@ -20,6 +20,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     # like get_assoc_property_type but for non-association columns
+    # TODO
     def get_property_type column
     end
 
@@ -33,6 +34,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     # Returns options for comboboxes in grids/forms
+    # TODO
     def combobox_options_for_column(column, method_options = {})
     end
 
@@ -45,23 +47,29 @@ module Netzke::Basepack::DataAdapters
       @model_class.association_reflection(:author)[:class_name].constantize
     end
 
+    # TODO
     def destroy(ids)
     end
 
+    # TODO
     def find_record(id)
     end
 
     # Build a hash of foreign keys and the associated model
+    # TODO
     def hash_fk_model
     end
 
+    # TODO: is this possible with Sequel?
     def move_records(params)
     end
 
     # Needed for seed and tests
+    # TODO
     def last
     end
 
+    # TODO
     def destroy_all
     end
 
