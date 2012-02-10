@@ -132,11 +132,11 @@ module Netzke::Basepack::DataAdapters
     end
 
     def column_virtual? c
-      assoc, method = c.split '__'
+      assoc, method = c[:name].split '__'
       if method
-        @model_class.association_reflection(assoc.to_sym)[:class_name].constantize.columns.include? method.to_sym
+        !@model_class.association_reflection(assoc.to_sym)[:class_name].constantize.columns.include? method.to_sym
       else
-        @model_class.columns.include? method.to_sym
+        !@model_class.columns.include? assoc.to_sym
       end
     end
 
