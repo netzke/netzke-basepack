@@ -38,7 +38,7 @@ module Netzke
           else
             attr_config = {:name => name}.merge(options)
             # if primary_key, insert in front, otherwise append
-            if name == self.primary_key
+            if name == self.primary_key.to_s
               declared_attrs.insert(0, attr_config)
             else
               declared_attrs << {:name => name}.merge(options)
@@ -76,10 +76,10 @@ module Netzke
 
         def netzke_exposed_attributes
           exposed = read_inheritable_attribute(:netzke_exposed_attributes)
-          if exposed && !exposed.include?(self.primary_key)
+          if exposed && !exposed.include?(self.primary_key.to_s)
             # automatically declare primary key as a netzke attribute
-            netzke_attribute(self.primary_key)
-            exposed.insert(0, self.primary_key)
+            netzke_attribute(self.primary_key.to_s)
+            exposed.insert(0, self.primary_key.to_s)
           end
           exposed
         end

@@ -99,7 +99,7 @@ module Netzke
 
       def js_config
         super.tap do |res|
-          res[:pri] = data_class && data_class.primary_key
+          res[:pri] = data_class && data_class.primary_key.to_s
           res[:record] = js_record_data if record
         end
       end
