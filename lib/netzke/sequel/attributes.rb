@@ -224,12 +224,11 @@ module Netzke
             split.inject(self) { |r,m| m == split.last ? (r && r.send("#{m}=", v) && r.save) : r.send(m) }
           else
             if split.size == 2
-              # TODO
               # search for association and assign it to self
-              assoc = self.class.reflect_on_association(split.first.to_sym)
+              assoc = self.class.association_reflection(split.first.to_sym)
               assoc_method = split.last
               if assoc
-                if assoc.macro == :has_one
+                if assoc[:type] == :one_to_one
                   assoc_instance = self.send(assoc.name)
                   if assoc_instance
                     assoc_instance.send("#{assoc_method}=", v)
@@ -238,7 +237,7 @@ module Netzke
                     # what should we do in this case?
                   end
                 else
-                  self.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}=", v)
+                  self.send("#{assoc[:key]}=", v)
                 end
               else
                 logger.debug "Netzke::Basepack: Association #{assoc} is not known for class #{self.class.name}"

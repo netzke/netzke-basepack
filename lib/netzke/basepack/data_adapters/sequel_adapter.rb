@@ -17,25 +17,63 @@ module Netzke::Basepack::DataAdapters
     end
 
     def get_assoc_property_type assoc_name, prop_name
+      class_for(assoc_name.to_sym).db_schema[prop_name.to_sym][:type]
     end
 
     # like get_assoc_property_type but for non-association columns
-    # TODO
     def get_property_type column
+      @model_class.db_schema[column.to_sym][:type]
     end
 
     def column_virtual? c
       assoc, method = c[:name].split '__'
       if method
-        !@model_class.association_reflection(assoc.to_sym)[:class_name].constantize.columns.include? method.to_sym
+        class_for(assoc_name.to_sym).columns.include? method.to_sym
       else
         !@model_class.columns.include? assoc.to_sym
       end
     end
 
     # Returns options for comboboxes in grids/forms
-    # TODO
     def combobox_options_for_column(column, method_options = {})
+      query = method_options[:query]
+
+      # First, check if we have options for this column defined in persistent storage
+      options = column[:combobox_options] && column[:combobox_options].split("\n")
+      if options
+        query ? options.select{ |o| o.index(/^#{query}/) }.map{ |el| [el] } : options
+      else
+        assoc_name, assoc_method = column[:name].split '__'
+
+        if assoc_name
+          # Options for an asssociation attribute
+          dataset = class_for(assoc_name)
+
+          dataset = dataset.extend_with(method_options[:scope]) if method_options[:scope]
+
+          if class_for(assoc_name).column_names.include?(assoc_method)
+            # apply query
+            dataset = dataset.where(assoc_method.to_sym.like("%#{query}%")) if query.present?
+            dataset.all.map{ |r| [r.id, r.send(assoc_method)] }
+          else
+            dataset.all.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value =~ /^#{query}/ }
+          end
+        else
+          # Options for a non-association attribute
+          res=@model_class.netzke_combo_options_for(column[:name], method_options)
+
+          # ensure it is an array-in-array, as Ext will fail otherwise
+          raise RuntimeError, "netzke_combo_options_for should return an Array" unless res.kind_of? Array
+          return [[]] if res.empty?
+
+          unless res.first.kind_of? Array
+            res=res.map do |v|
+              [v]
+            end
+          end
+          return res
+        end
+      end
     end
 
     def foreign_key_for assoc_name
@@ -43,7 +81,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     # Returns the model class for an association
-    def klass_for assoc_name
+    def class_for assoc_name
       @model_class.association_reflection(assoc_name.to_sym)[:class_name].constantize
     end
 
