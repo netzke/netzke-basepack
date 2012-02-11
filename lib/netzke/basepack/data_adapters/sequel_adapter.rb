@@ -48,7 +48,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def destroy(ids)
-      @model_class.where(id: ids).destroy
+      @model_class.where(:id => ids).destroy
     end
 
     def find_record(id)
@@ -184,7 +184,11 @@ module Netzke::Basepack::DataAdapters
       end
 
       # apply scope
-      dataset = dataset.extend_with(params[:scope]) if params[:scope]
+      # need to symbolize_keys, because when the request is made from client-side (as opposed
+      # to server-side on inital render), the scope's keys are given as string {"author_id" => 1}
+      # If we give Sequel a filter like this, it will (correctly) do WHERE 'author_id' = 1 - note the quotes
+      # making the database match the string author_id to 1 and to the column.
+      dataset = dataset.extend_with(params[:scope].symbolize_keys) if params[:scope]
       dataset
     end
   end
