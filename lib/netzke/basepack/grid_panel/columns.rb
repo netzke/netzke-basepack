@@ -129,7 +129,7 @@ module Netzke
 
           if columns_from_config
             # automatically add a column that reflects the primary key (unless specified in the config)
-            columns_from_config.insert(0, {:name => data_class.primary_key}) unless columns_from_config.any?{ |c| c[:name] == data_class.primary_key }
+            columns_from_config.insert(0, {:name => data_class.primary_key.to_s}) unless columns_from_config.any?{ |c| c[:name] == data_class.primary_key }
 
             # reverse-merge each column hash from config with each column hash from exposed_attributes
             # (columns from config have higher priority)

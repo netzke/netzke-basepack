@@ -47,8 +47,8 @@ module Netzke::Basepack::DataAdapters
       @model_class.association_reflection(assoc_name.to_sym)[:class_name].constantize
     end
 
-    # TODO
     def destroy(ids)
+      @model_class.where(id: ids).destroy
     end
 
     def find_record(id)
