@@ -4,7 +4,6 @@ module Netzke
       def self.included receiver
         receiver.class_eval do
           def_dataset_method :extend_with do |*params|
-            p receiver
             scope = params.shift
             case scope.class.name
             when "Symbol" # model's scope

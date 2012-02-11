@@ -125,7 +125,7 @@ module Netzke::Basepack::DataAdapters
 
           relation = relation.extend_with(method_options[:scope]) if method_options[:scope]
 
-          if klass_for(assoc_name).column_names.include?(assoc_method)
+          if class_for(assoc_name).column_names.include?(assoc_method)
             # apply query
             relation = relation.all(assoc_method.to_sym.send(:like) => "%#{query}%") if query.present?
             relation.all.map{ |r| [r.id, r.send(assoc_method)] }
@@ -155,7 +155,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     # Returns the model class for an association
-    def klass_for assoc_name
+    def class_for assoc_name
       @model_class.send(assoc_name).model
     end
 

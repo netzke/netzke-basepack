@@ -127,10 +127,10 @@ module Netzke
               assoc = all_association_reflections.detect { |a| a[:key].to_s == c[:name] }
               if assoc
                 candidates = %w{name title label} << assoc[:key].to_s
-                assoc_klass = assoc[:class_name].constantize
-                assoc_method = candidates.detect{|m| ( assoc_klass.instance_methods.map(&:to_s) + column_names).include?(m) }
+                assoc_class = assoc[:class_name].constantize
+                assoc_method = candidates.detect{|m| ( assoc_class.instance_methods.map(&:to_s) + column_names).include?(m) }
                 c[:name] = "#{assoc[:name].to_s}__#{assoc_method}"
-                c[:attr_type] = assoc_klass.columns_hash[assoc_method].try(:[], :type) || :string # when it's an instance method rather than a column, fall back to :string
+                c[:attr_type] = assoc_class.columns_hash[assoc_method].try(:[], :type) || :string # when it's an instance method rather than a column, fall back to :string
               end
 
               # auto set up the default value from the column settings

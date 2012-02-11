@@ -90,7 +90,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     # Returns the model class for association columns
-    def klass_for assoc_name
+    def class_for assoc_name
       raise NotImplementedError
     end
 

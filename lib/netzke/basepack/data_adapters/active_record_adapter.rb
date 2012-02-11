@@ -115,7 +115,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     # Returns the model class for association columns
-    def klass_for assoc_name
+    def class_for assoc_name
       @model_class.reflect_on_association(assoc_name.to_sym).klass
     end
 
