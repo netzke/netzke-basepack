@@ -10,12 +10,11 @@ module Netzke
           @form_panel_items ||= begin
             res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # netzke_attributes as default items
             # if primary key isn't there, insert it as first
-            if data_class && !res.detect{ |f| f[:name] == data_class.primary_key}
+            if data_class && !res.detect{ |f| f[:name] == data_class.primary_key.to_s}
               primary_key_item = normalize_field(data_class.primary_key.to_sym)
               @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
               res.insert(0, primary_key_item)
             end
-
             res
           end
         end

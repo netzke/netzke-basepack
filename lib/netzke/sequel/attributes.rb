@@ -211,7 +211,9 @@ module Netzke
         if a[:setter]
           a[:setter].call(self, v)
         elsif respond_to?("#{a[:name]}=")
-          send("#{a[:name]}=", v)
+          unless primary_key.to_s == a[:name] && v.blank? # In contrast to ActiveRecord, Sequel doesn't allow setting nil/NULL primary keys
+            send("#{a[:name]}=", v)
+          end
         elsif is_association_attr?(a)
           split = a[:name].to_s.split(/\.|__/)
           if a[:nested_attribute]

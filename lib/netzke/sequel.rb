@@ -13,6 +13,16 @@ if defined? Sequel
     include ::Netzke::Sequel::Attributes
     include ::Netzke::Sequel::ComboboxOptions
     include ::Netzke::Sequel::RelationExtensions
+
+    # Emulate ARs timestamp behavior
+    def before_create
+      self.created_at ||= Time.now
+      self.updated_at ||= Time.now
+    end
+
+    def before_update
+      self.updated_at ||= Time.now
+    end
   end
 end
 
