@@ -51,8 +51,8 @@ module Netzke::Basepack::DataAdapters
     def destroy(ids)
     end
 
-    # TODO
     def find_record(id)
+      @model_class[id]
     end
 
     # Build a hash of foreign keys and the associated model
