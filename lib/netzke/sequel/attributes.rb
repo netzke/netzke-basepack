@@ -198,9 +198,9 @@ module Netzke
               end
             end
 
-        # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
-        v = v.to_datetime.to_s(:db) if [ActiveSupport::TimeWithZone].include?(v.class)
-
+        # need to serialize Date and Time objects with to_s :db for compatibility with client side
+        # DATETIME fields in database are given as Time by Sequel
+        v = v.to_s(:db) if [Date, Time].include?(v.class)
         v
       end
 
