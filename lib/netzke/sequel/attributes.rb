@@ -126,8 +126,8 @@ module Netzke
               # If it's named as foreign key of some association, then it's an association column
               assoc = all_association_reflections.detect { |a| a[:key].to_s == c[:name] }
               if assoc
-                candidates = %w{name title label} << data_adapter.foreign_key_for(assoc)
-                assoc_klass = data_adapter.klass_for(assoc)
+                candidates = %w{name title label} << assoc[:key].to_s
+                assoc_klass = assoc[:class_name].constantize
                 assoc_method = candidates.detect{|m| ( assoc_klass.instance_methods.map(&:to_s) + column_names).include?(m) }
                 c[:name] = "#{assoc[:name].to_s}__#{assoc_method}"
                 c[:attr_type] = assoc_klass.columns_hash[assoc_method].try(:[], :type) || :string # when it's an instance method rather than a column, fall back to :string

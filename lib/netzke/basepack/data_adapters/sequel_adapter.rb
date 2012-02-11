@@ -39,12 +39,12 @@ module Netzke::Basepack::DataAdapters
     end
 
     def foreign_key_for assoc_name
-      @model_class.association_reflection(:author)[:key].to_s
+      @model_class.association_reflection(assoc_name.to_sym)[:key].to_s
     end
 
     # Returns the model class for an association
     def klass_for assoc_name
-      @model_class.association_reflection(:author)[:class_name].constantize
+      @model_class.association_reflection(assoc_name.to_sym)[:class_name].constantize
     end
 
     # TODO
