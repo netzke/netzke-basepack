@@ -185,7 +185,6 @@ module Netzke::Basepack::DataAdapters
             dataset = dataset.filter field.to_sym.ilike("%#{value}%")
           else
             if type == "date"
-              puts "original: #{value.inspect}"
               # convert value to the DB date
               value.match /(\d\d)\/(\d\d)\/(\d\d\d\d)/
               value = "#{$3}-#{$1}-#{$2}"
