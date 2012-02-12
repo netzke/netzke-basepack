@@ -30,6 +30,7 @@ gem 'netzke-persistence', :path => File.expand_path('../vendor/gems/netzke-persi
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
+  gem 'pry'
   gem 'thin'
   gem 'capybara'
   gem 'capybara-screenshot'
