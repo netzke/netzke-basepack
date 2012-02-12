@@ -112,6 +112,12 @@ module Netzke::Basepack::DataAdapters
       @model_class.new(params)
     end
 
+    # give the data adapter the opportunity the set special options for
+    # saving
+    def save_record(record)
+      record.save
+    end
+
     # Finds a record by id, return nil if not found
     def find_record(id)
       @model_class.find(id)

@@ -89,7 +89,6 @@ module Netzke
           def build_form_errors(record)
             form_errors = {}
             foreign_keys = data_adapter.hash_fk_model
-
             record.errors.to_hash.map{|field, error|
               # some ORM return an array for error
               error = error.join ', ' if error.kind_of? Array
@@ -130,7 +129,7 @@ module Netzke
             #end
 
             # did we have complete success?
-            success && @record.save
+            success && data_adapter.save_record(@record)
           end
 
           # API handling form load

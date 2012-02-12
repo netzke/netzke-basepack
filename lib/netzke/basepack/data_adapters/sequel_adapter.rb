@@ -17,7 +17,9 @@ module Netzke::Basepack::DataAdapters
     end
 
     def get_assoc_property_type assoc_name, prop_name
-      class_for(assoc_name.to_sym).db_schema[prop_name.to_sym][:type]
+      db_schema=class_for(assoc_name.to_sym).db_schema
+      # return nil if prop_name not present in db schema (virtual column)
+      db_schema[prop_name.to_sym] ? db_schema[prop_name.to_sym][:type] : nil
     end
 
     # like get_assoc_property_type but for non-association columns
@@ -94,21 +96,31 @@ module Netzke::Basepack::DataAdapters
     end
 
     # Build a hash of foreign keys and the associated model
-    # TODO
     def hash_fk_model
+      @model_class.
     end
 
     # TODO: is this possible with Sequel?
     def move_records(params)
     end
 
-    # Needed for seed and tests
-    # TODO
-    def last
+    # give the data adapter the opportunity the set special options for
+    # saving
+    def save_record(record)
+      # don't raise an error on saving. basepack will evaluate record.errors
+      # to get validation errors
+      record.raise_on_save_failure = false
+      record.save
     end
 
-    # TODO
+    # Needed for seed and tests
+    def last
+      @model_class.last
+    end
+
+    # Needed for seed and tests
     def destroy_all
+      @model_class.destroy
     end
 
     private
