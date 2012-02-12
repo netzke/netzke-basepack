@@ -30,7 +30,7 @@ module Netzke::Basepack::DataAdapters
     def column_virtual? c
       assoc, method = c[:name].split '__'
       if method
-        class_for(assoc_name.to_sym).columns.include? method.to_sym
+        class_for(assoc.to_sym).columns.include? method.to_sym
       else
         !@model_class.columns.include? assoc.to_sym
       end
@@ -97,7 +97,10 @@ module Netzke::Basepack::DataAdapters
 
     # Build a hash of foreign keys and the associated model
     def hash_fk_model
-      @model_class.
+      @model_class.all_association_reflections.inject({}) do |res, assoc|
+        res[assoc[:key]] = assoc[:class_name].constantize.model_name.underscore.to_sym
+        res
+      end
     end
 
     # TODO: is this possible with Sequel?
