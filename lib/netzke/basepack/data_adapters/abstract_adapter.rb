@@ -36,7 +36,8 @@ module Netzke::Basepack::DataAdapters
     # * :scope - the scope as described in Netzke::Basepack::GridPanel
     # * :filter - Ext filters
     #
-    def count_records(params)
+    # The `columns` parameter may be used to use joins to address the n+1 query problem, and receives an array of column configurations
+    def count_records(params, columns)
       0
     end
 

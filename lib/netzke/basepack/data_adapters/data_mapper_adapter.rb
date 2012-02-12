@@ -62,13 +62,13 @@ module Netzke::Basepack::DataAdapters
       search_query.all(query_options)
     end
 
-    def count_records(params)
+    def count_records(params, columns=[])
       # delete pagig related params, as this would break the query
       params=params.reject { |k, v|
         [:start, :limit, :page].include? k.to_sym
       }
       # this will NOT do a SELECT *, but a SELECT COUNT(*)
-      get_records(params).count
+      get_records(params, columns).count
     end
 
     def map_type type

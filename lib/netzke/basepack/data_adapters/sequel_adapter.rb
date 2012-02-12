@@ -8,7 +8,8 @@ module Netzke::Basepack::DataAdapters
       get_dataset(params, columns).all
     end
 
-    def count_records(params)
+    def count_records(params, columns=[])
+      # dont pass columns, JOINs will be done as necessary for filters
       get_dataset(params, [], true).count
     end
 
