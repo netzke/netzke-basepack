@@ -32,7 +32,7 @@ class Book < Sequel::Model
   end
 
   def validate
-    validates_presence :title
+    validates_presence :title, :message => "can't be blank"
   end
 
 end

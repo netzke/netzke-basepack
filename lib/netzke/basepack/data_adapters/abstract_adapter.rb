@@ -113,9 +113,15 @@ module Netzke::Basepack::DataAdapters
     end
 
     # give the data adapter the opportunity the set special options for
-    # saving
+    # saving, must return true on success
     def save_record(record)
       record.save
+    end
+
+    # give the data adapter the opporunity to process error messages
+    # must return an raay of the form ["Title can't be blank", "Foo can't be blank"]
+    def errors_array(record)
+      record.errors.to_a
     end
 
     # Finds a record by id, return nil if not found

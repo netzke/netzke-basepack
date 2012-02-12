@@ -69,15 +69,8 @@ module Netzke
             {:set_form_values => js_record_data, :set_result => true}
           else
             # flash eventual errors
-            @record.errors.to_a.each do |msg|
-              # some ORMs return an array of error messages here
-              if msg.kind_of? Array
-                msg.each do |m|
-                  flash :error => m
-                end
-              else
-                flash :error => msg
-              end
+            data_adapter.errors_array(@record).each do |error|
+              flash :error => error
             end
             {:netzke_feedback => @flash, :apply_form_errors => build_form_errors(record)}
           end

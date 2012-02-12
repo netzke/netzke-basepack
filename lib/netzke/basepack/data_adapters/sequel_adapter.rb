@@ -116,6 +116,16 @@ module Netzke::Basepack::DataAdapters
       record.save
     end
 
+    # give the data adapter the opporunity to process error messages
+    # must return an raay of the form ["Title can't be blank", "Foo can't be blank"]
+    def errors_array(record)
+      record.errors.to_a.inject([]) do |errors, error|
+        field, message = error
+        errors << "#{record.class.human_attribute_name(field)} #{message.join ', '}"
+        errors
+      end
+    end
+
     # Needed for seed and tests
     def last
       @model_class.last

@@ -183,6 +183,12 @@ module Netzke::Basepack::DataAdapters
       end
     end
 
+    # give the data adapter the opporunity to process error messages
+    # must return an raay of the form ["Title can't be blank", "Foo can't be blank"]
+    def errors_array(record)
+      record.errors.to_a.flatten
+    end
+
     # Needed for seed and tests
     def last
       @model_class.last
