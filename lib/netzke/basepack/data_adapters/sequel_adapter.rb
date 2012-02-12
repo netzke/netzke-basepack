@@ -30,7 +30,7 @@ module Netzke::Basepack::DataAdapters
     def column_virtual? c
       assoc, method = c[:name].split '__'
       if method
-        class_for(assoc.to_sym).columns.include? method.to_sym
+        !class_for(assoc.to_sym).columns.include? method.to_sym
       else
         !@model_class.columns.include? assoc.to_sym
       end
