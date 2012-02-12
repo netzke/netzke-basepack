@@ -3,4 +3,16 @@ if defined? Sequel
   Sequel::Model.plugin :validation_helpers
   db = Sequel.connect(YAML.load(ERB.new(File.read(File.join(Rails.root,'config','database.yml'))).result)[Rails.env])
   db.logger = Logger.new $stdout if Rails.env.development?
+
+    Sequel::Model.class_eval do
+      # Emulate ARs timestamp behavior
+      def before_create
+        self.created_at ||= Time.now
+        self.updated_at ||= Time.now
+      end
+
+      def before_update
+        self.updated_at ||= Time.now
+      end
+    end
 end
