@@ -6,7 +6,7 @@ module Extras
 
         data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(Author).new(Author)
         # cast v to integer, if possible
-        v = v.to_i unless v.match(/[^[:digit:]]+/)
+        v = v.to_i unless !v.kind_of? String || v.match(/[^[:digit:]]+/)
         if v.is_a?(Integer)
           r.author = data_adapter.find_record(v)
         else
