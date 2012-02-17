@@ -222,7 +222,7 @@ module Netzke::Basepack::DataAdapters
               # coincidentally, netzkes convention of specifying association's attributes
               # i.e. "author__name" on Book matches sequel's convention
               # so we can just pass symbolized property here
-              dataset = dataset.order(sort_param["property"].to_sym)
+              dataset = dataset.order(sort_param["property"].to_sym.send(dir))
             end
           end
         end
