@@ -6,6 +6,7 @@ Feature: Window component loader
   @javascript
   Scenario: Creating an author on the fly with BookGridWithVirtualAttributes
     Given an author exists with first_name: "Victor"
+    And an author exists with first_name: "Vladimir"
     And a book exists with author: that author, title: "Lolita"
     And I am on the BookGridWithVirtualAttributes test page
     Then I should see "Victor"
