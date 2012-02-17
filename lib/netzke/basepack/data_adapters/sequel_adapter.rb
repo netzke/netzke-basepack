@@ -25,7 +25,7 @@ module Netzke::Basepack::DataAdapters
 
     # like get_assoc_property_type but for non-association columns
     def get_property_type column
-      @model_class.db_schema[column.to_sym][:type]
+      column[:type]
     end
 
     def column_virtual? c
