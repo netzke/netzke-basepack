@@ -192,12 +192,12 @@ module Netzke::Basepack::DataAdapters
             # if it's NOT an association column, we need to qualify column name with model's table_name
             qualified_column_name = method ? field.to_sym : field.to_sym.qualify(@model_class.table_name)
             case op
-            when 'eq'
-              dataset = dataset.filter qualified_column_name => value
             when 'lt'
               dataset = dataset.filter ":column < '#{value}'", :column => qualified_column_name
             when 'gt'
               dataset = dataset.filter ":column > '#{value}'", :column => qualified_column_name
+            else
+              dataset = dataset.filter qualified_column_name => value
             end
           end
         end
