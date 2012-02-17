@@ -14,5 +14,8 @@ if defined? Sequel
       def before_update
         self.updated_at ||= Time.now
       end
+
+      # enable mass-assignment of pk, so that pickle scenarios can work properly when id is specified
+      unrestrict_primary_key
     end
 end
