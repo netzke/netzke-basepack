@@ -67,6 +67,8 @@ DataMapper support is *incomplete*, as I didn't find a good way to sort by an as
 
 CAVEATS:
   - you can't use polymorphic associations for the time being, as the sequel_polymorphic plugin is not supported by netzke-basepack
+  - SearchPanel is broken atm. When it's fixed, Sequel support for
+    SearchPanel triggered queries should be implemented.
 
 ## Icons support
 Netzke Basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.
