@@ -42,13 +42,14 @@ elsif defined? Sequel::Model
 
   User.class_eval do
 
-    def self.role_id_gt_7
-      all(:role_id.gt => 7)
+    def_dataset_method(:role_id_gt_7) do
+      where{role_id > 7}
     end
 
-    def self.role_id_gt param
-      all(:role_id.gt => param)
+    def_dataset_method(:role_id_gt) do |p|
+      where{role_id > p}
     end
+
   end
 
   describe Netzke::Sequel::RelationExtensions do
@@ -60,19 +61,14 @@ elsif defined? Sequel::Model
 
       # Tests
 
-      User.all.extend_with(:role_id_gt_7).count.should == 2
+      User.extend_with(:role_id_gt_7).count.should == 2
+      User.extend_with(:role_id_gt, 2).count.should == 7
+      User.extend_with([:role_id_gt, 3]).count.should == 6
+      User.extend_with(:role_id => 5).first.first_name.should == "First Name 5"
+      User.where{role_id < 7}.extend_with(lambda{ |dataset| dataset.where{ role_id > 4}}).count.should == 2
+      User.extend_with("role_id > 6").count.should == 3
+      User.extend_with(["role_id >= ?", 5]).count.should == 5
 
-      User.all.extend_with(:role_id_gt, 2).count.should == 7
-
-      User.all.extend_with([:role_id_gt, 3]).count.should == 6
-
-      User.all.extend_with(:role_id => 5).first.first_name.should == "First Name 5"
-
-      User.all(:role_id.lt => 7).extend_with(lambda{ |relation| relation.all( :role_id.gt => 4)}).count.should == 2
-
-      #Not supported in DM
-      lambda { User.all.extend_with("select * from users where role_id > 6") }.should raise_error NotImplementedError
-      lambda { User.all.extend_with(["role_id >= ?", 5]).count }.should raise_error NotImplementedError
     end
   end
 

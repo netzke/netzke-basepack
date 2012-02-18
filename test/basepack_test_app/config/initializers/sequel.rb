@@ -1,7 +1,6 @@
 if defined? Sequel
   Sequel::Model.plugin :active_model
   Sequel::Model.plugin :validation_helpers
-  Sequel::Model.plugin :identity_map
   db = Sequel.connect(YAML.load(ERB.new(File.read(File.join(Rails.root,'config','database.yml'))).result)[Rails.env])
   db.logger = Logger.new $stdout if Rails.env.development?
 
@@ -21,7 +20,7 @@ if defined? Sequel
 
       # FactoryGirl compatibility fix
       def save!
-        save :raise_on_save_failure => true
+        save :raise_on_save_failure => true, :validate => false
       end
     end
 end

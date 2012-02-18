@@ -21,7 +21,7 @@ elsif defined? Sequel::Model
     end
 
     def_dataset_method(:author_name_like_he) do
-      eager_graph(:author).where(:authort__name.like("He%"))
+      eager_graph(:author).where(:author__name.like("He%"))
     end
   end
 

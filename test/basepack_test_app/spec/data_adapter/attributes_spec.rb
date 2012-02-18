@@ -27,6 +27,7 @@ describe Netzke::ActiveRecord::Attributes do
     author = Factory(:author)
     book = Factory(:book, :author => author)
     book.set_value_for_attribute({:name => :author__first_name, :nested_attribute => true}, "Carlitos")
+    author.reload if defined? Sequel::Model
     author.first_name.should == "Carlitos"
   end
 
@@ -40,7 +41,8 @@ describe Netzke::ActiveRecord::Attributes do
 
   it "should be possible to change address of a user (has_one association) via association attribute without specifying :nested_attribute => true" do
     address = Factory(:address)
-    user = Factory(:user, :address => address)
+    user = Factory(:user)
+    user.address = address
     user.set_value_for_attribute({:name => :address__city}, "Hidden Treasures")
     address.city.should == "Hidden Treasures"
   end

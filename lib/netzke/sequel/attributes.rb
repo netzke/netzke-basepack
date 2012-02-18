@@ -229,7 +229,7 @@ module Netzke
               assoc_method = split.last
               if assoc
                 if assoc[:type] == :one_to_one
-                  assoc_instance = self.send(assoc.name)
+                  assoc_instance = self.send(assoc[:name])
                   if assoc_instance
                     assoc_instance.send("#{assoc_method}=", v)
                     assoc_instance.save # what should we do when this fails?..
