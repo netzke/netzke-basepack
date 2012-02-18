@@ -4,32 +4,32 @@ Feature: Search
   I want feature
 
   @javascript
-  Scenario: Search via Search window
-    Given the following roles exist:
-    | id | name       |
-    | 1  | admin      |
-    | 2  | superadmin |
-    | 3  | user       |
+  #Scenario: Search via Search window
+    #Given the following roles exist:
+    #| id | name       |
+    #| 1  | admin      |
+    #| 2  | superadmin |
+    #| 3  | user       |
 
-    And the following users exist:
-    | first_name | last_name | role_id |
-    | Paul       | Bley      | 1       |
-    | Dalai      | Lama      | 3       |
-    | Taisha     | Abelar    | 2       |
-    | Florinda   | Donner    | 1       |
+    #And the following users exist:
+    #| first_name | last_name | role_id |
+    #| Paul       | Bley      | 1       |
+    #| Dalai      | Lama      | 3       |
+    #| Taisha     | Abelar    | 2       |
+    #| Florinda   | Donner    | 1       |
 
-    When I go to the UserGrid test page
-    Then the grid should show 4 records
+    #When I go to the UserGrid test page
+    #Then the grid should show 4 records
 
-    When I press "Search"
-    And I wait for the response from the server
-    And I expand combobox "undefined_attr"
-    And I select "First name" from combobox "undefined_attr"
-    And I wait for the response from the server
-    And I fill in "first_name_value" with "ai"
-    And I press "Search" within "#user_grid__search_form"
-    And I wait for the response from the server
-    Then the grid should show 2 records
+    #When I press "Search"
+    #And I wait for the response from the server
+    #And I expand combobox "undefined_attr"
+    #And I select "First name" from combobox "undefined_attr"
+    #And I wait for the response from the server
+    #And I fill in "first_name_value" with "ai"
+    #And I press "Search" within "#user_grid__search_form"
+    #And I wait for the response from the server
+    #Then the grid should show 2 records
 
     # When I press "Search"
     # And I follow "+"
