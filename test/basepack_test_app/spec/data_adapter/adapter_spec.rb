@@ -2,11 +2,7 @@ require File.dirname(__FILE__) + '/../spec_helper'
 
 if defined? DataMapper::Resource
 
-  # DatabaseCleaner not working in transaction mode for DM
-  DatabaseCleaner.strategy=:truncation
-  DatabaseCleaner.clean!
-
-  class Book
+  Book.class_eval do
 
     def self.title_like_jou
       all(:title.like => "Jou%")
@@ -17,9 +13,21 @@ if defined? DataMapper::Resource
     end
   end
 
+elsif defined? Sequel::Model
+
+  Book.class_eval do
+    def_dataset_method(:title_like_jou) do
+      where(:title.like("Jou%"))
+    end
+
+    def_dataset_method(:author_name_like_he) do
+      eager_graph(:author).where(:authort__name.like("He%"))
+    end
+  end
+
 else
 
-  class Book
+  Book.class_eval do
     scope :title_like_jou, where("title LIKE 'Jou%'")
     scope :author_name_like_he, joins(:author).where("authors.last_name LIKE 'He%'")
   end
