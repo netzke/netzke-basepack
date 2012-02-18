@@ -1,9 +1,9 @@
-Feature: Search
-  In order to value
-  As a role
-  I want feature
+#Feature: Search
+  #In order to value
+  #As a role
+  #I want feature
 
-  @javascript
+  #@javascript
   #Scenario: Search via Search window
     #Given the following roles exist:
     #| id | name       |
