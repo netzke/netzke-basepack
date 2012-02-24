@@ -4,6 +4,10 @@ module Netzke
       extend ActiveSupport::Concern
 
       module ClassMethods
+        def data_adapter
+          @data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(self).new(self)
+        end
+
         # Define or configure an attribute.
         # Example:
         #   netzke_attribute :recent, :type => :boolean, :read_only => true
