@@ -23,9 +23,14 @@ require 'capybara/cucumber'
 require 'capybara/session'
 # require 'cucumber/rails/capybara_javascript_emulation' # Lets you click links with onclick javascript handlers without using @culerity or @javascript
 
-# Capybara.register_driver :selenium do |app|
-#   Capybara::Driver::Selenium.new(app, {:profile => 'selenium' } )
-# end
+# resynchronize after ajax call
+# from README at (https://github.com/jnicklas/capybara)
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, {:resynchronize => true } )
+end
+
+# wait a bit longer (default 2s)
+Capybara.default_wait_time = 5
 
 # Capybara defaults to XPath selectors rather than Webrat's default of CSS3. In
 # order to ease the transition to Capybara we set the default here. If you'd
