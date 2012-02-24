@@ -163,6 +163,11 @@ module Netzke
         res
       end
 
+      # ActiveRecord compatibility
+      def to_hash
+        values
+      end
+
       # Accepts both hash and array of attributes
       def to_hash(attributes)
         res = {}
