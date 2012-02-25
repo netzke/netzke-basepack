@@ -152,6 +152,10 @@ module Netzke
         res
       end
 
+      def to_json
+        to_hash(Author.netzke_attributes).to_nifty_json
+      end
+
       # Accepts both hash and array of attributes
       def to_hash(attributes)
         res = {}

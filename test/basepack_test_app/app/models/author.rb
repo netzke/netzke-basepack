@@ -33,6 +33,6 @@ class Author
     "#{last_name}, #{first_name}"
   end
 
-#  netzke_attribute :name
+  netzke_attribute :name
 
 end
