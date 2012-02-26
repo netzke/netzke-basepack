@@ -42,11 +42,11 @@ module Netzke
 
         # Returns array of form values according to the configured columns
         # def array_of_values
-        #   @record && @record.to_array(fields)
+        #   @record && @record.netzke_array(fields)
         # end
 
         def values
-          record && record.to_hash(fields)
+          record && record.netzke_hash(fields)
         end
 
         # Implementation for the "netzke_submit" endpoint (for backward compatibility)

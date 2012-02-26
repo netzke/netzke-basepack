@@ -143,7 +143,7 @@ module Netzke
       end
 
       # Transforms a record to array of values according to the passed attributes
-      def to_array(attributes)
+      def netzke_array(attributes)
         res = []
         for a in attributes
           next if a[:included] == false
@@ -152,12 +152,12 @@ module Netzke
         res
       end
 
-      def to_json
-        to_hash(Author.netzke_attributes).to_nifty_json
+      def netzke_json
+        netzke_hash(self.class.netzke_attributes).to_nifty_json
       end
 
       # Accepts both hash and array of attributes
-      def to_hash(attributes)
+      def netzke_hash(attributes)
         res = {}
         for a in (attributes.is_a?(Hash) ? attributes.values : attributes)
           next if a[:included] == false

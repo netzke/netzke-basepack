@@ -146,7 +146,7 @@ module Netzke
           if !config[:prohibit_read]
             {}.tap do |res|
               records = get_records(params)
-              res[:data] = records.map{|r| r.to_array(columns(:with_meta => true))}
+              res[:data] = records.map{|r| r.netzke_array(columns(:with_meta => true))}
               res[:total] = count_records(params)  if config[:enable_pagination]
             end
           else
@@ -223,7 +223,7 @@ module Netzke
                 end
 
                 # try to save
-                mod_records[id] = record.to_array(columns(:with_meta => true)) if success && record.save
+                mod_records[id] = record.netzke_array(columns(:with_meta => true)) if success && record.save
 
                 # flash eventual errors
                 if !record.errors.empty?

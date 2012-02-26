@@ -47,10 +47,10 @@ describe Netzke::ActiveRecord::Attributes do
     address.city.should == "Hidden Treasures"
   end
 
-  it "should consider netzke_attributes, normalize date formats and niftify on .to_json" do
+  it "should consider netzke_attributes, normalize date formats and niftify on #netzke_json" do
     Time.zone = 'UTC'
     author = Factory(:author, :created_at => Time.zone.at(0), :updated_at => Time.zone.at(0))
-    author.to_json.should == "{\"id\":#{author.id},\"firstName\":\"Carlos\",\"lastName\":\"Castaneda\",\"createdAt\":\"1970-01-01 00:00:00\",\"updatedAt\":\"1970-01-01 00:00:00\",\"name\":\"Castaneda, Carlos\"}"
+    author.netzke_json.should == "{\"id\":#{author.id},\"firstName\":\"Carlos\",\"lastName\":\"Castaneda\",\"createdAt\":\"1970-01-01 00:00:00\",\"updatedAt\":\"1970-01-01 00:00:00\",\"name\":\"Castaneda, Carlos\"}"
   end
 
 end

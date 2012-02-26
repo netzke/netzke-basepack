@@ -106,7 +106,7 @@ module Netzke
 
       # A hash of record data including the meta field
       def js_record_data
-        record.to_hash(fields).merge(:_meta => meta_field).literalize_keys
+        record.netzke_hash(fields).merge(:_meta => meta_field).literalize_keys
       end
 
       def record
