@@ -173,9 +173,7 @@ module Netzke
       end
 
       # Accepts both hash and array of attributes
-      def to_hash(attributes = nil)
-        # ActiveRecord compatibility
-        return self.attributes unless attributes
+      def to_hash(attributes)
         res = {}
         for a in (attributes.is_a?(Hash) ? attributes.values : attributes)
           next if a[:included] == false
