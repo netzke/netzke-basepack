@@ -153,6 +153,11 @@ module Netzke
 
       end
 
+      # AR compatibility
+      def attributes
+        values
+      end
+
       # Transforms a record to array of values according to the passed attributes
       def netzke_array(attributes = self.class.netzke_attributes)
         res = []
