@@ -13,9 +13,9 @@ Scenario: UserForm should be rendered properly along with the data for the first
 
 @javascript
   Scenario: A form should be rendered properly along with the data for the specified record
-    Given a book exists with title: "Great Book", last_read_at: "2005-01-23"
+    Given a book exists with title: "Great Book", last_read_at: "2005-01-23 11:12:13"
     When I go to the BookFormWithDefaults test page
-    Then the form should show title: "Great Book", last_read_at: "2005-01-23"
+    Then the form should show title: "Great Book", last_read_at: "2005-01-23 11:12:13"
 
 @javascript
 Scenario: Editing the record
@@ -115,7 +115,16 @@ Scenario: Editing and immediately submitting the form
   Scenario: Setting date
     Given a book exists with title: "Some Title"
     When I go to the BookFormWithDefaults test page
-    Then I fill in "Last read at:" with "2005-01-23"
+    Then I fill in "Published on" with "2005-01-23"
     And I press "Apply"
     And I wait for the response from the server
-    Then a book should exist with last_read_at: "2005-01-23"
+    Then a book should exist with published_on: "2005-01-23"
+
+@javascript
+  Scenario: Setting datetime
+    Given a book exists with title: "Some Title"
+    When I go to the BookFormWithDefaults test page
+    Then I fill in Ext field "Last read at" with "2005-01-23 11:12:13"
+    And I press "Apply"
+    And I wait for the response from the server
+    Then a book should exist with last_read_at: "2005-01-23 11:12:13"

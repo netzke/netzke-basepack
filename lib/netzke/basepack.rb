@@ -3,13 +3,17 @@ require 'netzke/basepack/version'
 if defined? ActiveRecord
   require 'netzke/active_record'
 end
+if defined? DataMapper
+  require 'netzke/data_mapper'
+end
+if defined? Sequel
+  require 'netzke/sequel'
+end
 
 require 'netzke/basepack/data_adapters/abstract_adapter'
 require 'netzke/basepack/data_adapters/active_record_adapter' if defined? ActiveRecord
 require 'netzke/basepack/data_adapters/data_mapper_adapter' if defined? DataMapper
-
-# will_paginate supports more than just ActiveRecord
-require 'will_paginate'
+require 'netzke/basepack/data_adapters/sequel_adapter' if defined? Sequel
 
 module Netzke
   module Basepack
@@ -21,10 +25,9 @@ module Netzke
 
       # Called from netzke-basepack.rb
       def init
-        # Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/datetimefield.js"
+        Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/xdatetime.js"
         Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/basepack.js"
 
-        Netzke::Core.ext_stylesheets << "#{File.dirname(__FILE__)}/../../stylesheets/datetimefield.css"
         Netzke::Core.ext_stylesheets << "#{File.dirname(__FILE__)}/../../stylesheets/basepack.css"
       end
 

@@ -99,27 +99,18 @@ module Netzke
 
       def js_config
         super.tap do |res|
-          res[:pri] = data_class && data_class.primary_key
+          res[:pri] = data_class && data_class.primary_key.to_s
           res[:record] = js_record_data if record
         end
       end
 
       # A hash of record data including the meta field
       def js_record_data
-        hsh = record.to_hash(fields).merge(:_meta => meta_field).literalize_keys
-
-        # HACK: a dirty hack cutting off the time part from the datetime string to please the form's datefield - until we have a real datetimefield
-        hsh.each_pair do |k,v|
-          if v && [:datetime, :date].include?(fields[k.to_sym].try(:fetch, :attr_type, nil))
-            hsh[k] = v.split.first
-          end
-        end
-
-        hsh
+        record.netzke_hash(fields).merge(:_meta => meta_field).literalize_keys
       end
 
       def record
-        @record ||= config[:record] || config[:record_id] && data_class && data_class.where(data_class.primary_key => config[:record_id]).first
+        @record ||= config[:record] || config[:record_id] && data_class && data_adapter.find_record(config[:record_id])
       end
 
       private

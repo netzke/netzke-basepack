@@ -10,12 +10,11 @@ module Netzke
           @form_panel_items ||= begin
             res = normalize_fields(super || data_class && data_class.netzke_attributes || []) # netzke_attributes as default items
             # if primary key isn't there, insert it as first
-            if data_class && !res.detect{ |f| f[:name] == data_class.primary_key}
+            if data_class && !res.detect{ |f| f[:name] == data_class.primary_key.to_s}
               primary_key_item = normalize_field(data_class.primary_key.to_sym)
               @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
               res.insert(0, primary_key_item)
             end
-
             res
           end
         end
@@ -101,9 +100,8 @@ module Netzke
             set_default_read_only(field)
 
             # temporal datetime setup, while we don't have real datetime field
-            if field[:attr_type] == :datetime || field[:attr_type] == :date
-              field[:format] ||= "Y-m-d" # needed for
-              field[:submit_format] = "Y-m-d"
+            if field[:attr_type] == :date
+              field[:format] ||= "Y-m-d"
             end
 
             # provide our special combobox with our id
@@ -122,9 +120,7 @@ module Netzke
           def detect_association_with_method(c)
             if c[:name].index('__')
               assoc_name, method = c[:name].split('__').map(&:to_sym)
-              if method && assoc = data_class.reflect_on_association(assoc_name)
-                assoc_column = assoc.klass.columns_hash[method.to_s]
-                assoc_method_type = assoc_column.try(:type)
+              if assoc_method_type = data_adapter.get_assoc_property_type(assoc_name, method)
                 if c[:nested_attribute]
                   c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
                 else
@@ -187,10 +183,7 @@ module Netzke
               :integer => :numberfield,
               :boolean => config[:multi_edit] ? :tricheckbox : :checkboxfield,
               :date => :datefield,
-              # WIP: waiting for datetime.js implementation for ExtJS 4
-              # :datetime => :datetimefield,
-              :datetime => :datefield,
-
+              :datetime => :xdatetime,
               :text => :textarea,
               :json => :jsonfield,
               :string => :textfield

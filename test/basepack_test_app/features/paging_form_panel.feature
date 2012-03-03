@@ -23,19 +23,19 @@ Scenario: Paging through records
   And  I wait for the response from the server
   Then the form should show title: "Getting Things Done"
 
-@javascript
-Scenario: Searching
-  When I go to the BookPagingFormPanel test page
-  And I press "Search"
-  And I wait for the response from the server
-  And I expand combobox "undefined_attr"
-  And I select "Exemplars" from combobox "undefined_attr"
-  And I expand combobox "exemplars_operator"
-  And I select "Less than" from combobox "exemplars_operator"
-  And I fill in "exemplars_value" with "5"
-  And I press "Search" within "#book_paging_form_panel__search_form"
-  And I wait for the response from the server
-  Then the form should show title: "Getting Things Done"
+#@javascript
+#Scenario: Searching
+  #When I go to the BookPagingFormPanel test page
+  #And I press "Search"
+  #And I wait for the response from the server
+  #And I expand combobox "undefined_attr"
+  #And I select "Exemplars" from combobox "undefined_attr"
+  #And I expand combobox "exemplars_operator"
+  #And I select "Less than" from combobox "exemplars_operator"
+  #And I fill in "exemplars_value" with "5"
+  #And I press "Search" within "#book_paging_form_panel__search_form"
+  #And I wait for the response from the server
+  #Then the form should show title: "Getting Things Done"
 
 @javascript
 Scenario: I must see total records value

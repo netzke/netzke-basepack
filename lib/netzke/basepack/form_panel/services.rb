@@ -18,7 +18,7 @@ module Netzke
           #
           #     someForm.netzkeLoad({id: 100});
           endpoint :netzke_load do |params|
-            @record = data_class && data_class.find_by_id(params[:id])
+            @record = data_class && data_adapter.find_record(params[:id])
             {:set_form_values => js_record_data}
           end
 
@@ -42,16 +42,19 @@ module Netzke
 
         # Returns array of form values according to the configured columns
         # def array_of_values
-        #   @record && @record.to_array(fields)
+        #   @record && @record.netzke_array(fields)
         # end
 
         def values
-          record && record.to_hash(fields)
+          record && record.netzke_hash(fields)
         end
 
         # Implementation for the "netzke_submit" endpoint (for backward compatibility)
         def netzke_submit(params)
           data = ActiveSupport::JSON.decode(params[:data])
+          data.each_pair do |k,v|
+            data[k]=nil if v.blank? || v == "null" # Ext JS returns "null" on empty date fields, or "" for not filled optional integer fields, which gives errors when passed to model (at least in DataMapper)
+          end
 
           # File uploads are in raw params instead of "data" hash, so, mix them in into "data"
           if config[:file_upload]
@@ -66,8 +69,8 @@ module Netzke
             {:set_form_values => js_record_data, :set_result => true}
           else
             # flash eventual errors
-            @record.errors.to_a.each do |msg|
-              flash :error => msg
+            data_adapter.errors_array(@record).each do |error|
+              flash :error => error
             end
             {:netzke_feedback => @flash, :apply_form_errors => build_form_errors(record)}
           end
@@ -78,14 +81,10 @@ module Netzke
           # Builds the form errors
           def build_form_errors(record)
             form_errors = {}
-            foreign_keys = {}
-
-            # Build a hash of foreign keys and the associated model
-            data_class.reflect_on_all_associations(:belongs_to).map{ |r|
-              foreign_keys[r.association_foreign_key.to_sym] = r.name
-            }
-
-            record.errors.map{|field, error|
+            foreign_keys = data_adapter.hash_fk_model
+            record.errors.to_hash.map{|field, error|
+              # some ORM return an array for error
+              error = error.join ', ' if error.kind_of? Array
               # Get the correct field name for the errors on foreign keys
               if foreign_keys.has_key?(field)
                 fields.each do |k, v|
@@ -93,7 +92,6 @@ module Netzke
                   field = k.to_s.gsub('__', '____') if k.to_s.split('__').first == foreign_keys[field].to_s
                 end
               end
-
               form_errors[field] ||= []
               form_errors[field] << error
             }
@@ -103,7 +101,8 @@ module Netzke
           # Creates/updates a record from hash
           def create_or_update_record(hsh)
             hsh.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
-            @record ||= data_class.find(:first, :conditions => {data_class.primary_key => hsh.delete(data_class.primary_key)}) # only pick up the record specified in the params if it was not provided in the configuration
+            @record ||= data_adapter.find_record hsh.delete(data_class.primary_key.to_s) # only pick up the record specified in the params if it was not provided in the configuration
+              #data_class.find(:first, :conditions => {data_class.primary_key => hsh.delete(data_class.primary_key)}) 
             success = true
 
             @record = data_class.new if @record.nil?
@@ -123,7 +122,7 @@ module Netzke
             #end
 
             # did we have complete success?
-            success && @record.save
+            success && data_adapter.save_record(@record)
           end
 
           # API handling form load

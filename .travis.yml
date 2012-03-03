@@ -1,0 +1,11 @@
+rvm:
+  - 1.9.2
+
+env:
+  - ORM=ar
+  - ORM=dm
+  - ORM=sq
+
+bundler_args: "--without development production profiling"
+before_script: "./config/ci/before-travis.sh"
+script: "cd test/basepack_test_app ; bundle exec rake travis"

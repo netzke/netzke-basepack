@@ -24,7 +24,7 @@ class GridPanelTest < ActiveSupport::TestCase
     assert_equal('Yes', data[2][2]) # "recent" virtual column in the last book
 
     # delete all books
-    res = grid.delete_data(:records => Book.all.map(&:id).to_json)
+    res = grid.delete_data(:records => Book.all.map(&:id).netzke_json)
     assert_equal(nil, Book.first)
 
   end

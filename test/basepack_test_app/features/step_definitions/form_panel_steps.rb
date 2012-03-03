@@ -23,8 +23,24 @@ Then /the form should show #{capture_fields}$/ do |fields|
     var form = Ext.ComponentQuery.query('form')[0].getForm();
     var values = {#{fields}};
     for (var fieldName in values) {
-      if ((form.findField(fieldName).getValue() != values[fieldName]) && (form.findField(fieldName).getRawValue() != values[fieldName])) return false;
+      var field = form.findField(fieldName);
+
+      if (field.getXType() == 'xdatetime') {
+        // Treat xdatetime specially
+        var oldValue = field.getValue();
+        field.setValue(values[fieldName]);
+        return oldValue == field.getValue();
+      } else {
+        return (field.getValue() == values[fieldName] || field.getRawValue() == values[fieldName]);
+      }
     }
     return true;
+  JS
+end
+
+Then /^I fill in Ext field "([^"]*)" with "([^"]*)"$/ do |field_label, value|
+  page.driver.browser.execute_script <<-JS
+    var field = Ext.ComponentQuery.query("[fieldLabel='#{field_label}']")[0];
+    field.setValue("#{value}");
   JS
 end

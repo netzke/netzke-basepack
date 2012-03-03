@@ -146,8 +146,8 @@ module Netzke
           if !config[:prohibit_read]
             {}.tap do |res|
               records = get_records(params)
-              res[:data] = records.map{|r| r.to_array(columns(:with_meta => true))}
-              res[:total] = records.total_entries if config[:enable_pagination]
+              res[:data] = records.map{|r| r.netzke_array(columns(:with_meta => true))}
+              res[:total] = count_records(params)  if config[:enable_pagination]
             end
           else
             flash :error => "You don't have permissions to read data"
@@ -172,6 +172,20 @@ module Netzke
             params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
             data_adapter.get_records(params, columns)
+          end
+
+          def count_records(params)
+            # Restore params from component_session if requested
+            if params[:with_last_params]
+              params = component_session[:last_params]
+            else
+              # remember the last params
+              component_session[:last_params] = params
+            end
+
+            params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
+
+            data_adapter.count_records(params, columns)
           end
 
           # Override this method to react on each operation that caused changing of data
@@ -209,7 +223,7 @@ module Netzke
                 end
 
                 # try to save
-                mod_records[id] = record.to_array(columns(:with_meta => true)) if success && record.save
+                mod_records[id] = record.netzke_array(columns(:with_meta => true)) if success && record.save
 
                 # flash eventual errors
                 if !record.errors.empty?

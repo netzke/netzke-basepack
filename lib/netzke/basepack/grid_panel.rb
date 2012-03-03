@@ -75,6 +75,8 @@ module Netzke
     #       }
     #     end
     #
+    # * +format+ - the format to display data in case of date and datetime columns, e.g. 'Y-m-d g:i:s'.
+    #
     # Besides these options, a column can receive any meaningful config option understood by Ext.grid.column.Column.
     #
     # == One-to-many association support
@@ -241,8 +243,10 @@ module Netzke
 
       def get_default_association_values #:nodoc:
         columns.select{ |c| c[:name].index("__") && c[:default_value] }.each.inject({}) do |r,c|
-          assoc, assoc_method = assoc_and_assoc_method_for_attr(c)
-          assoc_instance = assoc.klass.find(c[:default_value])
+          assoc_name, assoc_method = c[:name].split '__'
+          assoc_class = data_adapter.class_for(assoc_name)
+          assoc_data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(assoc_class).new(assoc_class)
+          assoc_instance = assoc_data_adapter.find_record c[:default_value]
           r.merge(c[:name] => assoc_instance.send(assoc_method))
         end
       end
