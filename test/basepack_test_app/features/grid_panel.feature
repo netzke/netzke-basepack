@@ -212,8 +212,9 @@ Scenario: Advanced search window should be hidable after loading grid panel dyna
 Scenario: Column order should be saved across page reloads
   Given I am on the BookGridWithPersistence test page
   When I drag "Digitized" column before "Title"
+  And I wait for the response from the server
   And I go to the BookGridWithPersistence test page
-  Then I should see columns in order: "Author name", "Digitized", "Title"
+  Then I should see columns in order: "Digitized", "Title", "Exemplars"
 
 @javascript
 Scenario: I must see total records value
@@ -248,10 +249,29 @@ Scenario: GridPanel with overridden columns
     Then the grid's column "In abundance" should not be editable
 
 @javascript
-  Scenario: Delete record via an column action
-    Given a book exists with title: "Some Title"
-    When I go to the BookGridWithColumnActions test page
-    And I click the "Delete row" action icon
-    And I press "Yes"
-    Then I should see "Deleted 1 record(s)"
-    And a book should not exist with title: "Some Title"
+Scenario: Delete record via an column action
+  Given a book exists with title: "Some Title"
+  When I go to the BookGridWithColumnActions test page
+  And I click the "Delete row" action icon
+  And I press "Yes"
+  Then I should see "Deleted 1 record(s)"
+  And a book should not exist with title: "Some Title"
+
+@javascript
+Scenario: Pagination in grid panel
+  Given the following books exist:
+  | title               |
+  | Journey to Ixtlan   |
+  | Lolita              |
+  | Getting Things Done |
+  | Magus               |
+  When I go to the BookGridWithPaging test page
+  Then I should see "Journey to Ixtlan"
+  And I should see "Lolita"
+  But I should not see "Getting Things Done"
+  And the grid should show 2 records
+
+  When I go forward one page
+  And  I wait for the response from the server
+  Then I should see "Getting Things Done"
+  And I should see "Magus"

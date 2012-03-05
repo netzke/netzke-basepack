@@ -16,7 +16,7 @@ describe Netzke::Basepack::FormPanel do
     form = Netzke::Basepack::FormPanel.new(:model => 'User', :items => [:first_name, :created_at, :role__name])
 
     form.fields[:first_name][:xtype].should == :textfield
-    form.fields[:created_at][:xtype].should == :datetimefield
+    form.fields[:created_at][:xtype].should == :xdatetime
     form.fields[:role__name][:xtype].should == :netzkeremotecombo
   end
 

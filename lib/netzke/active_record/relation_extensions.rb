@@ -11,7 +11,9 @@ module Netzke
           params.empty? ? self.where(scope) : self.where([scope, *params])
         when "Array"
           self.extend_with(*scope)
-        when "Hash"   # conditions hash
+        when "Hash"  # conditions hash
+          self.where(scope)
+        when "ActiveSupport::HashWithIndifferentAccess" # conditions hash
           self.where(scope)
         when "Proc"   # receives a relation, must return a relation
           scope.call(self)

@@ -99,18 +99,18 @@ module Netzke
 
       def js_config
         super.tap do |res|
-          res[:pri] = data_class && data_class.primary_key
+          res[:pri] = data_class && data_class.primary_key.to_s
           res[:record] = js_record_data if record
         end
       end
 
       # A hash of record data including the meta field
       def js_record_data
-        record.to_hash(fields).merge(:_meta => meta_field).literalize_keys
+        record.netzke_hash(fields).merge(:_meta => meta_field).literalize_keys
       end
 
       def record
-        @record ||= config[:record] || config[:record_id] && data_class && data_class.where(data_class.primary_key => config[:record_id]).first
+        @record ||= config[:record] || config[:record_id] && data_class && data_adapter.find_record(config[:record_id])
       end
 
       private

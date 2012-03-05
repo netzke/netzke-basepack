@@ -47,6 +47,9 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/border_layout_panel.rb",
     "lib/netzke/basepack/border_layout_panel/javascripts/border_layout_panel.js",
     "lib/netzke/basepack/data_accessor.rb",
+    "lib/netzke/basepack/data_adapters/abstract_adapter.rb",
+    "lib/netzke/basepack/data_adapters/active_record_adapter.rb",
+    "lib/netzke/basepack/data_adapters/data_mapper_adapter.rb",
     "lib/netzke/basepack/form_panel.rb",
     "lib/netzke/basepack/form_panel/fields.rb",
     "lib/netzke/basepack/form_panel/javascripts/comma_list_cbg.js",
@@ -280,17 +283,11 @@ Gem::Specification.new do |s|
 
     if Gem::Version.new(Gem::VERSION) >= Gem::Version.new('1.2.0') then
       s.add_runtime_dependency(%q<netzke-core>, ["~> 0.7.4"])
-      s.add_runtime_dependency(%q<will_paginate>, ["~> 3.0.0"])
-      s.add_runtime_dependency(%q<acts_as_list>, ["~> 0.1.4"])
     else
       s.add_dependency(%q<netzke-core>, ["~> 0.7.4"])
-      s.add_dependency(%q<will_paginate>, ["~> 3.0.0"])
-      s.add_dependency(%q<acts_as_list>, ["~> 0.1.4"])
     end
   else
     s.add_dependency(%q<netzke-core>, ["~> 0.7.4"])
-    s.add_dependency(%q<will_paginate>, ["~> 3.0.0"])
-    s.add_dependency(%q<acts_as_list>, ["~> 0.1.4"])
   end
 end
 

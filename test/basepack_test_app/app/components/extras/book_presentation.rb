@@ -3,10 +3,17 @@ module Extras
     # A setter that creates an author on the fly
     def author_first_name_setter
       lambda do |r,v|
+
+        data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(Author).new(Author)
+        # cast v to integer, if possible
+        v = v.to_i if v.kind_of?(String) && v.match(/[[:digit:]]+/)
         if v.is_a?(Integer)
-          r.author = Author.find(v)
+          r.author = data_adapter.find_record(v)
         else
-          r.author = Author.create(:first_name => v)
+          author = data_adapter.new_record(:first_name => v)
+          # Sequel doesn't know of save!
+          author.respond_to?(:save!) ? author.save! : author.save(:raise_on_save_failure => true)
+          r.author = author
         end
       end
     end
