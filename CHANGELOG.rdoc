@@ -1,3 +1,7 @@
+= 0.7.5 - ?
+* improvements
+  * data-related operations in grids and forms are moved to data adapters; implemented (partial) support for DataMapper and Sequel (see updated README)
+
 = 0.7.4 - 2012-03-05
 * bug fix
   * :enable_pagination is now respected in GridPanel
