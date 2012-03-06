@@ -5,7 +5,7 @@ A pack of pre-built [Netzke](http://netzke.org) components - such as grid, form,
 ## Requirements
 
 * Ruby 1.9.2 (1.8.7 may work, too)
-* Rails >= 3.0.0
+* Rails ~> 3.1.0
 * Ext JS = 4.0.2a
 
 ## Installation
@@ -41,17 +41,17 @@ To install the test app with DataMapper or Sequel, put ORM=dm or ORM=sq
 into your environment.
 For example to set-up DataMapper support run
 
-    # in test/basepack_test_app 
+    # in test/basepack_test_app
     ORM=dm bundle install
 
 To run the test app in DataMapper-Mode (will use DataMapper models instead of ActiveRecord models)
 
-    # in test/basepack_test_app 
+    # in test/basepack_test_app
     ORM=dm rails s
 
 To run the test suite
 
-    # in test/basepack_test_app 
+    # in test/basepack_test_app
     ORM=dm bundle exec rake
 
 etc.
