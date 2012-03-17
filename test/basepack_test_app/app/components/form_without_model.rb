@@ -1,6 +1,7 @@
 class FormWithoutModel < Netzke::Basepack::FormPanel
-  def configuration
-    super.merge(
+  def configure!
+    super
+    @config.merge!(
       # :file_upload => true, # incompatible
       :items => [
         :text_field,

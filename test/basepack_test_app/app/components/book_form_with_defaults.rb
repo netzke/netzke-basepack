@@ -1,8 +1,7 @@
 class BookFormWithDefaults < Netzke::Basepack::FormPanel
-  def configuration
-    super.tap do |c|
-      c[:model] = "Book"
-      c[:record_id] = Book.first.id
-    end
+  def configure!
+    super
+    @config[:model] = "Book"
+    @config[:record_id] = Book.first.id
   end
 end

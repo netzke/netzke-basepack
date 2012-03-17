@@ -212,14 +212,22 @@ module Netzke
         end
       end
 
-      def configuration
-        super.tap do |c|
-          c[:columns] ||= self.class.read_inheritable_attribute(:columns)
+      def configure!
+        super
+        @config[:columns] ||= self.class.read_inheritable_attribute(:columns)
 
-          # user-passed :override_columns option should get deep_merged with the defaults
-          c[:override_columns] = (self.class.read_inheritable_attribute(:overridden_columns) || {}).deep_merge(c[:override_columns] || {})
-        end
+        # user-passed :override_columns option should get deep_merged with the defaults
+        @config[:override_columns] = (self.class.read_inheritable_attribute(:overridden_columns) || {}).deep_merge(@config[:override_columns] || {})
       end
+
+      #def configuration
+        #super.tap do |c|
+          #c[:columns] ||= self.class.read_inheritable_attribute(:columns)
+
+          ## user-passed :override_columns option should get deep_merged with the defaults
+          #c[:override_columns] = (self.class.read_inheritable_attribute(:overridden_columns) || {}).deep_merge(c[:override_columns] || {})
+        #end
+      #end
 
       def js_config #:nodoc:
         res = super

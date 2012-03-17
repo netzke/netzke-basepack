@@ -67,13 +67,13 @@ module Netzke
         }
       end
 
-      def configuration
-        super.tap do |sup|
-          configure_locked(sup)
-          configure_bbar(sup)
+      def configure!
+        super
 
-          sup[:record_id] = sup[:record] = nil if sup[:multi_edit] # never set record_id in multi-edit mode
-        end
+        configure_locked(@config)
+        configure_bbar(@config)
+
+        @config[:record_id] = @config[:record] = nil if @config[:multi_edit] # never set record_id in multi-edit mode
       end
 
       def configure_locked(c)
