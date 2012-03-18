@@ -13,6 +13,7 @@ module Netzke
         {
           :class_name => "Netzke::Basepack::SearchPanel",
           :model => config[:model],
+          :fields => config[:fields],
           :preset_query => config[:query],
           :auto_scroll => config[:auto_scroll]
         }
@@ -63,6 +64,7 @@ module Netzke
           s[:bbar] = (config[:bbar] || []) + [:clear_all.action, :reset.action, "->",
             I18n.t('netzke.basepack.query_builder.presets'),
             {
+              :itemId => "presetsCombo",
               :xtype => "combo",
               :triggerAction => "all",
               :value => super[:load_last_preset] && last_preset.try(:fetch, "name"),

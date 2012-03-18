@@ -129,7 +129,7 @@ module Netzke
 
           if columns_from_config
             # automatically add a column that reflects the primary key (unless specified in the config)
-            columns_from_config.insert(0, {:name => data_class.primary_key}) unless columns_from_config.any?{ |c| c[:name] == data_class.primary_key }
+            columns_from_config.insert(0, {:name => data_class.primary_key.to_s}) unless columns_from_config.any?{ |c| c[:name] == data_class.primary_key }
 
             # reverse-merge each column hash from config with each column hash from exposed_attributes
             # (columns from config have higher priority)
@@ -225,11 +225,10 @@ module Netzke
 
           # Detects an association column and sets up the proper editor.
           def set_default_association_editor(c)
-            assoc, assoc_method = assoc_and_assoc_method_for_attr(c)
+            assoc, assoc_method =  c[:name].split('__')
             return unless assoc
 
-            assoc_column = assoc.klass.columns_hash[assoc_method]
-            assoc_method_type = assoc_column.try(:type)
+            assoc_method_type = data_adapter.get_assoc_property_type assoc, assoc_method
 
             # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
             if c[:nested_attribute]
@@ -361,12 +360,12 @@ module Netzke
 
           def columns_default_values
             columns.inject({}) do |r,c|
-              assoc, assoc_method = assoc_and_assoc_method_for_attr(c)
+              assoc_name, assoc_method = c[:name].split '__'
               if c[:default_value].nil?
                 r
               else
-                if assoc
-                  r.merge(assoc.options[:foreign_key] || assoc.name.to_s.foreign_key => c[:default_value])
+                if assoc_method
+                  r.merge(data_adapter.foreign_key_for(assoc_name) || data_adapter.foreign_key_for(assoc_name) => c[:default_value])
                 else
                   r.merge(c[:name] => c[:default_value])
                 end

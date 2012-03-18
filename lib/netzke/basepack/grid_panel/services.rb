@@ -32,7 +32,7 @@ module Netzke
           endpoint :delete_data do |params|
             if !config[:prohibit_delete]
               record_ids = ActiveSupport::JSON.decode(params[:records])
-              data_class.destroy(record_ids)
+              data_adapter.destroy(record_ids)
               on_data_changed
               {:netzke_feedback => I18n.t('netzke.basepack.grid_panel.deleted_n_records', :n => record_ids.size), :load_store_data => get_data}
             else
@@ -83,16 +83,7 @@ module Netzke
           end
 
           endpoint :move_rows do |params|
-            if defined?(ActsAsList) && data_class.ancestors.include?(ActsAsList::InstanceMethods)
-              ids = JSON.parse(params[:ids]).reverse
-              ids.each_with_index do |id, i|
-                r = data_class.find(id)
-                r.insert_at(params[:new_index].to_i + i + 1)
-              end
-              on_data_changed
-            else
-              raise RuntimeError, "Data class should 'acts_as_list' to support moving rows"
-            end
+            data_adapter.move_records(params)
             {}
           end
 
@@ -155,12 +146,8 @@ module Netzke
           if !config[:prohibit_read]
             {}.tap do |res|
               records = get_records(params)
-              res[:data] = records.map{|r| r.to_array(columns(:with_meta => true))}
-              res[:total] = records.total_entries if config[:enable_pagination]
-
-              # provide association values for all records at once
-              # assoc_values = get_association_values(records, columns)
-              # res[:set_association_values] = assoc_values.literalize_keys if assoc_values.present?
+              res[:data] = records.map{|r| r.netzke_array(columns(:with_meta => true))}
+              res[:total] = count_records(params)  if config[:enable_pagination]
             end
           else
             flash :error => "You don't have permissions to read data"
@@ -169,20 +156,6 @@ module Netzke
         end
 
         protected
-
-          # Returns all values for association columns, per column, per associated record id, e.g.:
-          # {
-          #   :author__first_name => {1 => "Vladimir", 2 => "Herman"},
-          #   :author__last_name => {1 => "Nabokov", 2 => "Hesse"}
-          # }
-          # This is used to display the association by the specified method instead by the foreign key
-          # def get_association_values(records, columns)
-          #   columns.select{ |c| c[:name].index("__") }.each.inject({}) do |r,c|
-          #     column_values = {}
-          #     records.each{ |r| column_values[r.value_for_attribute(c)] = r.value_for_attribute(c, true) }
-          #     r.merge(c[:name] => column_values)
-          #   end
-          # end
 
           # Returns an array of records.
           def get_records(params)
@@ -195,43 +168,24 @@ module Netzke
               component_session[:last_params] = params
             end
 
-            # build initial relation based on passed params
-            relation = get_relation(params)
+            params[:limit] = config[:rows_per_page] if config[:enable_pagination]
+            params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
-            # addressing the n+1 query problem
-            columns.each do |c|
-              assoc, method = c[:name].split('__')
-              relation = relation.includes(assoc.to_sym) if method
-            end
+            data_adapter.get_records(params, columns)
+          end
 
-            # apply sorting if needed
-            if params[:sort] && sort_params = params[:sort].first
-              assoc, method = sort_params["property"].split('__')
-              dir = sort_params["direction"].downcase
-
-              # if a sorting scope is set, call the scope with the given direction
-              column = columns.detect { |c| c[:name] == sort_params["property"] }
-              if column.has_key?(:sorting_scope)
-                relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
-                ::Rails.logger.debug "!!! relation: #{relation.inspect}\n"
-              else
-                relation = if method.nil?
-                  relation.order("#{assoc} #{dir}")
-                else
-                  assoc = data_class.reflect_on_association(assoc.to_sym)
-                  relation.joins(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")
-                end
-              end
-            end
-
-            # apply pagination if needed
-            if config[:enable_pagination]
-              per_page = config[:rows_per_page]
-              page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
-              relation.paginate(:per_page => per_page, :page => page)
+          def count_records(params)
+            # Restore params from component_session if requested
+            if params[:with_last_params]
+              params = component_session[:last_params]
             else
-              relation.all
+              # remember the last params
+              component_session[:last_params] = params
             end
+
+            params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
+
+            data_adapter.count_records(params, columns)
           end
 
           # Override this method to react on each operation that caused changing of data
@@ -258,7 +212,7 @@ module Netzke
               modified_records = 0
               data.each do |record_hash|
                 id = record_hash.delete('id')
-                record = operation == :create ? data_class.new : data_class.find(id)
+                record = operation == :create ? data_adapter.new_record : data_adapter.find_record(id)
                 success = true
 
                 # merge with strong default attirbutes
@@ -268,21 +222,8 @@ module Netzke
                   record.set_value_for_attribute(columns_hash[k.to_sym].nil? ? {:name => k} : columns_hash[k.to_sym], v)
                 end
 
-                # process all attirubutes for this record
-                #record_hash.each_pair do |k,v|
-                  #begin
-                    #record.send("#{k}=",v)
-                  #rescue ArgumentError => exc
-                    #flash :error => exc.message
-                    #success = false
-                    #break
-                  #end
-                #end
-
                 # try to save
-                # modified_records += 1 if success && record.save
-                mod_records[id] = record.to_array(columns(:with_meta => true)) if success && record.save
-                # mod_record_ids << id if success && record.save
+                mod_records[id] = record.netzke_array(columns(:with_meta => true)) if success && record.save
 
                 # flash eventual errors
                 if !record.errors.empty?
@@ -292,7 +233,6 @@ module Netzke
                   end
                 end
               end
-              # flash :notice => "#{operation.to_s.capitalize}d #{modified_records} record(s)"
             else
               success = false
               flash :error => "You don't have permissions to #{operation} data"

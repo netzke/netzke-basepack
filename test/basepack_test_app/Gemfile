@@ -1,34 +1,59 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.0'
+RAILS_VERSION = '3.1.0'
+DM_VERSION    = '1.2.0'
 
+# we are getting AR still regardless of ORM env, because netzke-persistence needs it
+gem 'rails',                RAILS_VERSION
 gem 'mysql2'
+
+case (ENV['ORM'] || '').downcase
+when 'dm'
+  # DataMapper
+  gem 'dm-rails',           DM_VERSION
+  gem 'dm-mysql-adapter',   DM_VERSION
+  gem 'dm-validations',     DM_VERSION # needed for manual validations
+  gem 'dm-timestamps',      DM_VERSION # needed for created_at and updated_at
+  gem 'dm-aggregates',      DM_VERSION # needed for efficient count queries, else * will be selected and counted afterwards
+when 'sq'
+  gem 'sequel'  
+end
 
 gem 'netzke-core',        :path => File.expand_path('../vendor/gems/netzke-core', __FILE__)
 gem 'netzke-persistence', :path => File.expand_path('../vendor/gems/netzke-persistence', __FILE__)
 
 # We need to manually include these Basepack dependencies, because we're not including Basepack as a gem
-gem 'will_paginate', '~>3.0'
-gem 'acts_as_list'
+# gem 'will_paginate', :git=> "git://github.com/mislav/will_paginate.git"
+
 
 # Bundle gems for the local environment. Make sure to
 # put test-only gems in this group so their generators
 # and rake tasks are available in development mode:
 group :development, :test do
+  gem 'pry'
+  gem 'thin'
   gem 'capybara'
+  gem 'capybara-screenshot'
   gem 'cucumber-rails'
   gem 'cucumber'
+  gem 'selenium-webdriver', '2.17.0'
   gem 'rspec-rails'
   gem 'spork'
   gem 'launchy'    # So you can do Then show me the page
   gem 'factory_girl'
 end
 
-group :development do
-end
-
 group :test do
   gem 'sqlite3-ruby', :require => 'sqlite3'
-  gem 'pickle'
+  case (ENV['ORM'] || '').downcase
+  when 'dm'
+    # if we are using dm, we need the sqlite adapter
+    gem 'dm-sqlite-adapter', DM_VERSION
+  else
+    # default case: use ar
+    # nothing to do here
+  end
+  # pickle branch with sequel support
+  gem 'pickle', :git=>'git://github.com/NZX/pickle.git'
   gem 'database_cleaner'
 end

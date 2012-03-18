@@ -4,6 +4,8 @@ module Netzke
     # +load_last_preset+ - on load, tries to load the latest saved preset
     class SearchPanel < Base
 
+      include Netzke::Basepack::DataAccessor
+
       js_base_class "Ext.form.FormPanel"
 
       js_properties(
@@ -56,14 +58,15 @@ module Netzke
       def js_config
         super.merge(
           :attrs => attributes,
-          :attrs_hash => data_class.column_names.inject({}){ |hsh,c| hsh.merge(c => data_class.columns_hash[c].type) },
+          :attrs_hash => data_class.column_names.inject({}){ |hsh,c| 
+            hsh.merge(c => data_adapter.get_property_type(data_class.columns_hash[c])) },
           :preset_query => (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || []
         )
       end
 
       def attributes
-        data_class.column_names.map do |name|
-          [name, data_class.human_attribute_name(name)]
+        config[:fields].map do |field|
+          [field[:name], field[:field_label]]
         end
       end
 

@@ -1,20 +1,21 @@
 module Netzke
-  module ActiveRecord
+  module DataMapper
     module RelationExtensions
 
       def extend_with(*params)
         scope = params.shift
         case scope.class.name
         when "Symbol" # model's scope
+          # In DataMapper case this is just a method
           self.send(scope, *params)
         when "String" # SQL query or SQL query with params (e.g. ["created_at < ?", 1.day.ago])
-          params.empty? ? self.where(scope) : self.where([scope, *params])
+          raise NotImplementedError.new("This method is unsupported, as DM doen't allow to extend relations with SQL")
         when "Array"
           self.extend_with(*scope)
         when "Hash"  # conditions hash
-          self.where(scope)
+          self.all(scope)
         when "ActiveSupport::HashWithIndifferentAccess" # conditions hash
-          self.where(scope)
+          self.all(scope)
         when "Proc"   # receives a relation, must return a relation
           scope.call(self)
         else

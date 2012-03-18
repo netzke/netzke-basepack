@@ -10,6 +10,13 @@ Factory.find_definitions
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+if defined?(DataMapper::Resource) || defined?(Sequel::Model)
+
+  # DatabaseCleaner not working in transaction mode for DM
+  DatabaseCleaner.strategy=:truncation
+  DatabaseCleaner.clean!
+end
+
 RSpec.configure do |config|
   # == Mock Framework
   #
@@ -27,4 +34,6 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+  config.before(:all) { DatabaseCleaner.clean! }
+  config.after(:suite) { DatabaseCleaner.clean! }
 end

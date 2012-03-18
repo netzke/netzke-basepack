@@ -4,6 +4,10 @@ module Netzke
       extend ActiveSupport::Concern
 
       module ClassMethods
+        def data_adapter
+          @data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(self).new(self)
+        end
+
         # Define or configure an attribute.
         # Example:
         #   netzke_attribute :recent, :type => :boolean, :read_only => true
@@ -139,7 +143,7 @@ module Netzke
       end
 
       # Transforms a record to array of values according to the passed attributes
-      def to_array(attributes)
+      def netzke_array(attributes)
         res = []
         for a in attributes
           next if a[:included] == false
@@ -148,8 +152,12 @@ module Netzke
         res
       end
 
+      def netzke_json
+        netzke_hash(self.class.netzke_attributes).to_nifty_json
+      end
+
       # Accepts both hash and array of attributes
-      def to_hash(attributes)
+      def netzke_hash(attributes)
         res = {}
         for a in (attributes.is_a?(Hash) ? attributes.values : attributes)
           next if a[:included] == false

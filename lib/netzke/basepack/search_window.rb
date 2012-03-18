@@ -20,13 +20,15 @@ module Netzke
         super.tap do |s|
           s[:items] = [:search_panel.component(:prevent_header => true)]
           s[:title] = I18n.t('netzke.basepack.search_window.title')
+          s[:persistence] = false
         end
       end
 
       component :search_panel do
         {
           :class_name => "Netzke::Basepack::QueryBuilder",
-          :model => config[:model]
+          :model => config[:model],
+          :fields => config[:fields]
         }
       end
 

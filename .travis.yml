@@ -4,6 +4,7 @@ rvm:
 env:
   - ORM=ar
   - ORM=dm
+  - ORM=sq
 
 bundler_args: "--without development production profiling"
 before_script: "./config/ci/before-travis.sh"

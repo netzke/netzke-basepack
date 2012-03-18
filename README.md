@@ -5,7 +5,7 @@ A pack of pre-built [Netzke](http://netzke.org) components - such as grid, form,
 ## Requirements
 
 * Ruby 1.9.2 (1.8.7 may work, too)
-* Rails >= 3.0.0
+* Rails ~> 3.1.0
 * Ext JS = 4.0.2a
 
 ## Installation
@@ -35,6 +35,40 @@ Besides, the bundled test application is a convenient [playground](https://githu
 After starting up the test app, you can see the list of functional test components on the index page (along with links to the source code):
 
     http://localhost:3000/
+
+## Note on testing with DataMapper/Sequel Support
+To install the test app with DataMapper or Sequel, put ORM=dm or ORM=sq
+into your environment.
+For example to set-up DataMapper support run
+
+    # in test/basepack_test_app
+    ORM=dm bundle install
+
+To run the test app in DataMapper-Mode (will use DataMapper models instead of ActiveRecord models)
+
+    # in test/basepack_test_app
+    ORM=dm rails s
+
+To run the test suite
+
+    # in test/basepack_test_app
+    ORM=dm bundle exec rake
+
+etc.
+
+NOTE: netzke-basepack is not dependant on neither DataMapper nor Sequel.  It will pick the right DataAdapter for your models automatically.
+ActiveRecord is still included in Gemfile of the test app, as netzke-persistance is used which uses ActiveRecord.
+If you don't use netzke-persistence, then you don't need to include ActiveRecord.
+
+## DataMapper support
+DataMapper support is *incomplete*, as I didn't find a good way to sort by an association's column when the association needs a LEFT OUTER JOIN (i.e. nullable foreign key in many_to_one).
+
+## Sequel support
+
+CAVEATS:
+  - you can't use polymorphic associations for the time being, as the sequel_polymorphic plugin is not supported by netzke-basepack
+  - SearchPanel is broken atm. When it's fixed, Sequel support for
+    SearchPanel triggered queries should be implemented.
 
 ## Icons support
 Netzke Basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.
