@@ -8,7 +8,7 @@ class BookGridWithExtraFilters < Netzke::Basepack::GridPanel
 
   Netzke::Core.external_ext_css << "#{Netzke::Core.ext_uri}/examples/ux/grid/css/EneMenu"
 
-  def configure!
+  def configure
     super
     @config[:columns] = [{:name => :title, :filter => {:type => :ene}}, :exemplars, :digitized, :notes]
   end

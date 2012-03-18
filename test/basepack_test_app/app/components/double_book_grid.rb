@@ -1,7 +1,7 @@
 class DoubleBookGrid < Netzke::Base
   js_property :layout, :border
 
-  def configure!
+  def configure
     super
     @config[:items] = [{
       :region => :center,

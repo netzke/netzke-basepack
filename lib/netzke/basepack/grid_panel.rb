@@ -212,7 +212,7 @@ module Netzke
         end
       end
 
-      def configure!
+      def configure
         super
         @config[:columns] ||= self.class.read_inheritable_attribute(:columns)
 

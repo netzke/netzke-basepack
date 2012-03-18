@@ -1,5 +1,5 @@
 class FormWithoutModel < Netzke::Basepack::FormPanel
-  def configure!
+  def configure
     super
     @config.merge!(
       # :file_upload => true, # incompatible

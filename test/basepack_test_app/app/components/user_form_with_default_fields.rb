@@ -1,5 +1,5 @@
 class UserFormWithDefaultFields < Netzke::Basepack::FormPanel
-  def configure!
+  def configure
     super
     @config.merge!(
       :model => 'User',

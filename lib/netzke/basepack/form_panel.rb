@@ -67,7 +67,7 @@ module Netzke
         }
       end
 
-      def configure!
+      def configure
         super
 
         configure_locked(@config)
