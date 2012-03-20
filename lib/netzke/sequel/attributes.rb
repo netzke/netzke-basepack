@@ -113,7 +113,7 @@ module Netzke
         end
 
         # Returns netzke attributes in the order of columns in the table, followed by extra declared attributes
-        # Detects one-to-many association columns and replaces the name of the column with association column name (Netzke style), e.g.:
+        # Detects many-to-one association columns and replaces the name of the column with association column name (Netzke style), e.g.:
         #
         #   role_id => role__name
         def netzke_attrs_in_natural_order
@@ -124,7 +124,7 @@ module Netzke
               c = {:name => name, :attr_type => columns_hash[name][:type]}
 
               # If it's named as foreign key of some association, then it's an association column
-              assoc = all_association_reflections.detect { |a| a[:key].to_s == c[:name] }
+              assoc = all_association_reflections.detect { |a| a[:key].to_s == c[:name] && a[:type] == :many_to_one }
               if assoc
                 candidates = %w{name title label} << assoc[:key].to_s
                 assoc_class = assoc[:class_name].constantize
@@ -153,8 +153,13 @@ module Netzke
 
       end
 
+      # AR compatibility
+      def attributes
+        values
+      end
+
       # Transforms a record to array of values according to the passed attributes
-      def netzke_array(attributes)
+      def netzke_array(attributes = self.class.netzke_attributes)
         res = []
         for a in attributes
           next if a[:included] == false
@@ -165,11 +170,11 @@ module Netzke
 
       # convenience method to convert all netzke attributes of a model to nifty json
       def netzke_json
-        netzke_hash(self.class.netzke_attributes).to_nifty_json
+        netzke_hash.to_nifty_json
       end
 
       # Accepts both hash and array of attributes
-      def netzke_hash(attributes)
+      def netzke_hash(attributes = self.class.netzke_attributes)
         res = {}
         for a in (attributes.is_a?(Hash) ? attributes.values : attributes)
           next if a[:included] == false
