@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-RAILS_VERSION = '3.1.0'
+RAILS_VERSION = '3.2.1'
 DM_VERSION    = '1.2.0'
 
 # we are getting AR still regardless of ORM env, because netzke-persistence needs it
