@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = "2012-03-23"
+  s.date = "2012-04-11"
   s.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
   s.email = "sergei@playcode.nl"
   s.extra_rdoc_files = [
@@ -136,6 +136,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/components/book_search_panel/javascripts/i18n_de.js",
     "test/basepack_test_app/app/components/book_with_custom_primary_key_grid.rb",
     "test/basepack_test_app/app/components/books_bound_to_author.rb",
+    "test/basepack_test_app/app/components/border_layout_panel_with_persistence.rb",
     "test/basepack_test_app/app/components/double_book_grid.rb",
     "test/basepack_test_app/app/components/extras/book_presentation.rb",
     "test/basepack_test_app/app/components/form_without_model.rb",
