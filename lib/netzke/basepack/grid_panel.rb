@@ -126,6 +126,11 @@ module Netzke
     class GridPanel < Netzke::Base
       js_base_class "Ext.grid.Panel"
 
+      class_attribute :columns_attr
+
+      class_attribute :overridden_columns_attr
+      self.overridden_columns_attr = {}
+
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,
       # set column_filters_available to false, and the javascript for the filters won't be included at all.
@@ -198,15 +203,14 @@ module Netzke
         base.class_eval do
           class << self
             def column(name, config = {})
-              columns = self.read_inheritable_attribute(:columns) || []
-              columns << config.merge(:name => name.to_s)
-              self.write_inheritable_attribute(:columns, columns)
+              columns = self.columns_attr || []
+              columns |= [config.merge(:name => name.to_s)]
+              self.columns_attr = columns
             end
 
             def override_column(name, config)
-              columns = self.read_inheritable_attribute(:overridden_columns) || {}
-              columns.merge!(name.to_sym => config)
-              self.write_inheritable_attribute(:overridden_columns, columns)
+              columns = self.overridden_columns_attr.dup
+              self.overridden_columns_attr = columns.merge(name.to_sym => config)
             end
           end
         end
@@ -214,10 +218,10 @@ module Netzke
 
       def configuration
         super.tap do |c|
-          c[:columns] ||= self.class.read_inheritable_attribute(:columns)
+          c[:columns] ||= self.columns_attr
 
           # user-passed :override_columns option should get deep_merged with the defaults
-          c[:override_columns] = (self.class.read_inheritable_attribute(:overridden_columns) || {}).deep_merge(c[:override_columns] || {})
+          c[:override_columns] = self.overridden_columns_attr.deep_merge(c[:override_columns] || {})
         end
       end
 
