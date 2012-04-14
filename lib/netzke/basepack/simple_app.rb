@@ -40,10 +40,9 @@ module Netzke
 
       js_mixin :simple_app
 
-      def configuration
-        super.merge(
-          :items => [main_panel_config, menu_bar_config, status_bar_config]
-        )
+      def configure
+        super
+        config.items = [main_panel_config, menu_bar_config, status_bar_config]
       end
 
       # Override for custom menu

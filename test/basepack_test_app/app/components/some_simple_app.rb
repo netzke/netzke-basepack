@@ -3,9 +3,20 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
     [:simple_accordion, :user_grid, :simple_tab_panel] + super
   end
 
-  action :simple_accordion, :icon => :application_tile_vertical, :handler => :load_netzke_component_by_action
-  action :user_grid, :icon => :table, :handler => :load_netzke_component_by_action
-  action :simple_tab_panel, :icon => :table_multiple, :handler => :load_netzke_component_by_action
+  action :simple_accordion do |a|
+    a.icon = :application_tile_vertical
+    a.handler = :load_netzke_component_by_action
+  end
+
+  action :user_grid do |a|
+    a.icon = :table
+    a.handler = :load_netzke_component_by_action
+  end
+
+  action :simple_tab_panel do |a|
+    a.icon = :table_multiple
+    a.handler = :load_netzke_component_by_action
+  end
 
   component :user_grid
   component :simple_accordion
@@ -14,9 +25,9 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
   js_property :border, false
 
   # Wrapping up original layout into a border-layout with the north panel being a fancy header
-  def configuration
-    orig = super
-    orig.merge(:items => [{
+  def configure
+    super
+    config.merge!(:items => [{
       :region => :north,
       :height => 35,
       :html => %Q{
@@ -29,7 +40,7 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
     },{
       :region => :center,
       :layout => 'border',
-      :items => orig[:items]
+      :items => config.items
     }])
   end
 end

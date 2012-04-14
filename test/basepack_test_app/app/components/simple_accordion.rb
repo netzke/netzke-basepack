@@ -1,6 +1,7 @@
 class SimpleAccordion < Netzke::Basepack::AccordionPanel
   def configure
     super
+
     config.items = [{
       :html => "I'm a simple Ext.Panel",
       :title => "Panel One"
