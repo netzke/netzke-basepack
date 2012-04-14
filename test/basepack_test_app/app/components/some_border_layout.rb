@@ -4,7 +4,7 @@ class SomeBorderLayout < Netzke::Basepack::BorderLayoutPanel
     {:title => "Item Two", :class_name => "Netzke::Basepack::GridPanel", :region => :west, :width => 500, :split => true, :collapsible => true, :model => "Role", :name => :role_grid}
   ]
 
-  js_property :bbar, [:update_center_region.action, :update_west_region.action]
+  js_property :bbar, [:update_center_region, :update_west_region]
 
   action :update_center_region
   action :update_west_region

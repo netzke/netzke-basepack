@@ -3,7 +3,7 @@ class SimplePanel < Netzke::Basepack::Panel
 
   js_properties :title  => "SimplePanel",
                 :html => "Original HTML",
-                :bbar => [:update_html.action]
+                :bbar => [:update_html]
 
   endpoint :update_html_from_server do |params|
     {:update_body_html => config[:update_text] || "HTML received from server"}

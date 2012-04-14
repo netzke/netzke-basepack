@@ -3,11 +3,10 @@ class BookGridWithVirtualAttributes < Netzke::Basepack::GridPanel
 
   include Extras::BookPresentation
 
-  def default_config
-    super.merge(
-      :model => "Book",
-      :columns => default_fields_for_forms
-    )
+  def configure
+    super
+    config.model = "Book"
+    config.columns = default_fields_for_forms
   end
 
   def default_fields_for_forms

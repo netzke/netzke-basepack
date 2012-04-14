@@ -50,7 +50,7 @@ module Netzke
 
       def configure_bbar(c)
         super
-        c[:bbar] << :search.action
+        c[:bbar] << :search
       end
 
       component :search_form do

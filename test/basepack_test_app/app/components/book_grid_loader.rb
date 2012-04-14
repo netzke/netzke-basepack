@@ -19,6 +19,6 @@ class BookGridLoader < Netzke::Base
     }
   JS
 
-  js_property :bbar, [:load_one.action, :load_two.action]
+  js_property :bbar, [:load_one, :load_two]
 
 end

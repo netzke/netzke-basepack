@@ -7,14 +7,14 @@ module Netzke
                       :width => 400,
                       :auto_height => true,
                       :modal => true,
-                      :fbar => [:ok.action, :cancel.action]
+                      :fbar => [:ok, :cancel]
 
-        action :ok do
-          { :text => I18n.t('netzke.basepack.grid_panel.record_form_window.actions.ok')}
+        action :ok do |a|
+          a.text = I18n.t('netzke.basepack.grid_panel.record_form_window.actions.ok')
         end
 
-        action :cancel do
-          { :text => I18n.t('netzke.basepack.grid_panel.record_form_window.actions.cancel')}
+        action :cancel do |a|
+          a.text = I18n.t('netzke.basepack.grid_panel.record_form_window.actions.cancel')
         end
 
         js_method :init_component, <<-JS

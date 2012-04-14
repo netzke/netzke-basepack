@@ -2,26 +2,25 @@ module Netzke
   module Basepack
     class SearchWindow < Netzke::Basepack::Window
 
-      action :search do
-        { :text => I18n.t('netzke.basepack.search_window.action.search') }
+      action :search do |a|
+        a.text = I18n.t('netzke.basepack.search_window.action.search')
       end
 
-      action :cancel do
-        { :text => I18n.t('netzke.basepack.search_window.action.search') }
+      action :cancel do |a|
+        a.text = I18n.t('netzke.basepack.search_window.action.search')
       end
 
       js_properties :width => "50%",
                     :auto_height => true,
                     :close_action => "hide",
-                    :buttons => [:search.action, :cancel.action],
+                    :buttons => [:search, :cancel],
                     :modal => true
 
-      def configuration
-        super.tap do |s|
-          s[:items] = [:search_panel.component(:prevent_header => true)]
-          s[:title] = I18n.t('netzke.basepack.search_window.title')
-          s[:persistence] = false
-        end
+      def configure
+        super
+        config.items = [:search_panel.component(:prevent_header => true)]
+        config.title = I18n.t('netzke.basepack.search_window.title')
+        config.persistence = false
       end
 
       component :search_panel do

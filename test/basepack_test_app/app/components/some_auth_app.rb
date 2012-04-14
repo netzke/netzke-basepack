@@ -1,6 +1,6 @@
 class SomeAuthApp < Netzke::Basepack::AuthApp
   def menu
-    [:simple_accordion.action, :user_grid.action, :simple_tab_panel.action] + super
+    [:simple_accordion, :user_grid, :simple_tab_panel] + super
   end
 
   action :simple_accordion, :icon => :application_tile_vertical, :handler => :load_netzke_component_by_action

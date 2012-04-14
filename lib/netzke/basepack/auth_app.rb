@@ -107,13 +107,13 @@ module Netzke
               :menu => user_menu
             }
           else
-            menu << "->" << :login.action
+            menu << "->" << :login
           end
         end
       end
 
       def user_menu
-        [:logout.action]
+        [:logout]
       end
 
       def initialize(*args)

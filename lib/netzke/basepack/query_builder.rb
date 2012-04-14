@@ -19,49 +19,39 @@ module Netzke
         }
       end
 
-      action :clear_all do
-        {
-          :text => I18n.t('netzke.basepack.query_builder.actions.clear_all'),
-          :tooltip => I18n.t('netzke.basepack.query_builder.actions.clear_all_tooltip'),
-          :icon => :cross
-        }
+      action :clear_all do |a|
+        a.text = I18n.t('netzke.basepack.query_builder.actions.clear_all')
+        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.clear_all_tooltip')
+        a.icon = :cross
       end
 
-      action :reset do
-        {
-          :text => I18n.t('netzke.basepack.query_builder.actions.reset'),
-          :tooltip => I18n.t('netzke.basepack.query_builder.actions.reset_tooltip'),
-          :icon => :application_form
-        }
+      action :reset do |a|
+        a.text = I18n.t('netzke.basepack.query_builder.actions.reset')
+        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.reset_tooltip')
+        a.icon = :application_form
       end
 
-      action :save_preset do
-        {
-          :text => I18n.t('netzke.basepack.query_builder.actions.save_preset'),
-          :tooltip => I18n.t('netzke.basepack.query_builder.actions.save_preset_tooltip'),
-          :icon => :disk
-        }
+      action :save_preset do |a|
+        a.text = I18n.t('netzke.basepack.query_builder.actions.save_preset')
+        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.save_preset_tooltip')
+        a.icon = :disk
       end
 
-      action :delete_preset do
-        {
-          :text => I18n.t('netzke.basepack.query_builder.actions.delete_preset'),
-          :tooltip => I18n.t('netzke.basepack.query_builder.actions.delete_preset_tooltip'),
-          :icon => :cross
-        }
+      action :delete_preset do |a|
+        a.text = I18n.t('netzke.basepack.query_builder.actions.delete_preset')
+        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.delete_preset_tooltip')
+        a.icon = :cross
       end
 
-      action :apply do
-        {
-          :text => I18n.t('netzke.basepack.query_builder.actions.apply'),
-          :tooltip => I18n.t('netzke.basepack.query_builder.actions.apply_tooltip'),
-          :icon => :accept
-        }
+      action :apply do |a|
+        a.text = I18n.t('netzke.basepack.query_builder.actions.apply')
+        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.apply_tooltip')
+        a.icon = :accept
       end
 
       def js_config
         super.tap do |s|
-          s[:bbar] = (config[:bbar] || []) + [:clear_all.action, :reset.action, "->",
+          s[:bbar] = (config[:bbar] || []) + [:clear_all, :reset, "->",
             I18n.t('netzke.basepack.query_builder.presets'),
             {
               :itemId => "presetsCombo",
@@ -76,7 +66,7 @@ module Netzke
                   form.buildFormFromQuery(record.data.field1);
                 }".l
               }}
-            }, :save_preset.action, :delete_preset.action
+            }, :save_preset, :delete_preset
           ]
         end
       end
@@ -100,8 +90,6 @@ module Netzke
         update_state(:presets, saved_searches)
         {:netzke_feedback => I18n.t('netzke.basepack.query_builder.preset_deleted')}
       end
-
-
     end
   end
 end
