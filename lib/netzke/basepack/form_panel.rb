@@ -43,28 +43,22 @@ module Netzke
 
       delegates_to_dsl :model, :record_id
 
-      action :apply do
-        {
-          :text => I18n.t('netzke.basepack.form_panel.actions.apply'),
-          :tooltip => I18n.t('netzke.basepack.form_panel.actions.apply_tooltip'),
-          :icon => :tick
-        }
+      action :apply do |a|
+        a.text = I18n.t('netzke.basepack.form_panel.actions.apply')
+        a.tooltip = I18n.t('netzke.basepack.form_panel.actions.apply_tooltip')
+        a.icon = :tick
       end
 
-      action :edit do
-        {
-          :text => I18n.t('netzke.basepack.form_panel.actions.edit'),
-          :tooltip => I18n.t('netzke.basepack.form_panel.actions.edit_tooltip'),
-          :icon => :pencil
-        }
+      action :edit do |a|
+        a.text = I18n.t('netzke.basepack.form_panel.actions.edit')
+        a.tooltip = I18n.t('netzke.basepack.form_panel.actions.edit_tooltip')
+        a.icon = :pencil
       end
 
-      action :cancel do
-        {
-          :text => I18n.t('netzke.basepack.form_panel.actions.cancel'),
-          :tooltip => I18n.t('netzke.basepack.form_panel.actions.cancel_tooltip'),
-          :icon => :cancel
-        }
+      action :cancel do |a|
+        a.text = I18n.t('netzke.basepack.form_panel.actions.cancel')
+        a.tooltip = I18n.t('netzke.basepack.form_panel.actions.cancel_tooltip')
+        a.icon = :cancel
       end
 
       def configure
@@ -81,7 +75,7 @@ module Netzke
       end
 
       def configure_bbar(c)
-        c[:bbar] = [:apply.action] if c[:bbar].nil? && !c[:read_only]
+        c[:bbar] = [:apply] if c[:bbar].nil? && !c[:read_only]
       end
 
       # Extra JavaScripts and stylesheets
