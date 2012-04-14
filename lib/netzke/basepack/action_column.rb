@@ -4,20 +4,18 @@ module Netzke
       extend ActiveSupport::Concern
 
       included do |base|
+
+        # Returns registered actions
+        class_attribute :registered_column_actions
+        self.registered_column_actions = []
+
         js_include :action_column
       end
 
       module ClassMethods
         # Register an action
         def register_column_action(name)
-          current_column_actions = read_inheritable_attribute(:column_actions) || []
-          current_column_actions << name
-          write_inheritable_attribute(:column_actions, current_column_actions.uniq)
-        end
-
-        # Returns registered actions
-        def registered_column_actions
-          read_inheritable_attribute(:column_actions) || []
+          self.registered_column_actions |= [name]
         end
 
         # Use this method to define column actions in your component, e.g.:
