@@ -40,7 +40,7 @@ module Netzke
     # * +enable_edit_in_form+ - (defaults to true) provide buttons into the toolbar that activate editing/adding records via a form
     # * +enable_extended_search+ - (defaults to true) provide a button into the toolbar that shows configurable search form
     # * +enable_context_menu+ - (defaults to true) enable rows context menu
-    # * +context_menu+ - an array of actions (e.g. [:edit.action, "-", :del.action] - see the Actions section) or +false+ to disable the context menu
+    # * +context_menu+ - an array of actions (e.g. [:edit, "-", :del] - see the Actions section) or +false+ to disable the context menu
     # * +enable_rows_reordering+ - (defaults to false) enable reordering of rows with drag-n-drop; underlying model (specified in +model+) must implement "acts_as_list"-compatible functionality
     # * +enable_pagination+ - (defaults to true) enable pagination
     # * +rows_per_page+ - (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to +false+)
@@ -266,16 +266,16 @@ module Netzke
 
       # Override to change the default bottom toolbar
       def default_bbar
-        res = %w{ add edit apply del }.map(&:to_sym).map(&:action)
-        res << "-" << :add_in_form.action << :edit_in_form.action if config[:enable_edit_in_form]
-        res << "-" << :search.action if config[:enable_extended_search]
+        res = %w{ add edit apply del }.map(&:to_sym)
+        res << "-" << :add_in_form << :edit_in_form if config[:enable_edit_in_form]
+        res << "-" << :search if config[:enable_extended_search]
         res
       end
 
       # Override to change the default context menu
       def default_context_menu
-        res = %w{ edit del }.map(&:to_sym).map(&:action)
-        res << "-" << :edit_in_form.action if config[:enable_edit_in_form]
+        res = %w{ edit del }.map(&:to_sym)
+        res << "-" << :edit_in_form if config[:enable_edit_in_form]
         res
       end
 
@@ -297,67 +297,53 @@ module Netzke
       #   res
       # end
 
-      action :add do
-        {
-          :text => I18n.t('netzke.basepack.grid_panel.actions.add'),
-          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add'),
-          :disabled => config[:prohibit_create],
-          :handler => "onAddInline", # not following naming conventions here as Ext 4 grid has its own onAdd method
-          :icon => :add
-        }
+      action :add do |a|
+        a.text = I18n.t('netzke.basepack.grid_panel.actions.add')
+        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.add')
+        a.disabled = config[:prohibit_create]
+        a.handler = "onAddInline" # not following naming conventions here as Ext 4 grid has its own onAdd method
+        a.icon = :add
       end
 
-      action :edit do
-        {
-          :text => I18n.t('netzke.basepack.grid_panel.actions.edit'),
-          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit'),
-          :disabled => true,
-          :icon => :table_edit
-        }
+      action :edit do |a|
+        a.text = I18n.t('netzke.basepack.grid_panel.actions.edit')
+        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.edit')
+        a.disabled = true
+        a.icon = :table_edit
       end
 
-      action :del do
-        {
-          :text => I18n.t('netzke.basepack.grid_panel.actions.del'),
-          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.del'),
-          :disabled => true,
-          :icon => :table_row_delete
-        }
+      action :del do |a|
+        a.text = I18n.t('netzke.basepack.grid_panel.actions.del')
+        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.del')
+        a.disabled = true
+        a.icon = :table_row_delete
       end
 
-      action :apply do
-        {
-          :text => I18n.t('netzke.basepack.grid_panel.actions.apply'),
-          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.apply'),
-          :disabled => config[:prohibit_update] && config[:prohibit_create],
-          :icon => :tick
-        }
+      action :apply do |a|
+        a.text = I18n.t('netzke.basepack.grid_panel.actions.apply')
+        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.apply')
+        a.disabled = config[:prohibit_update] && config[:prohibit_create]
+        a.icon = :tick
       end
 
-      action :add_in_form do
-        {
-          :text => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
-          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.add_in_form'),
-          :icon => :application_form_add
-        }
+      action :add_in_form do |a|
+        a.text = I18n.t('netzke.basepack.grid_panel.actions.add_in_form')
+        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.add_in_form')
+        a.icon = :application_form_add
       end
 
-      action :edit_in_form do
-        {
-          :text => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
-          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.edit_in_form'),
-          :disabled => true,
-          :icon => :application_form_edit
-        }
+      action :edit_in_form do |a|
+        a.text = I18n.t('netzke.basepack.grid_panel.actions.edit_in_form')
+        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.edit_in_form')
+        a.disabled = true
+        a.icon = :application_form_edit
       end
 
-      action :search do
-        {
-          :text => I18n.t('netzke.basepack.grid_panel.actions.search'),
-          :tooltip => I18n.t('netzke.basepack.grid_panel.actions.search'),
-          :enable_toggle => true,
-          :icon => :find
-        }
+      action :search do |a|
+        a.text = I18n.t('netzke.basepack.grid_panel.actions.search')
+        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.search')
+        a.enable_toggle = true
+        a.icon = :find
       end
 
       component :add_form do
