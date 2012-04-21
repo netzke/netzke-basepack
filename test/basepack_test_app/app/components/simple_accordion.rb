@@ -1,14 +1,15 @@
 class SimpleAccordion < Netzke::Basepack::AccordionPanel
-  def configure
-    super
+  component :simple_panel do |c|
+    c.update_text = "Update for Panel Two"
+    c.title = "Panel Two"
+  end
 
-    config.items = [{
+  def items
+    [{
       :html => "I'm a simple Ext.Panel",
       :title => "Panel One"
     },{
-      :class_name => "SimplePanel",
-      :update_text => "Update for Panel Two",
-      :title => "Panel Two",
+      :netzke_component => :simple_panel,
       :lazy_loading => true
     }]
   end

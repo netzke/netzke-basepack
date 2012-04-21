@@ -22,7 +22,7 @@ module Netzke
 
       js_method :init_component, <<-JS
         function(params){
-          #{js_full_class_name}.superclass.initComponent.call(this);
+          this.callParent();
           this.items.each(function(item){
             item.on('expand', function(i){
               if (i && i.wrappedComponent && !i.items.first() && !i.beingLoaded) {
