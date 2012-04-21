@@ -2,6 +2,13 @@ module Netzke
   module Basepack
     class GridPanel < Netzke::Base
       class RecordFormWindow < Window
+        component :add_form do |c|
+          c.klass = FormPanel
+          c.border = true
+          c.bbar = false
+          c.prevent_header = true
+          c.merge! config.form_config
+        end
 
         js_properties :button_align => :right,
                       :width => 400,
