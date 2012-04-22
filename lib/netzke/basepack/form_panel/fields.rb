@@ -120,12 +120,11 @@ module Netzke
           def detect_association_with_method(c)
             if c[:name].index('__')
               assoc_name, method = c[:name].split('__').map(&:to_sym)
-              if assoc_method_type = data_adapter.get_assoc_property_type(assoc_name, method)
-                if c[:nested_attribute]
-                  c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
-                else
-                  c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
-                end
+              assoc_method_type = data_adapter.get_assoc_property_type(assoc_name, method)
+              if c[:nested_attribute]
+                c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
+              else
+                c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
               end
             end
           end
