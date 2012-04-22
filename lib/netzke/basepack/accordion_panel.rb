@@ -18,7 +18,7 @@ module Netzke
       include WrapLazyLoaded
 
       js_property :layout, 'accordion'
-      js_property :component_load_mask, {:msg => null} # due to a probable bug in Ext's Accordion Layout (mask message is mis-layed-out), disabling mask message
+      js_property :component_load_mask, {:msg => "null".l} # due to a probable bug in Ext's Accordion Layout (mask message is mis-layed-out), disabling mask message
 
       js_method :init_component, <<-JS
         function(params){

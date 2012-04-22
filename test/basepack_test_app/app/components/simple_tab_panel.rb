@@ -1,4 +1,6 @@
 class SimpleTabPanel < Netzke::Basepack::TabPanel
+  js_property :active_tab, 0
+
   def configure
     super
 
