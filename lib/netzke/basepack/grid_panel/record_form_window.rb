@@ -2,6 +2,7 @@ module Netzke
   module Basepack
     class GridPanel < Netzke::Base
       class RecordFormWindow < Window
+
         component :add_form do |c|
           c.klass = FormPanel
           c.border = true
@@ -10,11 +11,32 @@ module Netzke
           c.merge! config.form_config
         end
 
+        component :edit_form do |c|
+          c.klass = FormPanel
+          c.border = true
+          c.bbar = false
+          c.prevent_header = true
+          c.merge! config.form_config
+        end
+
+        component :multi_edit_form do |c|
+          c.klass = FormPanel
+          c.border = true
+          c.bbar = false
+          c.prevent_header = true
+          c.multi_edit = true
+          c.merge! config.form_config
+        end
+
+        def configure
+          super
+          config.fbar = [:ok, :cancel]
+        end
+
         js_properties :button_align => :right,
                       :width => 400,
                       :auto_height => true,
-                      :modal => true,
-                      :fbar => [:ok, :cancel]
+                      :modal => true
 
         action :ok do |a|
           a.text = I18n.t('netzke.basepack.grid_panel.record_form_window.actions.ok')
@@ -42,6 +64,11 @@ module Netzke
             this.close();
           }
         JS
+
+      private
+
+        def pre_configure_form(c)
+        end
       end
     end
   end

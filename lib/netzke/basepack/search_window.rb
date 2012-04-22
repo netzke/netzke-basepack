@@ -18,17 +18,16 @@ module Netzke
 
       def configure
         super
-        config.items = [:search_panel.component(:prevent_header => true)]
+        config.items = [:search_panel]
         config.title = I18n.t('netzke.basepack.search_window.title')
         config.persistence = false
+        config.prevent_header = true
       end
 
-      component :search_panel do
-        {
-          :class_name => "Netzke::Basepack::QueryBuilder",
-          :model => config[:model],
-          :fields => config[:fields]
-        }
+      component :search_panel do |c|
+        c.klass = QueryBuilder
+        c.model = config[:model]
+        c.fields = config[:fields]
       end
 
       js_method :init_component, <<-JS

@@ -115,7 +115,7 @@ module Netzke
           res.to_nifty_json
         end
 
-        def multi_edit_form__multi_edit_form0__netzke_submit_endpoint(params)
+        def multi_edit_window__multi_edit_form__netzke_submit_endpoint(params)
           ids = ActiveSupport::JSON.decode(params.delete(:ids))
           data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
 
@@ -136,7 +136,10 @@ module Netzke
 
         # When providing the edit_form component, fill in the form with the requested record
         def deliver_component_endpoint(params)
-          components[:edit_form][:items].first.merge!(:record_id => params[:record_id].to_i) if params[:name] == 'edit_form'
+          if params[:name] == 'edit_window'
+            components[:edit_window].form_config.record_id = params[:record_id].to_i
+          end
+
           super
         end
 

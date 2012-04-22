@@ -194,7 +194,7 @@ module Netzke
       # Allows children classes to simply do
       #
       #     model "User"
-      delegates_to_dsl :model, :add_form_config, :add_form_window_config, :edit_form_config, :edit_form_window_config, :multi_edit_form_config, :multi_edit_form_window_config
+      delegates_to_dsl :model
 
       # Inject some handy DSL methods into the child classes.
       def self.inherited(base)
@@ -223,15 +223,6 @@ module Netzke
         # user-passed :override_columns option should get deep_merged with the defaults
         config.override_columns = self.overridden_columns_attr.deep_merge(config.override_columns || {})
       end
-
-      #def configuration
-        #super.tap do |c|
-          #c[:columns] ||= self.class.read_inheritable_attribute(:columns)
-
-          ## user-passed :override_columns option should get deep_merged with the defaults
-          #c[:override_columns] = (self.class.read_inheritable_attribute(:overridden_columns) || {}).deep_merge(c[:override_columns] || {})
-        #end
-      #end
 
       def js_config #:nodoc:
         res = super
@@ -278,24 +269,6 @@ module Netzke
         res << "-" << :edit_in_form if config[:enable_edit_in_form]
         res
       end
-
-      # def configuration_components
-      #   res = []
-      #   res << {
-      #     :persistent_config => true,
-      #     :name              => 'columns',
-      #     :class_name        => "FieldsConfigurator",
-      #     :active            => true,
-      #     :owner             => self
-      #   }
-      #   res << {
-      #     :name               => 'general',
-      #     :class_name  => "PropertyEditor",
-      #     :component             => self,
-      #     :title => false
-      #   }
-      #   res
-      # end
 
       action :add do |a|
         a.text = I18n.t('netzke.basepack.grid_panel.actions.add')
@@ -349,7 +322,7 @@ module Netzke
       component :add_window do |c|
         c.klass = RecordFormWindow
         c.title = "Add #{data_class.model_name.human}"
-        c.items = [{netzke_component: :add_form}]
+        c.items = [:add_form]
 
         c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
           f.model = config[:model]
@@ -357,91 +330,42 @@ module Netzke
           f.strong_default_attrs = config[:strong_default_attrs]
           f.mode = config[:mode]
           f.record = data_class.new(columns_default_values)
+          #f.items = default_fields_for_forms
         end
       end
 
-      #component :add_form do
-        #form_config = {
-          #:class_name => "Netzke::Basepack::FormPanel",
-          #:model => config[:model],
-          #:persistent_config => config[:persistent_config],
-          #:strong_default_attrs => config[:strong_default_attrs],
-          #:border => true,
-          #:bbar => false,
-          #:prevent_header => true,
-          #:mode => config[:mode],
-          #:record => data_class.new(columns_default_values)
-        #}
+      component :edit_window do |c|
+        c.klass = RecordFormWindow
+        c.title = "Edit #{data_class.model_name.human}"
+        c.items = [:edit_form]
 
-        ## Only provide default form fields when no custom class_name is specified for the form
-        #form_config[:items] = default_fields_for_forms unless config[:add_form_config] && config[:add_form_config][:class_name]
+        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
+          f.model = config[:model]
+          f.persistent_config = config[:persistent_config]
+          f.strong_default_attrs = config[:strong_default_attrs]
+          f.mode = config[:mode]
+        end
+      end
 
-        #{
-          #:lazy_loading => true,
-          #:class_name => "Netzke::Basepack::GridPanel::RecordFormWindow",
-          #:title => "Add #{data_class.model_name.human}",
-          #:button_align => "right",
-          #:items => [form_config.deep_merge(config[:add_form_config] || {})]
-        #}.deep_merge(config[:add_form_window_config] || {})
-      #end
+      component :multi_edit_window do |c|
+        c.klass = RecordFormWindow
+        c.title = "Edit #{data_class.model_name.human.pluralize}"
+        c.items = [:multi_edit_form]
 
-      #component :edit_form do
-          #form_config = {
-            #:class_name => "Netzke::Basepack::FormPanel",
-            #:model => config[:model],
-            #:persistent_config => config[:persistent_config],
-            #:bbar => false,
-            #:prevent_header => true,
-            #:mode => config[:mode]
-            ## :record_id gets assigned by deliver_component dynamically, at the moment of loading
-          #}
+        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
+          f.model = config[:model]
+          f.persistent_config = config[:persistent_config]
+          f.strong_default_attrs = config[:strong_default_attrs]
+          f.mode = config[:mode]
+          f.multi_edit = true
+        end
+      end
 
-          ## Only provide default form fields when no custom class_name is specified for the form
-          #form_config[:items] = default_fields_for_forms unless config[:edit_form_config] && config[:edit_form_config][:class_name]
-
-        #{
-          #:lazy_loading => true,
-          #:class_name => "Netzke::Basepack::GridPanel::RecordFormWindow",
-          #:title => "Edit #{data_class.model_name.human}",
-          #:button_align => "right",
-          #:items => [form_config.deep_merge(config[:edit_form_config] || {})]
-        #}.deep_merge(config[:edit_form_window_config] || {})
-      #end
-
-      #component :multi_edit_form do
-        #form_config = {
-          #:class_name => "Netzke::Basepack::FormPanel",
-          #:multi_edit => true,
-          #:model => config[:model],
-          #:persistent_config => config[:persistent_config],
-          #:bbar => false,
-          #:prevent_header => true,
-          #:name => "multi_edit_form0", # we detect multi-edit form submission by its name
-          #:mode => config[:mode]
-        #}
-
-        ## Only provide default form fields when no custom class_name is specified for the form
-        #form_config[:items] = default_fields_for_forms unless config[:multi_edit_form_config] && config[:multi_edit_form_config][:class_name]
-
-        #{
-          #:lazy_loading => true,
-          #:class_name => "Netzke::Basepack::GridPanel::RecordFormWindow",
-          #:title => "Edit #{data_class.model_name.human.pluralize}",
-          #:button_align => "right",
-          #:items => [form_config.deep_merge(config[:multi_edit_form_config] || {})]
-        #}.deep_merge(config[:multi_edit_form_window_config] || {})
-      #end
-
-      #component :search_form do
-        #{
-          #:lazy_loading => true,
-          #:class_name => "Netzke::Basepack::SearchWindow",
-          #:model => config[:model],
-          #:fields => default_fields_for_forms
-        #}
-      #end
-
-      # include ::Netzke::Plugins::ConfigurationTool if config_tool_available # it will load ConfigurationPanel into a modal window
+      component :search_window do |c|
+        c.klass = SearchWindow
+        c.model = config.model
+        c.fields = default_fields_for_forms
+      end
 
     end
   end

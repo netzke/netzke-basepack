@@ -9,14 +9,13 @@ module Netzke
 
       js_mixin :query_builder
 
-      component :search_panel do
-        {
-          :class_name => "Netzke::Basepack::SearchPanel",
-          :model => config[:model],
-          :fields => config[:fields],
-          :preset_query => config[:query],
-          :auto_scroll => config[:auto_scroll]
-        }
+      component :search_panel do |c|
+        c.klass = SearchPanel
+        c.model = config[:model]
+        c.fields = config[:fields]
+        c.preset_query = config[:query]
+        c.auto_scroll = config[:auto_scroll]
+        c.lazy_loading = false
       end
 
       action :clear_all do |a|

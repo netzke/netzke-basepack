@@ -23,5 +23,4 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
       return value ? "*" + value + "*" : "";
     }
   JS
-
 end
