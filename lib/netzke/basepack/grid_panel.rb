@@ -194,7 +194,9 @@ module Netzke
       # Allows children classes to simply do
       #
       #     model "User"
-      delegates_to_dsl :model
+      #
+      # TODO: The rest of the list to be removed
+      delegates_to_dsl :model, :add_form_config, :add_form_window_config, :edit_form_config, :edit_form_window_config, :multi_edit_form_config, :multi_edit_form_window_config
 
       # Inject some handy DSL methods into the child classes.
       def self.inherited(base)
