@@ -51,12 +51,9 @@ module Netzke
         c[:bbar] << :search
       end
 
-      component :search_form do
-        {
-          :lazy_loading => true,
-          :class_name => "Netzke::Basepack::SearchWindow",
-          :model => config[:model]
-        }
+      component :search_form do |c|
+        c.klass = SearchWindow
+        c.model = config[:model]
       end
 
       protected

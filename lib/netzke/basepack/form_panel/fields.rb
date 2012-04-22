@@ -7,16 +7,22 @@ module Netzke
 
         # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render a field)
         def items
-          @form_panel_items ||= begin
-            res = normalize_fields(super.presence || data_class && data_class.netzke_attributes || []) # netzke_attributes as default items
-            # if primary key isn't there, insert it as first
-            if data_class && !res.detect{ |f| f[:name] == data_class.primary_key.to_s}
-              primary_key_item = normalize_field(data_class.primary_key.to_sym)
-              @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
-              res.insert(0, primary_key_item)
-            end
-            res
+          data_class && data_class.netzke_attributes || []
+        end
+
+        def js_items
+          return @js_items if @js_items.present?
+
+          @js_items = normalize_fields(config.items || items)
+
+          # if primary key isn't there, insert it as first
+          if data_class && !@js_items.detect{ |f| f[:name] == data_class.primary_key.to_s}
+            primary_key_item = normalize_field(data_class.primary_key.to_sym)
+            @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
+            @js_items.insert(0, primary_key_item)
           end
+
+          @js_items
         end
 
         # Hash of fully configured fields, that are referenced in the items. E.g.:
@@ -53,7 +59,7 @@ module Netzke
         #
         #     {:role__name => {:xtype => "netzkeremotecombo"}, :password => {:xtype => "passwordfield"}}
         def fields_from_config
-          items if @fields_from_config.nil? # by calling +items+ we initiate building of @fields_from_config
+          js_items if @fields_from_config.nil? # by calling +js_items+ we initiate building of @fields_from_config
           @fields_from_config ||= {}
         end
 
