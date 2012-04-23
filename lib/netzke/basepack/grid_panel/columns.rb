@@ -3,7 +3,6 @@ module Netzke
     class GridPanel < Netzke::Base
       module Columns
         extend ActiveSupport::Concern
-        extend ActiveSupport::Memoizable
 
         # module ClassMethods
         #   # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
@@ -59,7 +58,8 @@ module Netzke
         # * +with_excluded+ - when set to true, also excluded columns will be returned (handy for dynamic column configuration)
         # * +with_meta+ - when set to true, the meta column will be included as the last column
         def columns(options = {})
-          [].tap do |cols|
+          @_columns ||= {}
+          @_columns[options] ||= [].tap do |cols|
             if loaded_columns = load_columns
               filter_out_excluded_columns(loaded_columns) unless options[:with_excluded]
               cols.concat(reverse_merge_equally_named_columns(loaded_columns, initial_columns(options[:with_excluded])))
@@ -70,8 +70,6 @@ module Netzke
             append_meta_column(cols) if options[:with_meta]
           end
         end
-
-        memoize :columns
 
         def append_meta_column(cols)
           cols << {}.tap do |c|
@@ -124,33 +122,34 @@ module Netzke
 
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
         def initial_columns(with_excluded = false)
-          # Normalize here, as from the config we can get symbols (names) instead of hashes
-          columns_from_config = config[:columns] && normalize_attrs(config[:columns])
+          @_initial_columns = {}
+          @_initial_columns[with_excluded] ||= begin
+            # Normalize here, as from the config we can get symbols (names) instead of hashes
+            columns_from_config = config[:columns] && normalize_attrs(config[:columns])
 
-          if columns_from_config
-            # automatically add a column that reflects the primary key (unless specified in the config)
-            columns_from_config.insert(0, {:name => data_class.primary_key.to_s}) unless columns_from_config.any?{ |c| c[:name] == data_class.primary_key }
+            if columns_from_config
+              # automatically add a column that reflects the primary key (unless specified in the config)
+              columns_from_config.insert(0, {:name => data_class.primary_key.to_s}) unless columns_from_config.any?{ |c| c[:name] == data_class.primary_key }
 
-            # reverse-merge each column hash from config with each column hash from exposed_attributes
-            # (columns from config have higher priority)
-            for c in columns_from_config
-              corresponding_default_column = overridden_default_columns.find{ |k| k[:name] == c[:name] }
-              c.reverse_merge!(corresponding_default_column) if corresponding_default_column
+              # reverse-merge each column hash from config with each column hash from exposed_attributes
+              # (columns from config have higher priority)
+              for c in columns_from_config
+                corresponding_default_column = overridden_default_columns.find{ |k| k[:name] == c[:name] }
+                c.reverse_merge!(corresponding_default_column) if corresponding_default_column
+              end
+              columns_for_create = columns_from_config
+            else
+              # we didn't have columns configured in component's config, so, use the columns from the data class
+              columns_for_create = overridden_default_columns
             end
-            columns_for_create = columns_from_config
-          else
-            # we didn't have columns configured in component's config, so, use the columns from the data class
-            columns_for_create = overridden_default_columns
+
+            filter_out_excluded_columns(columns_for_create) unless with_excluded
+
+            # Make the column config complete with the defaults.
+            # Note: dup is needed to avoid modifying original hashes.
+            columns_for_create.map { |c| c.dup.tap { |c| augment_column_config c } }
           end
-
-          filter_out_excluded_columns(columns_for_create) unless with_excluded
-
-          # Make the column config complete with the defaults.
-          # Note: dup is needed to avoid modifying original hashes.
-          columns_for_create.map { |c| c.dup.tap { |c| augment_column_config c } }
         end
-
-        memoize :initial_columns
 
         private
 

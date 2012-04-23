@@ -247,7 +247,7 @@ module Netzke
       end
 
       def get_default_association_values #:nodoc:
-        columns.select{ |c| c[:name].index("__") && c[:default_value] }.each.inject({}) do |r,c|
+        @_default_association_values ||= columns.select{ |c| c[:name].index("__") && c[:default_value] }.each.inject({}) do |r,c|
           assoc_name, assoc_method = c[:name].split '__'
           assoc_class = data_adapter.class_for(assoc_name)
           assoc_data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(assoc_class).new(assoc_class)
@@ -255,7 +255,6 @@ module Netzke
           r.merge(c[:name] => assoc_instance.send(assoc_method))
         end
       end
-      memoize :get_default_association_values
 
       # Override to change the default bottom toolbar
       def default_bbar
