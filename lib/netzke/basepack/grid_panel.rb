@@ -321,51 +321,42 @@ module Netzke
       end
 
       component :add_window do |c|
-        c.klass = RecordFormWindow
+        preconfigure_record_window(c)
         c.title = "Add #{data_class.model_name.human}"
         c.items = [:add_form]
-
-        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
-          f.model = config[:model]
-          f.persistent_config = config[:persistent_config]
-          f.strong_default_attrs = config[:strong_default_attrs]
-          f.mode = config[:mode]
-          f.record = data_class.new(columns_default_values)
-          #f.items = default_fields_for_forms
-        end
+        c.form_config.record = data_class.new(columns_default_values)
       end
 
       component :edit_window do |c|
-        c.klass = RecordFormWindow
+        preconfigure_record_window(c)
         c.title = "Edit #{data_class.model_name.human}"
         c.items = [:edit_form]
-
-        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
-          f.model = config[:model]
-          f.persistent_config = config[:persistent_config]
-          f.strong_default_attrs = config[:strong_default_attrs]
-          f.mode = config[:mode]
-        end
       end
 
       component :multi_edit_window do |c|
-        c.klass = RecordFormWindow
+        preconfigure_record_window(c)
         c.title = "Edit #{data_class.model_name.human.pluralize}"
         c.items = [:multi_edit_form]
-
-        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
-          f.model = config[:model]
-          f.persistent_config = config[:persistent_config]
-          f.strong_default_attrs = config[:strong_default_attrs]
-          f.mode = config[:mode]
-          f.multi_edit = true
-        end
+        c.form_config.multi_edit = true
       end
 
       component :search_window do |c|
         c.klass = SearchWindow
         c.model = config.model
         c.fields = default_fields_for_forms
+      end
+
+    private
+
+      def preconfigure_record_window(c)
+        c.klass = RecordFormWindow
+
+        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
+          f.model = config[:model]
+          f.persistent_config = config[:persistent_config]
+          f.strong_default_attrs = config[:strong_default_attrs]
+          f.mode = config[:mode]
+        end
       end
 
     end

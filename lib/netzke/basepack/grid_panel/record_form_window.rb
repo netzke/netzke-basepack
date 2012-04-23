@@ -4,28 +4,16 @@ module Netzke
       class RecordFormWindow < Window
 
         component :add_form do |c|
-          c.klass = FormPanel
-          c.border = true
-          c.bbar = false
-          c.prevent_header = true
-          c.merge! config.form_config
+          preconfigure_form(c)
         end
 
         component :edit_form do |c|
-          c.klass = FormPanel
-          c.border = true
-          c.bbar = false
-          c.prevent_header = true
-          c.merge! config.form_config
+          preconfigure_form(c)
         end
 
         component :multi_edit_form do |c|
-          c.klass = FormPanel
-          c.border = true
-          c.bbar = false
-          c.prevent_header = true
+          preconfigure_form(c)
           c.multi_edit = true
-          c.merge! config.form_config
         end
 
         def configure
@@ -67,7 +55,12 @@ module Netzke
 
       private
 
-        def pre_configure_form(c)
+        def preconfigure_form(c)
+          c.klass = FormPanel
+          c.border = true
+          c.bbar = false
+          c.prevent_header = true
+          c.merge! config.form_config
         end
       end
     end
