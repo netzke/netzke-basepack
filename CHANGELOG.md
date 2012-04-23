@@ -1,8 +1,8 @@
-= 0.8.0 - ?
+# 0.8.0 - ?
 * improvements
   * BorderLayoutPanel is removed. Any component can now implement its items persistence by including `Netzke::Basepack::ItemsPersistence` module
 
-= 0.7.5 - ?
+# 0.7.5 - ?
 * improvements
   * data-related operations in grids and forms are moved to data adapters; implemented (partial) support for DataMapper and Sequel (see updated README)
   * afterApply event in forms and grids (credits to pschyska)
@@ -11,7 +11,7 @@
 * bug fix
   * advanced search panel works again (thanks pididi!)
 
-= 0.7.4 - 2012-03-05
+# 0.7.4 - 2012-03-05
 * bug fix
   * :enable_pagination is now respected in GridPanel
   * Virtual columns are not sortable by default now
@@ -19,12 +19,12 @@
   * Make Window respect persistence: false
   * Disable persistence for search window in GridPanel
 
-= 0.7.3 - 2011-10-23
+# 0.7.3 - 2011-10-23
 * bug fix
   * :sorting_scope is now respected in GridPanel
   * regression: filtering on association column is fix (covered with tests)
 
-= 0.7.2 - 2011-10-20
+# 0.7.2 - 2011-10-20
 * bug fix
   * Filter on a date column
   * Using date column caused FormPanel to crash
@@ -45,7 +45,7 @@
 * API changes
   * Skip supporting ModelExtensions. The preferred way is using setters and getters on columns/fields.
 
-= 0.7.1 - 2011-09-04
+# 0.7.1 - 2011-09-04
 * bug fix
   * FormPanel: fix the netzke_load endpoint when association fields are present
   * dates were not displayed in date fields, and submitting a form with date fields might result in erasing those fields
@@ -53,20 +53,20 @@
 * Rails 3.1 compatibility
   * no meta_where dependencies (searching and filtering done with Arel)
 
-= 0.7.0 - 2011-08-09
+# 0.7.0 - 2011-08-09
 * Core 0.7.0 and Ext 4 compatibility
 * API changes
   * [JS] Removed the helper BorderLayoutPanel#get<Region>Component method altogether. Use Ext 4 Container#child instead
 
-= v0.6.5 - to be released
+# v0.6.5 - to be released
 * enhancements
   * When columns states are saved in the persistent storage, adding/removing columns (e.g. in the code) will reset the saved states
   * Moved features and specs to test/basepack_test_app
 * bug fix
   * FormPanel with multiple association fields wouldn't submit data correctly
-  * GridPanel's forms take over the +text+ configuration option for columns as +fieldLabel+ for default fields
+  * GridPanel's forms take over the `text` configuration option for columns as `fieldLabel` for default fields
 
-= v0.6.4 - 2011-02-26
+# v0.6.4 - 2011-02-26
 * API changes
   * The combo field able to talk to the server has changed its xtype from combobox to netzkeremotecombo. When getting values from the server via AJAX, it expects a 2-dimensional array now, where the first value is the real value (which gets submitted), and the second value is the display value.
   * xdatetime is no more. datetimefield is used instead.
@@ -83,11 +83,11 @@
 * bug fix
   * Long-standing visual issues with datetime columns in grid panel are solved.
 
-= v0.6.3 - 2011-01-14
+# v0.6.3 - 2011-01-14
 * compatibility with netzke-core 0.6.5
 
 * refactoring
-  * GridPanel code restructured, using the new +js_mixin+ method
+  * GridPanel code restructured, using the new `js_mixin` method
 
 * bug fix
   * GridPanel respects strong_default_attrs
@@ -97,23 +97,23 @@
 
 * enhancements
   * I18n for Grid/FormPanel
-  * new +getter+ config option for columns/fields, a lambda receiving the record as parameter
-  * new +setter+ config option for columns/fields, a lambda receiving the record as first parameter, new value as the second
+  * new `getter` config option for columns/fields, a lambda receiving the record as parameter
+  * new `setter` config option for columns/fields, a lambda receiving the record as first parameter, new value as the second
   * GridPanel passes columns' default values to the "Add in form" form
   * FormPanel can now be used without specifying a model
-  * New +commalistcbg+ form field for checkboxes, where boxLabels of selected checkboxes are serialized into comma-separated string (the separator is configurable)
-  * New +nradiogroup+ form field for radio buttons, where the value is defined by the boxLabel of the selected radio button
-  * New +no_binding+ option for configuring a form field. Set it to "true" when you don't want Netzke to expand the field configuration based on the +name+ property. May be needed in some cases, e.g. when using checkboxes/radio buttons in the form.
-  * New +nested_attribute+ option for configuring data attributes (thus applicable for a column, a field, or a +netzke_attribute+ in the model). When set to true for an association attribute (e.g. author__name), assigning a value to it will change the association's attribute, *not* trying to find an association by name and reassign it if found (default behavior).
+  * New `commalistcbg` form field for checkboxes, where boxLabels of selected checkboxes are serialized into comma-separated string (the separator is configurable)
+  * New `nradiogroup` form field for radio buttons, where the value is defined by the boxLabel of the selected radio button
+  * New `no_binding` option for configuring a form field. Set it to "true" when you don't want Netzke to expand the field configuration based on the `name` property. May be needed in some cases, e.g. when using checkboxes/radio buttons in the form.
+  * New `nested_attribute` option for configuring data attributes (thus applicable for a column, a field, or a `netzke_attribute` in the model). When set to true for an association attribute (e.g. author__name), assigning a value to it will change the association's attribute, *not* trying to find an association by name and reassign it if found (default behavior).
   * FormPanel shows the "Updating..." mask while sending values to the server (configurable with updateMask option/property)
   * FormPanel now can be used in the "lockable" mode (:config => :lockable), which makes it load initially in "display mode", then "unlock" it, change the values, and "lock" it again (updating the values on the server)
 
-= v0.6.2 - 2010-11-05
+# v0.6.2 - 2010-11-05
 * compatibility with netzke-core 0.6.4
 * bug fix
   * BorderLayoutPanel persistence fix
 
-= v0.6.1 - 2010-11-04
+# v0.6.1 - 2010-11-04
 * enhancements
   * BorderLayoutPanel persistence: remembers region sizes and collapsed/expanded states
   * tooltips for grid buttons
@@ -121,7 +121,7 @@
 * bug fix
   * auto-detection of association's method when the latter is virtual was broken in 1.9.2
 
-= v0.6.0 - 2010-10-24
+# v0.6.0 - 2010-10-24
 * netzke-core 0.6.0 compatibility, thorough refactoring
 * Much more thorough testing (cucumber and rspec)
 * FormPanel/GridPanel dynamic column/field configuration has been left out (planned for a separate gem)
@@ -136,7 +136,7 @@
 * new
   * FormPanel allows for arbitrary layout of fields
 
-= v0.5.14 - 2010-09-08
+# v0.5.14 - 2010-09-08
 * bug fix
   * fields configurator wouldn't open in some cases
   * icons location was hardcoded in search panel (credits to @pschyska)
@@ -151,7 +151,7 @@
   * combobox options can now be searched ("type ahead") also in virtual columns (not efficient though, use at own risk!)
   * overriding an already existing attribute with `netzke_attribute` now also has effect on association attributes, such as boss__name
 
-= v0.5.13 - 2010-08-11
+# v0.5.13 - 2010-08-11
 * regression
   * combobox options configuration again has effect
 
@@ -164,20 +164,20 @@
   * GridPanel: you can now configure add/edit/multi_edit/search panels (e.g. to override the fields) and corresponding windows (e.g. to override the title)
   * minor refactoring GridPanel: moved static js out of grid_panel_js.rb
 
-= v0.5.12 - 2010-06-21
+# v0.5.12 - 2010-06-21
 * Fix: when used with Bundler, was crashing with the "uninitialized constant" exception
 
-= v0.5.11 - 2010-06-20
+# v0.5.11 - 2010-06-20
 * Fix: Partial fix for IE's (the rest to be fixed in Ext).
 * Fix: In some circumstances Netzke::ActiveRecord modules were not loading.
 
-= v0.5.10 - 2010-06-14
+# v0.5.10 - 2010-06-14
 * Impr: Checkbox replaced with tri-state checkbox in multi-edit form in GridPanel.
 * Impr: Column renderers reworked, allowing for more flexibility and cleanness.
 * Fix:  After applying changes to a grid disable "Edit in form" action.
 * Impr: A grid's forms are now getting the same fields as specified for the grid.
 
-= v0.5.9 - 2010-06-11
+# v0.5.9 - 2010-06-11
 * !!!: after updating to this version, run script/generate netzke_basepack
 * New: tri-state checkbox introduced into the search form
 * Impr: better defaults for the search form
@@ -195,16 +195,16 @@
 * New: FamFamFam Silk icons support.
 * Impr: Reworked defining Netzke (virtual) attributes for Grid/FormPanel.
 
-= v0.5.8 - 2010-03-12
+# v0.5.8 - 2010-03-12
 * Fix: GertThiel's method_missing-related fix enabling better compatibility with other Ruby libs
 * Fix: acts_as_list runtime dependency
 
-= v0.5.7 - 2010-02-26
+# v0.5.7 - 2010-02-26
 * Regression: column config for GridPanel again accepts a renderer along with its parameters (as array, where the first element is the renderers name, the second - the parameters passed to the renderer, e.g.: :renderer => ["date", "y-m-d"])
 * Fix: Window resize/move now works correctly
 * Code: taking care of deprecated methods
 
-= v0.5.6 - 2010-01-10
+# v0.5.6 - 2010-01-10
 * Compatibility with latest netzke-core
 * Compatibility with Ext JS v3.1
 * Impr: Code reorganization
@@ -219,10 +219,10 @@
 * Impr: "gear" tool is now hidden on FieldsConfigurator
 * Impr: Grid/FormPanel layouts are now not stored into the netzke_preferences table unless the defaults are modified (cleaner table)
 
-= v0.5.5.1 - 2009-11-09
+# v0.5.5.1 - 2009-11-09
 * Compatibility with latest netzke-core
 
-= v0.5.5 - 2009-11-09
+# v0.5.5 - 2009-11-09
 * Compatibility with latest netzke-core
 * Regression: pressing "enter" was not submitting the form (FormPanel)
 * Regression: "Restore defaults" button was not working in FieldsConfigurator and PropertyEditor
@@ -232,10 +232,10 @@
 * New: Netzke::Window widget, supports persistent moving/resizing.
 * New: (experimental) GridPanel's "Add in form" button now opens the new Window widget. Later all other windows will be slowly rewritten to do the same.
 
-= v0.5.4 - 2009-10-12
+# v0.5.4 - 2009-10-12
 * Dependencies updated
 
-= v0.5.3 - 2009-10-12
+# v0.5.3 - 2009-10-12
 * Compatibility with Ext 3.0 (and dropping compatibility with 2.x).
 * Compatibility with netzke-core v0.4.4.
 * Impr: Form/GridPanel-based widgets: more consistent Ext.Action-related functionality and code, like (context) menu, bbar, etc.
@@ -251,12 +251,12 @@
 * Fix: patching Ext's bug that caused double firing of "columnmove" in GridPanel.
 * Fix: moving columns around in GridPanel was causing erroneous mapping of data to columns after data reload.
 
-= v0.5.2 - 2009-09-24
+# v0.5.2 - 2009-09-24
 * Fix: combobox options for association columns didn't work properly.
 * Fix: GridPanel's multi-edit functionality didn't work.
 * Fix: gem dependencies are now correct.
 
-= v0.5.1 - 2009-09-11
+# v0.5.1 - 2009-09-11
 * Fix: crash when FormPanel has no data_class_name specified.
 * New: DataAccessor widgets (Form/GridPanel) now let the underlying model know which widget (i.e. which instance) accesses its data. Can be useful in virtual attributes for generating widget-specific HTML.
 * Fix: DataAccessor widgets (Form/GridPanel) now don't crash when calculating default columns/fields for the underlying model that has polymorphic columns.
@@ -268,7 +268,7 @@
 * Impr: configuration panel's header now shows the underlying model's name for convenience.
 * Fix: MasqueradeSelector widget added.
 
-= v0.5.0 - 2009-09-06
+# v0.5.0 - 2009-09-06
 * Major refactoring and code reorganization.
 * Compatibility with netzke-core v0.4.0.
 * New: GridPanel now supports adding/editing records in a form and extended configurable search.
@@ -281,17 +281,17 @@
 * New: some smart defaults for column/fields in Grid/FormPanel.
 * New: BasicApp supports masquerading and application-wide AJAX activity indicator.
 
-= v0.4.2 - 2009-05-07
+# v0.4.2 - 2009-05-07
 * Fix: afterlayout event bind removed completely because of some tricky inconsistent behavior of Ext. BasicApp initializing code put directly into js_after_constructor.
 
-= v0.4.1 - 2009-05-07
+# v0.4.1 - 2009-05-07
 * Fix: afterlayout call moved to js_after_constructor in BasicApp
 * Fix: cleaner persistent_config handling
 * New: default's configuration enabled for FormPanel on class-level
 * Fix: differently configured forms on the same page were showing the same columns
 * Fix: TableEditor was showing config-tool by default (must be hidden)
 
-= v0.4.0 - 2009-05-07
+# v0.4.0 - 2009-05-07
 * Refactor: got rid of NetzkeFormPanelField and NetzkeGridPanelColumn classes along with their tables. The layout is now stored in netzke_preferences.
 * New: dynamic hiding of columns from column menu in GridPanel.
 * New: FormPanel now supports combo boxes.
@@ -301,29 +301,29 @@
 * Fix: assigning association (a Boss to a Clerk) by virtual column (like boss__name) works now
 * Fix: an old bug that made GridPanel misbehave after reordering the columns
 
-= v0.3.10
+# v0.3.10
 * BasicApp-based widgets can now introduce arbitrary layout, following the convention of defining "main-panel" and "main-toolbar" panels with layout 'fit'.
 
-= v0.3.9.1
+# v0.3.9.1
 * Bug fix: (regression) appLoaded() in BasicApp gets executed again
 
-= v0.3.9
+# v0.3.9
 * AccordionPanel tests added
 * TabPanel works now
 * AccordionPanel replaced with more intuitive TabPanel in the configuration window
 * Code clean-up by using "single" option to call appLoaded() on "afterlayout"
 * Table editor bug fix
 
-= v0.3.8
+# v0.3.8
 * Fixing Ext's EditableItem render problem.
 * Filters by default enabled again in GridPanel.
 * GridPanel enhancement: base_params get sent along with post_data.
 
-= v0.3.7
+# v0.3.7
 * Netzke-core version sync.
 * Rails 2.3.2 compatibility.
 
-= v0.3.6
+# v0.3.6
 * Netzke-core v0.2.9 compatibility.
 * Cleaner handling of custom renderers in GridPanel.
 * New FormPanel-based PropertyEditor replaces PropertyGrid.
@@ -333,18 +333,18 @@
 * Bug fix: a couple of IE-related bugs.
 * Significant code clean-up.
 
-= v0.3.5
+# v0.3.5
 * Netzke-core v0.2.8 compatibility.
 
-= v0.3.4
+# v0.3.4
 * Quick tips added to the "tools".
 * Regression: the "General" configuration panel for GridPanel works again.
 * GridPanel: rows_per_page configuration is now read from General config panel.
 
-= v0.3.3.1
+# v0.3.3.1
 * Obviously using "new" as a property name in JavaScript isn't liked by Safari. Fixed.
 
-= v0.3.3
+# v0.3.3
 * Bug fix: application not loading the widget specified in the URL (Ext.History-related).
 * Some code refactoring and readability improvements.
 * Ext.componentCache renamed into Ext.netzke.cache.
@@ -362,29 +362,29 @@
 * Cleaner handling of validations in GridPanel.
 * FormPanel ready for the demo.
 
-= v0.3.2
+# v0.3.2
 * Minor code restructuring.
 * Working on FormPanel cont'd.
 
-= v0.3.1
+# v0.3.1
 * Added the "conditions" configuration option to GridPanel to limit the search
 * Basic column editor for grids has been replaced with FieldsConfigurator, which can do a bit more
 * Added Checkbox column/form-field type for boolean fields
 * "renderer" configuration option added for grid columns - any Ext.util.Format renderer can be specified there (thanks to Josh Holt for the initial idea)
 
-= v0.3.0
+# v0.3.0
 * Added BasicApp widget - the base for a Ext.Viewport based ("application") widget with support for dynamic widget loading, browser history, authentification, and more. See the demo an http://netzke-demo.writelesscode.com
 
-= v0.2.2
+# v0.2.2
 * Meta: updated netzke-core version (dependency)
 
-= v0.2.1
+# v0.2.1
 * Regression: BorderLayoutPanel now restores the region sizes from the database
 
-= v0.2.0.1
+# v0.2.0.1
 * Meta: updated netzke-core version (dependency)
 
-= v0.2.0
+# v0.2.0
 * Some re-factoring and redesign along with netzke-core
 * Panel widget added
 * BorderLayoutPanel added
@@ -394,41 +394,41 @@
 * Bug fix: exception was thrown at a column operation when no layout_manager was present
 * Reworked permission handling in GridPanel.
 
-= v0.1.4.1
+# v0.1.4.1
 * Meta: updated netzke-core version (dependency)
 
-= v0.1.4
+# v0.1.4
 * Grid#get_columns provides default columns even if none of layout_manager_class & column_manager_class are available
 
-= v0.1.3.1
+# v0.1.3.1
 * Meta: updated netzke-core version (dependency)
 
-= v0.1.3
+# v0.1.3
 * Path to javascript for grid filters corrected
 * Bug with creating new records in the grid fixed
 * Optimized away redundant sql queries when calling Grid#get_columns (sort of memoization)
 * README updated
 
-= v0.1.2.1
+# v0.1.2.1
 * Meta: trying to succeed publishing on RubyForge
 
-= v0.1.2
+# v0.1.2
 * Updated README with an example of stand-alone widget usage
 * Meta: updated netzke-core version (dependency)
 
-= v0.1.1.2
+# v0.1.1.2
 * Meta: updated netzke-core version (dependency)
 
-= v0.1.1.1
+# v0.1.1.1
 * Meta: github gem naming convention
 
-= v0.1.1
+# v0.1.1
 * Cleaner exception handling while loading data to grid
 * Column resize & move functionality enabled by default
 * Column filters added
 
-= v0.1.0.1
+# v0.1.0.1
 * Meta work: replacing underscore with dash in the name
 
-= v0.1.0 - 2008-12-20
+# v0.1.0 - 2008-12-20
 * Initial release
