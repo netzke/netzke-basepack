@@ -13,7 +13,6 @@ module Netzke
       js_properties :width => "50%",
                     :auto_height => true,
                     :close_action => "hide",
-                    :buttons => [:search, :cancel],
                     :modal => true
 
       def configure
@@ -22,6 +21,7 @@ module Netzke
         config.title = I18n.t('netzke.basepack.search_window.title')
         config.persistence = false
         config.prevent_header = true
+        config.buttons = [:search, :cancel]
       end
 
       component :search_panel do |c|

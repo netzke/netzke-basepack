@@ -205,8 +205,8 @@ Scenario: Advanced search window should be hidable after loading grid panel dyna
 
   And I press "Search" within "#book_grid_loader__book_grid_one"
   And I wait for the response from the server
-  And I press "Cancel" within "#book_grid_loader__book_grid_one__search_form"
-  Then the "book_grid_loader__book_grid_one__search_form" component should be hidden
+  And I press "Cancel" within "#book_grid_loader__book_grid_one__search_window"
+  Then the "book_grid_loader__book_grid_one__search_window" component should be hidden
 
 @javascript
 Scenario: Column order should be saved across page reloads
