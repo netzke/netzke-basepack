@@ -1,8 +1,17 @@
 class BookGridLoader < Netzke::Base
   js_property :layout, :fit
 
-  component :book_grid_one, :class_name => "Netzke::Basepack::GridPanel", :model => "Book", :lazy_loading => true
-  component :book_grid_two, :class_name => "Netzke::Basepack::GridPanel", :model => "Book", :lazy_loading => true
+  component :book_grid_one do |c|
+    c.klass = Netzke::Basepack::GridPanel
+    c.model = "Book"
+    c.title = "One"
+  end
+
+  component :book_grid_two do |c|
+    c.klass = Netzke::Basepack::GridPanel
+    c.model = "Book"
+    c.title = "Two"
+  end
 
   action :load_one
   action :load_two
@@ -19,6 +28,8 @@ class BookGridLoader < Netzke::Base
     }
   JS
 
-  js_property :bbar, [:load_one, :load_two]
-
+  def configure
+    super
+    config.bbar = [:load_one, :load_two]
+  end
 end

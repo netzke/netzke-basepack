@@ -1,21 +1,19 @@
 class WindowComponentLoader < Netzke::Base
-  component :some_window, {
-    :persistence => true,
-    :class_name => "Netzke::Basepack::Window",
-    :title => "Some Window Component",
-    :lazy_loading => true,
-    :width => 400,
-    :height => 300,
-    :modal => true,
-    :items => [{
-      :class_name => "Netzke::Basepack::GridPanel",
-      :model => "User"
-    }]
-  }
+  component :some_window do |c|
+    c.persistence = true
+    c.klass = Netzke::Basepack::Window
+    c.title = "Some Window Component"
+    c.width = 400
+    c.height = 300
+    c.modal = true
+  end
 
   action :load_window
 
-  js_property :bbar, [:load_window]
+  def configure
+    super
+    config.bbar = [:load_window]
+  end
 
   js_method :on_load_window, <<-JS
     function(params){
