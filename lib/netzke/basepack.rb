@@ -15,6 +15,8 @@ require 'netzke/basepack/data_adapters/active_record_adapter' if defined? Active
 require 'netzke/basepack/data_adapters/data_mapper_adapter' if defined? DataMapper
 require 'netzke/basepack/data_adapters/sequel_adapter' if defined? Sequel
 
+require 'netzke/basepack/items_persistence'
+
 module Netzke
   module Basepack
     mattr_accessor :with_icons

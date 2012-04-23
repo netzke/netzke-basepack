@@ -1,3 +1,7 @@
+= 0.8.0 - ?
+* improvements
+  * BorderLayoutPanel is removed. Any component can now implement its items persistence by including `Netzke::Basepack::ItemsPersistence` module
+
 = 0.7.5 - ?
 * improvements
   * data-related operations in grids and forms are moved to data adapters; implemented (partial) support for DataMapper and Sequel (see updated README)
