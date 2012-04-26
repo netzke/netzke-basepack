@@ -17,4 +17,8 @@ class BookGridWithDefaultValues < Netzke::Basepack::GridPanel
   column :digitized do |c|
     c.default_value = true
   end
+
+  def columns
+    [ :title, :author__last_name, :exemplars, :digitized ]
+  end
 end
