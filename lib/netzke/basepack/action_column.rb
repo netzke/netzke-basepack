@@ -37,7 +37,7 @@ module Netzke
         end
       end
 
-      def initial_columns(with_excluded = false)
+      def final_columns(options = {})
         orig_columns = super
 
         action_column_names = column_actions.map{ |action| action[:column] }.uniq
