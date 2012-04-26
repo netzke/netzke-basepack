@@ -7,7 +7,7 @@ module Netzke
 
         # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render a field)
         def items
-          data_class && data_class.netzke_attributes || []
+          data_class && data_adapter.model_attributes || []
         end
 
         def js_items
@@ -42,7 +42,8 @@ module Netzke
 
         # The array of fields as specified on the model level (using +netzke_attribute+ and alike)
         def fields_array_from_model
-          data_class && data_class.netzke_attributes
+          #data_class && data_class.netzke_attributes
+          data_class && data_adapter.model_attributes
         end
 
         # Hash of fields as specified on the model level

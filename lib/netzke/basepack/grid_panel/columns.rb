@@ -18,30 +18,13 @@ module Netzke
           end
         end
 
-        # Normalized columns for the grid, e.g.:
-        # [{:name => :id, :hidden => true, ...}, {:name => :name, :editable => false, ...}, ...]
-        # Possible options:
-        # * +with_excluded+ - when set to true, also excluded columns will be returned (handy for dynamic column configuration)
-        # * +with_meta+ - when set to true, the meta column will be included as the last column
-        #def columns(options = {})
-          #@_columns ||= {}
-          #@_columns[options] ||= [].tap do |cols|
-            #if loaded_columns = load_columns
-              #filter_out_excluded_columns(loaded_columns) unless options[:with_excluded]
-              #cols.concat(reverse_merge_equally_named_columns(loaded_columns, initial_columns(options[:with_excluded])))
-            #else
-              #cols.concat(initial_columns(options[:with_excluded]))
-            #end
-
-            #append_meta_column(cols) if options[:with_meta]
-          #end
-        #end
-
+        # Returns the list of (non-normalized) columns to be used. By default returns the list of model column names.
+        # Can be overridden.
         def columns
           data_adapter.model_attributes
         end
 
-        # An array of complete columns configs
+        # An array of complete columns configs ready to be passed to the JS side.
         def final_columns(options = {})
           @_final_columns ||= {}
           @_final_columns[options] ||= [].tap do |cols|
@@ -73,6 +56,7 @@ module Netzke
           end
         end
 
+        # Columns from config.columns or the `columns` method, after normalization
         def initial_columns(with_excluded = false)
           @_initial_columns ||= {}
           @_initial_columns[with_excluded] ||= [].tap do |cols|

@@ -3,146 +3,17 @@ module Netzke
     module Attributes
       extend ActiveSupport::Concern
 
-      included do
-        class_attribute :netzke_declared_attr
-        self.netzke_declared_attr = []
-
-        class_attribute :netzke_excluded_attr
-        self.netzke_excluded_attr = []
-
-        class_attribute :netzke_exposed_attr
-      end
-
       module ClassMethods
         def data_adapter
           @data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(self).new(self)
         end
 
-        # Define or configure an attribute.
-        # Example:
-        #   netzke_attribute :recent, :type => :boolean, :read_only => true
-        def netzke_attribute(name, options = {})
-          name = name.to_s
-          options[:attr_type] = options.delete(:type) || options.delete(:attr_type) || :string
-          declared_attrs = self.netzke_declared_attr.dup
-          # if the attr was declared already, simply merge it with the new options
-          existing = declared_attrs.detect{ |va| va[:name] == name }
-          if existing
-            existing.merge!(options)
-          else
-            attr_config = {:name => name}.merge(options)
-            # if primary_key, insert in front, otherwise append
-            if name == self.primary_key
-              declared_attrs.insert(0, attr_config)
-            else
-              declared_attrs << {:name => name}.merge(options)
-            end
-          end
-          self.netzke_declared_attr = declared_attrs
+      protected
+
+        # FIXME: this duplicates with is_association_attr? below
+        def association_attr?(attr_name)
+          !!attr_name.index("__") # probably we can't do much better than this, as we don't know at this moment if the associated model has a specific attribute, and we don't really want to find it out
         end
-
-        # Exclude attributes from being picked up by grids and forms.
-        # Accepts an array of attribute names (as symbols).
-        # Example:
-        #   netzke_expose_attributes :created_at, :updated_at, :crypted_password
-        def netzke_exclude_attributes(*args)
-          self.netzke_excluded_attr = args.map(&:to_s)
-        end
-
-        # Explicitly expose attributes that should be picked up by grids and forms.
-        # Accepts an array of attribute names (as symbols).
-        # Takes precedence over <tt>netzke_exclude_attributes</tt>.
-        # Example:
-        #   netzke_expose_attributes :name, :role__name
-        def netzke_expose_attributes(*args)
-          self.netzke_exposed_attr = args.map(&:to_s)
-        end
-
-        # Returns the attributes that will be picked up by grids and forms.
-        def netzke_attributes
-          exposed = netzke_exposed_attributes
-          exposed ? netzke_attrs_in_forced_order(exposed) : netzke_attrs_in_natural_order
-        end
-
-        def netzke_attribute_hash
-          netzke_attributes.inject({}){ |r,a| r.merge(a[:name].to_sym => a) }
-        end
-
-        def netzke_exposed_attributes
-          exposed = self.netzke_exposed_attr
-          if exposed && !exposed.include?(self.primary_key)
-            # automatically declare primary key as a netzke attribute
-            netzke_attribute(self.primary_key)
-            exposed.insert(0, self.primary_key)
-          end
-          exposed
-        end
-
-        private
-
-          def netzke_attrs_in_forced_order(attrs)
-            attrs.collect do |attr_name|
-              declared = self.netzke_declared_attr.detect { |va| va[:name] == attr_name } || {}
-              in_columns_hash = columns_hash[attr_name] && {:name => attr_name, :attr_type => columns_hash[attr_name].type, :default_value => columns_hash[attr_name].default} || {} # {:virtual => true} # if nothing found in columns, mark it as "virtual" or not?
-              if in_columns_hash.empty?
-                # If not among the model columns, it's either virtual, or an association
-                merged = association_attr?(attr_name) ? declared.merge!(:name => attr_name) : declared.merge(:virtual => true)
-              else
-                # .. otherwise merge with what's declared
-                merged = in_columns_hash.merge(declared)
-              end
-
-              # We didn't find it among declared, nor among the model columns, nor does it seem association attribute
-              merged[:name].nil? && raise(ArgumentError, "Unknown attribute '#{attr_name}' for model #{self.name}", caller)
-
-              merged
-            end
-          end
-
-          # Returns netzke attributes in the order of columns in the table, followed by extra declared attributes
-          # Detects one-to-many association columns and replaces the name of the column with association column name (Netzke style), e.g.:
-          #
-          #   role_id => role__name
-          def netzke_attrs_in_natural_order
-            (
-              declared_attrs = self.netzke_declared_attr
-
-              column_names.map do |name|
-                c = {:name => name, :attr_type => columns_hash[name].type}
-
-                # If it's named as foreign key of some association, then it's an association column
-                assoc = reflect_on_all_associations.detect { |a| foreign_key_for_assoc(a) == c[:name] }
-
-                if assoc && !assoc.options[:polymorphic]
-                  candidates = %w{name title label} << foreign_key_for_assoc(assoc)
-                  assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
-                  c[:name] = "#{assoc.name}__#{assoc_method}"
-                  c[:attr_type] = assoc.klass.columns_hash[assoc_method].try(:type) || :string # when it's an instance method rather than a column, fall back to :string
-                end
-
-                # auto set up the default value from the column settings
-                c.merge!(:default_value => columns_hash[name].default) if columns_hash[name].default
-
-                # if there's a declared attr with the same name, simply merge it with what's taken from the model's columns
-                if declared = declared_attrs.detect{ |va| va[:name] == c[:name] }
-                  c.merge!(declared)
-                  declared_attrs.delete(declared)
-                end
-                c
-              end +
-              declared_attrs
-            ).reject { |attr| self.netzke_excluded_attr.include?(attr[:name]) }
-          end
-
-          # Returns foreign key for given association (Rails >= 3.0)
-          def foreign_key_for_assoc(assoc)
-            assoc.respond_to?(:foreign_key) ? assoc.foreign_key : assoc.primary_key_name
-          end
-
-          def association_attr?(attr_name)
-            !!attr_name.index("__") # probably we can't do much better than this, as we don't know at this moment if the associated model has a specific attribute, and we don't really want to find it out
-          end
-
       end
 
       # Transforms a record to array of values according to the passed attributes

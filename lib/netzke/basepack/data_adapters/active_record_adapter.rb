@@ -4,12 +4,6 @@ module Netzke::Basepack::DataAdapters
       model_class <= ActiveRecord::Base
     end
 
-    # === begin of new methods
-
-    def model_attributes
-      @model_class.netzke_attributes
-    end
-
     def primary_key_name
       @model_class.primary_key.to_s
     end
@@ -18,7 +12,25 @@ module Netzke::Basepack::DataAdapters
       @model_class.columns_hash[attr_name.to_s].try(:type) || :string
     end
 
-    # === end of new methods
+    def model_attributes
+      @model_class.column_names.map do |column_name|
+        {name: column_name, attr_type: @model_class.columns_hash[column_name].type}.tap do |c|
+
+          # If it's named as foreign key of some association, then it's an association column
+          assoc = @model_class.reflect_on_all_associations.detect { |a| foreign_key_for_assoc(a) == c[:name] }
+
+          if assoc && !assoc.options[:polymorphic]
+            candidates = %w{name title label} << foreign_key_for_assoc(assoc)
+            assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
+            c[:name] = "#{assoc.name}__#{assoc_method}"
+            c[:attr_type] = assoc.klass.columns_hash[assoc_method].try(:type) || :string # when it's an instance method rather than a column, fall back to :string
+          end
+
+          # auto set up the default value from the column settings
+          c[:default_value] = @model_class.columns_hash[column_name].default if @model_class.columns_hash[column_name].default
+        end
+      end
+    end
 
     def get_records(params, columns=[])
       # build initial relation based on passed params
@@ -289,6 +301,13 @@ module Netzke::Basepack::DataAdapters
 
       # join them by AND
       predicates[1..-1].inject(predicates.first){ |r,p| r.and(p)  }
+    end
+
+  protected
+
+    # Returns foreign key for given association (Rails >= 3.0)
+    def foreign_key_for_assoc(assoc)
+      assoc.respond_to?(:foreign_key) ? assoc.foreign_key : assoc.primary_key_name
     end
 
   end

@@ -2,6 +2,23 @@ module Netzke::Basepack::DataAdapters
   # A concrete adapter should implement all the public instance methods of this adapter in order to support all the functionality of Basepack components.
   class AbstractAdapter
 
+    # Returns primary key name of the model
+    def primary_key_name
+      "id"
+    end
+
+    # Returns a list of model attribute hashes, each containing `name`, `attr_type` and `default_value` (if set in the schema).
+    # For association columns the name can have the double-underscore format, e.g.: `author__first_name`.
+    # These attributes will be used by grids and forms to display default columns/fields.
+    def model_attributes
+      raise NotImplementedError
+    end
+
+    # Returns attribute type (as Symbol) given its name.
+    def attr_type(attr_name)
+      raise NotImplementedError
+    end
+
     # Returns records based on passed params. Implements:
     # * pagination
     # * filtering
