@@ -79,8 +79,10 @@ module Netzke
             has_primary_column = false
 
             (config.columns || columns).each do |c|
-              # normalize
-              c = ActiveSupport::OrderedOptions.new.replace(c.is_a?(Symbol) ? {name: c.to_s} : c)
+              # normalize:
+              # * :title => {name: 'title'}
+              # * {name: :some_column} => {name: 'some_column'}
+              c = ActiveSupport::OrderedOptions.new.replace(c.is_a?(Symbol) ? {name: c.to_s} : c.merge(name: c[:name].to_s))
 
               cols << c if with_excluded || !c.excluded
 

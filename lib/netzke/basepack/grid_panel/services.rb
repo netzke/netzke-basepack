@@ -200,7 +200,7 @@ module Netzke
             index.times do
               while true do
                 norm_index += 1
-                break unless columns[norm_index][:included] == false
+                break unless final_columns[norm_index][:included] == false
               end
             end
             norm_index

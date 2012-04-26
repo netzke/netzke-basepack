@@ -8,4 +8,8 @@ class BookGridWithPersistence < BookGrid
     super
     config.persistence = true
   end
+
+  def columns
+    [:title, :exemplars, :digitized]
+  end
 end
