@@ -5,7 +5,7 @@ When /^I expand combobox "([^"]*)"$/ do |combo_label|
     combo.onTriggerClick();
   JS
 
-  When "I wait for the response from the server"
+  step "I wait for the response from the server"
 end
 
 When /^I select "([^"]*)" from combobox "([^"]*)"$/ do |value, combo_label|

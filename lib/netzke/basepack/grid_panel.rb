@@ -155,8 +155,6 @@ module Netzke
         :tools                  => %w{ refresh }
       }
 
-      extend ActiveSupport::Memoizable
-
       include self::Services
       include self::Columns
       include Netzke::Basepack::DataAccessor
