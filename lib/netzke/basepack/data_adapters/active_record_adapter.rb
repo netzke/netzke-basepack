@@ -4,6 +4,22 @@ module Netzke::Basepack::DataAdapters
       model_class <= ActiveRecord::Base
     end
 
+    # === begin of new methods
+
+    def model_attributes
+      @model_class.netzke_attributes
+    end
+
+    def primary_key_name
+      @model_class.primary_key.to_s
+    end
+
+    def attr_type(attr_name)
+      @model_class.columns_hash[attr_name.to_s].try(:type) || :string
+    end
+
+    # === end of new methods
+
     def get_records(params, columns=[])
       # build initial relation based on passed params
       relation = get_relation(params)

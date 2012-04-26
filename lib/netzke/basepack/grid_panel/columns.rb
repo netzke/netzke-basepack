@@ -4,70 +4,92 @@ module Netzke
       module Columns
         extend ActiveSupport::Concern
 
-        # module ClassMethods
-        #   # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
-        #   # option for each column in the grid.
-        #   def meta_columns
-        #     [
-        #       # Whether the column will be present in the grid, also in :hidden or :meta state. The value for this column will
-        #       # always be sent to/from the JS grid to the server
-        #       {:name => "included",      :attr_type => :boolean, :width => 40, :header => "Incl", :default_value => true},
-        #
-        #       # The name of the column. May be any accessible method or attribute of the data_class.
-        #       {:name => "name",          :attr_type => :string, :width => 200},
-        #
-        #       # The header for the column.
-        #       {:name => "label",         :attr_type => :string, :width => 200, :header => "Header"},
-        #
-        #       # The default value of this column. Is used when a new row in the grid gets created.
-        #       {:name => "default_value", :attr_type => :string, :width => 200},
-        #
-        #       # Options for drop-downs
-        #       {:name => "combobox_options",       :attr_type => :string, :editor => :textarea, :width => 200},
-        #
-        #       # Whether the column is editable in the grid.
-        #       {:name => "read_only",     :attr_type => :boolean, :header => "R/O", :tooltip => "Read-only"},
-        #
-        #       # Whether the column will be in the hidden state (hide/show columns from the column menu, if it's enabled).
-        #       {:name => "hidden",        :attr_type => :boolean},
-        #
-        #       # Whether the column should have "grid filters" enabled
-        #       # (see here: http://www.extjs.com/deploy/dev/examples/grid-filtering/grid-filter-local.html)
-        #       {:name => "with_filters",  :attr_type => :boolean, :default_value => true, :header => "Filters"},
-        #
-        #       #
-        #       # Below some rarely used parameters, hidden by default (you can always un-hide them from the column menu).
-        #       #
-        #
-        #       # The column's width
-        #       {:name => "width",         :attr_type => :integer, :hidden => true},
-        #
-        #       # Whether the column should be hideable
-        #       {:name => "hideable",      :attr_type => :boolean, :default_value => true, :hidden => true},
-        #
-        #       # Whether the column should be sortable (why change it? normally it's hardcoded)
-        #       {:name => "sortable",      :attr_type => :boolean, :default_value => true, :hidden => true},
-        #     ]
-        #   end
-        #
-        # end
+        COLUMN_METHOD_NAME = "%s_column"
+
+        module ClassMethods
+          # Overrides a column config, e.g.:
+          #
+          #     column :title do |c|
+          #       c.flex = 1
+          #     end
+          def column(name, &block)
+            method_name = COLUMN_METHOD_NAME % name
+            define_method(method_name, &block)
+          end
+        end
 
         # Normalized columns for the grid, e.g.:
         # [{:name => :id, :hidden => true, ...}, {:name => :name, :editable => false, ...}, ...]
         # Possible options:
         # * +with_excluded+ - when set to true, also excluded columns will be returned (handy for dynamic column configuration)
         # * +with_meta+ - when set to true, the meta column will be included as the last column
-        def columns(options = {})
-          @_columns ||= {}
-          @_columns[options] ||= [].tap do |cols|
-            if loaded_columns = load_columns
-              filter_out_excluded_columns(loaded_columns) unless options[:with_excluded]
-              cols.concat(reverse_merge_equally_named_columns(loaded_columns, initial_columns(options[:with_excluded])))
-            else
-              cols.concat(initial_columns(options[:with_excluded]))
+        #def columns(options = {})
+          #@_columns ||= {}
+          #@_columns[options] ||= [].tap do |cols|
+            #if loaded_columns = load_columns
+              #filter_out_excluded_columns(loaded_columns) unless options[:with_excluded]
+              #cols.concat(reverse_merge_equally_named_columns(loaded_columns, initial_columns(options[:with_excluded])))
+            #else
+              #cols.concat(initial_columns(options[:with_excluded]))
+            #end
+
+            #append_meta_column(cols) if options[:with_meta]
+          #end
+        #end
+
+        def columns
+          data_adapter.model_attributes
+        end
+
+        # An array of complete columns configs
+        def final_columns(options = {})
+          @_final_columns ||= {}
+          @_final_columns[options] ||= [].tap do |cols|
+            initial_columns(true).each do |c|
+              name = c.name
+
+              # merge with column declaration
+              send(:"#{name}_column", c) if respond_to?(:"#{name}_column")
+
+              # set the defaults as lowest priority
+              set_default_attr_type(c)
+              set_default_xtype(c)
+              set_default_virtual(c)
+              set_default_text(c)
+              set_default_editable(c)
+              set_default_editor(c)
+              set_default_width(c)
+              set_default_hidden(c)
+              set_default_sortable(c)
+              set_default_filterable(c)
+
+              # ?
+              c[:assoc] = association_attr?(c)
+
+              cols << c if options[:with_excluded] || !c.excluded
             end
 
             append_meta_column(cols) if options[:with_meta]
+          end
+        end
+
+        def initial_columns(with_excluded = false)
+          @_initial_columns ||= {}
+          @_initial_columns[with_excluded] ||= [].tap do |cols|
+            has_primary_column = false
+
+            (config.columns || columns).each do |c|
+              # normalize
+              c = ActiveSupport::OrderedOptions.new.replace(c.is_a?(Symbol) ? {name: c.to_s} : c)
+
+              cols << c if with_excluded || !c.excluded
+
+              # detect primary key column
+              has_primary_column ||= c.name == data_adapter.primary_key_name
+            end
+
+            # automatically add a column that reflects the primary key
+            cols.insert(0, ActiveSupport::OrderedOptions.new.replace(:name => data_adapter.primary_key_name)) unless has_primary_column
           end
         end
 
@@ -96,7 +118,7 @@ module Netzke
 
         # Columns as a hash, for easier access to a specific column
         def columns_hash
-          @columns_hash ||= columns.inject({}){|r,c| r.merge(c[:name].to_sym => c)}
+          @columns_hash ||= final_columns.inject({}){|r,c| r.merge(c[:name].to_sym => c)}
         end
 
         # Columns that we fall back to when neither persistent columns, nor configured columns are present.
@@ -121,7 +143,7 @@ module Netzke
         end
 
         # Columns that represent a smart merge of default_columns and columns passed during the configuration.
-        def initial_columns(with_excluded = false)
+        def initial_columns_DELETE(with_excluded = false)
           @_initial_columns = {}
           @_initial_columns[with_excluded] ||= begin
             # Normalize here, as from the config we can get symbols (names) instead of hashes
@@ -164,6 +186,7 @@ module Netzke
           # It may be handy to override it.
           def augment_column_config(c)
             # note: the order of these calls is important, as consequent calls may depend on the result of previous ones
+
             set_default_xtype(c)
             set_default_virtual(c)
             set_default_text(c)
@@ -174,6 +197,10 @@ module Netzke
             set_default_sortable(c)
             set_default_filterable(c)
             c[:assoc] = association_attr?(c)
+          end
+
+          def set_default_attr_type(c)
+            c[:attr_type] ||= data_adapter.attr_type(c.name)
           end
 
           def set_default_xtype(c)
@@ -251,7 +278,7 @@ module Netzke
           end
 
           def initial_columns_order
-            columns.map do |c|
+            final_columns.map do |c|
               {
                 :name => c[:name],
                 :width => c[:width],
@@ -326,7 +353,7 @@ module Netzke
           # Default fields that will be displayed in the Add/Edit/Search forms
           # When overriding this method, keep in mind that the fields inside the layout must be expanded (each field represented by a hash, not just a symbol)
           def default_fields_for_forms
-            selected_columns = columns.select do |c|
+            selected_columns = final_columns.select do |c|
               data_class.column_names.include?(c[:name]) ||
               data_class.instance_methods.include?("#{c[:name]}=") ||
               association_attr?(c[:name])
@@ -358,7 +385,7 @@ module Netzke
           # end
 
           def columns_default_values
-            columns.inject({}) do |r,c|
+            final_columns.inject({}) do |r,c|
               assoc_name, assoc_method = c[:name].split '__'
               if c[:default_value].nil?
                 r

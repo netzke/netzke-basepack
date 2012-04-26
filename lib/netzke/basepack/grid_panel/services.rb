@@ -75,7 +75,7 @@ module Netzke
           endpoint :get_combobox_options do |params|
             query = params[:query]
 
-            column = columns.detect{ |c| c[:name] == params[:column] }
+            column = final_columns.detect{ |c| c[:name] == params[:column] }
             scope = column.to_options[:scope] || column.to_options[:editor].try(:fetch, :scope, nil)
             query = params[:query]
 
@@ -149,7 +149,7 @@ module Netzke
           if !config[:prohibit_read]
             {}.tap do |res|
               records = get_records(params)
-              res[:data] = records.map{|r| r.netzke_array(columns(:with_meta => true))}
+              res[:data] = records.map{|r| r.netzke_array(final_columns(:with_meta => true))}
               res[:total] = count_records(params)  if config[:enable_pagination]
             end
           else
@@ -174,7 +174,7 @@ module Netzke
             params[:limit] = config[:rows_per_page] if config[:enable_pagination]
             params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
-            data_adapter.get_records(params, columns)
+            data_adapter.get_records(params, final_columns)
           end
 
           def count_records(params)
@@ -188,7 +188,7 @@ module Netzke
 
             params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
-            data_adapter.count_records(params, columns)
+            data_adapter.count_records(params, final_columns)
           end
 
           # Override this method to react on each operation that caused changing of data
@@ -226,7 +226,7 @@ module Netzke
                 end
 
                 # try to save
-                mod_records[id] = record.netzke_array(columns(:with_meta => true)) if success && record.save
+                mod_records[id] = record.netzke_array(final_columns(:with_meta => true)) if success && record.save
 
                 # flash eventual errors
                 if !record.errors.empty?
