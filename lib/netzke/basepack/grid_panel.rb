@@ -311,6 +311,7 @@ module Netzke
           f.persistent_config = config[:persistent_config]
           f.strong_default_attrs = config[:strong_default_attrs]
           f.mode = config[:mode]
+          f.items = default_fields_for_forms
         end
       end
 
