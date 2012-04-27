@@ -59,7 +59,6 @@ module Netzke
           end
         end
       end
-
     end
   end
 end

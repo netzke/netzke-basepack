@@ -35,19 +35,7 @@ module Netzke
               send(:"#{name}_column", c) if respond_to?(:"#{name}_column")
 
               # set the defaults as lowest priority
-              set_default_attr_type(c)
-              set_default_xtype(c)
-              set_default_virtual(c)
-              set_default_text(c)
-              set_default_editable(c)
-              set_default_editor(c)
-              set_default_width(c)
-              set_default_hidden(c)
-              set_default_sortable(c)
-              set_default_filterable(c)
-
-              # ?
-              c[:assoc] = association_attr?(c)
+              augment_column_config(c)
 
               cols << c if options[:with_excluded] || !c.excluded
             end
@@ -119,8 +107,7 @@ module Netzke
         #
         # It may be handy to override it.
         def augment_column_config(c)
-          # note: the order of these calls is important, as consequent calls may depend on the result of previous ones
-
+          set_default_attr_type(c)
           set_default_xtype(c)
           set_default_virtual(c)
           set_default_text(c)
@@ -130,7 +117,7 @@ module Netzke
           set_default_hidden(c)
           set_default_sortable(c)
           set_default_filterable(c)
-          c[:assoc] = association_attr?(c)
+          c[:assoc] = association_attr?(c) # needed on the JS side
         end
 
         def set_default_attr_type(c)
