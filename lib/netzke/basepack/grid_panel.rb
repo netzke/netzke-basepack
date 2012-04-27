@@ -196,34 +196,6 @@ module Netzke
       # TODO: The rest of the list to be removed
       delegates_to_dsl :model, :add_form_config, :add_form_window_config, :edit_form_config, :edit_form_window_config, :multi_edit_form_config, :multi_edit_form_window_config
 
-      # Inject some handy DSL methods into the child classes.
-      #def self.inherited(base)
-        #super
-
-        #base.class_eval do
-          #class << self
-            #def column(name, config = {})
-              #columns = self.columns_attr || []
-              #columns |= [config.merge(:name => name.to_s)]
-              #self.columns_attr = columns
-            #end
-
-            #def override_column(name, config)
-              #columns = self.overridden_columns_attr.dup
-              #self.overridden_columns_attr = columns.merge(name.to_sym => config)
-            #end
-          #end
-        #end
-      #end
-
-      def configure
-        super
-        #config.columns ||= self.columns_attr
-
-        # user-passed :override_columns option should get deep_merged with the defaults
-        #config.override_columns = self.overridden_columns_attr.deep_merge(config.override_columns || {})
-      end
-
       def js_config #:nodoc:
         res = super
         res.merge({
@@ -236,22 +208,6 @@ module Netzke
           :inline_data => (get_data if config[:load_inline_data]), # inline data (loaded along with the grid panel)
           :pri => data_class.primary_key # table primary key name
         })
-      end
-
-      def get_association_values(record) #:nodoc:
-        final_columns.select{ |c| c[:name].index("__") }.each.inject({}) do |r,c|
-          r.merge(c[:name] => record.value_for_attribute(c, true))
-        end
-      end
-
-      def get_default_association_values #:nodoc:
-        @_default_association_values ||= final_columns.select{ |c| c[:name].index("__") && c[:default_value] }.each.inject({}) do |r,c|
-          assoc_name, assoc_method = c[:name].split '__'
-          assoc_class = data_adapter.class_for(assoc_name)
-          assoc_data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(assoc_class).new(assoc_class)
-          assoc_instance = assoc_data_adapter.find_record c[:default_value]
-          r.merge(c[:name] => assoc_instance.send(assoc_method))
-        end
       end
 
       # Override to change the default bottom toolbar

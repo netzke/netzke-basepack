@@ -40,6 +40,18 @@ module Netzke
         res
       end
 
+      # TODO: document
+      def netzke_association_values(attr_hash) #:nodoc:
+        @_netzke_association_values ||= {}.tap do |values|
+          attr_hash.each_pair do |name,c|
+            values[name] = value_for_attribute(c, true) if is_association_attr?(c)
+          end
+        end
+        #final_columns.select{ |c| c[:name].index("__") }.each.inject({}) do |r,c|
+          #r.merge(c[:name] => record.value_for_attribute(c, true))
+        #end
+      end
+
       # Fetches the value specified by an (association) attribute
       # If +through_association+ is true, get the value of the association by provided method, *not* the associated record's id
       # E.g., author__name with through_association set to true may return "Vladimir Nabokov", while with through_association set to false, it'll return author_id for the current record

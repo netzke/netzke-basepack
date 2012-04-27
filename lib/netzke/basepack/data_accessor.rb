@@ -2,9 +2,6 @@ module Netzke
   module Basepack
     # This module is included into such data-driven components as GridPanel, FormPanel, PagingFormPanel, etc.
     module DataAccessor
-
-
-
       # Returns options for comboboxes in grids/forms
       def combobox_options_for_column(column, method_options = {})
         data_adapter.combobox_options_for_column column, method_options
@@ -46,6 +43,21 @@ module Netzke
       # Mark an attribute as "virtual" by default, when it doesn't reflect a model column, or a model column of an association
       def set_default_virtual(c)
         c[:virtual] = data_adapter.column_virtual?(c) if c[:virtual].nil?
+      end
+
+      # Returns a hash of association attribute default values. Used when creating new records with association attributes that have a default value
+      def default_association_values(attr_hash) #:nodoc:
+        @_default_association_values ||= {}.tap do |values|
+          attr_hash.each_pair do |name,c|
+            next unless association_attr?(c) && c[:default_value]
+
+            assoc_name, assoc_method = c[:name].split '__'
+            assoc_class = data_adapter.class_for(assoc_name)
+            assoc_data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(assoc_class).new(assoc_class)
+            assoc_instance = assoc_data_adapter.find_record c[:default_value]
+            values[name] = assoc_instance.send(assoc_method)
+          end
+        end
       end
 
     end
