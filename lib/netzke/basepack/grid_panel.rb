@@ -76,8 +76,9 @@ module Netzke
     #     end
     #
     # * +format+ - the format to display data in case of date and datetime columns, e.g. 'Y-m-d g:i:s'.
+    # * +excluded+ - when true, this column will not be used in the grid (not even in the hidden mode)
     #
-    # Besides these options, a column can receive any meaningful config option understood by Ext.grid.column.Column.
+    # Besides these options, a column can receive any meaningful config option understood by Ext.grid.column.Column (such as +hidden+)
     #
     # == One-to-many association support
     # If the model bound to a grid +belongs_to+ another model, GridPanel can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:

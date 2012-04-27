@@ -125,6 +125,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/components/book_grid_with_column_actions.rb",
     "test/basepack_test_app/app/components/book_grid_with_custom_columns.rb",
     "test/basepack_test_app/app/components/book_grid_with_default_values.rb",
+    "test/basepack_test_app/app/components/book_grid_with_excluded_columns.rb",
     "test/basepack_test_app/app/components/book_grid_with_extra_feedback.rb",
     "test/basepack_test_app/app/components/book_grid_with_extra_filters.rb",
     "test/basepack_test_app/app/components/book_grid_with_nested_attributes.rb",

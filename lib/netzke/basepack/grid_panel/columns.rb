@@ -25,6 +25,9 @@ module Netzke
         end
 
         # An array of complete columns configs ready to be passed to the JS side.
+        # The +options+ hash can have the following keys:
+        #   * :with_excluded - when true, include the columns that are marked as excluded
+        #   * :with_meta - when true, include the meta column
         def final_columns(options = {})
           @_final_columns ||= {}
           @_final_columns[options] ||= [].tap do |cols|

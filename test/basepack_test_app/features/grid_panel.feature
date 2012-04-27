@@ -275,3 +275,9 @@ Scenario: Pagination in grid panel
   And  I wait for the response from the server
   Then I should see "Getting Things Done"
   And I should see "Magus"
+
+@javascript
+Scenario: Hidden columns
+    When I go to the BookGridWithExcludedColumns test page
+    Then I should not see "Notes"
+    And I should not see "Exemplars"
