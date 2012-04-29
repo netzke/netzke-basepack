@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Sergei Kozlov"]
-  s.date = "2012-04-27"
+  s.date = "2012-04-29"
   s.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
   s.email = "sergei@playcode.nl"
   s.extra_rdoc_files = [
@@ -55,7 +55,6 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/form_panel/fields.rb",
     "lib/netzke/basepack/form_panel/javascripts/comma_list_cbg.js",
     "lib/netzke/basepack/form_panel/javascripts/form_panel.js",
-    "lib/netzke/basepack/form_panel/javascripts/misc.js",
     "lib/netzke/basepack/form_panel/javascripts/n_radio_group.js",
     "lib/netzke/basepack/form_panel/javascripts/readonly_mode.js",
     "lib/netzke/basepack/form_panel/services.rb",
@@ -118,6 +117,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/components/book_form.rb",
     "test/basepack_test_app/app/components/book_form_with_custom_fields.rb",
     "test/basepack_test_app/app/components/book_form_with_defaults.rb",
+    "test/basepack_test_app/app/components/book_form_with_file_upload.rb",
     "test/basepack_test_app/app/components/book_form_with_nested_attributes.rb",
     "test/basepack_test_app/app/components/book_grid.rb",
     "test/basepack_test_app/app/components/book_grid_filtering.rb",
