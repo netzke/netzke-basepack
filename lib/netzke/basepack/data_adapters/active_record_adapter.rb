@@ -199,11 +199,6 @@ module Netzke::Basepack::DataAdapters
 
       relation = apply_column_filters(relation, params[:filter]) if params[:filter]
 
-      if params[:extra_conditions]
-        extra_conditions = normalize_extra_conditions(ActiveSupport::JSON.decode(params[:extra_conditions]))
-        relation = relation.extend_with_netzke_conditions(extra_conditions) if params[:extra_conditions]
-      end
-
       query = params[:query] && ActiveSupport::JSON.decode(params[:query])
 
       if query.present?

@@ -31,10 +31,6 @@ module Netzke
     #
     #     :scope => ["id > ?", 100])
     #
-    #   When it's a Proc, it's passed the model class, and is expected to return a ActiveRecord::Relation, e.g.:
-    #
-    #     :scope => { |rel| rel.where(:id.gt => 100).order(:created_at) }
-    #
     # * +strong_default_attrs+ - (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. {:role_id => 1}
     # * +enable_column_filters+ - (defaults to true) enable filters in column's context menu
     # * +enable_edit_in_form+ - (defaults to true) provide buttons into the toolbar that activate editing/adding records via a form
@@ -313,6 +309,10 @@ module Netzke
           f.mode = config[:mode]
           f.items = default_fields_for_forms
         end
+      end
+
+      def self.server_side_config_options
+        super + [:scope]
       end
 
     end

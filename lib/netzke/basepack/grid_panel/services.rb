@@ -242,13 +242,6 @@ module Netzke
             end
             mod_records
           end
-
-          def normalize_extra_conditions(conditions)
-            conditions.each_pair do |k,v|
-              conditions[k] = "%#{v}%" if ["like", "matches"].include?(k.to_s.split("__").last)
-            end
-          end
-
       end
     end
   end
