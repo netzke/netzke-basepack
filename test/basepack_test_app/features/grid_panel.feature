@@ -281,3 +281,21 @@ Scenario: Hidden columns
     When I go to the BookGridWithExcludedColumns test page
     Then I should not see "Notes"
     And I should not see "Exemplars"
+
+@javascript
+Scenario: Editing in grid with mass-assignment security
+  # exemplars and author_id are protected attributes, not possible to change
+  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
+  And a book exists with title: "Lolita", author: that author, exemplars: 100
+  And an author exists with first_name: "Herman", last_name: "Hesse"
+  When I go to the BookGridWithMassAssignmentSecurity test page
+  And I expand combobox "author__name" in row 1 of the grid
+  And I wait for the response from the server
+  And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
+  And I edit row 1 of the grid with title: "Demian", exemplars: 200
+  And I stop editing the grid
+  And I press "Apply"
+  And I wait for the response from the server
+  Then a book should not exist with author: that author
+  And a book should not exist with exemplars: 200
+  But a book should exist with title: "Demian", exemplars: 100

@@ -8,6 +8,11 @@ module Netzke
           @data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(self).new(self)
         end
 
+        # Whether an attribute is mass assignable. As second argument optionally takes the role.
+        def attribute_mass_assignable?(attr_name, role = :default)
+          accessible_attributes(role).empty? ? !protected_attributes(role).include?(attr_name.to_s) : accessible_attributes(role).include?(attr_name.to_s)
+        end
+
       protected
 
         # FIXME: this duplicates with is_association_attr? below
@@ -84,12 +89,12 @@ module Netzke
       end
 
       # Assigns new value to an (association) attribute
-      def set_value_for_attribute(a, v)
+      def set_value_for_attribute(a, v, role = :default)
         v = v.to_time_in_current_zone if v.is_a?(Date) # convert Date to Time
 
         if a[:setter]
           a[:setter].call(self, v)
-        elsif respond_to?("#{a[:name]}=")
+        elsif respond_to?("#{a[:name]}=") && self.class.attribute_mass_assignable?(a[:name], role)
           send("#{a[:name]}=", v)
         elsif is_association_attr?(a)
           split = a[:name].to_s.split(/\.|__/)
@@ -114,7 +119,7 @@ module Netzke
                     # what should we do in this case?
                   end
                 else
-                  self.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}=", v)
+                  self.send("#{assoc.foreign_key}=", v) if self.class.attribute_mass_assignable?(assoc.foreign_key, role)
                 end
               else
                 logger.debug "Netzke::Basepack: Association #{assoc} is not known for class #{self.class.name}"

@@ -31,6 +31,7 @@ module Netzke
     #
     #     :scope => ["id > ?", 100])
     #
+    # * +role+ - role for ActiveModel mass-assignment security
     # * +strong_default_attrs+ - (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. {:role_id => 1}
     # * +enable_column_filters+ - (defaults to true) enable filters in column's context menu
     # * +enable_edit_in_form+ - (defaults to true) provide buttons into the toolbar that activate editing/adding records via a form
@@ -42,8 +43,6 @@ module Netzke
     # * +rows_per_page+ - (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to +false+)
     # * +load_inline_data+ - (defaults to true) load initial data into the grid right after its instantiation
     # * (TODO) +mode+ - when set to +config+, GridPanel loads in configuration mode
-    # * <tt>[add|edit|multi_edit]_search_form_config</tt> - additional configuration for add/edit/multi_edit/search form panel
-    # * <tt>[add|edit|multi_edit]_form_window_config</tt> - additional configuration for the window that wrapps up add/edit/multi_edit form panel
     #
     # == Columns
     # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name of model's (virtual) attribute (in which case the configuration will be fully automatic), or a hash that may contain the following configuration options as keys:

@@ -8,6 +8,11 @@ class BookForm < Netzke::Basepack::FormPanel
 
   record_id Book.first.try(:id)
 
+  def configure
+    super
+    config.role = :user
+  end
+
   def items
     [
       :title,

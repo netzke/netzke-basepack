@@ -222,7 +222,7 @@ module Netzke
                 record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
 
                 record_hash.each_pair do |k,v|
-                  record.set_value_for_attribute(final_columns_hash[k.to_sym].nil? ? {:name => k} : final_columns_hash[k.to_sym], v)
+                  record.set_value_for_attribute(final_columns_hash[k.to_sym].nil? ? {:name => k} : final_columns_hash[k.to_sym], v, config.role || :default)
                 end
 
                 # try to save

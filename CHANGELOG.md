@@ -1,6 +1,7 @@
 # 0.8.0 - ?
 * improvements
   * BorderLayoutPanel is removed. Any component can now implement its items persistence by including `Netzke::Basepack::ItemsPersistence` module
+  * Grid/FormPanel respect `attr_accessible` and `attr_protected` on the model; set the `role` config option on them to tune mass-assignment security
 
 # 0.7.5 - ?
 * improvements
