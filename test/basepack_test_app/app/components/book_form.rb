@@ -10,7 +10,7 @@ class BookForm < Netzke::Basepack::FormPanel
 
   def configure
     super
-    config.role = :user
+    # config.role = :user
   end
 
   def items

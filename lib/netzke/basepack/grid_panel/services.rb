@@ -6,11 +6,12 @@ module Netzke
 
         included do
 
-          endpoint :get_data do |params|
-            get_data(params)
+          endpoint :get_data do |params, this|
+            # not a usual Netzke endpoint, as it's being used by the Ext.data.DirectStore
+            this.merge! get_data(params)
           end
 
-          endpoint :post_data do |params|
+          endpoint :post_data do |params, this|
             mod_records = {}
             [:create, :update].each do |operation|
               data = ActiveSupport::JSON.decode(params["#{operation}d_records"]) if params["#{operation}d_records"]
@@ -22,33 +23,31 @@ module Netzke
 
             on_data_changed
 
-            {
-              :update_new_records => mod_records[:create],
-              :update_mod_records => mod_records[:update] || {},
-              :netzke_feedback => @flash
-            }
+            this.update_new_records mod_records[:create]
+            this.update_mod_records mod_records[:update] if mod_records[:update]
+            this.netzke_feedback @flash
           end
 
-          endpoint :delete_data do |params|
+          endpoint :delete_data do |params, this|
             if !config[:prohibit_delete]
               record_ids = ActiveSupport::JSON.decode(params[:records])
               data_adapter.destroy(record_ids)
               on_data_changed
-              {:netzke_feedback => I18n.t('netzke.basepack.grid_panel.deleted_n_records', :n => record_ids.size), :load_store_data => get_data}
+              this.netzke_feedback I18n.t('netzke.basepack.grid_panel.deleted_n_records', :n => record_ids.size)
+              this.load_store_data get_data
             else
-              {:netzke_feedback => I18n.t('netzke.basepack.grid_panel.cannot_delete')}
+              this.netzke_feedback I18n.t('netzke.basepack.grid_panel.cannot_delete')
             end
           end
 
-          endpoint :resize_column do |params|
+          endpoint :resize_column do |params, this|
             raise "Called resize_column endpoint while not configured to do so" if !config[:persistence]
             current_columns_order = state[:columns_order] || initial_columns_order
             current_columns_order[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
             update_state(:columns_order, current_columns_order)
-            {}
           end
 
-          endpoint :move_column do |params|
+          endpoint :move_column do |params, this|
             raise "Called move_column endpoint while not configured to do so" if !config[:persistence]
             remove_from = normalize_index(params[:old_index].to_i)
             insert_to = normalize_index(params[:new_index].to_i)
@@ -59,88 +58,71 @@ module Netzke
             current_columns_order.insert(insert_to, column_to_move)
 
             update_state(:columns_order, current_columns_order)
-
-            {}
           end
 
-          endpoint :hide_column do |params|
+          endpoint :hide_column do |params, this|
             raise "Called hide_column endpoint while not configured to do so" if !config[:persistence]
             current_columns_order = state[:columns_order] || initial_columns_order
             current_columns_order[normalize_index(params[:index].to_i)][:hidden] = params[:hidden]
             update_state(:columns_order, current_columns_order)
-            {}
           end
 
           # Returns choices for a column
-          endpoint :get_combobox_options do |params|
+          endpoint :get_combobox_options do |params, this|
             query = params[:query]
 
             column = final_columns.detect{ |c| c[:name] == params[:column] }
             scope = column.to_options[:scope] || column.to_options[:editor].try(:fetch, :scope, nil)
             query = params[:query]
 
-            {:data => combobox_options_for_column(column, :query => query, :scope => scope, :record_id => params[:id])}
+            this[:data] = combobox_options_for_column(column, :query => query, :scope => scope, :record_id => params[:id])
           end
 
-          endpoint :move_rows do |params|
+          endpoint :move_rows do |params, this|
             data_adapter.move_records(params)
-            {}
           end
 
-        end
-        #
-        # Some components' overridden endpoints
-        #
+          # When providing the edit_form component, fill in the form with the requested record
+          endpoint :deliver_component do |params, this|
+            if params[:name] == 'edit_window'
+              components[:edit_window].form_config.record_id = params[:record_id].to_i
+            end
 
-        ## Edit in form specific endpoint
-        def add_form__form_panel0__netzke_submit_endpoint(params)
-          res = component_instance(:add_form__form_panel0).netzke_submit(params)
-
-          if res[:set_form_values]
-            # successful creation
-            on_data_changed
-            res[:set_form_values] = nil
-          end
-          res.to_nifty_json
-        end
-
-        def edit_form__form_panel0__netzke_submit_endpoint(params)
-          res = component_instance(:edit_form__form_panel0).netzke_submit(params)
-
-          if res[:set_form_values]
-            on_data_changed
-            res[:set_form_values] = nil
+            super(params, this)
           end
 
-          res.to_nifty_json
-        end
+          # Process the submit of multi-editing form ourselves
+          endpoint :multi_edit_window__multi_edit_form__netzke_submit do |params, this|
+            ids = ActiveSupport::JSON.decode(params.delete(:ids))
+            data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
 
-        def multi_edit_window__multi_edit_form__netzke_submit_endpoint(params)
-          ids = ActiveSupport::JSON.decode(params.delete(:ids))
-          data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
+            data.map!{|el| el.delete_if{ |k,v| v.is_a?(String) && v.blank? }} # only interested in set values
 
-          data.map!{|el| el.delete_if{ |k,v| v.is_a?(String) && v.blank? }} # only interested in set values
+            mod_records_count = process_data(data, :update).count
 
-          mod_records_count = process_data(data, :update).count
+            # remove duplicated flash messages
+            @flash = @flash.inject([]){ |r,hsh| r.include?(hsh) ? r : r.push(hsh) }
 
-          # remove duplicated flash messages
-          @flash = @flash.inject([]){ |r,hsh| r.include?(hsh) ? r : r.push(hsh) }
+            if mod_records_count > 0
+              on_data_changed
+              this.set_result("ok")
+            end
 
-          if mod_records_count > 0
-            on_data_changed
-            {:set_result => "ok", :netzke_feedback => @flash}.to_nifty_json
-          else
-            {:netzke_feedback => @flash}.to_nifty_json
-          end
-        end
-
-        # When providing the edit_form component, fill in the form with the requested record
-        def deliver_component_endpoint(params)
-          if params[:name] == 'edit_window'
-            components[:edit_window].form_config.record_id = params[:record_id].to_i
+            this.netzke_feedback(@flash)
           end
 
-          super
+          # The following two look a bit hackish, but serve to invoke on_data_changed when a form gets successfully submitted
+          endpoint :add_window__add_form__netzke_submit do |params, this|
+            this.merge!(component_instance(:add_window__add_form).invoke_endpoint(:netzke_submit, params))
+            on_data_changed if this.set_form_values.present?
+            this.delete(:set_form_values)
+          end
+
+          endpoint :edit_window__edit_form__netzke_submit do |params, this|
+            this.merge!(component_instance(:edit_window__edit_form).invoke_endpoint(:netzke_submit, params))
+            on_data_changed if this.set_form_values.present?
+            this.delete(:set_form_values)
+          end
         end
 
         # Implementation for the "get_data" endpoint
@@ -192,7 +174,8 @@ module Netzke
           end
 
           # Override this method to react on each operation that caused changing of data
-          def on_data_changed; end
+          def on_data_changed
+          end
 
           # Given an index of a column among enabled (non-excluded) columns, provides the index (position) in the table
           def normalize_index(index)

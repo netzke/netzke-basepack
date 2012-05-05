@@ -33,10 +33,10 @@ module Netzke
         })
       end
 
-      endpoint :get_data do |params|
+      endpoint :get_data do |params, this|
         @record = data_adapter.get_records(params).first
         record_hash = @record && js_record_data
-        {:records => record_hash && [record_hash] || [], :total => total_records(params)}
+        this.merge!(:records => record_hash && [record_hash] || [], :total => total_records(params))
       end
 
       action :search do |a|
@@ -56,12 +56,11 @@ module Netzke
         c.model = config[:model]
       end
 
-      protected
+    protected
 
-        def total_records(params = {})
-          @total_records ||= data_adapter.count_records(params, [])
-        end
-
+      def total_records(params = {})
+        @total_records ||= data_adapter.count_records(params, [])
+      end
     end
   end
 end
