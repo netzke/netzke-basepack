@@ -159,15 +159,6 @@ module Netzke
 
           # Returns an array of records.
           def get_records(params)
-
-            # Restore params from component_session if requested
-            if params[:with_last_params]
-              params = component_session[:last_params]
-            else
-              # remember the last params
-              component_session[:last_params] = params
-            end
-
             params[:limit] = config[:rows_per_page] if config[:enable_pagination]
             params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
@@ -175,14 +166,6 @@ module Netzke
           end
 
           def count_records(params)
-            # Restore params from component_session if requested
-            if params[:with_last_params]
-              params = component_session[:last_params]
-            else
-              # remember the last params
-              component_session[:last_params] = params
-            end
-
             params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
             data_adapter.count_records(params, columns)
