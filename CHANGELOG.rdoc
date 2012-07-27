@@ -1,4 +1,6 @@
-= 0.7.5 - ?
+= 0.7.5 - 2012-07-27
+* Rails 3.2 compatibility
+
 * improvements
   * data-related operations in grids and forms are moved to data adapters; implemented (partial) support for DataMapper and Sequel (see updated README)
   * afterApply event in forms and grids (pschyska)
