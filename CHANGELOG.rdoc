@@ -1,11 +1,12 @@
 = 0.7.5 - ?
 * improvements
   * data-related operations in grids and forms are moved to data adapters; implemented (partial) support for DataMapper and Sequel (see updated README)
-  * afterApply event in forms and grids (credits to pschyska)
-  * apply event fired before apply button is processed in FormPanel (credits to pschyska)
+  * afterApply event in forms and grids (pschyska)
+  * apply event fired before apply button is processed in FormPanel (pschyska)
 
 * bug fix
-  * advanced search panel works again (thanks pididi!)
+  * advanced search panel works again (pididi)
+  * fixed a problem with session and GridPanel
 
 = 0.7.4 - 2012-03-05
 * bug fix
