@@ -1,5 +1,8 @@
+= 0.7.6 - 2012-07-27
+* Fix netzke-core version dependency in gemspec
+
 = 0.7.5 - 2012-07-27
-* Rails 3.2 compatibility
+* Rails 3.2
 
 * improvements
   * data-related operations in grids and forms are moved to data adapters; implemented (partial) support for DataMapper and Sequel (see updated README)

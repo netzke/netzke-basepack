@@ -6,27 +6,10 @@ begin
     gemspec.name = "netzke-basepack"
     gemspec.summary = "Pre-built Rails + ExtJS components for your RIA"
     gemspec.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
-    gemspec.email = "sergei@playcode.nl"
+    gemspec.email = "nmcoder@gmail.com"
     gemspec.homepage = "http://netzke.org"
-    gemspec.authors = ["Sergei Kozlov"]
-    gemspec.add_dependency("netzke-core",   "~>0.7.4")
-    gemspec.post_install_message = <<-MESSAGE
-
-========================================================================
-
-           Thanks for installing netzke-basepack!
-
-  Don't forget to run "rails generate netzke:baspack" to copy necessary
-  assets to your public folder!
-
-  Netzke home page:     http://netzke.org
-  Netzke Google Groups: http://groups.google.com/group/netzke
-  Netzke tutorials:     http://blog.writelesscode.com
-
-========================================================================
-
-    MESSAGE
-
+    gemspec.authors = ["Denis Gorin"]
+    gemspec.add_dependency("netzke-core",   "~>0.7.6")
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
