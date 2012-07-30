@@ -1,3 +1,7 @@
+= 0.7.7 - ?
+* bug fix
+  * models with non-conventional primary keys could not be updated by gridpanel (davide)
+
 = 0.7.6 - 2012-07-27
 * Fix netzke-core version dependency in gemspec
 
