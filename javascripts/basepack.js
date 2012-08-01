@@ -133,16 +133,3 @@ Ext.override( Ext.form.field.Checkbox, {
     return this.callOverridden() || false; // 'off';
   }
 });
-
-/* We were missing the 'load' event on proxy, implementing it ourselves */
-Ext.override(Ext.data.proxy.Server, {
-  constructor: function() {
-    this.addEvents('load');
-    this.callOverridden([arguments]);
-  },
-
-  processResponse: function(success, operation, request, response, callback, scope){
-    this.callOverridden(arguments);
-    this.fireEvent('load', this, response, operation);
-  }
-});
