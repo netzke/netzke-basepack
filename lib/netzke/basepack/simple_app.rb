@@ -40,6 +40,11 @@ module Netzke
 
       js_mixin :simple_app
 
+      # In Ext 4.1 calling `render` on a viewport causes an error
+      def js_component_render
+        ""
+      end
+
       def configuration
         super.merge(
           :items => [main_panel_config, menu_bar_config, status_bar_config]
