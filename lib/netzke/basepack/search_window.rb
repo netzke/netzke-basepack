@@ -7,7 +7,7 @@ module Netzke
       end
 
       action :cancel do
-        { :text => I18n.t('netzke.basepack.search_window.action.search') }
+        { :text => I18n.t('netzke.basepack.search_window.action.cancel') }
       end
 
       js_properties :width => "50%",
