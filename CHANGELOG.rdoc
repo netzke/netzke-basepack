@@ -1,4 +1,9 @@
 = 0.7.7 - ?
+* Ext JS 4.1.x support
+
+* improvements
+  * cleaner handling of association column editing in GridPanel
+
 * bug fix
   * models with non-conventional primary keys could not be updated by gridpanel (davide)
 
