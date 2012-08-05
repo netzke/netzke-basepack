@@ -1,9 +1,12 @@
 # Warning: this component participates in i18n.feature, careful with adding new fields!
 class AuthorForm < Netzke::Basepack::FormPanel
-  js_property :title, Author.model_name.human
+  js_configure do |c|
+    c.title = Author.model_name.human
+  end
 
-  def configuration
-    super.merge(
+  def configure(c)
+    super
+    c.merge!(
       :model => "Author",
       # :record => Author.first,
       # :items => [

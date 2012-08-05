@@ -1,4 +1,5 @@
 class WindowComponentLoader < Netzke::Base
+
   component :some_window do |c|
     c.persistence = true
     c.klass = Netzke::Basepack::Window
@@ -15,11 +16,14 @@ class WindowComponentLoader < Netzke::Base
     c.bbar = [:load_window]
   end
 
-  js_method :on_load_window, <<-JS
-    function(params){
-      this.loadNetzkeComponent({name: "some_window", callback: function(w){
-        w.show();
-      }});
-    }
-  JS
+  js_configure do |c|
+    c.on_load_window = <<-JS
+      function(params){
+        this.loadNetzkeComponent({name: "some_window", callback: function(w){
+          w.show();
+        }});
+      }
+    JS
+  end
+
 end

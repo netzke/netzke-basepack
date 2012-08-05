@@ -14,7 +14,9 @@ module Netzke
     #     ]
     #   end
     class BorderLayoutPanel < Netzke::Base
-      js_mixin :border_layout_panel
+      js_configure do |c|
+        c.mixin
+      end
 
       def items
         return @blp_items unless @blp_items.nil?
