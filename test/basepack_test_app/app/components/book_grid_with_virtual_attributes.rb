@@ -1,12 +1,7 @@
 class BookGridWithVirtualAttributes < Netzke::Basepack::GridPanel
-  js_property :title, "Books"
-
   include Extras::BookPresentation
 
-  def configure
-    super
-    config.model = "Book"
-  end
+  model "Book"
 
   def columns
     custom_fields

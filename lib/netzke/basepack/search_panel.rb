@@ -6,41 +6,38 @@ module Netzke
 
       include Netzke::Basepack::DataAccessor
 
-      js_base_class "Ext.form.FormPanel"
+      js_configure do |c|
+        c.extend = "Ext.form.FormPanel"
+        c.padding = 5
+        c.auto_scroll = true
+        c.include :condition_field
+        c.mixin
+        c.attribute_operators_map = {
+          :integer => [
+            ["eq", I18n.t('netzke.basepack.search_panel.equals')],
+            ["gt", I18n.t('netzke.basepack.search_panel.greater_than')],
+            ["lt", I18n.t('netzke.basepack.search_panel.less_than')]
+          ],
+          :text => [
+            ["contains", I18n.t('netzke.basepack.search_panel.contains')] # same as matches => %string%
+          ],
+          :string => [
+            ["contains", I18n.t('netzke.basepack.search_panel.contains')], # same as matches => %string%
+            ["matches", I18n.t('netzke.basepack.search_panel.matches')]
+          ],
+          :boolean => [
+            ["is_any", I18n.t('netzke.basepack.search_panel.is_true')],
+            ["is_true", I18n.t('netzke.basepack.search_panel.is_true')],
+            ["is_false", I18n.t('netzke.basepack.search_panel.is_false')]
+          ],
+          :datetime => [
+            ["eq", I18n.t('netzke.basepack.search_panel.date_equals')],
+            ["gt", I18n.t('netzke.basepack.search_panel.after')],
+            ["lt", I18n.t('netzke.basepack.search_panel.before')]
+          ]
+        }
 
-      js_properties(
-        :padding => 5,
-        :auto_scroll => true
-      )
-
-      js_include :condition_field
-
-      js_mixin :search_panel
-
-      js_property :attribute_operators_map, {
-        :integer => [
-          ["eq", I18n.t('netzke.basepack.search_panel.equals')],
-          ["gt", I18n.t('netzke.basepack.search_panel.greater_than')],
-          ["lt", I18n.t('netzke.basepack.search_panel.less_than')]
-        ],
-        :text => [
-          ["contains", I18n.t('netzke.basepack.search_panel.contains')] # same as matches => %string%
-        ],
-        :string => [
-          ["contains", I18n.t('netzke.basepack.search_panel.contains')], # same as matches => %string%
-          ["matches", I18n.t('netzke.basepack.search_panel.matches')]
-        ],
-        :boolean => [
-          ["is_any", I18n.t('netzke.basepack.search_panel.is_true')],
-          ["is_true", I18n.t('netzke.basepack.search_panel.is_true')],
-          ["is_false", I18n.t('netzke.basepack.search_panel.is_false')]
-        ],
-        :datetime => [
-          ["eq", I18n.t('netzke.basepack.search_panel.date_equals')],
-          ["gt", I18n.t('netzke.basepack.search_panel.after')],
-          ["lt", I18n.t('netzke.basepack.search_panel.before')]
-        ]
-      }
+      end
 
       # Builds default query search panel, where each field is presented
       def default_query

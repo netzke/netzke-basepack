@@ -1,6 +1,4 @@
 class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
-  js_property :title, "Books"
-
   model "Book"
 
   column :author__first_name do |c|
@@ -49,9 +47,11 @@ class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
   #column :exemplars
   #column :updated_at
 
-  js_method :my_renderer, <<-JS
-    function(value){
-      return value ? "*" + value + "*" : "";
-    }
-  JS
+  js_configure do |c|
+    c.my_renderer = <<-JS
+      function(value){
+        return value ? "*" + value + "*" : "";
+      }
+    JS
+  end
 end

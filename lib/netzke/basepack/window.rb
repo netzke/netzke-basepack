@@ -11,9 +11,10 @@ module Netzke
     #
     #     netzke :window, :item => {:class_name => "GridPanel", :model => "User"}
     class Window < Netzke::Base
-      js_base_class "Ext.window.Window"
-
-      js_mixin
+      js_configure do |c|
+        c.extend = "Ext.window.Window"
+        c.mixin
+      end
 
       endpoint :set_size_and_position do |params|
         update_persistent_options(

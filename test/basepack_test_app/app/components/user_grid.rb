@@ -1,5 +1,9 @@
 class UserGrid < Netzke::Basepack::GridPanel
-  title "Users"
+  def configure(c)
+    super
+    c.title = "Users"
+  end
+
   model "User"
 
   add_form_config :class_name => "UserForm"

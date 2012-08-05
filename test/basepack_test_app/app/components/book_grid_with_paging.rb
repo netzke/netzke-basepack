@@ -1,10 +1,9 @@
-# NOTE: not used
 class BookGridWithPaging < Netzke::Basepack::GridPanel
-  js_property :title, "Books with paging"
   model "Book"
 
-  def configure
+  def configure(c)
     super
-    @config[:rows_per_page] = 2
+    c.title = "Books with paging"
+    c.rows_per_page = 2
   end
 end

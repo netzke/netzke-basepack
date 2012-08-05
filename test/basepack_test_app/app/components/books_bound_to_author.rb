@@ -3,12 +3,10 @@ class BooksBoundToAuthor < Netzke::Basepack::GridPanel
 
   model "Book"
 
-  def configure
+  def configure(c)
     super
-    @config.merge!(
-      :scope => {:author_id => Author.first.id},
-      :strong_default_attrs => {:author_id => Author.first.id}
-    )
+    c.scope = {:author_id => Author.first.id}
+    c.strong_default_attrs = {:author_id => Author.first.id}
   end
 
 end

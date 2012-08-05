@@ -13,9 +13,10 @@ module Netzke
 
       include WrapLazyLoaded
 
-      js_base_class "Ext.TabPanel"
-
-      js_mixin :tab_panel
+      js_configure do |c|
+        c.extend = "Ext.tab.Panel"
+        c.mixin
+      end
     end
   end
 end

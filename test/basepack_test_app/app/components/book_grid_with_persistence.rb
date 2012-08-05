@@ -3,8 +3,8 @@ class BookGridWithPersistence < BookGrid
     c.excluded = true
   end
 
-  def configure
+  def configure(c)
     super
-    config.persistence = true
+    c.persistence = true
   end
 end

@@ -30,12 +30,10 @@ module Netzke
     # * +netzke_submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling onApply)
     # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
     class FormPanel < Netzke::Base
-
-      js_base_class "Ext.form.Panel"
-
       include self::Services
       include self::Fields
       include Netzke::Basepack::DataAccessor
+      include Netzke::ConfigToDslDelegator
 
       delegates_to_dsl :model, :record_id
 
@@ -57,13 +55,13 @@ module Netzke
         a.icon = :cancel
       end
 
-      def configure
+      def configure(c)
         super
 
-        configure_locked(@config)
-        configure_bbar(@config)
+        configure_locked(c)
+        configure_bbar(c)
 
-        @config[:record_id] = @config[:record] = nil if @config[:multi_edit] # never set record_id in multi-edit mode
+        c[:record_id] = c[:record] = nil if c[:multi_edit] # never set record_id in multi-edit mode
       end
 
       def configure_locked(c)
@@ -74,10 +72,14 @@ module Netzke
         c[:bbar] = [:apply] if c[:bbar].nil? && !c[:read_only]
       end
 
+      js_configure do |c|
+        c.extend = "Ext.form.Panel"
+        c.mixin :form_panel
+        c.include :comma_list_cbg
+        c.include :n_radio_group, :readonly_mode
+      end
+
       # Extra JavaScripts and stylesheets
-      js_mixin :form_panel
-      js_include :comma_list_cbg
-      js_include :n_radio_group, :readonly_mode
       css_include :readonly_mode
 
       def js_config

@@ -120,7 +120,6 @@ module Netzke
     # * +edit_in_form_available+ - (defaults to true) include code for (multi-record) editing and adding records through a form
     # * +extended_search_available+ - (defaults to true) include code for extended configurable search
     class GridPanel < Netzke::Base
-      js_base_class "Ext.grid.Panel"
 
       class_attribute :columns_attr
 
@@ -130,17 +129,23 @@ module Netzke
       # Class-level configuration. These options directly influence the amount of generated
       # javascript code for this component's class. For example, if you don't want filters for the grid,
       # set column_filters_available to false, and the javascript for the filters won't be included at all.
-      class_config_option :column_filters_available, true
+      class_attribute :column_filters_available
+      self.column_filters_available = true
 
-      class_config_option :extended_search_available, true
+      class_attribute :extended_search_available
+      self.extended_search_available = true
 
-      class_config_option :edit_in_form_available, true
+      class_attribute :edit_in_form_available
+      self.edit_in_form_available = true
 
-      class_config_option :rows_reordering_available, false
+      class_attribute :rows_reordering_available
+      self.rows_reordering_available = false
 
-      class_config_option :config_tool_available, false
+      class_attribute :config_tool_available
+      self.config_tool_available = false
 
-      class_config_option :default_instance_config, {
+      class_attribute :default_instance_config
+      self.default_instance_config = {
         :enable_edit_in_form    => edit_in_form_available,
         :enable_extended_search => extended_search_available,
         :enable_column_filters  => column_filters_available,
@@ -151,39 +156,44 @@ module Netzke
         :tools                  => %w{ refresh }
       }
 
-      include self::Services
-      include self::Columns
-      include Netzke::Basepack::DataAccessor
+      # JavaScript class configuration
+      js_configure do |c|
+        c.extend = "Ext.grid.Panel"
+        c.mixin :grid_panel, :event_handling
+        c.mixin :advanced_search if extended_search_available
+        c.mixin :edit_in_form if edit_in_form_available
 
-      js_mixin :grid_panel, :event_handling
-      js_mixin :advanced_search if extended_search_available
-      js_mixin :edit_in_form if edit_in_form_available
+        c.translate *%w[are_you_sure confirmation]
 
-      js_translate *%w[are_you_sure confirmation]
+        # JavaScript includes
+        ex = Netzke::Core.ext_path.join("examples")
 
-      # JavaScript includes
-      ex = Netzke::Core.ext_path.join("examples")
+        c.include ex.join("ux/CheckColumn.js")
+        c.include :check_column_fix
 
-      js_include(ex.join("ux/CheckColumn.js"))
-      js_include :check_column_fix
+        # Includes for column filters
+        if column_filters_available
+          [
+            "ux/grid/menu/ListMenu.js",
+            "ux/grid/menu/RangeMenu.js",
+            "ux/grid/FiltersFeature.js"
+          ].each{ |path| c.include(ex.join(path)) }
 
-      # Includes for column filters
-      if column_filters_available
-        [
-          "ux/grid/menu/ListMenu.js",
-          "ux/grid/menu/RangeMenu.js",
-          "ux/grid/FiltersFeature.js"
-        ].each{ |path| js_include(ex.join(path)) }
+          %w{Boolean Date List Numeric String}.unshift("").each do |f|
+            c.include(ex.join"ux/grid/filter/#{f}Filter.js")
+          end
+        end
 
-        %w{Boolean Date List Numeric String}.unshift("").each do |f|
-          js_include(ex.join"ux/grid/filter/#{f}Filter.js")
+        # Includes for rows reordering
+        if rows_reordering_available
+          c.include(ex.join("#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"))
         end
       end
 
-      # Includes for rows reordering
-      if rows_reordering_available
-        js_include(ex.join("#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"))
-      end
+      include self::Services
+      include self::Columns
+      include Netzke::Basepack::DataAccessor
+      include Netzke::ConfigToDslDelegator
 
       # Allows children classes to simply do
       #

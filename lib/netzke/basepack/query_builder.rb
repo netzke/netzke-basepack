@@ -1,13 +1,12 @@
 module Netzke
   module Basepack
     class QueryBuilder < Netzke::Base
-      js_base_class "Ext.tab.Panel"
-
-      js_property :active_tab, 0
-
-      js_translate :overwrite_confirm, :overwrite_confirm_title, :delete_confirm, :delete_confirm_title
-
-      js_mixin :query_builder
+      js_configure do |c|
+        c.extend = "Ext.tab.Panel"
+        c.active_tab = 0
+        c.translate :overwrite_confirm, :overwrite_confirm_title, :delete_confirm, :delete_confirm_title
+        c.mixin
+      end
 
       component :search_panel do |c|
         c.klass = SearchPanel

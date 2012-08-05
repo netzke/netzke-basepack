@@ -6,10 +6,12 @@ class BookGridWithColumnActions < Netzke::Basepack::GridPanel
 
   column_action :delete_row, :icon => "#{Netzke::Core.ext_uri}/resources/themes/images/default/tree/drop-no.gif"
 
-  js_method :on_delete_row, <<-JS
-    function(record){
-      this.getSelectionModel().select(record);
-      this.onDel();
-    }
-  JS
+  js_configure do |c|
+    c.on_delete_row = <<-JS
+      function(record){
+        this.getSelectionModel().select(record);
+        this.onDel();
+      }
+    JS
+  end
 end

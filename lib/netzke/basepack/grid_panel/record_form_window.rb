@@ -16,15 +16,35 @@ module Netzke
           c.multi_edit = true
         end
 
-        def configure
+        def configure(c)
           super
-          config.fbar = [:ok, :cancel]
+          c.fbar = [:ok, :cancel]
         end
 
-        js_properties :button_align => :right,
-                      :width => 400,
-                      :auto_height => true,
-                      :modal => true
+        js_configure do |c|
+          c.button_align = :right
+          c.width = 400
+          c.auto_height = true
+          c.modal = true
+          c.init_component = <<-JS
+            function(params){
+              this.callParent();
+              this.items.first().on("submitsuccess", function(){ this.closeRes = "ok"; this.close(); }, this);
+            }
+          JS
+
+          c.on_ok = <<-JS
+            function(params){
+              this.items.first().onApply();
+            }
+          JS
+
+          c.on_cancel = <<-JS
+            function(params){
+              this.close();
+            }
+          JS
+        end
 
         action :ok do |a|
           a.text = I18n.t('netzke.basepack.grid_panel.record_form_window.actions.ok')
@@ -33,25 +53,6 @@ module Netzke
         action :cancel do |a|
           a.text = I18n.t('netzke.basepack.grid_panel.record_form_window.actions.cancel')
         end
-
-        js_method :init_component, <<-JS
-          function(params){
-            this.callParent();
-            this.items.first().on("submitsuccess", function(){ this.closeRes = "ok"; this.close(); }, this);
-          }
-        JS
-
-        js_method :on_ok, <<-JS
-          function(params){
-            this.items.first().onApply();
-          }
-        JS
-
-        js_method :on_cancel, <<-JS
-          function(params){
-            this.close();
-          }
-        JS
 
       private
 

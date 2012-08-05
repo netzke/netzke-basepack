@@ -2,19 +2,14 @@
 class BookForm < Netzke::Basepack::FormPanel
   include Extras::BookPresentation
 
-  title Book.model_name.human
-
   model "Book"
 
   record_id Book.first.try(:id)
 
-  def configure
+  def configure(c)
     super
-    # config.role = :user
-  end
-
-  def items
-    [
+    c.title Book.model_name.human
+    c.items = [
       :title,
       {:name => :author__first_name, :setter => author_first_name_setter},
       :author__name,
@@ -35,11 +30,16 @@ class BookForm < Netzke::Basepack::FormPanel
     ]
   end
 
-  js_method :init_component, <<-JS
-    function(){
-      this.callParent();
-      this.on('submitsuccess', function(){ this.netzkeFeedback('Suc'+'cess!')}, this);
-    }
-  JS
+  js_configure do |c|
+    c.init_component = <<-JS
+      function(){
+        this.callParent();
+        this.on('submitsuccess', function(){ this.netzkeFeedback('Suc'+'cess!')}, this);
+      }
+    JS
+  end
+
+  # def items
+  # end
 
 end
