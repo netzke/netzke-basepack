@@ -1,10 +1,10 @@
 class BookFormWithFileUpload < Netzke::Basepack::FormPanel
   model "Book"
 
-  def configure
+  def configure(c)
     super
-    config.record = Book.first
-    config.file_upload= true
+    c.record = Book.first
+    c.file_upload = true
   end
 
   # This should be supported by the model, e.g. using Carrierwave

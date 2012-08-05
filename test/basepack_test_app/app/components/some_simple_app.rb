@@ -31,9 +31,9 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
   js_property :border, false
 
   # Wrapping up original layout into a border-layout with the north panel being a fancy header
-  def configure
+  def configure(c)
     super
-    config.merge!(:items => [{
+    c.merge!(:items => [{
       :region => :north,
       :height => 35,
       :html => %Q{

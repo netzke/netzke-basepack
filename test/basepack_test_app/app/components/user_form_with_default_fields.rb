@@ -1,7 +1,7 @@
 class UserFormWithDefaultFields < Netzke::Basepack::FormPanel
-  def configure
+  def configure(c)
     super
-    @config.merge!(
+    c.merge!(
       :model => 'User',
       :record_id => User.first.id
     )

@@ -1,9 +1,9 @@
 class DoubleBookGrid < Netzke::Base
   js_property :layout, :border
 
-  def configure
+  def configure(c)
     super
-    @config[:items] = [{
+    c.items = [{
       :region => :center,
       :class_name => "Netzke::Basepack::GridPanel",
       :model => "Book"

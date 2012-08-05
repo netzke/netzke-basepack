@@ -10,9 +10,9 @@ class WindowComponentLoader < Netzke::Base
 
   action :load_window
 
-  def configure
+  def configure(c)
     super
-    config.bbar = [:load_window]
+    c.bbar = [:load_window]
   end
 
   js_method :on_load_window, <<-JS

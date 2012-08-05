@@ -3,9 +3,9 @@ class BookGridWithScopedAuthors < Netzke::Basepack::GridPanel
 
   model "Book"
 
-  def configure
+  def configure(c)
     super
-    @config[:columns] = [:title, {:name => :author__first_name, :scope => lambda{ |r| r.where("first_name LIKE ?", "%tom%")}}]
+    c.columns = [:title, {:name => :author__first_name, :scope => lambda{ |r| r.where("first_name LIKE ?", "%tom%")}}]
   end
 
 end

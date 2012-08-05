@@ -4,9 +4,9 @@ class SimplePanel < Netzke::Basepack::Panel
   js_properties :title  => "SimplePanel",
                 :html => "Original HTML"
 
-  def configure
+  def configure(c)
     super
-    config.bbar = [:update_html]
+    c.bbar = [:update_html]
   end
 
   endpoint :update_html_from_server do |params, this|

@@ -1,9 +1,9 @@
 class BookQueryBuilder < Netzke::Basepack::QueryBuilder
-  def configure
+  def configure(c)
     super
 
-    config[:model] = "Book"
-    config[:auto_scroll] = true
-    config.fields = []
+    c.model = "Book"
+    c.auto_scroll = true
+    c.fields = []
   end
 end

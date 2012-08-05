@@ -5,8 +5,8 @@ class BorderLayoutPanelWithPersistence < Netzke::Basepack::BorderLayoutPanel
     {title: "North", region: :north, height: 100, split: true, collapsible: true}
   ]
 
-  def configure
+  def configure(c)
     super
-    config.persistence = true
+    c.persistence = true
   end
 end

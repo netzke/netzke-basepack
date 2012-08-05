@@ -6,10 +6,10 @@ class SimpleTabPanel < Netzke::Basepack::TabPanel
     c.title = "Panel Two"
   end
 
-  def configure
+  def configure(c)
     super
 
-    config.items = [{
+    c.items = [{
       :html => "I'm a simple Ext.Panel",
       :title => "Panel One"
     },{

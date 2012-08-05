@@ -1,7 +1,7 @@
 class BookPagingFormPanel < Netzke::Basepack::PagingFormPanel
-  def configure
+  def configure(c)
     super
-    config.merge!({
+    c.merge!({
       :title => "Digitized books",
       :model => "Book",
       :record => Book.first,
