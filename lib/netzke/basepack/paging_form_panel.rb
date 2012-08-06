@@ -19,7 +19,9 @@ module Netzke
     # == ToDo
     # * Update the number of records after form submit
     class PagingFormPanel < FormPanel
-      js_mixin :paging_form_panel
+      js_configure do |c|
+        c.mixin
+      end
 
       # override
       def record
