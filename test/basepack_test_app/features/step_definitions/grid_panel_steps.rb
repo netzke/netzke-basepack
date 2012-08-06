@@ -46,7 +46,7 @@ When /^I enable filter on column "([^"]*)" with value "([^"]*)"$/ do |column, va
   page.driver.browser.execute_script <<-JS
     var grid = Ext.ComponentQuery.query('gridpanel')[0],
         filter;
-    grid.features[0].createFilters();
+    grid.filters.createFilters();
     filter = grid.filters.getFilter('#{column}');
     filter.setValue(#{value});
     filter.setActive(true);
@@ -60,7 +60,7 @@ When /^I enable date filter on column "([^"]*)" with value "([^"]*)"$/ do |colum
   page.driver.browser.execute_script <<-JS
     var grid = Ext.ComponentQuery.query('gridpanel')[0],
         filter, value;
-    grid.features[0].createFilters();
+    grid.filters.createFilters();
     filter = grid.filters.getFilter('#{column}');
     value = filter.getValue();
     value.#{operand} = new Date('#{date}'); // merge the new value with the current one

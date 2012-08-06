@@ -53,6 +53,10 @@ Ext.define('Ext.netzke.ComboBox', {
       params.params.column = this.name;
     },this);
 
+    store.on('load', function(self, params) {
+      self.insert(0, Ext.create(modelName, {field1: 0, field2: this.column.emptyText}));
+    }, this);
+
     // If inline data was passed (TODO: is this actually working?)
     if (this.store) store.loadData({data: this.store});
 
@@ -131,18 +135,5 @@ Ext.define('Ext.ux.form.TriCheckbox', {
 Ext.override( Ext.form.field.Checkbox, {
   getSubmitValue: function() {
     return this.callOverridden() || false; // 'off';
-  }
-});
-
-/* We were missing the 'load' event on proxy, implementing it ourselves */
-Ext.override(Ext.data.proxy.Server, {
-  constructor: function() {
-    this.addEvents('load');
-    this.callOverridden([arguments]);
-  },
-
-  processResponse: function(success, operation, request, response, callback, scope){
-    this.callOverridden(arguments);
-    this.fireEvent('load', this, response, operation);
   }
 });

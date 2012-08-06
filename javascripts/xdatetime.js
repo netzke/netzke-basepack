@@ -6,6 +6,7 @@
  * @author ontho (http://www.sencha.com/forum/member.php?285806-ontho)
  * @author jakob.ketterl (http://www.sencha.com/forum/member.php?25102-jakob.ketterl)
  * @link http://www.sencha.com/forum/showthread.php?134345-Ext.ux.form.field.DateTime
+ * from http://www.sencha.com/forum/showthread.php?134345-Ext.ux.form.field.DateTime&p=863449&viewfull=1#post863449
  */
 Ext.define('Ext.ux.form.field.DateTime', {
     extend:'Ext.form.FieldContainer',
@@ -112,7 +113,7 @@ Ext.define('Ext.ux.form.field.DateTime', {
 
         // this dummy is necessary because Ext.Editor will not check whether an inputEl is present or not
         this.inputEl = {
-            dom:{},
+            dom: document.createElement('div'),
             swallowEvent:function(){}
         };
 
@@ -120,7 +121,7 @@ Ext.define('Ext.ux.form.field.DateTime', {
     },
 
     focus:function(){
-        this.callParent();
+        this.callParent(arguments);
         this.dateField.focus();
     },
 
@@ -131,12 +132,12 @@ Ext.define('Ext.ux.form.field.DateTime', {
         this.focussedItem = item;
     },
 
-    onItemBlur:function(item){
+    onItemBlur:function(item, e){
         var me = this;
         if (item != me.focussedItem){ return; }
         // 100ms to focus a new item that belongs to us, otherwise we will assume the user left the field
         me.blurTask = new Ext.util.DelayedTask(function(){
-            me.fireEvent('blur', me);
+            me.fireEvent('blur', me, e);
         });
         me.blurTask.delay(100);
     },

@@ -3,14 +3,29 @@
   * BorderLayoutPanel is removed. Any component can now implement its items persistence by including `Netzke::Basepack::ItemsPersistence` module
   * Grid/FormPanel respect `attr_accessible` and `attr_protected` on the model; set the `role` config option on them to tune mass-assignment security
 
-# 0.7.5 - ?
+# 0.7.7 - ?
+* Ext JS 4.1.x support
+
 * improvements
-  * data-related operations in grids and forms are moved to data adapters; implemented (partial) support for DataMapper and Sequel (see updated README)
-  * afterApply event in forms and grids (credits to pschyska)
-  * apply event fired before apply button is processed in FormPanel (credits to pschyska)
+  * cleaner handling of association column editing in GridPanel
 
 * bug fix
-  * advanced search panel works again (thanks pididi!)
+  * models with non-conventional primary keys could not be updated by gridpanel (davide)
+
+# 0.7.6 - 2012-07-27
+* Fix netzke-core version dependency in gemspec
+
+# 0.7.5 - 2012-07-27
+* Rails 3.2
+
+* improvements
+  * data-related operations in grids and forms are moved to data adapters; implemented (partial) support for DataMapper and Sequel (see updated README)
+  * afterApply event in forms and grids (pschyska)
+  * apply event fired before apply button is processed in FormPanel (pschyska)
+
+* bug fix
+  * advanced search panel works again (pididi)
+  * fixed a problem with session and GridPanel
 
 # 0.7.4 - 2012-03-05
 * bug fix
