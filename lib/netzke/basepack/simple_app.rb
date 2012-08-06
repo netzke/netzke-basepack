@@ -43,6 +43,11 @@ module Netzke
         c.items = [main_panel_config, menu_bar_config, status_bar_config]
       end
 
+      # In Ext 4.1 calling `render` on a viewport causes an error
+      def js_component_render
+        ""
+      end
+
       # Override for custom menu
       def menu
         []
