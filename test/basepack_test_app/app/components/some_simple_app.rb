@@ -28,12 +28,11 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
   component :simple_accordion
   component :simple_tab_panel
 
-  js_property :border, false
-
   # Wrapping up original layout into a border-layout with the north panel being a fancy header
   def configure(c)
     super
-    c.merge!(:items => [{
+    c.border = false
+    c.items = [{
       :region => :north,
       :height => 35,
       :html => %Q{
@@ -47,6 +46,6 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
       :region => :center,
       :layout => 'border',
       :items => config.items
-    }])
+    }]
   end
 end

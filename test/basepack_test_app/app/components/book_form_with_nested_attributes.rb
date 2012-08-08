@@ -1,8 +1,8 @@
+# TODO: not used atm
 class BookFormWithNestedAttributes < Netzke::Basepack::FormPanel
-  js_property :title, Book.model_name.human
-
-  def default_config
-    super.merge(
+  def configure(c)
+    c.merge!(
+      :title => Book.model_name.human,
       :model => "Book",
       :record => Book.first,
       :items => [
@@ -14,5 +14,4 @@ class BookFormWithNestedAttributes < Netzke::Basepack::FormPanel
       ]
     )
   end
-
 end

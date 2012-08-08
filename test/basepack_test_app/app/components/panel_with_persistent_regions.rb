@@ -2,7 +2,9 @@ class PanelWithPersistentRegions < Netzke::Base
   # enable persistence on items sizes and collapse-states
   include Netzke::Basepack::ItemsPersistence
 
-  js_property :layout, :border
+  js_configure do |c|
+    c.layout = :border
+  end
 
   component :west do |c|
     c.klass = SimplePanel
@@ -20,7 +22,8 @@ class PanelWithPersistentRegions < Netzke::Base
     c.split = true
   end
 
-  def items
-    [ :west, :south, {region: :center, title: "An Ext panel"} ]
+  def configure(c)
+    super
+    c.items = [ :west, :south, {region: :center, title: "An Ext panel"} ]
   end
 end

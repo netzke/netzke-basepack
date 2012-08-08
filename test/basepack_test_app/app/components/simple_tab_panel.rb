@@ -1,5 +1,7 @@
 class SimpleTabPanel < Netzke::Basepack::TabPanel
-  js_property :active_tab, 0
+  js_configure do |c|
+    c.active_tab = 0
+  end
 
   component :simple_panel do |c|
     c.update_text = "Update for Panel Two"

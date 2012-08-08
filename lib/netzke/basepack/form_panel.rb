@@ -80,7 +80,9 @@ module Netzke
       end
 
       # Extra JavaScripts and stylesheets
-      css_include :readonly_mode
+      css_configure do |c|
+        c.include :readonly_mode
+      end
 
       def js_config
         super.tap do |res|

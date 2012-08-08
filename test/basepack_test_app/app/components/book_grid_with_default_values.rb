@@ -1,6 +1,9 @@
 class BookGridWithDefaultValues < Netzke::Basepack::GridPanel
-  model "Book"
-  js_property :title, "Books"
+  def configure(c)
+    super
+    c.model = "Book"
+    c.title = "Books"
+  end
 
   column :title do |c|
     c.default_value = "Lolita"

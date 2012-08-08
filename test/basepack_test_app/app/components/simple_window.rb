@@ -1,10 +1,11 @@
 class SimpleWindow < Netzke::Basepack::Window
-  js_properties :title => "My simple window"
+  js_configure do |c|
+    c.title = "My simple window"
+  end
 
-  def default_config
-    {
-      :width => 400,
-      :height => 300
-    }
+  def configure(c)
+    super
+    c.width = 400
+    c.height = 300
   end
 end

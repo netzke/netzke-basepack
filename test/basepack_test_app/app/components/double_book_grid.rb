@@ -1,5 +1,7 @@
 class DoubleBookGrid < Netzke::Base
-  js_property :layout, :border
+  js_configure do |c|
+    c.layout = :border
+  end
 
   def configure(c)
     super

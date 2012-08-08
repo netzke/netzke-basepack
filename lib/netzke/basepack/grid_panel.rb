@@ -205,7 +205,7 @@ module Netzke
       def js_config #:nodoc:
         res = super
         res.merge({
-          :title => res[:title] || self.class.js_properties[:title] || data_class.name.pluralize,
+          :title => res[:title] || self.class.js_config.properties[:title] || data_class.name.pluralize,
           :bbar => config.has_key?(:bbar) ? config[:bbar] : default_bbar,
           :context_menu => config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu,
           :columns => final_columns(:with_meta => true),

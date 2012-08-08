@@ -16,13 +16,11 @@ module Netzke
     #     :model => "User"
     #   }
     class Wrapper < Netzke::Base
-      js_properties(
-        :layout => 'fit',
-
-        # invisible
-        :header => false,
-        :border => false
-      )
+      js_configure do |c|
+        c.layout = :fit
+        c.header = false
+        c.border = false
+      end
     end
   end
 end

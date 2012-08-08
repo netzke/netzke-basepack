@@ -1,6 +1,8 @@
 class UserGridWithCustomizedFormFields < Netzke::Basepack::GridPanel
-  js_property :title, "Users"
-  config :model => "User"
+  def configure(c)
+    c.title = "Users"
+    c.model = "User"
+  end
 
   def default_fields_for_forms
     [
