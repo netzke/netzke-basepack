@@ -30,8 +30,8 @@ module Netzke
 
       # Pass total records amount and the first record to the JS constructor
       def configure(c)
-        c.total_records = total_records
         super
+        c.total_records = total_records
       end
 
       endpoint :get_data do |params, this|
