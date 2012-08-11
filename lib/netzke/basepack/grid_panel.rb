@@ -202,18 +202,24 @@ module Netzke
       # TODO: The rest of the list to be removed
       delegates_to_dsl :model, :add_form_config, :add_form_window_config, :edit_form_config, :edit_form_window_config, :multi_edit_form_config, :multi_edit_form_window_config
 
-      def js_config #:nodoc:
-        res = super
-        res.merge({
-          :title => res[:title] || self.class.js_config.properties[:title] || data_class.name.pluralize,
-          :bbar => config.has_key?(:bbar) ? config[:bbar] : default_bbar,
-          :context_menu => config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu,
-          :columns => final_columns(:with_meta => true),
-          :columns_order => columns_order,
-          :model => config[:model], # the model name
-          :inline_data => (get_data if config[:load_inline_data]), # inline data (loaded along with the grid panel)
-          :pri => data_class.primary_key # table primary key name
-        })
+      def configure(c) #:nodoc:
+        super
+
+        c.title = c.title || self.class.js_config.properties[:title] || data_class.name.pluralize
+        c.bbar = bbar
+        c.context_menu = context_menu
+        c.columns = final_columns(with_meta: true)
+        c.columns_order = columns_order
+        c.inline_data = get_data if c.load_inline_data
+        c.pri = data_class.primary_key
+      end
+
+      def bbar
+        config.has_key?(:bbar) ? config[:bbar] : default_bbar
+      end
+
+      def context_menu
+        config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu
       end
 
       # Override to change the default bottom toolbar

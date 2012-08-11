@@ -1,8 +1,8 @@
 class BookGrid < Netzke::Basepack::GridPanel
   def configure(c)
-    super
     c.model = "Book"
     c.title = I18n.t('books', :default => "Books")
+    super
   end
 
   add_form_config :class_name => "BookForm"

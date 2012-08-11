@@ -1,9 +1,8 @@
 class BookGridWithPaging < Netzke::Basepack::GridPanel
-  model "Book"
-
   def configure(c)
-    super
+    c.model = "Book"
     c.title = "Books with paging"
     c.rows_per_page = 2
+    super
   end
 end

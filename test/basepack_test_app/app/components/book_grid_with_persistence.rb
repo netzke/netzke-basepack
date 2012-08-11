@@ -4,7 +4,7 @@ class BookGridWithPersistence < BookGrid
   end
 
   def configure(c)
-    super
     c.persistence = true
+    super
   end
 end

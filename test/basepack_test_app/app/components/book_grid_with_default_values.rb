@@ -1,8 +1,8 @@
 class BookGridWithDefaultValues < Netzke::Basepack::GridPanel
   def configure(c)
-    super
     c.model = "Book"
     c.title = "Books"
+    super
   end
 
   column :title do |c|

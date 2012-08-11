@@ -4,9 +4,9 @@ class BooksBoundToAuthor < Netzke::Basepack::GridPanel
   model "Book"
 
   def configure(c)
-    super
     c.scope = {:author_id => Author.first.id}
     c.strong_default_attrs = {:author_id => Author.first.id}
+    super
   end
 
 end
