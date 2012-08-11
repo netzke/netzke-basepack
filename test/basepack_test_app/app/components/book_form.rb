@@ -2,12 +2,9 @@
 class BookForm < Netzke::Basepack::FormPanel
   include Extras::BookPresentation
 
-  model "Book"
-
-  record_id Book.first.try(:id)
-
   def configure(c)
-    super
+    c.model = "Book"
+    c.record = Book.first
     c.title Book.model_name.human
     c.items = [
       :title,
@@ -28,6 +25,7 @@ class BookForm < Netzke::Basepack::FormPanel
       # WIP: waithing on nradiogroup
       # {:name => :rating, :xtype => :nradiogroup, :options => [[1, "Good"], [2, "Average"], [3, "Poor"]]}
     ]
+    super
   end
 
   js_configure do |c|
@@ -38,8 +36,4 @@ class BookForm < Netzke::Basepack::FormPanel
       }
     JS
   end
-
-  # def items
-  # end
-
 end

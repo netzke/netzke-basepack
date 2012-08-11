@@ -61,7 +61,14 @@ module Netzke
         configure_locked(c)
         configure_bbar(c)
 
-        c[:record_id] = c[:record] = nil if c[:multi_edit] # never set record_id in multi-edit mode
+        c.pri = data_class && data_class.primary_key.to_s
+
+        if !c.multi_edit
+          c.record = js_record_data if record
+        else
+          c.record_id = c.record = nil if c.multi_edit # never set record_id in multi-edit mode
+        end
+
       end
 
       def configure_locked(c)
@@ -84,13 +91,6 @@ module Netzke
         c.include :readonly_mode
       end
 
-      def js_config
-        super.tap do |res|
-          res[:pri] = data_class && data_class.primary_key.to_s
-          res[:record] = js_record_data if record
-        end
-      end
-
       # A hash of record data including the meta field
       def js_record_data
         record.netzke_hash(fields).merge(:_meta => meta_field).literalize_keys
@@ -103,7 +103,7 @@ module Netzke
     private
 
       def self.server_side_config_options
-        super + [:record, :scope]
+        super + [:scope]
       end
 
       def meta_field

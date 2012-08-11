@@ -1,6 +1,7 @@
 class UserForm < Netzke::Basepack::FormPanel
   def configure(c)
-    super
+    c.model = "User"
+    c.record = User.first
     c.title = User.model_name.human
     c.items = [
       {:xtype => 'fieldset', :title => "Basic Info", :checkboxToggle => true, :items => [
@@ -13,11 +14,8 @@ class UserForm < Netzke::Basepack::FormPanel
       ]},
       :role__name
     ]
+    super
   end
-
-  model "User"
-
-  record_id User.first.try(:id)
 
   # Uncomment for visual mask testing
   # def netzke_submit_endpoint(params)

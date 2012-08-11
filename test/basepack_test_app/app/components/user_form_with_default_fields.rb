@@ -1,9 +1,7 @@
 class UserFormWithDefaultFields < Netzke::Basepack::FormPanel
   def configure(c)
+    c.model = "User"
+    c.record = User.first
     super
-    c.merge!(
-      :model => 'User',
-      :record_id => User.first.id
-    )
   end
 end

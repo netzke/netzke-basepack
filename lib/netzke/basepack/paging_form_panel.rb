@@ -29,10 +29,9 @@ module Netzke
       end
 
       # Pass total records amount and the first record to the JS constructor
-      def js_config
-        super.merge({
-          :total_records => total_records
-        })
+      def configure(c)
+        c.total_records = total_records
+        super
       end
 
       endpoint :get_data do |params, this|
