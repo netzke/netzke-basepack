@@ -12,10 +12,10 @@ Scenario: UserForm should be rendered properly along with the data for the first
   And I should see "writer"
 
 @javascript
-  Scenario: A form should be rendered properly along with the data for the specified record
-    Given a book exists with title: "Great Book", last_read_at: "2005-01-23 11:12:13"
-    When I go to the BookFormWithDefaults test page
-    Then the form should show title: "Great Book", last_read_at: "2005-01-23 11:12:13"
+Scenario: A form should be rendered properly along with the data for the specified record
+  Given a book exists with title: "Great Book", last_read_at: "2005-01-23 11:12:13"
+  When I go to the BookFormWithDefaults test page
+  Then the form should show title: "Great Book", last_read_at: "2005-01-23 11:12:13"
 
 @javascript
 Scenario: Editing the record
@@ -36,6 +36,18 @@ Scenario: Editing the record
   But I should not see "Maxim"
   And I should not see "Osminogov"
   And I should not see "musician"
+
+@javascript
+Scenario: Resetting an association
+  Given a role exists with name: "musician"
+  And a user exists with first_name: "Paul", last_name: "Bley", role: that role
+  When I go to the UserForm test page
+  And I expand combobox "Role name"
+  And I select "---" from combobox "Role name"
+  And I press "Apply"
+  And I go to the UserForm test page
+  Then I should see "---"
+  But I should not see "musician"
 
 Scenario: UserFormWithDefaultFields should render properly
   Given a role exists with name: "writer"
