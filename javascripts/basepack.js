@@ -54,7 +54,7 @@ Ext.define('Ext.netzke.ComboBox', {
     },this);
 
     store.on('load', function(self, params) {
-      self.insert(0, Ext.create(modelName, {field1: 0, field2: this.column.emptyText}));
+      self.insert(0, Ext.create(modelName, {field1: 0, field2: this.emptyText}));
     }, this);
 
     // If inline data was passed (TODO: is this actually working?)
