@@ -220,6 +220,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/features/i18n.feature",
     "test/basepack_test_app/features/nested_attributes.feature",
     "test/basepack_test_app/features/paging_form_panel.feature",
+    "test/basepack_test_app/features/persistent_regions.feature",
     "test/basepack_test_app/features/search_in_grid.feature",
     "test/basepack_test_app/features/simple_app.feature",
     "test/basepack_test_app/features/simple_panel.feature",

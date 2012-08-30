@@ -42,3 +42,65 @@ Then /^I should see "([^"]*)" within paging toolbar$/ do |text|
   #   Ext.ComponentQuery.query('pagingtoolbar')[0].query('tbtext[text="#{text}"]').length >= 1
   # JS
 end
+
+When /^I resize the ([^"]*) region to the size of (\d+)$/ do |region, size|
+  page.driver.browser.execute_script(<<-JS)
+    for (var prop in Netzke.page) {
+      var panel = Netzke.page[prop];
+      break;
+    }
+    var region = panel.items.filter('region', '#{region}').first();
+
+    region.setSize(#{size});
+  JS
+end
+
+Then /^the ([^"]*) region should have size of (\d+)$/ do |region, size|
+  size_property = [:west, :east].include?(region.to_sym) ? :Width : :Height
+
+  page.driver.browser.execute_script(<<-JS).should == size.to_i
+    for (var prop in Netzke.page) {
+      var panel = Netzke.page[prop];
+      break;
+    }
+    var region = panel.items.filter('region', '#{region}').first();
+
+    return region.get#{size_property}();
+  JS
+end
+
+When /^I collapse the ([^"]*) region$/ do |region|
+  page.driver.browser.execute_script(<<-JS)
+    for (var prop in Netzke.page) {
+      var panel = Netzke.page[prop];
+      break;
+    }
+    var region = panel.items.filter('region', '#{region}').first();
+
+    region.collapse();
+  JS
+end
+
+Then /^the ([^"]*) region should be (expanded|collapsed)$/ do |region, state|
+  page.driver.browser.execute_script(<<-JS).should state == "collapsed" ? be_true : be_false
+    for (var prop in Netzke.page) {
+      var panel = Netzke.page[prop];
+      break;
+    }
+    var region = panel.items.filter('region', '#{region}').filter('hidden', true).first();
+
+    return !!(region && region.collapsed);
+  JS
+end
+
+When /^I expand the ([^"]*) region$/ do |region|
+  page.driver.browser.execute_script(<<-JS)
+    for (var prop in Netzke.page) {
+      var panel = Netzke.page[prop];
+      break;
+    }
+    var region = panel.items.filter('region', '#{region}').filter('hidden', true).first();
+
+    region.expand();
+  JS
+end
