@@ -181,6 +181,7 @@ Then /^the grid's column "([^"]*)" should not be editable$/ do |column_name|
   JS
 end
 
-When /^I click the "([^"]*)" action icon$/ do |action_name|
-  find("img[data-qtip='#{action_name}']").click
-end
+# TODO: move to Communitypack
+# When /^I click the "([^"]*)" action icon$/ do |action_name|
+#   find("img[data-qtip='#{action_name}']").click
+# end
