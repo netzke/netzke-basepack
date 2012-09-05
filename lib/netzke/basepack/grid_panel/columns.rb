@@ -21,7 +21,7 @@ module Netzke
         # Returns the list of (non-normalized) columns to be used. By default returns the list of model column names.
         # Can be overridden.
         def columns
-          data_adapter.model_attributes
+          config.columns || data_adapter.model_attributes
         end
 
         # An array of complete columns configs ready to be passed to the JS side.
@@ -58,7 +58,7 @@ module Netzke
           @_initial_columns[with_excluded] ||= [].tap do |cols|
             has_primary_column = false
 
-            (config.columns || columns).each do |c|
+            columns.each do |c|
               # normalize:
               # * :title => {name: 'title'}
               # * {name: :some_column} => {name: 'some_column'}

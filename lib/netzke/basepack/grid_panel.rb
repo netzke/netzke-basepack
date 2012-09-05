@@ -19,6 +19,8 @@ module Netzke
     # * virtual attribute support
     # * (TODO) dynamic configuration of properties and columns
     #
+    #
+    #
     # == Instance configuration
     # The following config options are supported:
     # * +model+ - name of the ActiveRecord model that provides data to this GridPanel, e.g. "User"
@@ -43,6 +45,8 @@ module Netzke
     # * +rows_per_page+ - (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to +false+)
     # * +load_inline_data+ - (defaults to true) load initial data into the grid right after its instantiation
     # * (TODO) +mode+ - when set to +config+, GridPanel loads in configuration mode
+    #
+    #
     #
     # == Columns
     # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name of model's (virtual) attribute (in which case the configuration will be fully automatic), or a hash that may contain the following configuration options as keys:
@@ -75,6 +79,15 @@ module Netzke
     #
     # Besides these options, a column can receive any meaningful config option understood by Ext.grid.column.Column (such as +hidden+)
     #
+    # === Customizing columns by extending GridPanel
+    # GridPanel itself always uses the columns provided in the `columns` config option. But this behavior can be changed by overriding the `columns` method, which follows the same semantics as the `columns` config option. This can be used, for example, for extending the list of columns provided in the config:
+    #
+    #     def columns
+    #       super + [:extra_column]
+    #     end
+    #
+    #
+    #
     # == One-to-many association support
     # If the model bound to a grid +belongs_to+ another model, GridPanel can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
     #
@@ -90,6 +103,8 @@ module Netzke
     # The forms will by default display the fields that correspond to the configured columns, taking over meaningful configuration options (e.g. +text+ will be converted into +fieldLabel+).
     # You may override the default fields displayed in the forms by overriding the +default_fields_for_forms+ method, which should return an array understood by the +items+ config property of the +FormPanel+. If you need to use a custom class instead of +FormPanel+, you may need to go an extra mile overriding the corresponding GridPanel's child component (e.g. "add_form" or "edit_form").
     #
+    #
+    #
     # == Actions
     # You can override GridPanel's actions to change their text, icons, and tooltips (see http://api.netzke.org/core/Netzke/Actions.html).
     #
@@ -101,6 +116,8 @@ module Netzke
     # * +add_in_form+ - adding a record in a form
     # * +edit_in_form+ - (multi-record) editing in a forrm
     # * +search+ - advanced searching
+    #
+    #
     #
     # == Class configuration
     #
