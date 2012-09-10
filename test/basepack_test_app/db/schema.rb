@@ -19,22 +19,22 @@ ActiveRecord::Schema.define(:version => 20110909071740) do
     t.string   "city"
     t.string   "postcode"
     t.integer  "country_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "authors", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "book_with_custom_primary_keys", :primary_key => "uid", :force => true do |t|
     t.string   "title"
     t.integer  "author_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "books", :force => true do |t|
@@ -45,8 +45,8 @@ ActiveRecord::Schema.define(:version => 20110909071740) do
     t.text     "notes"
     t.string   "tags"
     t.integer  "rating"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at",                      :null => false
+    t.datetime "updated_at",                      :null => false
     t.datetime "last_read_at"
     t.date     "published_on"
   end
@@ -56,8 +56,8 @@ ActiveRecord::Schema.define(:version => 20110909071740) do
     t.integer  "user_id"
     t.integer  "role_id"
     t.text     "value"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   add_index "netzke_component_states", ["component"], :name => "index_netzke_component_states_on_component"
@@ -66,16 +66,16 @@ ActiveRecord::Schema.define(:version => 20110909071740) do
 
   create_table "roles", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "users", :force => true do |t|
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "role_id"
-    t.datetime "created_at"
-    t.datetime "updated_at"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
 end
