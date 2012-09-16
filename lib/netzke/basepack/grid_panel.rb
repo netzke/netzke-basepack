@@ -219,7 +219,7 @@ module Netzke
       # TODO: The rest of the list to be removed
       delegates_to_dsl :model, :add_form_config, :add_form_window_config, :edit_form_config, :edit_form_window_config, :multi_edit_form_config, :multi_edit_form_window_config
 
-      def configure(c) #:nodoc:
+      def js_configure(c) #:nodoc:
         super
 
         c.title = c.title || self.class.js_config.properties[:title] || data_class.name.pluralize
