@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Denis Gorin"]
-  s.date = "2012-09-11"
+  s.date = "2012-09-16"
   s.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -85,6 +85,7 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/tab_panel.rb",
     "lib/netzke/basepack/tab_panel/javascripts/tab_panel.js",
     "lib/netzke/basepack/version.rb",
+    "lib/netzke/basepack/viewport.rb",
     "lib/netzke/basepack/window.rb",
     "lib/netzke/basepack/window/javascripts/window.js",
     "lib/netzke/basepack/wrap_lazy_loaded.rb",
