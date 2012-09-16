@@ -42,6 +42,7 @@ module Netzke
 
           endpoint :resize_column do |params, this|
             raise "Called resize_column endpoint while not configured to do so" if !config[:persistence]
+
             current_columns_order = state[:columns_order] || initial_columns_order
             current_columns_order[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
             update_state(:columns_order, current_columns_order)
@@ -49,6 +50,7 @@ module Netzke
 
           endpoint :move_column do |params, this|
             raise "Called move_column endpoint while not configured to do so" if !config[:persistence]
+
             remove_from = normalize_index(params[:old_index].to_i)
             insert_to = normalize_index(params[:new_index].to_i)
 

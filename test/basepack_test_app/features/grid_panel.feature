@@ -215,6 +215,10 @@ Scenario: Column order should be saved across page reloads
   And I wait for the response from the server
   And I go to the BookGridWithPersistence test page
   Then I should see columns in order: "Digitized", "Title", "Exemplars"
+  When I drag "Digitized" column before "Exemplars"
+  And I wait for the response from the server
+  And I go to the BookGridWithPersistence test page
+  Then I should see columns in order: "Title", "Digitized", "Exemplars"
 
 @javascript
 Scenario: I must see total records value
