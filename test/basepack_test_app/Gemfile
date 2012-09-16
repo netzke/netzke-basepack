@@ -16,7 +16,7 @@ when 'dm'
   gem 'dm-timestamps',      DM_VERSION # needed for created_at and updated_at
   gem 'dm-aggregates',      DM_VERSION # needed for efficient count queries, else * will be selected and counted afterwards
 when 'sq'
-  gem 'sequel'  
+  gem 'sequel'
 end
 
 gem 'netzke-core',        :path => File.expand_path('../vendor/gems/netzke-core', __FILE__)
@@ -36,7 +36,7 @@ end
 
 group :test do
   gem 'factory_girl'
-  gem 'selenium-webdriver', '2.17.0'
+  gem 'selenium-webdriver'
   gem 'launchy'    # So you can do Then show me the page
   gem 'capybara'
   gem 'capybara-screenshot'
