@@ -14,7 +14,7 @@ module Netzke
         c.fields = config[:fields]
         c.preset_query = config[:query]
         c.auto_scroll = config[:auto_scroll]
-        c.lazy_loading = false
+        c.eager_loading = true
       end
 
       action :clear_all do |a|
