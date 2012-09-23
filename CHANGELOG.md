@@ -2,6 +2,7 @@
 * improvements
   * BorderLayoutPanel is removed. Any component can now implement its items persistence by including `Netzke::Basepack::ItemsPersistence` module
   * Grid/FormPanel respect `attr_accessible` and `attr_protected` on the model; set the `role` config option on them to tune mass-assignment security
+  * AccordionPanel and TabPanel now lazily load the Netzke components by default; set `eager_loading` to true for the components that should be loaded eagerly
 
 # 0.7.7 - ?
 * Ext JS 4.1.x support

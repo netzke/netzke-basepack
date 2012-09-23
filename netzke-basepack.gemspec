@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Denis Gorin"]
-  s.date = "2012-09-16"
+  s.date = "2012-09-23"
   s.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -146,12 +146,10 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/components/lockable_user_form.rb",
     "test/basepack_test_app/app/components/paging_form_with_search.rb",
     "test/basepack_test_app/app/components/panel_with_persistent_regions.rb",
-    "test/basepack_test_app/app/components/simple_accordion.rb",
     "test/basepack_test_app/app/components/simple_panel.rb",
-    "test/basepack_test_app/app/components/simple_tab_panel.rb",
     "test/basepack_test_app/app/components/simple_window.rb",
     "test/basepack_test_app/app/components/simple_wrapper.rb",
-    "test/basepack_test_app/app/components/some_accordion_panel.rb",
+    "test/basepack_test_app/app/components/some_accordion.rb",
     "test/basepack_test_app/app/components/some_auth_app.rb",
     "test/basepack_test_app/app/components/some_border_layout.rb",
     "test/basepack_test_app/app/components/some_simple_app.rb",
