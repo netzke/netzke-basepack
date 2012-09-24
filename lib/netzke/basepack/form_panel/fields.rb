@@ -10,22 +10,6 @@ module Netzke
           data_class && data_adapter.model_attributes || []
         end
 
-        # DELETE
-        def js_items
-          return @js_items if @js_items.present?
-
-          @js_items = normalize_fields(config.items || items)
-
-          # if primary key isn't there, insert it as first
-          if data_class && !@js_items.detect{ |f| f[:name] == data_class.primary_key.to_s}
-            primary_key_item = normalize_field(data_class.primary_key.to_sym)
-            @fields_from_config[data_class.primary_key.to_sym] = primary_key_item
-            @js_items.insert(0, primary_key_item)
-          end
-
-          @js_items
-        end
-
         # Hash of fully configured fields, that are referenced in the items. E.g.:
         #   {
         #     :role__name => {:xtype => 'netzkeremotecombo', :disabled => true, :value => "admin"},
@@ -55,7 +39,6 @@ module Netzke
         #
         #     {:role__name => {:xtype => "netzkeremotecombo"}, :password => {:xtype => "passwordfield"}}
         def fields_from_config
-          # js_items if @fields_from_config.nil? # by calling +js_items+ we initiate building of @fields_from_config
           @fields_from_config || (normalize_config || true) && @fields_from_config
         end
 

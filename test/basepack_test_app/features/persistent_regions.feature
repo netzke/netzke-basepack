@@ -10,6 +10,10 @@ Feature: Persistent regions
     And I wait for the response from the server
     And I go to the PanelWithPersistentRegions test page
     Then the west region should have size of 300
+    When I resize the east region to the size of 300
+    And I wait for the response from the server
+    And I go to the PanelWithPersistentRegions test page
+    Then the east region should have size of 300
 
   @javascript
   Scenario: A panel with persistent regions should store its region collapse status

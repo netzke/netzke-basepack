@@ -24,23 +24,21 @@ module Netzke
         end
       end
 
-      # Override js_items to add the size/collapse state options to each item
-      def js_items
-        super.map do |item|
-          # normalize first
-          new_item = item.is_a?(Hash) ? item.dup : {netzke_component: item}
+      def extend_item(item)
+        item = super
 
-          item_id = new_item[:netzke_component]
+        item_id = item[:netzke_component] || item[:item_id] # identify regions by item_id
 
-          new_item[:width] = state[:"#{item_id}_width"] || new_item[:width]
-          new_item[:height] = state[:"#{item_id}_height"] || new_item[:height]
+        if item_id
+          item[:width] = state[:"#{item_id}_width"] || item[:width]
+          item[:height] = state[:"#{item_id}_height"] || item[:height]
 
           if state[:"#{item_id}_collapsed"].present?
-            new_item[:collapsed] = state[:"#{item_id}_collapsed"]
+            item[:collapsed] = state[:"#{item_id}_collapsed"]
           end
-
-          new_item
         end
+
+        item
       end
     end
   end

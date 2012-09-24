@@ -48,7 +48,7 @@ module Netzke
 
         super
 
-        c.items.insert(0, data_class.primary_key.to_sym) if data_class && !includes_primary_key_field?(c.items)
+        c.items = [data_class.primary_key.to_sym, *c.items] if data_class && !includes_primary_key_field?(c.items)
       end
 
       def js_configure(c)
@@ -59,29 +59,11 @@ module Netzke
 
         c.pri = data_class && data_class.primary_key.to_s
 
-        # if data_class && !c.items.detect{ |f| f[:name] == data_class.primary_key.to_s}
-        #   primary_key_field = extend_item(data_class.primary_key.to_sym)
-        #   @fields_from_config[data_class.primary_key.to_sym] = primary_key_field
-        #   c.items.insert(0, primary_key_field)
-        # end
-
         if !c.multi_edit
           c.record = js_record_data if record
         else
           c.record_id = c.record = nil if c.multi_edit # never set record_id in multi-edit mode
         end
-
-      end
-
-      def includes_primary_key_field?(items)
-        !!items.detect do |item|
-          (item.is_a?(Hash) ? item[:name] : item.to_s) == data_class.primary_key.to_s
-        end
-      end
-
-      def normalize_config
-        @fields_from_config = {}
-        super
       end
 
       action :apply do |a|
@@ -124,7 +106,18 @@ module Netzke
         @record ||= config[:record] || config[:record_id] && data_class && data_adapter.find_record(config[:record_id])
       end
 
-    private
+    protected
+
+      def includes_primary_key_field?(items)
+        !!items.detect do |item|
+          (item.is_a?(Hash) ? item[:name] : item.to_s) == data_class.primary_key.to_s
+        end
+      end
+
+      def normalize_config
+        @fields_from_config = {}
+        super
+      end
 
       def self.server_side_config_options
         super + [:scope]
