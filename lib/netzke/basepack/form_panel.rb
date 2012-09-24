@@ -35,7 +35,54 @@ module Netzke
       include Netzke::Basepack::DataAccessor
       include Netzke::ConfigToDslDelegator
 
+      js_configure do |c|
+        c.extend = "Ext.form.Panel"
+        c.mixin
+        c.include :comma_list_cbg, :n_radio_group, :readonly_mode
+      end
+
       delegates_to_dsl :model, :record_id
+
+      def configure(c)
+        c.items ||= default_items
+
+        super
+
+        c.items.insert(0, data_class.primary_key.to_sym) if data_class && !includes_primary_key_field?(c.items)
+      end
+
+      def js_configure(c)
+        super
+
+        configure_locked(c)
+        configure_bbar(c)
+
+        c.pri = data_class && data_class.primary_key.to_s
+
+        # if data_class && !c.items.detect{ |f| f[:name] == data_class.primary_key.to_s}
+        #   primary_key_field = extend_item(data_class.primary_key.to_sym)
+        #   @fields_from_config[data_class.primary_key.to_sym] = primary_key_field
+        #   c.items.insert(0, primary_key_field)
+        # end
+
+        if !c.multi_edit
+          c.record = js_record_data if record
+        else
+          c.record_id = c.record = nil if c.multi_edit # never set record_id in multi-edit mode
+        end
+
+      end
+
+      def includes_primary_key_field?(items)
+        !!items.detect do |item|
+          (item.is_a?(Hash) ? item[:name] : item.to_s) == data_class.primary_key.to_s
+        end
+      end
+
+      def normalize_config
+        @fields_from_config = {}
+        super
+      end
 
       action :apply do |a|
         a.text = I18n.t('netzke.basepack.form_panel.actions.apply')
@@ -55,35 +102,12 @@ module Netzke
         a.icon = :cancel
       end
 
-      def configure(c)
-        super
-
-        configure_locked(c)
-        configure_bbar(c)
-
-        c.pri = data_class && data_class.primary_key.to_s
-
-        if !c.multi_edit
-          c.record = js_record_data if record
-        else
-          c.record_id = c.record = nil if c.multi_edit # never set record_id in multi-edit mode
-        end
-
-      end
-
       def configure_locked(c)
         c[:locked] = c[:locked].nil? ? (c[:mode] == :lockable) : c[:locked]
       end
 
       def configure_bbar(c)
         c[:bbar] = [:apply] if c[:bbar].nil? && !c[:read_only]
-      end
-
-      js_configure do |c|
-        c.extend = "Ext.form.Panel"
-        c.mixin :form_panel
-        c.include :comma_list_cbg
-        c.include :n_radio_group, :readonly_mode
       end
 
       # Extra JavaScripts and stylesheets

@@ -6,10 +6,11 @@ module Netzke
         extend ActiveSupport::Concern
 
         # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render a field)
-        def items
+        def default_items
           data_class && data_adapter.model_attributes || []
         end
 
+        # DELETE
         def js_items
           return @js_items if @js_items.present?
 
@@ -42,7 +43,6 @@ module Netzke
 
         # The array of fields as specified on the model level (using +netzke_attribute+ and alike)
         def fields_array_from_model
-          #data_class && data_class.netzke_attributes
           data_class && data_adapter.model_attributes
         end
 
@@ -55,8 +55,8 @@ module Netzke
         #
         #     {:role__name => {:xtype => "netzkeremotecombo"}, :password => {:xtype => "passwordfield"}}
         def fields_from_config
-          js_items if @fields_from_config.nil? # by calling +js_items+ we initiate building of @fields_from_config
-          @fields_from_config ||= {}
+          # js_items if @fields_from_config.nil? # by calling +js_items+ we initiate building of @fields_from_config
+          @fields_from_config || (normalize_config || true) && @fields_from_config
         end
 
         module ClassMethods
@@ -72,17 +72,21 @@ module Netzke
           end
         end
 
-        private
-          def load_persistent_fields
-            # NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
-          end
+      protected
 
-          def load_model_level_attrs
-            # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
-          end
+        def load_persistent_fields
+          # NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
+        end
 
-          # This is where we expand our basic field config with all the defaults
-          def normalize_field(field)
+        def load_model_level_attrs
+          # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
+        end
+
+        # This is where we expand our basic field config with all the defaults
+        def extend_item(field)
+          field = super
+
+          if is_field_config?(field)
             # field can only be a string, a symbol, or a hash
             if field.is_a?(Hash)
               field = field.dup # we don't want to modify original hash
@@ -91,6 +95,9 @@ module Netzke
             else
               field = {:name => field.to_s}
             end
+
+            # right place?
+            @fields_from_config[field[:name].to_sym] = field
 
             field_from_model = fields_from_model && fields_from_model[field[:name].to_sym]
 
@@ -101,109 +108,107 @@ module Netzke
             set_default_field_xtype(field) if field[:xtype].nil?
             set_default_read_only(field)
 
-            # temporal datetime setup, while we don't have real datetime field
-            if field[:attr_type] == :date
-              field[:format] ||= "Y-m-d"
-            end
-
             # provide our special combobox with our id
             field[:parent_id] = self.global_id if field[:xtype] == :netzkeremotecombo
 
             field[:hidden] = field[:hide_label] = true if field[:hidden].nil? && primary_key_attr?(field)
 
             # checkbox setup
-            field[:checked] = field[:value] if field[:attr_type] == :boolean
-            field[:input_value] = true if field[:attr_type] == :boolean
+            if field[:attr_type] == :boolean
+              field[:checked] = field[:value]
+              field[:input_value] = true if field[:attr_type] == :boolean
+            end
 
-            field
-          end
-
-          # Sets the proper xtype of an asociation field
-          def detect_association_with_method(c)
-            if c[:name].index('__')
-              assoc_name, method = c[:name].split('__').map(&:to_sym)
-              assoc_method_type = data_adapter.get_assoc_property_type(assoc_name, method)
-              if c[:nested_attribute]
-                c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
-              else
-                c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
-              end
+            # date field format
+            if field[:attr_type] = :date
+              field[:submit_format] = "Y-m-d"
+              field[:format] ||= "Y-m-d"
             end
           end
 
-          # RECURSIVELY extracts fields configuration from :items
-          def normalize_fields(items)
-            @fields_from_config ||= {}
-            items.map do |item|
-              # at this moment, item is a hash or a symbol
-              if is_field_config?(item)
-                item = normalize_field(item)
-                @fields_from_config[item[:name].to_sym] = item
-                item #.reject{ |k,v| k == :name } # do we really need to remove the :name key?
-              elsif item.is_a?(Hash)
-                item = item.dup # we don't want to modify original hash
-                item[:items].is_a?(Array) ? item.merge(:items => normalize_fields(item[:items])) : item
-              else
-                item
-              end
+          field
+        end
+
+        # Sets the proper xtype of an asociation field
+        def detect_association_with_method(c)
+          if c[:name].index('__')
+            assoc_name, method = c[:name].split('__').map(&:to_sym)
+            assoc_method_type = data_adapter.get_assoc_property_type(assoc_name, method)
+            if c[:nested_attribute]
+              c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
+            else
+              c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
             end
           end
+        end
 
-          def is_field_config?(item)
-            item.is_a?(String) || item.is_a?(Symbol) || item[:name] # && !is_component_config?(item)
-          end
-
-          # Deeply merges only those key/values at the top level that are already there
-          def deep_merge_existing_fields(dest, src)
-            dest.each_pair do |k,v|
-              v.deep_merge!(src[k] || {})
+        # RECURSIVELY extracts fields configuration from :items
+        def normalize_fields(items)
+          @fields_from_config ||= {}
+          items.map do |item|
+            # at this moment, item is a hash or a symbol
+            if is_field_config?(item)
+              item = normalize_field(item)
+              @fields_from_config[item[:name].to_sym] = item
+              item #.reject{ |k,v| k == :name } # do we really need to remove the :name key?
+            elsif item.is_a?(Hash)
+              item = item.dup # we don't want to modify original hash
+              item[:items].is_a?(Array) ? item.merge(:items => normalize_fields(item[:items])) : item
+            else
+              item
             end
           end
+        end
 
-          def set_default_field_label(c)
-            # multiple spaces (in case of association attrs) get replaced with one
-            c[:field_label] ||= data_class ? data_class.human_attribute_name(c[:name]) : c[:name].humanize
-            c[:field_label].gsub!(/\s+/, " ")
+        def is_field_config?(item)
+          item.is_a?(Symbol) || (item.is_a?(Hash) && item[:name]) # && !is_component_config?(item)
+        end
+
+        # Deeply merges only those key/values at the top level that are already there
+        def deep_merge_existing_fields(dest, src)
+          dest.each_pair do |k,v|
+            v.deep_merge!(src[k] || {})
           end
+        end
 
-          def set_default_field_xtype(field)
-            field[:xtype] = xtype_for_attr_type(field[:attr_type]) unless xtype_for_attr_type(field[:attr_type]).nil?
-          end
+        def set_default_field_label(c)
+          # multiple spaces (in case of association attrs) get replaced with one
+          c[:field_label] ||= data_class ? data_class.human_attribute_name(c[:name]) : c[:name].humanize
+          c[:field_label].gsub!(/\s+/, " ")
+        end
 
-          def set_default_read_only(field)
-            enabled_if = !data_class || data_class.column_names.include?(field[:name])
-            enabled_if ||= data_class.instance_methods.map(&:to_s).include?("#{field[:name]}=")
-            enabled_if ||= record && record.respond_to?("#{field[:name]}=")
-            enabled_if ||= association_attr?(field[:name])
+        def set_default_field_xtype(field)
+          field[:xtype] = xtype_for_attr_type(field[:attr_type]) unless xtype_for_attr_type(field[:attr_type]).nil?
+        end
 
-            field[:read_only] = !enabled_if if field[:read_only].nil?
-          end
+        def set_default_read_only(field)
+          enabled_if = !data_class || data_class.column_names.include?(field[:name])
+          enabled_if ||= data_class.instance_methods.map(&:to_s).include?("#{field[:name]}=")
+          enabled_if ||= record && record.respond_to?("#{field[:name]}=")
+          enabled_if ||= association_attr?(field[:name])
 
-          def attr_type_to_xtype_map
-            {
-              :integer => :numberfield,
-              :boolean => config[:multi_edit] ? :tricheckbox : :checkboxfield,
-              :date => :datefield,
-              :datetime => :xdatetime,
-              :text => :textarea,
-              :json => :jsonfield,
-              :string => :textfield
-            }
-          end
+          field[:read_only] = !enabled_if if field[:read_only].nil?
+        end
 
-          def xtype_for_attr_type(type)
-            attr_type_to_xtype_map[type] || :textfield
-          end
+        def attr_type_to_xtype_map
+          {
+            :integer => :numberfield,
+            :boolean => config[:multi_edit] ? :tricheckbox : :checkboxfield,
+            :date => :datefield,
+            :datetime => :xdatetime,
+            :text => :textarea,
+            :json => :jsonfield,
+            :string => :textfield
+          }
+        end
 
-          def xtype_for_association
-            :netzkeremotecombo
-          end
+        def xtype_for_attr_type(type)
+          attr_type_to_xtype_map[type] || :textfield
+        end
 
-          # Are we provided with a static field layout?
-          def static_layout?
-            !!config[:items]
-          end
-
+        def xtype_for_association
+          :netzkeremotecombo
+        end
       end
     end
   end
