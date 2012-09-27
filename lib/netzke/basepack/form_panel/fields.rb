@@ -19,15 +19,19 @@ module Netzke
           @fields ||= begin
             # extract incomplete field configs from +config+
             flds = fields_from_config
+
+            primary_key = data_adapter.primary_key_name
+            flds[primary_key.to_sym] ||= {name: primary_key}
+
             # and merged them with fields from the model
-            deep_merge_existing_fields(flds, fields_from_model) if data_class
+            deep_merge_existing_fields(flds, fields_from_model) if data_adapter
             flds
           end
         end
 
         # The array of fields as specified on the model level (using +netzke_attribute+ and alike)
         def fields_array_from_model
-          data_class && data_adapter.model_attributes
+          data_adapter && data_adapter.model_attributes
         end
 
         # Hash of fields as specified on the model level

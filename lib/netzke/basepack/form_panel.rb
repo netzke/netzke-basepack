@@ -47,8 +47,6 @@ module Netzke
         c.items ||= default_items
 
         super
-
-        c.items = [data_class.primary_key.to_sym, *c.items] if data_class && !includes_primary_key_field?(c.items)
       end
 
       def js_configure(c)
@@ -57,7 +55,11 @@ module Netzke
         configure_locked(c)
         configure_bbar(c)
 
-        c.pri = data_class && data_class.primary_key.to_s
+        # prepend the primary key field if not present
+        if data_adapter
+          c.items = [extend_item(data_adapter.primary_key_name.to_sym), *c.items] if !includes_primary_key_field?(c.items)
+          c.pri = data_adapter.primary_key_name
+        end
 
         if !c.multi_edit
           c.record = js_record_data if record
@@ -103,14 +105,14 @@ module Netzke
       end
 
       def record
-        @record ||= config[:record] || config[:record_id] && data_class && data_adapter.find_record(config[:record_id])
+        @record ||= config[:record] || config[:record_id] && data_adapter && data_adapter.find_record(config[:record_id])
       end
 
     protected
 
       def includes_primary_key_field?(items)
         !!items.detect do |item|
-          (item.is_a?(Hash) ? item[:name] : item.to_s) == data_class.primary_key.to_s
+          (item.is_a?(Hash) ? item[:name] : item.to_s) == data_adapter.primary_key_name
         end
       end
 
