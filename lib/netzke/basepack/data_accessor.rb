@@ -32,10 +32,10 @@ module Netzke
 
       # Data adapter responsible for all DB-related operations
       def data_adapter
-        @data_adapter ||= Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(data_class).new(data_class)
+        @data_adapter ||= data_class && Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(data_class).new(data_class)
       end
 
-      # whether a column is bound to the primary_key
+      # whether a column/field is bound to the primary_key
       def primary_key_attr?(a)
         data_class && a[:name].to_s == data_class.primary_key.to_s
       end
