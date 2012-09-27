@@ -42,7 +42,6 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/accordion_panel.rb",
     "lib/netzke/basepack/auth_app.rb",
     "lib/netzke/basepack/basic_app.rb",
-    "lib/netzke/basepack/border_layout_panel.rb",
     "lib/netzke/basepack/border_layout_panel/javascripts/border_layout_panel.js",
     "lib/netzke/basepack/data_accessor.rb",
     "lib/netzke/basepack/data_adapters/abstract_adapter.rb",
