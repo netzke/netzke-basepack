@@ -1,7 +1,10 @@
 class UserForm < Netzke::Basepack::FormPanel
   def configure(c)
-    c.model = "User"
     c.record = User.first
+
+    super
+
+    c.model = "User"
     c.title = User.model_name.human
     c.items = [
       {:xtype => 'fieldset', :title => "Basic Info", :checkboxToggle => true, :items => [
@@ -14,7 +17,6 @@ class UserForm < Netzke::Basepack::FormPanel
       ]},
       :role__name
     ]
-    super
   end
 
   # Uncomment for visual mask testing

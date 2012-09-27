@@ -5,7 +5,9 @@ class UserGrid < Netzke::Basepack::GridPanel
     super
   end
 
-  add_form_config :class_name => "UserForm"
-  edit_form_config :class_name => "UserForm"
-  multi_edit_form_config :class_name => "UserForm"
+  # The way to make the grid use a custom form
+  def preconfigure_record_window(c)
+    super
+    c.form_config.klass = UserForm
+  end
 end

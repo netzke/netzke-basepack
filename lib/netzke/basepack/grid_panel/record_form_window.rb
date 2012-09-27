@@ -54,7 +54,11 @@ module Netzke
           a.text = I18n.t('netzke.basepack.grid_panel.record_form_window.actions.cancel')
         end
 
-      private
+      protected
+
+        def self.server_side_config_options
+          [:form_config, *super]
+        end
 
         def preconfigure_form(c)
           c.klass = FormPanel

@@ -87,7 +87,6 @@ module Netzke
     #     end
     #
     #
-    #
     # == One-to-many association support
     # If the model bound to a grid +belongs_to+ another model, GridPanel can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
     #
@@ -99,10 +98,14 @@ module Netzke
     #
     #     {:name => "author__first_name", :scope => lambda{|relation| relation.where(:popular => true)}}
     #
-    # == Add/edit/search forms
+    # == Add/edit forms
     # The forms will by default display the fields that correspond to the configured columns, taking over meaningful configuration options (e.g. +text+ will be converted into +fieldLabel+).
-    # You may override the default fields displayed in the forms by overriding the +default_fields_for_forms+ method, which should return an array understood by the +items+ config property of the +FormPanel+. If you need to use a custom class instead of +FormPanel+, you may need to go an extra mile overriding the corresponding GridPanel's child component (e.g. "add_form" or "edit_form").
+    # You may override the default fields displayed in the forms by overriding the +default_fields_for_forms+ method, which should return an array understood by the +items+ config property of the +FormPanel+. If you need to use a custom class instead of +FormPanel+, you need to override the +preconfigure_record_window+ method:
     #
+    #     def preconfigure_record_window(c)
+    #       super
+    #       c.form_config.klass = UserForm
+    #     end
     #
     #
     # == Actions
@@ -320,7 +323,6 @@ module Netzke
         preconfigure_record_window(c)
         c.title = "Edit #{data_class.model_name.human.pluralize}"
         c.items = [:multi_edit_form]
-        c.form_config.multi_edit = true
       end
 
       component :search_window do |c|
