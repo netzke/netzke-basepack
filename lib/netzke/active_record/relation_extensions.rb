@@ -15,9 +15,8 @@ module Netzke
           self.where(scope)
         when "ActiveSupport::HashWithIndifferentAccess" # conditions hash
           self.where(scope)
-        # This is not working any longer, probably due to some change in Rails
-        # when "Proc"   # receives a relation, must return a relation
-        #   scope.call(self)
+        when "Proc"   # receives a relation, must return a relation
+          scope.call(self)
         else
           raise ArgumentError, "Wrong parameter type for ActiveRecord::Relation#extend_with"
         end

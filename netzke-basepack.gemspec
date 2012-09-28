@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Denis Gorin"]
-  s.date = "2012-09-27"
+  s.date = "2012-09-28"
   s.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -129,6 +129,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/components/book_grid_with_overridden_columns.rb",
     "test/basepack_test_app/app/components/book_grid_with_paging.rb",
     "test/basepack_test_app/app/components/book_grid_with_persistence.rb",
+    "test/basepack_test_app/app/components/book_grid_with_scope.rb",
     "test/basepack_test_app/app/components/book_grid_with_scoped_authors.rb",
     "test/basepack_test_app/app/components/book_grid_with_virtual_attributes.rb",
     "test/basepack_test_app/app/components/book_paging_form_panel.rb",

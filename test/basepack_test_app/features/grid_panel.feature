@@ -304,3 +304,13 @@ Scenario: Editing in grid with mass-assignment security
   Then a book should not exist with author: that author
   And a book should not exist with exemplars: 200
   But a book should exist with title: "Demian", exemplars: 100
+
+@javascript
+Scenario: Scoping out grid records
+  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
+  And a book exists with title: "Lolita", author: that author
+  And a book exists with title: "Louzhin Defence", author: that author
+  And an author exists with first_name: "Herman", last_name: "Hesse"
+  And a book exists with title: "Demian", author: that author
+  When I go to the BookGridWithScope test page
+  Then the grid should show 2 records
