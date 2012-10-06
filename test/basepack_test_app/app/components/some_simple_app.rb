@@ -41,7 +41,7 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
         </div>
       },
       # TODO: this has no effect anymore:
-      :bodyStyle => {:background => "#AAA url(\"/images/header-deco.gif\") top left repeat-x"}
+      # :bodyStyle => {:background => "#AAA url(\"/images/header-deco.gif\") top left repeat-x"}
     },{
       :region => :center,
       :layout => 'border',
