@@ -43,12 +43,6 @@ module Netzke
 
       delegates_to_dsl :model, :record_id
 
-      def configure(c)
-        c.items ||= default_items
-
-        super
-      end
-
       def js_configure(c)
         super
 
@@ -117,6 +111,7 @@ module Netzke
       end
 
       def normalize_config
+        config.items ||= default_items
         @fields_from_config = {}
         super
       end
