@@ -28,9 +28,9 @@ module Netzke
         @record ||= data_adapter.first
       end
 
-      # Pass total records amount and the first record to the JS constructor
-      def configure(c)
+      def js_configure(c)
         super
+        # Pass total records amount and the first record to the JS constructor
         c.total_records = total_records
       end
 
