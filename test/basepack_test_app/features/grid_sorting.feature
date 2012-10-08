@@ -12,6 +12,8 @@ Feature: Grid sorting
     | Avatar  |
 
     When I go to the BookGrid test page
+    # HACK...
+    And I sleep 1 second
     And I click on column "Title"
     And I wait for the response from the server
     Then the grid should have records sorted by "Title"
@@ -30,6 +32,8 @@ Feature: Grid sorting
     And a book exists with title: "Magus", author: that author
 
     When I go to the BookGridWithCustomColumns test page
+    # HACK...
+    And I sleep 1 second
     And I click on column "Author  first name"
     And I wait for the response from the server
     Then the grid should have records sorted by "Author  first name"
@@ -39,6 +43,8 @@ Feature: Grid sorting
     Then the grid should have records sorted by "Author  first name" desc
 
     When I go to the BookGrid test page
+    # HACK...
+    And I sleep 1 second
     And I click on column "Author  name"
     And I wait for the response from the server
     Then the grid should have records sorted by "Author  name"
