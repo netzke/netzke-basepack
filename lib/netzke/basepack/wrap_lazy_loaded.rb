@@ -15,7 +15,7 @@ module Netzke
           {
             layout: :fit,
             wrapped_component: merged_config[:item_id],
-            title: merged_config[:title] || merged_config[:item_id],
+            title: merged_config[:title] || merged_config[:item_id].humanize,
             icon_cls: merged_config[:icon_cls],
             disabled: merged_config[:disabled]
           }
