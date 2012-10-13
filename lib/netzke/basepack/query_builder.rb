@@ -73,7 +73,7 @@ module Netzke
               :listeners => {:before_select => {
                 :fn => "function(combo, record){
                   var form = Ext.getCmp('#{global_id}');
-                  form.buildFormFromQuery(record.data.field1);
+                  form.buildFormFromQuery(record.data.value);
                 }".l
               }}
             }, :save_preset.action, :delete_preset.action

@@ -157,7 +157,7 @@ Then /^the grid should have records sorted by "([^"]*)"\s?(asc|desc)?$/ do |colu
         columnValues = [];
 
     grid.getStore().each(function(r){
-      var value = column.assoc ? r.get('_meta').associationValues[fieldName] : r.get(fieldName);
+      var value = column.assoc ? r.get('meta').associationValues[fieldName] : r.get(fieldName);
       if (value) columnValues.#{dir == "asc" ? "push" : "unshift"}(value);
     });
 

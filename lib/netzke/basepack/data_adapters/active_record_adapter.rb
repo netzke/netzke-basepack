@@ -4,6 +4,35 @@ module Netzke::Basepack::DataAdapters
       model_class <= ActiveRecord::Base
     end
 
+    def primary_key_name
+      @model_class.primary_key.to_s
+    end
+
+    def attr_type(attr_name)
+      @model_class.association_attr?(attr_name) ? :integer : (@model_class.columns_hash[attr_name.to_s].try(:type) || :string)
+    end
+
+    def model_attributes
+      @model_class.column_names.map do |column_name|
+        {name: column_name, attr_type: @model_class.columns_hash[column_name].type}.tap do |c|
+
+          # If it's named as foreign key of some association, then it's an association column
+          assoc = @model_class.reflect_on_all_associations.detect { |a| foreign_key_for_assoc(a) == c[:name] }
+
+          if assoc && !assoc.options[:polymorphic]
+            candidates = %w{name title label} << foreign_key_for_assoc(assoc)
+            assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
+            c[:name] = "#{assoc.name}__#{assoc_method}"
+          end
+
+          c[:attr_type] = attr_type(c[:name])
+
+          # auto set up the default value from the column settings
+          c[:default_value] = @model_class.columns_hash[column_name].default if @model_class.columns_hash[column_name].default
+        end
+      end
+    end
+
     def get_records(params, columns=[])
       # build initial relation based on passed params
       relation = get_relation(params)

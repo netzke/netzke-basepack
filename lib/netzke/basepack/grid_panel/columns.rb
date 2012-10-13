@@ -76,7 +76,7 @@ module Netzke
         def append_meta_column(cols)
           cols << {}.tap do |c|
             c.merge!(
-              :name => "_meta",
+              :name => "meta",
               :meta => true,
               :getter => lambda do |r|
                 meta_data(r)
@@ -107,6 +107,10 @@ module Netzke
         # Override this method if you want to provide a fix set of columns in your subclass.
         def default_columns
           @default_columns ||= load_model_level_attrs || data_class.netzke_attributes
+        end
+
+        def set_default_attr_type(c)
+          c[:attr_type] ||= association_attr?(c) ? :integer : data_adapter.attr_type(c.name)
         end
 
         # Columns that were overridden with :override_columns config option.
