@@ -9,7 +9,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def attr_type(attr_name)
-      @model_class.columns_hash[attr_name.to_s].try(:type) || :string
+      @model_class.association_attr?(attr_name) ? :integer : (@model_class.columns_hash[attr_name.to_s].try(:type) || :string)
     end
 
     def model_attributes
@@ -23,8 +23,9 @@ module Netzke::Basepack::DataAdapters
             candidates = %w{name title label} << foreign_key_for_assoc(assoc)
             assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
             c[:name] = "#{assoc.name}__#{assoc_method}"
-            c[:attr_type] = assoc.klass.columns_hash[assoc_method].try(:type) || :string # when it's an instance method rather than a column, fall back to :string
           end
+
+          c[:attr_type] = attr_type(c[:name])
 
           # auto set up the default value from the column settings
           c[:default_value] = @model_class.columns_hash[column_name].default if @model_class.columns_hash[column_name].default

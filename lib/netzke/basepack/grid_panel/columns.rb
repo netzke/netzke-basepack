@@ -78,7 +78,7 @@ module Netzke
         def append_meta_column(cols)
           cols << {}.tap do |c|
             c.merge!(
-              :name => "_meta",
+              :name => "meta",
               :meta => true,
               :getter => lambda do |r|
                 meta_data(r)
@@ -124,7 +124,7 @@ module Netzke
         end
 
         def set_default_attr_type(c)
-          c[:attr_type] ||= data_adapter.attr_type(c.name)
+          c[:attr_type] ||= association_attr?(c) ? :integer : data_adapter.attr_type(c.name)
         end
 
         def set_default_xtype(c)

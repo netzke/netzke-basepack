@@ -13,11 +13,9 @@ module Netzke
           accessible_attributes(role).empty? ? !protected_attributes(role).include?(attr_name.to_s) : accessible_attributes(role).include?(attr_name.to_s)
         end
 
-      protected
-
         # FIXME: this duplicates with is_association_attr? below
         def association_attr?(attr_name)
-          !!attr_name.index("__") # probably we can't do much better than this, as we don't know at this moment if the associated model has a specific attribute, and we don't really want to find it out
+          !!attr_name.to_s.index("__") # probably we can't do much better than this, as we don't know at this moment if the associated model has a specific attribute, and we don't really want to find it out
         end
       end
 
@@ -119,7 +117,10 @@ module Netzke
                     # what should we do in this case?
                   end
                 else
-                  self.send("#{assoc.foreign_key}=", v) if self.class.attribute_mass_assignable?(assoc.foreign_key, role)
+
+                  # set the foreign key to the passed value
+                  # not that if a negative value is passed, we reset the association (set it to nil)
+                  self.send("#{assoc.foreign_key}=", v.to_i < 0 ? nil : v) if self.class.attribute_mass_assignable?(assoc.foreign_key, role)
                 end
               else
                 logger.debug "Netzke::Basepack: Association #{assoc} is not known for class #{self.class.name}"

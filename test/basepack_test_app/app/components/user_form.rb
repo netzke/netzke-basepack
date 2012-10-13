@@ -15,7 +15,7 @@ class UserForm < Netzke::Basepack::FormPanel
         {:name => :created_at, :disabled => true},
         {:name => :updated_at, :disabled => true}
       ]},
-      :role__name
+      { name: :role__name, empty_text: "Select a role" }
     ]
   end
 

@@ -46,7 +46,7 @@ Scenario: Resetting an association
   And I select "---" from combobox "Role name"
   And I press "Apply"
   And I go to the UserForm test page
-  Then I should see "---"
+  Then I should see "Select a role"
   But I should not see "musician"
 
 Scenario: UserFormWithDefaultFields should render properly
