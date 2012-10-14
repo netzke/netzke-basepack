@@ -29,6 +29,7 @@ Gem::Specification.new do |s|
     "init.rb",
     "install.rb",
     "javascripts/basepack.js",
+    "javascripts/netzkeremotecombo.js",
     "javascripts/xdatetime.js",
     "lib/generators/netzke/basepack_generator.rb",
     "lib/generators/netzke/templates/assets/ts-checkbox.gif",

@@ -27,13 +27,14 @@ module Netzke
 
       # Called from netzke-basepack.rb
       def init
-        Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/xdatetime.js"
-        Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/basepack.js"
+        %w[netzkeremotecombo xdatetime basepack].each do |name|
+          Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/#{name}.js"
+        end
 
         Netzke::Core.ext_stylesheets << "#{File.dirname(__FILE__)}/../../stylesheets/basepack.css"
       end
 
-      # Use it to confirure Basepack in the initializers, e.g.:
+      # Use this to confirure Basepack in the initializers, e.g.:
       #
       #     Netzke::Basepack.setup do |config|
       #       config.icons_uri = "/images/famfamfam/icons"
