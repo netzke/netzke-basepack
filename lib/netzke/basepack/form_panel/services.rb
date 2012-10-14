@@ -17,18 +17,16 @@ module Netzke
             end
 
             # File uploads are in raw params instead of "data" hash, so, mix them in into "data"
-            if config[:file_upload]
-              Netzke::Core.controller.params.each_pair do |k,v|
-                data[k] = v if v.is_a?(ActionDispatch::Http::UploadedFile)
-              end
+            Netzke::Core.controller.params.each_pair do |k,v|
+              data[k] = v if v.is_a?(ActionDispatch::Http::UploadedFile)
             end
 
             success = create_or_update_record(data)
 
             if success
               this.set_form_values(js_record_data)
-              this.set_result(true)
-              # {:set_form_values => js_record_data, :set_result => true}
+              this.success = true # respond to classic form submission with {success: true}
+              this.on_submit_success # inform the Netzke endpoint caller about success
             else
               # flash eventual errors
               data_adapter.errors_array(@record).each do |error|
@@ -36,7 +34,6 @@ module Netzke
               end
               this.netzke_feedback(@flash)
               this.apply_form_errors(build_form_errors(record))
-              # {:netzke_feedback => @flash, :apply_form_errors => build_form_errors(record)}
             end
           end
 

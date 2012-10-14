@@ -31,10 +31,10 @@ class BookForm < Netzke::Basepack::FormPanel
   end
 
   js_configure do |c|
-    c.init_component = <<-JS
+    c.on_submit_success = <<-JS
       function(){
         this.callParent();
-        this.on('submitsuccess', function(){ this.netzkeFeedback('Suc'+'cess!')}, this);
+        this.netzkeFeedback('Suc'+'cess!');
       }
     JS
   end
