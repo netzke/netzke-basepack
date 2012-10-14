@@ -46,28 +46,7 @@ module Netzke
           @fields_from_config || (normalize_config || true) && @fields_from_config
         end
 
-        module ClassMethods
-          # Columns to be displayed by the FieldConfigurator, "meta-columns". Each corresponds to a configuration
-          # option for each field in the form.
-          def meta_columns
-            [
-              {:name => "included", :attr_type => :boolean, :width => 40, :header => "Incl", :default_value => true},
-              {:name => "name", :attr_type => :string, :editor => :netzkeremotecombo, :width => 200},
-              {:name => "label", :attr_type => :string, :header => "Label"},
-              {:name => "default_value", :attr_type => :string}
-            ]
-          end
-        end
-
       protected
-
-        def load_persistent_fields
-          # NetzkeFieldList.read_list(global_id) if persistent_config_enabled?
-        end
-
-        def load_model_level_attrs
-          # NetzkeModelAttrList.read_list(data_class.name) if persistent_config_enabled? && data_class
-        end
 
         # This is where we expand our basic field config with all the defaults
         def extend_item(field)
@@ -126,24 +105,6 @@ module Netzke
               c[:xtype] ||= xtype_for_attr_type(assoc_method_type)
             else
               c[:xtype] ||= assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : xtype_for_association
-            end
-          end
-        end
-
-        # RECURSIVELY extracts fields configuration from :items
-        def normalize_fields(items)
-          @fields_from_config ||= {}
-          items.map do |item|
-            # at this moment, item is a hash or a symbol
-            if is_field_config?(item)
-              item = normalize_field(item)
-              @fields_from_config[item[:name].to_sym] = item
-              item #.reject{ |k,v| k == :name } # do we really need to remove the :name key?
-            elsif item.is_a?(Hash)
-              item = item.dup # we don't want to modify original hash
-              item[:items].is_a?(Array) ? item.merge(:items => normalize_fields(item[:items])) : item
-            else
-              item
             end
           end
         end
