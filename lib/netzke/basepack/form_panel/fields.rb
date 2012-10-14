@@ -6,8 +6,8 @@ module Netzke
         extend ActiveSupport::Concern
 
         # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render a field)
-        def default_items
-          data_class && data_adapter.model_attributes || []
+        def items
+          config.items || data_class && data_adapter.model_attributes || []
         end
 
         # Hash of fully configured fields, that are referenced in the items. E.g.:

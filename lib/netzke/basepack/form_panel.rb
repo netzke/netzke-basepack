@@ -111,7 +111,7 @@ module Netzke
       end
 
       def normalize_config
-        config.items ||= default_items
+        config.items = items
         @fields_from_config = {}
         super
       end
