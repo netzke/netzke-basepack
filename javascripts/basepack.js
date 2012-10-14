@@ -71,16 +71,3 @@ Ext.define('Ext.ux.form.TriCheckbox', {
   store: [[true, "Yes"], [false, "No"]],
   forceSelection: true
 });
-
-// Enabling checkbox submission when unchecked
-// TODO: it would be nice to standardize return values
-//  because currently checkboxes return "on", if checked,
-//  and boolean 'false' otherwise. It's not nice
-//  MAV
-//  TODO: maybe we should simply initialize 'uncheckedValue' somewhere else,
-//  instead
-Ext.override( Ext.form.field.Checkbox, {
-  getSubmitValue: function() {
-    return this.callOverridden() || false; // 'off';
-  }
-});

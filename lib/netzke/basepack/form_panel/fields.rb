@@ -103,6 +103,7 @@ module Netzke
             # checkbox setup
             if field[:attr_type] == :boolean
               field[:checked] = field[:value]
+              field[:unchecked_value] = false
               field[:input_value] = true if field[:attr_type] == :boolean
             end
 
