@@ -1,3 +1,4 @@
+# This has been excluded from tests in 0-8. In 0-8 the values in the association columns/fields are passed as integers (id of associated record), not as string. So, the author_first_name_setter won't work as planned here.
 class BookGridWithVirtualAttributes < Netzke::Basepack::GridPanel
   include Extras::BookPresentation
 
