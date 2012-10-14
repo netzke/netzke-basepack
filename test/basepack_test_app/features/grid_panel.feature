@@ -143,14 +143,15 @@ Scenario: Inline adding of records
   And I wait for the response from the server
   And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
   And I edit row 1 of the grid with title: "Demian"
+  And I stop editing the grid
 
   And I press "Add"
   And I expand combobox "author__name" in row 2 of the grid
   And I wait for the response from the server
   And I select "Nabokov, Vladimir" in combobox "author__name" in row 2 of the grid
   And I edit row 2 of the grid with title: "Lolita"
-
   And I stop editing the grid
+
   And I press "Apply"
   And I wait for the response from the server
   Then a book should exist with title: "Lolita", author: author "Nabokov"
