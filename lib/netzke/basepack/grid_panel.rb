@@ -76,6 +76,7 @@ module Netzke
     #
     # * +format+ - the format to display data in case of date and datetime columns, e.g. 'Y-m-d g:i:s'.
     # * +excluded+ - when true, this column will not be used in the grid (not even in the hidden mode)
+    # * +blank_line+ - the blank line for one-to-many association columns, defaults to "---". Set to false to exclude completely.
     #
     # Besides these options, a column can receive any meaningful config option understood by Ext.grid.column.Column (such as +hidden+)
     #
