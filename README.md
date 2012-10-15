@@ -16,7 +16,7 @@ In your Gemfile:
 
 For the "edge" stuff, tell bundler to get the gem straight from GitHub:
 
-    gem 'netzke-basepack', :git => "git://github.com/skozlov/netzke-basepack.git"
+    gem 'netzke-basepack', :git => "git://github.com/nomadcoder/netzke-basepack.git"
 
 ## Usage
 
@@ -28,9 +28,9 @@ For more examples, see http://demo.netzke.com, and look into test/basepack_test_
 
 ## Testing and playing with Netzke Basepack
 
-Netzke Basepack is bundled with Cucumber and RSpec tests. If you would like to contribute to the project, you may want to learn how to [run the tests](https://github.com/skozlov/netzke-core/wiki/Automated-testing).
+Netzke Basepack is bundled with Cucumber and RSpec tests. If you would like to contribute to the project, you may want to learn how to [run the tests](https://github.com/nomadcoder/netzke-core/wiki/Automated-testing).
 
-Besides, the bundled test application is a convenient [playground](https://github.com/skozlov/netzke-core/wiki/Playground) for those who search to experiment with the framework.
+Besides, the bundled test application is a convenient [playground](https://github.com/nomadcoder/netzke-core/wiki/Playground) for those who search to experiment with the framework.
 
 After starting up the test app, you can see the list of functional test components on the index page (along with links to the source code):
 
