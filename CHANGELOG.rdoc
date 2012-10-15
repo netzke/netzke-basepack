@@ -6,6 +6,7 @@
 
 * bug fix
   * models with non-conventional primary keys could not be updated by gridpanel (davide)
+  * GridPanel's default forms respect "read_only" and "editable" config in fields
 
 = 0.7.6 - 2012-07-27
 * Fix netzke-core version dependency in gemspec
