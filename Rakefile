@@ -23,22 +23,22 @@ Rake::TestTask.new(:test) do |test|
   test.verbose = true
 end
 
-require 'rake/rdoctask'
-Rake::RDocTask.new do |rdoc|
-  require './lib/netzke/basepack/version'
-  version = Netzke::Basepack::Version::STRING
+begin
+  require 'yard'
 
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title = "netzke-basepack #{version}"
-  # rdoc.main = "README.rdoc"
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('CHANGELOG*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
-
-namespace :rdoc do
-  desc "Publish rdocs"
-  task :publish => :rdoc do
-    `scp -r rdoc/* fl:www/api.netzke.org/basepack`
+  YARD::Rake::YardocTask.new do |t|
+    t.options = ['--title', "Netzke Basepack #{Netzke::Basepack::Version::STRING}"]
   end
+
+  namespace :yard do
+    desc "Publish docs to api.netzke.org"
+    task publish: :yard do
+      dir = 'www/api.netzke.org/basepack'
+      puts "Publishing to fl:#{dir}..."
+      `ssh fl "mkdir -p #{dir}"`
+      `scp -r doc/* fl:#{dir}`
+    end
+  end
+rescue
+  puts "To enable yard do 'gem install yard'"
 end
