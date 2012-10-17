@@ -9,7 +9,7 @@ begin
     gemspec.email = "nmcoder@gmail.com"
     gemspec.homepage = "http://netzke.org"
     gemspec.add_dependency("netzke-core",   "~>0.8.0")
-    gemspec.authors = ["Denis Gorin"]
+    gemspec.authors = ["nomadcoder"]
   end
   Jeweler::GemcutterTasks.new
 rescue LoadError
