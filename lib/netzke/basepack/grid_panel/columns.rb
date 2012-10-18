@@ -341,8 +341,8 @@ module Netzke
               field_config = {
                 :name => c[:name],
                 :field_label => c[:text] || c[:header],
-                read_only: c[:read_only],
-                editable: c[:editable]
+                :read_only => c[:read_only],
+                :editable => c[:editable]
               }
 
               # scopes for combobox options

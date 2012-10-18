@@ -14,7 +14,7 @@ module Netzke::Basepack::DataAdapters
 
     def model_attributes
       @model_class.column_names.map do |column_name|
-        {name: column_name, attr_type: @model_class.columns_hash[column_name].type}.tap do |c|
+        {:name => column_name, :attr_type => @model_class.columns_hash[column_name].type}.tap do |c|
 
           # If it's named as foreign key of some association, then it's an association column
           assoc = @model_class.reflect_on_all_associations.detect { |a| foreign_key_for_assoc(a) == c[:name] }

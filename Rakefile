@@ -32,13 +32,13 @@ begin
 
   namespace :yard do
     desc "Publish docs to api.netzke.org"
-    task publish: :yard do
+    task :publish => :yard do
       dir = 'www/api.netzke.org/basepack'
       puts "Publishing to fl:#{dir}..."
       `ssh fl "mkdir -p #{dir}"`
       `scp -r doc/* fl:#{dir}`
     end
   end
-rescue
+rescue LoadError
   puts "To enable yard do 'gem install yard'"
 end
