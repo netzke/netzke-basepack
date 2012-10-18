@@ -203,11 +203,11 @@ module Netzke
 
         def initial_columns_order
           final_columns.map do |c|
-            {
-              :name => c[:name],
-              :width => c[:width],
-              :hidden => c[:hidden]
-            }
+            # copy the values that are not null
+            {name: c[:name]}.tap do |r|
+              r[:width] = c[:width] if c[:width]
+              r[:hidden] = c[:hidden] if c[:hidden]
+            end
           end
         end
 
