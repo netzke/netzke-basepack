@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Denis Gorin"]
-  s.date = "2012-10-18"
+  s.date = "2012-10-19"
   s.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -100,6 +100,7 @@ Gem::Specification.new do |s|
     "lib/tasks/netzke_basepack_tasks.rake",
     "locales/de.yml",
     "locales/en.yml",
+    "locales/zh-cn.yml",
     "netzke-basepack.gemspec",
     "stylesheets/basepack.css",
     "stylesheets/datetimefield.css",

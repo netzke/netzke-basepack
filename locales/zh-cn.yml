@@ -1,0 +1,79 @@
+zh-cn:
+  netzke:
+    basepack:
+      grid_panel:
+        actions:
+          add: "增加"
+          edit: "编辑"
+          del: "删除"
+          apply: "保存"
+          add_in_form: "表格添加"
+          edit_in_form: "表格编辑"
+          search: "搜索"
+
+        deleted_n_records: "删除了 %{n} 条记录"
+        cannot_delete: "本用户无权限删除"
+        confirmation: "确认"
+        are_you_sure: "确认改操作吗？"
+
+        record_form_window:
+          actions:
+            ok: "确定"
+            cancel: "取消"
+
+      search_window:
+        title: "高级搜索"
+        actions:
+          search: "搜索"
+          cancel: "取消"
+
+      form_panel:
+        actions:
+          edit: "编辑"
+          edit_tooltip: "编辑"
+          cancel: "取消"
+          cancel_tooltip: "取消编辑"
+          apply: "保存"
+          apply_tooltip: "保存修改"
+
+      search_panel:
+        presets: "呈现"
+        equals: "等于"
+        greater_than: "大于"
+        less_than: "小于"
+        contains: "包含"
+        matches: "匹配"
+        date_equals: "On"
+        before: "之前"
+        after: "之后"
+
+      paging_form_panel:
+        actions:
+          search: "搜索"
+          search_tooltip: "高级搜索"
+
+      query_builder:
+        presets: "预设"
+        preset_saved: "预设成功保存"
+        preset_deleted: "预设成功删除"
+        overwrite_confirm: "确定覆盖已存在的预设 '{0}' 吗?"
+        overwrite_confirm_title: "覆盖已存在预设"
+        delete_confirm: "确定删除预设 '{0}' 吗?"
+        delete_confirm_title: "删除预设确认"
+        actions:
+          clear_all: "清除"
+          clear_all_tooltip: "清除所有条件"
+          reset: "重置"
+          reset_tooltip: "重置条件值"
+          save_preset: "保存预设"
+          save_preset_tooltip: "保存预设"
+          delete_preset: "删除预设"
+          delete_preset_tooltip: "删除预设"
+          apply: "保存"
+          apply_tooltip: "应用条件"
+
+
+    formats:
+      date: Y-m-d
+      datetime: Y-m-d H:i:s
+      time: H:i:s
