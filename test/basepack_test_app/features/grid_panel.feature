@@ -10,7 +10,7 @@ Scenario: BookGrid should correctly display data
 
   When I go to the BookGrid test page
   Then I should see "Nabokov, Vladimir"
-  And I should see "2011-12-13 11:12:13"
+  And I should see "12/13/2011 11:12:13"
   And I should see "01/30/2005"
 
 @javascript
@@ -23,11 +23,13 @@ Scenario: Adding a record via "Add in form"
   And I press "OK"
   Then I should see "Herman"
   And I should see "Hesse"
+  And a user should exist with first_name: "Herman", last_name: "Hesse"
 
 @javascript
 Scenario: Updating a record via "Edit in form"
   Given a user exists with first_name: "Carlos", last_name: "Castaneda"
   When I go to the UserGrid test page
+  And I wait for the response from the server
   And I select first row in the grid
   And I press "Edit in form"
   And I fill in "First name:" with "Maxim"
@@ -56,8 +58,10 @@ Scenario: Multi-editing records
   Given a user exists with first_name: "Carlos", last_name: "Castaneda"
   And a user exists with first_name: "Herman", last_name: "Hesse"
   When I go to the UserGrid test page
+  And I wait for the response from the server
   And I select all rows in the grid
   And I press "Edit in form"
+  And I wait for the response from the server
   And I fill in "First name:" with "Maxim"
   And I press "OK"
   And I wait for the response from the server
@@ -107,6 +111,7 @@ Scenario: Grid with columns with default values
 Scenario: Inline editing
   Given a book exists with title: "Magus", exemplars: 100
   When I go to the BookGrid test page
+  And I wait for the response from the server
   And I edit row 1 of the grid with title: "Collector", exemplars: 200
   And I press "Apply"
   And I wait for the response from the server
@@ -295,6 +300,7 @@ Scenario: Editing in grid with mass-assignment security
   And a book exists with title: "Lolita", author: that author, exemplars: 100
   And an author exists with first_name: "Herman", last_name: "Hesse"
   When I go to the BookGridWithMassAssignmentSecurity test page
+  And I wait for the response from the server
   And I expand combobox "author__name" in row 1 of the grid
   And I wait for the response from the server
   And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
@@ -314,4 +320,12 @@ Scenario: Scoping out grid records
   And an author exists with first_name: "Herman", last_name: "Hesse"
   And a book exists with title: "Demian", author: that author
   When I go to the BookGridWithScope test page
+  And I wait for the response from the server
   Then the grid should show 2 records
+
+@javascript
+Scenario: Auto-loading of grid data
+    Given a book exists with title: "Man for himself"
+    When I go to the GridWithAutoLoad test page
+    And I wait for the response from the server
+    Then I should see "Man for himself"

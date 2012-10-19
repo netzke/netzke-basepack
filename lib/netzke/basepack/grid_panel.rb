@@ -17,8 +17,6 @@ module Netzke
     # * advanced search
     # * rows reordering by drag-n-drop, requires acts_as_list on the model
     # * virtual attribute support
-    # * (TODO) dynamic configuration of properties and columns
-    #
     #
     #
     # == Instance configuration
@@ -31,7 +29,7 @@ module Netzke
     #   When it's a hash, it's a conditions hash (passed directly to +where+).
     #   When it's an array, it's expanded into an SQL statement with arguments (passed directly to +where+), e.g.:
     #
-    #     :scope => ["id > ?", 100])
+    #     scope: ["id > ?", 100])
     #
     # * +role+ - role for ActiveModel mass-assignment security
     # * +strong_default_attrs+ - (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. +role_id: 1+
@@ -43,10 +41,10 @@ module Netzke
     # * +enable_rows_reordering+ - (defaults to false) enable reordering of rows with drag-n-drop; underlying model (specified in +model+) must implement "acts_as_list"-compatible functionality
     # * +enable_pagination+ - (defaults to true) enable pagination
     # * +rows_per_page+ - (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to +false+)
-    # * +load_inline_data+ - (defaults to true) load initial data into the grid right after its instantiation
-    # * (TODO) +mode+ - when set to +config+, GridPanel loads in configuration mode
+    # * +load_inline_data+ - (defaults to false) grid is being loaded along with its initial data; use with precaution, preferred method is auto-loading of data in a separate server request (see +data_store+)
+    # * +data_store+ - (defaults to {}) extra configuration for the JS class's internal store (see Ext.data.Store). For example, to disable auto loading of data, do:
     #
-    #
+    #     data_store: {auto_load: false}
     #
     # == Columns
     # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name of model's (virtual) attribute (in which case the configuration will be fully automatic), or a hash that may contain the following configuration options as keys:
@@ -171,7 +169,6 @@ module Netzke
         :enable_edit_in_form    => edit_in_form_available,
         :enable_extended_search => extended_search_available,
         :enable_column_filters  => column_filters_available,
-        :load_inline_data       => true,
         :enable_rows_reordering => false, # column drag n drop
         :enable_pagination      => true,
         :rows_per_page          => 30,
@@ -234,6 +231,12 @@ module Netzke
         c.columns_order = columns_order
         c.inline_data = get_data if c.load_inline_data
         c.pri = data_class.primary_key
+      end
+
+      def config
+        @config ||= ActiveSupport::OrderedOptions.new.tap do |c|
+          c.data_store = ActiveSupport::OrderedOptions.new
+        end
       end
 
       def bbar

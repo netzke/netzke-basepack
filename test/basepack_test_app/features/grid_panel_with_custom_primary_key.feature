@@ -7,6 +7,7 @@ Feature: Grid panel with custom primary key
   Scenario: Inline editing
     Given a book_with_custom_primary_key exists with title: "Book you are to write"
     When I go to the BookWithCustomPrimaryKeyGrid test page
+    And I wait for the response from the server
     And I edit row 1 of the grid with title: "My fight club"
     And I press "Apply"
     And I wait for the response from the server
