@@ -143,6 +143,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/components/double_book_grid.rb",
     "test/basepack_test_app/app/components/extras/book_presentation.rb",
     "test/basepack_test_app/app/components/form_without_model.rb",
+    "test/basepack_test_app/app/components/grid_with_initial_sorting.rb",
     "test/basepack_test_app/app/components/grid_with_inline_data.rb",
     "test/basepack_test_app/app/components/lockable_book_form.rb",
     "test/basepack_test_app/app/components/lockable_user_form.rb",

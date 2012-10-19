@@ -57,3 +57,15 @@ Feature: Grid sorting
     When I click on column "Author  name"
     And I wait for the response from the server
     Then the grid should have records sorted by "Author  name" desc
+
+  @javascript
+  Scenario: Sorting on regular column
+    Given the following books exist:
+    | title   |
+    | Belief  |
+    | Cosmos  |
+    | Avatar  |
+
+    When I go to the GridWithInitialSorting test page
+    And I wait for the response from the server
+    Then the grid should have records sorted by "Title" desc
