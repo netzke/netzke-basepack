@@ -8,8 +8,7 @@ module Netzke
       end
 
       # Normalize array of attributes
-      # [:col1, "col2", {:name => :col3}] =>
-      #   [{:name => "col1"}, {:name => "col2"}, {:name => "col3"}]
+      #     [:col1, "col2", {:name => :col3}] #=> [{:name => "col1"}, {:name => "col2"}, {:name => "col3"}]
       def normalize_attrs(attrs)
         attrs.map{ |a| normalize_attr(a) }
       end

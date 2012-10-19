@@ -34,7 +34,7 @@ module Netzke
     #     :scope => ["id > ?", 100])
     #
     # * +role+ - role for ActiveModel mass-assignment security
-    # * +strong_default_attrs+ - (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. {:role_id => 1}
+    # * +strong_default_attrs+ - (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. +role_id: 1+
     # * +enable_column_filters+ - (defaults to true) enable filters in column's context menu
     # * +enable_edit_in_form+ - (defaults to true) provide buttons into the toolbar that activate editing/adding records via a form
     # * +enable_extended_search+ - (defaults to true) provide a button into the toolbar that shows configurable search form
@@ -58,6 +58,7 @@ module Netzke
     # * +getter+ - a lambda that receives a record as a parameter, and is expected to return a string that will be sent to the cell (can be HTML code), e.g.:
     #
     #     :getter => lambda {|r| [r.first_name, r.last_name].join }
+    #
     # * +setter+ - a lambda that receives a record as first parameter, and the value passed from the cell as the second parameter, and is expected to modify the record accordingly, e.g.:
     #
     #     :setter => lambda { |r,v| r.first_name, r.last_name = v.split(" ") }
