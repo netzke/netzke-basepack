@@ -324,8 +324,7 @@ Scenario: Scoping out grid records
   Then the grid should show 2 records
 
 @javascript
-Scenario: Auto-loading of grid data
+Scenario: Inline grid data
     Given a book exists with title: "Man for himself"
-    When I go to the GridWithAutoLoad test page
-    And I wait for the response from the server
+    When I go to the GridWithInlineData test page
     Then I should see "Man for himself"
