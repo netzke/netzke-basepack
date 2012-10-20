@@ -2,7 +2,7 @@
 
 [RDocs](http://rdoc.info/github/nomadcoder/netzke-basepack)
 
-**WARNING 2012-10-20: This README is WIP, in the transition from v0-7 to v0-8**
+**WARNING 2012-10-20: This README is WIP, in the transition from v0.7 to v0.8. For v0.7 see the [0-7 branch](https://github.com/nomadcoder/netzke-basepack/tree/0-7).**
 
 A pack of pre-built [Netzke](http://netzke.org) components - such as grid, form, tab panel, etc.
 
@@ -77,22 +77,16 @@ CAVEATS:
 ## Icons support
 Netzke Basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.
 
-## Ext 3 support
+## Ext JS 3 support
 Versions 0.6.x are for you if you're using Ext 3 (*hardly maintained*)
 
-## Rails 2 support
-With Rails 2 (and Ext 3 only), use versions 0.5.x (*not maintained*)
-
-## More info
-Official project site: http://netzke.org
-
-Twitter:
-
-* latest news about Netzke: http://twitter.com/netzke
-* author's tweets on osx, productivity and what not:  http://twitter.com/nomadcoder
-
-Tutorials: http://writelesscode.com
+## Useful links
+* [Project website](http://netzke.org)
+* [Documentation](https://github.com/nomadcoder/netzke/wiki)
+* [Live-demo](http://netzke-demo.herokuapp.com)
+* [Twitter](http://twitter.com/netzke) - latest news about the framework
 
 ---
-Copyright (c) 2008-2012 NomadCoder, released under the MIT license
-Note, that Ext JS itself is licensed [differently](http://www.sencha.com/products/extjs/license/)
+Copyright (c) 2008-2012 [nomadcoder](http://twitter.com/nomadcoder), released under the MIT license.
+
+Note, that Ext JS itself is licensed [differently](http://www.sencha.com/products/extjs/license/).
