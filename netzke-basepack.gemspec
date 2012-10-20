@@ -24,7 +24,6 @@ Gem::Specification.new do |s|
     "README.md",
     "Rakefile",
     "TODO.rdoc",
-    "UPGRADING.md",
     "config/ci/before-travis.sh",
     "init.rb",
     "install.rb",
