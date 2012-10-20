@@ -1,4 +1,8 @@
-# Netzke Basepack
+# Netzke Basepack [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/nomadcoder/netzke-basepack)
+
+[RDocs](http://rdoc.info/github/nomadcoder/netzke-basepack)
+
+**WARNING 2012-10-20: This README is WIP, in the transition from v0-7 to v0-8**
 
 A pack of pre-built [Netzke](http://netzke.org) components - such as grid, form, tab panel, etc.
 
@@ -6,7 +10,7 @@ A pack of pre-built [Netzke](http://netzke.org) components - such as grid, form,
 
 * Ruby 1.9.2
 * Rails ~> 3.1.0
-* Ext JS ~> 4.1.x
+* Ext JS ~> 4.1.0
 
 ## Installation
 
@@ -16,7 +20,7 @@ In your Gemfile:
 
 For the "edge" stuff, tell bundler to get the gem straight from GitHub:
 
-    gem 'netzke-basepack', :git => "git://github.com/skozlov/netzke-basepack.git"
+    gem 'netzke-basepack', :git => "git://github.com/nomadcoder/netzke-basepack.git"
 
 ## Usage
 
@@ -24,13 +28,13 @@ Embed a basepack component into a view as any other Netzke component, e.g.:
 
   <%= netzke :books, :class_name => 'Netzke::Basepack::GridPanel', :model => 'Book' %>
 
-For more examples, see http://demo.netzke.com, and look into test/basepack_test_app.
+For more examples, see http://netzke-demo.herokuapp.com, and look into test/basepack_test_app.
 
 ## Testing and playing with Netzke Basepack
 
-Netzke Basepack is bundled with Cucumber and RSpec tests. If you would like to contribute to the project, you may want to learn how to [run the tests](https://github.com/skozlov/netzke-core/wiki/Automated-testing).
+Netzke Basepack is bundled with Cucumber and RSpec tests. If you would like to contribute to the project, you may want to learn how to [run the tests](https://github.com/nomadcoder/netzke-core/wiki/Automated-testing).
 
-Besides, the bundled test application is a convenient [playground](https://github.com/skozlov/netzke-core/wiki/Playground) for those who search to experiment with the framework.
+Besides, the bundled test application is a convenient [playground](https://github.com/nomadcoder/netzke-core/wiki/Playground) for those who search to experiment with the framework.
 
 After starting up the test app, you can see the list of functional test components on the index page (along with links to the source code):
 
@@ -87,8 +91,8 @@ Twitter:
 * latest news about Netzke: http://twitter.com/netzke
 * author's tweets on osx, productivity and what not:  http://twitter.com/nomadcoder
 
-Many (if a bit outdated) tutorials: http://blog.writelesscode.com
+Tutorials: http://writelesscode.com
 
 ---
-Copyright (c) 2008-2011 NomadCoder, released under the MIT license
+Copyright (c) 2008-2012 NomadCoder, released under the MIT license
 Note, that Ext JS itself is licensed [differently](http://www.sencha.com/products/extjs/license/)
