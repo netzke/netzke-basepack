@@ -125,6 +125,7 @@ Scenario: Inline editing of association
   And a book exists with title: "Lolita", author: that author
   And an author exists with first_name: "Herman", last_name: "Hesse"
   When I go to the BookGrid test page
+  And I wait for the response from the server
   And I expand combobox "author__name" in row 1 of the grid
   And I wait for the response from the server
   And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
