@@ -1,4 +1,4 @@
-= 0.7.7 - ?
+= 0.7.7 - 2012-10-20
 * Ext JS 4.1.x support
 
 * improvements
