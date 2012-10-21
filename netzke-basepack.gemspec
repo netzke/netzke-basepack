@@ -44,7 +44,6 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/data_accessor.rb",
     "lib/netzke/basepack/data_adapters/abstract_adapter.rb",
     "lib/netzke/basepack/data_adapters/active_record_adapter.rb",
-    "lib/netzke/basepack/data_adapters/data_mapper_adapter.rb",
     "lib/netzke/basepack/data_adapters/sequel_adapter.rb",
     "lib/netzke/basepack/form_panel.rb",
     "lib/netzke/basepack/form_panel/fields.rb",

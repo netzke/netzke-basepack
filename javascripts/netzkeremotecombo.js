@@ -22,7 +22,6 @@ Ext.define('Ext.netzke.ComboBox', {
         fields: ['value', 'text']
     });
 
-    console.log("this.parentId:", this.parentId);
     var store = new Ext.data.Store({
       model: modelName,
       proxy: {
