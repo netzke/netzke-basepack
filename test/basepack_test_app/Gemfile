@@ -1,7 +1,7 @@
 source 'http://rubygems.org'
 
-RAILS_VERSION = '3.2.1'
-DM_VERSION    = '1.2.0'
+RAILS_VERSION = '~>3.2.0'
+DM_VERSION    = '>=1.2.0'
 
 # we are getting AR still regardless of ORM env, because netzke-persistence needs it
 gem 'rails',                RAILS_VERSION
@@ -39,7 +39,6 @@ group :test do
   gem 'selenium-webdriver'
   gem 'launchy'    # So you can do Then show me the page
   gem 'capybara'
-  gem 'capybara-screenshot'
   gem 'cucumber-rails'
   gem 'cucumber'
   gem 'rspec-rails'
