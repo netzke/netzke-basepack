@@ -133,7 +133,7 @@ module Netzke
         end
 
         def set_default_text(c)
-          c[:text] ||= c[:label] || data_class.human_attribute_name(c[:name])
+          c[:text] ||= c[:label] || data_adapter.human_attribute_name(c[:name])
         end
 
         def set_default_editor(c)
@@ -154,7 +154,7 @@ module Netzke
         end
 
         def set_default_hidden(c)
-          c[:hidden] = true if primary_key_attr?(c) && c[:hidden].nil?
+          c[:hidden] = true if data_adapter.primary_key_attr?(c) && c[:hidden].nil?
         end
 
         def set_default_editable(c)
@@ -190,11 +190,11 @@ module Netzke
 
         # If the column should be editable
         def is_editable_column?(c)
-          not_editable_if = primary_key_attr?(c)
+          not_editable_if = data_adapter.primary_key_attr?(c)
           not_editable_if ||= c[:virtual] && !association_attr?(c[:name])
           not_editable_if ||= c[:read_only]
 
-          editable_if = data_class.column_names.include?(c[:name])
+          editable_if = data_adapter.attribute_names.include?(c[:name])
           editable_if ||= data_class.instance_methods.map(&:to_s).include?("#{c[:name]}=")
           editable_if ||= association_attr?(c[:name])
 
@@ -261,7 +261,7 @@ module Netzke
         # When overriding this method, keep in mind that the fields inside the layout must be expanded (each field represented by a hash, not just a symbol)
         def default_fields_for_forms
           selected_columns = final_columns.select do |c|
-            data_class.column_names.include?(c[:name]) ||
+            data_adapter.attribute_names.include?(c[:name]) ||
             data_class.instance_methods.include?("#{c[:name]}=") ||
             association_attr?(c[:name])
           end

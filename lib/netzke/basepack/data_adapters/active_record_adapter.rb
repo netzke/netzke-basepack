@@ -30,6 +30,24 @@ module Netzke::Basepack::DataAdapters
       end
     end
 
+    # WIP
+    def attribute_names
+      @model_class.column_names
+    end
+
+    def primary_key_attr?(a)
+      a[:name].to_s == @model_class.primary_key.to_s
+    end
+
+    def human_attribute_name(attr_name)
+      @model_class.human_attribute_name(attr_name)
+    end
+
+    def primary_key
+      @model_class.primary_key
+    end
+    ## E_WIP
+
     def attr_type(attr_name)
       association_attr?(attr_name) ? :integer : (@model_class.columns_hash[attr_name.to_s].try(:type) || :string)
     end

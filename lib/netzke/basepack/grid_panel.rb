@@ -230,7 +230,7 @@ module Netzke
         c.columns = final_columns(with_meta: true)
         c.columns_order = columns_order
         c.inline_data = get_data if c.load_inline_data
-        c.pri = data_class.primary_key
+        c.pri = data_adapter.primary_key
       end
 
       def config

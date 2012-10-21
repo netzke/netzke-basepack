@@ -35,9 +35,9 @@ module Netzke
       end
 
       # whether a column/field is bound to the primary_key
-      def primary_key_attr?(a)
-        data_class && a[:name].to_s == data_class.primary_key.to_s
-      end
+      # def primary_key_attr?(a)
+      #   data_class && a[:name].to_s == data_class.primary_key.to_s
+      # end
 
       # Mark an attribute as "virtual" by default, when it doesn't reflect a model column, or a model column of an association
       def set_default_virtual(c)

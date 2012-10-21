@@ -77,7 +77,7 @@ module Netzke
             # provide our special combobox with our id
             field[:parent_id] = self.global_id if field[:xtype] == :netzkeremotecombo
 
-            field[:hidden] = field[:hide_label] = true if field[:hidden].nil? && primary_key_attr?(field)
+            field[:hidden] = field[:hide_label] = true if field[:hidden].nil? && data_adapter.try(:primary_key_attr?, field)
 
             # checkbox setup
             if field[:attr_type] == :boolean
@@ -131,7 +131,7 @@ module Netzke
         end
 
         def set_default_read_only(field)
-          enabled_if = !data_class || data_class.column_names.include?(field[:name])
+          enabled_if = !data_adapter || data_adapter.attribute_names.include?(field[:name])
           enabled_if ||= data_class.instance_methods.map(&:to_s).include?("#{field[:name]}=")
           enabled_if ||= record && record.respond_to?("#{field[:name]}=")
           enabled_if ||= association_attr?(field[:name])

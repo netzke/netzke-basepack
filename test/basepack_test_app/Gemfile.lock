@@ -9,7 +9,7 @@ GIT
       yard
 
 PATH
-  remote: vendor/gems/netzke-core
+  remote: vendor/gems
   specs:
     netzke-core (0.8.0)
       activesupport (>= 3.0.0)
@@ -44,7 +44,7 @@ GEM
     activesupport (3.2.8)
       i18n (~> 0.6)
       multi_json (~> 1.0)
-    addressable (2.3.2)
+    addressable (2.2.8)
     arel (3.0.2)
     builder (3.0.4)
     capybara (1.1.2)
@@ -80,8 +80,8 @@ GEM
     i18n (0.6.1)
     journey (1.0.4)
     json (1.7.5)
-    launchy (2.1.2)
-      addressable (~> 2.3)
+    launchy (2.1.0)
+      addressable (~> 2.2.6)
     libwebsocket (0.1.5)
       addressable
     mail (2.4.4)
