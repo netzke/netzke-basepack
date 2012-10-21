@@ -15,12 +15,12 @@ when 'dm'
   gem 'dm-validations',     DM_VERSION # needed for manual validations
   gem 'dm-timestamps',      DM_VERSION # needed for created_at and updated_at
   gem 'dm-aggregates',      DM_VERSION # needed for efficient count queries, else * will be selected and counted afterwards
+  gem 'netzke-basepack-dm', :path => File.expand_path('../vendor/gems', __FILE__)
 when 'sq'
   gem 'sequel'
 end
 
-gem 'netzke-core',        :path => File.expand_path('../vendor/gems/netzke-core', __FILE__)
-gem 'netzke-persistence', :path => File.expand_path('../vendor/gems/netzke-persistence', __FILE__)
+gem 'netzke-core',        :path => File.expand_path('../vendor/gems', __FILE__)
 
 # We need to manually include these Basepack dependencies, because we're not including Basepack as a gem
 # gem 'will_paginate', :git=> "git://github.com/mislav/will_paginate.git"
