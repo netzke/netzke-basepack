@@ -91,14 +91,18 @@ module Netzke::Basepack::DataAdapters
     def get_property_type column
       column.type
     end
- 
+
     # should return true if column is virtual
-    def column_virtual? c
+    def virtual_attribute? c
       raise NotImplementedError
     end
 
     # Returns options for comboboxes in grids/forms
-    def combobox_options_for_column(column, method_options = {})
+    # +attr+ - column/field configuration; note that it will in its turn provide:
+    # * +name+ - attribute name
+    # * +scope+ - searching scope (optional)
+    # +query+ - whatever is entered in the combobox
+    def combo_data(attr, query = "")
       raise NotImplementedError
     end
 
@@ -114,6 +118,16 @@ module Netzke::Basepack::DataAdapters
 
     # Destroys records with the provided ids
     def destroy(ids)
+    end
+
+    # Finds a record by id, return nil if not found
+    def find_record(id)
+      @model_class.find(id)
+    end
+
+    # Build a hash of foreign keys and the associated model
+    def hash_fk_model
+      raise NotImplementedError
     end
 
     # Changes records position (e.g. when acts_as_list is used in ActiveRecord).
@@ -142,21 +156,54 @@ module Netzke::Basepack::DataAdapters
       record.errors.to_a
     end
 
-    # Finds a record by id, return nil if not found
-    def find_record(id)
-      @model_class.find(id)
+    # Whether an attribute is mass assignable. As second argument optionally takes the role.
+    def attribute_mass_assignable?(attr_name, role = :default)
+      true
     end
 
-    # Build a hash of foreign keys and the associated model
-    def hash_fk_model
-      raise NotImplementedError
+    # Whether an attribute (by name) is an association one
+    def association_attr?(attr_name)
+      !!attr_name.to_s.index("__")
     end
 
+    # Transforms a record to an array of values according to the passed attributes
+    # +attrs+ - array of attribute config hashes
+    def record_to_array(r, attrs)
+      []
+    end
 
+    # Transforms a record to a hash of values according to the passed attributes
+    # +attrs+ - array of attribute config hashes
+    def record_to_hash(r, attrs)
+      {}
+    end
+
+    # Returns a hash of association values for given record, e.g.:
+    #
+    #     {author__first_name: "Michael"}
+    def assoc_values(r, attr_hash) #:nodoc:
+      @_assoc_values ||= {}.tap do |values|
+        attr_hash.each_pair do |name,c|
+          values[name] = record_value_for_attribute(r, c, true) if association_attr?(c)
+        end
+      end
+    end
+
+    # Fetches the value specified by an (association) attribute
+    # If +through_association+ is true, get the value of the association by provided method, *not* the associated record's id
+    # E.g., author__name with through_association set to true may return "Vladimir Nabokov", while with through_association set to false, it'll return author_id for the current record
+    def record_value_for_attribute(r, a, through_association = false)
+    end
+
+    # Assigns new value to an (association) attribute in a given record
+    # +role+ - role provided for mass assignment protection
+    def set_record_value_for_attribute(record, attr, value, role = :default)
+    end
 
     # -- End of overridable methods
 
     # Abstract-adapter specifics
+    #
     #
 
     # Used to determine if the given adapter should be used for the passed in class.

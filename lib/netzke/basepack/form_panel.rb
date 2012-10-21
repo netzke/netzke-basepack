@@ -88,6 +88,7 @@ module Netzke
         c[:bbar] = [:apply] if c[:bbar].nil? && !c[:read_only]
       end
 
+
       # Extra JavaScripts and stylesheets
       css_configure do |c|
         c.include :readonly_mode
@@ -95,7 +96,7 @@ module Netzke
 
       # A hash of record data including the meta field
       def js_record_data
-        record.netzke_hash(fields).merge(:meta => meta_field).literalize_keys
+        data_adapter.record_to_hash(record, fields.values).merge(:meta => meta_field).literalize_keys
       end
 
       def record
@@ -135,7 +136,7 @@ module Netzke
         end
 
         fields_that_need_associated_values.each_pair.inject({}) do |r,(k,v)|
-          r.merge(k => record.value_for_attribute(fields_that_need_associated_values[k], true))
+          r.merge(k => data_adapter.record_value_for_attribute(record, fields_that_need_associated_values[k], true))
         end
       end
     end

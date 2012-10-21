@@ -95,7 +95,7 @@ module Netzke
 
         # Override it when you need extra meta data to be passed through the meta column
         def meta_data(r)
-          { :association_values => r.netzke_association_values(final_columns_hash).literalize_keys }
+          { :association_values => data_adapter.assoc_values(r, final_columns_hash).literalize_keys }
         end
 
       private

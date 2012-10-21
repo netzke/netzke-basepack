@@ -47,6 +47,8 @@ Scenario: Deleting a record
   When I go to the UserGrid test page
   And I select all rows in the grid
   And I press "Delete"
+  # HACK
+  And I sleep 1 second
   Then I should see "Are you sure?"
   When I press "Yes"
   Then I should see "Deleted 2 record(s)"

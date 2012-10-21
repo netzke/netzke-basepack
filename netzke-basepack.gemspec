@@ -35,8 +35,6 @@ Gem::Specification.new do |s|
     "lib/generators/netzke/templates/create_netzke_field_lists.rb",
     "lib/netzke-basepack.rb",
     "lib/netzke/active_record.rb",
-    "lib/netzke/active_record/attributes.rb",
-    "lib/netzke/active_record/combobox_options.rb",
     "lib/netzke/active_record/relation_extensions.rb",
     "lib/netzke/basepack.rb",
     "lib/netzke/basepack/accordion_panel.rb",

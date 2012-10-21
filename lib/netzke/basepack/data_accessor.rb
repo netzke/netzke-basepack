@@ -41,7 +41,7 @@ module Netzke
 
       # Mark an attribute as "virtual" by default, when it doesn't reflect a model column, or a model column of an association
       def set_default_virtual(c)
-        c[:virtual] = data_adapter.column_virtual?(c) if c[:virtual].nil?
+        c[:virtual] = data_adapter.virtual_attribute?(c) if c[:virtual].nil?
       end
 
       # Returns a hash of association attribute default values. Used when creating new records with association attributes that have a default value

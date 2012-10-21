@@ -22,6 +22,7 @@ Ext.define('Ext.netzke.ComboBox', {
         fields: ['value', 'text']
     });
 
+    console.log("this.parentId:", this.parentId);
     var store = new Ext.data.Store({
       model: modelName,
       proxy: {
@@ -35,7 +36,7 @@ Ext.define('Ext.netzke.ComboBox', {
     });
 
     store.on('beforeload', function(self, params) {
-      params.params.column = this.name;
+      params.params.attr = this.name;
     },this);
 
     // insert a selectable "blank line" which allows to remove the associated record

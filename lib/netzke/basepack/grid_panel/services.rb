@@ -69,15 +69,14 @@ module Netzke
             update_state(:columns_order, current_columns_order)
           end
 
-          # Returns choices for a column
+          # Returns options for a combobox
+          # params receive:
+          # +attr+ - column's name
+          # +query+ - what's typed-in in the combobox
+          # +id+ - selected record id
           endpoint :get_combobox_options do |params, this|
-            query = params[:query]
-
-            column = final_columns.detect{ |c| c[:name] == params[:column] }
-            scope = column.to_options[:scope] || column.to_options[:editor].try(:fetch, :scope, nil)
-            query = params[:query]
-
-            this[:data] = combobox_options_for_column(column, :query => query, :scope => scope, :record_id => params[:id])
+            column = final_columns.detect{ |c| c[:name] == params[:attr] }
+            this.data = data_adapter.combo_data(column, params[:query])
           end
 
           endpoint :move_rows do |params, this|
@@ -133,7 +132,7 @@ module Netzke
           if !config[:prohibit_read]
             {}.tap do |res|
               records = get_records(params)
-              res[:data] = records.map{|r| r.netzke_array(final_columns(:with_meta => true))}
+              res[:data] = records.map{|r| data_adapter.record_to_array(r, final_columns(:with_meta => true))}
               res[:total] = count_records(params)  if config[:enable_pagination]
             end
           else
@@ -190,11 +189,11 @@ module Netzke
                 record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
 
                 record_hash.each_pair do |k,v|
-                  record.set_value_for_attribute(final_columns_hash[k.to_sym].nil? ? {:name => k} : final_columns_hash[k.to_sym], v, config.role || :default)
+                  data_adapter.set_record_value_for_attribute(record, final_columns_hash[k.to_sym].nil? ? {:name => k} : final_columns_hash[k.to_sym], v, config.role || :default)
                 end
 
                 # try to save
-                mod_records[id] = record.netzke_array(final_columns(:with_meta => true)) if success && record.save
+                mod_records[id] = data_adapter.record_to_array(record, final_columns(:with_meta => true)) if success && record.save
 
                 # flash eventual errors
                 if !record.errors.empty?

@@ -46,13 +46,13 @@ module Netzke
           end
 
           # Returns options for a combobox
+          # params receive:
+          # +attr+ - column's name
+          # +query+ - what's typed-in in the combobox
+          # +id+ - selected record id
           endpoint :get_combobox_options do |params, this|
-            query = params[:query]
-
-            field = fields[params[:column].to_sym]
-            scope = field.to_options[:scope]
-            query = params[:query]
-            this[:data] = combobox_options_for_column(field, :query => query, :scope => scope, :record_id => params[:id])
+            attr = fields[params[:attr].to_sym]
+            this.data = data_adapter.combo_data(attr, params[:query])
           end
 
         end
@@ -93,7 +93,7 @@ module Netzke
           @record = data_class.new if @record.nil?
 
           hsh.each_pair do |k,v|
-            @record.set_value_for_attribute(fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v, config.role || :default)
+            data_adapter.set_record_value_for_attribute(@record, fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v, config.role || :default)
           end
 
           #hsh.each_pair do |k,v|
