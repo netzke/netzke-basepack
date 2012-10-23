@@ -25,7 +25,7 @@ class AuthorForm < Netzke::Basepack::FormPanel
 
   # js_method :init_component, <<-JS
   #   function(){
-  #     Netzke.classes.AuthorForm.superclass.initComponent.call(this);
+  #     this.callParent();
 
   #     this.on('submitsuccess', function(){ this.feedback('Suc'+'cess!')}, this);
   #   }

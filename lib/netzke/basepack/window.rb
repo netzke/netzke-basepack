@@ -16,14 +16,13 @@ module Netzke
         c.mixin
       end
 
-      endpoint :set_size_and_position do |params|
+      endpoint :set_size_and_position do |params, this|
         update_persistent_options(
-          :x => params[:x].to_i,
-          :y => params[:y].to_i,
-          :width => params[:w].to_i,
-          :height => params[:h].to_i
+          x: params[:x].to_i,
+          y: params[:y].to_i,
+          width: params[:w].to_i,
+          height: params[:h].to_i
         )
-        {}
       end
     end
   end
