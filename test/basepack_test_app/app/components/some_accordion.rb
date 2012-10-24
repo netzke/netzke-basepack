@@ -4,10 +4,11 @@ class SomeAccordion < Netzke::Basepack::AccordionPanel
     c.update_text = "Update for Panel Two"
     c.title = "Panel Two"
     c.border = false
-    c.prevent_header = true
+    c.header = false
   end
 
   def configure(c)
+    c.title = "Some Accordion"
     c.items = [
       { :html => "I'm a simple Ext.Panel", :title => "Panel One" },
       :simple_panel

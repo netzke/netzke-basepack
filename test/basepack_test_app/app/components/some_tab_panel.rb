@@ -11,6 +11,7 @@ class SomeTabPanel < Netzke::Basepack::TabPanel
   end
 
   def configure(c)
+    c.title = "Some Tab Panel"
     c.active_tab = 0
 
     c.items = [
