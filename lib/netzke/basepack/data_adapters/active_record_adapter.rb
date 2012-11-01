@@ -254,7 +254,18 @@ module Netzke::Basepack::DataAdapters
           #     set_value_for_attribute({:name => :assoc_1__assoc_2__method, :nested_attribute => true}, 100)
           # =>
           #     r.assoc_1.assoc_2.method = 100
-          split.inject(r) { |r,m| m == split.last ? (r && r.send("#{m}=", v) && r.save) : r.send(m) }
+          split.inject(self) {|r,m|
+            if (m == split.last)
+              (r && r.send("#{m}=", v) && r.save)
+            else
+              newR = r.send(m)
+              if (newR.nil?)
+                r.send("build_#{m}")
+              else
+                newR
+              end
+            end
+          }
         else
           if split.size == 2
             # search for association and assign it to r
