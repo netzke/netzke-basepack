@@ -93,6 +93,16 @@ module Netzke
           @record = data_class.new if @record.nil?
 
           hsh.each_pair do |k,v|
+
+            # if there's a non-nil value in a nested attribute and the
+            # associated record is nil, call build_other
+            if !v.nil? && k.index("__") && fields[k.to_sym][:nested_attribute]
+              assocName = k.split("__").first
+              if record[assocName.to_sym].nil?
+                record.send("build_#{assocName}")
+              end
+            end
+
             data_adapter.set_record_value_for_attribute(@record, fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v, config.role || :default)
           end
 
