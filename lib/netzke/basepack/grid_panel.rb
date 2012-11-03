@@ -158,6 +158,9 @@ module Netzke
       class_attribute :edit_in_form_available
       self.edit_in_form_available = true
 
+      class_attribute :edit_inline_available
+      self.edit_inline_available = true
+
       class_attribute :rows_reordering_available
       self.rows_reordering_available = false
 
@@ -167,6 +170,7 @@ module Netzke
       class_attribute :default_instance_config
       self.default_instance_config = {
         :enable_edit_in_form    => edit_in_form_available,
+        :enable_edit_inline     => edit_inline_available,
         :enable_extended_search => extended_search_available,
         :enable_column_filters  => column_filters_available,
         :enable_rows_reordering => false, # column drag n drop
@@ -249,16 +253,19 @@ module Netzke
 
       # Override to change the default bottom toolbar
       def default_bbar
-        res = %w{ add edit apply del }.map(&:to_sym)
-        res << "-" << :add_in_form << :edit_in_form if config[:enable_edit_in_form]
+        res = config[:enable_edit_inline] || config[:enable_edit_in_form] ? %w{ add edit }.map(&:to_sym) : []
+        res << :apply if config[:enable_edit_inline]
+        res << :del
+        res << "-" << :add_in_form << :edit_in_form if config[:enable_edit_inline] && config[:enable_edit_in_form]
         res << "-" << :search if config[:enable_extended_search]
         res
       end
 
       # Override to change the default context menu
       def default_context_menu
-        res = %w{ edit del }.map(&:to_sym)
-        res << "-" << :edit_in_form if config[:enable_edit_in_form]
+        res = config[:enable_edit_inline] || config[:enable_edit_in_form] ? [:edit] : []
+        res << :del if !config[:read_only]
+        res << "-" << :edit_in_form if config[:enable_edit_in_form] && config[:enable_edit_inline]
         res
       end
 
@@ -266,7 +273,7 @@ module Netzke
         a.text = I18n.t('netzke.basepack.grid_panel.actions.add')
         a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.add')
         a.disabled = config[:prohibit_create]
-        a.handler = "onAddInline" # not following naming conventions here as Ext 4 grid has its own onAdd method
+        a.handler = config[:enable_edit_inline] ? "onAddInline" : "onAddInForm"
         a.icon = :add
       end
 
@@ -274,6 +281,7 @@ module Netzke
         a.text = I18n.t('netzke.basepack.grid_panel.actions.edit')
         a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.edit')
         a.disabled = true
+        a.handler = config[:enable_edit_inline] ? "onEdit" : "onEditInForm"
         a.icon = :table_edit
       end
 
