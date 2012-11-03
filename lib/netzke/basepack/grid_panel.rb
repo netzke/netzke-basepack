@@ -264,7 +264,7 @@ module Netzke
       # Override to change the default context menu
       def default_context_menu
         res = config[:enable_edit_inline] || config[:enable_edit_in_form] ? [:edit] : []
-        res << :del if !config[:read_only]
+        res << :del
         res << "-" << :edit_in_form if config[:enable_edit_in_form] && config[:enable_edit_inline]
         res
       end
