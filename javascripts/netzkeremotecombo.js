@@ -5,6 +5,8 @@ Ext.define('Ext.netzke.ComboBox', {
   valueField    : 'value',
   displayField  : 'text',
   triggerAction : 'all',
+  forceSelection: true,
+
   // WIP: Breaking - should not be 'true' if combobox is not editable
   // typeAhead     : true,
 
