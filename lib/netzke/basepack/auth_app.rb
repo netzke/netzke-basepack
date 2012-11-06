@@ -98,7 +98,7 @@ module Netzke
       # Set the Logout button if Netzke::Core.current_user is set
       def menu
         [].tap do |menu|
-          user = Netzke::Core.current_user
+          user = Netzke::Base.current_user
           if !user.nil?
             user_name = user.respond_to?(:name) ? user.name : user.email # try to display user's name, fallback to email
             menu << "->" <<

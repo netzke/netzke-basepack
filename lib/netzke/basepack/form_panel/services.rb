@@ -17,7 +17,7 @@ module Netzke
             end
 
             # File uploads are in raw params instead of "data" hash, so, mix them in into "data"
-            Netzke::Core.controller.params.each_pair do |k,v|
+            controller.params.each_pair do |k,v|
               data[k] = v if v.is_a?(ActionDispatch::Http::UploadedFile)
             end
 
