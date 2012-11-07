@@ -60,7 +60,7 @@ module Netzke
               :ref => "../presetsCombo",
               :listeners => {:before_select => {
                 :fn => "function(combo, record){
-                  var form = Ext.getCmp('#{global_id}');
+                  var form = Ext.getCmp('#{js_id}');
                   form.buildFormFromQuery(record.data.value);
                 }".l
               }}
