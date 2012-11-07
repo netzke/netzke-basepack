@@ -104,3 +104,11 @@ When /^I expand the ([^"]*) region$/ do |region|
     region.expand();
   JS
 end
+
+# Because sometimes "I press 'Text'" does not work due to some reason...
+When /^I press button with text "(.*?)"$/ do |text|
+  click_button page.driver.browser.execute_script(<<-JS) + '-btnEl'
+    var button = Ext.ComponentQuery.query("button[text='#{text}']")[0];
+    return button.id;
+  JS
+end

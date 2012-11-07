@@ -46,11 +46,9 @@ Scenario: Deleting a record
   And a user exists with first_name: "Maxim", last_name: "Osminogov"
   When I go to the UserGrid test page
   And I select all rows in the grid
-  And I press "Delete"
-  Then I should see "Are you sure?"
-  # HACK
-  When I sleep 1 second
-  When I press "Yes"
+  And I press button with text "Delete"
+  Then I should see "Are you sure?" within ".x-window"
+  When I press button with text "Yes"
   Then I should see "Deleted 2 record(s)"
   Then a user should not exist with first_name: "Anton"
   And a user should not exist with first_name: "Maxim"
