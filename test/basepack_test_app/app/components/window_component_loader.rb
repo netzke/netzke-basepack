@@ -4,8 +4,10 @@ class WindowComponentLoader < Netzke::Base
     c.persistence = true
     c.klass = Netzke::Basepack::Window
     c.title = "Some Window Component"
-    c.width = 400
-    c.height = 300
+    c.width = 300
+    c.height = 200
+    c.x = 100
+    c.y = 80
     c.modal = true
   end
 

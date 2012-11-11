@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["nomadcoder"]
-  s.date = "2012-11-07"
+  s.date = "2012-11-11"
   s.description = "A set of full-featured extendible Netzke components (such as FormPanel, GridPanel, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -220,6 +220,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/features/step_definitions/grid_panel_steps.rb",
     "test/basepack_test_app/features/step_definitions/pickle_steps.rb",
     "test/basepack_test_app/features/step_definitions/web_steps.rb",
+    "test/basepack_test_app/features/step_definitions/window_steps.rb",
     "test/basepack_test_app/features/support/env.rb",
     "test/basepack_test_app/features/support/paths.rb",
     "test/basepack_test_app/features/support/pickle.rb",
