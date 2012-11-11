@@ -13,7 +13,7 @@ module Netzke
     # * +record_id+ - id of the record to be displayd in the form. Also see +:record+
     # * +items+ - the layout of the fields as an array. See "Layout configuration".
     # * +mode+ - render mode, accepted options:
-    #   * +lockable+ - makes the form panel load initially in "display mode", then lets "unlock" it, change the values, and "lock" it again, while updating the values on the server
+    # * +lockable+ - makes the form panel load initially in "display mode", then lets "unlock" it, change the values, and "lock" it again, while updating the values on the server
     # * +updateMask+ - +Ext.LoadMask+ config options for the mask shown while the form is submitting its values
     #
     # === Layout configuration

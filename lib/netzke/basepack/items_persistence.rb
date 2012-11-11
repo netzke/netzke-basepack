@@ -1,5 +1,6 @@
 module Netzke
   module Basepack
+    # When mixed into a component with resizable layout (e.g. border layout), this module enables persistence for regions size and collapsed/expanded state.
     module ItemsPersistence
       extend ActiveSupport::Concern
 

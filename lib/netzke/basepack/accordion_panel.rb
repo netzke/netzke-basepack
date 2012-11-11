@@ -1,22 +1,22 @@
 module Netzke
   module Basepack
-    # = AccordionPanel
-    #
     # A panel with the 'accordion' layout. By default, lazily loads its nested components. For example:
     #
     #   class MyAccordion < Netzke::Basepack::AccordionPanel
-    #     def items
-    #       [{
+    #     def configure(c)
+    #       super
+    #       c.items = [{
     #         # just an Ext panel
     #         :html => "I'm a simple Ext.Panel",
     #         :title => "Panel One"
     #       },{
     #         # a Netzke component
-    #         :klass => SimplePanel,
-    #         :update_text => "Update for Panel Two",
+    #         :component => :my_component,
     #         :title => "Panel Two"
     #       }]
     #     end
+    #
+    #     component :my_component
     #   end
     class AccordionPanel < Netzke::Base
 
@@ -24,7 +24,6 @@ module Netzke
 
       js_configure do |c|
         c.layout = :accordion
-        # c.component_load_mask = {:msg => "null".l} # due to a probable bug in Ext's Accordion Layout (mask message is mis-layed-out), disabling mask message
 
         c.init_component = <<-JS
           function(params){

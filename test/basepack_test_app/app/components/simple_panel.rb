@@ -1,4 +1,4 @@
-class SimplePanel < Netzke::Basepack::Panel
+class SimplePanel < Netzke::Base
   action :update_html
 
   js_configure do |c|
@@ -7,6 +7,11 @@ class SimplePanel < Netzke::Basepack::Panel
     c.on_update_html = <<-JS
       function(){
         this.updateHtmlFromServer();
+      }
+    JS
+    c.update_body_html = <<-JS
+      function(){
+        this.body.update(html);
       }
     JS
   end

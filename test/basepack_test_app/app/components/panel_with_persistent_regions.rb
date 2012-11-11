@@ -1,5 +1,4 @@
 class PanelWithPersistentRegions < Netzke::Base
-  # enable persistence on items sizes and collapse-states
   include Netzke::Basepack::ItemsPersistence
 
   js_configure do |c|
@@ -7,7 +6,6 @@ class PanelWithPersistentRegions < Netzke::Base
   end
 
   component :west do |c|
-    c.klass = SimplePanel
     c.width = 100
     c.collapsible = true
     c.region = :west
@@ -15,7 +13,6 @@ class PanelWithPersistentRegions < Netzke::Base
   end
 
   component :south do |c|
-    c.klass = SimplePanel
     c.height = 100
     c.collapsible = true
     c.region = :south
