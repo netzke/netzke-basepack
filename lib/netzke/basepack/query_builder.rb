@@ -1,5 +1,6 @@
 module Netzke
   module Basepack
+    # Search query builder used in GridPanel's advanced search
     class QueryBuilder < Netzke::Base
       js_configure do |c|
         c.extend = "Ext.tab.Panel"
@@ -47,29 +48,13 @@ module Netzke
         a.icon = :accept
       end
 
-      def js_config
-        super.tap do |s|
-          s[:bbar] = (config[:bbar] || []) + [:clear_all, :reset, "->",
-            I18n.t('netzke.basepack.query_builder.presets'),
-            {
-              :itemId => "presetsCombo",
-              :xtype => "combo",
-              :triggerAction => "all",
-              :value => super[:load_last_preset] && last_preset.try(:fetch, "name"),
-              :store => state[:presets].blank? ? [[[], ""]] : state[:presets].map{ |s| [s["query"], s["name"]] },
-              :ref => "../presetsCombo",
-              :listeners => {:before_select => {
-                :fn => "function(combo, record){
-                  var form = Ext.getCmp('#{js_id}');
-                  form.buildFormFromQuery(record.data.value);
-                }".l
-              }}
-            }, :save_preset, :delete_preset
-          ]
-        end
+      def js_configure(c)
+        super
+        c.preset_store = state[:presets].blank? ? [[[], ""]] : state[:presets].map{ |s| [s["query"], s["name"]] }
+        c.bbar = (config[:bbar] || []) + [:clear_all, :reset, "->", I18n.t('netzke.basepack.query_builder.presets'), :preset_selector, :save_preset, :delete_preset ]
       end
 
-      endpoint :save_preset do |params|
+      endpoint :save_preset do |params, this|
         saved_searches = state[:presets] || []
         existing = saved_searches.detect{ |s| s["name"] == params[:name] }
         query = ActiveSupport::JSON.decode(params[:query])
@@ -79,14 +64,14 @@ module Netzke
           saved_searches << {"name" => params[:name], "query" => query}
         end
         update_state(:presets, saved_searches)
-        {:netzke_feedback => I18n.t('netzke.basepack.query_builder.preset_saved')}
+        this.netzke_feedback(I18n.t('netzke.basepack.query_builder.preset_saved'))
       end
 
-      endpoint :delete_preset do |params|
+      endpoint :delete_preset do |params, this|
         saved_searches = state[:presets]
         saved_searches.delete_if{ |s| s["name"] == params[:name] }
         update_state(:presets, saved_searches)
-        {:netzke_feedback => I18n.t('netzke.basepack.query_builder.preset_deleted')}
+        this.netzke_feedback(I18n.t('netzke.basepack.query_builder.preset_deleted'))
       end
     end
   end
