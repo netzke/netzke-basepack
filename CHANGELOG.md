@@ -3,6 +3,7 @@
   * Grid/FormPanel respect `attr_accessible` and `attr_protected` on the model; set the `role` config option on them to tune mass-assignment security
   * New `data_store` config option in GridPanel
   * Major internal refactorings
+  * Window now also stores its 'maximized' state
 
 * changes
   * BorderLayoutPanel is removed. Any component can now enable its items persistence by including `Netzke::Basepack::ItemsPersistence` module

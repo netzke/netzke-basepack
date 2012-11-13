@@ -1,6 +1,6 @@
 module Netzke
   module Basepack
-    # Ext.window.Window-based component. With +persistence+ option set to +true+, it will remember it's size and position.
+    # Ext.window.Window-based component. With +persistence+ option set to +true+, it will remember it's size, position, and maximized state.
     #
     # Example:
     #
@@ -9,7 +9,7 @@ module Netzke
     #         super
     #         c.width = 800
     #         c.height = 600
-    #         c.items = [:users]
+    #         c.items = [:users] # nesting the `users` component declared below
     #       end
     #
     #       component :users
@@ -26,6 +26,7 @@ module Netzke
         c.y = state[:y].to_i if state[:y]
         c.width = state[:w].to_i if state[:w]
         c.height = state[:h].to_i if state[:h]
+        c.maximized = state[:maximized] if state[:maximized]
       end
 
       endpoint :set_size_and_position do |params, this|
@@ -33,6 +34,10 @@ module Netzke
         update_state(:y, params[:y].to_i)
         update_state(:w, params[:w].to_i)
         update_state(:h, params[:h].to_i)
+      end
+
+      endpoint :set_maximized do |maximized,this|
+        maximized ? update_state(:maximized, true) : state.delete(:maximized)
       end
     end
   end
