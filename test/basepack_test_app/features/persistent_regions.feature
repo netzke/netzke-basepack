@@ -12,7 +12,7 @@ Feature: Persistent regions
     When I resize the west region to the size of 300
     And I resize the south region to the size of 200
 
-    And I wait for the response from the server
+    And I wait for response from server
     And I go to the PanelWithPersistentRegions test page
     Then the west region should have size of 300
     And the south region should have size of 200
@@ -21,10 +21,10 @@ Feature: Persistent regions
   Scenario: A panel with persistent regions should store its region collapse status
     Given I am on the PanelWithPersistentRegions test page
     When I collapse the south region
-    And I wait for the response from the server
+    And I wait for response from server
     And I go to the PanelWithPersistentRegions test page
     Then the south region should be collapsed
     When I expand the south region
-    And I wait for the response from the server
+    And I wait for response from server
     And I go to the PanelWithPersistentRegions test page
     Then the south region should be expanded

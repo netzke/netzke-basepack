@@ -127,7 +127,7 @@ When /^I (?:drag|move) "([^"]*)" column before "([^"]*)"$/ do |header1, header2|
     cmp = Ext.ComponentQuery.query('gridpanel')[0];
     cmp.onColumnMove(null, null, #{indexi[0]}, #{indexi[1]});
   JS
-  step "I wait for the response from the server"
+  step "I wait for response from server"
 end
 
 Then /^I should see columns in order: "([^"]*)", "([^"]*)", "([^"]*)"$/ do |header1, header2, header3|

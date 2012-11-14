@@ -29,13 +29,13 @@ Scenario: Adding a record via "Add in form"
 Scenario: Updating a record via "Edit in form"
   Given a user exists with first_name: "Carlos", last_name: "Castaneda"
   When I go to the UserGrid test page
-  And I wait for the response from the server
+  And I wait for response from server
   And I select first row in the grid
   And I press "Edit in form"
   And I fill in "First name:" with "Maxim"
   And I fill in "Last name:" with "Osminogov"
   And I press "OK"
-  And I wait for the response from the server
+  And I wait for response from server
   Then I should see "Maxim"
   And I should see "Osminogov"
   And a user should not exist with first_name: "Carlos"
@@ -58,13 +58,13 @@ Scenario: Multi-editing records
   Given a user exists with first_name: "Carlos", last_name: "Castaneda"
   And a user exists with first_name: "Herman", last_name: "Hesse"
   When I go to the UserGrid test page
-  And I wait for the response from the server
+  And I wait for response from server
   And I select all rows in the grid
   And I press "Edit in form"
-  And I wait for the response from the server
+  And I wait for response from server
   And I fill in "First name:" with "Maxim"
   And I press "OK"
-  And I wait for the response from the server
+  And I wait for response from server
   Then the following users should exist:
   | first_name | last_name |
   | Maxim | Castaneda |
@@ -99,22 +99,22 @@ Scenario: Grid with columns with default values
   When I press "Add"
   Then I should see "Nabokov"
   And I press "Apply"
-  And I wait for the response from the server
+  And I wait for response from server
   Then a book should exist with title: "Lolita", exemplars: 100, digitized: true, author: that author
 
   When I press "Add in form"
   And I press "OK"
-  And I wait for the response from the server
+  And I wait for response from server
   Then 2 books should exist with title: "Lolita", exemplars: 100, digitized: true, author: that author
 
 @javascript
 Scenario: Inline editing
   Given a book exists with title: "Magus", exemplars: 100
   When I go to the BookGrid test page
-  And I wait for the response from the server
+  And I wait for response from server
   And I edit row 1 of the grid with title: "Collector", exemplars: 200
   And I press "Apply"
-  And I wait for the response from the server
+  And I wait for response from server
   Then the grid should have 0 modified records
   And a book should exist with title: "Collector", exemplars: 200
   But a book should not exist with title: "Magus"
@@ -125,16 +125,16 @@ Scenario: Inline editing of association
   And a book exists with title: "Lolita", author: that author
   And an author exists with first_name: "Herman", last_name: "Hesse"
   When I go to the BookGrid test page
-  And I wait for the response from the server
+  And I wait for response from server
   And I expand combobox "author__name" in row 1 of the grid
-  And I wait for the response from the server
+  And I wait for response from server
   And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
   And I edit row 1 of the grid with title: "Demian"
   And I stop editing the grid
   Then I should see "Hesse, Herman" within "#book_grid"
 
   When I press "Apply"
-  And I wait for the response from the server
+  And I wait for response from server
   Then a book should exist with title: "Demian", author: that author
   But a book should not exist with title: "Lolita"
 
@@ -146,20 +146,20 @@ Scenario: Inline adding of records
   When I go to the BookGrid test page
   And I press "Add"
   And I expand combobox "author__name" in row 1 of the grid
-  And I wait for the response from the server
+  And I wait for response from server
   And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
   And I edit row 1 of the grid with title: "Demian"
   And I stop editing the grid
 
   And I press "Add"
   And I expand combobox "author__name" in row 2 of the grid
-  And I wait for the response from the server
+  And I wait for response from server
   And I select "Nabokov, Vladimir" in combobox "author__name" in row 2 of the grid
   And I edit row 2 of the grid with title: "Lolita"
   And I stop editing the grid
 
   And I press "Apply"
-  And I wait for the response from the server
+  And I wait for response from server
   Then a book should exist with title: "Lolita", author: author "Nabokov"
   And a book should exist with title: "Demian", author: author "Hesse"
 
@@ -171,13 +171,13 @@ Scenario: Inline adding of records in GridPanel with default values
   When I go to the BookGridWithDefaultValues test page
   And I press "Add"
   And I expand combobox "author__last_name" in row 1 of the grid
-  And I wait for the response from the server
+  And I wait for response from server
   And I select "Hesse" in combobox "author__last_name" in row 1 of the grid
   And I edit row 1 of the grid with title: "Demian"
 
   And I stop editing the grid
   And I press "Apply"
-  And I wait for the response from the server
+  And I wait for response from server
   Then a book should exist with title: "Demian", author: author "Hesse"
 
 @javascript
@@ -200,18 +200,18 @@ Scenario: Reloading grid data
 Scenario: Advanced search window should be hidable after loading grid panel dynamically second time
   Given I am on the BookGridLoader test page
   When I press "Load one"
-  And I wait for the response from the server
+  And I wait for response from server
   And I press "Search"
   And I press "Cancel"
 
   When I press "Load two"
-  And I wait for the response from the server
+  And I wait for response from server
 
   When I press "Load one"
-  And I wait for the response from the server
+  And I wait for response from server
 
   And I press "Search" within "#book_grid_loader__book_grid_one"
-  And I wait for the response from the server
+  And I wait for response from server
   And I press "Cancel" within "#book_grid_loader__book_grid_one__search_window"
   Then the "book_grid_loader__book_grid_one__search_window" component should be hidden
 
@@ -219,11 +219,11 @@ Scenario: Advanced search window should be hidable after loading grid panel dyna
 Scenario: Column order should be saved across page reloads
   Given I am on the BookGridWithPersistence test page
   When I drag "Digitized" column before "Title"
-  And I wait for the response from the server
+  And I wait for response from server
   And I go to the BookGridWithPersistence test page
   Then I should see columns in order: "Digitized", "Title", "Exemplars"
   When I drag "Digitized" column before "Exemplars"
-  And I wait for the response from the server
+  And I wait for response from server
   And I go to the BookGridWithPersistence test page
   Then I should see columns in order: "Title", "Digitized", "Exemplars"
 
@@ -284,7 +284,7 @@ Scenario: Pagination in grid panel
   And the grid should show 2 records
 
   When I go forward one page
-  And  I wait for the response from the server
+  And  I wait for response from server
   Then I should see "Getting Things Done"
   And I should see "Magus"
 
@@ -301,14 +301,14 @@ Scenario: Editing in grid with mass-assignment security
   And a book exists with title: "Lolita", author: that author, exemplars: 100
   And an author exists with first_name: "Herman", last_name: "Hesse"
   When I go to the BookGridWithMassAssignmentSecurity test page
-  And I wait for the response from the server
+  And I wait for response from server
   And I expand combobox "author__name" in row 1 of the grid
-  And I wait for the response from the server
+  And I wait for response from server
   And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
   And I edit row 1 of the grid with title: "Demian", exemplars: 200
   And I stop editing the grid
   And I press "Apply"
-  And I wait for the response from the server
+  And I wait for response from server
   Then a book should not exist with author: that author
   And a book should not exist with exemplars: 200
   But a book should exist with title: "Demian", exemplars: 100
@@ -321,7 +321,7 @@ Scenario: Scoping out grid records
   And an author exists with first_name: "Herman", last_name: "Hesse"
   And a book exists with title: "Demian", author: that author
   When I go to the BookGridWithScope test page
-  And I wait for the response from the server
+  And I wait for response from server
   Then the grid should show 2 records
 
 @javascript

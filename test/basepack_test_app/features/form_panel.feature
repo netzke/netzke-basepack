@@ -92,7 +92,7 @@ Scenario: Editing and immediately submitting the form
   Then the form should show author__name: "Castaneda, Carlos"
 
   When I press "Apply"
-  And I wait for the response from the server
+  And I wait for response from server
   Then the form should show author__name: "Castaneda, Carlos"
 
 # @javascript
@@ -102,7 +102,7 @@ Scenario: Editing and immediately submitting the form
 #   And I check ext checkbox "recommend"
 #   And I check ext checkbox "cool"
 #   And I press "Apply"
-#   And I wait for the response from the server
+#   And I wait for response from server
 #   Then ext "cool" checkbox should be checked
 #   And ext "recommend" checkbox should be checked
 #   But ext "read" checkbox should not be checked
@@ -114,12 +114,12 @@ Scenario: Editing and immediately submitting the form
   When I go to the BookForm test page
   And I fill in "Title:" with ""
   And I press "Apply"
-  And I wait for the response from the server
+  And I wait for response from server
   Then I should see "Title can't be blank"
   But I should not see "Success!"
   When I fill in "Title:" with "Not Blank"
   And I press "Apply"
-  And I wait for the response from the server
+  And I wait for response from server
   Then I should not see "Title can't be blank"
   But I should see "Success!"
 
@@ -129,7 +129,7 @@ Scenario: Editing and immediately submitting the form
     When I go to the BookFormWithDefaults test page
     Then I fill in "Published on" with "2005-01-23"
     And I press "Apply"
-    And I wait for the response from the server
+    And I wait for response from server
     Then a book should exist with published_on: "2005-01-23"
 
 @javascript
@@ -138,5 +138,5 @@ Scenario: Editing and immediately submitting the form
     When I go to the BookFormWithDefaults test page
     Then I fill in Ext field "Last read at" with "2005-01-23 11:12:13"
     And I press "Apply"
-    And I wait for the response from the server
+    And I wait for response from server
     Then a book should exist with last_read_at: "2005-01-23 11:12:13"

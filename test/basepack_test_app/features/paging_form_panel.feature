@@ -16,25 +16,25 @@ Scenario: Paging through records
   Then I should see "Journey to Ixtlan"
 
   When I go forward one page
-  And  I wait for the response from the server
+  And  I wait for response from server
   Then the form should show title: "Lolita"
 
   When I go forward one page
-  And  I wait for the response from the server
+  And  I wait for response from server
   Then the form should show title: "Getting Things Done"
 
 #@javascript
 #Scenario: Searching
   #When I go to the BookPagingFormPanel test page
   #And I press "Search"
-  #And I wait for the response from the server
+  #And I wait for response from server
   #And I expand combobox "undefined_attr"
   #And I select "Exemplars" from combobox "undefined_attr"
   #And I expand combobox "exemplars_operator"
   #And I select "Less than" from combobox "exemplars_operator"
   #And I fill in "exemplars_value" with "5"
   #And I press "Search" within "#book_paging_form_panel__search_form"
-  #And I wait for the response from the server
+  #And I wait for response from server
   #Then the form should show title: "Getting Things Done"
 
 @javascript

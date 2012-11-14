@@ -17,11 +17,11 @@ Feature: Grid sorting
     And I sleep 1 second
 
     And I click on column "Title"
-    And I wait for the response from the server
+    And I wait for response from server
     Then the grid should have records sorted by "Title"
 
     When I click on column "Title"
-    And I wait for the response from the server
+    And I wait for response from server
     Then the grid should have records sorted by "Title" desc
 
   @javascript
@@ -39,11 +39,11 @@ Feature: Grid sorting
     And I sleep 1 second
 
     And I click on column "Author  first name"
-    And I wait for the response from the server
+    And I wait for response from server
     Then the grid should have records sorted by "Author  first name"
 
     When I click on column "Author  first name"
-    And I wait for the response from the server
+    And I wait for response from server
     Then the grid should have records sorted by "Author  first name" desc
 
     When I go to the BookGrid test page
@@ -52,10 +52,10 @@ Feature: Grid sorting
     And I sleep 1 second
 
     And I click on column "Author  name"
-    And I wait for the response from the server
+    And I wait for response from server
     Then the grid should have records sorted by "Author  name"
     When I click on column "Author  name"
-    And I wait for the response from the server
+    And I wait for response from server
     Then the grid should have records sorted by "Author  name" desc
 
   @javascript
@@ -67,5 +67,5 @@ Feature: Grid sorting
     | Avatar  |
 
     When I go to the GridWithInitialSorting test page
-    And I wait for the response from the server
+    And I wait for response from server
     Then the grid should have records sorted by "Title" desc
