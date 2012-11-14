@@ -27,13 +27,11 @@ module Netzke
 
       def extend_item(item)
         item = super
-
         item_id = item[:netzke_component] || item[:item_id] # identify regions by item_id
 
         if item_id
-          item[:width] = state[:"#{item_id}_width"] || item[:width]
-          item[:height] = state[:"#{item_id}_height"] || item[:height]
-
+          item[:width] = state[:"#{item_id}_width"] if state[:"#{item_id}_width"]
+          item[:height] = state[:"#{item_id}_height"] if state[:"#{item_id}_height"]
           if state[:"#{item_id}_collapsed"].present?
             item[:collapsed] = state[:"#{item_id}_collapsed"]
           end

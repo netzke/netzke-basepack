@@ -53,9 +53,9 @@ When /^I resize the ([^"]*) region to the size of (\d+)$/ do |region, size|
       var panel = Netzke.page[prop];
       break;
     }
-    var region = panel.items.filter('region', '#{region}').first();
+    var region = panel.down('panel[region="#{region}"]');
 
-    region.setSize(#{size});
+    region.setSize({"#{["south", "north"].include?(region) ? "height" : "width"}": #{size}});
   JS
 end
 
@@ -67,7 +67,7 @@ Then /^the ([^"]*) region should have size of (\d+)$/ do |region, size|
       var panel = Netzke.page[prop];
       break;
     }
-    var region = panel.items.filter('region', '#{region}').first();
+    var region = panel.down('panel[region="#{region}"]');
 
     return region.get#{size_property}();
   JS
@@ -79,10 +79,23 @@ When /^I collapse the ([^"]*) region$/ do |region|
       var panel = Netzke.page[prop];
       break;
     }
-    var region = panel.items.filter('region', '#{region}').first();
+    var region = panel.down('panel[region="#{region}"]')
+    region.on('collapse', function(r){r.doneCollapsing = true});
 
     region.collapse();
   JS
+
+  wait_until do
+    page.driver.browser.execute_script(<<-JS)
+      for (var prop in Netzke.page) {
+        var panel = Netzke.page[prop];
+        break;
+      }
+      var region = panel.down('panel[region="#{region}"]')
+
+      return region.doneCollapsing;
+    JS
+  end
 end
 
 Then /^the ([^"]*) region should be (expanded|collapsed)$/ do |region, state|
@@ -91,9 +104,9 @@ Then /^the ([^"]*) region should be (expanded|collapsed)$/ do |region, state|
       var panel = Netzke.page[prop];
       break;
     }
-    var region = panel.items.filter('region', '#{region}').filter('hidden', true).first();
+    var region = panel.down('panel[region="#{region}"]');
 
-    return !!(region && region.collapsed);
+    return !!region.collapsed;
   JS
 end
 
@@ -103,10 +116,21 @@ When /^I expand the ([^"]*) region$/ do |region|
       var panel = Netzke.page[prop];
       break;
     }
-    var region = panel.items.filter('region', '#{region}').filter('hidden', true).first();
+    var region = panel.down('panel[region="#{region}"]')
+    region.on('expand', function(r){r.doneExpanding = true});
 
     region.expand();
   JS
+  wait_until do
+    page.driver.browser.execute_script(<<-JS)
+      for (var prop in Netzke.page) {
+        var panel = Netzke.page[prop];
+        break;
+      }
+      var region = panel.down('panel[region="#{region}"]')
+      return region.doneExpanding;
+    JS
+  end
 end
 
 # Because sometimes "I press 'Text'" does not work due to some reason...
