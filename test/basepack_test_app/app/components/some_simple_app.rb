@@ -5,21 +5,21 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
 
   action :load_simple_accordion do |a|
     a.icon = :application_tile_vertical
-    a.handler = :load_netzke_component_by_action
+    a.handler = :netzke_load_component_by_action
     a.component = :some_accordion
     a.text = "Some accordion"
   end
 
   action :load_user_grid do |a|
     a.icon = :table
-    a.handler = :load_netzke_component_by_action
+    a.handler = :netzke_load_component_by_action
     a.component = :user_grid
     a.text = "User grid"
   end
 
   action :load_simple_tab_panel do |a|
     a.icon = :table_multiple
-    a.handler = :load_netzke_component_by_action
+    a.handler = :netzke_load_component_by_action
     a.component = :some_tab_panel
     a.text = "Some tab panel"
   end
