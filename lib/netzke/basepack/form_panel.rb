@@ -33,7 +33,7 @@ module Netzke
       include self::Services
       include self::Fields
       include Netzke::Basepack::DataAccessor
-      include Netzke::ConfigToDslDelegator
+      include Netzke::Core::ConfigToDslDelegator
 
       js_configure do |c|
         c.extend = "Ext.form.Panel"

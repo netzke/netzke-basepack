@@ -4,14 +4,6 @@ if defined? ActiveRecord
   require 'netzke/basepack/active_record'
   require 'netzke/basepack/data_adapters/active_record_adapter'
 end
-# if defined? DataMapper
-#   require 'netzke/data_mapper'
-# require 'netzke/basepack/data_adapters/data_mapper_adapter'
-# end
-# if defined? sequel
-#   require 'netzke/sequel'
-# require 'netzke/basepack/data_adapters/sequel_adapter'
-# end
 
 require 'netzke/basepack/data_adapters/abstract_adapter'
 require 'netzke/basepack/items_persistence'

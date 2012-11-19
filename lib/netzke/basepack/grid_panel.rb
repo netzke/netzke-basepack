@@ -212,7 +212,7 @@ module Netzke
       include self::Services
       include self::Columns
       include Netzke::Basepack::DataAccessor
-      include Netzke::ConfigToDslDelegator
+      include Netzke::Core::ConfigToDslDelegator
 
       # Allows children classes to simply do
       #
