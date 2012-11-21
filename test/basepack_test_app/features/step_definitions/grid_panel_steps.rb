@@ -4,20 +4,17 @@ When /^I select first row in the grid$/ do
   JS
 end
 
+# This step can randomly cause problems, by selectAll being seemingly ignored; not used atm.
 When /^I select all rows in the grid$/ do
   page.driver.browser.execute_script <<-JS
-    var components = [];
-    for (var cmp in Netzke.page) { components.push(cmp); }
-    var grid = Netzke.page[components[0]];
+    var grid = Ext.ComponentQuery.query('gridpanel')[0];
     grid.getSelectionModel().selectAll();
   JS
 end
 
 Then /^the grid should show (\d+) records$/ do |arg1|
   page.driver.browser.execute_script(<<-JS).should == arg1.to_i
-    var components = [];
-    for (var cmp in Netzke.page) { components.push(cmp); }
-    var grid = Netzke.page[components[0]];
+    var grid = Ext.ComponentQuery.query('gridpanel')[0];
     return grid.getStore().getCount();
   JS
 end

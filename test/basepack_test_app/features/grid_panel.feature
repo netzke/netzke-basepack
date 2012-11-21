@@ -43,15 +43,13 @@ Scenario: Updating a record via "Edit in form"
 @javascript
 Scenario: Deleting a record
   Given a user exists with first_name: "Anton", last_name: "Chekhov"
-  And a user exists with first_name: "Maxim", last_name: "Osminogov"
   When I go to the UserGrid test page
-  And I select all rows in the grid
+  And I select first row in the grid
   And I press button with text "Delete"
   Then I should see "Are you sure?" within ".x-window"
   When I press button with text "Yes"
-  Then I should see "Deleted 2 record(s)"
+  Then I should see "Deleted 1 record(s)"
   Then a user should not exist with first_name: "Anton"
-  And a user should not exist with first_name: "Maxim"
 
 @javascript
 Scenario: Multi-editing records
