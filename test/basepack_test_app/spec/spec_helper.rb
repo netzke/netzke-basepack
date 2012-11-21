@@ -4,18 +4,11 @@ require File.expand_path("../../config/environment", __FILE__)
 require 'rspec/rails'
 
 # Somehow the following is needed
-Factory.find_definitions
+FactoryGirl.find_definitions
 
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-
-if defined?(DataMapper::Resource) || defined?(Sequel::Model)
-
-  # DatabaseCleaner not working in transaction mode for DM
-  DatabaseCleaner.strategy=:truncation
-  DatabaseCleaner.clean!
-end
 
 RSpec.configure do |config|
   # == Mock Framework

@@ -1,38 +1,10 @@
 source 'http://rubygems.org'
 
-RAILS_VERSION = '~>3.2.0'
-DM_VERSION    = '>=1.2.0'
-
 # we are getting AR still regardless of ORM env, because netzke-persistence needs it
-gem 'rails',                RAILS_VERSION
+gem 'rails', '~>3.2.0'
 gem 'mysql2'
 
-case (ENV['ORM'] || '').downcase
-when 'dm'
-  # DataMapper
-  gem 'dm-rails',           DM_VERSION
-  gem 'dm-mysql-adapter',   DM_VERSION
-  gem 'dm-validations',     DM_VERSION # needed for manual validations
-  gem 'dm-timestamps',      DM_VERSION # needed for created_at and updated_at
-  gem 'dm-aggregates',      DM_VERSION # needed for efficient count queries, else * will be selected and counted afterwards
-  gem 'netzke-basepack-dm', :path => File.expand_path('../vendor/gems', __FILE__)
-when 'sq'
-  gem 'sequel'
-end
-
 gem 'netzke-core',        :path => File.expand_path('../vendor/gems', __FILE__)
-
-# We need to manually include these Basepack dependencies, because we're not including Basepack as a gem
-# gem 'will_paginate', :git=> "git://github.com/mislav/will_paginate.git"
-
-
-# Bundle gems for the local environment. Make sure to
-# put test-only gems in this group so their generators
-# and rake tasks are available in development mode:
-group :development, :test do
-  gem 'pry'
-  gem 'thin'
-end
 
 group :test do
   gem 'factory_girl'
@@ -44,16 +16,7 @@ group :test do
   gem 'rspec-rails'
   gem 'spork'
 
-  gem 'sqlite3-ruby', :require => 'sqlite3'
-  case (ENV['ORM'] || '').downcase
-  when 'dm'
-    # if we are using dm, we need the sqlite adapter
-    gem 'dm-sqlite-adapter', DM_VERSION
-  else
-    # default case: use ar
-    # nothing to do here
-  end
-  # pickle branch with sequel support
-  gem 'pickle', :git=>'git://github.com/NZX/pickle.git'
+  # gem 'sqlite3-ruby', :require => 'sqlite3'
+  gem 'pickle'
   gem 'database_cleaner'
 end
