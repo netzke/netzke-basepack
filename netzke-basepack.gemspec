@@ -35,7 +35,6 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/accordion_panel.rb",
     "lib/netzke/basepack/active_record.rb",
     "lib/netzke/basepack/active_record/relation_extensions.rb",
-    "lib/netzke/basepack/border_layout_panel/javascripts/border_layout_panel.js",
     "lib/netzke/basepack/data_accessor.rb",
     "lib/netzke/basepack/data_adapters/abstract_adapter.rb",
     "lib/netzke/basepack/data_adapters/active_record_adapter.rb",
