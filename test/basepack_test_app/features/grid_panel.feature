@@ -44,6 +44,7 @@ Scenario: Updating a record via "Edit in form"
 Scenario: Deleting a record
   Given a user exists with first_name: "Anton", last_name: "Chekhov"
   When I go to the UserGrid test page
+  And I wait for response from server
   And I select first row in the grid
   And I press button with text "Delete"
   Then I should see "Are you sure?" within ".x-window"
