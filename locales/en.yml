@@ -3,13 +3,21 @@ en:
     basepack:
       grid_panel:
         actions:
-          add: Add
-          edit: Edit
-          del: Delete
-          apply: Apply
-          add_in_form: Add in form
-          edit_in_form: Edit in form
-          search: Search
+          add:
+            text: Add
+          edit:
+            text: Edit
+          del:
+            text: Delete
+            tooltip: Delete
+          apply:
+            text: Apply
+          add_in_form:
+            text: Add in form
+          edit_in_form:
+            text: Edit in form
+          search:
+            text: Search
 
         deleted_n_records: "Deleted %{n} record(s)"
         cannot_delete: "You don't have permissions to delete data"
@@ -18,23 +26,30 @@ en:
 
         record_form_window:
           actions:
-            ok: OK
-            cancel: Cancel
+            ok:
+              text: OK
+            cancel:
+              text: Cancel
 
       search_window:
         title: Extended search
         actions:
-          search: Search
-          cancel: Cancel
+          search:
+            text: Search
+          cancel:
+            text: Cancel
 
       form_panel:
         actions:
-          edit: Edit
-          edit_tooltip: Edit
-          cancel: Cancel
-          cancel_tooltip: Cancel editing
-          apply: Apply
-          apply_tooltip: Apply changes
+          edit:
+            text: Edit
+            tooltip: Edit
+          cancel:
+            text: Cancel
+            tooltip: Cancel editing
+          apply:
+            text: Apply
+            tooltip: Apply changes
 
       search_panel:
         presets: Presets
@@ -49,8 +64,9 @@ en:
 
       paging_form_panel:
         actions:
-          search: Search
-          search_tooltip: Extended search
+          search:
+            text: Search
+            tooltip: Extended search
 
       query_builder:
         presets: Presets

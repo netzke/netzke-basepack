@@ -63,20 +63,14 @@ module Netzke
       end
 
       action :apply do |a|
-        a.text = I18n.t('netzke.basepack.form_panel.actions.apply')
-        a.tooltip = I18n.t('netzke.basepack.form_panel.actions.apply_tooltip')
         a.icon = :tick
       end
 
       action :edit do |a|
-        a.text = I18n.t('netzke.basepack.form_panel.actions.edit')
-        a.tooltip = I18n.t('netzke.basepack.form_panel.actions.edit_tooltip')
         a.icon = :pencil
       end
 
       action :cancel do |a|
-        a.text = I18n.t('netzke.basepack.form_panel.actions.cancel')
-        a.tooltip = I18n.t('netzke.basepack.form_panel.actions.cancel_tooltip')
         a.icon = :cancel
       end
 

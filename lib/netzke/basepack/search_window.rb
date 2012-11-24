@@ -2,13 +2,8 @@ module Netzke
   module Basepack
     class SearchWindow < Netzke::Basepack::Window
 
-      action :search do |a|
-        a.text = I18n.t('netzke.basepack.search_window.actions.search')
-      end
-
-      action :cancel do |a|
-        a.text = I18n.t('netzke.basepack.search_window.actions.cancel')
-      end
+      action :search
+      action :cancel
 
       js_configure do |c|
         c.width = "50%"

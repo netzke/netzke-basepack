@@ -296,50 +296,36 @@ module Netzke
       end
 
       action :add do |a|
-        a.text = I18n.t('netzke.basepack.grid_panel.actions.add')
-        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.add')
         a.disabled = config[:prohibit_create]
-        a.handler = "onAddInline" # not following naming conventions here as Ext 4 grid has its own onAdd method
+        a.handler = "onAddInline" # overriding naming conventions as Ext 4 grid has its own onAdd method
         a.icon = :add
       end
 
       action :edit do |a|
-        a.text = I18n.t('netzke.basepack.grid_panel.actions.edit')
-        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.edit')
         a.disabled = true
         a.icon = :table_edit
       end
 
       action :del do |a|
-        a.text = I18n.t('netzke.basepack.grid_panel.actions.del')
-        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.del')
         a.disabled = true
         a.icon = :table_row_delete
       end
 
       action :apply do |a|
-        a.text = I18n.t('netzke.basepack.grid_panel.actions.apply')
-        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.apply')
         a.disabled = config[:prohibit_update] && config[:prohibit_create]
         a.icon = :tick
       end
 
       action :add_in_form do |a|
-        a.text = I18n.t('netzke.basepack.grid_panel.actions.add_in_form')
-        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.add_in_form')
         a.icon = :application_form_add
       end
 
       action :edit_in_form do |a|
-        a.text = I18n.t('netzke.basepack.grid_panel.actions.edit_in_form')
-        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.edit_in_form')
         a.disabled = true
         a.icon = :application_form_edit
       end
 
       action :search do |a|
-        a.text = I18n.t('netzke.basepack.grid_panel.actions.search')
-        a.tooltip = I18n.t('netzke.basepack.grid_panel.actions.search')
         a.enable_toggle = true
         a.icon = :find
       end

@@ -46,13 +46,9 @@ module Netzke
           JS
         end
 
-        action :ok do |a|
-          a.text = I18n.t('netzke.basepack.grid_panel.record_form_window.actions.ok')
-        end
+        action :ok
 
-        action :cancel do |a|
-          a.text = I18n.t('netzke.basepack.grid_panel.record_form_window.actions.cancel')
-        end
+        action :cancel
 
       protected
 
