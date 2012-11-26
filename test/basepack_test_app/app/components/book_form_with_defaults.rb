@@ -1,4 +1,4 @@
-class BookFormWithDefaults < Netzke::Basepack::FormPanel
+class BookFormWithDefaults < Netzke::Basepack::Form
   def configure(c)
     c.record = Book.first
     super

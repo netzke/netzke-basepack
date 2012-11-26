@@ -1,4 +1,4 @@
-class BookGridWithNestedAttributes < Netzke::Basepack::GridPanel
+class BookGridWithNestedAttributes < Netzke::Basepack::Grid
   def configure(c)
     c.columns = [:title, {:name => :author__first_name, :nested_attribute => true}, {:name => :author__last_name, :nested_attribute => true}]
     c.model = "Book"

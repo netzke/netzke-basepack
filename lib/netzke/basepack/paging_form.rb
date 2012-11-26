@@ -1,9 +1,9 @@
 module Netzke
   module Basepack
-    # A FormPanel with paging toolbar. Allows browsing and editing records one-by-one.
+    # A Form with paging toolbar. Allows browsing and editing records one-by-one.
     #
     # == Configuration
-    # Besides +Netzke::Basepack::FormPanel+ config options, accepts:
+    # Besides +Netzke::Basepack::Form+ config options, accepts:
     # * +scope+ - specifies how the data should be filtered.
     #   When it's a symbol, it's used as a scope name.
     #   When it's a string, it's a SQL statement (passed directly to +ActiveRecord::Relation#where+).
@@ -18,7 +18,7 @@ module Netzke
     #
     # == ToDo
     # * Update the number of records after form submit
-    class PagingFormPanel < FormPanel
+    class PagingForm < Form
       js_configure do |c|
         c.mixin
       end
@@ -41,8 +41,6 @@ module Netzke
       end
 
       action :search do |a|
-        a.text = I18n.t('netzke.basepack.paging_form_panel.actions.search')
-        a.tooltip = I18n.t('netzke.basepack.paging_form_panel.actions.search_tooltip')
         a.icon = :find
         a.select = true
       end
@@ -55,6 +53,7 @@ module Netzke
       component :search_form do |c|
         c.klass = SearchWindow
         c.model = config[:model]
+        c.fields = fields
       end
 
     protected

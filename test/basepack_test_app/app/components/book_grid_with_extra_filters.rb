@@ -1,6 +1,6 @@
 # This requires a patch to Ext examples/ux/grid
 # NOTE: not used!
-class BookGridWithExtraFilters < Netzke::Basepack::GridPanel
+class BookGridWithExtraFilters < Netzke::Basepack::Grid
   model "Book"
 
   js_include Netzke::Core.ext_path.join("examples", "ux/grid/filter/EneFilter.js")

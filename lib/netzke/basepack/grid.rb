@@ -1,5 +1,5 @@
-require "netzke/basepack/grid_panel/columns"
-require "netzke/basepack/grid_panel/services"
+require "netzke/basepack/grid_lib/columns"
+require "netzke/basepack/grid_lib/services"
 # require "netzke/basepack/plugins/configuration_tool"
 
 module Netzke
@@ -22,7 +22,7 @@ module Netzke
     # == Instance configuration
     # The following config options are supported:
     # [:+model+]
-    #   Name of the ActiveRecord model that provides data to this GridPanel, e.g. "User"
+    #   Name of the ActiveRecord model that provides data to this Grid, e.g. "User"
     # [:+columns+]
     #   An array of columns to be displayed in the grid; each column may be represented by a symbol (representing the model's attribute name), or a hash (when extra configuration is needed). See the "Columns" section below.
     # [:+scope+]
@@ -105,8 +105,8 @@ module Netzke
     #
     # Besides these options, a column can receive any meaningful config option understood by {Ext.grid.column.Column}(http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.column.Column) (e.g. +hidden+)
     #
-    # === Customizing columns by extending GridPanel
-    # GridPanel itself always uses the columns provided in the `columns` config option. But this behavior can be changed by overriding the `columns` method, which follows the same semantics as the `columns` config option. This can be used, for example, for extending the list of columns provided in the config:
+    # === Customizing columns by extending Grid
+    # Grid itself always uses the columns provided in the `columns` config option. But this behavior can be changed by overriding the `columns` method, which follows the same semantics as the `columns` config option. This can be used, for example, for extending the list of columns provided in the config:
     #
     #     def columns
     #       super + [:extra_column]
@@ -114,11 +114,11 @@ module Netzke
     #
     #
     # == One-to-many association support
-    # If the model bound to a grid +belongs_to+ another model, GridPanel can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
+    # If the model bound to a grid +belongs_to+ another model, Grid can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
     #
     #     {:name => "author__first_name"}
     #
-    # GridPanel will detect it to be an association column, and will use the drop-down box for selecting an author, where the list of authors will be represented by the author's first name.
+    # Grid will detect it to be an association column, and will use the drop-down box for selecting an author, where the list of authors will be represented by the author's first name.
     #
     # In order to scope out the records displayed in the drop-down box, the +scope+ column option can be used, e.g.:
     #
@@ -126,7 +126,7 @@ module Netzke
     #
     # == Add/edit forms
     # The forms will by default display the fields that correspond to the configured columns, taking over meaningful configuration options (e.g. +text+ will be converted into +fieldLabel+).
-    # You may override the default fields displayed in the forms by overriding the +default_fields_for_forms+ method, which should return an array understood by the +items+ config property of the +FormPanel+. If you need to use a custom class instead of +FormPanel+, you need to override the +preconfigure_record_window+ method:
+    # You may override the default fields displayed in the forms by overriding the +default_fields_for_forms+ method, which should return an array understood by the +items+ config property of the +Form+. If you need to use a custom class instead of +Form+, you need to override the +preconfigure_record_window+ method:
     #
     #     def preconfigure_record_window(c)
     #       super
@@ -135,9 +135,9 @@ module Netzke
     #
     #
     # == Actions
-    # You can override GridPanel's actions to change their text, icons, and tooltips (see http://api.netzke.org/core/Netzke/Actions.html).
+    # You can override Grid's actions to change their text, icons, and tooltips (see http://api.netzke.org/core/Netzke/Actions.html).
     #
-    # GridPanel implements the following actions:
+    # Grid implements the following actions:
     # [:+add+]
     #   Inline adding of a record
     # [:+del+]
@@ -163,7 +163,7 @@ module Netzke
     #
     # These can also be eventually set directly on the component's class:
     #
-    #     Netzke::Basepack::GridPanel.column_filters_available = false
+    #     Netzke::Basepack::Grid.column_filters_available = false
     #
     # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the way that the less functionality is enabled, the less code is generated.
     #
@@ -174,7 +174,7 @@ module Netzke
     #   (defaults to true) include code for (multi-record) editing and adding records through a form
     # [:+extended_search_available+]
     #   (defaults to true) include code for extended configurable search
-    class GridPanel < Netzke::Base
+    class Grid < Netzke::Base
 
       class_attribute :columns_attr
 
@@ -213,7 +213,7 @@ module Netzke
       # JavaScript class configuration
       js_configure do |c|
         c.extend = "Ext.grid.Panel"
-        c.mixin :grid_panel, :event_handling
+        c.mixin :grid, :event_handling
         c.mixin :advanced_search if extended_search_available
         c.mixin :edit_in_form if edit_in_form_available
 
@@ -240,12 +240,12 @@ module Netzke
 
         # Includes for rows reordering
         if rows_reordering_available
-          c.require(ex.join("#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"))
+          c.require(ex.join("#{File.dirname(__FILE__)}/grid.js"))
         end
       end
 
-      include self::Services
-      include self::Columns
+      include GridLib::Services
+      include GridLib::Columns
       include Netzke::Basepack::DataAccessor
       include Netzke::Core::ConfigToDslDelegator
 
@@ -358,7 +358,7 @@ module Netzke
     private
 
       def preconfigure_record_window(c)
-        c.klass = RecordFormWindow
+        c.klass = GridLib::RecordFormWindow
 
         c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
           f.model = config[:model]

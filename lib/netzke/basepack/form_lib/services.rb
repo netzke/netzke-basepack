@@ -1,6 +1,6 @@
 module Netzke
   module Basepack
-    class FormPanel < Netzke::Base
+    module FormLib
       module Services
         extend ActiveSupport::Concern
 

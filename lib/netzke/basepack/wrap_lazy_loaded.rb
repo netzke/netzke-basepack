@@ -2,7 +2,7 @@ module Netzke
   module Basepack
     # Include this module into your component component class when you want lazy-loaded component in config to be auto-replaced with
     # a panel with the 'fit' layout, and a property wrappedComponent set to the name of the original component.
-    # Used, for instance, in TabPanel and AccordionPanel to dynamically load components on expanding a panel or clicking
+    # Used, for instance, in TabPanel and Accordion to dynamically load components on expanding a panel or clicking
     # a tab.
     module WrapLazyLoaded
       def extend_item(item)

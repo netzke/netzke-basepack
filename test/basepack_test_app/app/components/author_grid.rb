@@ -1,3 +1,3 @@
-class AuthorGrid < Netzke::Basepack::GridPanel
+class AuthorGrid < Netzke::Basepack::Grid
   model "Author"
 end

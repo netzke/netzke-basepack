@@ -1,5 +1,5 @@
 # NOTE: not used
-class BookGridWithScopedAuthors < Netzke::Basepack::GridPanel
+class BookGridWithScopedAuthors < Netzke::Basepack::Grid
 
   model "Book"
 

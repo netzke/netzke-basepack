@@ -1,4 +1,4 @@
-class UserGridWithCustomizedFormFields < Netzke::Basepack::GridPanel
+class UserGridWithCustomizedFormFields < Netzke::Basepack::Grid
   def configure(c)
     c.title = "Users"
     c.model = "User"

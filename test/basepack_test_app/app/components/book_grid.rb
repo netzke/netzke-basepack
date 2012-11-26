@@ -1,4 +1,4 @@
-class BookGrid < Netzke::Basepack::GridPanel
+class BookGrid < Netzke::Basepack::Grid
   def configure(c)
     c.model = "Book"
     c.title = I18n.t('books', :default => "Books")

@@ -1,7 +1,7 @@
 module Netzke
   module Basepack
-    class GridPanel < Netzke::Base
-      class RecordFormWindow < Window
+    module GridLib
+      class RecordFormWindow < Netzke::Basepack::Window
 
         component :add_form do |c|
           preconfigure_form(c)
@@ -57,7 +57,7 @@ module Netzke
         end
 
         def preconfigure_form(c)
-          c.klass = FormPanel
+          c.klass = Form
           c.border = true
           c.bbar = false
           c.prevent_header = true

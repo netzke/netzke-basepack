@@ -31,7 +31,7 @@ module Netzke::Basepack::DataAdapters
     #   * :direction - "asc" or "desc"
     # * :limit - rows per page in pagination
     # * :start - page number in pagination
-    # * :scope - the scope as described in Netzke::Basepack::GridPanel
+    # * :scope - the scope as described in Netzke::Basepack::Grid
     # * :filter - Ext filters
     #
     # The `columns` parameter may be used to use joins to address the n+1 query problem, and receives an array of column configurations
@@ -50,7 +50,7 @@ module Netzke::Basepack::DataAdapters
     #
     # `params` is a hash that contains the following keys:
     #
-    # * :scope - the scope as described in Netzke::Basepack::GridPanel
+    # * :scope - the scope as described in Netzke::Basepack::Grid
     # * :filter - Ext filters
     #
     # The `columns` parameter may be used to use joins to address the n+1 query problem, and receives an array of column configurations

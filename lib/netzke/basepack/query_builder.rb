@@ -1,6 +1,6 @@
 module Netzke
   module Basepack
-    # Search query builder used in GridPanel's advanced search
+    # Search query builder used in Grid's advanced search
     class QueryBuilder < Netzke::Base
       js_configure do |c|
         c.extend = "Ext.tab.Panel"

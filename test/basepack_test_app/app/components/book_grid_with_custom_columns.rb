@@ -1,4 +1,4 @@
-class BookGridWithCustomColumns < Netzke::Basepack::GridPanel
+class BookGridWithCustomColumns < Netzke::Basepack::Grid
   column :author__first_name do |c|
     c.renderer = :my_renderer
   end

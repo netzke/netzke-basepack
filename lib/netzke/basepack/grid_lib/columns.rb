@@ -1,6 +1,6 @@
 module Netzke
   module Basepack
-    class GridPanel < Netzke::Base
+    module GridLib
       module Columns
         extend ActiveSupport::Concern
 

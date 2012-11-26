@@ -58,7 +58,7 @@ Scenario: UserFormWithDefaultFields should render properly
   And I should see "writer"
 
 @javascript
-Scenario: FormPanel should be functional without model provided
+Scenario: Form should be functional without model provided
   Given I am on the FormWithoutModel test page
   When I fill in "Text field:" with "Some text"
   And I fill in "Number field:" with "42"

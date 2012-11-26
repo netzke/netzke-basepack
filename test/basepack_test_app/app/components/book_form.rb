@@ -1,5 +1,5 @@
 # Warning: this component participates in i18n.feature, careful with adding new fields!
-class BookForm < Netzke::Basepack::FormPanel
+class BookForm < Netzke::Basepack::Form
   include Extras::BookPresentation
 
   def configure(c)

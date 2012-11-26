@@ -163,7 +163,7 @@ Scenario: Inline adding of records
   And a book should exist with title: "Demian", author: author "Hesse"
 
 @javascript
-Scenario: Inline adding of records in GridPanel with default values
+Scenario: Inline adding of records in Grid with default values
   Given an author: "Nabokov" exists with first_name: "Vladimir", last_name: "Nabokov"
   And an author: "Hesse" exists with first_name: "Herman", last_name: "Hesse"
 
@@ -239,7 +239,7 @@ Scenario: I must see total records value
   Then I should see "of 2" within paging toolbar
 
 @javascript
-Scenario: GridPanel with overridden columns
+Scenario: Grid with overridden columns
   Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
   And a book exists with title: "Lolita", author: that author
   When I go to the BookGridWithOverriddenColumns test page

@@ -1,19 +1,24 @@
 # 0.8.0 - WIP
+* Basepack component name change:
+  * GridPanel -> Grid
+  * FormPanel -> Form
+  * AccordionPanel -> Accordion
+
 * improvements
-  * Grid/FormPanel respect `attr_accessible` and `attr_protected` on the model; set the `role` config option on them to tune mass-assignment security
-  * New `data_store` config option in GridPanel
+  * Grid/Form respect `attr_accessible` and `attr_protected` on the model; set the `role` config option on them to tune mass-assignment security
+  * New `data_store` config option in Grid
   * Major internal refactorings
   * Window now also stores its 'maximized' state
 
 * changes
   * BorderLayoutPanel is removed. Any component can now enable its items persistence by including `Netzke::Basepack::ItemsPersistence` module
   * Methods like `netzke_attribute`, `netzke_expose_attributes` etc are gone. Define your columns/fields right on grids/forms.
-  * AccordionPanel and TabPanel now lazily load the Netzke components by default; set `eager_loading` to true for the components that should be loaded eagerly
+  * Accordion and TabPanel now lazily load the Netzke components by default; set `eager_loading` to true for the components that should be loaded eagerly
 
-## GridPanel
+## Grid
 
 ### Customizing grid's forms
-The windows with a form inside, which is used for adding/(multi-)editing of records, are now referred as: `add_window`, `edit_window` (instead of `add_form` and `edit_form`). Both accept a config param `form_config`, which can be used to configure the contained FormPanel - e.g., to change its layout or even class. For example, to change the layout of a form that is found in the edit window, do the following in your grid class:
+The windows with a form inside, which is used for adding/(multi-)editing of records, are now referred as: `add_window`, `edit_window` (instead of `add_form` and `edit_form`). Both accept a config param `form_config`, which can be used to configure the contained Form - e.g., to change its layout or even class. For example, to change the layout of a form that is found in the edit window, do the following in your grid class:
 
     component :edit_window do |c|
       super(c)
@@ -43,7 +48,7 @@ DSL method `override_column` is gone.
 * improvements
   * data-related operations in grids and forms are moved to data adapters; implemented (partial) support for DataMapper and Sequel (see updated README)
   * afterApply event in forms and grids (pschyska)
-  * apply event fired before apply button is processed in FormPanel (pschyska)
+  * apply event fired before apply button is processed in Form (pschyska)
 
 * bug fix
   * advanced search panel works again (pididi)
@@ -65,7 +70,7 @@ DSL method `override_column` is gone.
 # 0.7.2 - 2011-10-20
 * bug fix
   * Filter on a date column
-  * Using date column caused FormPanel to crash
+  * Using date column caused Form to crash
   * Virtual columns are no longer editable by default
 
 * improvements
@@ -74,10 +79,10 @@ DSL method `override_column` is gone.
   * New :override_columns config option for grid allows overriding specified column config without influencing other columns' order/presence
   * New DSL method (override_column) to override a specific column config without influencing other columns' order/presence.
   * Grid's title is set to model's pluralized name by default.
-  * New :read_only option for FormPanel - makes all fields read-only and removes the "Apply" button.
-  * FormPanel implements DSL shortcuts for the following options in default config: :model, :items, :record_id.
+  * New :read_only option for Form - makes all fields read-only and removes the "Apply" button.
+  * Form implements DSL shortcuts for the following options in default config: :model, :items, :record_id.
   * GridPanel implements DSL shortcuts for the following options in default config: :model, :add_form_config, :edit_form_config, :multi_edit_form_config.
-  * New FormPanel option :multi_edit - set when the form is used for editing multiple records at a time
+  * New Form option :multi_edit - set when the form is used for editing multiple records at a time
   * Introduce action columns (see BookGridWithColumnActions)
 
 * API changes
@@ -85,7 +90,7 @@ DSL method `override_column` is gone.
 
 # 0.7.1 - 2011-09-04
 * bug fix
-  * FormPanel: fix the netzke_load endpoint when association fields are present
+  * Form: fix the netzke_load endpoint when association fields are present
   * dates were not displayed in date fields, and submitting a form with date fields might result in erasing those fields
 
 * Rails 3.1 compatibility
@@ -101,7 +106,7 @@ DSL method `override_column` is gone.
   * When columns states are saved in the persistent storage, adding/removing columns (e.g. in the code) will reset the saved states
   * Moved features and specs to test/basepack_test_app
 * bug fix
-  * FormPanel with multiple association fields wouldn't submit data correctly
+  * Form with multiple association fields wouldn't submit data correctly
   * GridPanel's forms take over the `text` configuration option for columns as `fieldLabel` for default fields
 
 # v0.6.4 - 2011-02-26
@@ -111,7 +116,7 @@ DSL method `override_column` is gone.
 
 * enhancements
   * Components updated to use Ext.Direct (by @pschyska)
-  * New, improved advanced search for GridPanel and PagingFormPanel.
+  * New, improved advanced search for GridPanel and PagingForm.
   * One-to-many association support in Form/GridPanel reworked to use the foreign id instead of a string. This gives us more flexibility about what to display in the association column/field, and also provides for performance improvements (no more need to search for the associated record based on the value provided from the column/field).
   * GridPanel now memorizes its columns visibility, position and size (when :persistence is set to true)
   * I18n for GridPanel
@@ -134,17 +139,17 @@ DSL method `override_column` is gone.
   * Filtering on date columns
 
 * enhancements
-  * I18n for Grid/FormPanel
+  * I18n for Grid/Form
   * new `getter` config option for columns/fields, a lambda receiving the record as parameter
   * new `setter` config option for columns/fields, a lambda receiving the record as first parameter, new value as the second
   * GridPanel passes columns' default values to the "Add in form" form
-  * FormPanel can now be used without specifying a model
+  * Form can now be used without specifying a model
   * New `commalistcbg` form field for checkboxes, where boxLabels of selected checkboxes are serialized into comma-separated string (the separator is configurable)
   * New `nradiogroup` form field for radio buttons, where the value is defined by the boxLabel of the selected radio button
   * New `no_binding` option for configuring a form field. Set it to "true" when you don't want Netzke to expand the field configuration based on the `name` property. May be needed in some cases, e.g. when using checkboxes/radio buttons in the form.
   * New `nested_attribute` option for configuring data attributes (thus applicable for a column, a field, or a `netzke_attribute` in the model). When set to true for an association attribute (e.g. author__name), assigning a value to it will change the association's attribute, *not* trying to find an association by name and reassign it if found (default behavior).
-  * FormPanel shows the "Updating..." mask while sending values to the server (configurable with updateMask option/property)
-  * FormPanel now can be used in the "lockable" mode (:config => :lockable), which makes it load initially in "display mode", then "unlock" it, change the values, and "lock" it again (updating the values on the server)
+  * Form shows the "Updating..." mask while sending values to the server (configurable with updateMask option/property)
+  * Form now can be used in the "lockable" mode (:config => :lockable), which makes it load initially in "display mode", then "unlock" it, change the values, and "lock" it again (updating the values on the server)
 
 # v0.6.2 - 2010-11-05
 * compatibility with netzke-core 0.6.4
@@ -162,17 +167,17 @@ DSL method `override_column` is gone.
 # v0.6.0 - 2010-10-24
 * netzke-core 0.6.0 compatibility, thorough refactoring
 * Much more thorough testing (cucumber and rspec)
-* FormPanel/GridPanel dynamic column/field configuration has been left out (planned for a separate gem)
+* Form/GridPanel dynamic column/field configuration has been left out (planned for a separate gem)
 * different bug fixes
 
 * enhancements
-  * if omitted in config, a column for the primary key is automatically added to Grid/FormPanel
+  * if omitted in config, a column for the primary key is automatically added to Grid/Form
 
 * API incompatibilities
-  * in FormPanel, define the fields layout directly in :items, not in :fields or :columns
+  * in Form, define the fields layout directly in :items, not in :fields or :columns
 
 * new
-  * FormPanel allows for arbitrary layout of fields
+  * Form allows for arbitrary layout of fields
 
 # v0.5.14 - 2010-09-08
 * bug fix
@@ -180,8 +185,8 @@ DSL method `override_column` is gone.
   * icons location was hardcoded in search panel (credits to @pschyska)
   * quick fix for datetimes not being displayed in the preferred timezone
   * ext_config options :enable_edit_in_form and :enable_advanced_search now do have effect
-  * PropertyEditor fixed for Grid/FormPanel
-  * Grid/FormPanel again obeys persistent_config option when loading columns/fields
+  * PropertyEditor fixed for Grid/Form
+  * Grid/Form again obeys persistent_config option when loading columns/fields
 
 * enhancements
   * numberfield is default in grids also for columns of type float
@@ -195,10 +200,10 @@ DSL method `override_column` is gone.
 
 * bug fix
   * when a TabPanel was used as a standalone widget, the first tab was rendered empty
-  * Grid/FormPanel: dynamically changing of columns doesn't erase those column settings that are not configurable via GUI, but which were specified in the code
+  * Grid/Form: dynamically changing of columns doesn't erase those column settings that are not configurable via GUI, but which were specified in the code
 
 * enhancements
-  * scopes can now be specified for an association combobox in Grid/FormPanels
+  * scopes can now be specified for an association combobox in Grid/Forms
   * GridPanel: you can now configure add/edit/multi_edit/search panels (e.g. to override the fields) and corresponding windows (e.g. to override the title)
   * minor refactoring GridPanel: moved static js out of grid_panel_js.rb
 
@@ -227,11 +232,11 @@ DSL method `override_column` is gone.
 * Fix: GridPanel date filter now should work
 * New: GridPanel now has a method on_data_changed that can be overridden by children to detect actions that modify data
 * New: New way of configuring Netzke (virtual) attributes for AR models.
-* Impr: Grid/FormPanel refactoring.
+* Impr: Grid/Form refactoring.
 * Impr: Multi-level column/fields configuration reworked and made more consistent.
 * New: New configuration layer introduced between the AR models and the rest of Netzke widgets. Use AttributesConfigurator to access it.
 * New: FamFamFam Silk icons support.
-* Impr: Reworked defining Netzke (virtual) attributes for Grid/FormPanel.
+* Impr: Reworked defining Netzke (virtual) attributes for Grid/Form.
 
 # v0.5.8 - 2010-03-12
 * Fix: GertThiel's method_missing-related fix enabling better compatibility with other Ruby libs
@@ -246,7 +251,7 @@ DSL method `override_column` is gone.
 * Compatibility with latest netzke-core
 * Compatibility with Ext JS v3.1
 * Impr: Code reorganization
-* Impr: Non-standard primary key support in GridPanel and FormPanel
+* Impr: Non-standard primary key support in GridPanel and Form
 * Impr: Search button in GridPanel indicates that records filtering is active
 * Fix: by default, SearchPanel excludes boolean fields for now (until a 3-state checkbox is introduced)
 * Impr: made it possible to create new AR records with assigned associations using double-underscore notation, e.g.: Clerk.new(:boss__last_name => "Aguraijuja ")
@@ -255,18 +260,18 @@ DSL method `override_column` is gone.
 * Fix: FieldsConfigurator was crashing when fired consequently for grid and form
 * Depr: :data_class_name option is deprecated, use :model
 * Impr: "gear" tool is now hidden on FieldsConfigurator
-* Impr: Grid/FormPanel layouts are now not stored into the netzke_preferences table unless the defaults are modified (cleaner table)
+* Impr: Grid/Form layouts are now not stored into the netzke_preferences table unless the defaults are modified (cleaner table)
 
 # v0.5.5.1 - 2009-11-09
 * Compatibility with latest netzke-core
 
 # v0.5.5 - 2009-11-09
 * Compatibility with latest netzke-core
-* Regression: pressing "enter" was not submitting the form (FormPanel)
+* Regression: pressing "enter" was not submitting the form (Form)
 * Regression: "Restore defaults" button was not working in FieldsConfigurator and PropertyEditor
 * Fix: excluding columns in FieldsConfigurator was causing inconsistent column behavior (move/hide/resize)
-* Fix: resolving conflicts with Ext.form.FormPanel's <tt>submit</tt> and <tt>load</tt> methods
-* New: rudimentary FileUploadField support in FormPanel (it will do a normal, non-AJAX, form submit)
+* Fix: resolving conflicts with Ext.form.Form's <tt>submit</tt> and <tt>load</tt> methods
+* New: rudimentary FileUploadField support in Form (it will do a normal, non-AJAX, form submit)
 * New: Netzke::Window widget, supports persistent moving/resizing.
 * New: (experimental) GridPanel's "Add in form" button now opens the new Window widget. Later all other windows will be slowly rewritten to do the same.
 
@@ -295,7 +300,7 @@ DSL method `override_column` is gone.
 * Fix: gem dependencies are now correct.
 
 # v0.5.1 - 2009-09-11
-* Fix: crash when FormPanel has no data_class_name specified.
+* Fix: crash when Form has no data_class_name specified.
 * New: DataAccessor widgets (Form/GridPanel) now let the underlying model know which widget (i.e. which instance) accesses its data. Can be useful in virtual attributes for generating widget-specific HTML.
 * Fix: DataAccessor widgets (Form/GridPanel) now don't crash when calculating default columns/fields for the underlying model that has polymorphic columns.
 * Fix: TabPanel was sending redundant "tabchange" event to server when initially instantiated.
@@ -316,7 +321,7 @@ DSL method `override_column` is gone.
 * New: "strong_default_attrs" config option added to GridPanel to specify the attributes that will be assigned to each record that is created or modified by the grid.
 * Usability: GridPanel's actions now get enabled/disabled according to the current selection.
 * Configuration panel for grids and forms now works more consistently.
-* New: some smart defaults for column/fields in Grid/FormPanel.
+* New: some smart defaults for column/fields in Grid/Form.
 * New: BasicApp supports masquerading and application-wide AJAX activity indicator.
 
 # v0.4.2 - 2009-05-07
@@ -325,14 +330,14 @@ DSL method `override_column` is gone.
 # v0.4.1 - 2009-05-07
 * Fix: afterlayout call moved to js_after_constructor in BasicApp
 * Fix: cleaner persistent_config handling
-* New: default's configuration enabled for FormPanel on class-level
+* New: default's configuration enabled for Form on class-level
 * Fix: differently configured forms on the same page were showing the same columns
 * Fix: TableEditor was showing config-tool by default (must be hidden)
 
 # v0.4.0 - 2009-05-07
-* Refactor: got rid of NetzkeFormPanelField and NetzkeGridPanelColumn classes along with their tables. The layout is now stored in netzke_preferences.
+* Refactor: got rid of NetzkeFormField and NetzkeGridPanelColumn classes along with their tables. The layout is now stored in netzke_preferences.
 * New: dynamic hiding of columns from column menu in GridPanel.
-* New: FormPanel now supports combo boxes.
+* New: Form now supports combo boxes.
 * Fix: config[:bbar] set to 'false' now works in grids with pagination
 * New: you can specify :preloaded => true in a tab config in TabPanel to preload the widget in that tab along with the TabPanel itself
 * New: hideBusy added to Ext.StatusBar
@@ -364,7 +369,7 @@ DSL method `override_column` is gone.
 # v0.3.6
 * Netzke-core v0.2.9 compatibility.
 * Cleaner handling of custom renderers in GridPanel.
-* New FormPanel-based PropertyEditor replaces PropertyGrid.
+* New Form-based PropertyEditor replaces PropertyGrid.
 * Xcheckbox and check-column introduced.
 * TODO file added.
 * Bug fix: in TableEditor, the grid now responses on events also after being reconfigured.
@@ -398,11 +403,11 @@ DSL method `override_column` is gone.
 * Bug fix: redundant flash messages for GridPanel.
 * FeedbackGhost won't be showing anything if given an empty array.
 * Cleaner handling of validations in GridPanel.
-* FormPanel ready for the demo.
+* Form ready for the demo.
 
 # v0.3.2
 * Minor code restructuring.
-* Working on FormPanel cont'd.
+* Working on Form cont'd.
 
 # v0.3.1
 * Added the "conditions" configuration option to GridPanel to limit the search

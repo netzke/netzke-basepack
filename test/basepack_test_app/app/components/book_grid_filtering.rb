@@ -1,4 +1,4 @@
-class BookGridFiltering < Netzke::Basepack::GridPanel
+class BookGridFiltering < Netzke::Basepack::Grid
   model "Book"
 
   def columns

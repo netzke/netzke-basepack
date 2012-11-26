@@ -1,4 +1,4 @@
-class BookGridWithOverriddenColumns < Netzke::Basepack::GridPanel
+class BookGridWithOverriddenColumns < Netzke::Basepack::Grid
   model "Book"
 
   # First way to override a column

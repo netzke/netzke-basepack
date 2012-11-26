@@ -1,4 +1,4 @@
-class SomeAccordion < Netzke::Basepack::AccordionPanel
+class SomeAccordion < Netzke::Basepack::Accordion
   # This component will be dynamically loaded on expanding the second accordion pane
   component :simple_panel do |c|
     c.update_text = "Update for Panel Two"

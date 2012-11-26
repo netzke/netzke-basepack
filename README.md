@@ -10,10 +10,10 @@ A pack of pre-built [Netzke](http://netzke.org) components that can be used as b
 
 Basepack includes the following components:
 
-* [GridPanel](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/GridPanel) - a grid panel with a thick bag of features
-* [FormPanel](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/FormPanel) - a form panel with automatic binding of fields
+* [Grid](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/Grid) - a grid panel with a thick bag of features
+* [Form](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/Form) - a form panel with automatic binding of fields
 * [TabPanel](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/TabPanel) - a tab panel with support for lazy loading of nested components
-* [AccordionPanel](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/AccordionPanel) - an accordion panel with support for lazy loading of nested components
+* [Accordion](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/Accordion) - an accordion panel with support for lazy loading of nested components
 * [Window](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/Window) - a window which stores its size, position, and maximized state
 
 Besides, Basepack implements persistence of region sizes and collapsed states of an arbitrary component that uses [border layout](http://docs.sencha.com/ext-js/4-1/#!/api/Ext.layout.container.Border) (see [ItemsPersistence](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/ItemsPersistence)).
@@ -41,7 +41,7 @@ For the "edge" stuff, tell bundler to get the gem straight from GitHub:
 Embed a basepack component into a view as any other Netzke component, e.g.:
 
 ```erb
-<%= netzke :books, :class_name => 'Netzke::Basepack::GridPanel', :model => 'Book' %>
+<%= netzke :books, :class_name => 'Netzke::Basepack::Grid', :model => 'Book' %>
 ```
 
 For more examples, see http://netzke-demo.herokuapp.com ([source code](https://github.com/nomadcoder/netzke-demo)), and look into `test/basepack_test_app`.

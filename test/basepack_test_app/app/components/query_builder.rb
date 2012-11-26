@@ -1,4 +1,4 @@
-class QueryBuilder < Netzke::Basepack::GridPanel::QueryBuilder
+class QueryBuilder < Netzke::Basepack::GridLib::QueryBuilder
   def configure(c)
     super
     c.model = "Book"

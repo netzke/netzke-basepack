@@ -1,4 +1,4 @@
-class BookGridWithExtraFeedback < Netzke::Basepack::GridPanel
+class BookGridWithExtraFeedback < Netzke::Basepack::Grid
   model "Book"
 
   # Override the get_data endpoint

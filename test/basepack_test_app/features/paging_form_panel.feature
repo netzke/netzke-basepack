@@ -12,7 +12,7 @@ Background:
 
 @javascript
 Scenario: Paging through records
-  When I go to the BookPagingFormPanel test page
+  When I go to the BookPagingForm test page
   Then I should see "Journey to Ixtlan"
 
   When I go forward one page
@@ -25,7 +25,7 @@ Scenario: Paging through records
 
 #@javascript
 #Scenario: Searching
-  #When I go to the BookPagingFormPanel test page
+  #When I go to the BookPagingForm test page
   #And I press "Search"
   #And I wait for response from server
   #And I expand combobox "undefined_attr"
@@ -39,5 +39,5 @@ Scenario: Paging through records
 
 @javascript
 Scenario: I must see total records value
-  When I go to the BookPagingFormPanel test page
+  When I go to the BookPagingForm test page
   Then I should see "of 3" within paging toolbar

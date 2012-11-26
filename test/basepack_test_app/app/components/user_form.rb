@@ -1,4 +1,4 @@
-class UserForm < Netzke::Basepack::FormPanel
+class UserForm < Netzke::Basepack::Form
   def configure(c)
     c.record = User.first
 

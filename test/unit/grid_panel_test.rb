@@ -1,10 +1,10 @@
 require 'test_helper'
 require 'netzke-core'
 
-class GridPanelTest < ActiveSupport::TestCase
+class GridTest < ActiveSupport::TestCase
 
   test "api" do
-    grid = Netzke::GridPanel.new(:name => 'grid', :model => 'Book', :columns => [:id, :title, :recent])
+    grid = Netzke::Grid.new(:name => 'grid', :model => 'Book', :columns => [:id, :title, :recent])
     grid_data = grid.get_data[:data]
     assert_equal(2, grid_data.count)
 
@@ -30,7 +30,7 @@ class GridPanelTest < ActiveSupport::TestCase
   end
 
   # test "normalize index" do
-  #   grid = Netzke::GridPanel.new(:name => 'grid', :model => 'Book', :columns => [:id, :col0, {:name => :col1, :excluded => true}, :col2, {:name => :col3, :excluded => true}, :col4, :col5])
+  #   grid = Netzke::Grid.new(:name => 'grid', :model => 'Book', :columns => [:id, :col0, {:name => :col1, :excluded => true}, :col2, {:name => :col3, :excluded => true}, :col4, :col5])
   #
   #   assert_equal(0, grid.normalize_index(0))
   #   assert_equal(1, grid.normalize_index(1))
@@ -40,7 +40,7 @@ class GridPanelTest < ActiveSupport::TestCase
   # end
 
   test "default columns" do
-    grid = Netzke::GridPanel.new(:model => "Book")
+    grid = Netzke::Grid.new(:model => "Book")
 
     assert_equal(7, grid.columns.size)
     # assert_equal({:name => "id", :type => :integer}, grid.columns.first)

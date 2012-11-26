@@ -2,10 +2,10 @@ require 'test_helper'
 require 'rubygems'
 require 'netzke-core'
 
-class AccordionPanelTest < ActiveSupport::TestCase
+class AccordionTest < ActiveSupport::TestCase
 
   test "specifying items" do
-    accordion = Netzke::AccordionPanel.new(:items => [{
+    accordion = Netzke::Accordion.new(:items => [{
       :class_name => "Panel"
     },{
       :class_name => "Panel", :name => "second_panel", :active => true

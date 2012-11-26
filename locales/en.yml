@@ -1,7 +1,7 @@
 en:
   netzke:
     basepack:
-      grid_panel:
+      grid:
         actions:
           add:
             text: Add
@@ -24,6 +24,7 @@ en:
         confirmation: Confirmation
         are_you_sure: Are you sure?
 
+      grid_lib:
         record_form_window:
           actions:
             ok:
@@ -39,7 +40,7 @@ en:
           cancel:
             text: Cancel
 
-      form_panel:
+      form:
         actions:
           edit:
             text: Edit
@@ -62,7 +63,7 @@ en:
         before: Before
         after: After
 
-      paging_form_panel:
+      paging_form:
         actions:
           search:
             text: Search

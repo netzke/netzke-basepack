@@ -1,5 +1,5 @@
 # TODO: not used atm
-class BookFormWithNestedAttributes < Netzke::Basepack::FormPanel
+class BookFormWithNestedAttributes < Netzke::Basepack::Form
   def configure(c)
     c.merge!(
       :title => Book.model_name.human,

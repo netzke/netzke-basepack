@@ -16,8 +16,8 @@ class SomeBorderLayout < Netzke::Basepack::BorderLayoutPanel
   def configure(c)
     super
     c.items = [
-      {:title => "Who", :class_name => "Netzke::Basepack::GridPanel", :region => :center, :model => "User", :name => :user_grid},
-      {:title => "Item Two", :class_name => "Netzke::Basepack::GridPanel", :region => :west, :width => 500, :split => true, :collapsible => true, :model => "Role", :name => :role_grid}
+      {:title => "Who", :class_name => "Netzke::Basepack::Grid", :region => :center, :model => "User", :name => :user_grid},
+      {:title => "Item Two", :class_name => "Netzke::Basepack::Grid", :region => :west, :width => 500, :split => true, :collapsible => true, :model => "Role", :name => :role_grid}
     ]
     c.bbar = [:update_center_region, :update_west_region]
   end

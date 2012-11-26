@@ -2,7 +2,7 @@ module Netzke
   module Basepack
     # A panel with the 'accordion' layout. By default, lazily loads its nested components. For example:
     #
-    #   class MyAccordion < Netzke::Basepack::AccordionPanel
+    #   class MyAccordion < Netzke::Basepack::Accordion
     #     def configure(c)
     #       super
     #       c.items = [{
@@ -18,7 +18,7 @@ module Netzke
     #
     #     component :my_component
     #   end
-    class AccordionPanel < Netzke::Base
+    class Accordion < Netzke::Base
 
       include WrapLazyLoaded
 

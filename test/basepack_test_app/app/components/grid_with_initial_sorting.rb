@@ -1,4 +1,4 @@
-class GridWithInitialSorting < Netzke::Basepack::GridPanel
+class GridWithInitialSorting < Netzke::Basepack::Grid
   def configure(c)
     super
     c.model = "Book"

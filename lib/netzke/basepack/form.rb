@@ -1,5 +1,5 @@
-require "netzke/basepack/form_panel/fields"
-require "netzke/basepack/form_panel/services"
+require "netzke/basepack/form_lib/fields"
+require "netzke/basepack/form_lib/services"
 # require "netzke/plugins/configuration_tool"
 
 module Netzke
@@ -8,7 +8,7 @@ module Netzke
     #
     # == Netzke-specific config options
     #
-    # * +model+ - name of the ActiveRecord model that provides data to this GridPanel.
+    # * +model+ - name of the ActiveRecord model that provides data to this Grid.
     # * +record+ - record to be displayd in the form. Takes precedence over +:record_id+
     # * +record_id+ - id of the record to be displayd in the form. Also see +:record+
     # * +items+ - the layout of the fields as an array. See "Layout configuration".
@@ -18,20 +18,20 @@ module Netzke
     #
     # === Layout configuration
     #
-    # The layout of the form is configured by supplying the +item+ config option, same way it would be configured in Ext (thus allowing for complex form layouts). FormPanel will expand fields by looking at their names (unless +no_binding+ set to +true+ is specified for a specific field).
+    # The layout of the form is configured by supplying the +item+ config option, same way it would be configured in Ext (thus allowing for complex form layouts). Form will expand fields by looking at their names (unless +no_binding+ set to +true+ is specified for a specific field).
     #
     # == Endpoints
-    # FormPanel implements the following endpoints:
+    # Form implements the following endpoints:
     #
     # * +netzke_load+ - loads a record with a given id from the server, e.g.:
     #
-    #     someFormPanel.netzkeLoad({id: 100});
+    #     someForm.netzkeLoad({id: 100});
     #
     # * +netzke_submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling onApply)
     # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
-    class FormPanel < Netzke::Base
-      include self::Services
-      include self::Fields
+    class Form < Netzke::Base
+      include FormLib::Services
+      include FormLib::Fields
       include Netzke::Basepack::DataAccessor
       include Netzke::Core::ConfigToDslDelegator
 

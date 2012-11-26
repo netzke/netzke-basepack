@@ -1,4 +1,4 @@
-class BookGridWithDefaultValues < Netzke::Basepack::GridPanel
+class BookGridWithDefaultValues < Netzke::Basepack::Grid
   def configure(c)
     c.model = "Book"
     c.title = "Books"

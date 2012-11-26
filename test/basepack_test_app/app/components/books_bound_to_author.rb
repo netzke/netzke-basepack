@@ -1,5 +1,5 @@
 # Grid with books that belong to the first author in the DB (assumes the existence of at least 1 author)
-class BooksBoundToAuthor < Netzke::Basepack::GridPanel
+class BooksBoundToAuthor < Netzke::Basepack::Grid
 
   model "Book"
 

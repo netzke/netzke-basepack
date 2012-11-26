@@ -1,4 +1,4 @@
-class BookPagingFormPanel < Netzke::Basepack::PagingFormPanel
+class BookPagingForm < Netzke::Basepack::PagingForm
   def configure(c)
     c.title = "Digitized books"
     c.model = "Book"

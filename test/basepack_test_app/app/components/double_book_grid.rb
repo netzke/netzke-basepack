@@ -9,13 +9,13 @@ class DoubleBookGrid < Netzke::Base
   end
 
   component :first_grid do |c|
-    c.klass = Netzke::Basepack::GridPanel
+    c.klass = Netzke::Basepack::Grid
     c.region = :center
     c.model = "Book"
   end
 
   component :second_grid do |c|
-    c.klass = Netzke::Basepack::GridPanel
+    c.klass = Netzke::Basepack::Grid
     c.region = :south
     c.height = 200
     c.model = "Book"

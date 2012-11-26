@@ -1,4 +1,4 @@
-class UserGrid < Netzke::Basepack::GridPanel
+class UserGrid < Netzke::Basepack::Grid
   def configure(c)
     c.model = "User"
     c.title = "Users"

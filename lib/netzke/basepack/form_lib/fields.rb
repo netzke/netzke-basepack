@@ -1,11 +1,11 @@
 module Netzke
   module Basepack
-    class FormPanel < Netzke::Base
-      # Because FormPanel allows for arbitrary layout of fields, we need to have all fields configured in one place (the +fields+ method), and then have references to those fields from +items+.
+    module FormLib
+      # Because Form allows for arbitrary layout of fields, we need to have all fields configured in one place (the +fields+ method), and then have references to those fields from +items+.
       module Fields
         extend ActiveSupport::Concern
 
-        # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.FormPanel to render a field)
+        # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.Form to render a field)
         def items
           config.items || data_class && data_adapter.model_attributes || []
         end

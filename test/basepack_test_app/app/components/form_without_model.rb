@@ -1,4 +1,4 @@
-class FormWithoutModel < Netzke::Basepack::FormPanel
+class FormWithoutModel < Netzke::Basepack::Form
   def configure(c)
     c.items = [
       :text_field,

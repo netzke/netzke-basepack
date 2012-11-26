@@ -1,4 +1,4 @@
-class BookGridWithExcludedColumns < Netzke::Basepack::GridPanel
+class BookGridWithExcludedColumns < Netzke::Basepack::Grid
   model "Book"
 
   column :notes do |c|
