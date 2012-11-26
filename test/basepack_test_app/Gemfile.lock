@@ -1,5 +1,6 @@
-PATH
-  remote: vendor/gems
+GIT
+  remote: git://github.com/nomadcoder/netzke-core.git
+  revision: 6cc5dccf857a4d07ffd14fbe32a790dc109162f3
   specs:
     netzke-core (0.8.0)
       activesupport (>= 3.0.0)
