@@ -34,7 +34,7 @@ module Netzke
       js_configure do |c|
         c.extend = "Ext.container.Viewport"
         c.layout = :border
-        c.include Netzke::Core.ext_path.join("examples", "ux/statusbar/StatusBar.js"), :statusbar_ext
+        c.require Netzke::Core.ext_path.join("examples", "ux/statusbar/StatusBar.js"), :statusbar_ext
         c.mixin
       end
 

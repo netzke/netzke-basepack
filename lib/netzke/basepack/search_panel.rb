@@ -35,7 +35,7 @@ module Netzke
         c.extend = "Ext.form.FormPanel"
         c.padding = 5
         c.auto_scroll = true
-        c.include :condition_field
+        c.require :condition_field
         c.mixin
         c.attribute_operators_map = ATTRIBUTE_OPERATORS_MAP
       end

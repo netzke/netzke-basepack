@@ -222,8 +222,8 @@ module Netzke
         # JavaScript includes
         ex = Netzke::Core.ext_path.join("examples")
 
-        c.include ex.join("ux/CheckColumn.js")
-        c.include :check_column_fix
+        c.require ex.join("ux/CheckColumn.js")
+        c.require :check_column_fix
 
         # Includes for column filters
         if column_filters_available
@@ -231,16 +231,16 @@ module Netzke
             "ux/grid/menu/ListMenu.js",
             "ux/grid/menu/RangeMenu.js",
             "ux/grid/FiltersFeature.js"
-          ].each{ |path| c.include(ex.join(path)) }
+          ].each{ |path| c.require(ex.join(path)) }
 
           %w{Boolean Date List Numeric String}.unshift("").each do |f|
-            c.include(ex.join"ux/grid/filter/#{f}Filter.js")
+            c.require(ex.join"ux/grid/filter/#{f}Filter.js")
           end
         end
 
         # Includes for rows reordering
         if rows_reordering_available
-          c.include(ex.join("#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"))
+          c.require(ex.join("#{File.dirname(__FILE__)}/grid_panel/javascripts/rows-dd.js"))
         end
       end
 
