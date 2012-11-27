@@ -1,6 +1,4 @@
-require "netzke/basepack/grid_lib/columns"
-require "netzke/basepack/grid_lib/services"
-# require "netzke/basepack/plugins/configuration_tool"
+require "netzke/basepack/grid/services"
 
 module Netzke
   module Basepack
@@ -244,9 +242,8 @@ module Netzke
         end
       end
 
-      include GridLib::Services
-      include GridLib::Columns
-      include Netzke::Basepack::DataAccessor
+      include Columns
+      include DataAccessor
       include Netzke::Core::ConfigToDslDelegator
 
       # Allows children classes to simply do
@@ -358,7 +355,7 @@ module Netzke
     private
 
       def preconfigure_record_window(c)
-        c.klass = GridLib::RecordFormWindow
+        c.klass = RecordFormWindow
 
         c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
           f.model = config[:model]

@@ -24,13 +24,12 @@ en:
         confirmation: Confirmation
         are_you_sure: Are you sure?
 
-      grid_lib:
-        record_form_window:
-          actions:
-            ok:
-              text: OK
-            cancel:
-              text: Cancel
+      record_form_window:
+        actions:
+          ok:
+            text: OK
+          cancel:
+            text: Cancel
 
       search_window:
         title: Extended search
