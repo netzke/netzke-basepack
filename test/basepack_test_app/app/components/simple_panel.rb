@@ -9,11 +9,6 @@ class SimplePanel < Netzke::Base
         this.updateHtmlFromServer();
       }
     JS
-    c.update_body_html = <<-JS
-      function(){
-        this.body.update(html);
-      }
-    JS
   end
 
   def configure(c)
@@ -22,7 +17,6 @@ class SimplePanel < Netzke::Base
   end
 
   endpoint :update_html_from_server do |params, this|
-    this.update_body_html config[:update_text] || "HTML received from server"
+    this[:update] = [config[:update_text] || "HTML received from server"]
   end
-
 end

@@ -8,16 +8,16 @@ module Netzke
       def extend_item(item)
         item = super
 
+        c = components[item[:netzke_component]].try(:merge, item)
+
         # when a nested component with lazy loading is detected, it gets replaced with a 'fit' panel,
         # into which later the component itself is dynamically loaded on request.
-        merged_config = components[item[:netzke_component]].try(:merge, item)
-        if merged_config && !merged_config[:eager_loading]
-          {
-            layout: :fit,
-            wrapped_component: merged_config[:item_id],
-            title: merged_config[:title] || merged_config[:item_id].humanize,
-            icon_cls: merged_config[:icon_cls],
-            disabled: merged_config[:disabled]
+        if c && !c[:eager_loading]
+          { layout: :fit,
+            wrapped_component: c[:item_id],
+            title: c[:title] || c[:item_id].humanize,
+            icon_cls: c[:icon_cls],
+            disabled: c[:disabled]
           }
         else
           item

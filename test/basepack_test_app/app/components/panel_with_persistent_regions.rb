@@ -6,6 +6,7 @@ class PanelWithPersistentRegions < Netzke::Base
   end
 
   component :west do |c|
+    c.klass = Netzke::Core::Panel
     c.width = 100
     c.collapsible = true
     c.region = :west
@@ -13,6 +14,7 @@ class PanelWithPersistentRegions < Netzke::Base
   end
 
   component :south do |c|
+    c.klass = Netzke::Core::Panel
     c.height = 100
     c.collapsible = true
     c.region = :south
