@@ -1,6 +1,4 @@
-require "netzke/basepack/form_lib/fields"
-require "netzke/basepack/form_lib/services"
-# require "netzke/plugins/configuration_tool"
+require "netzke/basepack/form/services"
 
 module Netzke
   module Basepack
@@ -30,9 +28,8 @@ module Netzke
     # * +netzke_submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling onApply)
     # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
     class Form < Netzke::Base
-      include FormLib::Services
-      include FormLib::Fields
-      include Netzke::Basepack::DataAccessor
+      include Fields
+      include DataAccessor
       include Netzke::Core::ConfigToDslDelegator
 
       js_configure do |c|
