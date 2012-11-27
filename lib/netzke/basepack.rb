@@ -6,7 +6,7 @@ if defined? ActiveRecord
 end
 
 require 'netzke/basepack/data_adapters/abstract_adapter'
-require 'netzke/basepack/items_persistence'
+require 'netzke/basepack/item_persistence'
 
 module Netzke
   module Basepack

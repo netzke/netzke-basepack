@@ -11,7 +11,7 @@
   * Window now also stores its 'maximized' state
 
 * changes
-  * BorderLayoutPanel is removed. Any component can now enable its items persistence by including `Netzke::Basepack::ItemsPersistence` module
+  * BorderLayoutPanel is removed. Any component can now enable its items persistence by including `Netzke::Basepack::ItemPersistence` module
   * Methods like `netzke_attribute`, `netzke_expose_attributes` etc are gone. Define your columns/fields right on grids/forms.
   * Accordion and TabPanel now lazily load the Netzke components by default; set `eager_loading` to true for the components that should be loaded eagerly
 

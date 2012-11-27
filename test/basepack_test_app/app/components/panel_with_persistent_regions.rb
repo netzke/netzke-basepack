@@ -1,5 +1,5 @@
 class PanelWithPersistentRegions < Netzke::Base
-  include Netzke::Basepack::ItemsPersistence
+  include Netzke::Basepack::ItemPersistence
 
   js_configure do |c|
     c.layout = :border

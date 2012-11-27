@@ -16,7 +16,7 @@ Basepack includes the following components:
 * [Accordion](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/Accordion) - an accordion panel with support for lazy loading of nested components
 * [Window](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/Window) - a window which stores its size, position, and maximized state
 
-Besides, Basepack implements persistence of region sizes and collapsed states of an arbitrary component that uses [border layout](http://docs.sencha.com/ext-js/4-1/#!/api/Ext.layout.container.Border) (see [ItemsPersistence](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/ItemsPersistence)).
+Besides, Basepack implements persistence of region sizes and collapsed states of an arbitrary component that uses [border layout](http://docs.sencha.com/ext-js/4-1/#!/api/Ext.layout.container.Border) (see [ItemPersistence](http://rdoc.info/github/nomadcoder/netzke-basepack/Netzke/Basepack/ItemPersistence)).
 
 For more pre-built components refer to [Netzke Community-pack](https://github.com/nomadcoder/netzke-communitypack).
 

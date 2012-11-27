@@ -1,6 +1,6 @@
 module Netzke
   module Basepack
-    module ItemsPersistence
+    module ItemPersistence
       class EventsPlugin < Netzke::Plugin
         js_configure do |c|
           c.init = <<-JS
