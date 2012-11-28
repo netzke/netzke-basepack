@@ -14,7 +14,6 @@ module Netzke
     # * complex query search with preset management
     # * persistent column resizing, moving and hiding
     # * permissions
-    # * rows reordering by drag-n-drop, requires acts_as_list on the model
     # * virtual attribute support
     #
     # == Instance configuration
@@ -46,8 +45,6 @@ module Netzke
     #   (defaults to true) enable rows context menu
     # [:+context_menu+]
     #   An array of actions (e.g. [:edit, "-", :del] - see the Actions section) or +false+ to disable the context menu
-    # [:+enable_rows_reordering+]
-    #   (defaults to false) enable reordering of rows with drag-n-drop; underlying model (specified in +model+) must implement "acts_as_list"-compatible functionality
     # [:+enable_pagination+]
     #   (defaults to true) enable pagination
     # [:+rows_per_page+]
@@ -55,7 +52,7 @@ module Netzke
     # [:+load_inline_data+]
     #   (defaults to false) grid is being loaded along with its initial data; use with precaution, preferred method is auto-loading of data in a separate server request (see +data_store+)
     # [:+data_store+]
-    #   (defaults to {}) extra configuration for the JS class's internal store (see Ext.data.Store). For example, to disable auto loading of data, do:
+    #   (defaults to {}) extra configuration for the JS class's internal store (see {Ext.data.Store}[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Store] ). For example, to disable auto loading of data, do:
     #
     #     data_store: {auto_load: false}
     #
@@ -73,12 +70,12 @@ module Netzke
     # [:+getter+]
     #   A lambda that receives a record as a parameter, and is expected to return a string that will be sent to the cell (can be HTML code), e.g.:
     #
-    #     :getter => lambda {|r| [r.first_name, r.last_name].join }
+    #     getter: ->(r){ [r.first_name, r.last_name].join }
     #
     # [:+setter+]
     #   A lambda that receives a record as first parameter, and the value passed from the cell as the second parameter, and is expected to modify the record accordingly, e.g.:
     #
-    #     :setter => lambda { |r,v| r.first_name, r.last_name = v.split(" ") }
+    #     :setter => ->(r,v){ r.first_name, r.last_name = v.split(" ") }
     #
     # [:+scope+]
     #   The scope for one-to-many association column. Same syntax applies as for scoping out records for the grid itself. See "One-to-many association support" for details.
@@ -86,10 +83,10 @@ module Netzke
     # [:+sorting_scope+]
     #   The name of the scope used for sorting the column. This can be useful for virtual columns for example. The scope will get one parameter specifying the direction (:asc or :desc). Example:
     #
-    #     columns => [{ :name => "complete_user_name", :sorting_scope => :sort_user_by_full_name }, ...]
+    #     columns => [{ name: "complete_user_name", sorting_scope: :sort_user_by_full_name }, ...]
     #
     #     class User < ActiveRecord::Base
-    #       scope :sort_user_by_full_name, lambda { |dir|
+    #       scope :sort_user_by_full_name, ->(dir){
     #         order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}")
     #       }
     #     end
@@ -114,13 +111,13 @@ module Netzke
     # == One-to-many association support
     # If the model bound to a grid +belongs_to+ another model, Grid can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
     #
-    #     {:name => "author__first_name"}
+    #     {name: "author__first_name"}
     #
     # Grid will detect it to be an association column, and will use the drop-down box for selecting an author, where the list of authors will be represented by the author's first name.
     #
     # In order to scope out the records displayed in the drop-down box, the +scope+ column option can be used, e.g.:
     #
-    #     {:name => "author__first_name", :scope => lambda{|relation| relation.where(:popular => true)}}
+    #     {name: "author__first_name", scope: ->(relation){relation.where(:popular => true)}
     #
     # == Add/edit forms
     # The forms will by default display the fields that correspond to the configured columns, taking over meaningful configuration options (e.g. +text+ will be converted into +fieldLabel+).
@@ -133,7 +130,7 @@ module Netzke
     #
     #
     # == Actions
-    # You can override Grid's actions to change their text, icons, and tooltips (see http://api.netzke.org/core/Netzke/Actions.html).
+    # You can override Grid's actions to change their text, icons, and tooltips (see http://rdoc.info/github/nomadcoder/netzke-core/Netzke/Core/Actions).
     #
     # Grid implements the following actions:
     # [:+add+]
@@ -153,15 +150,15 @@ module Netzke
     #
     #
     #
-    # == Class configuration
+    # == Class-level configuration
     #
-    # Configuration on this level is effective during the life-time of the application. One place for setting these options are in application.rb, e.g.:
+    # Configuration on this level is effective during the life-time of the application. One place for setting these options is initializers:
     #
-    #     config.netzke.basepack.grid_panel.column_filters_available = false
-    #
-    # These can also be eventually set directly on the component's class:
-    #
-    #     Netzke::Basepack::Grid.column_filters_available = false
+    #    Netzke::Basepack::Grid.setup do |c|
+    #      c.edit_in_form_available = false
+    #      c.advanced_search_available = false
+    #      c.column_filters_available = false
+    #    end
     #
     # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the way that the less functionality is enabled, the less code is generated.
     #
@@ -170,49 +167,27 @@ module Netzke
     #   (defaults to true) include code for the filters in the column's context menu
     # [:+edit_in_form_available+]
     #   (defaults to true) include code for (multi-record) editing and adding records through a form
-    # [:+extended_search_available+]
+    # [:+advanced_search_available+]
     #   (defaults to true) include code for extended configurable search
     class Grid < Netzke::Base
+      include Columns
+      include DataAccessor
+      include Netzke::Core::ConfigToDslDelegator
 
-      class_attribute :columns_attr
-
-      class_attribute :overridden_columns_attr
-      self.overridden_columns_attr = {}
-
-      # Class-level configuration. These options directly influence the amount of generated
-      # javascript code for this component's class. For example, if you don't want filters for the grid,
-      # set column_filters_available to false, and the javascript for the filters won't be included at all.
       class_attribute :column_filters_available
       self.column_filters_available = true
 
-      class_attribute :extended_search_available
-      self.extended_search_available = true
+      class_attribute :advanced_search_available
+      self.advanced_search_available = true
 
       class_attribute :edit_in_form_available
       self.edit_in_form_available = true
-
-      class_attribute :rows_reordering_available
-      self.rows_reordering_available = false
-
-      class_attribute :config_tool_available
-      self.config_tool_available = false
-
-      class_attribute :default_instance_config
-      self.default_instance_config = {
-        :enable_edit_in_form    => edit_in_form_available,
-        :enable_extended_search => extended_search_available,
-        :enable_column_filters  => column_filters_available,
-        :enable_rows_reordering => false, # column drag n drop
-        :enable_pagination      => true,
-        :rows_per_page          => 30,
-        :tools                  => %w{ refresh }
-      }
 
       # JavaScript class configuration
       js_configure do |c|
         c.extend = "Ext.grid.Panel"
         c.mixin :grid, :event_handling
-        c.mixin :advanced_search if extended_search_available
+        c.mixin :advanced_search if advanced_search_available
         c.mixin :edit_in_form if edit_in_form_available
 
         c.translate *%w[are_you_sure confirmation]
@@ -235,21 +210,24 @@ module Netzke
             c.require(ex.join"ux/grid/filter/#{f}Filter.js")
           end
         end
-
-        # Includes for rows reordering
-        if rows_reordering_available
-          c.require(ex.join("#{File.dirname(__FILE__)}/grid.js"))
-        end
       end
 
-      include Columns
-      include DataAccessor
-      include Netzke::Core::ConfigToDslDelegator
-
-      # Allows children classes to simply do
+      # Allows children classes to simply do:
       #
       #     model "User"
       delegates_to_dsl :model
+
+      def configure(c)
+        # Defaults. The nil? checks are needed because these can be already set in a subclass
+        c.enable_edit_in_form = self.class.edit_in_form_available if c.enable_edit_in_form.nil?
+        c.enable_extended_search = self.class.advanced_search_available if c.enable_extended_search.nil?
+        c.enable_column_filters = self.class.column_filters_available if c.enable_column_filters.nil?
+        c.enable_pagination = true if c.enable_pagination.nil?
+        c.rows_per_page = 30 if c.rows_per_page.nil?
+        c.tools = %w{ refresh } if c.tools.nil?
+
+        super
+      end
 
       def js_configure(c) #:nodoc:
         super
@@ -265,6 +243,7 @@ module Netzke
 
       def config
         @config ||= ActiveSupport::OrderedOptions.new.tap do |c|
+          # extend with data_store convenient config object
           c.data_store = ActiveSupport::OrderedOptions.new
         end
       end
@@ -352,7 +331,7 @@ module Netzke
         c.fields = default_fields_for_forms
       end
 
-    private
+    protected
 
       def preconfigure_record_window(c)
         c.klass = RecordFormWindow
