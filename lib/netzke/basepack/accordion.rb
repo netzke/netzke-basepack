@@ -32,7 +32,7 @@ module Netzke
               item.on('expand', function(i){
                 if (i && i.wrappedComponent && !i.items.first() && !i.beingLoaded) {
                   i.beingLoaded = true; // prevent more than one request per panel in case of fast clicking
-                  this.netzkeLoadComponent({name: i.wrappedComponent, container: i.id}, function(){i.beingLoaded = false});
+                  this.netzkeLoadComponent(i.wrappedComponent, {container: i.id, callback: function(){i.beingLoaded = false}});
                 }
               }, this);
             }, this);

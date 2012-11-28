@@ -21,7 +21,7 @@ class WindowComponentLoader < Netzke::Base
   js_configure do |c|
     c.on_load_window = <<-JS
       function(params){
-        this.netzkeLoadComponent({name: "some_window", callback: function(w){
+        this.netzkeLoadComponent("some_window", {callback: function(w){
           w.show();
         }});
       }
