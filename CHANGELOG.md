@@ -1,5 +1,5 @@
 # 0.8.0 - WIP
-* Basepack component name change:
+* Basepack component renaming:
   * GridPanel -> Grid
   * FormPanel -> Form
   * AccordionPanel -> Accordion
@@ -12,12 +12,13 @@
 
 * changes
   * BorderLayoutPanel is removed. Any component can now enable its items persistence by including `Netzke::Basepack::ItemPersistence` module
-  * Methods like `netzke_attribute`, `netzke_expose_attributes` etc are gone. Define your columns/fields right on grids/forms.
-  * Accordion and TabPanel now lazily load the Netzke components by default; set `eager_loading` to true for the components that should be loaded eagerly
+  * Methods like `netzke_attribute`, `netzke_expose_attributes` etc are gone. Define your columns/fields directly in your grids/forms.
+  * Accordion and TabPanel now lazily load the Netzke components by default; set `eager_loading` to true for the components that should be loaded eagerly.
 
 ## Grid
 
 ### Customizing grid's forms
+
 The windows with a form inside, which is used for adding/(multi-)editing of records, are now referred as: `add_window`, `edit_window` (instead of `add_form` and `edit_form`). Both accept a config param `form_config`, which can be used to configure the contained Form - e.g., to change its layout or even class. For example, to change the layout of a form that is found in the edit window, do the following in your grid class:
 
     component :edit_window do |c|
@@ -38,6 +39,10 @@ Use the new `column` DSL method that accepts a block:
 If needed, this can be overridden in the subclass the same way as components and actions can be.
 
 DSL method `override_column` is gone.
+
+### Misc
+
+`Grid.extended_search_available` -> `Grid.advanced_search_available`
 
 # 0.7.6 - 2012-07-27
 * Fix netzke-core version dependency in gemspec
