@@ -10,7 +10,7 @@ group :test do
   gem 'factory_girl'
   gem 'selenium-webdriver'
   gem 'launchy'    # So you can do Then show me the page
-  gem 'capybara'
+  gem 'capybara', '~>1'
   gem 'cucumber-rails'
   gem 'cucumber'
   gem 'rspec-rails'
