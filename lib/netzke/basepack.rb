@@ -1,11 +1,12 @@
 require 'netzke/basepack/version'
 
+require 'netzke/basepack/data_adapters/abstract_adapter'
+
 if defined? ActiveRecord
   require 'netzke/basepack/active_record'
   require 'netzke/basepack/data_adapters/active_record_adapter'
 end
 
-require 'netzke/basepack/data_adapters/abstract_adapter'
 require 'netzke/basepack/item_persistence'
 
 module Netzke
