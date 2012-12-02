@@ -170,6 +170,7 @@ module Netzke
     # [:+advanced_search_available+]
     #   (defaults to true) include code for extended configurable search
     class Grid < Netzke::Base
+      include self::Services
       include Columns
       include DataAccessor
       include Netzke::Core::ConfigToDslDelegator

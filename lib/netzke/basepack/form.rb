@@ -28,6 +28,7 @@ module Netzke
     # * +netzke_submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling onApply)
     # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
     class Form < Netzke::Base
+      include self::Services
       include Fields
       include DataAccessor
       include Netzke::Core::ConfigToDslDelegator
