@@ -22,15 +22,12 @@ module Netzke
 
       def js_configure(c)
         super
-        c.x = state[:x].to_i if state[:x]
-        c.y = state[:y].to_i if state[:y]
-        c.width = state[:w].to_i if state[:w]
-        c.height = state[:h].to_i if state[:h]
+        [:x, :y, :width, :height].each { |p| c[p] = state[p].to_i if state[p] }
         c.maximized = state[:maximized] if state[:maximized]
       end
 
       endpoint :set_size_and_position do |params, this|
-        [:x, :y, :w, :h].each {|p| state[p] = params[p].to_i}
+        [:x, :y, :width, :height].each {|p| state[p] = params[p].to_i}
       end
 
       endpoint :set_maximized do |maximized,this|
