@@ -1,6 +1,5 @@
-GIT
-  remote: git://github.com/nomadcoder/netzke-core.git
-  revision: 19477096edb11257d4ce13588f4790ab6353255c
+PATH
+  remote: ~/code/netzke/netzke-core
   specs:
     netzke-core (0.8.0)
       activesupport (>= 3.0.0)

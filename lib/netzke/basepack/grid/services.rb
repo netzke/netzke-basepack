@@ -44,7 +44,7 @@ module Netzke
 
             current_columns_order = state[:columns_order] || initial_columns_order
             current_columns_order[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
-            update_state(:columns_order, current_columns_order)
+            state[:columns_order] = current_columns_order
           end
 
           endpoint :move_column do |params, this|
@@ -58,14 +58,14 @@ module Netzke
             column_to_move = current_columns_order.delete_at(remove_from)
             current_columns_order.insert(insert_to, column_to_move)
 
-            update_state(:columns_order, current_columns_order)
+            state[:columns_order] = current_columns_order
           end
 
           endpoint :hide_column do |params, this|
             raise "Called hide_column endpoint while not configured to do so" if !config[:persistence]
             current_columns_order = state[:columns_order] || initial_columns_order
             current_columns_order[normalize_index(params[:index].to_i)][:hidden] = params[:hidden]
-            update_state(:columns_order, current_columns_order)
+            state[:columns_order] = current_columns_order
           end
 
           # Returns options for a combobox

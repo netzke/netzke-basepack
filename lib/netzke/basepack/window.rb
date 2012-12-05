@@ -30,14 +30,11 @@ module Netzke
       end
 
       endpoint :set_size_and_position do |params, this|
-        update_state(:x, params[:x].to_i)
-        update_state(:y, params[:y].to_i)
-        update_state(:w, params[:w].to_i)
-        update_state(:h, params[:h].to_i)
+        [:x, :y, :w, :h].each {|p| state[p] = params[p].to_i}
       end
 
       endpoint :set_maximized do |maximized,this|
-        maximized ? update_state(:maximized, true) : state.delete(:maximized)
+        maximized ? state[:maximized] = true : state.delete(:maximized)
       end
     end
   end

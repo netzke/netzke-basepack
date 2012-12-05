@@ -212,7 +212,7 @@ module Netzke
 
       def columns_order
         if config[:persistence]
-          update_state(:columns_order, initial_columns_order) if columns_have_changed?
+          state[:columns_order] = initial_columns_order if columns_have_changed?
           state[:columns_order] || initial_columns_order
         else
           initial_columns_order
