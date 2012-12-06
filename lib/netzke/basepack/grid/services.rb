@@ -105,7 +105,7 @@ module Netzke
 
             if mod_records_count > 0
               on_data_changed
-              this.set_result("ok")
+              this.netzke_set_result("ok")
             end
 
             this.netzke_feedback(@flash)
