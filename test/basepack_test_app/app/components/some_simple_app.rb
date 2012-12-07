@@ -1,6 +1,6 @@
 class SomeSimpleApp < Netzke::Basepack::SimpleApp
   def menu
-    [:load_simple_accordion, :load_user_grid, :load_simple_tab_panel] + super
+    [:load_simple_accordion, :load_book_grid, :load_simple_tab_panel] + super
   end
 
   action :load_simple_accordion do |a|
@@ -10,11 +10,11 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
     a.text = "Some accordion"
   end
 
-  action :load_user_grid do |a|
+  action :load_book_grid do |a|
     a.icon = :table
     a.handler = :netzke_load_component_by_action
-    a.component = :user_grid
-    a.text = "User grid"
+    a.component = :book_grid
+    a.text = "Book grid"
   end
 
   action :load_simple_tab_panel do |a|
@@ -24,7 +24,7 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
     a.text = "Some tab panel"
   end
 
-  component :user_grid
+  component :book_grid
   component :some_accordion
   component :some_tab_panel
 
@@ -40,8 +40,6 @@ class SomeSimpleApp < Netzke::Basepack::SimpleApp
           Simple <span style="color:#B32D15">Netzke</span> app
         </div>
       },
-      # TODO: this has no effect anymore:
-      # :bodyStyle => {:background => "#AAA url(\"/images/header-deco.gif\") top left repeat-x"}
     },{
       :region => :center,
       :layout => 'border',

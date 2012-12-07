@@ -8,7 +8,7 @@ Scenario: SimpleApp should load its components dynamically
   Given I am on the SomeSimpleApp test page
   When I press "Some accordion"
   Then I should see "Some Accordion"
-  When I press "User grid"
-  Then I should see "Users"
+  When I press "Book grid"
+  Then I should see "Books"
   When I press "Some tab panel"
   Then I should see "Some Tab Panel"
