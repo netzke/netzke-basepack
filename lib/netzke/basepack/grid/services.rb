@@ -91,6 +91,7 @@ module Netzke
             super(params, this)
           end
 
+          # TODO: functionality of the following 2 endpoints could probably be improved by subclassing Basepack::Form as a dedicated form for adding/editing records in a grid.
           # Process the submit of multi-editing form ourselves
           endpoint :multi_edit_window__multi_edit_form__netzke_submit do |params, this|
             ids = ActiveSupport::JSON.decode(params.delete(:ids))
@@ -106,6 +107,7 @@ module Netzke
             if mod_records_count > 0
               on_data_changed
               this.netzke_set_result("ok")
+              this.on_submit_success
             end
 
             this.netzke_feedback(@flash)
