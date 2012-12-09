@@ -130,7 +130,7 @@ module Netzke
     #
     #
     # == Actions
-    # You can override Grid's actions to change their text, icons, and tooltips (see http://rdoc.info/github/nomadcoder/netzke-core/Netzke/Core/Actions).
+    # You can override Grid's actions to change their text, icons, and tooltips (see http://rdoc.info/github/netzke/netzke-core/Netzke/Core/Actions).
     #
     # Grid implements the following actions:
     # [:+add+]
