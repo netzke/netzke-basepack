@@ -2,9 +2,7 @@
 
 [RDocs](http://rdoc.info/github/netzke/netzke-basepack)
 
-**WARNING 2012-10-20: This README is reflecting the upcoming v0.8. For v0.7 see the [0-7 branch](https://github.com/netzke/netzke-core/tree/0-7).**
-
-A pack of pre-built [Netzke](http://netzke.org) components that can be used as building blocks for your application.
+A pack of pre-built [Netzke](http://netzke.org) components that can be used as building blocks for your webapps.
 
 ## Included components
 
@@ -65,7 +63,6 @@ Before being able run the test app and the tests themselves, you must link your 
 For cucumber tests (from `test/basepack_test_app`):
 
     $ cucumber features
-
 
 ## Using ORM other than ActiveRecord
 

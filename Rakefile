@@ -4,8 +4,8 @@ begin
   Jeweler::Tasks.new do |gemspec|
     gemspec.version = Netzke::Basepack::Version::STRING
     gemspec.name = "netzke-basepack"
-    gemspec.summary = "Pre-built Rails + ExtJS components for your RIA"
-    gemspec.description = "A set of full-featured extendible Netzke components (such as Form, Grid, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
+    gemspec.summary = "Pre-built Netzke components"
+    gemspec.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) which can be used as building block for your RIA"
     gemspec.email = "nmcoder@gmail.com"
     gemspec.homepage = "http://netzke.org"
     gemspec.add_dependency("netzke-core",   "~>0.8.0")

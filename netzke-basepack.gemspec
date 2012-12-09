@@ -10,7 +10,7 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["nomadcoder"]
   s.date = "2012-12-09"
-  s.description = "A set of full-featured extendible Netzke components (such as Form, Grid, Window, BorderLayoutPanel, etc) which can be used as building block for your RIA"
+  s.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
     "LICENSE",
@@ -260,7 +260,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://netzke.org"
   s.require_paths = ["lib"]
   s.rubygems_version = "1.8.24"
-  s.summary = "Pre-built Rails + ExtJS components for your RIA"
+  s.summary = "Pre-built Netzke components"
 
   if s.respond_to? :specification_version then
     s.specification_version = 3
