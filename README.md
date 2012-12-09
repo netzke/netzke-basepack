@@ -46,21 +46,32 @@ Embed a basepack component into a view as any other Netzke component, e.g.:
 
 For more examples, see http://netzke-demo.herokuapp.com ([source code](https://github.com/netzke/netzke-demo)), and look into `test/basepack_test_app`.
 
-## Testing and playing with Netzke Basepack
+## Running tests
 
-Netzke Basepack is bundled with Cucumber and RSpec tests. If you would like to contribute to the project, you may want to learn how to [run the tests](https://github.com/netzke/netzke-core/wiki/Automated-testing).
+The bundled `test/basepack_test_app` application used for automated testing can be easily run as a stand-alone Rails app. It's a good source of concise, focused examples. After starting the application, access any of the test components (located in `app/components`) by using the following url:
 
-Besides, the bundled test application is a convenient [playground](https://github.com/netzke/netzke-core/wiki/Playground) for those who search to experiment with the framework.
+    http://localhost:3000/components/{name of the component's class}
 
-After starting up the test app, you can see the list of functional test components on the index page (along with links to the source code):
+For example [http://localhost:3000/components/BookGrid](http://localhost:3000/components/BookGrid)
+
+Also, you can see the list of test components on the index page (along with links to the source code):
 
     http://localhost:3000/
+
+Before being able run the test app and the tests themselves, you must link your Ext JS library to `test/basepack_test_app/public`, e.g. (from the gems's root):
+
+    $ ln -s ~/code/sencha/ext-4.1.1 test/basepack_test_app/public/extjs
+
+For cucumber tests (from `test/basepack_test_app`):
+
+    $ cucumber features
+
 
 ## Using ORM other than ActiveRecord
 
 Using ActiveRecord as its default ORM, Basepack is designed to be extendable with data adapters for other ORMs. If you're thinking about implementing an adapter, `AbstractAdapter` and `ActiveRecordAdapter` classes can be used as a reference.
 
-There's some work being done in the direction of implementing [DataMapper](https://github.com/nomadcoder/netzke-basepack-dm) and [Sequel](https://github.com/nomadcoder/netzke-basepack-sequel) adapters.
+There's some work being done in the direction of implementing [DataMapper](https://github.com/nomadcoder/netzke-basepack-dm) and [Sequel](https://github.com/nomadcoder/netzke-basepack-sequel) adapters, but at this moment the code is broken.
 
 ## Icons support
 
