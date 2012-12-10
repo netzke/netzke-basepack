@@ -147,3 +147,11 @@ Then /^I should not see window$/ do
     return out;
   JS
 end
+
+Then /^active tab should have button "(.*?)"$/ do |text|
+  page.driver.browser.execute_script(<<-JS).should == true
+    var tp = Ext.ComponentQuery.query('tabpanel')[0],
+        at = tp.getActiveTab();
+    return !!at.down('button[text="#{text}"]');
+  JS
+end

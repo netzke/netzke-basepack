@@ -1,4 +1,8 @@
-# 0.8.0 - WIP
+# 0.8.1 - WIP
+* bug fix
+  * TabPanel now shows the active tab's nested component upon loading
+
+# 0.8.0 - 2012-12-09
 * Basepack component renaming:
   * GridPanel -> Grid
   * FormPanel -> Form

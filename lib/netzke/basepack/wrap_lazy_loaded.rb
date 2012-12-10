@@ -5,22 +5,23 @@ module Netzke
     # Used, for instance, in TabPanel and Accordion to dynamically load components on expanding a panel or clicking
     # a tab.
     module WrapLazyLoaded
-      def extend_item(item)
-        item = super
+      def js_configure(cfg)
+        super
+        cfg.items = cfg.items.each_with_index.map do |item,i|
+          c = components[item[:netzke_component]].try(:merge, item)
 
-        c = components[item[:netzke_component]].try(:merge, item)
-
-        # when a nested component with lazy loading is detected, it gets replaced with a 'fit' panel,
-        # into which later the component itself is dynamically loaded on request.
-        if c && !c[:eager_loading]
-          { layout: :fit,
-            wrapped_component: c[:item_id],
-            title: c[:title] || c[:item_id].humanize,
-            icon_cls: c[:icon_cls],
-            disabled: c[:disabled]
-          }
-        else
-          item
+          # when a nested component with lazy loading is detected, it gets replaced with a 'fit' panel,
+          # into which later the component itself is dynamically loaded on request.
+          if c && !c[:eager_loading] && i != config.active_tab
+            { layout: :fit,
+              wrapped_component: c[:item_id],
+              title: c[:title] || c[:item_id].humanize,
+              icon_cls: c[:icon_cls],
+              disabled: c[:disabled]
+            }
+          else
+            item
+          end
         end
       end
     end

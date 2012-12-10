@@ -5,8 +5,9 @@ Feature: Tab panel
 
 @javascript
 Scenario: Lazy loading of a component into a tab when the latter gets open
-  Given I am on the SomeTabPanel test page
+  When I go to the SomeTabPanel test page
+  Then active tab should have button "Update html"
   When I press "Panel Two"
-  Then I should see "Original HTML"
+  Then active tab should have button "Update html"
   When I press "Update html"
   Then I should see "Update for Panel Two"
