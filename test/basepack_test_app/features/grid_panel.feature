@@ -53,6 +53,17 @@ Scenario: Deleting a record
   Then a user should not exist with first_name: "Anton"
 
 @javascript
+Scenario: Try deleting an undeletable record
+  Given a user exists with first_name: "Admin", last_name: "Admin"
+  When I go to the UserGrid test page
+  And I select all rows in the grid
+  And I press "Delete"
+  Then I should see "Are you sure?"
+  When I press "Yes"
+  Then I should see "Can't delete Admin User"
+  Then a user should exist with first_name: "Admin"
+
+@javascript
 Scenario: Multi-editing records
   Given a user exists with first_name: "Carlos", last_name: "Castaneda"
   And a user exists with first_name: "Herman", last_name: "Hesse"
