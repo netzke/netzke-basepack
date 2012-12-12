@@ -32,9 +32,22 @@ module Netzke
           endpoint :delete_data do |params|
             if !config[:prohibit_delete]
               record_ids = ActiveSupport::JSON.decode(params[:records])
-              data_adapter.destroy(record_ids)
+              success = true
+              record_ids.each {|id|
+                record = data_adapter.find_record(id)
+                if !record.destroy
+                  success = false
+                  record.errors.to_a.each do |msg|
+                    flash :error => msg
+                  end
+                end
+              }
               on_data_changed
-              {:netzke_feedback => I18n.t('netzke.basepack.grid_panel.deleted_n_records', :n => record_ids.size), :load_store_data => get_data}
+              if success
+                {:netzke_feedback => I18n.t('netzke.basepack.grid_panel.deleted_n_records', :n => record_ids.size), :load_store_data => get_data}
+              else
+                {:netzke_feedback => @flash}
+              end
             else
               {:netzke_feedback => I18n.t('netzke.basepack.grid_panel.cannot_delete')}
             end
