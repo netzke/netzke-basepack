@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["nomadcoder"]
-  s.date = "2012-12-10"
+  s.date = "2012-12-13"
   s.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -189,7 +189,6 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/db/migrate/20110909071740_add_published_on_to_books.rb",
     "test/basepack_test_app/db/schema.rb",
     "test/basepack_test_app/db/seeds.rb",
-    "test/basepack_test_app/features/accordion_panel.feature",
     "test/basepack_test_app/features/form_panel.feature",
     "test/basepack_test_app/features/grid_panel.feature",
     "test/basepack_test_app/features/grid_panel_filters.feature",
