@@ -12,7 +12,7 @@ module Netzke
 
           # when a nested component with lazy loading is detected, it gets replaced with a 'fit' panel,
           # into which later the component itself is dynamically loaded on request.
-          if c && !c[:eager_loading] && i != config.active_tab
+          if c && !c[:eager_loading] && i != config.active_tab.to_i # so it works for both TabPanel and Accordion
             { layout: :fit,
               wrapped_component: c[:item_id],
               title: c[:title] || c[:item_id].humanize,

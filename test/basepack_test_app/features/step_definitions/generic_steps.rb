@@ -155,3 +155,14 @@ Then /^active tab should have button "(.*?)"$/ do |text|
     return !!at.down('button[text="#{text}"]');
   JS
 end
+
+Then /^expanded panel should have button "(.*?)"$/ do |text|
+  page.driver.browser.execute_script(<<-JS).should == true
+    for (var prop in Netzke.page) {
+      var panel = Netzke.page[prop];
+      break;
+    }
+    ap = panel.down("[collapsed=false]");
+    return !!ap.down('button[text="#{text}"]');
+  JS
+end

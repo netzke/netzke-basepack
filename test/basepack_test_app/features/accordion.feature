@@ -5,8 +5,10 @@ Feature: Accordion panel
 
 @javascript
 Scenario: Lazy loading of a component into a panel when the latter gets expanded
-  Given I am on the SomeAccordion test page
+  When I go to the SomeAccordion test page
+  Then expanded panel should have button "Update html"
   When I expand "Panel Two"
-  Then I should see "Original HTML"
+  And I sleep 1 second
+  Then expanded panel should have button "Update html"
   When I press "Update html"
   Then I should see "Update for Panel Two"

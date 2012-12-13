@@ -189,6 +189,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/db/migrate/20110909071740_add_published_on_to_books.rb",
     "test/basepack_test_app/db/schema.rb",
     "test/basepack_test_app/db/seeds.rb",
+    "test/basepack_test_app/features/accordion.feature",
     "test/basepack_test_app/features/form_panel.feature",
     "test/basepack_test_app/features/grid_panel.feature",
     "test/basepack_test_app/features/grid_panel_filters.feature",
