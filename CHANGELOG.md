@@ -3,6 +3,9 @@
   * TabPanel now shows the active tab's nested component upon loading
   * Accordion now shows the active pane's nested component upon loading
 
+* improvements
+  * Add support for validation errors on before_destroy (by firemind)
+
 # 0.8.0 - 2012-12-09
 * Basepack component renaming:
   * GridPanel -> Grid
