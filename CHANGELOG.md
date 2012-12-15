@@ -1,4 +1,4 @@
-# 0.8.1 - WIP
+# 0.8.1 - 2012-12-15
 * bug fix
   * TabPanel now shows the active tab's nested component upon loading
   * Accordion now shows the active pane's nested component upon loading
