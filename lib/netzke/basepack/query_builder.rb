@@ -19,32 +19,22 @@ module Netzke
       end
 
       action :clear_all do |a|
-        a.text = I18n.t('netzke.basepack.query_builder.actions.clear_all')
-        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.clear_all_tooltip')
         a.icon = :cross
       end
 
       action :reset do |a|
-        a.text = I18n.t('netzke.basepack.query_builder.actions.reset')
-        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.reset_tooltip')
         a.icon = :application_form
       end
 
       action :save_preset do |a|
-        a.text = I18n.t('netzke.basepack.query_builder.actions.save_preset')
-        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.save_preset_tooltip')
         a.icon = :disk
       end
 
       action :delete_preset do |a|
-        a.text = I18n.t('netzke.basepack.query_builder.actions.delete_preset')
-        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.delete_preset_tooltip')
         a.icon = :cross
       end
 
       action :apply do |a|
-        a.text = I18n.t('netzke.basepack.query_builder.actions.apply')
-        a.tooltip = I18n.t('netzke.basepack.query_builder.actions.apply_tooltip')
         a.icon = :accept
       end
 
