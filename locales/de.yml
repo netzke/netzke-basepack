@@ -1,15 +1,22 @@
 de:
   netzke:
     basepack:
-      grid_panel:
+      grid:
         actions:
-          add: Hinzufügen
-          edit: Bearbeiten
-          del: Löschen
-          apply: Anwenden
-          add_in_form: extern Hinzufügen
-          edit_in_form: extern Bearbeiten
-          search: Suche
+          add:
+            text: Hinzufügen
+          edit:
+            text: Bearbeiten
+          del:
+            text: Löschen
+          apply:
+            text: Anwenden
+          add_in_form:
+            text: extern Hinzufügen
+          edit_in_form:
+            text: extern Bearbeiten
+          search:
+            text: Suche
 
         deleted_n_records: "Deleted %{n} record(s)"
         cannot_delete: "Du hast keine Berechtigung die Daten zu löschen"
@@ -18,23 +25,30 @@ de:
 
         record_form_window:
           actions:
-            ok: OK
-            cancel: Abbrechen
+            ok:
+              text: OK
+            cancel:
+              text: Abbrechen
 
       search_window:
         title: erweiterte Suche
         actions:
-          search: Suche
-          cancel: Abbrechen
+          search:
+            text: Suche
+          cancel:
+            text: Abbrechen
 
-      form_panel:
+      form:
         actions:
-          edit: Bearbeiten
-          edit_tooltip: Bearbeiten
-          cancel: Abbrechen
-          cancel_tooltip: Bearbeiten abbrechen
-          apply: Anwenden
-          apply_tooltip: Änderungen speichern
+          edit:
+            text: Bearbeiten
+            tooltip: Bearbeiten
+          cancel:
+            text: Abbrechen
+            tooltip: Bearbeiten abbrechen
+          apply:
+            text: Anwenden
+            tooltip: Änderungen speichern
 
       search_panel:
         presets: Vorlagen
@@ -47,10 +61,11 @@ de:
         before: vorher
         after: nachher
 
-      paging_form_panel:
+      paging_form:
         actions:
-          search: Suche
-          search_tooltip: Erweiterte Suche
+          search:
+            text: Suche
+            tooltip: Erweiterte Suche
 
       query_builder:
         presets: Vorlagen
@@ -61,16 +76,21 @@ de:
         delete_confirm: "Soll die Vorlage wirklich gelöscht werden '{0}'?"
         delete_confirm_title: "Lösche Vorlage"
         actions:
-          clear_all: leeren
-          clear_all_tooltip: Leere alle Bedingungen
-          reset: Reset
-          reset_tooltip: Setze alle Bedingungs-Werte zurück
-          save_preset: Speicher Vorlage
-          save_preset_tooltip: Speichere Vorlage
-          delete_preset: Lösche Vorlage
-          delete_preset_tooltip: Lösche Vorlage
-          apply: Anwenden
-          apply_tooltip: Wende neue Bedinungen an
+          clear_all:
+            text: leeren
+            tooltip: Leere alle Bedingungen
+          reset:
+            text: Reset
+            tooltip: Setze alle Bedingungs-Werte zurück
+          save_preset:
+            text: Speicher Vorlage
+            tooltip: Speichere Vorlage
+          delete_preset:
+            text: Lösche Vorlage
+            tooltip: Lösche Vorlage
+          apply:
+            text: Anwenden
+            tooltip: Wende neue Bedinungen an
 
 
     formats:
