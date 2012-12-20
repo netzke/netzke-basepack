@@ -384,7 +384,7 @@ module Netzke::Basepack::DataAdapters
         when "date"
           # convert value to the DB date
           value.match /(\d\d)\/(\d\d)\/(\d\d\d\d)/
-            res = res.where("#{field} #{op} ?", "#{$3}-#{$1}-#{$2}")
+          res = res.where("#{field} #{op} ?", "#{$3}-#{$1}-#{$2}")
         when "numeric"
           res = res.where(["#{field} #{op} ?", value])
         else
