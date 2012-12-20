@@ -53,6 +53,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def get_records(params, columns=[])
+      @cls = columns
       # build initial relation based on passed params
       relation = get_relation(params)
 
@@ -355,7 +356,9 @@ module Netzke::Basepack::DataAdapters
         assoc, method = v["field"].split('__')
         if method
           assoc = @model_class.reflect_on_association(assoc.to_sym)
-          field = [assoc.klass.table_name, method].join('.').to_sym
+          if assoc.klass.column_names.include? method
+            field = [assoc.klass.table_name, method].join('.').to_sym
+          end
         else
           field = assoc.to_sym
         end
@@ -364,13 +367,24 @@ module Netzke::Basepack::DataAdapters
 
         op = operator_map[v['comparison']]
 
+        col_filter = @cls.inject(nil) { |fil, col|
+          if col.is_a?(Hash) && col[:lfilter] && col[:name].to_sym == v['field'].to_sym
+            fil = col[:lfilter]
+          end
+          fil
+        }
+        if col_filter
+          res = col_filter.call(res, value, op)
+          col_filter = nil
+          next
+        end
         case v["type"]
         when "string"
           res = res.where(["#{field} like ?", "%#{value}%"])
         when "date"
           # convert value to the DB date
           value.match /(\d\d)\/(\d\d)\/(\d\d\d\d)/
-          res = res.where("#{field} #{op} ?", "#{$3}-#{$1}-#{$2}")
+            res = res.where("#{field} #{op} ?", "#{$3}-#{$1}-#{$2}")
         when "numeric"
           res = res.where(["#{field} #{op} ?", value])
         else
@@ -380,6 +394,7 @@ module Netzke::Basepack::DataAdapters
 
       res
     end
+
     protected :apply_column_filters
 
     def predicates_for_and_conditions(conditions)
