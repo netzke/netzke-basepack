@@ -86,9 +86,9 @@ module Netzke
           end
 
           # date field format
-          if field[:attr_type] = :date
+          if field[:attr_type] == :date
             field[:submit_format] = "Y-m-d"
-            field[:format] ||= "Y-m-d"
+            field[:format] ||= I18n.t("date", scope: 'netzke.formats', default: "Y-m-d")
           end
         end
 
