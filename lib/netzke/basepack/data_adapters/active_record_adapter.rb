@@ -368,8 +368,8 @@ module Netzke::Basepack::DataAdapters
         op = operator_map[v['comparison']]
 
         col_filter = @cls.inject(nil) { |fil, col|
-          if col.is_a?(Hash) && col[:lfilter] && col[:name].to_sym == v['field'].to_sym
-            fil = col[:lfilter]
+          if col.is_a?(Hash) && col[:filter_with] && col[:name].to_sym == v['field'].to_sym
+            fil = col[:filter_with]
           end
           fil
         }
