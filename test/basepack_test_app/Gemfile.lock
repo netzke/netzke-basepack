@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/netzke/netzke-core.git
+  revision: b130e21dc294a42f63d84101ea204e1e8800e6ee
+  specs:
+    netzke-core (0.8.1)
+      activesupport (>= 3.1.0)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -73,8 +80,6 @@ GEM
     mime-types (1.19)
     multi_json (1.5.0)
     mysql2 (0.3.11)
-    netzke-core (0.8.1)
-      activesupport (>= 3.1.0)
     nokogiri (1.5.5)
     pickle (0.4.11)
       cucumber (>= 0.8)
@@ -149,7 +154,7 @@ DEPENDENCIES
   factory_girl
   launchy
   mysql2
-  netzke-core (~> 0.8.0)
+  netzke-core!
   pickle
   rails (~> 3.2.0)
   rspec-rails
