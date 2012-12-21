@@ -71,3 +71,19 @@ Scenario: Boolean filter
   When I clear all filters in the grid
   And I enable filter on column "digitized" with value "true"
   Then the grid should show 2 records
+
+@javascript
+Scenario: Virtual Column Filter
+  When I go to the GridWithLfilter test page
+  # Just to initialize the filters. No assertion.
+  And I enable filter on column "first_name" with value "'Vladimir'"
+
+  When I clear all filters in the grid
+  And I enable filter on column "name" with value "'lle'"
+  Then the grid should show 1 records
+
+  When I clear all filters in the grid
+  And I enable filter on column "name" with value "'Carl'"
+  Then the grid should show 1 records
+
+

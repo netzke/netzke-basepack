@@ -168,9 +168,8 @@ module Netzke
       end
 
       def set_default_filterable(c)
-        c[:filterable] = !c[:virtual] if c[:filterable].nil?
+        c[:filterable] = !c[:virtual] || c[:filter_with] if c[:filterable].nil?
       end
-
 
       # Detects an association column and sets up the proper editor.
       def set_default_association_editor(c)
