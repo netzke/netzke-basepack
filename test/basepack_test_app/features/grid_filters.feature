@@ -74,7 +74,7 @@ Scenario: Boolean filter
 
 @javascript
 Scenario: Virtual Column Filter
-  When I go to the GridWithLfilter test page
+  When I go to the GridWithCustomFilter test page
   # Just to initialize the filters. No assertion.
   And I enable filter on column "first_name" with value "'Vladimir'"
 
@@ -85,5 +85,3 @@ Scenario: Virtual Column Filter
   When I clear all filters in the grid
   And I enable filter on column "name" with value "'Carl'"
   Then the grid should show 1 records
-
-
