@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["nomadcoder"]
-  s.date = "2012-12-15"
+  s.date = "2012-12-21"
   s.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -83,7 +83,6 @@ Gem::Specification.new do |s|
     "stylesheets/basepack.css",
     "stylesheets/datetimefield.css",
     "test/basepack_test_app/.gitignore",
-    "test/basepack_test_app/.rvmrc",
     "test/basepack_test_app/Gemfile",
     "test/basepack_test_app/Gemfile.lock",
     "test/basepack_test_app/Guardfile",
@@ -121,6 +120,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/components/double_book_grid.rb",
     "test/basepack_test_app/app/components/extras/book_presentation.rb",
     "test/basepack_test_app/app/components/form_without_model.rb",
+    "test/basepack_test_app/app/components/grid_with_custom_filter.rb",
     "test/basepack_test_app/app/components/grid_with_initial_sorting.rb",
     "test/basepack_test_app/app/components/grid_with_inline_data.rb",
     "test/basepack_test_app/app/components/lockable_book_form.rb",
@@ -191,8 +191,8 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/db/seeds.rb",
     "test/basepack_test_app/features/accordion.feature",
     "test/basepack_test_app/features/form_panel.feature",
+    "test/basepack_test_app/features/grid_filters.feature",
     "test/basepack_test_app/features/grid_panel.feature",
-    "test/basepack_test_app/features/grid_panel_filters.feature",
     "test/basepack_test_app/features/grid_panel_with_custom_primary_key.feature",
     "test/basepack_test_app/features/grid_sorting.feature",
     "test/basepack_test_app/features/i18n.feature",
@@ -259,7 +259,7 @@ Gem::Specification.new do |s|
   ]
   s.homepage = "http://netzke.org"
   s.require_paths = ["lib"]
-  s.rubygems_version = "1.8.24"
+  s.rubygems_version = "1.8.23"
   s.summary = "Pre-built Netzke components"
 
   if s.respond_to? :specification_version then

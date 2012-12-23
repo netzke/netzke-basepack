@@ -1,10 +1,14 @@
+# 0.8.2 - WIP
+* improvements
+  * Add grid column config option `filter_with` - by @firemind
+
 # 0.8.1 - 2012-12-15
 * bug fix
   * TabPanel now shows the active tab's nested component upon loading
   * Accordion now shows the active pane's nested component upon loading
 
 * improvements
-  * Add support for validation errors on before_destroy (by firemind)
+  * Add support for validation errors on `before_destroy` (by firemind)
 
 # 0.8.0 - 2012-12-09
 * Basepack component renaming:

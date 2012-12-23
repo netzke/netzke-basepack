@@ -91,6 +91,11 @@ module Netzke
     #       }
     #     end
     #
+    # [:+filter_with+]
+    #   A lambda that receives the relation, the value to filter by and the operator. This allows for more flexible handling of basic filters and enables filtering of virtual columns. Example:
+    #
+    #     columns => [{ name: "complete_user_name", filter_with: lambda{|rel, value, op| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) } }, ...]
+    #
     # [:+format+]
     #   The format to display data in case of date and datetime columns, e.g. 'Y-m-d g:i:s'.
     # [:+excluded+]
