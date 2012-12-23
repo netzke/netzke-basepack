@@ -77,7 +77,7 @@ module Netzke
       end
 
       def configure_bbar(c)
-        c[:bbar] = [:apply] if c[:bbar].nil? && !c[:read_only]
+        c[:bbar] = ["->", :apply] if c[:bbar].nil? && !c[:read_only]
       end
 
 
