@@ -88,7 +88,7 @@ module Netzke
 
       # A hash of record data including the meta field
       def js_record_data
-        data_adapter.record_to_hash(record, fields.values).merge(:meta => meta_field).literalize_keys
+        data_adapter.record_to_hash(record, fields.values).merge(:meta => meta_field).netzke_literalize_keys
       end
 
       def record
@@ -116,7 +116,7 @@ module Netzke
       def meta_field
         {}.tap do |res|
           assoc_values = get_association_values
-          res[:association_values] = assoc_values.literalize_keys if record && !assoc_values.empty?
+          res[:association_values] = assoc_values.netzke_literalize_keys if record && !assoc_values.empty?
         end
       end
 

@@ -89,12 +89,12 @@ module Netzke
 
       # default_value for the meta column; used when a new record is being created in the grid
       def meta_default_data
-        default_association_values(final_columns_hash).present? ? { :association_values => default_association_values(final_columns_hash).literalize_keys } : {}
+        default_association_values(final_columns_hash).present? ? { :association_values => default_association_values(final_columns_hash).netzke_literalize_keys } : {}
       end
 
       # Override it when you need extra meta data to be passed through the meta column
       def meta_data(r)
-        { :association_values => data_adapter.assoc_values(r, final_columns_hash).literalize_keys }
+        { :association_values => data_adapter.assoc_values(r, final_columns_hash).netzke_literalize_keys }
       end
 
     private
