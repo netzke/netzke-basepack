@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["nomadcoder"]
-  s.date = "2012-12-29"
+  s.date = "2013-01-02"
   s.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -35,6 +35,7 @@ Gem::Specification.new do |s|
     "lib/netzke/basepack/accordion.rb",
     "lib/netzke/basepack/active_record.rb",
     "lib/netzke/basepack/active_record/relation_extensions.rb",
+    "lib/netzke/basepack/column_config.rb",
     "lib/netzke/basepack/columns.rb",
     "lib/netzke/basepack/data_accessor.rb",
     "lib/netzke/basepack/data_adapters/abstract_adapter.rb",
@@ -83,6 +84,7 @@ Gem::Specification.new do |s|
     "stylesheets/basepack.css",
     "stylesheets/datetimefield.css",
     "test/basepack_test_app/.gitignore",
+    "test/basepack_test_app/.rspec",
     "test/basepack_test_app/Gemfile",
     "test/basepack_test_app/Gemfile.lock",
     "test/basepack_test_app/Guardfile",
@@ -191,10 +193,10 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/db/seeds.rb",
     "test/basepack_test_app/features/accordion.feature",
     "test/basepack_test_app/features/form_panel.feature",
+    "test/basepack_test_app/features/grid.feature",
     "test/basepack_test_app/features/grid_filters.feature",
-    "test/basepack_test_app/features/grid_panel.feature",
-    "test/basepack_test_app/features/grid_panel_with_custom_primary_key.feature",
     "test/basepack_test_app/features/grid_sorting.feature",
+    "test/basepack_test_app/features/grid_with_custom_primary_key.feature",
     "test/basepack_test_app/features/i18n.feature",
     "test/basepack_test_app/features/nested_attributes.feature",
     "test/basepack_test_app/features/paging_form_panel.feature",
@@ -234,6 +236,8 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/public/stylesheets/.gitkeep",
     "test/basepack_test_app/script/cucumber",
     "test/basepack_test_app/script/rails",
+    "test/basepack_test_app/spec/column_config_spec.rb",
+    "test/basepack_test_app/spec/spec_helper.rb",
     "test/basepack_test_app/test/performance/browsing_test.rb",
     "test/basepack_test_app/test/test_helper.rb",
     "test/basepack_test_app/tmp/restart.txt",

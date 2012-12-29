@@ -28,20 +28,29 @@ module Netzke
       #   * :with_excluded - when true, include the columns that are marked as excluded
       #   * :with_meta - when true, include the meta column
       def final_columns(options = {})
+        # memoize
         @_final_columns ||= {}
         @_final_columns[options] ||= [].tap do |cols|
-          initial_columns(true).each do |c|
-            name = c.name
+          has_primary_column = false
+
+          columns.each do |c|
+            c = ColumnConfig.new(c, data_adapter)
 
             # merge with column declaration
-            send(:"#{name}_column", c) if respond_to?(:"#{name}_column")
+            send(:"#{c.name}_column", c) if respond_to?(:"#{c.name}_column")
 
-            # set the defaults as lowest priority
-            augment_column_config(c)
+            # detect primary key column
+            has_primary_column ||= c.primary?
 
-            cols << c if options[:with_excluded] || !c.excluded
+            if !c.excluded || options[:with_excluded]
+              # set the defaults as lowest priority
+              augment_column_config(c)
+
+              cols << c if options[:with_excluded] || !c.excluded
+            end
           end
 
+          insert_primary_column(cols) if !has_primary_column
           append_meta_column(cols) if options[:with_meta]
         end
       end
@@ -49,29 +58,6 @@ module Netzke
       # Columns as a hash, for easier access to a specific column
       def final_columns_hash
         @_final_columns_hash ||= final_columns.inject({}){|r,c| r.merge(c[:name].to_sym => c)}
-      end
-
-      # Columns from config.columns or the `columns` method, after normalization
-      def initial_columns(with_excluded = false)
-        @_initial_columns ||= {}
-        @_initial_columns[with_excluded] ||= [].tap do |cols|
-          has_primary_column = false
-
-          columns.each do |c|
-            # normalize:
-            # * :title => {name: 'title'}
-            # * {name: :some_column} => {name: 'some_column'}
-            c = ActiveSupport::OrderedOptions.new.replace(c.is_a?(Symbol) ? {name: c.to_s} : c.merge(name: c[:name].to_s))
-
-            cols << c if with_excluded || !c.excluded
-
-            # detect primary key column
-            has_primary_column ||= c.name == data_adapter.primary_key_name
-          end
-
-          # automatically add a column that reflects the primary key
-          cols.insert(0, ActiveSupport::OrderedOptions.new.replace(:name => data_adapter.primary_key_name)) unless has_primary_column
-        end
       end
 
       def append_meta_column(cols)
@@ -85,6 +71,12 @@ module Netzke
           )
           c[:default_value] = meta_default_data if meta_default_data.present?
         end
+      end
+
+      def insert_primary_column(cols)
+        c = ColumnConfig.new(data_adapter.primary_key_name, data_adapter)
+        augment_column_config(c)
+        cols.insert(0, c)
       end
 
       # default_value for the meta column; used when a new record is being created in the grid

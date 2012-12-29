@@ -1,4 +1,5 @@
 require "netzke/basepack/grid/services"
+require 'netzke/basepack/column_config'
 
 module Netzke
   module Basepack
