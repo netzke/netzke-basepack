@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["nomadcoder"]
-  s.date = "2013-01-02"
+  s.date = "2013-01-05"
   s.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -152,7 +152,11 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/app/models/author.rb",
     "test/basepack_test_app/app/models/book.rb",
     "test/basepack_test_app/app/models/book_with_custom_primary_key.rb",
+    "test/basepack_test_app/app/models/developer.rb",
+    "test/basepack_test_app/app/models/issue.rb",
+    "test/basepack_test_app/app/models/project.rb",
     "test/basepack_test_app/app/models/role.rb",
+    "test/basepack_test_app/app/models/status.rb",
     "test/basepack_test_app/app/models/user.rb",
     "test/basepack_test_app/app/views/layouts/application.html.erb",
     "test/basepack_test_app/app/views/layouts/components.html.erb",
@@ -189,6 +193,10 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/db/migrate/20110701070052_create_book_with_custom_primary_keys.rb",
     "test/basepack_test_app/db/migrate/20110901114016_add_last_read_at_to_books.rb",
     "test/basepack_test_app/db/migrate/20110909071740_add_published_on_to_books.rb",
+    "test/basepack_test_app/db/migrate/20130105145110_create_issues.rb",
+    "test/basepack_test_app/db/migrate/20130105145156_create_projects.rb",
+    "test/basepack_test_app/db/migrate/20130105145231_create_developers.rb",
+    "test/basepack_test_app/db/migrate/20130105145239_create_statuses.rb",
     "test/basepack_test_app/db/schema.rb",
     "test/basepack_test_app/db/seeds.rb",
     "test/basepack_test_app/features/accordion.feature",
@@ -236,6 +244,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/public/stylesheets/.gitkeep",
     "test/basepack_test_app/script/cucumber",
     "test/basepack_test_app/script/rails",
+    "test/basepack_test_app/spec/active_record_adapter_spec.rb",
     "test/basepack_test_app/spec/column_config_spec.rb",
     "test/basepack_test_app/spec/spec_helper.rb",
     "test/basepack_test_app/test/performance/browsing_test.rb",

@@ -1,6 +1,9 @@
 # 0.8.2 - WIP
 * improvements
-  * Add grid column config option `filter_with` - by @firemind
+  * Add grid column config option `filter_with` (by firemind)
+
+* bug fix
+  * Fix one-to-many association method falling back to 'id'
 
 # 0.8.1 - 2012-12-15
 * bug fix
