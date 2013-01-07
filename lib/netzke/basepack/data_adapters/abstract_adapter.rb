@@ -182,7 +182,7 @@ module Netzke::Basepack::DataAdapters
     #
     #     {author__first_name: "Michael"}
     def assoc_values(r, attr_hash) #:nodoc:
-      @_assoc_values ||= {}.tap do |values|
+      {}.tap do |values|
         attr_hash.each_pair do |name,c|
           values[name] = record_value_for_attribute(r, c, true) if association_attr?(c)
         end

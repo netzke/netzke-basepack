@@ -134,3 +134,16 @@ When /^I press button with text "(.*?)"$/ do |text|
     return button.id;
   JS
 end
+
+Then /^I should not see window$/ do
+  page.driver.browser.execute_script(<<-JS).should == true
+    var out = true;
+    Ext.each(Ext.ComponentQuery.query('window'), function(w){
+      if (w.isVisible()) {
+        out = false;
+        return false;
+      }
+    });
+    return out;
+  JS
+end

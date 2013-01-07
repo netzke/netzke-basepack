@@ -68,6 +68,7 @@ Scenario: Multi-editing records
   | first_name | last_name |
   | Maxim | Castaneda |
   | Maxim | Hesse |
+  And I should not see window
   But a user should not exist with first_name: "Carlos"
 
 @javascript
