@@ -20,3 +20,6 @@ group :test do
   gem 'pickle'
   gem 'database_cleaner'
 end
+
+gem 'jeweler'
+gem 'yard'

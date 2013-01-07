@@ -16,6 +16,11 @@ rescue LoadError
   puts "Jeweler (or a dependency) not available. Install it with: gem install jeweler"
 end
 
+# Load tasks, that will be available for Rails user
+Dir[File.join(File.dirname(__FILE__), './lib/tasks/*.rake')].each { |file| load file }
+# Load tasks for gem development
+Dir[File.join(File.dirname(__FILE__), 'tasks/*.rake')].each { |file| load file }
+
 require 'rake/testtask'
 Rake::TestTask.new(:test) do |test|
   test.libs << 'lib' << 'test'
