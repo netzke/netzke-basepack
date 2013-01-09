@@ -10,14 +10,14 @@ module Netzke::Basepack::DataAdapters
     end
 
     def model_attributes
-      @model_class.column_names.map do |column_name|
+      attribute_names.map do |column_name|
         {name: column_name, attr_type: @model_class.columns_hash[column_name].type}.tap do |c|
 
           # If it's named as foreign key of some association, then it's an association column
           assoc = @model_class.reflect_on_all_associations.detect { |a| a.foreign_key == c[:name] }
 
           if assoc && !assoc.options[:polymorphic]
-            candidates = %w{name title label} << assoc.foreign_key
+            candidates = %w{name title label} << assoc.klass.primary_key
             assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
             c[:name] = "#{assoc.name}__#{assoc_method}"
           end
@@ -30,7 +30,6 @@ module Netzke::Basepack::DataAdapters
       end
     end
 
-    # WIP
     def attribute_names
       @model_class.column_names
     end
@@ -74,7 +73,7 @@ module Netzke::Basepack::DataAdapters
           relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
         else
           relation = if method.nil?
-            relation.order("#{assoc} #{dir}")
+            relation.order("#{@model_class.table_name}.#{assoc} #{dir}")
           else
             assoc = @model_class.reflect_on_association(assoc.to_sym)
             relation.joins(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110909071740) do
+ActiveRecord::Schema.define(:version => 20130105145239) do
 
   create_table "addresses", :force => true do |t|
     t.integer  "user_id"
@@ -51,6 +51,20 @@ ActiveRecord::Schema.define(:version => 20110909071740) do
     t.date     "published_on"
   end
 
+  create_table "developers", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "issues", :force => true do |t|
+    t.string   "title"
+    t.integer  "developer_id"
+    t.integer  "project_id"
+    t.integer  "status_id"
+    t.datetime "created_at",   :null => false
+    t.datetime "updated_at",   :null => false
+  end
+
   create_table "netzke_component_states", :force => true do |t|
     t.string   "component"
     t.integer  "user_id"
@@ -64,8 +78,19 @@ ActiveRecord::Schema.define(:version => 20110909071740) do
   add_index "netzke_component_states", ["role_id"], :name => "index_netzke_component_states_on_role_id"
   add_index "netzke_component_states", ["user_id"], :name => "index_netzke_component_states_on_user_id"
 
+  create_table "projects", :force => true do |t|
+    t.string   "title"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "roles", :force => true do |t|
     t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "statuses", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
   end
