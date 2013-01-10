@@ -1,8 +1,6 @@
 source 'http://rubygems.org'
 
-# we are getting AR still regardless of ORM env, because netzke-persistence needs it
 gem 'rails', '~>3.2.0'
-gem 'mysql2'
 
 gem 'netzke-core', github: 'netzke/netzke-core'
 
@@ -19,4 +17,8 @@ group :test do
   # gem 'sqlite3-ruby', :require => 'sqlite3'
   gem 'pickle'
   gem 'database_cleaner'
+end
+
+group :test, :development do
+  gem 'sqlite3'
 end

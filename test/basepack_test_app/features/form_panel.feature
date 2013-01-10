@@ -139,4 +139,4 @@ Scenario: Editing and immediately submitting the form
     Then I fill in Ext field "Last read at" with "2005-01-23 11:12:13"
     And I press "Apply"
     And I wait for response from server
-    Then a book should exist with last_read_at: "2005-01-23 11:12:13"
+    Then a book should exist with last_read_at: "2005-01-23 11:12:13.000000"

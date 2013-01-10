@@ -9,7 +9,7 @@ Gem::Specification.new do |s|
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["nomadcoder"]
-  s.date = "2013-01-05"
+  s.date = "2013-01-10"
   s.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) which can be used as building block for your RIA"
   s.email = "nmcoder@gmail.com"
   s.extra_rdoc_files = [
@@ -83,7 +83,6 @@ Gem::Specification.new do |s|
     "netzke-basepack.gemspec",
     "stylesheets/basepack.css",
     "stylesheets/datetimefield.css",
-    "test/basepack_test_app/.gitignore",
     "test/basepack_test_app/.rspec",
     "test/basepack_test_app/Gemfile",
     "test/basepack_test_app/Gemfile.lock",
@@ -166,6 +165,7 @@ Gem::Specification.new do |s|
     "test/basepack_test_app/config/application.rb",
     "test/basepack_test_app/config/boot.rb",
     "test/basepack_test_app/config/cucumber.yml",
+    "test/basepack_test_app/config/database.yml",
     "test/basepack_test_app/config/database.yml.sample",
     "test/basepack_test_app/config/database.yml.travis",
     "test/basepack_test_app/config/environment.rb",

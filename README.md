@@ -46,6 +46,10 @@ For more examples, see http://netzke-demo.herokuapp.com ([source code](https://g
 
 ## Running tests
 
+Before being able run the test app and the tests themselves, you must link your Ext JS library to `test/basepack_test_app/public`, e.g. (from the gems's root):
+
+    $ ln -s PATH/TO/YOUR/EXTJS/FILES test/basepack_test_app/public/extjs
+
 The bundled `test/basepack_test_app` application used for automated testing can be easily run as a stand-alone Rails app. It's a good source of concise, focused examples. After starting the application, access any of the test components (located in `app/components`) by using the following url:
 
     http://localhost:3000/components/{name of the component's class}
@@ -56,13 +60,13 @@ Also, you can see the list of test components on the index page (along with link
 
     http://localhost:3000/
 
-Before being able run the test app and the tests themselves, you must link your Ext JS library to `test/basepack_test_app/public`, e.g. (from the gems's root):
-
-    $ ln -s ~/code/sencha/ext-4.1.1 test/basepack_test_app/public/extjs
-
 For cucumber tests (from `test/basepack_test_app`):
 
     $ cucumber features
+
+For specs (from `test/basepack_test_app`):
+
+    $ rspec spec
 
 ## Using ORM other than ActiveRecord
 
