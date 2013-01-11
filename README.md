@@ -1,4 +1,4 @@
-# Netzke Basepack [![Build Status](https://secure.travis-ci.org/nomadcoder/netzke-basepack.png?branch=master)](http://travis-ci.org/nomadcoder/netzke-basepack) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/netzke/netzke-basepack)
+# Netzke Basepack [![Build Status](https://secure.travis-ci.org/netzke/netzke-basepack.png?branch=master)](http://travis-ci.org/netzke/netzke-basepack) [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/netzke/netzke-basepack)
 
 [RDocs](http://rdoc.info/github/netzke/netzke-basepack)
 
