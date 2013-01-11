@@ -60,13 +60,13 @@ Also, you can see the list of test components on the index page (along with link
 
     http://localhost:3000/
 
-For cucumber tests (from `test/basepack_test_app`):
+To run all the tests (from the gem's root):
 
-    $ cucumber features
+    $ rake
 
-For specs (from `test/basepack_test_app`):
+This assumes that the Ext JS library is located/symlinked in `test/core_test_app/public/extjs`. If you want to use Sencha CDN instead, run:
 
-    $ rspec spec
+    $ EXTJS_SRC=cdn rake
 
 ## Using ORM other than ActiveRecord
 
