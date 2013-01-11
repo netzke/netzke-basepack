@@ -5,22 +5,35 @@ module Netzke
 
       COLUMN_METHOD_NAME = "%s_column"
 
+      included do
+        # list of column names declared with the `column` class method
+        class_attribute :declared_columns
+        self.declared_columns = []
+      end
+
       module ClassMethods
-        # Overrides a column config, e.g.:
+        # Adds/overrides a column config, e.g.:
         #
         #     column :title do |c|
         #       c.flex = 1
         #     end
+        #
+        # If a new column is declared, it gets appended to the list of default columns.
         def column(name, &block)
           method_name = COLUMN_METHOD_NAME % name
           define_method(method_name, &block)
+          self.declared_columns << name
         end
       end
 
-      # Returns the list of (non-normalized) columns to be used. By default returns the list of model column names.
+      # Returns the list of (non-normalized) columns to be used. By default returns the list of model column names and declared columns.
       # Can be overridden.
       def columns
-        config.columns || data_adapter.model_attributes
+        config.columns || default_columns
+      end
+
+      def default_columns
+        (data_adapter.model_attributes + self.class.declared_columns).uniq
       end
 
       # An array of complete columns configs ready to be passed to the JS side.

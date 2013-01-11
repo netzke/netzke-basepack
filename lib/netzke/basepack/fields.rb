@@ -6,7 +6,7 @@ module Netzke
 
       # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.Form to render a field)
       def items
-        config.items || data_class && data_adapter.model_attributes || []
+        config.items || data_class && data_adapter.model_attributes.map{|a| {name: a.to_s}} || []
       end
 
       # Hash of fully configured fields, that are referenced in the items. E.g.:
@@ -30,7 +30,7 @@ module Netzke
 
       # The array of fields as specified on the model level (using +netzke_attribute+ and alike)
       def fields_array_from_model
-        data_adapter && data_adapter.model_attributes
+        data_adapter && data_adapter.model_attributes.map{|a| {name: a.to_s}}
       end
 
       # Hash of fields as specified on the model level

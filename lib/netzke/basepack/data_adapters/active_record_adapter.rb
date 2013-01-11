@@ -10,23 +10,19 @@ module Netzke::Basepack::DataAdapters
     end
 
     def model_attributes
-      attribute_names.map do |column_name|
-        {name: column_name, attr_type: @model_class.columns_hash[column_name].type}.tap do |c|
+      @_model_attributes ||= attribute_names.map do |column_name|
+        # If it's named as foreign key of some association, then it's an association column
+        assoc = @model_class.reflect_on_all_associations.detect { |a| a.foreign_key == column_name }
 
-          # If it's named as foreign key of some association, then it's an association column
-          assoc = @model_class.reflect_on_all_associations.detect { |a| a.foreign_key == c[:name] }
-
-          if assoc && !assoc.options[:polymorphic]
-            candidates = %w{name title label} << assoc.klass.primary_key
-            assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
-            c[:name] = "#{assoc.name}__#{assoc_method}"
-          end
-
-          c[:attr_type] = attr_type(c[:name])
-
-          # auto set up the default value from the column settings
-          c[:default_value] = @model_class.columns_hash[column_name].default if @model_class.columns_hash[column_name].default
+        if assoc && !assoc.options[:polymorphic]
+          candidates = %w{name title label} << assoc.klass.primary_key
+          assoc_method = candidates.detect{|m| (assoc.klass.instance_methods.map(&:to_s) + assoc.klass.column_names).include?(m) }
+          :"#{assoc.name}__#{assoc_method}"
+        else
+          column_name.to_sym
         end
+        # auto set up the default value from the column settings
+        # c[:default_value] = @model_class.columns_hash[column_name].default if @model_class.columns_hash[column_name].default
       end
     end
 

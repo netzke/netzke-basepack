@@ -2,6 +2,7 @@
 * improvements
   * Add grid column config option `filter_with` (by firemind)
   * Add ActionColumn (move over from Communitypack)
+  * A `column` declaration now appends the declared column to the list of default columns
 
 * bug fix
   * Fix one-to-many association method falling back to 'id'
