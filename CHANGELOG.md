@@ -1,6 +1,7 @@
 # 0.8.2 - WIP
 * improvements
   * Add grid column config option `filter_with` (by firemind)
+  * Add ActionColumn (move over from Communitypack)
 
 * bug fix
   * Fix one-to-many association method falling back to 'id'

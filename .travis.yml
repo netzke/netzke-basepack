@@ -1,16 +1,12 @@
 language: ruby
 rvm:
   - 1.9.3
-gemfile:
-  - test/basepack_test_app/Gemfile
 before_script:
   - chmod 777 ./config/before-travis.sh
   - ./config/before-travis.sh
 script:
   - export DISPLAY=:99.0
-  - cd test/basepack_test_app
-  - bundle exec rake db:create db:migrate RAILS_ENV=test
-  - bundle exec cucumber features
+  - bundle exec rake
 branches:
   only:
     - master
