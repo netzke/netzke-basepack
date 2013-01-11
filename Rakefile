@@ -19,7 +19,7 @@ end
 desc "Run all tests"
 task :test do
   system %(cd test/basepack_test_app && rspec spec)
-  system %(cd test/basepack_test_app && cucumber features)
+  system %(cucumber test/basepack_test_app/features)
 end
 
 desc 'rake test'
