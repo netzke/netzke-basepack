@@ -6,7 +6,7 @@ before_script:
   - ./config/before-travis.sh
 script:
   - export DISPLAY=:99.0
-  - EXTJS_SRC=cdn bundle exec rake
+  - bundle exec rake
 branches:
   only:
     - master

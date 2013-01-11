@@ -62,9 +62,9 @@ To run all the tests (from the gem's root):
 
     $ rake
 
-This assumes that the Ext JS library is located/symlinked in `test/core_test_app/public/extjs`. If you want to use Sencha CDN instead, run:
+This assumes that the Ext JS library is located/symlinked in `test/core_test_app/public/extjs`.
 
-    $ EXTJS_SRC=cdn rake
+*Sourcing Ext JS files from Sencha CDN is broken in Basepack atm*.
 
 ## Using ORM other than ActiveRecord
 
