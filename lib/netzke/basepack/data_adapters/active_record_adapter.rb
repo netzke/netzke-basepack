@@ -208,6 +208,10 @@ module Netzke::Basepack::DataAdapters
     #   end
     # end
 
+    def human_attribute_name(name)
+      @model_class.human_attribute_name(name)
+    end
+
     def record_value_for_attribute(r, a, through_association = false)
       v = if a[:getter]
         a[:getter].call(r)

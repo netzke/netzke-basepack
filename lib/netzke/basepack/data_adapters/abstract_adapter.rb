@@ -1,6 +1,7 @@
 module Netzke::Basepack::DataAdapters
   # A concrete adapter should implement all the public instance methods of this adapter in order to support all the functionality of Basepack components.
   class AbstractAdapter
+    attr_accessor :model_class
 
     # Returns primary key name of the model
     def primary_key_name
@@ -198,6 +199,11 @@ module Netzke::Basepack::DataAdapters
     # Assigns new value to an (association) attribute in a given record
     # +role+ - role provided for mass assignment protection
     def set_record_value_for_attribute(record, attr, value, role = :default)
+    end
+
+    # Returns human attribute name
+    def human_attribute_name(name)
+      name.to_s.humanize
     end
 
     # -- End of overridable methods

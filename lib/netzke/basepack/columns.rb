@@ -6,12 +6,16 @@ module Netzke
       COLUMN_METHOD_NAME = "%s_column"
 
       included do
-        # list of column names declared with the `column` class method
         class_attribute :declared_columns
         self.declared_columns = []
       end
 
       module ClassMethods
+        def inherited(klass)
+          klass.class_attribute :declared_columns
+          klass.declared_columns = []
+        end
+
         # Adds/overrides a column config, e.g.:
         #
         #     column :title do |c|
@@ -128,7 +132,7 @@ module Netzke
       end
 
       def set_default_attr_type(c)
-        c[:attr_type] ||= association_attr?(c) ? :integer : data_adapter.attr_type(c.name)
+        c[:attr_type] ||= data_adapter.attr_type(c.name)
       end
 
       def set_default_xtype(c)

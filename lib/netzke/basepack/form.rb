@@ -47,9 +47,7 @@ module Netzke
         configure_locked(c)
         configure_bbar(c)
 
-        # prepend the primary key field if not present
         if data_adapter
-          c.items = [extend_item(data_adapter.primary_key_name.to_sym), *c.items] if !includes_primary_key_field?(c.items)
           c.pri = data_adapter.primary_key_name
         end
 
@@ -97,15 +95,9 @@ module Netzke
 
     protected
 
-      def includes_primary_key_field?(items)
-        !!items.detect do |item|
-          (item.is_a?(Hash) ? item[:name] : item.to_s) == data_adapter.primary_key_name
-        end
-      end
-
       def normalize_config
         config.items = items
-        @fields_from_config = {}
+        @fields_from_items = {} # will be built during execution of `super`
         super
       end
 
