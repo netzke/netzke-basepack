@@ -90,7 +90,7 @@ module Netzke
       end
 
       def record
-        @record ||= config[:record] || config[:record_id] && data_adapter && data_adapter.find_record(config[:record_id])
+        @record ||= config[:record] || config[:record_id] && data_adapter.find_record(config[:record_id])
       end
 
     protected

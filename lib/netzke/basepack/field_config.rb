@@ -2,16 +2,6 @@ module Netzke
   module Basepack
     # Takes care of automatic field configuration in {Basepack::Form}
     class FieldConfig < ActiveSupport::OrderedOptions
-      class NullDataAdapter < Netzke::Basepack::DataAdapters::AbstractAdapter
-        def attr_type(name)
-          :string
-        end
-
-        def attribute_names
-          []
-        end
-      end
-
       def initialize(c, data_adapter)
         c = {name: c.to_s} if c.is_a?(Symbol) || c.is_a?(String)
         c[:name] = c[:name].to_s

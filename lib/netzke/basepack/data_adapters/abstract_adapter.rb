@@ -12,12 +12,12 @@ module Netzke::Basepack::DataAdapters
     # For association columns the name can have the double-underscore format, e.g.: `author__first_name`.
     # These attributes will be used by grids and forms to display default columns/fields.
     def model_attributes
-      raise NotImplementedError
+      []
     end
 
     # Returns attribute type (as Symbol) given its name.
     def attr_type(attr_name)
-      raise NotImplementedError
+      :string
     end
 
     # Returns records based on passed params. Implements:
@@ -42,7 +42,7 @@ module Netzke::Basepack::DataAdapters
 
     # gets the first record
     def first
-      @model_class.first
+      nil
     end
 
     # Returns record count based on passed params. Implements:
@@ -123,7 +123,7 @@ module Netzke::Basepack::DataAdapters
 
     # Finds a record by id, return nil if not found
     def find_record(id)
-      @model_class.find(id)
+      nil
     end
 
     # Build a hash of foreign keys and the associated model
@@ -142,7 +142,7 @@ module Netzke::Basepack::DataAdapters
 
     # Returns a new record.
     def new_record(params = {})
-      @model_class.new(params)
+      nil
     end
 
     # give the data adapter the opportunity the set special options for
@@ -229,6 +229,5 @@ module Netzke::Basepack::DataAdapters
     def initialize(model_class)
       @model_class = model_class
     end
-
   end
 end

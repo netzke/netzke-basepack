@@ -6,7 +6,7 @@ module Netzke
 
       # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.Form to render a field)
       def items
-        data_adapter && (prepend_primary_key(config.items) || data_adapter.model_attributes) || config.items || []
+        prepend_primary_key(config.items) || data_adapter.model_attributes
       end
 
       # Hash of fully configured fields, that are referenced in the items. E.g.:

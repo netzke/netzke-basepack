@@ -1,8 +1,12 @@
 module Netzke::Basepack::DataAdapters
-  # Implementation of Netzke::Basepack::DataAdapters::AbstractAdapter
+  # Implementation of {Netzke::Basepack::DataAdapters::AbstractAdapter}
   class ActiveRecordAdapter < AbstractAdapter
     def self.for_class?(model_class)
-      model_class <= ActiveRecord::Base
+      model_class && model_class <= ActiveRecord::Base
+    end
+
+    def new_record(params = {})
+      @model_class.new(params)
     end
 
     def primary_key_name
