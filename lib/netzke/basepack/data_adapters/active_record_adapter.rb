@@ -9,7 +9,7 @@ module Netzke::Basepack::DataAdapters
       @model_class.new(params)
     end
 
-    def primary_key_name
+    def primary_key
       @model_class.primary_key.to_s
     end
 
@@ -34,18 +34,9 @@ module Netzke::Basepack::DataAdapters
       @model_class.column_names
     end
 
-    def primary_key_attr?(a)
-      a[:name].to_s == @model_class.primary_key.to_s
-    end
-
     def human_attribute_name(attr_name)
       @model_class.human_attribute_name(attr_name)
     end
-
-    def primary_key
-      @model_class.primary_key
-    end
-    ## E_WIP
 
     def attr_type(attr_name)
       association_attr?(attr_name) ? :integer : (@model_class.columns_hash[attr_name.to_s].try(:type) || :string)
@@ -114,9 +105,9 @@ module Netzke::Basepack::DataAdapters
       assoc, assoc_method = assoc_and_assoc_method_for_attr(c[:name])
 
       if assoc
-        return !assoc.klass.column_names.map(&:to_sym).include?(assoc_method.to_sym)
+        return !assoc.klass.column_names.include?(assoc_method)
       else
-        return !@model_class.column_names.map(&:to_sym).include?(c[:name].to_sym)
+        return !@model_class.column_names.include?(c[:name])
       end
     end
 
@@ -163,7 +154,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def find_record(id)
-      @model_class.where(@model_class.primary_key => id).first
+      @model_class.where(primary_key => id).first
     end
 
     # Build a hash of foreign keys and the associated model

@@ -10,4 +10,12 @@ describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
     adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Issue)
     adapter.model_attributes.should == %w[id title developer__name project__title status__id created_at updated_at].map(&:to_sym)
   end
+
+  it "should detect virtual attributes" do
+    adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
+    adapter.virtual_attribute?({name: 'author__first_name'}).should be_false
+    adapter.virtual_attribute?({name: 'title'}).should be_false
+    adapter.virtual_attribute?({name: 'author__name'}).should be_true
+    adapter.virtual_attribute?({name: 'some_virtual_attr'}).should be_true
+  end
 end

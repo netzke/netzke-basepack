@@ -4,8 +4,13 @@ module Netzke::Basepack::DataAdapters
     attr_accessor :model_class
 
     # Returns primary key name of the model
-    def primary_key_name
+    def primary_key
       "id"
+    end
+
+    # Whether passed attribute config represents the primary key
+    def primary_key_attr?(a)
+      a[:name].to_s == primary_key
     end
 
     # Returns a list of model attribute hashes, each containing `name`, `attr_type` and `default_value` (if set in the schema).

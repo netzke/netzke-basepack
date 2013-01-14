@@ -16,7 +16,7 @@ module Netzke
       def fields
         @_fields ||= fields_from_items.tap do |flds|
           # add primary key field if not present
-          primary_key = data_adapter.primary_key_name
+          primary_key = data_adapter.primary_key
           flds[primary_key.to_sym] ||= {name: primary_key}
         end
       end
@@ -58,13 +58,13 @@ module Netzke
 
       def prepend_primary_key(items)
         items && items.tap do |items|
-          items.insert(0, data_adapter.primary_key_name.to_sym) if !includes_primary_key?(items)
+          items.insert(0, data_adapter.primary_key.to_sym) if !includes_primary_key?(items)
         end
       end
 
       def includes_primary_key?(items)
         !!items.detect do |item|
-          (item.is_a?(Hash) ? item[:name] : item.to_s) == data_adapter.primary_key_name
+          (item.is_a?(Hash) ? item[:name] : item.to_s) == data_adapter.primary_key
         end
       end
 

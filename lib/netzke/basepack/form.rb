@@ -48,7 +48,7 @@ module Netzke
         configure_bbar(c)
 
         if data_adapter
-          c.pri = data_adapter.primary_key_name
+          c.pri = data_adapter.primary_key
         end
 
         if !c.multi_edit
