@@ -1,4 +1,5 @@
 class Book < ActiveRecord::Base
+  attr_accessible :title, :exemplars, :digitized, :notes, :tags, :rating, :author_id, :last_read_at, :published_on
   belongs_to :author
   validates_presence_of :title
 
