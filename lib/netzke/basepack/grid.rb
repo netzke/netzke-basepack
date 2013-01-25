@@ -300,6 +300,7 @@ module Netzke
       end
 
       action :add_in_form do |a|
+        a.disabled = config[:prohibit_create]
         a.icon = :application_form_add
       end
 
