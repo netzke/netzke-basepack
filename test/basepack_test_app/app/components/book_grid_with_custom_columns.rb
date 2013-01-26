@@ -1,10 +1,12 @@
 class BookGridWithCustomColumns < Netzke::Basepack::Grid
   column :author__first_name do |c|
     c.renderer = :my_renderer
+    c.read_only = true
   end
 
   column :author__last_name do |c|
     c.renderer = :uppercase
+    c.read_only = true
   end
 
   column :author_name do |c|

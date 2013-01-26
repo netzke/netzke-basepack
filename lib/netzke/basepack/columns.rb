@@ -107,6 +107,23 @@ module Netzke
         { :association_values => data_adapter.assoc_values(r, final_columns_hash).netzke_literalize_keys }
       end
 
+    protected
+
+      # Default fields that will be displayed in the Add/Edit/Search forms
+      # When overriding this method, keep in mind that the fields inside the layout must be expanded (each field represented by a hash, not just a symbol)
+      def default_fields_for_forms
+        columns_taken_over_to_forms.map do |c|
+          (c[:editor] || {}).tap do |f|
+            f[:name] = c.name
+            f[:label] = c.text || c.header
+            f[:read_only] = c.read_only
+
+            # scopes for combobox options
+            f[:scopes] = c[:editor][:scopes] if c[:editor].is_a?(Hash)
+          end
+        end
+      end
+
     private
 
       # Based on initial column config, e.g.:
@@ -147,27 +164,12 @@ module Netzke
         init_column_names != stored_column_names
       end
 
-      # Default fields that will be displayed in the Add/Edit/Search forms
-      # When overriding this method, keep in mind that the fields inside the layout must be expanded (each field represented by a hash, not just a symbol)
-      def default_fields_for_forms
-        selected_columns = final_columns.select do |c|
+      # Selects those columns that make sense to be shown in forms
+      def columns_taken_over_to_forms
+        final_columns.select do |c|
           data_adapter.attribute_names.include?(c[:name]) ||
           data_class.instance_methods.include?("#{c[:name]}=") ||
           association_attr?(c[:name])
-        end
-
-        selected_columns.map do |c|
-          field_config = {
-            :name => c[:name],
-            :field_label => c[:text] || c[:header]
-          }
-
-          # scopes for combobox options
-          field_config[:scopes] = c[:editor][:scopes] if c[:editor].is_a?(Hash)
-
-          field_config.merge!(c[:editor] || {})
-
-          field_config
         end
       end
 
