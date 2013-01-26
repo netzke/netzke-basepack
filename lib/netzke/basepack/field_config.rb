@@ -3,16 +3,18 @@ module Netzke
     # Takes care of automatic field configuration in {Basepack::Form}
     class FieldConfig < AttrConfig
       def set_defaults!
-        self.attr_type ||= @data_adapter.attr_type(self.name)
+        super
 
-        set_xtype! if self.xtype.nil?
+        self.attr_type ||= @data_adapter.attr_type(name)
 
-        self.field_label ||= @data_adapter.human_attribute_name(self.name).gsub(/\s+/, " ")
+        set_xtype! if xtype.nil?
 
-        self.hidden = true if self.hidden.nil? && self.primary?
-        self.hide_label = self.hidden if self.hide_label.nil?
+        self.field_label ||= @data_adapter.human_attribute_name(name).gsub(/\s+/, " ")
 
-        case self.attr_type
+        self.hidden = true if hidden.nil? && primary?
+        self.hide_label = hidden if hide_label.nil?
+
+        case attr_type
         when :boolean
           configure_checkbox!
         when :date
@@ -26,14 +28,14 @@ module Netzke
         if association?
           set_xtype_for_association!
         else
-          self.xtype = xtype_for_attr_type(self.attr_type)
+          self.xtype = xtype_for_attr_type(attr_type)
         end
       end
 
       def set_xtype_for_association!
-        assoc_name, method = self.name.split('__').map(&:to_sym)
+        assoc_name, method = name.split('__').map(&:to_sym)
         assoc_method_type = @data_adapter.get_assoc_property_type(assoc_name, method)
-        if self.nested_attribute
+        if nested_attribute
           self.xtype = xtype_for_attr_type(assoc_method_type)
         else
           self.xtype = assoc_method_type == :boolean ? xtype_for_attr_type(assoc_method_type) : :netzkeremotecombo
@@ -52,7 +54,7 @@ module Netzke
       end
 
       def configure_checkbox!
-        self.checked = self.value
+        self.checked = value
         self.unchecked_value = false
         self.input_value = true
       end

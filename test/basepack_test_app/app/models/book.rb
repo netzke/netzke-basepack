@@ -7,7 +7,10 @@ class Book < ActiveRecord::Base
 
   attr_protected :exemplars, :author_id, :as => :user
 
-  def some_virtual_attr
-    "Dummy result"
+  def read_only_virtual_attr
+    "Dummy value"
+  end
+
+  def assignable_virtual_attr=(value)
   end
 end

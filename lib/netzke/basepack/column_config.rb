@@ -13,6 +13,8 @@ module Netzke
       }
 
       def set_defaults!
+        super
+
         self.attr_type ||= @data_adapter.attr_type(name)
 
         set_xtype! if xtype.nil?
@@ -21,7 +23,7 @@ module Netzke
 
         self.text ||= label || @data_adapter.human_attribute_name(name)
 
-        set_editor!
+        set_editor! if editor.nil?
 
         set_width! if width.nil?
 
@@ -33,25 +35,14 @@ module Netzke
 
         self.assoc = association? # used at the JS side
 
-        remove_defaults! # why set default options?
+        remove_defaults! # options that are implied by Ext JS by default, thus don't have to be passed
       end
-
-    private
 
       def set_xtype!
         # if user set those manually, we don't mess with column xtype
         return if renderer || editor
         xtype = xtype_for_attr_type(attr_type)
         self.xtype = xtype unless xtype.nil?
-      end
-
-      def editable?
-        read_only == false ||
-        !primary? &&
-        !virtual &&
-        @data_adapter.attribute_names.include?(name) ||
-        @data_adapter.model_class.instance_methods.include?(:"#{name}=") ||
-        association?
       end
 
       def xtype_for_attr_type(type)
@@ -62,7 +53,7 @@ module Netzke
 
       def set_editor!
         # if shouldn't be editable, don't set any default editor
-        return unless editable?
+        return if read_only
 
         if association?
           set_default_association_editor!

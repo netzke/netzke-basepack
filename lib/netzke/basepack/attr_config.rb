@@ -17,6 +17,25 @@ module Netzke
       def association?
         @data_adapter.association_attr?(self)
       end
+
+      def set_defaults!
+        set_read_only! if read_only.nil?
+      end
+
+      def set_read_only!
+        self.read_only = primary? || virtual? ||
+          !responded_to_by_model? &&
+          !association?
+      end
+
+    private
+
+      def responded_to_by_model?
+        # if no model class is provided, assume the attribute is being responded to
+        @data_adapter.model_class.nil? ||
+          @data_adapter.model_class.instance_methods.include?(:"#{name}=") ||
+          @data_adapter.model_class.attribute_names.include?(name)
+      end
     end
   end
 end

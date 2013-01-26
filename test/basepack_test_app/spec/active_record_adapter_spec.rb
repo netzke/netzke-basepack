@@ -16,6 +16,6 @@ describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
     adapter.virtual_attribute?({name: 'author__first_name'}).should be_false
     adapter.virtual_attribute?({name: 'title'}).should be_false
     adapter.virtual_attribute?({name: 'author__name'}).should be_true
-    adapter.virtual_attribute?({name: 'some_virtual_attr'}).should be_true
+    adapter.virtual_attribute?({name: 'read_only_virtual_attr'}).should be_true
   end
 end
