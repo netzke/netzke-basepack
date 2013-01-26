@@ -1,14 +1,24 @@
 require 'spec_helper'
-require 'netzke/basepack/column_config'
 
-describe ColumnConfig do
-  it "should respond to primary?" do
-    adapter = BookGrid.new.data_adapter
+module Netzke::Basepack
+  describe ColumnConfig do
+    it "should implement primary?" do
+      adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
 
-    c = ColumnConfig.new(:id, adapter)
-    c.primary?.should be_true
+      c = ColumnConfig.new(:id, adapter)
+      c.primary?.should be_true
 
-    c = ColumnConfig.new(:title, adapter)
-    c.primary?.should be_false
+      c = ColumnConfig.new(:title, adapter)
+      c.primary?.should be_false
+    end
+
+    it "should not set default editor for read-only columns" do
+      adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
+      c = ColumnConfig.new(:title, adapter)
+      c.read_only = true
+      c.set_defaults!
+
+      c.editor.should be_nil
+    end
   end
 end

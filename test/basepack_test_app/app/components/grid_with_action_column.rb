@@ -6,10 +6,6 @@ class GridWithActionColumn < Netzke::Basepack::Grid
     super
   end
 
-  def columns
-    super + [:basic_actions, :extra_actions]
-  end
-
   column :basic_actions do |c|
     c.type = :action
     c.actions = [{name: :delete_row, tooltip: "Delete row", icon: :delete}]
