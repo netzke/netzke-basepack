@@ -266,7 +266,6 @@ module Netzke
       # Override to change the default bottom toolbar
       def default_bbar
         res = %w{ add apply }.map(&:to_sym)
-        res << "-" << :add_in_form << :edit_in_form if config[:enable_edit_in_form]
         res << "-" << :search if config[:enable_extended_search]
         res
       end
@@ -274,7 +273,6 @@ module Netzke
       # Override to change the default context menu
       def default_context_menu
         res = %w{ edit del }.map(&:to_sym)
-        res << "-" << :edit_in_form if config[:enable_edit_in_form]
         res
       end
 
