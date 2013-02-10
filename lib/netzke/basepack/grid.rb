@@ -265,7 +265,7 @@ module Netzke
 
       # Override to change the default bottom toolbar
       def default_bbar
-        res = %w{ add edit apply del }.map(&:to_sym)
+        res = %w{ add apply }.map(&:to_sym)
         res << "-" << :add_in_form << :edit_in_form if config[:enable_edit_in_form]
         res << "-" << :search if config[:enable_extended_search]
         res
