@@ -6,6 +6,7 @@ gemspec
 gem 'netzke-core', github: 'netzke/netzke-core'
 
 group :test do
+  gem 'rspec', '~> 2.12.0'
   gem 'factory_girl'
   gem 'pickle'
   gem 'capybara', '~> 1.0'
