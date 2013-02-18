@@ -64,7 +64,7 @@ module Netzke
 
       def attributes
         config[:fields].map do |field|
-          [field[:name], field[:field_label]]
+          [field[:name], field[:label]]
         end
       end
 
