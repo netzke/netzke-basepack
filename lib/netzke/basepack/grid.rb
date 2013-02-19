@@ -301,7 +301,7 @@ module Netzke
       end
 
       action :apply do |a|
-        a.disabled = config[:prohibit_update] && config[:prohibit_create] && !config[:enable_edit_inline]
+        a.disabled = (config[:prohibit_update] && config[:prohibit_create]) || !config[:enable_edit_inline]
         a.icon = :tick
       end
 
