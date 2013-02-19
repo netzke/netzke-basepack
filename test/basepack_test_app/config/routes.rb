@@ -3,6 +3,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../../../lib/netzke-basepack
 RailsApp::Application.routes.draw do
   get "embedded_components/index"
 
+  resources :specs
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

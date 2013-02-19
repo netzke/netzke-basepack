@@ -18,6 +18,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rails', '~> 3.2.0'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'yard'
+  s.add_development_dependency 'coffee-script'
 
   s.rubyforge_project = s.name
   s.required_rubygems_version = ">= 1.3.4"
