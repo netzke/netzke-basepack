@@ -40,6 +40,10 @@ module Netzke
     #   (defaults to true) enable filters in column's context menu
     # [:+enable_edit_in_form+]
     #   (defaults to true) provide buttons into the toolbar that activate editing/adding records via a form
+    # [:+enable_edit_inline+]
+    #   (defaults to true) provide inline editing functionality
+    # [:+enable_add_inline+]
+    #   (defaults to true) provide inline adding functionality
     # [:+enable_extended_search+]
     #   (defaults to true) provide a button into the toolbar that shows configurable search form
     # [:+enable_context_menu+]
@@ -230,6 +234,8 @@ module Netzke
         c.enable_extended_search = self.class.advanced_search_available if c.enable_extended_search.nil?
         c.enable_column_filters = self.class.column_filters_available if c.enable_column_filters.nil?
         c.enable_pagination = true if c.enable_pagination.nil?
+        c.enable_edit_inline = true if c.enable_edit_inline.nil?
+        c.enable_add_inline = true if c.enable_add_inline.nil?
         c.rows_per_page = 30 if c.rows_per_page.nil?
         c.tools = %w{ refresh } if c.tools.nil?
 
@@ -279,7 +285,7 @@ module Netzke
       end
 
       action :add do |a|
-        a.disabled = config[:prohibit_create]
+        a.disabled = config[:prohibit_create] || !config[:enable_add_inline]
         a.handler = "onAddInline" # overriding naming conventions as Ext 4 grid has its own onAdd method
         a.icon = :add
       end
@@ -295,7 +301,7 @@ module Netzke
       end
 
       action :apply do |a|
-        a.disabled = config[:prohibit_update] && config[:prohibit_create]
+        a.disabled = (config[:prohibit_update] && config[:prohibit_create]) || !config[:enable_edit_inline]
         a.icon = :tick
       end
 
