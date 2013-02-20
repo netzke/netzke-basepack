@@ -190,6 +190,9 @@ module Netzke
       class_attribute :edit_in_form_available
       self.edit_in_form_available = true
 
+      class_attribute :edit_inline_available
+      self.edit_inline_available = true
+
       # JavaScript class configuration
       js_configure do |c|
         c.extend = "Ext.grid.Panel"
@@ -227,6 +230,7 @@ module Netzke
       def configure(c)
         # Defaults. The nil? checks are needed because these can be already set in a subclass
         c.enable_edit_in_form = self.class.edit_in_form_available if c.enable_edit_in_form.nil?
+        c.enable_edit_inline = self.class.edit_inline_available if c.enable_edit_inline.nil?
         c.enable_extended_search = self.class.advanced_search_available if c.enable_extended_search.nil?
         c.enable_column_filters = self.class.column_filters_available if c.enable_column_filters.nil?
         c.enable_pagination = true if c.enable_pagination.nil?
@@ -265,16 +269,19 @@ module Netzke
 
       # Override to change the default bottom toolbar
       def default_bbar
-        res = %w{ add edit apply del }.map(&:to_sym)
-        res << "-" << :add_in_form << :edit_in_form if config[:enable_edit_in_form]
+        res = config[:enable_edit_inline] || config[:enable_edit_in_form] ? %w{ add edit }.map(&:to_sym) : []
+        res << :apply if config[:enable_edit_inline]
+        res << :del
+        res << "-" << :add_in_form << :edit_in_form if config[:enable_edit_inline] && config[:enable_edit_in_form]
         res << "-" << :search if config[:enable_extended_search]
         res
       end
 
       # Override to change the default context menu
       def default_context_menu
-        res = %w{ edit del }.map(&:to_sym)
-        res << "-" << :edit_in_form if config[:enable_edit_in_form]
+        res = config[:enable_edit_inline] || config[:enable_edit_in_form] ? [:edit] : []
+        res << :del if !config[:read_only]
+        res << "-" << :edit_in_form if config[:enable_edit_in_form] && config[:enable_edit_inline]
         res
       end
 
@@ -286,6 +293,7 @@ module Netzke
 
       action :edit do |a|
         a.disabled = true
+        a.handler = config[:enable_edit_inline] ? "onEdit" : "onEditInForm"
         a.icon = :table_edit
       end
 
