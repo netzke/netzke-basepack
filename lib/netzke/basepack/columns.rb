@@ -115,7 +115,7 @@ module Netzke
         columns_taken_over_to_forms.map do |c|
           (c[:editor] || {}).tap do |f|
             f[:name] = c.name
-            f[:label] = c.text || c.header
+            f[:field_label] = c.text || c.header
             f[:read_only] = c.read_only
 
             # scopes for combobox options
