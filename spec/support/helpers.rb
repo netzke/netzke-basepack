@@ -30,10 +30,11 @@ module Helpers
 
   def assert_mocha_results
     result = page.execute_script(<<-JS)
-      var stats = Netzke.mochaRunner.stats;
-      return stats.failures == 0 && stats.tests !=0
+      return Netzke.mochaRunner.stats;
     JS
 
-    raise "JS spec faild" if !result
+    raise "Mocha spec failed" if result["failures"].to_i > 0 && result["tests"].to_i > 0
+    pending = result["pending"].to_i
+    puts "WARNING: #{pending} pending Mocha #{'spec'.pluralize(pending)}" if pending > 0
   end
 end
