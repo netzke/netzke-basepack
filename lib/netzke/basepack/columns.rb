@@ -64,6 +64,8 @@ module Netzke
               # set the defaults as lowest priority
               augment_column_config(c)
 
+              c[:editable] = false if(config[:enable_edit_inline] == false && c[:xtype] == :checkcolumn)
+
               cols << c # if options[:with_excluded] || !c.excluded
             end
           end
