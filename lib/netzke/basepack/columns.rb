@@ -136,7 +136,8 @@ module Netzke
       #
       # It may be handy to override it.
       def augment_column_config(c)
-        c.set_defaults!
+        c.set_defaults!      
+        c[:editable] = false if (config[:enable_edit_inline] == false || c[:read_only]) && c[:xtype] == :checkcolumn
       end
 
       def initial_columns_order
