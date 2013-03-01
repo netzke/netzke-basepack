@@ -6,6 +6,7 @@
   * Add support for autoSync store option (by scho)
   * Fix a glitch with Grid context menu
   * Add `enable_edit_inline` option for Grid; when set to false, all editing is done via forms
+  * Make checkcolumn respect the `read_only` option
 
 * bug fix
   * Fix one-to-many association method falling back to 'id'
