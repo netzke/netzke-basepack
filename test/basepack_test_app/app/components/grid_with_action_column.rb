@@ -4,6 +4,8 @@ class GridWithActionColumn < Netzke::Basepack::Grid
   def configure(c)
     c.model = "Book"
     super
+
+    c.columns = [:title, :basic_actions, :extra_actions]
   end
 
   column :basic_actions do |c|

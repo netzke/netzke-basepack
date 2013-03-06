@@ -2,10 +2,15 @@
 * improvements
   * Add grid column config option `filter_with` (by firemind)
   * Add ActionColumn (move over from Communitypack)
-  * A `column` declaration now appends the declared column to the list of default columns
+  * `Grid.column` DSL method now appends the declared column to the list of default columns
+  * Add support for autoSync store option (by scho)
+  * Fix a glitch with Grid context menu
+  * Add `enable_edit_inline` option for Grid; when set to false, all editing is done via forms
+  * Make checkcolumn respect the `read_only` option
 
 * bug fix
   * Fix one-to-many association method falling back to 'id'
+  * Attributes in QueryBuilder displayed as 'null'
 
 # 0.8.1 - 2012-12-15
 * bug fix
