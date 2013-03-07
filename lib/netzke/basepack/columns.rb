@@ -117,6 +117,8 @@ module Netzke
             f[:name] = c.name
             f[:field_label] = c.text || c.header
             f[:read_only] = c.read_only
+            f[:setter] = c.setter
+            f[:getter] = c.getter
 
             # scopes for combobox options
             f[:scopes] = c[:editor][:scopes] if c[:editor].is_a?(Hash)
@@ -167,6 +169,7 @@ module Netzke
       # Selects those columns that make sense to be shown in forms
       def columns_taken_over_to_forms
         final_columns.select do |c|
+          !c.getter.nil? || !c.setter.nil? ||
           data_adapter.attribute_names.include?(c[:name]) ||
           data_class.instance_methods.include?("#{c[:name]}=") ||
           association_attr?(c[:name])
