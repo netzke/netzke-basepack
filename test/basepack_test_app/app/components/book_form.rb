@@ -15,7 +15,7 @@ class BookForm < Netzke::Basepack::Form
       :author__name,
       {:name => :author__last_name, :xtype => :displayfield},
       {:name => :rating, :xtype => :combo, :store => [[1, "Good"], [2, "Average"], [3, "Poor"]]},
-      {:name => :author__updated_at, :editable => false},
+      {:name => :author__updated_at, :read_only => true},
       :digitized,
       :exemplars,
       {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},

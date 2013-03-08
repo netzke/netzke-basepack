@@ -117,6 +117,8 @@ module Netzke
             f[:name] = c.name
             f[:field_label] = c.text || c.header
             f[:read_only] = c.read_only
+            f[:setter] = c.setter
+            f[:getter] = c.getter
 
             # scopes for combobox options
             f[:scopes] = c[:editor][:scopes] if c[:editor].is_a?(Hash)
@@ -132,7 +134,7 @@ module Netzke
       #
       # augment it with additional configuration params, e.g.:
       #
-      #   {:name=>"author__name", :attr_type=>:string, :editor=>{:xtype=>:netzkeremotecombo}, :assoc=>true, :virtual=>true, :header=>"Author  name", :editable=>true, :sortable=>false, :filterable=>false}
+      #   {:name=>"author__name", :attr_type=>:string, :editor=>{:xtype=>:netzkeremotecombo}, :assoc=>true, :virtual=>true, :header=>"Author  name", :sortable=>false, :filterable=>false}
       #
       # It may be handy to override it.
       def augment_column_config(c)
@@ -167,6 +169,7 @@ module Netzke
       # Selects those columns that make sense to be shown in forms
       def columns_taken_over_to_forms
         final_columns.select do |c|
+          !c.getter.nil? || !c.setter.nil? ||
           data_adapter.attribute_names.include?(c[:name]) ||
           data_class.instance_methods.include?("#{c[:name]}=") ||
           association_attr?(c[:name])
