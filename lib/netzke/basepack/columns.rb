@@ -171,7 +171,7 @@ module Netzke
         final_columns.select do |c|
           !c.getter.nil? || !c.setter.nil? ||
           data_adapter.attribute_names.include?(c[:name]) ||
-          data_class.instance_methods.include?("#{c[:name]}=") ||
+          data_class.instance_methods.include?(:"#{c[:name]}=") ||
           association_attr?(c[:name])
         end
       end
