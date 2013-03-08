@@ -23,7 +23,7 @@ module Netzke
       end
 
       def set_read_only!
-        self.read_only = primary? || virtual? ||
+        self.read_only = primary? ||
           !responded_to_by_model? &&
           !association?
       end
@@ -33,6 +33,7 @@ module Netzke
       def responded_to_by_model?
         # if no model class is provided, assume the attribute is being responded to
         @data_adapter.model_class.nil? ||
+          !setter.nil? ||
           @data_adapter.model_class.instance_methods.include?(:"#{name}=") ||
           @data_adapter.model_class.attribute_names.include?(name)
       end
