@@ -169,11 +169,11 @@ module Netzke
       # Selects those columns that make sense to be shown in forms
       def columns_taken_over_to_forms
         final_columns.select do |c|
-          !c.getter.nil? || !c.setter.nil? ||
+          (!c.getter.nil? || !c.setter.nil? ||
           data_adapter.attribute_names.include?(c[:name]) ||
           data_class.instance_methods.include?(c[:name].to_sym) ||
           data_class.instance_methods.include?(:"#{c[:name]}=") ||
-          association_attr?(c[:name])
+          association_attr?(c[:name])) && c[:type] != :action
         end
       end
 
