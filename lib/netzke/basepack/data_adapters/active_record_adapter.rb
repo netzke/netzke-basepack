@@ -126,7 +126,7 @@ module Netzke::Basepack::DataAdapters
           relation.all.map{ |r| [r.id, r.send(assoc_method)] }
         else
           # an expensive search!
-          relation.all.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value =~ /^#{query}/ }
+          relation.all.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value.include?(query) }
         end
 
       else
