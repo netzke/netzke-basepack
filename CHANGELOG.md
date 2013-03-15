@@ -1,4 +1,4 @@
-# 0.8.2 - WIP
+# 0.8.2 - 2013-03-16
 * improvements
   * Add grid column config option `filter_with` (by firemind)
   * Add ActionColumn (move over from Communitypack)
@@ -12,6 +12,7 @@
 * bug fix
   * Fix one-to-many association method falling back to 'id'
   * Attributes in QueryBuilder displayed as 'null'
+  * Various fixes for virtual attributes (by Paul Donohue)
 
 # 0.8.1 - 2012-12-15
 * bug fix
