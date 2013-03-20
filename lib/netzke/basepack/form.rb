@@ -80,7 +80,7 @@ module Netzke
       end
 
       def configure_apply_on_return(c)
-        c[:apply_on_return] = !!c[:apply_on_return]
+        c[:apply_on_return] = c[:apply_on_return].nil? ? true : !!c[:apply_on_return]
       end
 
       # Extra JavaScripts and stylesheets
