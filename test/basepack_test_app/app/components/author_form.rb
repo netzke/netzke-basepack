@@ -13,7 +13,7 @@ class AuthorForm < Netzke::Basepack::Form
       #   :title,
       #   {:name => :author__first_name, :setter => author_first_name_setter},
       #   {:name => :author__last_name, :xtype => :displayfield},
-      #   {:name => :author__updated_at, :editable => false},
+      #   {:name => :author__updated_at, :read_only => true},
       #   :digitized,
       #   :exemplars,
       #   {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},

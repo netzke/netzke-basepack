@@ -64,8 +64,6 @@ module Netzke
     #   (required) name of the column, that may correspond to the model's (virtual) attribute
     # [:+read_only+]
     #   A boolean that defines if the cells in the column should be editable
-    # [:+editable+]
-    #   Same as +read_only+, but in reverse (takes precedence over +read_only+)
     # [:+filterable+]
     #   Set to false to disable filtering on this column
     # [:+getter+]
