@@ -55,30 +55,37 @@ module Netzke::Basepack::DataAdapters
 
       # apply sorting if needed
       if params[:sort] && sort_params = params[:sort].first
-        assoc, method = sort_params["property"].split('__')
         dir = sort_params["direction"].downcase
-
-        # if a sorting scope is set, call the scope with the given direction
         column = columns.detect { |c| c[:name] == sort_params["property"] }
-        if column.has_key?(:sorting_scope)
-          relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
-        else
-          relation = if method.nil?
-            relation.order("#{@model_class.table_name}.#{assoc} #{dir}")
-          else
-            assoc = @model_class.reflect_on_association(assoc.to_sym)
-            relation.joins(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")
-          end
-        end
+        relation = apply_sorting(relation, column, dir)
       end
 
-      page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
+      #page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
       if params[:limit]
         relation.offset(params[:start]).limit(params[:limit])
       else
         relation.all
       end
     end
+
+    def apply_sorting(relation, column, dir)
+      assoc, method = column[:name].split('__')
+
+      # if a sorting scope is set, call the scope with the given direction
+      if column.has_key?(:sorting_scope)
+        relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
+      else
+        relation = if method.nil?
+          relation.order("#{@model_class.table_name}.#{assoc} #{dir}")
+        else
+          assoc = @model_class.reflect_on_association(assoc.to_sym)
+          relation.joins(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")
+        end
+      end
+
+      relation
+    end
+    protected :apply_sorting
 
     def count_records(params, columns=[])
       # build initial relation based on passed params
