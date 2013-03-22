@@ -129,7 +129,9 @@ module Netzke::Basepack::DataAdapters
 
         if assoc.klass.column_names.include?(assoc_method)
           # apply query
-          relation = relation.where(["#{assoc_method} like ?", "%#{query}%"]) if query.present?
+          assoc_arel_table = assoc.klass.arel_table
+
+          relation = relation.where(assoc_arel_table[assoc_method].matches("%#{query}%"))  if query.present?
           relation.all.map{ |r| [r.id, r.send(assoc_method)] }
         else
           # an expensive search!
