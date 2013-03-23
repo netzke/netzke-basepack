@@ -122,7 +122,9 @@ module Netzke::Basepack::DataAdapters
 
         if assoc.klass.column_names.include?(assoc_method)
           # apply query
-          relation = relation.where(["#{assoc_method} like ?", "%#{query}%"]) if query.present?
+          assoc_arel_table = assoc.klass.arel_table
+
+          relation = relation.where(assoc_arel_table[assoc_method].matches("%#{query}%"))  if query.present?
           relation.all.map{ |r| [r.id, r.send(assoc_method)] }
         else
           # an expensive search!
@@ -340,7 +342,7 @@ module Netzke::Basepack::DataAdapters
     #      relation.where(["id > ?", 10]).where(["food_name like ?", "%pizza%"])
     def apply_column_filters(relation, column_filter)
       res = relation
-      operator_map = {"lt" => "<", "gt" => ">", "eq" => "="}
+      valid_operators = ["lt", "gt", "eq"]
 
       # these are still JSON-encoded due to the migration to Ext.direct
       column_filter=JSON.parse(column_filter)
@@ -349,15 +351,16 @@ module Netzke::Basepack::DataAdapters
         if method
           assoc = @model_class.reflect_on_association(assoc.to_sym)
           if assoc.klass.column_names.include? method
-            field = [assoc.klass.table_name, method].join('.').to_sym
+            field = method
+            arel_table = assoc.klass.arel_table
           end
         else
           field = assoc.to_sym
+          arel_table = @model_class.arel_table
         end
 
         value = v["value"]
-
-        op = operator_map[v['comparison']]
+        op = v['comparison'] if valid_operators.include? v['comparison']
 
         col_filter = @cls.inject(nil) { |fil, col|
           if col.is_a?(Hash) && col[:filter_with] && col[:name].to_sym == v['field'].to_sym
@@ -370,17 +373,24 @@ module Netzke::Basepack::DataAdapters
           col_filter = nil
           next
         end
+
+
         case v["type"]
         when "string"
-          res = res.where(["#{field} like ?", "%#{value}%"])
+          res = res.where(arel_table[field].matches("%#{value}%"))
         when "date"
           # convert value to the DB date
-          value.match /(\d\d)\/(\d\d)\/(\d\d\d\d)/
-          res = res.where("#{field} #{op} ?", "#{$3}-#{$1}-#{$2}".to_time)
+          value.match(/(\d\d)\/(\d\d)\/(\d\d\d\d)/)
+          if op == 'eq'
+            res = res.where(arel_table[field].gt("#{$3}-#{$1}-#{$2}".to_date.beginning_of_day))
+            res = res.where(arel_table[field].lt("#{$3}-#{$1}-#{$2}".to_date.end_of_day))
+          else
+            res = res.where(arel_table[field].send(op, "#{$3}-#{$1}-#{$2}".to_time))
+          end
         when "numeric"
-          res = res.where(["#{field} #{op} ?", value])
+          res = res.where(arel_table[field].send(op, value))
         else
-          res = res.where(["#{field} = ?", value])
+          res = res.where(arel_table[field].send(op, value))
         end
       end
 
