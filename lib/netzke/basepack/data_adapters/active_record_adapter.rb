@@ -291,8 +291,6 @@ module Netzke::Basepack::DataAdapters
 
     # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
     def get_relation(params = {})
-      @arel = @model_class.arel_table
-
       relation = @model_class.scoped
 
       relation = apply_column_filters(relation, params[:filter]) if params[:filter]
@@ -388,22 +386,33 @@ module Netzke::Basepack::DataAdapters
 
       res
     end
-
     protected :apply_column_filters
 
     def predicates_for_and_conditions(conditions)
       return nil if conditions.empty?
 
       predicates = conditions.map do |q|
+        assoc, method = q["attr"].split('__')
+        if method
+          assoc = @model_class.reflect_on_association(assoc.to_sym)
+          assoc_arel = assoc.klass.arel_table
+          attr = method
+          arel_table = Arel::Table.new(assoc.klass.table_name.to_sym)
+        else
+          attr = assoc
+          arel_table = @model_class.arel_table
+        end
+
         value = q["value"]
+
         case q["operator"]
         when "contains"
-          @arel[q["attr"]].matches "%#{value}%"
+          arel_table[attr].matches "%#{value}%"
         else
           if value == false || value == true
-            @arel[q["attr"]].eq(value ? 1 : 0)
+            arel_table[attr].eq(value ? 1 : 0)
           else
-            @arel[q["attr"]].send(q["operator"], value)
+            arel_table[attr].send(q["operator"], value)
           end
         end
       end
