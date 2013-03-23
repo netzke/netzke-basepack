@@ -1,6 +1,7 @@
 module Netzke
   module Basepack
-    # Search query builder used in Grid's advanced search
+    # Search query builder used in Grid's advanced search.
+    # Based on Ext.tab.Panel. A new tab is created for each OR condition. Each tab contains an instance of SearchPanel which is used to build AND conditions.
     class QueryBuilder < Netzke::Base
       js_configure do |c|
         c.extend = "Ext.tab.Panel"

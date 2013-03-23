@@ -1,3 +1,7 @@
+# 0.8.3 - WIP
+* improvements
+  * implement advanced searching by association (issue #93)
+
 # 0.8.2 - 2013-03-16
 * improvements
   * Add grid column config option `filter_with` (by firemind)

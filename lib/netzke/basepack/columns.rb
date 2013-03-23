@@ -126,6 +126,19 @@ module Netzke
         end
       end
 
+      # ATM the same attributes are used as in forms
+      def attributes_for_search
+        columns_taken_over_to_forms.map do |c|
+          {name: c.name, text: c.text, attr_type: c.attr_type}.tap do |a|
+            if c[:assoc]
+              a[:text].sub!("  ", " ")
+              a[:assoc] = true
+              a[:attr_type] = :string
+            end
+          end
+        end
+      end
+
     private
 
       # Based on initial column config, e.g.:

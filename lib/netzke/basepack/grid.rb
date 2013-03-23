@@ -342,7 +342,7 @@ module Netzke
       component :search_window do |c|
         c.klass = SearchWindow
         c.model = config.model
-        c.fields = default_fields_for_forms
+        c.fields = attributes_for_search
       end
 
     protected
