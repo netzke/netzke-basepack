@@ -349,7 +349,6 @@ module Netzke::Basepack::DataAdapters
     #      relation.where(["id > ?", 10]).where(["food_name like ?", "%pizza%"])
     def apply_column_filters(relation, column_filter)
       res = relation
-      valid_operators = ["lt", "gt", "eq"]
 
       # these are still JSON-encoded due to the migration to Ext.direct
       column_filter=JSON.parse(column_filter)
@@ -367,7 +366,7 @@ module Netzke::Basepack::DataAdapters
         end
 
         value = v["value"]
-        op = v['comparison'] if valid_operators.include? v['comparison']
+        op = v['comparison']
 
         col_filter = @cls.inject(nil) { |fil, col|
           if col.is_a?(Hash) && col[:filter_with] && col[:name].to_sym == v['field'].to_sym
@@ -389,15 +388,15 @@ module Netzke::Basepack::DataAdapters
           # convert value to the DB date
           value.match(/(\d\d)\/(\d\d)\/(\d\d\d\d)/)
           if op == 'eq'
-            res = res.where(arel_table[field].gt("#{$3}-#{$1}-#{$2}".to_date.beginning_of_day))
-            res = res.where(arel_table[field].lt("#{$3}-#{$1}-#{$2}".to_date.end_of_day))
+            res = res.where(arel_table[field].ge("#{$3}-#{$1}-#{$2}".to_date.beginning_of_day))
+            res = res.where(arel_table[field].le("#{$3}-#{$1}-#{$2}".to_date.end_of_day))
           else
             res = res.where(arel_table[field].send(op, "#{$3}-#{$1}-#{$2}".to_time))
           end
         when "numeric"
           res = res.where(arel_table[field].send(op, value))
-        else
-          res = res.where(arel_table[field].send(op, value))
+        else # boolean
+          res = res.where(arel_table[field].eq(value))
         end
       end
 
