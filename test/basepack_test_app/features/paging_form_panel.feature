@@ -10,19 +10,6 @@ Background:
   | Lolita              | 5         | false     | To read      | 1988-04-05   | 2011-03-04   |
   | Getting Things Done | 3         | true      | Productivity | 2005-06-07   | 2011-12-13   |
 
-@javascript
-Scenario: Paging through records
-  When I go to the BookPagingForm test page
-  Then I should see "Journey to Ixtlan"
-
-  When I go forward one page
-  And  I wait for response from server
-  Then the form should show title: "Lolita"
-
-  When I go forward one page
-  And  I wait for response from server
-  Then the form should show title: "Getting Things Done"
-
 #@javascript
 #Scenario: Searching
   #When I go to the BookPagingForm test page
