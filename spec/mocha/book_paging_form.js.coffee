@@ -4,6 +4,7 @@ describe "BookPagingForm component", ->
     done()
 
   # FIXME page does not contain the first record on load
+  # https://github.com/netzke/netzke-basepack/issues/109
   xit "starts with Journey to Ixtlan", (done)->
     expectToSee textFieldWith "Journey to Ixtlan"
     done()
