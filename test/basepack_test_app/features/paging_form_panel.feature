@@ -1,15 +1,15 @@
-Feature: Paging form panel
-  In order to value
-  As a role
-  I want feature
-
-Background:
-  Given the following books exist:
-  | title               | exemplars | digitized | notes        | published_on | last_read_at |
-  | Journey to Ixtlan   | 10        | true      | A must-read  | 2001-01-02   | 2011-01-02   |
-  | Lolita              | 5         | false     | To read      | 1988-04-05   | 2011-03-04   |
-  | Getting Things Done | 3         | true      | Productivity | 2005-06-07   | 2011-12-13   |
-
+# Feature: Paging form panel
+#   In order to value
+#   As a role
+#   I want feature
+#
+# Background:
+#   Given the following books exist:
+#   | title               | exemplars | digitized | notes        | published_on | last_read_at |
+#   | Journey to Ixtlan   | 10        | true      | A must-read  | 2001-01-02   | 2011-01-02   |
+#   | Lolita              | 5         | false     | To read      | 1988-04-05   | 2011-03-04   |
+#   | Getting Things Done | 3         | true      | Productivity | 2005-06-07   | 2011-12-13   |
+#
 #@javascript
 #Scenario: Searching
   #When I go to the BookPagingForm test page
