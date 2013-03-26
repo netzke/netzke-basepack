@@ -1,9 +1,6 @@
 require 'spec_helper'
 
 feature "Mocha specs", js: true do
-  before :each do
-    Book.delete_all
-  end
 
   # create a spec for each file in mocha/**/* except for extra/ and support/
   dir = File.join(File.dirname(__FILE__), "mocha")
