@@ -24,7 +24,3 @@ Background:
   #And I wait for response from server
   #Then the form should show title: "Getting Things Done"
 
-@javascript
-Scenario: I must see total records value
-  When I go to the BookPagingForm test page
-  Then I should see "of 3" within paging toolbar

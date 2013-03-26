@@ -1,4 +1,8 @@
 describe "BookPagingForm component", ->
+  it "shows total records value of 3", (done)->
+    expectToSee somewhere "of 3"
+    done()
+
   # FIXME page does not contain the first record on load
   xit "starts with Journey to Ixtlan", (done)->
     expectToSee textFieldWith "Journey to Ixtlan"
