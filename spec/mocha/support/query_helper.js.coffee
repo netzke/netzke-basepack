@@ -34,5 +34,11 @@ Ext.apply window,
   somewhere: (text) ->
     Ext.DomQuery.select("*:contains(" + text + ")")[0] || 'anywhere ' + text
 
+  textFieldWith: (text) ->
+    _componentLike "textfield", "value", text
+
+  _componentLike:(type,attr,value)->
+    Ext.ComponentQuery.query(type+'['+attr+'='+value+']')[0]
+
 # alias
 window.anywhere = window.somewhere
