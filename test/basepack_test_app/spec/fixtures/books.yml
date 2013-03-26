@@ -1,5 +1,16 @@
 one:
+  id: 1
   title: Journey to Ixtlan
+  # exemplars: 10
+  # digitized: true
+  # notes: A must-read
+  # published_on: 2001-01-02
+  # last_read_on: 2011-01-02
 
 two:
-  title: Art of War
+  id: 2
+  title: Lolita
+
+three:
+  id: 3
+  title: Getting Things Done
