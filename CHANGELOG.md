@@ -2,6 +2,8 @@
 * improvements
   * implement advanced searching by association (issue #93)
   * a few improvements on grid column filtering (by Simon Willmann)
+* bug fix
+  * was crashing when an attribute with name like `author__id` was attempted to be read on a nil association
 
 # 0.8.2 - 2013-03-16
 * improvements

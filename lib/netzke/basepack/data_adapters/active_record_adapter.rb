@@ -226,7 +226,8 @@ module Netzke::Basepack::DataAdapters
         split = a[:name].to_s.split(/\.|__/)
         assoc = @model_class.reflect_on_association(split.first.to_sym)
         if through_association
-          split.inject(r) do |r,m| # TODO: do we really need to descend deeper than 1 level?
+          split.inject(r) do |r,m| # Do we *really* need to descend deeper than 1 level?
+            return nil if r.nil?
             if r.respond_to?(m)
               r.send(m)
             else

@@ -18,4 +18,12 @@ describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
     adapter.virtual_attribute?({name: 'author__name'}).should be_true
     adapter.virtual_attribute?({name: 'read_only_virtual_attr'}).should be_true
   end
+
+  describe '#record_value_for_attribute' do
+    it 'returns nil for attribute with name "some_assoc__id" if the association is nil' do
+      adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
+      book = Book.create(title: 'Foo')
+      adapter.record_value_for_attribute(book, {name: 'author__id'}, true).should be_nil
+    end
+  end
 end
