@@ -1,0 +1,99 @@
+es:
+  netzke:
+    basepack:
+      grid:
+        actions:
+          add:
+            text: Agregar
+          edit:
+            text: Editar
+          del:
+            text: Eliminar
+            tooltip: Eliminar
+          apply:
+            text: Aplicar
+          add_in_form:
+            text: Agregar en formulario
+          edit_in_form:
+            text: Editar en formulario
+          search:
+            text: Buscar
+
+        deleted_n_records: "Se han eliminado %{n} registro(s)"
+        cannot_delete: "Usted no tiene permiso para borrar los datos"
+        confirmation: Confirmación
+        are_you_sure: ¿Está seguro?
+
+      record_form_window:
+        actions:
+          ok:
+            text: Aceptar
+          cancel:
+            text: Cancelar
+
+      search_window:
+        title: Búsqueda avanzada
+        actions:
+          search:
+            text: Buscar
+          cancel:
+            text: Cancelar
+
+      form:
+        actions:
+          edit:
+            text: Editar
+            tooltip: Editar
+          cancel:
+            text: Cancelar
+            tooltip: Cancelar edición
+          apply:
+            text: Aplicar
+            tooltip: Aplicar los cambios
+
+      search_panel:
+        presets: Búsquedas anteriores
+        equals: Igual
+        greater_than: Mayor que
+        less_than: Menor que
+        contains: Contiene
+        matches: Coincide con
+        date_equals: "Es"
+        before: Antes de
+        after: Despues de
+
+      paging_form:
+        actions:
+          search:
+            text: Buscar
+            tooltip: Búsqueda avanzada
+
+      query_builder:
+        presets: Búsquedas anteriores
+        preset_saved: Búsqueda guardada con éxito
+        preset_deleted: Búsqueda eliminada con éxito
+        overwrite_confirm: "¿Está seguro que quiere sobrescribir la búsqueda '{0}'?"
+        overwrite_confirm_title: "Sobrescribiendo búsqueda"
+        delete_confirm: "¿Está seguro que quiere eliminar la búsqueda '{0}'?"
+        delete_confirm_title: "Eliminando búsqueda anterior"
+        actions:
+          clear_all:
+            text: Limpiar
+            tooltip: Limpiar todas las condiciones
+          reset:
+            text: Restablecer
+            tooltip: Restablecer valores de condiciones
+          save_preset:
+            text: Guardar búsqueda
+            tooltip: Guardar búsqueda
+          delete_preset:
+            text: Eliminar búsqueda
+            tooltip: Eliminar búsqueda
+          apply:
+            text: Aplicar
+            tooltip: Aplicar las condiciones actuales
+
+    formats:
+      date: Y-m-d
+      datetime: Y-m-d H:i:s
+      time: H:i:s
