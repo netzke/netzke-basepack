@@ -191,12 +191,16 @@ module Netzke
       class_attribute :edit_inline_available
       self.edit_inline_available = true
 
+      class_attribute :remember_selection_available
+      self.remember_selection_available = true
+
       # JavaScript class configuration
       js_configure do |c|
         c.extend = "Ext.grid.Panel"
         c.mixin :grid, :event_handling
         c.mixin :advanced_search if advanced_search_available
         c.mixin :edit_in_form if edit_in_form_available
+        c.mixin :remember_selection if remember_selection_available
 
         c.translate *%w[are_you_sure confirmation]
 
