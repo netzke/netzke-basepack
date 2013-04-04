@@ -1,0 +1,99 @@
+nl:
+  netzke:
+    basepack:
+      grid:
+        actions:
+          add:
+            text: Toevoegen
+          edit:
+            text: Wijzigen
+          del:
+            text: Verwijderen
+            tooltip: Verwijderen
+          apply:
+            text: Toepassen
+          add_in_form:
+            text: Toevoegen in formulier
+          edit_in_form:
+            text: Wijzigen in formulier
+          search:
+            text: Zoeken
+
+        deleted_n_records: "%{n} objecten verwijderd"
+        cannot_delete: "Je hebt geen toestemming om data te verwijderen"
+        confirmation: Bevestiging
+        are_you_sure: Weet je het zeker?
+
+      record_form_window:
+        actions:
+          ok:
+            text: OK
+          cancel:
+            text: Annuleren
+
+      search_window:
+        title: Uitgebreid zoeken
+        actions:
+          search:
+            text: Zoeken
+          cancel:
+            text: Annuleren
+
+      form:
+        actions:
+          edit:
+            text: Wijzigen
+            tooltip: Wijzigen
+          cancel:
+            text: Annuleren
+            tooltip: Wijzigen annuleren
+          apply:
+            text: Toepassen
+            tooltip: Wijzigingen toepassen
+
+      search_panel:
+        presets: Standaardwaarden
+        equals: Is gelijk aan
+        greater_than: Groter dan
+        less_than: Kleiner dan
+        contains: Bevat
+        matches: Komt overeen met
+        date_equals: "Op"
+        before: Voor
+        after: Na
+
+      paging_form:
+        actions:
+          search:
+            text: Zoeken
+            tooltip: Uitgebreid zoeken
+
+      query_builder:
+        presets: Standaardwaarden
+        preset_saved: Standaardwaarden opgeslagen
+        preset_deleted: Standaardwaarden verwijderd
+        overwrite_confirm: "Weet je zeker dat je standaardwaarde '{0}' wilt overschrijven?"
+        overwrite_confirm_title: "Standaardwaarde overschrijven"
+        delete_confirm: "Weet je zeker dat je standaardwaarde '{0}' wilt verwijderen?"
+        delete_confirm_title: "Standaardwaarde verwijderen"
+        actions:
+          clear_all:
+            text: Wissen
+            tooltip: Wis alle voorwaarden
+          reset:
+            text: Reset
+            tooltip: Reset voorwaarden
+          save_preset:
+            text: Standaardwaarde opslaan
+            tooltip: Standaardwaarde opslaan
+          delete_preset:
+            text: Standaardwaarde verwijderen
+            tooltip: Standaardwaarde verwijderen
+          apply:
+            text: Toepassen
+            tooltip: Aangepaste voorwaarden toepassen
+
+    formats:
+      date: d-m-Y
+      datetime: d-m-Y H:i:s
+      time: H:i:s
