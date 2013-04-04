@@ -162,6 +162,7 @@ module Netzke
     #      c.edit_in_form_available = false
     #      c.advanced_search_available = false
     #      c.column_filters_available = false
+    #      c.remember_selection_available = false
     #    end
     #
     # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the way that the less functionality is enabled, the less code is generated.
@@ -173,6 +174,8 @@ module Netzke
     #   (defaults to true) include code for (multi-record) editing and adding records through a form
     # [:+advanced_search_available+]
     #   (defaults to true) include code for extended configurable search
+    # [:+remember_selection_available+]
+    #   (defaults to true) include code for re-selecting records after grid reload
     class Grid < Netzke::Base
       include self::Services
       include Columns
