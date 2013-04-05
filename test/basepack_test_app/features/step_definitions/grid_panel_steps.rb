@@ -178,6 +178,12 @@ Then /^the grid's column "([^"]*)" should not be editable$/ do |column_name|
   JS
 end
 
+Then /^the grid should have (\d+) selected records$/ do |n|
+  page.driver.browser.execute_script(<<-JS).should == n.to_i
+    return Ext.ComponentQuery.query('gridpanel')[0].getSelectionModel().getSelection().length;
+  JS
+end
+
 # TODO: move to Communitypack
 # When /^I click the "([^"]*)" action icon$/ do |action_name|
 #   find("img[data-qtip='#{action_name}']").click

@@ -208,6 +208,19 @@ Scenario: Reloading grid data
   Then I should not see "Internal Server Error"
 
 @javascript
+Scenario: Reloading grid remembers selection
+  Given a book exists with title: "Magus"
+  And another book exists with title: "Lolita"
+  When I go to the BookGrid test page
+  And I wait for response from server
+  And I select first row in the grid
+  Then the grid should have 1 selected records
+  When I reload the grid
+  And I wait for response from server
+  And I wait 1 second
+  Then the grid should have 1 selected records
+
+@javascript
 Scenario: Advanced search window should be hidable after loading grid panel dynamically second time
   Given I am on the BookGridLoader test page
   When I press "Load one"

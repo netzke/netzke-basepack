@@ -162,6 +162,7 @@ module Netzke
     #      c.edit_in_form_available = false
     #      c.advanced_search_available = false
     #      c.column_filters_available = false
+    #      c.remember_selection_available = false
     #    end
     #
     # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the way that the less functionality is enabled, the less code is generated.
@@ -173,6 +174,8 @@ module Netzke
     #   (defaults to true) include code for (multi-record) editing and adding records through a form
     # [:+advanced_search_available+]
     #   (defaults to true) include code for extended configurable search
+    # [:+remember_selection_available+]
+    #   (defaults to true) include code for re-selecting records after grid reload
     class Grid < Netzke::Base
       include self::Services
       include Columns
@@ -191,12 +194,16 @@ module Netzke
       class_attribute :edit_inline_available
       self.edit_inline_available = true
 
+      class_attribute :remember_selection_available
+      self.remember_selection_available = true
+
       # JavaScript class configuration
       js_configure do |c|
         c.extend = "Ext.grid.Panel"
         c.mixin :grid, :event_handling
         c.mixin :advanced_search if advanced_search_available
         c.mixin :edit_in_form if edit_in_form_available
+        c.mixin :remember_selection if remember_selection_available
 
         c.translate *%w[are_you_sure confirmation]
 
