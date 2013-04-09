@@ -76,6 +76,12 @@ There's some work being done in the direction of implementing [DataMapper](https
 
 Netzke Basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.
 
+## Contributions and support
+
+Help developing Netzke by submitting a pull request when you think others can benefit from it.
+
+If you feel particularily generous, you can donate a couple of bucks a week at [GitTip](https://www.gittip.com/nomadcoder/).
+
 ## Useful links
 * [Project website](http://netzke.org)
 * [Live-demo](http://netzke-demo.herokuapp.com)
