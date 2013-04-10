@@ -255,6 +255,34 @@ module Netzke
         c.columns_order = columns_order
         c.inline_data = get_data if c.load_inline_data
         c.pri = data_adapter.primary_key
+        if c.defaultFilters
+          populate_cols_with_filters(c)
+        end
+      end
+
+      def populate_cols_with_filters(c)
+        c.defaultFilters.each do |f|
+
+          c.columns.each do |col|
+            if col[:name].to_sym == f[:column].to_sym
+              if f[:value].is_a?(Hash)
+                val = {}
+                f[:value].each do |k,v|
+                  val[k] = (v.is_a?(Time) || v.is_a?(Date) || v.is_a?(ActiveSupport::TimeWithZone)) ? "new Date('#{v.strftime("%m/%d/%Y")}')".l : v
+                end
+              else
+                val = f[:value]
+              end
+              new_filter = {value: val, active: true}
+              if col[:filter]
+                col[:filter].merge! new_filter
+              else
+                col[:filter] = new_filter
+              end
+            end
+          end
+        end
+        c.defaultFilters = nil
       end
 
       def config
