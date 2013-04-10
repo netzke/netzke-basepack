@@ -9,7 +9,7 @@ class PanelWithGridWithDefaultFiltering < Netzke::Base
     c.model = "Book"
     c.region = :center
     c.columns = [ :title, :author__first_name, :exemplars, :notes, :last_read_at, :digitized ]
-    c.defaultFilters = [{column: :title, value: 'Brandstifter'}]
+    c.default_filters = [{column: :title, value: 'Brandstifter'}]
   end
 
   component :south do |c|

@@ -116,14 +116,14 @@ module Netzke
     #
     #     def configure(c)
     #       super
-    #       c.defaultFilters = [{name: "Mark"}, {age: {gt: 10}}]
+    #       c.default_filters = [{name: "Mark"}, {age: {gt: 10}}]
     #     end
     #
     # or as a component configuration
     #  
     #      component :tasks |c|
     #        c.klass = TaskGrid
-    #        c.defaultFilters = [{due_date: {before: Time.now}}]
+    #        c.default_filters = [{due_date: {before: Time.now}}]
     #      end
     #
     # == One-to-many association support
@@ -269,13 +269,13 @@ module Netzke
         c.columns_order = columns_order
         c.inline_data = get_data if c.load_inline_data
         c.pri = data_adapter.primary_key
-        if c.defaultFilters
+        if c.default_filters
           populate_cols_with_filters(c)
         end
       end
 
       def populate_cols_with_filters(c)
-        c.defaultFilters.each do |f|
+        c.default_filters.each do |f|
 
           c.columns.each do |col|
             if col[:name].to_sym == f[:column].to_sym
@@ -296,7 +296,7 @@ module Netzke
             end
           end
         end
-        c.defaultFilters = nil
+        c.default_filters = nil
       end
 
       def config

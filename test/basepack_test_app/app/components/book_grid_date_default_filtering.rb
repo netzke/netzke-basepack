@@ -7,6 +7,6 @@ class BookGridDateDefaultFiltering < Netzke::Basepack::Grid
 
   def configure(c)
     super
-    c.defaultFilters = [{column: :last_read_at, value: {after: Date.parse("2011-01-01")}}]
+    c.default_filters = [{column: :last_read_at, value: {after: Date.parse("2011-01-01")}}]
   end
 end

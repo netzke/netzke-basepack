@@ -7,6 +7,6 @@ class BookGridDefaultFiltering < Netzke::Basepack::Grid
 
   def configure(c)
     super
-    c.defaultFilters = [{column: :title, value: 'Brandstifter'}]
+    c.default_filters = [{column: :title, value: 'Brandstifter'}]
   end
 end
