@@ -111,6 +111,20 @@ module Netzke
     #       super + [:extra_column]
     #     end
     #
+    # === Configuring default filters on grid columns
+    # Default Filters can either be configured on the grid itself
+    #
+    #     def configure(c)
+    #       super
+    #       c.default_filters = [{name: "Mark"}, {age: {gt: 10}}]
+    #     end
+    #
+    # or as a component configuration
+    #  
+    #      component :tasks |c|
+    #        c.klass = TaskGrid
+    #        c.default_filters = [{due_date: {before: Time.now}}]
+    #      end
     #
     # == One-to-many association support
     # If the model bound to a grid +belongs_to+ another model, Grid can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
@@ -255,6 +269,34 @@ module Netzke
         c.columns_order = columns_order
         c.inline_data = get_data if c.load_inline_data
         c.pri = data_adapter.primary_key
+        if c.default_filters
+          populate_cols_with_filters(c)
+        end
+      end
+
+      def populate_cols_with_filters(c)
+        c.default_filters.each do |f|
+
+          c.columns.each do |col|
+            if col[:name].to_sym == f[:column].to_sym
+              if f[:value].is_a?(Hash)
+                val = {}
+                f[:value].each do |k,v|
+                  val[k] = (v.is_a?(Time) || v.is_a?(Date) || v.is_a?(ActiveSupport::TimeWithZone)) ?  ActiveSupport::JSON::Variable.new("new Date('#{v.strftime("%m/%d/%Y")}')") : v
+                end
+              else
+                val = f[:value]
+              end
+              new_filter = {value: val, active: true}
+              if col[:filter]
+                col[:filter].merge! new_filter
+              else
+                col[:filter] = new_filter
+              end
+            end
+          end
+        end
+        c.default_filters = nil
       end
 
       def config
