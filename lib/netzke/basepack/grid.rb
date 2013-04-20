@@ -53,7 +53,7 @@ module Netzke
     # [:+load_inline_data+]
     #   (defaults to false) grid is being loaded along with its initial data; use with precaution, preferred method is auto-loading of data in a separate server request (see +data_store+)
     # [:+data_store+]
-    #   (defaults to {}) extra configuration for the JS class's internal store (see {Ext.data.Store}[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Store] ). For example, to disable auto loading of data, do:
+    #   (defaults to empty Hash) extra configuration for the JS class's internal store (see {Ext.data.Store}[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Store] ). For example, to disable auto loading of data, do:
     #
     #     data_store: {auto_load: false}
     #
@@ -120,7 +120,7 @@ module Netzke
     #     end
     #
     # or as a component configuration
-    #  
+    #
     #      component :tasks |c|
     #        c.klass = TaskGrid
     #        c.default_filters = [{due_date: {before: Time.now}}]
