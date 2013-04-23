@@ -87,16 +87,16 @@ module Netzke::Basepack::DataAdapters
     end
     protected :apply_sorting
 
+    # If get_relation was called before (e.g. through get_records), then this method won't call it again, but use its latest result.
+    # FIXME: it's pretty awkward and should be refactored
     def count_records(params, columns=[])
       # build initial relation based on passed params
-      relation = get_relation(params)
-
+      relation = @relation || get_relation(params)
       # addressing the n+1 query problem
       columns.each do |c|
         assoc, method = c[:name].split('__')
         relation = relation.includes(assoc.to_sym) if method
       end
-
       relation.count
     end
 
@@ -322,7 +322,7 @@ module Netzke::Basepack::DataAdapters
 
       relation = relation.extend_with(params[:scope]) if params[:scope]
 
-      relation
+      @relation = relation
     end
     protected :get_relation
 
@@ -428,7 +428,7 @@ module Netzke::Basepack::DataAdapters
           arel_table[attr].matches "%#{value}%"
         else
           if value == false || value == true
-            arel_table[attr].eq(value ? 1 : 0)
+            arel_table[attr].eq(value)
           else
             arel_table[attr].send(q["operator"], value)
           end

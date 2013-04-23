@@ -4,6 +4,7 @@
   * a few improvements on grid column filtering (by Simon Willmann)
 * bug fix
   * was crashing when an attribute with name like `author__id` was attempted to be read on a nil association
+  * boolean search from the search panel works now
 
 # 0.8.2 - 2013-03-16
 * improvements
