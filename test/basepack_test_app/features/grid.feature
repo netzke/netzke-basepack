@@ -9,7 +9,7 @@ Scenario: BookGrid should correctly display data
   And a book exists with author: that author, title: "Lolita", last_read_at: "2011-12-13 11:12:13", published_on: "2005-01-30"
 
   When I go to the BookGrid test page
-  Then I should see "Nabokov, Vladimir"
+  Then I should see "Vladimir Nabokov"
   And I should see "12/13/2011 11:12:13"
   And I should see "01/30/2005"
 
@@ -53,17 +53,6 @@ Scenario: Deleting a record
   Then a user should not exist with first_name: "Anton"
 
 @javascript
-Scenario: Try deleting an undeletable record
-  Given a user exists with first_name: "Admin", last_name: "Admin"
-  When I go to the UserGrid test page
-  And I select all rows in the grid
-  And I press "Delete"
-  Then I should see "Are you sure?"
-  When I press "Yes"
-  Then I should see "Can't delete Admin User"
-  Then a user should exist with first_name: "Admin"
-
-@javascript
 Scenario: Multi-editing records
   Given a user exists with first_name: "Carlos", last_name: "Castaneda"
   And a user exists with first_name: "Herman", last_name: "Hesse"
@@ -87,7 +76,7 @@ Scenario: Filling out association column with association's virtual method
   Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
   And a book exists with title: "Lolita", author: that author
   When I go to the BookGrid test page
-  Then I should see "Nabokov, Vladimir"
+  Then I should see "Vladimir Nabokov"
   And I should see "Lolita"
 
 @javascript
@@ -139,10 +128,10 @@ Scenario: Inline editing of association
   And I wait for response from server
   And I expand combobox "author__name" in row 1 of the grid
   And I wait for response from server
-  And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
+  And I select "Herman Hesse" in combobox "author__name" in row 1 of the grid
   And I edit row 1 of the grid with title: "Demian"
   And I stop editing the grid
-  Then I should see "Hesse, Herman" within "#book_grid"
+  Then I should see "Herman Hesse" within "#book_grid"
 
   When I press "Apply"
   And I wait for response from server
@@ -158,14 +147,14 @@ Scenario: Inline adding of records
   And I press "Add"
   And I expand combobox "author__name" in row 1 of the grid
   And I wait for response from server
-  And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
+  And I select "Herman Hesse" in combobox "author__name" in row 1 of the grid
   And I edit row 1 of the grid with title: "Demian"
   And I stop editing the grid
 
   And I press "Add"
   And I expand combobox "author__name" in row 2 of the grid
   And I wait for response from server
-  And I select "Nabokov, Vladimir" in combobox "author__name" in row 2 of the grid
+  And I select "Vladimir Nabokov" in combobox "author__name" in row 2 of the grid
   And I edit row 2 of the grid with title: "Lolita"
   And I stop editing the grid
 
@@ -269,7 +258,7 @@ Scenario: Grid with overridden columns
   And a book exists with title: "Lolita", author: that author
   When I go to the BookGridWithOverriddenColumns test page
   Then I should see "LOLITA"
-  And I should see "Nabokov, Vladimir"
+  And I should see "Vladimir Nabokov"
 
 @javascript
   Scenario: Virtual attributes should not be sortable

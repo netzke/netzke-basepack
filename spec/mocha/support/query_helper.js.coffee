@@ -37,8 +37,33 @@ Ext.apply window,
   textFieldWith: (text) ->
     _componentLike "textfield", "value", text
 
+  comboboxWith: (text) ->
+    _componentLike "combo", "rawValue", text
+
+  textAreaWith: (text) ->
+    _componentLike "textareafield", "value", text
+
+  numberFieldWith: (value) ->
+    _componentLike "numberfield", "value", value
+
+  dateTimeFieldWith: (value) ->
+    res = 'xdatetime with value ' + value
+    Ext.each Ext.ComponentQuery.query('xdatetime'), (item) ->
+      if item.getValue().toString() == (new Date(value)).toString()
+        res = item
+        return
+    res
+
+  dateFieldWith: (value) ->
+    res = 'datefield with value ' + value
+    Ext.each Ext.ComponentQuery.query('datefield'), (item) ->
+      if item.getValue().toString() == (new Date(value)).toString()
+        res = item
+        return
+    res
+
   _componentLike:(type,attr,value)->
-    Ext.ComponentQuery.query(type+'['+attr+'='+value+']')[0]
+    Ext.ComponentQuery.query(type+'['+attr+'='+value+']')[0] || type + " with " + attr + " '" + value + "'"
 
 # alias
 window.anywhere = window.somewhere

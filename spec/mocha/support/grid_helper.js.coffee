@@ -10,5 +10,8 @@ Ext.apply window,
         record.isNew = true
     click button 'Apply' if params.submit
 
+  selectAllRowsIn: (grid) ->
+    grid.getSelectionModel().selectAll()
+
 # Aliases
 window.addRecord = window.addRecords

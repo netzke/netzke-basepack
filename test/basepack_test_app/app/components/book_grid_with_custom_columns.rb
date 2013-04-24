@@ -9,8 +9,9 @@ class BookGridWithCustomColumns < Netzke::Basepack::Grid
     c.read_only = true
   end
 
-  column :author_name do |c|
+  column :author__name do |c|
     c.flex = 1
+    c.sorting_scope = :sorted_by_author_name
     c.text = "Author"
   end
 

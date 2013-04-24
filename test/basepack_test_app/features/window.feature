@@ -24,5 +24,6 @@ Scenario: Window with persistence should remember its size and position
 
   And I go to the WindowComponentLoader test page
   When I press "Load window"
+  And I wait for response from server
   Then active window position must be 50,40
   And active window size must be 150,100

@@ -3,20 +3,6 @@ Feature: Form panel
   As a role
   I want feature
 
-Scenario: UserForm should be rendered properly along with the data for the first user
-  Given a role exists with name: "writer"
-  And a user exists with first_name: "Carlos", last_name: "Castaneda", role: that role
-  When I go to the UserForm test page
-  Then I should see "Carlos"
-  And I should see "Castaneda"
-  And I should see "writer"
-
-@javascript
-Scenario: A form should be rendered properly along with the data for the specified record
-  Given a book exists with title: "Great Book", last_read_at: "2005-01-23 11:12:13"
-  When I go to the BookFormWithDefaults test page
-  Then the form should show title: "Great Book", last_read_at: "2005-01-23 11:12:13"
-
 @javascript
 Scenario: Editing the record
   Given a role exists with name: "musician"
@@ -89,11 +75,11 @@ Scenario: Editing and immediately submitting the form
   Given an author exists with first_name: "Carlos", last_name: "Castaneda"
   And a book exists with title: "Journey to Ixtlan", author: that author
   When I go to the BookForm test page
-  Then the form should show author__name: "Castaneda, Carlos"
+  Then the form should show author__name: "Carlos Castaneda"
 
   When I press "Apply"
   And I wait for response from server
-  Then the form should show author__name: "Castaneda, Carlos"
+  Then the form should show author__name: "Carlos Castaneda"
 
 # @javascript
 # Scenario: Checkbox group for tags should work properly

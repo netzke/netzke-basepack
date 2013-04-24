@@ -46,17 +46,12 @@ Feature: Grid sorting
     And I wait for response from server
     Then the grid should have records sorted by "Author  first name" desc
 
-    When I go to the BookGrid test page
-
-    # HACK
-    And I sleep 1 second
-
-    And I click on column "Author  name"
+    And I click on column "Author"
     And I wait for response from server
-    Then the grid should have records sorted by "Author  name"
-    When I click on column "Author  name"
+    Then the grid should have records sorted by "Author"
+    When I click on column "Author"
     And I wait for response from server
-    Then the grid should have records sorted by "Author  name" desc
+    Then the grid should have records sorted by "Author" desc
 
   @javascript
   Scenario: Sorting on regular column

@@ -19,6 +19,7 @@ Feature: Search
     | Florinda   | Donner    | 1       |
 
     When I go to the UserGrid test page
+    And I wait for response from server
     Then the grid should show 4 records
 
     When I press "Search"

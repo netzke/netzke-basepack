@@ -1,5 +1,6 @@
 Ext.apply window,
   expectToSee: (el) ->
+    throw el + " not found" if Ext.isString(el)
     expect(Ext.isObject(el) || Ext.isElement(el)).to.be.ok()
 
   expectToNotSee: (el) ->

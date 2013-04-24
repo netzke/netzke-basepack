@@ -6,7 +6,7 @@ class User < ActiveRecord::Base
 
   before_destroy :is_admin
   def is_admin
-    errors.add :base, "Can't delete Admin User." if self.first_name == "Admin"
+    errors.add :base, "Can't delete admins." if self.role.try(:name) == "admin"
     errors.blank?
   end
 end

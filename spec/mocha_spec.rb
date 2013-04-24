@@ -1,7 +1,6 @@
 require 'spec_helper'
 
 feature "Mocha specs", js: true do
-
   # create a spec for each file in mocha/**/* except for extra/ and support/
   dir = File.join(File.dirname(__FILE__), "mocha")
   Dir[File.join(dir, "**/*")].each do |f|
