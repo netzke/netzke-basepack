@@ -123,7 +123,7 @@ module Netzke
             f[:getter] = c.getter
 
             # scopes for combobox options
-            f[:scopes] = c[:editor][:scopes] if c[:editor].is_a?(Hash)
+            f[:scope] = c[:scope] if c[:scope]
           end
         end
       end
