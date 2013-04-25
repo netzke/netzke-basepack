@@ -3,7 +3,7 @@
 <head>
   <title>Netzke Basepack Test App</title>
   <%= csrf_meta_tag %>
-  <%= load_netzke minified: true %>
+  <%= load_netzke minified: Rails.env.testing? %>
   <% if params[:spec] %>
     <%= javascript_include_tag "/assets/expect/expect.js" %>
     <%= javascript_include_tag "/assets/mocha/mocha.js" %>
