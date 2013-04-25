@@ -1,4 +1,8 @@
 # 0.8.4 - WIP
+* bug fix
+  * datetime field in forms respects `read_only` now
+* improvements
+  * Raise a meaninful exception when a model doesn't have a primary key, which is required by Grid
 
 # 0.8.3 - 2013-04-24
 * improvements
