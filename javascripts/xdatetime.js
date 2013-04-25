@@ -80,7 +80,8 @@ Ext.define('Ext.ux.form.field.DateTime', {
             format:me.dateFormat,
             flex:1,
             isFormField:false, //exclude from field query's
-            submitValue:false
+            submitValue:false,
+            readOnly: me.readOnly
         }, me.dateConfig));
         me.items.push(me.dateField);
 
@@ -88,7 +89,8 @@ Ext.define('Ext.ux.form.field.DateTime', {
             format:me.timeFormat,
             flex:1,
             isFormField:false, //exclude from field query's
-            submitValue:false
+            submitValue:false,
+            readOnly: me.readOnly
         }, me.timeConfig));
         me.items.push(me.timeField);
 
