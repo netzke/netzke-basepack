@@ -11,10 +11,9 @@ module Netzke
   module Basepack
     class Engine < Rails::Engine
 
-      I18n.load_path << File.dirname(__FILE__) + '/../locales/en.yml'
-      I18n.load_path << File.dirname(__FILE__) + '/../locales/de.yml'
-      I18n.load_path << File.dirname(__FILE__) + '/../locales/ru.yml'
-      I18n.load_path << File.dirname(__FILE__) + '/../locales/es.yml'
+      %w[en de ru es].each do |lang|
+        I18n.load_path << File.dirname(__FILE__) + "/../locales/#{lang}.yml"
+      end
 
       config.after_initialize do
         Netzke::Core.external_ext_css << "#{Netzke::Core.ext_uri}/examples/ux/grid/css/RangeMenu"

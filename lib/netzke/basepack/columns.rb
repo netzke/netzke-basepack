@@ -116,14 +116,10 @@ module Netzke
       def default_fields_for_forms
         columns_taken_over_to_forms.map do |c|
           (c[:editor] || {}).tap do |f|
-            f[:name] = c.name
+            %w(name read_only setter getter scope).each do |key|
+              f[key.to_sym] = c[key.to_sym]
+            end
             f[:field_label] = c.text || c.header
-            f[:read_only] = c.read_only
-            f[:setter] = c.setter
-            f[:getter] = c.getter
-
-            # scopes for combobox options
-            f[:scope] = c[:scope] if c[:scope]
           end
         end
       end
