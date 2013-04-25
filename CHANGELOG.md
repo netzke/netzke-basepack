@@ -1,3 +1,5 @@
+# 0.8.4 - WIP
+
 # 0.8.3 - 2013-04-24
 * improvements
   * implement advanced searching by association (issue #93)
