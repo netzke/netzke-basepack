@@ -31,6 +31,9 @@ Ext.apply window,
   icon: (tooltip) ->
     Ext.DomQuery.select('img[data-qtip="'+tooltip+'"]')[0] || 'icon ' + tooltip
 
+  activeWindow: ->
+    Ext.WindowMgr.getActive()
+
   somewhere: (text) ->
     Ext.DomQuery.select("*:contains(" + text + ")")[0] || 'anywhere ' + text
 

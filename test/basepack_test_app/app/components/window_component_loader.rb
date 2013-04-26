@@ -12,10 +12,11 @@ class WindowComponentLoader < Netzke::Base
   end
 
   action :load_window
+  action :reset_session
 
   def configure(c)
     super
-    c.bbar = [:load_window]
+    c.bbar = [:load_window, :reset_session]
   end
 
   js_configure do |c|
@@ -26,6 +27,15 @@ class WindowComponentLoader < Netzke::Base
         }});
       }
     JS
+
+    c.on_reset_session = <<-JS
+      function(params){
+        this.serverResetSession();
+      }
+    JS
   end
 
+  endpoint :server_reset_session do |params,this|
+    component_instance(:some_window).state.clear
+  end
 end
