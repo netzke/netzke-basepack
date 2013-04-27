@@ -1,9 +1,0 @@
-# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
-
-one:
-  name: Spain
-  continent_id: 1
-
-two:
-  name: Argentina
-  continent_id: 2
