@@ -3,7 +3,8 @@ require 'netzke/basepack/column_config'
 
 module Netzke
   module Basepack
-    # {Ext.grid.Panel}[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.Panel] -based component with the following features:
+    # {Ext.grid.Panel}[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.Panel] -based component with the following
+    # features:
     #
     # * automatic column configuration based on used ORM
     # * pagination
@@ -18,12 +19,20 @@ module Netzke
     # * virtual attribute support
     #
     # == Instance configuration
+    #
     # The following config options are supported:
-    # [:+model+]
+    #
+    # [model]
+    #
     #   Name of the ActiveRecord model that provides data to this Grid, e.g. "User"
-    # [:+columns+]
-    #   An array of columns to be displayed in the grid; each column may be represented by a symbol (representing the model's attribute name), or a hash (when extra configuration is needed). See the "Columns" section below.
-    # [:+scope+]
+    #
+    # [columns]
+    #
+    #   An array of columns to be displayed in the grid; each column may be represented by a symbol (representing the
+    #   model's attribute name), or a hash (when extra configuration is needed). See the "Columns" section below.
+    #
+    # [scope]
+    #
     #   Specifies how the data should be filtered.
     #   When it's a symbol, it's used as a scope name.
     #   When it's a string, it's a SQL statement (passed directly to +where+).
@@ -32,55 +41,96 @@ module Netzke
     #
     #     scope: ["id > ?", 100])
     #
-    # [:+role+]
+    # [role]
+    #
     #   Role for ActiveModel mass-assignment security
-    # [:+strong_default_attrs+]
+    #
+    # [strong_default_attrs]
+    #
     #   (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. +role_id: 1+
-    # [:+enable_column_filters+]
+    #
+    # [enable_column_filters]
+    #
     #   (defaults to true) enable filters in column's context menu
-    # [:+enable_edit_in_form+]
+    #
+    # [enable_edit_in_form]
+    #
     #   (defaults to true) provide buttons into the toolbar that activate editing/adding records via a form
-    # [:+enable_extended_search+]
+    #
+    # [enable_extended_search]
+    #
     #   (defaults to true) provide a button into the toolbar that shows configurable search form
-    # [:+enable_context_menu+]
+    #
+    # [enable_context_menu]
+    #
     #   (defaults to true) enable rows context menu
-    # [:+context_menu+]
+    #
+    # [context_menu]
+    #
     #   An array of actions (e.g. [:edit, "-", :del] - see the Actions section) or +false+ to disable the context menu
-    # [:+enable_pagination+]
+    #
+    # [enable_pagination]
+    #
     #   (defaults to true) enable pagination
-    # [:+rows_per_page+]
+    #
+    # [rows_per_page]
+    #
     #   (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to +false+)
-    # [:+load_inline_data+]
-    #   (defaults to false) grid is being loaded along with its initial data; use with precaution, preferred method is auto-loading of data in a separate server request (see +data_store+)
-    # [:+data_store+]
-    #   (defaults to empty Hash) extra configuration for the JS class's internal store (see {Ext.data.Store}[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Store] ). For example, to disable auto loading of data, do:
+    #
+    # [load_inline_data]
+    #
+    #   (defaults to false) grid is being loaded along with its initial data; use with precaution, preferred method is
+    #   auto-loading of data in a separate server request (see +data_store+)
+    #
+    # [data_store]
+    #
+    #   (defaults to empty Hash) extra configuration for the JS class's internal store (see
+    #   {Ext.data.Store}[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Store] ). For example, to disable auto
+    #   loading of data, do:
     #
     #     data_store: {auto_load: false}
     #
     # == Columns
-    # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name of model's (virtual) attribute (in which case the configuration will be fully automatic), or a hash that may contain the following configuration options as keys:
     #
-    # [:+name+]
+    # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name
+    # of model's (virtual) attribute (in which case the configuration will be fully automatic), or a hash that may
+    # contain the following configuration options as keys:
+    #
+    # [name]
+    #
     #   (required) name of the column, that may correspond to the model's (virtual) attribute
-    # [:+read_only+]
+    #
+    # [read_only]
+    #
     #   A boolean that defines if the cells in the column should be editable
-    # [:+filterable+]
+    #
+    # [filterable]
+    #
     #   Set to false to disable filtering on this column
-    # [:+getter+]
-    #   A lambda that receives a record as a parameter, and is expected to return a string that will be sent to the cell (can be HTML code), e.g.:
+    #
+    # [getter]
+    #
+    #   A lambda that receives a record as a parameter, and is expected to return a string that will be sent to the cell
+    #   (can be HTML code), e.g.:
     #
     #     getter: ->(r){ [r.first_name, r.last_name].join }
     #
-    # [:+setter+]
-    #   A lambda that receives a record as first parameter, and the value passed from the cell as the second parameter, and is expected to modify the record accordingly, e.g.:
+    # [setter]
+    #
+    #   A lambda that receives a record as first parameter, and the value passed from the cell as the second parameter,
+    #   and is expected to modify the record accordingly, e.g.:
     #
     #     :setter => ->(r,v){ r.first_name, r.last_name = v.split(" ") }
     #
-    # [:+scope+]
-    #   The scope for one-to-many association column. Same syntax applies as for scoping out records for the grid itself. See "One-to-many association support" for details.
+    # [scope]
     #
-    # [:+sorting_scope+]
-    #   The name of the scope used for sorting the column. This can be useful for virtual columns for example. The scope will get one parameter specifying the direction (:asc or :desc). Example:
+    #   The scope for one-to-many association column. Same syntax applies as for scoping out records for the grid
+    #   itself. See "One-to-many association support" for details.
+    #
+    # [sorting_scope]
+    #
+    #   The name of the scope used for sorting the column. This can be useful for virtual columns for example. The scope
+    #   will get one parameter specifying the direction (:asc or :desc). Example:
     #
     #     columns => [{ name: "complete_user_name", sorting_scope: :sort_user_by_full_name }, ...]
     #
@@ -90,28 +140,40 @@ module Netzke
     #       }
     #     end
     #
-    # [:+filter_with+]
-    #   A lambda that receives the relation, the value to filter by and the operator. This allows for more flexible handling of basic filters and enables filtering of virtual columns. Example:
+    # [filter_with]
+    #
+    #   A lambda that receives the relation, the value to filter by and the operator. This allows for more flexible
+    #   handling of basic filters and enables filtering of virtual columns. Example:
     #
     #     columns => [{ name: "complete_user_name", filter_with: lambda{|rel, value, op| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) } }, ...]
     #
-    # [:+format+]
+    # [format]
+    #
     #   The format to display data in case of date and datetime columns, e.g. 'Y-m-d g:i:s'.
-    # [:+excluded+]
+    #
+    # [excluded]
+    #
     #   When true, this column will not be used in the grid (not even in the hidden mode)
-    # [:+blank_line+]
+    #
+    # [blank_line]
+    #
     #   The blank line for one-to-many association columns, defaults to "---". Set to false to exclude completely.
     #
-    # Besides these options, a column can receive any meaningful config option understood by {Ext.grid.column.Column}(http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.column.Column) (e.g. +hidden+)
+    # Besides these options, a column can receive any meaningful config option understood by
+    # Ext.grid.column.Column[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.column.Column] (e.g. +hidden+)
     #
     # === Customizing columns by extending Grid
-    # Grid itself always uses the columns provided in the `columns` config option. But this behavior can be changed by overriding the `columns` method, which follows the same semantics as the `columns` config option. This can be used, for example, for extending the list of columns provided in the config:
+    #
+    # Grid itself always uses the columns provided in the `columns` config option. But this behavior can be changed by
+    # overriding the `columns` method, which follows the same semantics as the `columns` config option. This can be
+    # used, for example, for extending the list of columns provided in the config:
     #
     #     def columns
     #       super + [:extra_column]
     #     end
     #
     # === Configuring default filters on grid columns
+    #
     # Default Filters can either be configured on the grid itself
     #
     #     def configure(c)
@@ -127,19 +189,30 @@ module Netzke
     #      end
     #
     # == One-to-many association support
-    # If the model bound to a grid +belongs_to+ another model, Grid can display an "assocition column" - where the user can select the associated record from a drop-down box. You can specify which method of the association should be used as the display value for the drop-down box options by using the double-underscore notation on the column name, where the association name is separated from the association method by "__" (double underscore). For example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way, the book grid can have a column defined as follows:
+    #
+    # If the model bound to a grid +belongs_to+ another model, Grid can display an "assocition column" - where the user
+    # can select the associated record from a drop-down box. You can specify which method of the association should be
+    # used as the display value for the drop-down box options by using the double-underscore notation on the column
+    # name, where the association name is separated from the association method by "__" (double underscore). For
+    # example, let's say we have a Book that +belongs_to+ model Author, and Author responds to +first_name+. This way,
+    # the book grid can have a column defined as follows:
     #
     #     {name: "author__first_name"}
     #
-    # Grid will detect it to be an association column, and will use the drop-down box for selecting an author, where the list of authors will be represented by the author's first name.
+    # Grid will detect it to be an association column, and will use the drop-down box for selecting an author, where the
+    # list of authors will be represented by the author's first name.
     #
     # In order to scope out the records displayed in the drop-down box, the +scope+ column option can be used, e.g.:
     #
-    #     {name: "author__first_name", scope: ->(relation){relation.where(:popular => true)}
+    #     {name: "author__first_name", scope: ->(relation){relation.where(popular: true)}
     #
     # == Add/edit forms
-    # The forms will by default display the fields that correspond to the configured columns, taking over meaningful configuration options (e.g. +text+ will be converted into +fieldLabel+).
-    # You may override the default fields displayed in the forms by overriding the +default_fields_for_forms+ method, which should return an array understood by the +items+ config property of the +Form+. If you need to use a custom class instead of +Form+, you need to override the +preconfigure_record_window+ method:
+    #
+    # The forms will by default display the fields that correspond to the configured columns, taking over meaningful
+    # configuration options (e.g. +text+ will be converted into +fieldLabel+).
+    # You may override the default fields displayed in the forms by overriding the +default_fields_for_forms+ method,
+    # which should return an array understood by the +items+ config property of the +Form+. If you need to use a custom
+    # class instead of +Form+, you need to override the +preconfigure_record_window+ method:
     #
     #     def preconfigure_record_window(c)
     #       super
@@ -148,29 +221,44 @@ module Netzke
     #
     #
     # == Actions
-    # You can override Grid's actions to change their text, icons, and tooltips (see http://rdoc.info/github/netzke/netzke-core/Netzke/Core/Actions).
+    # You can override Grid's actions to change their text, icons, and tooltips (see
+    # http://rdoc.info/github/netzke/netzke-core/Netzke/Core/Actions).
     #
     # Grid implements the following actions:
-    # [:+add+]
-    #   Inline adding of a record
-    # [:+del+]
-    #   Deletion of records
-    # [:+edit+]
-    #   Inline editing of a record
-    # [:+apply+]
-    #   Applying inline changes
-    # [:+add_in_form+]
-    #   Adding a record in a form
-    # [:+edit_in_form+]
-    #   (multi-record) editing in a forrm
-    # [:+search+]
-    #   Advanced searching
     #
+    # [add]
+    #
+    #   Inline adding of a record
+    #
+    # [del]
+    #
+    #   Deletion of records
+    #
+    # [edit]
+    #
+    #   Inline editing of a record
+    #
+    # [apply]
+    #
+    #   Applying inline changes
+    #
+    # [add_in_form]
+    #
+    #   Adding a record in a form
+    #
+    # [edit_in_form]
+    #
+    #   (multi-record) editing in a forrm
+    #
+    # [search]
+    #
+    #   Advanced searching
     #
     #
     # == Class-level configuration
     #
-    # Configuration on this level is effective during the life-time of the application. One place for setting these options is initializers:
+    # Configuration on this level is effective during the life-time of the application. One place for setting these
+    # options is initializers:
     #
     #    Netzke::Basepack::Grid.setup do |c|
     #      c.edit_in_form_available = false
@@ -179,16 +267,25 @@ module Netzke
     #      c.remember_selection_available = false
     #    end
     #
-    # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the way that the less functionality is enabled, the less code is generated.
+    # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the
+    # way that the less functionality is enabled, the less code is generated.
     #
     # The following class configuration options are available:
-    # [:+column_filters_available+]
+    #
+    # [column_filters_available]
+    #
     #   (defaults to true) include code for the filters in the column's context menu
-    # [:+edit_in_form_available+]
+    #
+    # [edit_in_form_available]
+    #
     #   (defaults to true) include code for (multi-record) editing and adding records through a form
-    # [:+advanced_search_available+]
+    #
+    # [advanced_search_available]
+    #
     #   (defaults to true) include code for extended configurable search
-    # [:+remember_selection_available+]
+    #
+    # [remember_selection_available]
+    #
     #   (defaults to true) include code for re-selecting records after grid reload
     class Grid < Netzke::Base
       include self::Services
