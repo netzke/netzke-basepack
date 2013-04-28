@@ -6,7 +6,6 @@ module Netzke
 
         included do
           endpoint :get_data do |params, this|
-            # not a usual Netzke endpoint, as it's being used by the Ext.data.DirectStore
             this.merge! get_data(params)
           end
 

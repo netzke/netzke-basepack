@@ -323,7 +323,7 @@ module Netzke
         ex = Netzke::Core.ext_path.join("examples")
 
         c.require ex.join("ux/CheckColumn.js")
-        c.require :check_column_fix
+        c.require :extensions
 
         # Includes for column filters
         if column_filters_available

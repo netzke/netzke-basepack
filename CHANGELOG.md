@@ -4,6 +4,7 @@
   request
 * bug fix
   * datetime field in forms respects `read_only` now
+  * Re-enable piggybacking commands to the client from within Grid's `get_data` endpoint
 * improvements
   * Raise a meaninful exception when a model doesn't have a primary key, which is required by Grid
 
