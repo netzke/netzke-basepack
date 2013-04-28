@@ -29,24 +29,16 @@ module Netzke
 
           endpoint :delete_data do |params, this|
             if !config[:prohibit_delete]
-              record_ids = ActiveSupport::JSON.decode(params[:records])
-              success = true
-              record_ids.each {|id|
-                record = data_adapter.find_record(id)
-                if !record.destroy
-                  success = false
-                  record.errors.to_a.each do |msg|
-                    flash :error => msg
-                  end
-                end
-              }
-              on_data_changed
-              if success
-                this.netzke_feedback I18n.t('netzke.basepack.grid.deleted_n_records', :n => record_ids.size)
-                this.load_store_data get_data
-              else
-                this.netzke_feedback @flash
+              ids = ActiveSupport::JSON.decode(params[:records])
+              destroyed_ids, errors = destroy(ids)
+
+              feedback = errors
+              if destroyed_ids.present?
+                feedback << I18n.t('netzke.basepack.grid.deleted_n_records', :n => destroyed_ids.size)
+                on_data_changed
+                this.load_store_data(get_data)
               end
+              this.netzke_feedback(feedback)
             else
               this.netzke_feedback I18n.t('netzke.basepack.grid.cannot_delete')
             end
@@ -153,6 +145,26 @@ module Netzke
             flash :error => "You don't have permissions to read data"
             { :netzke_feedback => @flash }
           end
+        end
+
+        # Destroys records by ids
+        # Returns [destroyed_ids, errors]
+        def destroy(ids)
+          destroyed_ids = []
+          errors = []
+          ids.each {|id|
+            record = data_adapter.find_record(id, scope: config[:scope])
+            next if record.nil?
+
+            if record.destroy
+              destroyed_ids << id
+            else
+              record.errors.to_a.each do |msg|
+                errors << msg
+              end
+            end
+          }
+          [destroyed_ids, errors]
         end
 
       protected

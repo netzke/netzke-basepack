@@ -163,8 +163,12 @@ module Netzke::Basepack::DataAdapters
       @model_class.destroy(ids)
     end
 
-    def find_record(id)
-      @model_class.where(primary_key => id).first
+    # Returns a record by id.
+    # Respects the following options:
+    # * scope - will only return a record if it falls into the provided scope
+    def find_record(id, options = {})
+      scope = options[:scope] || {}
+      @model_class.where(primary_key => id).extend_with(scope).first
     end
 
     # Build a hash of foreign keys and the associated model
@@ -176,6 +180,7 @@ module Netzke::Basepack::DataAdapters
       foreign_keys
     end
 
+    # FIXME
     def move_records(params)
       if defined?(ActsAsList) && @model_class.ancestors.include?(ActsAsList::InstanceMethods)
         ids = JSON.parse(params[:ids]).reverse
@@ -183,7 +188,7 @@ module Netzke::Basepack::DataAdapters
           r = @model_class.find(id)
           r.insert_at(params[:new_index].to_i + i + 1)
         end
-        on_data_changed
+        on_data_changed # copypaste nonsense
       else
         raise RuntimeError, "Model class should implement 'acts_as_list' to support reordering records"
       end

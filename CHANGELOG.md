@@ -1,4 +1,7 @@
 # 0.8.4 - WIP
+* SECURITY FIX
+  * when a grid had a scope set, it was possible to delete a record outside of the scope by tweaking its id during a
+  request
 * bug fix
   * datetime field in forms respects `read_only` now
 * improvements
