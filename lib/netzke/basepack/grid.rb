@@ -288,6 +288,7 @@ module Netzke
     #
     #   (defaults to true) include code for re-selecting records after grid reload
     class Grid < Netzke::Base
+      include self::Endpoints
       include self::Services
       include Columns
       include DataAccessor
