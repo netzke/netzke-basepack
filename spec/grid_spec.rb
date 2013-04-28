@@ -2,40 +2,45 @@ require 'spec_helper'
 
 module Netzke::Basepack
   describe Grid::Services do
-    it 'does not allow deleting out-of-scope records' do
+    before do
       Author.delete_all
 
-      castaneda = FactoryGirl.create(:castaneda)
-      fowles = FactoryGirl.create(:fowles)
+      @castaneda = FactoryGirl.create(:castaneda)
+      @fowles = FactoryGirl.create(:fowles)
 
-      castaneda_book1 = FactoryGirl.create(:book, author: castaneda)
-      castaneda_book2 = FactoryGirl.create(:book, author: castaneda)
-      castaneda_book3 = FactoryGirl.create(:book, author: castaneda)
+      @cb1 = FactoryGirl.create(:book, author: @castaneda)
+      @cb2 = FactoryGirl.create(:book, author: @castaneda)
+      @cb3 = FactoryGirl.create(:book, author: @castaneda)
 
-      fowles_book1 = FactoryGirl.create(:book, author: fowles)
-      fowles_book2 = FactoryGirl.create(:book, author: fowles)
+      @fb1 = FactoryGirl.create(:book, author: @fowles)
+      @fb2 = FactoryGirl.create(:book, author: @fowles)
+    end
 
-      grid = BookGridWithScope.new
+    let(:grid) {BookGridWithScope.new}
 
+    it 'does not allow deleting out-of-scope records' do
       # allowed
       expect {
-        grid.destroy([castaneda_book1.id])
-      }.to change {castaneda.books.count}.by(-1)
+        grid.destroy([@cb1.id])
+      }.to change {@castaneda.books.count}.by(-1)
 
       # not allowed
       expect {
-        grid.destroy([fowles_book1.id])
-      }.to change {fowles.books.count}.by(0)
+        grid.destroy([@fb1.id])
+      }.to change {@fowles.books.count}.by(0)
 
       # partially allowed
       destroyed_ids, errors = grid.destroy([
-        castaneda_book2.id,
-        castaneda_book3.id,
-        fowles_book1.id,
-        fowles_book2.id
+        @cb2.id,
+        @cb3.id,
+        @fb1.id,
+        @fb2.id
       ])
 
-      destroyed_ids.should == [castaneda_book2.id, castaneda_book3.id]
+      destroyed_ids.should == [@cb2.id, @cb3.id]
+    end
+
+    it 'does not allow editing out-of-scope records' do
     end
   end
 end
