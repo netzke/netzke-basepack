@@ -68,6 +68,54 @@ module Netzke
           norm_index
         end
 
+        def create(data)
+          out = {}
+          data.each do |record_hash|
+            client_id = record_hash.delete('internal_id')
+            record_result = out[client_id] = {}
+            record = data_adapter.new_record
+
+            # merge with strong default attirbutes
+            record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
+
+            record_hash.each_pair do |k,v|
+              data_adapter.set_record_value_for_attribute(record, final_columns_hash[k.to_sym].nil? ? {:name => k} : final_columns_hash[k.to_sym], v, config.role || :default)
+            end
+
+            if record.save
+              record_result[:record] = data_adapter.record_to_array(record, final_columns(:with_meta => true))
+            else
+              record_result[:error] = record.errors.to_a
+            end
+          end
+
+          out
+        end
+
+        def update(data)
+          out = {}
+          data.each do |record_hash|
+            id = record_hash.delete(data_adapter.primary_key)
+            record = data_adapter.find_record(id)
+            record_result = out[id] = {}
+
+            # merge with strong default attirbutes
+            record_hash.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
+
+            record_hash.each_pair do |k,v|
+              data_adapter.set_record_value_for_attribute(record, final_columns_hash[k.to_sym].nil? ? {:name => k} : final_columns_hash[k.to_sym], v, config.role || :default)
+            end
+
+            if record.save
+              record_result[:record] = data_adapter.record_to_array(record, final_columns(:with_meta => true))
+            else
+              record_result[:error] = record.errors.to_a
+            end
+          end
+
+          out
+        end
+
         # Params:
         # <tt>:operation</tt>: :update or :create
         def process_data(data, operation)

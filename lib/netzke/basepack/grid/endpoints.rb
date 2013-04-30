@@ -5,25 +5,18 @@ module Netzke
         extend ActiveSupport::Concern
 
         included do
-          endpoint :get_data do |params, this|
-            this.merge! get_data(params)
+          endpoint :server_create do |data,this|
+            if !config[:prohibit_create]
+              this.netzke_set_result create(data)
+            end
           end
 
-          endpoint :post_data do |params, this|
-            mod_records = {}
-            [:create, :update].each do |operation|
-              data = ActiveSupport::JSON.decode(params["#{operation}d_records"]) if params["#{operation}d_records"]
-              if !data.nil? && !data.empty? # data may be nil for one of the operations
-                mod_records[operation] = process_data(data, operation)
-                mod_records[operation] = nil if mod_records[operation].empty?
-              end
-            end
+          endpoint :server_update do |data, this|
+            this.netzke_set_result update(data)
+          end
 
-            on_data_changed
-
-            this.update_new_records mod_records[:create]
-            this.update_mod_records mod_records[:update] if mod_records[:update]
-            this.netzke_feedback @flash
+          endpoint :get_data do |params, this|
+            this.netzke_set_result get_data(params)
           end
 
           endpoint :delete_data do |params, this|
