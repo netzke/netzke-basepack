@@ -19,6 +19,8 @@ module Netzke
           configure_checkbox!
         when :date
           configure_date_field!
+        when :datetime
+          configure_datetime_field!          
         end
       end
 
@@ -62,6 +64,11 @@ module Netzke
       def configure_date_field!
         self.submit_format = "Y-m-d"
         self.format ||= I18n.t("date", scope: 'netzke.formats', default: "Y-m-d")
+      end
+      
+      def configure_datetime_field!
+        self.date_submit_format = "Y-m-d"
+        self.time_submit_format = "H:i:s"
       end
     end
   end
