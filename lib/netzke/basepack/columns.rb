@@ -116,8 +116,8 @@ module Netzke
       def default_fields_for_forms
         columns_taken_over_to_forms.map do |c|
           (c[:editor] || {}).tap do |f|
-            %w(name read_only setter getter scope format).each do |key|
-              f[key.to_sym] = c[key.to_sym]
+            %w(name read_only setter getter scope format time_format date_format).each do |key|
+              f[key.to_sym] = c[key.to_sym] unless c[key.to_sym].nil?
             end
             f[:field_label] = c.text || c.header
           end
