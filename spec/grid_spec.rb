@@ -2,6 +2,9 @@ require 'spec_helper'
 
 module Netzke::Basepack
   describe Grid::Services do
+    # Grid with books scoped out to the first existing author (@castaneda in this case)
+    let(:grid) {BookGridWithScope.new}
+
     before do
       Author.delete_all
 
@@ -15,8 +18,6 @@ module Netzke::Basepack
       @fb1 = FactoryGirl.create(:book, author: @fowles)
       @fb2 = FactoryGirl.create(:book, author: @fowles)
     end
-
-    let(:grid) {BookGridWithScope.new}
 
     it 'does not allow deleting out-of-scope records' do
       # allowed
@@ -41,6 +42,17 @@ module Netzke::Basepack
     end
 
     it 'does not allow editing out-of-scope records' do
+      # allowed
+      res = grid.update([{"id" => @cb1.id, title: 'Foo'}])
+      res[@cb1.id][:error].should be_blank
+      @cb1.reload
+      @cb1.title.should == 'Foo'
+
+      # not allowed
+      res = grid.update([{"id" => @fb1.id, "title" => 'Foo'}])
+      res[@fb1.id][:error].should be_present
+      @fb1.reload
+      @fb1.title.should_not == 'Foo'
     end
   end
 end

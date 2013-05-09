@@ -1,7 +1,7 @@
 class Book < ActiveRecord::Base
   attr_accessible :title, :exemplars, :digitized, :notes, :tags, :rating, :author_id, :last_read_at, :published_on
   belongs_to :author
-  validates_presence_of :title
+  validates :title, presence: true
 
   scope :sorted_by_author_name, lambda { |dir| joins(:author).order("authors.first_name #{dir}, authors.last_name #{dir}") }
 

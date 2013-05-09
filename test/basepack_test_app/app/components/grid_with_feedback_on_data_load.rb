@@ -5,7 +5,7 @@ class GridWithFeedbackOnDataLoad < Netzke::Basepack::Grid
     c.model = 'Book'
   end
 
-  endpoint :get_data do |params,this|
+  endpoint :server_read do |params,this|
     super(params,this)
     this.netzke_feedback "Data loaded!"
   end

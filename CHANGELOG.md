@@ -1,15 +1,18 @@
 # 0.8.4 - WIP
+* internal changes
+  * Endpoints renamed in Grid:
+    * `post_data` => `server_create` and `server_update`
+    * `get_data` => `server_read`
+    * `delete_data` => `server_delete`
 * SECURITY FIX
-  * when a grid had a scope set, it was possible to delete a record outside of the scope by tweaking its id during a
+  * when a grid had a scope set, it was possible to delete/edit a record outside of the scope by tweaking its id during
   request
 * bug fix
   * datetime field in forms respects `read_only` now
   * Re-enable piggybacking commands to the client from within Grid's `get_data` endpoint
 * improvements
   * Raise a meaningful exception when a model doesn't have a primary key, which is required by Grid
-  * grid operations are now routed cleanly through endpoints
-* internal changes
-  * `post_data` endpoint in Grid is gone, in favor of `server_create` and `server_update`
+  * Do not loose rows in grid when attempting to create records that fail validations
 
 # 0.8.3 - 2013-04-24
 * improvements

@@ -20,7 +20,11 @@ en:
             text: Search
 
         deleted_n_records: "Deleted %{n} record(s)"
+        cannot_create: "You don't have permissions to create data"
+        cannot_read: "You don't have permissions to read data"
+        cannot_update: "You don't have permissions to update data"
         cannot_delete: "You don't have permissions to delete data"
+
         confirmation: Confirmation
         are_you_sure: Are you sure?
 

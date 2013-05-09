@@ -5,30 +5,27 @@ module Netzke
         extend ActiveSupport::Concern
 
         included do
-          endpoint :server_create do |data,this|
-            if !config[:prohibit_create]
-              this.netzke_set_result create(data)
-            end
+          endpoint :server_read do |data, this|
+            attempt_operation(:read, data, this)
+          end
+
+          endpoint :server_create do |data, this|
+            attempt_operation(:create, data, this)
           end
 
           endpoint :server_update do |data, this|
-            this.netzke_set_result update(data)
+            attempt_operation(:update, data, this)
           end
 
-          endpoint :get_data do |params, this|
-            this.netzke_set_result get_data(params)
-          end
-
-          endpoint :delete_data do |params, this|
+          endpoint :server_delete do |ids, this|
             if !config[:prohibit_delete]
-              ids = ActiveSupport::JSON.decode(params[:records])
               destroyed_ids, errors = destroy(ids)
 
               feedback = errors
               if destroyed_ids.present?
                 feedback << I18n.t('netzke.basepack.grid.deleted_n_records', :n => destroyed_ids.size)
                 on_data_changed
-                this.load_store_data(get_data)
+                this.reload_data
               end
               this.netzke_feedback(feedback)
             else
@@ -88,26 +85,28 @@ module Netzke
             super(params, this)
           end
 
-          # TODO: functionality of the following 2 endpoints could probably be improved by subclassing Basepack::Form as a dedicated form for adding/editing records in a grid.
           # Process the submit of multi-editing form ourselves
+          # TODO: refactor to let the form handle the validations
           endpoint :multi_edit_window__multi_edit_form__netzke_submit do |params, this|
             ids = ActiveSupport::JSON.decode(params.delete(:ids))
             data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
 
             data.map!{|el| el.delete_if{ |k,v| v.is_a?(String) && v.blank? }} # only interested in set values
 
-            mod_records_count = process_data(data, :update).count
+            res = attempt_operation(:update, data, this)
 
-            # remove duplicated flash messages
-            @flash = @flash.inject([]){ |r,hsh| r.include?(hsh) ? r : r.push(hsh) }
+            errors = []
+            res.each do |id, out|
+              errors << out[:error] if out[:error]
+            end
 
-            if mod_records_count > 0
+            if errors.empty?
               on_data_changed
               this.netzke_set_result("ok")
               this.on_submit_success
             end
 
-            this.netzke_feedback(@flash)
+            this.netzke_feedback(errors)
           end
 
           # The following two look a bit hackish, but serve to invoke on_data_changed when a form gets successfully submitted
@@ -122,6 +121,32 @@ module Netzke
             on_data_changed if this.set_form_values.present?
             this.delete(:set_form_values)
           end
+        end
+
+        # Operations:
+        #   create, read, update, delete
+        def attempt_operation(op, data, this)
+          if !config["prohibit_#{op}"]
+            res = send(op, data)
+            this.netzke_set_result res
+            res
+          else
+            this.netzke_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
+          end
+        end
+
+      protected
+
+        # Given an index of a column among enabled (non-excluded) columns, provides the index (position) in the table
+        def normalize_index(index)
+          norm_index = 0
+          index.times do
+            while true do
+              norm_index += 1
+              break unless final_columns[norm_index][:included] == false
+            end
+          end
+          norm_index
         end
       end
     end
