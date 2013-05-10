@@ -311,7 +311,7 @@ module Netzke::Basepack::DataAdapters
 
       relation = apply_column_filters(relation, params[:filter]) if params[:filter]
 
-      query = params[:query] && ActiveSupport::JSON.decode(params[:query])
+      query = params[:query]
 
       if query.present?
         # array of arrays of conditions that should be joined by OR
