@@ -29,6 +29,7 @@ Ext.define('Ext.ux.form.field.DateTime', {
      * The default is 'Y-m-d'
      */
     dateFormat: 'Y-m-d',
+    dateSubmitFormat: 'Y-m-d',    
     /**
      * @cfg {String} timeFormat
      * Convenience config for specifying the format of the time portion.
@@ -36,6 +37,7 @@ Ext.define('Ext.ux.form.field.DateTime', {
      * The default is 'H:i:s'
      */
     timeFormat: 'H:i:s',
+    timeSubmitFormat: 'H:i:s',    
 //    /**
 //     * @cfg {String} dateTimeFormat
 //     * The format used when submitting the combined value.
