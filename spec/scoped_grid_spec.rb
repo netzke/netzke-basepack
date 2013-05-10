@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 module Netzke::Basepack
-  describe Grid::Services do
+  describe ScopedGrid do
     # Grid with books scoped out to the first existing author (@castaneda in this case)
-    let(:grid) {BookGridWithScope.new}
+    let(:grid) {ScopedGrid.new}
 
     before do
       Author.delete_all

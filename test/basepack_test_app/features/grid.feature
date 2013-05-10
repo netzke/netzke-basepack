@@ -333,7 +333,7 @@ Scenario: Scoping out grid records
   And a book exists with title: "Louzhin Defence", author: that author
   And an author exists with first_name: "Herman", last_name: "Hesse"
   And a book exists with title: "Demian", author: that author
-  When I go to the BookGridWithScope test page
+  When I go to the ScopedGrid test page
   And I wait for response from server
   Then the grid should show 2 records
 
