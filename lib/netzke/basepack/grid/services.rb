@@ -3,6 +3,15 @@ module Netzke
     class Grid < Netzke::Base
       # Implements Grid server-side operations. Used by the Endpoints module.
       module Services
+        # Implementation for the "server_read" endpoint
+        def read(params = {})
+          {}.tap do |res|
+            records = get_records(params)
+            res[:data] = records.map{|r| data_adapter.record_to_array(r, final_columns(:with_meta => true))}
+            res[:total] = count_records(params)  if config[:enable_pagination]
+          end
+        end
+
         # Returns hash with results per client (temporary) id, e.g.:
         #
         #   {
@@ -55,17 +64,9 @@ module Netzke
           [destroyed_ids, errors]
         end
 
-        # Implementation for the "get_data" endpoint
-        def read(params = {})
-          {}.tap do |res|
-            records = get_records(params)
-            res[:data] = records.map{|r| data_adapter.record_to_array(r, final_columns(:with_meta => true))}
-            res[:total] = count_records(params)  if config[:enable_pagination]
-          end
-        end
-
         # Returns an array of records.
         def get_records(params)
+          params[:filters] = normalize_filters(params[:filters]) if params[:filters]
           params[:limit] = config[:rows_per_page] if config[:enable_pagination]
           params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
@@ -83,6 +84,31 @@ module Netzke
         end
 
       protected
+
+        def normalize_filters(filters)
+          filters.map do |f|
+            norm = {
+              attr: f["field"],
+              value: f["value"],
+              operator: f["comparison"]
+            }
+
+
+            # Ext JS filters send us date in the American format
+            if f["type"] == "date"
+              norm[:value].match(/^(\d\d)\/(\d\d)\/(\d\d\d\d)$/)
+              norm[:value] = "#{$3}-#{$1}-#{$2}"
+            end
+
+            if filter_proc = final_columns_hash[norm[:attr].to_sym][:filter_with]
+              norm[:operator] = filter_proc
+            else
+              norm[:operator] = "contains" if f["type"] == "string"
+            end
+
+            norm
+          end
+        end
 
         def update_record(record, attrs)
           # merge with strong default attirbutes

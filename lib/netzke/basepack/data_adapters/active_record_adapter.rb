@@ -85,23 +85,22 @@ module Netzke::Basepack::DataAdapters
 
       relation
     end
-    protected :apply_sorting
 
-    # If get_relation was called before (e.g. through get_records), then this method won't call it again, but use its latest result.
-    # FIXME: it's pretty awkward and should be refactored
     def count_records(params, columns=[])
-      # build initial relation based on passed params
+      # if get_relation was called before (e.g. through get_records), don't call it again, just use its latest result
       relation = @relation || get_relation(params)
+
       # addressing the n+1 query problem
       columns.each do |c|
         assoc, method = c[:name].split('__')
         relation = relation.includes(assoc.to_sym) if method
       end
+
       relation.count
     end
 
     def get_assoc_property_type assoc_name, prop_name
-      if prop_name && assoc=@model_class.reflect_on_association(assoc_name)
+      if prop_name && assoc = @model_class.reflect_on_association(assoc_name)
         assoc_column = assoc.klass.columns_hash[prop_name.to_s]
         assoc_column.try(:type)
       end
@@ -148,7 +147,6 @@ module Netzke::Basepack::DataAdapters
       records = query.empty? ? @model_class.find_by_sql("select distinct #{attr[:name]} from #{@model_class.table_name}") : @model_class.find_by_sql("select distinct #{attr[:name]} from #{@model_class.table_name} where #{attr[:name]} like '#{query}%'")
       records.map{|r| [r.send(attr[:name]), r.send(attr[:name])]}
     end
-    protected :distinct_combo_values
 
     def foreign_key_for assoc_name
       @model_class.reflect_on_association(assoc_name.to_sym).foreign_key
@@ -209,14 +207,6 @@ module Netzke::Basepack::DataAdapters
         end
       end
     end
-
-    # def assoc_values(r, attr_hash) #:nodoc:
-    #   @_assoc_values ||= {}.tap do |values|
-    #     attr_hash.each_pair do |name,c|
-    #       values[name] = record_value_for_attribute(r, c, true) if association_attr?(c)
-    #     end
-    #   end
-    # end
 
     def human_attribute_name(name)
       @model_class.human_attribute_name(name)
@@ -302,14 +292,10 @@ module Netzke::Basepack::DataAdapters
       assoc = @model_class.reflect_on_association(assoc_name.to_sym) if assoc_method
       [assoc, assoc_method]
     end
-    protected :assoc_and_assoc_method_for_attr
-
 
     # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
     def get_relation(params = {})
       relation = @model_class.scoped
-
-      relation = apply_column_filters(relation, params[:filter]) if params[:filter]
 
       query = params[:query]
 
@@ -325,96 +311,37 @@ module Netzke::Basepack::DataAdapters
 
       relation = relation.where(predicates)
 
+      if params[:filters]
+        extract_proc_filters(params[:filters]).each do |proc_filter|
+          # apply filter from :filter_with
+          relation = proc_filter[:operator].call(relation, proc_filter[:value], nil)
+        end
+
+        # apply other, non-Proc filters
+        relation = relation.where(predicates_for_and_conditions(params[:filters]))
+      end
+
       relation = relation.extend_with(params[:scope]) if params[:scope]
 
       @relation = relation
     end
-    protected :get_relation
 
-    # Parses and applies grid column filters, calling consequent "where" methods on the passed relation.
-    # Returns the updated relation.
-    #
-    # Example column grid data:
-    #
-    #     {"0" => {
-    #       "data" => {
-    #         "type" => "numeric",
-    #         "comparison" => "gt",
-    #         "value" => 10 },
-    #       "field" => "id"
-    #     },
-    #     "1" => {
-    #       "data" => {
-    #         "type" => "string",
-    #         "value" => "pizza"
-    #       },
-    #       "field" => "food_name"
-    #     }}
-    #
-    # This will result in:
-    #
-    #      relation.where(["id > ?", 10]).where(["food_name like ?", "%pizza%"])
-    def apply_column_filters(relation, column_filter)
-      res = relation
-
-      # these are still JSON-encoded due to the migration to Ext.direct
-      column_filter=JSON.parse(column_filter)
-      column_filter.each do |v|
-        assoc, method = v["field"].split('__')
-        if method
-          assoc = @model_class.reflect_on_association(assoc.to_sym)
-          if assoc.klass.column_names.include? method
-            field = method
-            arel_table = assoc.klass.arel_table
-          end
-        else
-          field = assoc.to_sym
-          arel_table = @model_class.arel_table
-        end
-
-        value = v["value"]
-        op = v['comparison']
-
-        col_filter = @cls.inject(nil) { |fil, col|
-          if col.is_a?(Hash) && col[:filter_with] && col[:name].to_sym == v['field'].to_sym
-            fil = col[:filter_with]
-          end
-          fil
-        }
-        if col_filter
-          res = col_filter.call(res, value, op)
-          col_filter = nil
-          next
-        end
-
-
-        case v["type"]
-        when "string"
-          res = res.where(arel_table[field].matches("%#{value}%"))
-        when "date"
-          # convert value to the DB date
-          value.match(/(\d\d)\/(\d\d)\/(\d\d\d\d)/)
-          if op == 'eq'
-            res = res.where(arel_table[field].ge("#{$3}-#{$1}-#{$2}".to_date.beginning_of_day))
-            res = res.where(arel_table[field].le("#{$3}-#{$1}-#{$2}".to_date.end_of_day))
-          else
-            res = res.where(arel_table[field].send(op, "#{$3}-#{$1}-#{$2}".to_time))
-          end
-        when "numeric"
-          res = res.where(arel_table[field].send(op, value))
-        else # boolean
-          res = res.where(arel_table[field].eq(value))
-        end
+    # Extracts filters that were configured on columns with :filter_with
+    def extract_proc_filters(filters)
+      out = []
+      filters.select{|f| f[:operator].is_a?(Proc)}.each do |f|
+        out << f
+        filters.delete(f)
       end
-
-      res
+      out
     end
-    protected :apply_column_filters
 
     def predicates_for_and_conditions(conditions)
       return nil if conditions.empty?
 
       predicates = conditions.map do |q|
+        q = HashWithIndifferentAccess.new(q)
+
         assoc, method = q["attr"].split('__')
         if method
           assoc = @model_class.reflect_on_association(assoc.to_sym)
@@ -427,28 +354,58 @@ module Netzke::Basepack::DataAdapters
         end
 
         value = q["value"]
+        op = q["operator"]
 
-        case q["operator"]
-        when "contains"
-          arel_table[attr].matches "%#{value}%"
+        attr_type = attr_type(attr)
+
+        case attr_type
+        when :datetime
+          update_predecate_for_datetime(arel_table[attr], op, value.to_date)
+        when :string, :text
+          update_predecate_for_string(arel_table[attr], op, value)
+        when :boolean
+          update_predecate_for_boolean(arel_table[attr], op, value)
+        when :date
+          update_predecate_for_rest(arel_table[attr], op, value.to_date)
         else
-          if value == false || value == true
-            arel_table[attr].eq(value)
-          else
-            arel_table[attr].send(q["operator"], value)
-          end
+          update_predecate_for_rest(arel_table[attr], op, value)
         end
       end
 
       # join them by AND
       predicates[1..-1].inject(predicates.first){ |r,p| r.and(p)  }
     end
-    protected :predicates_for_and_conditions
+
+    def update_predecate_for_boolean(table, op, value)
+      table.eq(value)
+    end
+
+    def update_predecate_for_string(table, op, value)
+      table.matches "%#{value}%"
+    end
+
+    def update_predecate_for_datetime(table, op, value)
+      case op
+      when "eq"
+        table.lteq(value.end_of_day).and(table.gteq(value.beginning_of_day))
+      when "gt"
+        table.gt(value.end_of_day)
+      when "lt"
+        table.lt(value.beginning_of_day)
+      when "gteq"
+        table.gteq(value.beginning_of_day)
+      when "lteq"
+        table.lteq(value.end_of_day)
+      end
+    end
+
+    def update_predecate_for_rest(table, op, value)
+      table.send(op, value)
+    end
 
     # Whether an attribute is mass assignable. As second argument optionally takes the role.
     def attribute_mass_assignable?(attr_name, role = :default)
       @model_class.accessible_attributes(role).empty? ? !@model_class.protected_attributes(role).include?(attr_name.to_s) : @model_class.accessible_attributes(role).include?(attr_name.to_s)
     end
-    protected :attribute_mass_assignable?
   end
 end

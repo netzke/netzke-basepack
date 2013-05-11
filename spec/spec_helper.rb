@@ -9,6 +9,9 @@ require 'rspec/autorun'
 # Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 require 'support/helpers'
 
+# For JS tests change the cleaning strategy to truncation
+require 'support/database_cleaner'
+
 RSpec.configure do |config|
   require 'capybara/rspec'
   require 'capybara/rails'
@@ -27,7 +30,7 @@ RSpec.configure do |config|
 
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false # we are cleaning up ourselves with DatabaseCleaner
   config.global_fixtures = :all
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your

@@ -10,9 +10,10 @@
 * bug fix
   * datetime field in forms respects `read_only` now
   * Re-enable piggybacking commands to the client from within Grid's `get_data` endpoint
+  * Searching and filtering in grid by date/datetime columns is fixed
 * improvements
   * Raise a meaningful exception when a model doesn't have a primary key, which is required by Grid
-  * Do not loose rows in grid when attempting to create records that fail validations
+  * Do not let rows in grid disappear after an attempt to create invalid records
 
 # 0.8.3 - 2013-04-24
 * improvements

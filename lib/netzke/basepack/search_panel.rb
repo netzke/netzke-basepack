@@ -24,10 +24,19 @@ module Netzke
           ["is_true", I18n.t('netzke.basepack.search_panel.is_true')],
           ["is_false", I18n.t('netzke.basepack.search_panel.is_false')]
         ],
+        :date => [
+          ["eq", I18n.t('netzke.basepack.search_panel.date_equals')],
+          ["gt", I18n.t('netzke.basepack.search_panel.after')],
+          ["lt", I18n.t('netzke.basepack.search_panel.before')],
+          ["gteq", I18n.t('netzke.basepack.search_panel.on_or_after')],
+          ["lteq", I18n.t('netzke.basepack.search_panel.on_or_before')]
+        ],
         :datetime => [
           ["eq", I18n.t('netzke.basepack.search_panel.date_equals')],
           ["gt", I18n.t('netzke.basepack.search_panel.after')],
-          ["lt", I18n.t('netzke.basepack.search_panel.before')]
+          ["lt", I18n.t('netzke.basepack.search_panel.before')],
+          ["gteq", I18n.t('netzke.basepack.search_panel.on_or_after')],
+          ["lteq", I18n.t('netzke.basepack.search_panel.on_or_before')]
         ]
       }
 

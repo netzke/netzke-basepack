@@ -65,6 +65,8 @@ en:
         date_equals: "On"
         before: Before
         after: After
+        on_or_before: On or before
+        on_or_after: On or after
 
       paging_form:
         actions:
