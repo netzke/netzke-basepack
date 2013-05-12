@@ -43,7 +43,6 @@ module Netzke::Basepack::DataAdapters
     end
 
     def get_records(params, columns=[])
-      @cls = columns
       # build initial relation based on passed params
       relation = get_relation(params)
 
