@@ -23,7 +23,7 @@ module Netzke
 
         self.text ||= label || @data_adapter.human_attribute_name(name)
 
-        set_editor! if editor.nil?
+        set_editor!
 
         set_width! if width.nil?
 
@@ -52,14 +52,18 @@ module Netzke
       end
 
       def set_editor!
+        passed_editor = editor
+
         # if shouldn't be editable, don't set any default editor
         return if read_only
 
         if association?
           set_default_association_editor!
         else
-          self.editor ||= editor_for_attr_type(attr_type)
+          self.editor = editor_for_attr_type(attr_type)
         end
+
+        self.editor.merge!(passed_editor) if passed_editor
       end
 
       # Detects an association column and sets up the proper editor.
@@ -70,9 +74,9 @@ module Netzke
 
         # if association column is boolean, display a checkbox (or alike), otherwise - a combobox (or alike)
         if nested_attribute
-          self.editor ||= editor_for_attr_type(assoc_method_type)
+          self.editor = editor_for_attr_type(assoc_method_type)
         else
-          self.editor ||= assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : {xtype: :netzkeremotecombo}
+          self.editor = assoc_method_type == :boolean ? editor_for_attr_type(:boolean) : {xtype: :netzkeremotecombo}
         end
       end
 

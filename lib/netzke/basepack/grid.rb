@@ -159,6 +159,12 @@ module Netzke
     #
     #   The blank line for one-to-many association columns, defaults to "---". Set to false to exclude completely.
     #
+    # [editor]
+    #
+    #   A hash that will override the automatic editor configuration. For example, for one-to-many association column
+    #   you may set it to +{min_chars: 1}+, which will be passed to the combobox and make it query its remote data after
+    #   entering 1 character (instead of default 4).
+    #
     # Besides these options, a column can receive any meaningful config option understood by
     # Ext.grid.column.Column[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.column.Column] (e.g. +hidden+)
     #

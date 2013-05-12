@@ -8,6 +8,7 @@ class BookGrid < Netzke::Basepack::Grid
 
   column :author__name do |c|
     c.sorting_scope = :sorted_by_author_name
+    c.editor = {min_chars: 1}
   end
 
   # crafting a static combobox column; TODO: include a prebuilt one in Basepack

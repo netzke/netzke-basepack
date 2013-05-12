@@ -7,13 +7,6 @@ Ext.define('Ext.netzke.ComboBox', {
   triggerAction : 'all',
   forceSelection: true,
 
-  // WIP: Breaking - should not be 'true' if combobox is not editable
-  // typeAhead     : true,
-
-  // getDisplayValue: function() {
-  //   return this.getValue() == 0 ? this.emptyText : this.callOverridden();
-  // },
-
   initComponent : function(){
     var modelName = this.parentId + "_" + this.name;
 
