@@ -19,7 +19,9 @@ nl:
           search:
             text: Zoeken
 
-        deleted_n_records: "%{n} objecten verwijderd"
+        deleted_n_records:
+         one: "%{count} objecten verwijderd"
+         other: "%{count} objecten verwijderd"
         cannot_delete: "Je hebt geen toestemming om data te verwijderen"
         confirmation: Bevestiging
         are_you_sure: Weet je het zeker?

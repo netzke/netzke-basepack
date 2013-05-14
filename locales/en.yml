@@ -19,7 +19,9 @@ en:
           search:
             text: Search
 
-        deleted_n_records: "Deleted %{n} record(s)"
+        deleted_n_records:
+         one: "Deleted 1 record"
+         other: "Deleted %{count} records"
         cannot_create: "You don't have permissions to create data"
         cannot_read: "You don't have permissions to read data"
         cannot_update: "You don't have permissions to update data"

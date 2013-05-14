@@ -23,7 +23,7 @@ module Netzke
 
               feedback = errors
               if destroyed_ids.present?
-                feedback << I18n.t('netzke.basepack.grid.deleted_n_records', :n => destroyed_ids.size)
+                feedback << I18n.t('netzke.basepack.grid.deleted_n_records', :count => destroyed_ids.size)
                 on_data_changed
               end
               this.netzke_feedback(feedback)

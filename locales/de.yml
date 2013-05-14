@@ -5,20 +5,29 @@ de:
         actions:
           add:
             text: Hinzufügen
+            tooltip: Hinzufügen
           edit:
             text: Bearbeiten
+            tooltip: Bearbeiten
           del:
             text: Löschen
+            tooltip: Löschen
           apply:
             text: Anwenden
+            tooltip: Anwenden
           add_in_form:
             text: extern Hinzufügen
+            tooltip: extern Hinzufügen
           edit_in_form:
             text: extern Bearbeiten
+            tooltip: extern Bearbeiten
           search:
             text: Suche
+            tooltip: Suche
 
-        deleted_n_records: "Deleted %{n} record(s)"
+        deleted_n_records:
+         one: "1 Datensatz wurde gelöscht"
+         other:  "%{count} Datensätze wurden gelöscht"
         cannot_delete: "Du hast keine Berechtigung die Daten zu löschen"
         confirmation: Bestätigung
         are_you_sure: Bist du sicher?

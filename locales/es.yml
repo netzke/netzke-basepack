@@ -19,7 +19,9 @@ es:
           search:
             text: Buscar
 
-        deleted_n_records: "Se han eliminado %{n} registro(s)"
+        deleted_n_records:
+         one: "Se han eliminado %{count} registro(s)"
+         other: "Se han eliminado %{count} registro(s)"
         cannot_delete: "Usted no tiene permiso para borrar los datos"
         confirmation: Confirmación
         are_you_sure: ¿Está seguro?
