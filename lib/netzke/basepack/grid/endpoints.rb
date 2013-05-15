@@ -25,7 +25,6 @@ module Netzke
               if destroyed_ids.present?
                 feedback << I18n.t('netzke.basepack.grid.deleted_n_records', :n => destroyed_ids.size)
                 on_data_changed
-                this.reload_data
               end
               this.netzke_feedback(feedback)
             else
