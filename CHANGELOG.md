@@ -1,4 +1,6 @@
 # 0.8.4 - WIP
+* new
+  * GridLiveSearch plugin - implements flexible "live" search on any grid
 * internal changes
   * Endpoints renamed in Grid:
     * `post_data` => `server_create` and `server_update`
