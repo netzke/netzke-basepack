@@ -90,6 +90,22 @@ module Netzke
     #
     #     data_store: {auto_load: false}
     #
+    # [prohibit_create]
+    #
+    #   when set to +true+ prevents user from adding data
+    #
+    # [prohibit_update]
+    #
+    #   when set to +true+ prevents user from editing data
+    #
+    # [prohibit_read]
+    #
+    #   when set to +true+ prevents user from reading data
+    #
+    # [prohibit_delete]
+    #
+    #   when set to +true+ prevents user from deleting data
+    #
     # == Columns
     #
     # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name
@@ -363,7 +379,7 @@ module Netzke
         super
       end
 
-      def js_configure(c) #:nodoc:
+      def js_configure(c)
         super
 
         c.title = c.title || self.class.js_config.properties[:title] || data_class.name.pluralize
