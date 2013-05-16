@@ -60,7 +60,7 @@ module Netzke
             # detect primary key column
             has_primary_column ||= c.primary?
 
-            if !c.excluded || options[:with_excluded]
+            if (!c.excluded || options[:with_excluded]) && (!c.meta || options[:with_meta])
               # set the defaults as lowest priority
               augment_column_config(c)
 

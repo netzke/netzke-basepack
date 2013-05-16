@@ -171,6 +171,11 @@ module Netzke
     #
     #   When true, this column will not be used in the grid (not even in the hidden mode)
     #
+    # [meta]
+    #
+    #   When set to +true+, the data for this column will be available in the grid store, but the column won't be shown
+    #   (as if +excluded+ were set to +true+).
+    #
     # [blank_line]
     #
     #   The blank line for one-to-many association columns, defaults to "---". Set to false to exclude completely.
