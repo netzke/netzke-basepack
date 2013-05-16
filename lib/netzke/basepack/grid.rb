@@ -136,7 +136,7 @@ module Netzke
     #   A lambda that receives a record as first parameter, and the value passed from the cell as the second parameter,
     #   and is expected to modify the record accordingly, e.g.:
     #
-    #     :setter => ->(r,v){ r.first_name, r.last_name = v.split(" ") }
+    #     setter: ->(r,v){ r.first_name, r.last_name = v.split(" ") }
     #
     # [scope]
     #

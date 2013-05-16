@@ -37,13 +37,27 @@ module Netzke::Basepack::DataAdapters
     #
     # `params` is a hash that contains the following keys:
     #
-    # * :sort - sorting params, which is an array of hashes that contain the following keys in their turn:
-    #   * :property - the field that is being sorted on
-    #   * :direction - "asc" or "desc"
-    # * :limit - rows per page in pagination
-    # * :start - page number in pagination
-    # * :scope - the scope as described in Netzke::Basepack::Grid
-    # * :filter - Ext filters
+    # [sorters]
+    #   sorting params, which is an array of hashes that contain the following keys in their turn:
+    #   [property]
+    #     the field that is being sorted on
+    #   [direction]
+    #     "asc" or "desc"
+    # [limit]
+    #   rows per page in pagination
+    # [start]
+    #   page number in pagination
+    # [scope]
+    #   the scope as described in Netzke::Basepack::Grid
+    # [filters]
+    #   an array of hashes representing a filter query, where the hashes have the following keys:
+    #   [attr]
+    #     Name of the (virtual) model attribute to apply the filter to
+    #   [operator]
+    #     Operator for this filter. Possible values are: +contains+, +eq+, +gt+, +gteq+, +lt+, +lteq+
+    #   [value]
+    #     The value for this filter
+    # [query]
     #
     # The `columns` parameter may be used to use joins to address the n+1 query problem, and receives an array of column configurations
     def get_records(params, columns)

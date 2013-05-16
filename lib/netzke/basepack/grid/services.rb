@@ -67,6 +67,7 @@ module Netzke
         # Returns an array of records.
         def get_records(params)
           params[:filters] = normalize_filters(params[:filters]) if params[:filters]
+          params[:query] = normalize_query(params[:query]) if params[:query].present?
           params[:limit] = config[:rows_per_page] if config[:enable_pagination]
           params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
@@ -87,26 +88,30 @@ module Netzke
 
         def normalize_filters(filters)
           filters.map do |f|
-            norm = {
-              attr: f["field"],
-              value: f["value"],
-              operator: f["comparison"]
-            }
+            { attr: f["field"], value: f["value"], operator: f["comparison"] }.tap do |norm|
 
+              # Ext JS filters send us date in the American format
+              if f["type"] == "date"
+                norm[:value].match(/^(\d\d)\/(\d\d)\/(\d\d\d\d)$/)
+                norm[:value] = "#{$3}-#{$1}-#{$2}"
+              end
 
-            # Ext JS filters send us date in the American format
-            if f["type"] == "date"
-              norm[:value].match(/^(\d\d)\/(\d\d)\/(\d\d\d\d)$/)
-              norm[:value] = "#{$3}-#{$1}-#{$2}"
-            end
+              if filter_with = final_columns_hash[norm[:attr].to_sym][:filter_with]
+                norm[:proc] = filter_with
+              end
 
-            if filter_proc = final_columns_hash[norm[:attr].to_sym][:filter_with]
-              norm[:operator] = filter_proc
-            else
               norm[:operator] = "contains" if f["type"] == "string"
             end
+          end
+        end
 
-            norm
+        def normalize_query(or_query)
+          or_query.each do |and_query|
+            and_query.each do |q|
+              if filter_with = final_columns_hash[q[:attr].to_sym][:filter_with]
+                q[:proc] = filter_with
+              end
+            end
           end
         end
 

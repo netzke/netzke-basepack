@@ -42,6 +42,7 @@ module Netzke::Basepack::DataAdapters
       association_attr?(attr_name) ? :integer : (@model_class.columns_hash[attr_name.to_s].try(:type) || :string)
     end
 
+    # Implementation for {AbstractAdapter#get_records}
     def get_records(params, columns=[])
       # build initial relation based on passed params
       relation = get_relation(params)
@@ -299,40 +300,41 @@ module Netzke::Basepack::DataAdapters
       query = params[:query]
 
       if query.present?
-        # array of arrays of conditions that should be joined by OR
-        and_predicates = query.map do |conditions|
-          predicates_for_and_conditions(conditions)
+        cannot_use_procs = query.size > 1
+
+        and_predicates = query.map do |and_query|
+          and_query.each do |q|
+            if prok = q.delete(:proc)
+              raise "Cannot use Proc conditions in OR queries" if cannot_use_procs
+              relation = prok.call(relation, q[:value], q[:operator])
+              and_query.delete(q)
+            end
+          end
+
+          predicates_for_and_conditions(and_query)
         end
 
         # join them by OR
         predicates = and_predicates[1..-1].inject(and_predicates.first){ |r,c| r.or(c) }
+        relation = relation.where(predicates)
       end
 
-      relation = relation.where(predicates)
-
       if params[:filters]
-        extract_proc_filters(params[:filters]).each do |proc_filter|
-          # apply filter from :filter_with
-          relation = proc_filter[:operator].call(relation, proc_filter[:value], nil)
+        and_query = params[:filters]
+        and_query.each do |q|
+          if prok = q.delete(:proc)
+            relation = prok.call(relation, q[:value], q[:operator])
+            and_query.delete(q)
+          end
         end
 
         # apply other, non-Proc filters
-        relation = relation.where(predicates_for_and_conditions(params[:filters]))
+        relation = relation.where(predicates_for_and_conditions(and_query))
       end
 
       relation = relation.extend_with(params[:scope]) if params[:scope]
 
       @relation = relation
-    end
-
-    # Extracts filters that were configured on columns with :filter_with
-    def extract_proc_filters(filters)
-      out = []
-      filters.select{|f| f[:operator].is_a?(Proc)}.each do |f|
-        out << f
-        filters.delete(f)
-      end
-      out
     end
 
     def predicates_for_and_conditions(conditions)
