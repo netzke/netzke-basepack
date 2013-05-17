@@ -6,39 +6,36 @@ module Netzke
 
       include Netzke::Basepack::DataAccessor
 
+      i18n_path = "netzke.basepack.search_panel.%s"
+
       ATTRIBUTE_OPERATORS_MAP = {
         :integer => [
-          ["eq", I18n.t('netzke.basepack.search_panel.equals')],
-          ["gt", I18n.t('netzke.basepack.search_panel.greater_than')],
-          ["lt", I18n.t('netzke.basepack.search_panel.less_than')]
+          ["eq", I18n.t(i18n_path % 'equals')],
+          ["gt", I18n.t(i18n_path % 'greater_than')],
+          ["lt", I18n.t(i18n_path % 'less_than')]
         ],
         :text => [
-          ["contains", I18n.t('netzke.basepack.search_panel.contains')] # same as matches => %string%
+          ["contains", I18n.t(i18n_path % 'contains')] # same as matches => %string%
         ],
         :string => [
-          ["contains", I18n.t('netzke.basepack.search_panel.contains')], # same as matches => %string%
-          ["matches", I18n.t('netzke.basepack.search_panel.matches')]
+          ["contains", I18n.t(i18n_path % 'contains')], # same as matches => %string%
+          ["matches", I18n.t(i18n_path % 'matches')]
         ],
         :boolean => [
-          ["is_any", I18n.t('netzke.basepack.search_panel.is_true')],
-          ["is_true", I18n.t('netzke.basepack.search_panel.is_true')],
-          ["is_false", I18n.t('netzke.basepack.search_panel.is_false')]
+          ["is_any", I18n.t(i18n_path % 'is_true')],
+          ["is_true", I18n.t(i18n_path % 'is_true')],
+          ["is_false", I18n.t(i18n_path % 'is_false')]
         ],
         :date => [
-          ["eq", I18n.t('netzke.basepack.search_panel.date_equals')],
-          ["gt", I18n.t('netzke.basepack.search_panel.after')],
-          ["lt", I18n.t('netzke.basepack.search_panel.before')],
-          ["gteq", I18n.t('netzke.basepack.search_panel.on_or_after')],
-          ["lteq", I18n.t('netzke.basepack.search_panel.on_or_before')]
-        ],
-        :datetime => [
-          ["eq", I18n.t('netzke.basepack.search_panel.date_equals')],
-          ["gt", I18n.t('netzke.basepack.search_panel.after')],
-          ["lt", I18n.t('netzke.basepack.search_panel.before')],
-          ["gteq", I18n.t('netzke.basepack.search_panel.on_or_after')],
-          ["lteq", I18n.t('netzke.basepack.search_panel.on_or_before')]
+          ["eq", I18n.t(i18n_path % 'date_equals')],
+          ["gt", I18n.t(i18n_path % 'after')],
+          ["lt", I18n.t(i18n_path % 'before')],
+          ["gteq", I18n.t(i18n_path % 'on_or_after')],
+          ["lteq", I18n.t(i18n_path % 'on_or_before')]
         ]
       }
+
+      ATTRIBUTE_OPERATORS_MAP[:datetime] = ATTRIBUTE_OPERATORS_MAP[:date]
 
       js_configure do |c|
         c.extend = "Ext.form.FormPanel"

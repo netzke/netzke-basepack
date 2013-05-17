@@ -52,10 +52,10 @@ module Netzke
       end
 
       def set_editor!
-        passed_editor = editor
-
         # if shouldn't be editable, don't set any default editor
         return if read_only
+
+        passed_editor = editor
 
         if association?
           set_default_association_editor!
