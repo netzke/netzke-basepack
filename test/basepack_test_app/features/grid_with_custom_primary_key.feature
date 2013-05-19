@@ -9,7 +9,7 @@ Feature: Grid panel with custom primary key
     When I go to the BookWithCustomPrimaryKeyGrid test page
     And I wait for response from server
     And I edit row 1 of the grid with title: "My fight club"
-    And I press "Apply"
+    And I click "Apply"
     And I wait for response from server
     Then the grid should have 0 modified records
     And a book_with_custom_primary_key should exist with title: "My fight club"

@@ -349,7 +349,6 @@ module Netzke
         # JavaScript includes
         ex = Netzke::Core.ext_path.join("examples")
 
-        c.require ex.join("ux/CheckColumn.js")
         c.require :extensions
 
         # Includes for column filters

@@ -127,11 +127,29 @@ When /^I expand the ([^"]*) region$/ do |region|
   end
 end
 
-# Because sometimes "I press 'Text'" does not work due to some reason...
+# Because sometimes "I click 'Text'" does not work due to some reason...
 When /^I press button with text "(.*?)"$/ do |text|
   click_button page.driver.browser.execute_script(<<-JS) + '-btnEl'
     var button = Ext.ComponentQuery.query("button[text='#{text}']")[0];
     return button.id;
+  JS
+end
+
+When /^I click "([^"]*)"$/ do |button|
+  page.driver.browser.execute_script <<-JS
+    var button = Ext.ComponentQuery.query("button{isVisible(true)}[text='#{button}']")[0] ||
+      Ext.DomQuery.select("[data-qtip=#{button}]")[0],
+      el = button.getEl();
+    el.dom.click();
+  JS
+end
+
+When /^I click "(.*?)" on "(.*?)"$/ do |text, id|
+  page.driver.browser.execute_script <<-JS
+    var container = Ext.getCmp('#{id}'),
+        button = container.query("button{isVisible(true)}[text='#{button}']")[0],
+        el = button.getEl();
+    el.dom.click();
   JS
 end
 
