@@ -103,7 +103,7 @@ module Netzke
         when :datetime
           150
         else
-          100
+          120
         end
       end
 

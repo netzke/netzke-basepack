@@ -6,9 +6,9 @@ Feature: Basic application
 @javascript
 Scenario: SimpleApp should load its components dynamically
   Given I am on the SomeSimpleApp test page
-  When I press "Some accordion"
+  When I click "Some accordion"
   Then I should see "Some Accordion"
-  When I press "Book grid"
+  When I click "Book grid"
   Then I should see "Books"
-  When I press "Some tab panel"
+  When I click "Some tab panel"
   Then I should see "Some Tab Panel"

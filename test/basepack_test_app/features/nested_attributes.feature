@@ -12,11 +12,11 @@ Scenario: Grid with nested attributes
   And I should see "Nabokoff" within "#book_grid_with_nested_attributes"
 
   When I select first row in the grid
-  And I press "Edit in form"
+  And I click "Edit in form"
   And I fill in "Author first name:" with "Vladimir"
   And I fill in "Author last name:" with "Nabokov"
   And I fill in "Title:" with "Lolita"
-  And I press "OK"
+  And I click "OK"
 
   Then I should see "Nabokov"
   Then an author should exist with first_name: "Vladimir", last_name: "Nabokov"

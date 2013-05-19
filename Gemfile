@@ -3,10 +3,10 @@ source 'http://rubygems.org'
 gemspec
 
 # use unreleased version of netzke-core
-gem 'netzke-core', github: 'netzke/netzke-core'
+# gem 'netzke-core', github: 'netzke/netzke-core'
 
 # for local testing
-# gem 'netzke-core', path: '~/code/netzke/netzke-core'
+gem 'netzke-core', path: '~/code/netzke/netzke-core'
 
 gem 'carrierwave'
 

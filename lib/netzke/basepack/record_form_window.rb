@@ -22,7 +22,7 @@ module Netzke
 
       js_configure do |c|
         c.button_align = :right
-        c.width = 400
+        c.width = '80%'
         c.auto_height = true
         c.modal = true
         c.init_component = <<-JS
