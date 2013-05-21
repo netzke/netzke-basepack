@@ -135,7 +135,7 @@ module Netzke::Basepack::DataAdapters
         else
           query.downcase!
           # an expensive search!
-          relation.all.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value.downcase.include?(query) }
+          relation.all.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value.to_s.downcase.include?(query) }
         end
 
       else
