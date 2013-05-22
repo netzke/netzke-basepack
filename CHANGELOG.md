@@ -1,4 +1,4 @@
-# 0.8.4 - WIP
+# 0.9.0 - WIP
 * new
   * GridLiveSearch plugin - implements flexible "live" search on any grid
 * internal changes
