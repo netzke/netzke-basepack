@@ -17,6 +17,11 @@ module Netzke
     #
     # [attr] - name of the attribute to be searched on; to search on associations, use the double-underscore notation
     # [op] - operation to apply for this attribute. Possible values are: contains, eq, gt, lt, gteq, lteq
+    #
+    # == Known issues
+    #
+    # Trying to search on a *virtual* column that is *not* shown in the grid will break. A fix would require refactoring
+    # of +Grid::Columns+.
     class GridLiveSearch < Netzke::Plugin
       js_configure do |c|
         c.mixin

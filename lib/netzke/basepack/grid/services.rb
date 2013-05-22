@@ -108,7 +108,8 @@ module Netzke
         def normalize_query(or_query)
           or_query.each do |and_query|
             and_query.each do |q|
-              if filter_with = final_columns_hash[q[:attr].to_sym][:filter_with]
+              column_config = final_columns_hash[q[:attr].to_sym] || {}
+              if filter_with = column_config[:filter_with]
                 q[:proc] = filter_with
               end
             end
