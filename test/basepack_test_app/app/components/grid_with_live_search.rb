@@ -11,11 +11,13 @@ class GridWithLiveSearch < Netzke::Basepack::Grid
   def configure(c)
     super
     c.model = "Book"
+    c.columns = [:author__name, :title, :rating, :created_on]
     c.tbar = [
       "Author:", {xtype: 'textfield', attr: :author__name},
       "Title:", {xtype: 'textfield', attr: :title, op: 'contains'},
       "Rating greater than:", {xtype: 'numberfield', attr: :rating, op: 'gt'},
       "Created on:", {xtype: 'datefield', attr: :created_at, op: 'eq'},
+      "Notes:", {xtype: 'textfield', attr: :notes, op: 'contains'}
     ]
   end
 end
