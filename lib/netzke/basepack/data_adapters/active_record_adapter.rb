@@ -370,6 +370,9 @@ module Netzke::Basepack::DataAdapters
         value = v["value"]
         op = v['comparison']
 
+        # safety
+        raise "Invalid filter operator '#{op}'" unless op.blank? || %w(lt gt lteq gteq eq contains).include?(op)
+
         col_filter = @cls.inject(nil) { |fil, col|
           if col.is_a?(Hash) && col[:filter_with] && col[:name].to_sym == v['field'].to_sym
             fil = col[:filter_with]
@@ -382,7 +385,6 @@ module Netzke::Basepack::DataAdapters
           next
         end
 
-
         case v["type"]
         when "string"
           res = res.where(arel_table[field].matches("%#{value}%"))
@@ -390,8 +392,8 @@ module Netzke::Basepack::DataAdapters
           # convert value to the DB date
           value.match(/(\d\d)\/(\d\d)\/(\d\d\d\d)/)
           if op == 'eq'
-            res = res.where(arel_table[field].ge("#{$3}-#{$1}-#{$2}".to_date.beginning_of_day))
-            res = res.where(arel_table[field].le("#{$3}-#{$1}-#{$2}".to_date.end_of_day))
+            res = res.where(arel_table[field].gteq("#{$3}-#{$1}-#{$2}".to_date.beginning_of_day))
+            res = res.where(arel_table[field].lteq("#{$3}-#{$1}-#{$2}".to_date.end_of_day))
           else
             res = res.where(arel_table[field].send(op, "#{$3}-#{$1}-#{$2}".to_time))
           end

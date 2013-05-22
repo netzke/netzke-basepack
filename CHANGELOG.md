@@ -1,3 +1,7 @@
+# 0.8.4 - 2013-05-22
+* bug fix
+  * the 'on' filter on date works again (thanks Simon Willmann)
+
 # 0.8.3 - 2013-04-24
 * improvements
   * implement advanced searching by association (issue #93)
