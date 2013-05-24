@@ -8,6 +8,8 @@ class CreateBooks < ActiveRecord::Migration
       t.text :notes
       t.string :tags
       t.integer :rating
+      t.decimal :price, precision: 7, scale: 2
+      t.float :special_index
 
       t.timestamps
     end
