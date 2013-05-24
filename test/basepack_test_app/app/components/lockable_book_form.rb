@@ -1,17 +1,14 @@
 class LockableBookForm < BookForm
-  def default_config
-    super.merge(:mode => :lockable)
-  end
+  # Code from the future
+  # field :author__first_name do |c|
+  #   c.xtype = :compositefield
+  #   c.defaults = {:flex => 1}
+  #   c.field_label = "Author name (first, last)"
+  #   c.items = [{:name => :author__first_name, :nested_attribute => true}, {:name => :author__last_name, :nested_attribute => true}]
+  # end
 
-  def configuration
-    sup = super
-    sup.merge(
-      :items => sup[:items].reject{ |i| i.is_a?(Hash) && i[:name] == :author__first_name } + [{
-        :xtype => :compositefield,
-        :defaults => {:flex => 1},
-        :field_label => "Author name (first, last)",
-        :items => [{:name => :author__first_name, :nested_attribute => true}, {:name => :author__last_name, :nested_attribute => true}]
-      }]
-    )
+  def configure(c)
+    super
+    c.mode = :lockable
   end
 end
