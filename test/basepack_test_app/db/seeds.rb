@@ -35,10 +35,10 @@ hesse = Author.find_by_last_name("Hesse")
 castaneda = Author.find_by_last_name("Castaneda")
 puts "Creating books..."
 Book.create([
-  {:title => "Journey to Ixtlan", :author => castaneda, exemplars: 2, notes: 'Basic ideas', tags: 'must-read', rating: 1, digitized: false, last_read_at: 2000.hours.ago, published_on: 2.years.ago},
-  {:title => "The Tales of Power", :author => castaneda, exemplars: 1, notes: 'Advanced reading', tags: 'mystics', rating: 2, digitized: true, last_read_at: 20.hours.ago, published_on: 5.years.ago},
-  {:title => "The Art of Dreaming", :author => castaneda, exemplars: 3, notes: 'Concious dreaming', tags: 'must-read, mystics', rating: 1, digitized: false, last_read_at: 200.hours.ago, published_on: 7.years.ago},
-  {:title => "Steppenwolf", :author => hesse, exemplars: 1, notes: 'Suicidal man', tags: 'psychology, must-read', rating: 3, digitized: true, last_read_at: 30.hours.ago, published_on: 5.years.ago},
-  {:title => "Demian", :author => hesse, exemplars: 1, notes: 'How a child sees the world', tags: 'must-read', rating: 1, digitized: true, last_read_at: 300.hours.ago, published_on: 3.years.ago},
-  {:title => "Narciss and Goldmund", :author => hesse, exemplars: 3, notes: 'Inspiring', tags: 'must-read', rating: 1, digitized: false, last_read_at: 3000.hours.ago, published_on: 8.years.ago}
+  {:title => "Journey to Ixtlan", :author => castaneda, exemplars: 2, notes: 'Basic ideas', tags: 'must-read', rating: 1, digitized: false, last_read_at: 2000.hours.ago, price: 10.22, special_index: 0.02, published_on: 2.years.ago},
+  {:title => "The Tales of Power", :author => castaneda, exemplars: 1, notes: 'Advanced reading', tags: 'mystics', rating: 2, digitized: true, last_read_at: 20.hours.ago, price: 17.82, special_index: 0.32, published_on: 5.years.ago},
+  {:title => "The Art of Dreaming", :author => castaneda, exemplars: 3, notes: 'Concious dreaming', tags: 'must-read, mystics', rating: 1, digitized: false, last_read_at: 200.hours.ago, price: 12.42, special_index: 1.02, published_on: 7.years.ago},
+  {:title => "Steppenwolf", :author => hesse, exemplars: 1, notes: 'Suicidal man', tags: 'psychology, must-read', rating: 3, digitized: true, last_read_at: 30.hours.ago, price: 13.80, special_index: 2.02, published_on: 5.years.ago},
+  {:title => "Demian", :author => hesse, exemplars: 1, notes: 'How a child sees the world', tags: 'must-read', rating: 1, digitized: true, last_read_at: 300.hours.ago, price: 170.82, special_index: 4.02, published_on: 3.years.ago},
+  {:title => "Narciss and Goldmund", :author => hesse, exemplars: 3, notes: 'Inspiring', tags: 'must-read', rating: 1, digitized: false, last_read_at: 3000.hours.ago, price: 1.90, special_index: 2.02, published_on: 8.years.ago}
 ])

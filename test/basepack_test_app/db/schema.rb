@@ -41,12 +41,14 @@ ActiveRecord::Schema.define(:version => 20130105145239) do
     t.integer  "author_id"
     t.string   "title"
     t.integer  "exemplars"
-    t.boolean  "digitized",    :default => false
+    t.boolean  "digitized",                                   :default => false
     t.text     "notes"
     t.string   "tags"
     t.integer  "rating"
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
+    t.decimal  "price",         :precision => 7, :scale => 2
+    t.float    "special_index"
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
     t.datetime "last_read_at"
     t.date     "published_on"
   end
@@ -64,19 +66,6 @@ ActiveRecord::Schema.define(:version => 20130105145239) do
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
   end
-
-  create_table "netzke_component_states", :force => true do |t|
-    t.string   "component"
-    t.integer  "user_id"
-    t.integer  "role_id"
-    t.text     "value"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
-  end
-
-  add_index "netzke_component_states", ["component"], :name => "index_netzke_component_states_on_component"
-  add_index "netzke_component_states", ["role_id"], :name => "index_netzke_component_states_on_role_id"
-  add_index "netzke_component_states", ["user_id"], :name => "index_netzke_component_states_on_user_id"
 
   create_table "projects", :force => true do |t|
     t.string   "title"
