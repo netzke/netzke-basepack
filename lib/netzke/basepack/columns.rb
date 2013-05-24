@@ -150,7 +150,6 @@ module Netzke
       # It may be handy to override it.
       def augment_column_config(c)
         c.set_defaults!
-        c.editor = nil if !config.enable_edit_inline
       end
 
       def initial_columns_order
