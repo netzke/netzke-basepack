@@ -1,5 +1,7 @@
 module Netzke
   module Basepack
+    # Takes care of grid column configuration, as well as the grid's default form fields
+    # TODO: refactor using Netzke::Core::DslSupport
     module Columns
       extend ActiveSupport::Concern
 
@@ -78,6 +80,16 @@ module Netzke
         @_final_columns_hash ||= final_columns.inject({}){|r,c| r.merge(c[:name].to_sym => c)}
       end
 
+      # Columns that have to be used by the JS side of the grid
+      def js_columns
+        final_columns(with_meta: true).map do |c|
+          # we are removing the editor on this last step, so that the editor config is still being passed from the
+          # column config to the form editor; refactor!
+          c.delete(:editor) if !config.enable_edit_inline
+          c
+        end
+      end
+
       def append_meta_column(cols)
         cols << {}.tap do |c|
           c.merge!(
@@ -150,7 +162,6 @@ module Netzke
       # It may be handy to override it.
       def augment_column_config(c)
         c.set_defaults!
-        c.editor = nil if !config.enable_edit_inline
       end
 
       def initial_columns_order
