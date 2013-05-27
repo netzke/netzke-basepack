@@ -226,7 +226,7 @@ module Netzke::Basepack::DataAdapters
             if r.respond_to?(m)
               r.send(m)
             else
-              logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}" unless r.nil?
+              logger.warn "Netzke: Wrong attribute name: #{a[:name]}" unless r.nil?
               nil
             end
           end
@@ -277,10 +277,10 @@ module Netzke::Basepack::DataAdapters
                 r.send("#{assoc.foreign_key}=", v.to_i < 0 ? nil : v) if attribute_mass_assignable?(assoc.foreign_key, role)
               end
             else
-              logger.debug "Netzke::Basepack: Association #{assoc} is not known for class #{@data_class}"
+              logger.warn "Netzke: Association #{assoc} is not known for class #{@data_class}"
             end
           else
-            logger.debug "Netzke::Basepack: Wrong attribute name: #{a[:name]}"
+            logger.warn "Netzke: Wrong attribute name: #{a[:name]}"
           end
         end
       end
@@ -401,12 +401,25 @@ module Netzke::Basepack::DataAdapters
     end
 
     def update_predecate_for_rest(table, op, value)
-      table.send(op, value)
+      legal_ops = %w[eq gt lt gteq lteq]
+
+      if legal_ops.include?(op.to_s)
+        table.send(op, value)
+      else
+        logger.warn("Netzke: Illegal filter operator: #{op}")
+        table
+      end
     end
 
     # Whether an attribute is mass assignable. As second argument optionally takes the role.
     def attribute_mass_assignable?(attr_name, role = :default)
       @model_class.accessible_attributes(role).empty? ? !@model_class.protected_attributes(role).include?(attr_name.to_s) : @model_class.accessible_attributes(role).include?(attr_name.to_s)
+    end
+
+  private
+
+    def logger
+      Netzke::Base.logger
     end
   end
 end
