@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(:version => 20130105145239) do
     t.integer  "rating"
     t.decimal  "price",         :precision => 7, :scale => 2
     t.float    "special_index"
+    t.string   "cover"
     t.datetime "created_at",                                                     :null => false
     t.datetime "updated_at",                                                     :null => false
     t.datetime "last_read_at"
