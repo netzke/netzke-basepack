@@ -10,6 +10,7 @@ class CreateBooks < ActiveRecord::Migration
       t.integer :rating
       t.decimal :price, precision: 7, scale: 2
       t.float :special_index
+      t.string :cover
 
       t.timestamps
     end

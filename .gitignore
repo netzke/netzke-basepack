@@ -7,6 +7,7 @@ icons
 .vimrc
 test/basepack_test_app/db/development_structure.sql
 test/basepack_test_app/public/extjs*
+test/basepack_test_app/public/uploads/
 test/basepack_test_app/db/*.sqlite3
 test/basepack_test_app/tmp
 tags
