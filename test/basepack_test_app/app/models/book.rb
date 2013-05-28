@@ -5,7 +5,7 @@ class Book < ActiveRecord::Base
 
   mount_uploader :cover
 
-  scope :sorted_by_author_name, lambda { |dir| joins(:author).order("authors.first_name #{dir}, authors.last_name #{dir}") }
+  scope :sorted_by_author_name, lambda { |dir| includes(:author).order("authors.first_name #{dir}, authors.last_name #{dir}") }
 
   attr_protected :exemplars, :author_id, :as => :user
 

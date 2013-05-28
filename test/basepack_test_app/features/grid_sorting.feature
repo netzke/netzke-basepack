@@ -64,3 +64,14 @@ Feature: Grid sorting
     When I go to the GridWithInitialSorting test page
     And I wait for response from server
     Then the grid should have records sorted by "Title" desc
+
+@javascript
+Scenario: Sorting an association column with nulls
+  Given a role exists with name: "reader"
+  Given a user exists with first_name: "John", last_name: "Doe", role: that role
+  Given a user exists with first_name: "Carlos", last_name: "Castaneda"
+  When I go to the UserGrid test page
+  And I wait for response from server
+  And I click on column "Role  name"
+  And I wait for response from server
+  Then the grid should show 2 records
