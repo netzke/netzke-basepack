@@ -79,7 +79,7 @@ module Netzke::Basepack::DataAdapters
           relation.order("#{@model_class.table_name}.#{assoc} #{dir}")
         else
           assoc = @model_class.reflect_on_association(assoc.to_sym)
-          relation.joins(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")
+          relation.includes(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")
         end
       end
 
