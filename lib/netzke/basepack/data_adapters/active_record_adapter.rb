@@ -243,6 +243,7 @@ module Netzke::Basepack::DataAdapters
 
     def set_record_value_for_attribute(r, a, v, role = :default)
       v = v.to_time_in_current_zone if v.is_a?(Date) # convert Date to Time
+      v = false if a[:xtype] == :checkbox && v.nil? # fix bug with checkbox
 
       if a[:setter]
         a[:setter].call(r, v)
