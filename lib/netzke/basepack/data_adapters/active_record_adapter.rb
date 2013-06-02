@@ -263,13 +263,11 @@ module Netzke::Basepack::DataAdapters
             assoc_method = split.last
             if assoc
               if assoc.macro == :has_one
-                assoc_instance = r.send(assoc.name)
-                if assoc_instance
-                  assoc_instance.send("#{assoc_method}=", v)
-                  assoc_instance.save # what should we do when this fails?..
-                else
-                  # what should we do in this case?
-                end
+                #here we just set the new new relationship, we
+                # do not change nested attributes here
+                r.send "#{assoc.name}=", assoc.klass.find v
+                #this is excess, at least for checked examples
+                r.save # what should we do when this fails?..
               else
 
                 # set the foreign key to the passed value
