@@ -260,12 +260,16 @@ module Netzke::Basepack::DataAdapters
           if split.size == 2
             # search for association and assign it to r
             assoc = @model_class.reflect_on_association(split.first.to_sym)
-            assoc_method = split.last
             if assoc
-              if assoc.macro == :has_one
+              if (assoc.macro == :has_one) && attribute_mass_assignable?(assoc.foreign_key, role)
                 #here we just set the new new relationship, we
                 # do not change nested attributes here
-                r.send "#{assoc.name}=", assoc.klass.find v
+                assoc_instance = begin
+                  assoc.klass.find v
+                rescue ActiveRecord::RecordNotFound
+                  nil
+                end
+                r.send "#{assoc.name}=", assoc_instance
                 #this is excess, at least for checked examples
                 r.save # what should we do when this fails?..
               else
