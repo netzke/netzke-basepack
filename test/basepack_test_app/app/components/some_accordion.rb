@@ -11,7 +11,6 @@ class SomeAccordion < Netzke::Basepack::Accordion
     c.update_text = "Update for Panel Two"
     c.title = "Panel Two"
     c.border = false
-    c.header = false
   end
 
   def configure(c)

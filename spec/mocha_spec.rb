@@ -11,11 +11,16 @@ feature "Mocha specs", js: true do
       ActiveRecord::Fixtures.reset_cache
       ActiveRecord::Fixtures.create_fixtures(File.join(Rails.root, fixtures_dir), File.basename(fixture_file, '.*'))
     end
+
+    # for each spec load a dedicated Ruby file with (factory_girl-powered) fixtures
+    spec_name = x.example.description.split.last.underscore
+    fixture_path = File.join(Rails.root, '../../spec', 'mocha', 'fixtures', "#{spec_name}.rb")
+    require fixture_path if File.exists?(fixture_path)
   end
 
   # if a component provided, create a single spec for it
   if comp_class = ENV["C"]
-    spec = comp_class.underscore.gsub("/", "__")
+    spec = comp_class.underscore
     it "runs successfully for #{comp_class}" do
       run_js_specs(comp_class, spec)
     end
@@ -26,7 +31,7 @@ feature "Mocha specs", js: true do
       next if File.directory?(f)
 
       file = f.gsub(dir, "")[1..-1].split(".").first
-      next if file.index(/helper$/) || file.index(/^extra\//)
+      next if file.index(/helper$/) || file.index(/^extra\//) || file.index(/^fixtures\//)
 
       comp = file.split("/").map(&:camelize).join("::")
 

@@ -8,6 +8,6 @@ describe 'SomeTabPanel component', ->
 
       click button "Update html"
       wait ->
-        expectToSee panelWithContent "Update for Panel Two"
+        expectToSee header "Update for Panel Two"
         done()
 

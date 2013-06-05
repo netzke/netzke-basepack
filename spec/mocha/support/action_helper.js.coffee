@@ -10,13 +10,13 @@ Ext.apply window,
     i = 0
     id = setInterval ->
       i += 1
-      if i >= 100
+      if i >= 100 || Netzke.ajaxCount == 0
         clearInterval(id)
         callback.call()
 
       # this way we ensure another 20ms cycle before we issue a callback
-      i = 100 if Netzke.ajaxCount == 0
-    , 20
+      # callback.call() if Netzke.ajaxCount == 0
+    , 100
 
   click: (cmp) ->
     if Ext.isString(cmp)

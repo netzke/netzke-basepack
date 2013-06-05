@@ -33,7 +33,11 @@ module Helpers
       return Netzke.mochaRunner.stats;
     JS
 
-    raise "Mocha spec failed" if result["failures"].to_i > 0 && result["tests"].to_i > 0
+    if result["failures"].to_i > 0 && result["tests"].to_i > 0
+      sleep 10
+      raise "Mocha spec failed"
+    end
+
     pending = result["pending"].to_i
     puts "WARNING: #{pending} pending Mocha #{'spec'.pluralize(pending)}" if pending > 0
   end

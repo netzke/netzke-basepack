@@ -3,8 +3,6 @@ require File.expand_path(File.dirname(__FILE__) + '/../../../lib/netzke-basepack
 RailsApp::Application.routes.draw do
   get "embedded_components/index"
 
-  resources :specs
-
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -62,6 +60,8 @@ RailsApp::Application.routes.draw do
   # Note: This route will make all actions in every controller accessible via GET requests.
 
   netzke
+
+  match 'specs/:path.js' => 'specs#show', as: 'specs', constraints: {path: /.*/}
 
   match 'components/:component' => 'components#index', :as => "components"
   match 'components/embedded/:action' => 'components', :as => "embedded_components"
