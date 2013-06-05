@@ -1,5 +1,5 @@
 describe "BookPagingForm component", ->
-  it "shows total records value of 3", (done)->
+  itx "shows total records value of 3", (done)->
     expectToSee somewhere "of 3"
     done()
 

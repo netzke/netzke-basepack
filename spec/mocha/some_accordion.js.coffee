@@ -9,6 +9,6 @@ describe 'SomeAccordion component', ->
         .query("button[text=Update html]")[0]
 
       wait ->
-        expectToSee panelWithContent "Update for Panel Two"
+        expectToSee header "Update for Panel Two"
         done()
 

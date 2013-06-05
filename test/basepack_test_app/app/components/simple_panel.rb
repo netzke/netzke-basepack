@@ -11,7 +11,6 @@ class SimplePanel < Netzke::Base
   end
 
   def configure(c)
-    c.html = "Original HTML"
     c.bbar = [:update_html]
     super
   end
@@ -21,6 +20,6 @@ class SimplePanel < Netzke::Base
   end
 
   endpoint :update_html_from_server do |params, this|
-    this[:update] = [config[:update_text] || "HTML received from server"]
+    this.set_title(config[:update_text] || "HTML received from server")
   end
 end

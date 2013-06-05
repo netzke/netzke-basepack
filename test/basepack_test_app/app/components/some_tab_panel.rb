@@ -10,7 +10,6 @@ class SomeTabPanel < Netzke::Basepack::TabPanel
   component :simple_panel do |c|
     c.update_text = "Update for Panel Two"
     c.title = "Panel Two"
-    c.header = false
     c.border = false
 
     # optionally, you can force a certain component to be eagerly loaded:

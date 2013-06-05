@@ -35,26 +35,25 @@ module Netzke
       # An override. This is where we expand our basic field config with all the defaults
       def extend_item(field)
         item = super
+        is_field_config?(item) ? extend_field(item) : item
+      end
 
-        if is_field_config?(item)
-          FieldConfig.new(item, data_adapter).tap do |c|
+      def extend_field(field)
+        FieldConfig.new(field, data_adapter).tap do |c|
 
-            # not binding to a model attribute
-            return c if c.no_binding
+          # not binding to a model attribute
+          return c if c.no_binding
 
-            @fields_from_items[c.name.to_sym] = c
+          @fields_from_items[c.name.to_sym] = c
 
-            c.set_defaults!
+          c.set_defaults!
 
-            # netzkeremotecombo requires our js_id
-            c.parent_id = self.js_id if c.xtype == :netzkeremotecombo
-          end
-        else
-          item
+          # netzkeremotecombo requires our js_id
+          c.parent_id = self.js_id if c.xtype == :netzkeremotecombo
         end
       end
 
-    private
+      private
 
       def prepend_primary_key(items)
         items && items.tap do |items|

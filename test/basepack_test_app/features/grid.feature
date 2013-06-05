@@ -41,18 +41,6 @@ Scenario: Updating a record via "Edit in form"
   And a user should not exist with first_name: "Carlos"
 
 @javascript
-Scenario: Deleting a record
-  Given a user exists with first_name: "Anton", last_name: "Chekhov"
-  When I go to the UserGrid test page
-  And I wait for response from server
-  And I select first row in the grid
-  And I click "Delete"
-  Then I should see "Are you sure?" within ".x-window"
-  When I click "Yes"
-  Then I should see "Deleted 1 record(s)"
-  Then a user should not exist with first_name: "Anton"
-
-@javascript
 Scenario: Multi-editing records
   Given a user exists with first_name: "Carlos", last_name: "Castaneda"
   And a user exists with first_name: "Herman", last_name: "Hesse"
@@ -93,109 +81,12 @@ Scenario: Grid with strong_default_attrs
   But I should not see "Unknown"
 
 @javascript
-Scenario: Grid with columns with default values
-  Given an author exists with last_name: "Nabokov"
-  And I am on the BookGridWithDefaultValues test page
-  When I click "Add"
-  Then I should see "Nabokov"
-  And I click "Apply"
-  And I sleep 5 seconds
-  And I wait for response from server
-  Then a book should exist with title: "Lolita", exemplars: 100, digitized: true, author: that author
-
-  When I click "Add in form"
-  And I click "OK"
-  And I wait for response from server
-  Then 2 books should exist with title: "Lolita", exemplars: 100, digitized: true, author: that author
-
-@javascript
-Scenario: Inline editing
-  Given a book exists with title: "Magus", exemplars: 100
-  When I go to the BookGrid test page
-  And I wait for response from server
-  And I edit row 1 of the grid with title: "Collector", exemplars: 200
-  And I click "Apply"
-  And I wait for response from server
-  Then the grid should have 0 modified records
-  And a book should exist with title: "Collector", exemplars: 200
-  But a book should not exist with title: "Magus"
-
-@javascript
-Scenario: Inline editing of association
-  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
-  And a book exists with title: "Lolita", author: that author
-  And an author exists with first_name: "Herman", last_name: "Hesse"
-  When I go to the BookGrid test page
-  And I wait for response from server
-  And I expand combobox "author__name" in row 1 of the grid
-  And I wait for response from server
-  And I select "Herman Hesse" in combobox "author__name" in row 1 of the grid
-  And I edit row 1 of the grid with title: "Demian"
-  And I stop editing the grid
-  Then I should see "Herman Hesse" within "#book_grid"
-
-  When I click "Apply"
-  And I wait for response from server
-  Then a book should exist with title: "Demian", author: that author
-  But a book should not exist with title: "Lolita"
-
-@javascript
-Scenario: Inline adding of records
-  Given an author: "Nabokov" exists with first_name: "Vladimir", last_name: "Nabokov"
-  And an author: "Hesse" exists with first_name: "Herman", last_name: "Hesse"
-
-  When I go to the BookGrid test page
-  And I click "Add"
-  And I expand combobox "author__name" in row 1 of the grid
-  And I wait for response from server
-  And I select "Herman Hesse" in combobox "author__name" in row 1 of the grid
-  And I edit row 1 of the grid with title: "Demian"
-  And I stop editing the grid
-
-  And I click "Add"
-  And I expand combobox "author__name" in row 2 of the grid
-  And I wait for response from server
-  And I select "Vladimir Nabokov" in combobox "author__name" in row 2 of the grid
-  And I edit row 2 of the grid with title: "Lolita"
-  And I stop editing the grid
-
-  And I click "Apply"
-  And I wait for response from server
-  Then a book should exist with title: "Lolita", author: author "Nabokov"
-  And a book should exist with title: "Demian", author: author "Hesse"
-
-@javascript
-Scenario: Inline adding of records in Grid with default values
-  Given an author: "Nabokov" exists with first_name: "Vladimir", last_name: "Nabokov"
-  And an author: "Hesse" exists with first_name: "Herman", last_name: "Hesse"
-
-  When I go to the BookGridWithDefaultValues test page
-  And I click "Add"
-  And I expand combobox "author__last_name" in row 1 of the grid
-  And I wait for response from server
-  And I select "Hesse" in combobox "author__last_name" in row 1 of the grid
-  And I edit row 1 of the grid with title: "Demian"
-
-  And I stop editing the grid
-  And I click "Apply"
-  And I wait for response from server
-  Then a book should exist with title: "Demian", author: author "Hesse"
-
-@javascript
 Scenario: Renderers for association columns should take effect
   Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
   And a book exists with title: "Lolita", author: that author
   When I go to the BookGridWithCustomColumns test page
   Then I should see "NABOKOV"
   And I should see "*Vladimir*"
-
-@javascript
-Scenario: Reloading grid data
-  Given a book exists with title: "Magus"
-  When I go to the BookGrid test page
-  And I reload the grid
-  And I reload the grid
-  Then I should not see "Internal Server Error"
 
 @javascript
 Scenario: Reloading grid remembers selection
@@ -209,25 +100,6 @@ Scenario: Reloading grid remembers selection
   And I wait for response from server
   And I wait 1 second
   Then the grid should have 1 selected records
-
-@javascript
-Scenario: Advanced search window should be hidable after loading grid panel dynamically second time
-  Given I am on the BookGridLoader test page
-  When I click "Load one"
-  And I wait for response from server
-  And I click "Search"
-  And I click "Cancel"
-
-  When I click "Load two"
-  And I wait for response from server
-
-  When I click "Load one"
-  And I wait for response from server
-
-  And I click "Search" on "#book_grid_loader__book_grid_one"
-  And I wait for response from server
-  And I click "Cancel" on "#book_grid_loader__book_grid_one__search_window"
-  Then the "book_grid_loader__book_grid_one__search_window" component should be hidden
 
 @javascript
 Scenario: Column order should be saved across page reloads
@@ -307,25 +179,6 @@ Scenario: Hidden columns
     When I go to the BookGridWithExcludedColumns test page
     Then I should not see "Notes"
     And I should not see "Exemplars"
-
-@javascript
-Scenario: Editing in grid with mass-assignment security
-  # exemplars and author_id are protected attributes, not possible to change
-  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
-  And a book exists with title: "Lolita", author: that author, exemplars: 100
-  And an author exists with first_name: "Herman", last_name: "Hesse"
-  When I go to the BookGridWithMassAssignmentSecurity test page
-  And I wait for response from server
-  And I expand combobox "author__name" in row 1 of the grid
-  And I wait for response from server
-  And I select "Hesse, Herman" in combobox "author__name" in row 1 of the grid
-  And I edit row 1 of the grid with title: "Demian", exemplars: 200
-  And I stop editing the grid
-  And I click "Apply"
-  And I wait for response from server
-  Then a book should not exist with author: that author
-  And a book should not exist with exemplars: 200
-  But a book should exist with title: "Demian", exemplars: 100
 
 @javascript
 Scenario: Scoping out grid records

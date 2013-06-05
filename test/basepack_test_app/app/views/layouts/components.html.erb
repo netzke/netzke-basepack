@@ -10,16 +10,16 @@
     <%= stylesheet_link_tag "/assets/mocha/mocha.css" %>
     <script>
       mocha.setup('bdd');
-      mocha.setup({ignoreLeaks: true});
+      mocha.setup({ignoreLeaks: true, timeout: 5000});
       Ext.onReady(function(){
         Netzke.mochaRunner = mocha.run(function(){Netzke.mochaDone = true;});
       });
     </script>
-    <%= javascript_include_tag "/specs/support__action_helper" %>
-    <%= javascript_include_tag "/specs/support__query_helper" %>
-    <%= javascript_include_tag "/specs/support__expectation_helper" %>
-    <%= javascript_include_tag "/specs/support__grid_helper" %>
-    <%= javascript_include_tag "/specs/#{params[:spec]}" %>
+    <%= javascript_include_tag specs_url(path: 'support/action_helper')%>
+    <%= javascript_include_tag specs_url(path: 'support/query_helper')%>
+    <%= javascript_include_tag specs_url(path: 'support/expectation_helper')%>
+    <%= javascript_include_tag specs_url(path: 'support/grid_helper')%>
+    <%= javascript_include_tag specs_url(path: params[:spec])%>
   <% end %>
 </head>
 <body>

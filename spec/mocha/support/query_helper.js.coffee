@@ -28,6 +28,10 @@ Ext.apply window,
     Ext.ComponentQuery.query("panel{isVisible(true)}[id='"+id+"']")[0] ||
       'component ' + id
 
+  combobox: (name) ->
+    Ext.ComponentQuery.query("combo{isVisible(true)}[name='"+name+"']")[0] ||
+      'combobox ' + name
+
   icon: (tooltip) ->
     Ext.DomQuery.select('img[data-qtip="'+tooltip+'"]')[0] || 'icon ' + tooltip
 

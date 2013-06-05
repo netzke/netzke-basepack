@@ -1,7 +1,7 @@
 describe "UserGrid component", ->
   it "does not allow deleting a user with first name 'Admin'", (done)->
     wait ->
-      selectAllRowsIn grid('Users')
+      selectAllRows grid('Users')
       click button 'Delete'
       click button 'Yes'
       wait ->
