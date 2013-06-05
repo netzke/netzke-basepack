@@ -100,7 +100,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def get_assoc_property_type assoc_name, prop_name
-      if prop_name && assoc = @model_class.reflect_on_association(assoc_name)
+      if prop_name && assoc = @model_class.reflect_on_association(assoc_name.to_sym)
         assoc_column = assoc.klass.columns_hash[prop_name.to_s]
         assoc_column.try(:type)
       end
