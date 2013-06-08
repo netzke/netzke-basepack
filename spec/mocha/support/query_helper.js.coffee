@@ -15,10 +15,20 @@ Ext.apply window,
     Ext.DomQuery.select("div.x-panel-body:contains(" + text + ")")[0] ||
       'panel with content ' + text
 
-  button: (text) ->
-    Ext.ComponentQuery.query("button{isVisible(true)}[text='"+text+"']")[0] ||
-      Ext.DomQuery.select("[data-qtip=#{text}]")[0] ||
-      "button " + text
+  button: (text, params) ->
+    params ?= {}
+    context = params.within
+
+    query = "button{isVisible(true)}[text='"+text+"']"
+    if context
+      context.query(query)[0] || 'button ' + text
+    else
+      Ext.ComponentQuery.query(query)[0] ||
+        Ext.DomQuery.select("[data-qtip=#{text}]")[0] ||
+        "button " + text
+
+  panel: (name, params) ->
+    Ext.getCmp(name)
 
   tool: (type) ->
     Ext.ComponentQuery.query("tool{isVisible(true)}[type='"+type+"']")[0] ||

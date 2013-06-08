@@ -35,3 +35,32 @@ Ext.apply window,
   # Closes the first found window
   closeWindow: ->
     Ext.ComponentQuery.query("window[hidden=false]")[0].close()
+
+  expandCombo: (name)->
+    combo = Ext.ComponentQuery.query('combobox[name='+name+']')[0]
+    combo.onTriggerClick()
+
+  select: (value, params, callback) ->
+    params ?= params
+    combo = params.in
+    if combo.isExpanded
+      combo.setValue combo.findRecordByDisplay value
+      combo.collapse()
+    else
+      combo.onTriggerClick()
+      if callback
+        wait ->
+          rec = combo.findRecordByDisplay value
+          combo.select rec
+          combo.fireEvent('select', combo, rec )
+          combo.collapse()
+          callback.call()
+      else
+        rec = combo.findRecordByDisplay value
+        combo.select rec
+        combo.fireEvent('select', combo, rec )
+        combo.collapse()
+
+  fillIn: (name, value) ->
+    field = Ext.ComponentQuery.query('textfield[name="'+name+'"]')[0]
+    field.setValue(value)
