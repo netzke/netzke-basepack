@@ -5,7 +5,7 @@ Ext.apply window,
     else
       Ext.ComponentQuery.query('grid{isVisible(true)}')[0]
 
-  expandCombo: (field, params) ->
+  expandRowCombo: (field, params) ->
     g = g || this.grid()
     editor = g.getPlugin('celleditor')
     column = g.headerCt.items.findIndex('name', field) - 1
@@ -37,15 +37,11 @@ Ext.apply window,
       record.set(key, value)
 
   selectAssociation: (attr, value, callback) ->
-    expandCombo attr
+    expandRowCombo attr
     wait ->
       select value, in: combobox(attr)
       wait ->
         callback.call()
-
-  select: (value, params) ->
-    combo = params.in
-    combo.setValue combo.findRecordByDisplay value
 
   valuesInColumn: (name, params) ->
     params ?= {}

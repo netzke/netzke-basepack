@@ -10,8 +10,7 @@ end
 
 When /^I select "([^"]*)" from combobox "([^"]*)"$/ do |value, combo_label|
   page.driver.browser.execute_script <<-JS
-    var combo = Ext.ComponentQuery.query("combobox[fieldLabel='#{combo_label}']")[0];
-    combo = combo || Ext.ComponentQuery.query("combobox[name='#{combo_label}']")[0];
+    var combo = Ext.ComponentQuery.query("combobox[name='#{combo_label}']")[0];
     var rec = combo.findRecordByDisplay('#{value}');
     combo.select(rec);
     combo.fireEvent('select', combo, rec );
