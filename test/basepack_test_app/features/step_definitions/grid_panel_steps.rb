@@ -117,24 +117,26 @@ When /^I reload the grid$/ do
   JS
 end
 
-When /^I (?:drag|move) "([^"]*)" column before "([^"]*)"$/ do |header1, header2|
-  headers=[header1,header2].map {|s| s=s.gsub(/ /, '  ')}
-  indexi =[0,1].map { |i| i=page.driver.browser.execute_script %Q(return Ext.ComponentQuery.query('gridcolumn[text="#{headers[i]}"]')[0].getIndex()) }
-  page.driver.browser.execute_script <<-JS
-    cmp = Ext.ComponentQuery.query('gridpanel')[0];
-    cmp.onColumnMove(null, null, #{indexi[0]}, #{indexi[1]});
-  JS
-  step "I wait for response from server"
-end
+# When /^I (?:drag|move) "([^"]*)" column before "([^"]*)"$/ do |header1, header2|
+#   # headers=[header1,header2].map {|s| s=s.gsub(/ /, '  ')}
+#   # indexi =[0,1].map { |i| i=page.driver.browser.execute_script %Q(return Ext.ComponentQuery.query('gridcolumn[text="#{headers[i]}"]')[0].getIndex()) }
+#   page.driver.browser.execute_script <<-JS
+#     var i1 = Ext.ComponentQuery.query('gridcolumn[text="#{header1}"]')[0].getIndex();
+#     var i2 = Ext.ComponentQuery.query('gridcolumn[text="#{header2}"]')[0].getIndex();
+#     cmp = Ext.ComponentQuery.query('gridpanel')[0];
+#     cmp.headerCt.moveHeader(i1+1, i2+1);
+#   JS
+#   step "I wait for response from server"
+# end
 
-Then /^I should see columns in order: "([^"]*)", "([^"]*)", "([^"]*)"$/ do |header1, header2, header3|
-  headers=[header1,header2,header3].map {|s| s=s.gsub(/ /, '  ')}
-  page.driver.browser.execute_script(<<-JS).should be_true
-    return (Ext.ComponentQuery.query('gridcolumn[text="#{headers[0]}"]')[0].getIndex() == 1) &&
-           (Ext.ComponentQuery.query('gridcolumn[text="#{headers[1]}"]')[0].getIndex() == 2) &&
-           (Ext.ComponentQuery.query('gridcolumn[text="#{headers[2]}"]')[0].getIndex() == 3)
-  JS
-end
+# Then /^I should see columns in order: "([^"]*)", "([^"]*)", "([^"]*)"$/ do |header1, header2, header3|
+#   headers=[header1,header2,header3].map {|s| s=s.gsub(/ /, '  ')}
+#   page.driver.browser.execute_script(<<-JS).should be_true
+#     return (Ext.ComponentQuery.query('gridcolumn[text="#{headers[0]}"]')[0].getIndex() == 0) &&
+#            (Ext.ComponentQuery.query('gridcolumn[text="#{headers[1]}"]')[0].getIndex() == 1) &&
+#            (Ext.ComponentQuery.query('gridcolumn[text="#{headers[2]}"]')[0].getIndex() == 2)
+#   JS
+# end
 
 When /^I click on column "([^"]*)"$/ do |column|
   el_id = page.driver.browser.execute_script <<-JS

@@ -102,16 +102,17 @@ Scenario: Reloading grid remembers selection
   Then the grid should have 1 selected records
 
 @javascript
-Scenario: Column order should be saved across page reloads
-  Given I am on the BookGridWithPersistence test page
-  When I drag "Digitized" column before "Title"
-  And I wait for response from server
-  And I go to the BookGridWithPersistence test page
-  Then I should see columns in order: "Digitized", "Title", "Exemplars"
-  When I drag "Digitized" column before "Exemplars"
-  And I wait for response from server
-  And I go to the BookGridWithPersistence test page
-  Then I should see columns in order: "Title", "Digitized", "Exemplars"
+# Scenario: Column order should be saved across page reloads
+#   Given I am on the BookGridWithPersistence test page
+#   When I drag "Digitized" column before "Title"
+#   And I wait for response from server
+#   And I go to the BookGridWithPersistence test page
+#   Then I should see columns in order: "Digitized", "Title", "Exemplars"
+
+#   When I drag "Digitized" column before "Exemplars"
+#   And I wait for response from server
+#   And I go to the BookGridWithPersistence test page
+#   Then I should see columns in order: "Title", "Digitized", "Exemplars"
 
 @javascript
 Scenario: I must see total records value

@@ -32,33 +32,8 @@ module Netzke
             end
           end
 
-          endpoint :resize_column do |params, this|
-            raise "Called resize_column endpoint while not configured to do so" if !config[:persistence]
-
-            current_columns_order = state[:columns_order] || initial_columns_order
-            current_columns_order[normalize_index(params[:index].to_i)][:width] = params[:size].to_i
-            state[:columns_order] = current_columns_order
-          end
-
-          endpoint :move_column do |params, this|
-            raise "Called move_column endpoint while not configured to do so" if !config[:persistence]
-
-            remove_from = normalize_index(params[:old_index].to_i)
-            insert_to = normalize_index(params[:new_index].to_i)
-
-            current_columns_order = state[:columns_order] || initial_columns_order
-
-            column_to_move = current_columns_order.delete_at(remove_from)
-            current_columns_order.insert(insert_to, column_to_move)
-
-            state[:columns_order] = current_columns_order
-          end
-
-          endpoint :hide_column do |params, this|
-            raise "Called hide_column endpoint while not configured to do so" if !config[:persistence]
-            current_columns_order = state[:columns_order] || initial_columns_order
-            current_columns_order[normalize_index(params[:index].to_i)][:hidden] = params[:hidden]
-            state[:columns_order] = current_columns_order
+          endpoint :server_save_columns do |cols, this|
+            state[:columns_order] = cols
           end
 
           # Returns options for a combobox
@@ -132,20 +107,6 @@ module Netzke
           else
             this.netzke_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
           end
-        end
-
-      protected
-
-        # Given an index of a column among enabled (non-excluded) columns, provides the index (position) in the table
-        def normalize_index(index)
-          norm_index = 0
-          index.times do
-            while true do
-              norm_index += 1
-              break unless final_columns[norm_index][:included] == false
-            end
-          end
-          norm_index
         end
       end
     end
