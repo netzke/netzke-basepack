@@ -83,15 +83,20 @@ module Netzke
             this.netzke_feedback(errors)
           end
 
-          # The following two look a bit hackish, but serve to invoke on_data_changed when a form gets successfully submitted
+          # The following two look a bit hackish, but serve to invoke on_data_changed when a form gets successfully
+          # submitted
           endpoint :add_window__add_form__netzke_submit do |params, this|
-            this.merge!(component_instance(:add_window__add_form).invoke_endpoint(:netzke_submit, params))
+            this.merge!(component_instance(:add_window).
+                        component_instance(:add_form).
+                        invoke_endpoint(:netzke_submit, params))
             on_data_changed if this.set_form_values.present?
             this.delete(:set_form_values)
           end
 
           endpoint :edit_window__edit_form__netzke_submit do |params, this|
-            this.merge!(component_instance(:edit_window__edit_form).invoke_endpoint(:netzke_submit, params))
+            this.merge!(component_instance(:edit_window).
+                        component_instance(:edit_form).
+                        invoke_endpoint(:netzke_submit, params))
             on_data_changed if this.set_form_values.present?
             this.delete(:set_form_values)
           end
