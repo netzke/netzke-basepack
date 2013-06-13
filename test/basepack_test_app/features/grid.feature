@@ -101,7 +101,7 @@ Scenario: Reloading grid remembers selection
   And I wait 1 second
   Then the grid should have 1 selected records
 
-@javascript
+# @javascript
 # Scenario: Column order should be saved across page reloads
 #   Given I am on the BookGridWithPersistence test page
 #   When I drag "Digitized" column before "Title"
