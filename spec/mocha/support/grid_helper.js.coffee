@@ -48,7 +48,8 @@ Ext.apply window,
     grid = params.in || this.grid()
     out = []
     grid.getStore().each (r) ->
-      out.push r.get(name)
+      assocValue = r.get('meta').associationValues[name]
+      out.push(if assocValue then assocValue else r.get(name))
     out
 
   selectAllRows: (params) ->
