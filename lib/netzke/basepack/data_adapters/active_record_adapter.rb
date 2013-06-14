@@ -54,10 +54,15 @@ module Netzke::Basepack::DataAdapters
       end
 
       # apply sorting if needed
-      if params[:sorters] && sort_params = params[:sorters].first
-        dir = sort_params["direction"].downcase
-        column = columns.detect { |c| c[:name] == sort_params["property"] }
-        relation = apply_sorting(relation, column, dir)
+      if params[:sorters]
+        sorters = Array.new(params[:sorters])
+        sorters.each do |sorter|
+          sorter["direction"] ||= 'ASC'
+          dir = sorter["direction"].downcase
+          column = columns.detect { |c| c[:name] == sorter["property"] }
+          column ||= {name: sorter["property"]} # stub column, as we may want to sort by a column that's not in the grid
+          relation = apply_sorting(relation, column, dir)
+        end
       end
 
       #page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
