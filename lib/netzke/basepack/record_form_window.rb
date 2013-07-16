@@ -12,6 +12,7 @@ module Netzke
 
       component :multi_edit_form do |c|
         preconfigure_form(c)
+        c.items.reject!{|el| el[:xtype] == :checkbox || el[:read_only] == true }
         c.multi_edit = true
       end
 
