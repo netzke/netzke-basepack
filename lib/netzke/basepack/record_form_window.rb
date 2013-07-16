@@ -4,6 +4,7 @@ module Netzke
 
       component :add_form do |c|
         preconfigure_form(c)
+        c.items.reject!{|el| el[:read_only] == true } unless c[:record].nil?
       end
 
       component :edit_form do |c|
@@ -12,6 +13,7 @@ module Netzke
 
       component :multi_edit_form do |c|
         preconfigure_form(c)
+        c.items.reject!{|el| el[:xtype] == :checkbox || el[:read_only] == true } if c[:record_id].nil? && c[:record].nil?
         c.multi_edit = true
       end
 
