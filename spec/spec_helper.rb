@@ -7,7 +7,8 @@ require 'rspec/autorun'
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 # Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
-require 'support/helpers'
+# require 'support/helpers'
+require 'netzke_testing'
 
 # For JS tests change the cleaning strategy to truncation
 require 'support/database_cleaner'
@@ -16,7 +17,8 @@ RSpec.configure do |config|
   require 'capybara/rspec'
   require 'capybara/rails'
 
-  config.include Helpers
+  # config.include Helpers
+  NetzkeTesting.rspec_init(config)
 
   FactoryGirl.find_definitions
 

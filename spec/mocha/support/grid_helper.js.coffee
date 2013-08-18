@@ -9,7 +9,6 @@ Ext.apply window,
     g = g || this.grid()
     editor = g.getPlugin('celleditor')
     column = g.headerCt.items.findIndex('name', field) - 1
-    window.editor = editor
     editor.startEditByPosition({row: g.getSelectionModel().getCurrentPosition().row, column: column})
     editor.activeEditor.field.onTriggerClick()
 

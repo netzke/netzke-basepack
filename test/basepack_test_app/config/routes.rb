@@ -66,6 +66,4 @@ RailsApp::Application.routes.draw do
   match 'components/:component' => 'components#index', :as => "components"
   match 'components/embedded/:action' => 'components', :as => "embedded_components"
 
-  match ':controller(/:action(/:id(.:format)))'
-
 end
