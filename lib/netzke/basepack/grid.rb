@@ -92,7 +92,7 @@ module Netzke
     #
     #   To enable (multi) sorting, do:
     #
-    #     data_store: {sorters: [:title, :author__first_name]}
+    #     data_store: {sorters: [:title, {property: :author__first_name, direction: :DESC}]}
     #
     # [prohibit_create]
     #
