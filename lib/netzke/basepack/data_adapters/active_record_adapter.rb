@@ -238,6 +238,10 @@ module Netzke::Basepack::DataAdapters
         else
           r.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}")
         end
+      # the composite_primary_keys gem produces [Key1,Key2...] and [Value1,Value2...]
+      # on primary_key and id requests. Basepack::AttrConfig converts the keys-array to an String.
+      elsif r.class.primary_key.try(:to_s) == a[:name]
+        r.id # return 'val1,val2...' on 'key1,key2...' composite_primary_keys
       end
 
       # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
