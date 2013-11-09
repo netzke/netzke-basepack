@@ -12,7 +12,7 @@ gem 'netzke-core', path: '~/code/netzke/netzke-core'
 gem 'carrierwave'
 
 group :test do
-  gem 'rspec', '~> 2.13.0'
+  gem 'rspec'
   gem 'factory_girl'
   gem 'pickle'
   gem 'capybara', '~> 1.0'

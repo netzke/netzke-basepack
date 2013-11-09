@@ -20,4 +20,3 @@ describe "BookPagingForm component", ->
     wait ->
       expectToSee textFieldWith "Getting Things Done"
       done()
-

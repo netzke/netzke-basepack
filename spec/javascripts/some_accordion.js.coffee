@@ -11,4 +11,3 @@ describe 'SomeAccordion component', ->
       wait ->
         expectToSee header "Update for Panel Two"
         done()
-

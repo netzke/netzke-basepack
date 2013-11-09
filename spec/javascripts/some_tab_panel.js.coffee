@@ -10,4 +10,3 @@ describe 'SomeTabPanel component', ->
       wait ->
         expectToSee header "Update for Panel Two"
         done()
-
