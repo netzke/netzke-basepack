@@ -5,8 +5,6 @@ feature Netzke::Basepack::Form, js: true do
 
     run_mocha_spec 'form/create', component: Form::Crud
 
-    sleep 100
-
     Book.count.should == 1
 
     book = Book.first
@@ -19,7 +17,7 @@ feature Netzke::Basepack::Form, js: true do
     hesse = FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
     book = FactoryGirl.create(:book, author: castaneda)
 
-    run_mocha_spec 'edit_form', component: Form::Crud
+    run_mocha_spec 'form/edit', component: Form::Edit
 
     Book.first.author.should == hesse
   end
