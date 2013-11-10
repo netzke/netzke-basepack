@@ -12,7 +12,7 @@ feature "Mocha specs", js: true do
     Dir[File.join(dir, "**/*_spec.js.coffee")].each do |f|
       spec_path = f.sub(dir, '')[1..-1].sub(/_spec\..*$/, '')
 
-      it "pass for '#{spec_path.underscore}_spec.js.coffee'" do
+      it "pass for '#{spec_path.underscore}'" do
         run_mocha_spec spec_path
       end
     end
