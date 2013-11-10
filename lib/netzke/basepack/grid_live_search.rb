@@ -20,7 +20,7 @@ module Netzke
     #
     # == Known issues
     #
-    # Trying to search on a *virtual* column that is *not* shown in the grid will break. A fix would require refactoring
+    # Trying to search on a *virtual* column that is *not shown* in the grid will break. A fix would require refactoring
     # of +Grid::Columns+.
     class GridLiveSearch < Netzke::Plugin
       js_configure do |c|

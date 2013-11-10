@@ -1,4 +1,4 @@
-describe 'GridWithLiveSearch component', ->
+describe 'LiveSearch grid plugin', ->
   it 'searches by title', (done) ->
     wait ->
       searchField = Ext.ComponentQuery.query('field[attr="title"]')[0]
