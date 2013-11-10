@@ -1,4 +1,4 @@
-class Grid::MultiSorting < Netzke::Basepack::Grid
+class Grid::Multisorting < Netzke::Basepack::Grid
   def configure(c)
     super
     c.model = 'Book'
