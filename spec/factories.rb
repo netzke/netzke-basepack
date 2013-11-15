@@ -17,4 +17,16 @@ FactoryGirl.define do
   factory :book do
     title 'A Book'
   end
+
+  factory :role do
+    name 'user'
+
+    factory :admin_role do
+      name 'admin'
+    end
+  end
+
+  factory :user do
+
+  end
 end

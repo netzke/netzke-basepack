@@ -70,8 +70,6 @@ Ext.apply window,
     i = -1
     return Ext.Array.map(Ext.DomQuery.select('tr[data-recordid="'+record.internalId+'"] td div'), (cell) ->
       i++
-      console.debug(visibleColumns[i].attrType)
-      console.debug(i)
       if visibleColumns[i].attrType == 'boolean'
         record.get(visibleColumns[i].name)
       else

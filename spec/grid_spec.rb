@@ -24,4 +24,15 @@ feature Netzke::Basepack::Grid do
 
     run_mocha_spec 'grid/multisorting'
   end
+
+  it 'shows proper error when model prevents deleting a record', js: true do
+    FactoryGirl.create :book, title: 'Untouchable'
+    run_mocha_spec 'grid/untouchable_record', component: 'BookGrid'
+  end
+
+  it 'loads data properly being 2 instances in tabs', js: true do
+    FactoryGirl.create :book
+    FactoryGirl.create :book
+    run_mocha_spec 'grid/in_tabs'
+  end
 end

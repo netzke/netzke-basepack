@@ -7,7 +7,12 @@ class Book < ActiveRecord::Base
 
   scope :sorted_by_author_name, lambda { |dir| joins(:author).order("authors.first_name #{dir}, authors.last_name #{dir}") }
 
-  attr_protected :exemplars, :author_id, :as => :user
+  # prevent deleting books with title 'Untouchable'
+  before_destroy :confirm_deletion
+  def confirm_deletion
+    errors.add :base, "Can't delete this book." if title == "Untouchable"
+    errors.blank?
+  end
 
   def read_only_virtual_attr
     "Dummy value"
