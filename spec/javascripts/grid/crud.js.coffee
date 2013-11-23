@@ -16,6 +16,7 @@ describe 'Grid::Crud', ->
       updateRecord title: 'Art of Dreaming'
       selectAssociation 'author__name', 'Carlos Castaneda', ->
         completeEditing()
+        expect(rowDisplayValues()).to.eql ['Carlos Castaneda', 'Art of Dreaming']
         click button 'Apply'
         wait ->
           wait ->
