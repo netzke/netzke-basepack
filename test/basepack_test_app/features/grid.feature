@@ -14,33 +14,6 @@ Scenario: BookGrid should correctly display data
   And I should see "01/30/2005"
 
 @javascript
-Scenario: Multi-editing records
-  Given a user exists with first_name: "Carlos", last_name: "Castaneda"
-  And a user exists with first_name: "Herman", last_name: "Hesse"
-  When I go to the UserGrid test page
-  And I wait for response from server
-  And I select all rows in the grid
-  And I click "Edit in form"
-  And I wait for response from server
-  And I fill in "First name:" with "Maxim"
-  And I click "OK"
-  And I wait for response from server
-  Then the following users should exist:
-  | first_name | last_name |
-  | Maxim | Castaneda |
-  | Maxim | Hesse |
-  And I should not see window
-  But a user should not exist with first_name: "Carlos"
-
-@javascript
-Scenario: Filling out association column with association's virtual method
-  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
-  And a book exists with title: "Lolita", author: that author
-  When I go to the BookGrid test page
-  Then I should see "Vladimir Nabokov"
-  And I should see "Lolita"
-
-@javascript
 Scenario: Grid with strong_default_attrs
   Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
   And a book exists with title: "Lolita", author: that author

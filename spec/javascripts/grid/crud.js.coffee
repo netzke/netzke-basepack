@@ -91,3 +91,20 @@ describe 'Grid::Crud', ->
           expect(rowDisplayValues()).to.eql ['Carlos Castaneda', 'Art of Dreaming']
           expect(grid('Books').getStore().getCount()).to.eql rowCount
           done()
+
+  it 'simultaneously updates all records via form', (done) ->
+    selectAllRows()
+    click button 'Edit in form'
+    wait ->
+      fill textfield('title'), with: 'Steppenwolf'
+      expandCombo 'author__name'
+      wait ->
+        select 'Herman Hesse', in: combobox 'author__name'
+        click button 'OK'
+        wait ->
+          wait ->
+            selectFirstRow()
+            expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Steppenwolf']
+            selectLastRow()
+            expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Steppenwolf']
+            done()
