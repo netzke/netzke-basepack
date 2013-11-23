@@ -14,33 +14,6 @@ Scenario: BookGrid should correctly display data
   And I should see "01/30/2005"
 
 @javascript
-Scenario: Adding a record via "Add in form"
-  Given I am on the UserGrid test page
-  When I click "Add in form"
-  Then I should see "Add User"
-  When I fill in "First name:" with "Herman"
-  And I fill in "Last name:" with "Hesse"
-  And I click "OK"
-  Then I should see "Herman"
-  And I should see "Hesse"
-  And a user should exist with first_name: "Herman", last_name: "Hesse"
-
-@javascript
-Scenario: Updating a record via "Edit in form"
-  Given a user exists with first_name: "Carlos", last_name: "Castaneda"
-  When I go to the UserGrid test page
-  And I wait for response from server
-  And I select first row in the grid
-  And I click "Edit in form"
-  And I fill in "First name:" with "Maxim"
-  And I fill in "Last name:" with "Osminogov"
-  And I click "OK"
-  And I wait for response from server
-  Then I should see "Maxim"
-  And I should see "Osminogov"
-  And a user should not exist with first_name: "Carlos"
-
-@javascript
 Scenario: Multi-editing records
   Given a user exists with first_name: "Carlos", last_name: "Castaneda"
   And a user exists with first_name: "Herman", last_name: "Hesse"

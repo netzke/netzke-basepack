@@ -1,6 +1,10 @@
 module Netzke
   module Basepack
     class RecordFormWindow < Netzke::Basepack::Window
+      def configure(c)
+        super
+        c.fbar = [:ok, :cancel]
+      end
 
       component :add_form do |c|
         preconfigure_form(c)
@@ -8,16 +12,12 @@ module Netzke
 
       component :edit_form do |c|
         preconfigure_form(c)
+        c.record_id = config.client_config[:record_id]
       end
 
       component :multi_edit_form do |c|
         preconfigure_form(c)
         c.multi_edit = true
-      end
-
-      def configure(c)
-        super
-        c.fbar = [:ok, :cancel]
       end
 
       js_configure do |c|

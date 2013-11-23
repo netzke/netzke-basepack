@@ -50,15 +50,6 @@ module Netzke
             data_adapter.move_records(params)
           end
 
-          # When providing the edit_form component, fill in the form with the requested record
-          endpoint :deliver_component do |params, this|
-            if params[:name] == 'edit_window'
-              components[:edit_window].form_config.record_id = params[:record_id].to_i
-            end
-
-            super(params, this)
-          end
-
           # Process the submit of multi-editing form ourselves
           # TODO: refactor to let the form handle the validations
           endpoint :multi_edit_window__multi_edit_form__netzke_submit do |params, this|
