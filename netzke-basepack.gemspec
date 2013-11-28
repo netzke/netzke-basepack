@@ -3,8 +3,8 @@ require "./lib/netzke/basepack/version"
 Gem::Specification.new do |s|
   s.name        = "netzke-basepack"
   s.version     = Netzke::Basepack::Version::STRING
-  s.author      = "nomadcoder"
-  s.email       = "nmcoder@gmail.com"
+  s.author      = "Max Gorin"
+  s.email       = "gorinme@gmail.com"
   s.homepage    = "http://netzke.org"
   s.summary     = "Pre-built Netzke components"
   s.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) and component extensions which can be used as building blocks for your RIA"
@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'yard'
   s.add_development_dependency 'coffee-script'
-  s.add_development_dependency 'netzke_testing'
+  s.add_development_dependency 'netzke-testing'
 
   s.rubyforge_project = s.name
   s.required_rubygems_version = ">= 1.3.4"
