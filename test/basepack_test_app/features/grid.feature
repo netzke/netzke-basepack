@@ -30,7 +30,7 @@ Scenario: Grid with strong_default_attrs
 Scenario: Renderers for association columns should take effect
   Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
   And a book exists with title: "Lolita", author: that author
-  When I go to the BookGridWithCustomColumns test page
+  When I go to the Grid::CustomColumns test page
   Then I should see "NABOKOV"
   And I should see "*Vladimir*"
 

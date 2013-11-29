@@ -1,4 +1,4 @@
-class BookGridWithCustomColumns < Netzke::Basepack::Grid
+class Grid::CustomColumns < Netzke::Basepack::Grid
   column :author__first_name do |c|
     c.renderer = :my_renderer
     c.read_only = true
