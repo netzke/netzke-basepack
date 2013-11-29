@@ -3,8 +3,8 @@ source 'http://rubygems.org'
 gemspec
 
 # use unreleased version of netzke-core
-gem 'netzke-core', github: 'netzke/netzke-core'
-gem 'netzke-testing', github: 'netzke/netzke-testing'
+gem 'netzke-core', github: 'netzke/netzke-core', branch: 'ext42'
+gem 'netzke-testing'
 
 # for local testing
 # gem 'netzke-testing', path: '~/code/netzke/netzke-testing'

@@ -3,6 +3,6 @@ Netzke::Core.setup do |config|
   config.js_direct_max_retries = 0
 end
 
-NetzkeTesting.setup do |config|
+Netzke::Testing.setup do |config|
   config.spec_root = File.expand_path("../../../../..", __FILE__)
 end

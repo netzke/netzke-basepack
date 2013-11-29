@@ -8,7 +8,7 @@ require 'rspec/autorun'
 # in spec/support/ and its subdirectories.
 # Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 # require 'support/helpers'
-require 'netzke_testing'
+require 'netzke/testing'
 
 # For JS tests change the cleaning strategy to truncation
 require 'support/database_cleaner'
@@ -18,7 +18,7 @@ RSpec.configure do |config|
   require 'capybara/rails'
 
   # config.include Helpers
-  NetzkeTesting.rspec_init(config)
+  Netzke::Testing.rspec_init(config)
 
   FactoryGirl.find_definitions
 
