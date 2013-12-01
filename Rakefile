@@ -19,8 +19,7 @@ end
 desc "Run all tests"
 task :test do
   system("cd spec/rails_app && RAILS_ENV=test rake db:migrate") &&
-  system("rspec spec") &&
-  # system("cucumber spec/rails_app/features") ||
+  system("rspec spec") ||
   abort
 end
 
