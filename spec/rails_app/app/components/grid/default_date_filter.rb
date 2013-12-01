@@ -1,4 +1,4 @@
-class BookGridDefaultFiltering < Netzke::Basepack::Grid
+class Grid::DefaultDateFilter < Netzke::Basepack::Grid
   model "Book"
 
   def columns
@@ -7,6 +7,6 @@ class BookGridDefaultFiltering < Netzke::Basepack::Grid
 
   def configure(c)
     super
-    c.default_filters = [{column: :title, value: 'Brandstifter'}]
+    c.default_filters = [{column: :last_read_at, value: {after: Date.parse("2011-01-01")}}]
   end
 end
