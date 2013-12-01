@@ -33,59 +33,62 @@ In your Gemfile:
 
     gem 'netzke-basepack'
 
-For the "edge" stuff, tell bundler to get the gem straight from GitHub:
+For the "edge" stuff, instruct bundler to get the gem straight from GitHub:
 
-    gem 'netzke-basepack', :git => "git://github.com/netzke/netzke-basepack.git"
+    gem 'netzke-basepack', git: "netzke/netzke-basepack"
 
-## Usage
+## Basic usage
 
 Embed a basepack component into a view as any other Netzke component, e.g.:
 
 ```erb
-<%= netzke :books, :class_name => 'Netzke::Basepack::Grid', :model => 'Book' %>
+<%= netzke :books, class_name: 'Netzke::Basepack::Grid', model: 'Book' %>
 ```
 
-For more examples, see http://netzke-demo.herokuapp.com ([source code](https://github.com/netzke/netzke-demo)), and look into `spec/rails_app`.
+For more examples, see http://netzke-demo.herokuapp.com ([source code](https://github.com/netzke/netzke-demo)), and look
+into `spec/rails_app`.
 
 ## Running tests
 
-Before being able run the test app and the tests themselves, you must link your Ext JS library to `spec/rails_app/public`, e.g. (from the gems's root):
+Before running the tests, you must link your Ext JS library to `spec/rails_app/public`, e.g. (from the gems's root):
 
     $ ln -s PATH/TO/YOUR/EXTJS/FILES spec/rails_app/public/extjs
 
-The bundled `spec/rails_app` application used for automated testing can be easily run as a stand-alone Rails app. It's a good source of concise, focused examples. After starting the application, access any of the test components (located in `app/components`) by using the following url:
+The bundled `spec/rails_app` application used for automated testing can be easily run as a stand-alone Rails app. It's a
+good source of concise, focused examples. After starting the application, access any of the test components (located in
+`app/components`) by using the following url:
 
-    http://localhost:3000/components/{name of the component's class}
+    http://localhost:3000/netzke/components/{name of the component's class}
 
-For example [http://localhost:3000/components/BookGrid](http://localhost:3000/components/BookGrid)
-
-Also, you can see the list of test components on the index page (along with links to the source code):
-
-    http://localhost:3000/
+For example [http://localhost:3000/netzke/components/BookGrid](http://localhost:3000/netzke/components/BookGrid)
 
 To run all the tests (from the gem's root):
 
     $ rake
 
-This assumes that the Ext JS library is located/symlinked in `test/core_test_app/public/extjs`.
-
-*Sourcing Ext JS files from Sencha CDN is broken in Basepack atm*.
+*Sourcing Ext JS files from Sencha CDN is broken in Basepack at the moment*.
 
 ## Using ORM other than ActiveRecord
 
-Using ActiveRecord as its default ORM, Basepack is designed to be extendable with data adapters for other ORMs. If you're thinking about implementing an adapter, `AbstractAdapter` and `ActiveRecordAdapter` classes can be used as a reference.
+Using ActiveRecord as its default ORM, Basepack is designed to be extendable with data adapters for other ORMs. If
+you're thinking about implementing an adapter, `AbstractAdapter` and `ActiveRecordAdapter` classes can be used as a
+reference.
 
-There's some work being done in the direction of implementing [DataMapper](https://github.com/nomadcoder/netzke-basepack-dm) and [Sequel](https://github.com/nomadcoder/netzke-basepack-sequel) adapters, but at this moment the code is broken.
+There's some work being done in the direction of implementing
+[DataMapper](https://github.com/nomadcoder/netzke-basepack-dm) and
+[Sequel](https://github.com/nomadcoder/netzke-basepack-sequel) adapters, but at this moment the code is broken.
 
 ## Icons support
 
-Netzke Basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/). To enable this, download the icons and put the "icons" folder into your app's public/images folder. Then restart your application.
+Netzke Basepack can make use of FamFamFam Silk icon set (http://www.famfamfam.com/archive/silk-icons-thats-your-lot/).
+To enable this, download the icons and put the "icons" folder into your app's `public/images` folder. Then restart your
+application.
 
 ## Contributions and support
 
 Help developing Netzke by submitting a pull request when you think others can benefit from it.
 
-If you feel particularily generous, you can donate a couple of bucks a week at [GitTip](https://www.gittip.com/uptomax/).
+If you feel particularily generous, you can donate a couple of bucks weekly at [GitTip](https://www.gittip.com/uptomax/).
 
 ## Useful links
 * [Project website](http://netzke.org)
@@ -95,4 +98,5 @@ If you feel particularily generous, you can donate a couple of bucks a week at [
 ---
 Copyright (c) 2008-2013 [Max Gorin](https://twitter.com/uptomax), released under the MIT license (see LICENSE).
 
-**Note** that Ext JS is licensed [differently](http://www.sencha.com/products/extjs/license/), and you may need to purchase a commercial license in order to use it in your projects!
+**Note** that Ext JS is licensed [differently](http://www.sencha.com/products/extjs/license/), and you may need to
+purchase a commercial license in order to use it in your projects.
