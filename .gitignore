@@ -5,10 +5,10 @@ doc
 *.gem
 icons
 .vimrc
-test/basepack_test_app/db/development_structure.sql
-test/basepack_test_app/public/extjs*
-test/basepack_test_app/public/uploads/
-test/basepack_test_app/db/*.sqlite3
-test/basepack_test_app/tmp
+spec/rails_app/db/development_structure.sql
+spec/rails_app/public/extjs*
+spec/rails_app/public/uploads/
+spec/rails_app/db/*.sqlite3
+spec/rails_app/tmp
 tags
 Gemfile.lock
