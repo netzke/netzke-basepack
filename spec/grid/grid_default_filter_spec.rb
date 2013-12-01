@@ -4,7 +4,7 @@ feature Netzke::Basepack::Grid do
     frisch = FactoryGirl.create(:author, first_name: 'Max', last_name: 'Frisch')
     FactoryGirl.create(:book, author: frisch, title: "Biedermann und die Brandstifter", exemplars: 5, digitized: false, notes: 'To read', last_read_at: "2010-12-23")
 
-    durrenmatt = FactoryGirl.create(:author, first_name: 'Friedrich', last_name: 'Dürrenmatt')
+    durrenmatt = FactoryGirl.create(:author, first_name: 'Friedrich', last_name: 'Durrenmatt')
     FactoryGirl.create(:book, author: durrenmatt, title: "Die Panne", exemplars: 10, digitized: true, notes: 'A must-read', last_read_at: "2011-04-25")
 
     adams = FactoryGirl.create(:author, first_name: 'Douglas', last_name: 'Adams')
