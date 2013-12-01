@@ -45,15 +45,15 @@ Embed a basepack component into a view as any other Netzke component, e.g.:
 <%= netzke :books, :class_name => 'Netzke::Basepack::Grid', :model => 'Book' %>
 ```
 
-For more examples, see http://netzke-demo.herokuapp.com ([source code](https://github.com/netzke/netzke-demo)), and look into `test/basepack_test_app`.
+For more examples, see http://netzke-demo.herokuapp.com ([source code](https://github.com/netzke/netzke-demo)), and look into `spec/rails_app`.
 
 ## Running tests
 
-Before being able run the test app and the tests themselves, you must link your Ext JS library to `test/basepack_test_app/public`, e.g. (from the gems's root):
+Before being able run the test app and the tests themselves, you must link your Ext JS library to `spec/rails_app/public`, e.g. (from the gems's root):
 
-    $ ln -s PATH/TO/YOUR/EXTJS/FILES test/basepack_test_app/public/extjs
+    $ ln -s PATH/TO/YOUR/EXTJS/FILES spec/rails_app/public/extjs
 
-The bundled `test/basepack_test_app` application used for automated testing can be easily run as a stand-alone Rails app. It's a good source of concise, focused examples. After starting the application, access any of the test components (located in `app/components`) by using the following url:
+The bundled `spec/rails_app` application used for automated testing can be easily run as a stand-alone Rails app. It's a good source of concise, focused examples. After starting the application, access any of the test components (located in `app/components`) by using the following url:
 
     http://localhost:3000/components/{name of the component's class}
 
