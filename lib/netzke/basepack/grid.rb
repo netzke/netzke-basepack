@@ -410,7 +410,7 @@ module Netzke
               if f[:value].is_a?(Hash)
                 val = {}
                 f[:value].each do |k,v|
-                  val[k] = (v.is_a?(Time) || v.is_a?(Date) || v.is_a?(ActiveSupport::TimeWithZone)) ?  ActiveSupport::JSON::Variable.new("new Date('#{v.strftime("%m/%d/%Y")}')") : v
+                  val[k] = (v.is_a?(Time) || v.is_a?(Date) || v.is_a?(ActiveSupport::TimeWithZone)) ? Netzke::Core::JsonLiteral.new("new Date('#{v.strftime("%m/%d/%Y")}')") : v
                 end
               else
                 val = f[:value]
