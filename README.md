@@ -35,7 +35,7 @@ In your Gemfile:
 
 For the "edge" stuff, instruct bundler to get the gem straight from GitHub:
 
-    gem 'netzke-basepack', git: "netzke/netzke-basepack"
+    gem 'netzke-basepack', github: "netzke/netzke-basepack"
 
 ## Basic usage
 
