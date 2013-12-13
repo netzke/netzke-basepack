@@ -20,7 +20,7 @@ ru:
             text: Искать
 
         deleted_n_records:
-         one: "Записей удалено: %{count}"
+         one: "1 запись удалена"
          other: "Записей удалено: %{count}"
         cannot_delete: "У вас недостаточно прав для удаления"
         confirmation: Подтверждение

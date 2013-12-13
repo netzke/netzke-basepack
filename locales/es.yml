@@ -20,7 +20,7 @@ es:
             text: Buscar
 
         deleted_n_records:
-         one: "Se han eliminado %{count} registro(s)"
+         one: "Se ha eliminado 1 registro"
          other: "Se han eliminado %{count} registro(s)"
         cannot_delete: "Usted no tiene permiso para borrar los datos"
         confirmation: Confirmación
