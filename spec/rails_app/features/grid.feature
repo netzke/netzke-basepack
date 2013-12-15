@@ -4,27 +4,6 @@ Feature: Grid panel
   I want feature
 
 @javascript
-Scenario: Grid with strong_default_attrs
-  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
-  And a book exists with title: "Lolita", author: that author
-  And a book exists with title: "Unknown"
-  When I go to the BooksBoundToAuthor test page
-  And I click "Add in form"
-  And I fill in "Title:" with "The Luzhin Defence"
-  And I click "OK"
-  And I should see "The Luzhin Defence"
-  And I should see "Lolita"
-  But I should not see "Unknown"
-
-@javascript
-Scenario: Renderers for association columns should take effect
-  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
-  And a book exists with title: "Lolita", author: that author
-  When I go to the Grid::CustomColumns test page
-  Then I should see "NABOKOV"
-  And I should see "*Vladimir*"
-
-@javascript
 Scenario: Reloading grid remembers selection
   Given a book exists with title: "Magus"
   And another book exists with title: "Lolita"

@@ -35,4 +35,10 @@ feature Netzke::Basepack::Grid do
     FactoryGirl.create :book
     run_mocha_spec 'grid/in_tabs'
   end
+
+  it 'takes custom columns renderers into account', js: true do
+    castaneda = FactoryGirl.create :author, first_name: 'Carlos', last_name: 'Castaneda'
+    FactoryGirl.create :book, title: 'Journey to Ixtlan', author: castaneda
+    run_mocha_spec 'grid/custom_renderers'
+  end
 end
