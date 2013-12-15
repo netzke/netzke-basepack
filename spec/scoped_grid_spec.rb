@@ -3,7 +3,7 @@ require 'spec_helper'
 module Netzke::Basepack
   describe ScopedGrid do
     # Grid with books scoped out to the first existing author (@castaneda in this case)
-    let(:grid) {ScopedGrid.new}
+    let(:grid) {::Grid::Scoped.new}
 
     before do
       Author.delete_all
@@ -53,6 +53,12 @@ module Netzke::Basepack
       res[@fb1.id][:error].should be_present
       @fb1.reload
       @fb1.title.should_not == 'Foo'
+    end
+
+    it 'sets strongs attributes' do
+      res = grid.update([{"id" => @cb1.id, title: 'Foo', author_id: @fowles.id}])
+      @cb1.reload
+      @cb1.author.should == @castaneda
     end
   end
 end

@@ -4,16 +4,6 @@ Feature: Grid panel
   I want feature
 
 @javascript
-Scenario: BookGrid should correctly display data
-  Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
-  And a book exists with author: that author, title: "Lolita", last_read_at: "2011-12-13 11:12:13", published_on: "2005-01-30"
-
-  When I go to the BookGrid test page
-  Then I should see "Vladimir Nabokov"
-  And I should see "12/13/2011 11:12:13"
-  And I should see "01/30/2005"
-
-@javascript
 Scenario: Grid with strong_default_attrs
   Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
   And a book exists with title: "Lolita", author: that author
