@@ -3,19 +3,6 @@ Feature: Grid panel
   As a role
   I want feature
 
-@javascript
-Scenario: Reloading grid remembers selection
-  Given a book exists with title: "Magus"
-  And another book exists with title: "Lolita"
-  When I go to the BookGrid test page
-  And I wait for response from server
-  And I select first row in the grid
-  Then the grid should have 1 selected records
-  When I reload the grid
-  And I wait for response from server
-  And I wait 1 second
-  Then the grid should have 1 selected records
-
 # @javascript
 # Scenario: Column order should be saved across page reloads
 #   Given I am on the BookGridWithPersistence test page

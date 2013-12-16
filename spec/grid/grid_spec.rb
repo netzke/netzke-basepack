@@ -41,4 +41,11 @@ feature Netzke::Basepack::Grid do
     FactoryGirl.create :book, title: 'Journey to Ixtlan', author: castaneda
     run_mocha_spec 'grid/custom_renderers'
   end
+
+  it 'keeps row selection after grid reload', js: true do
+    4.times do
+      FactoryGirl.create :book
+    end
+    run_mocha_spec 'grid/selection', component: 'Grid::Crud'
+  end
 end
