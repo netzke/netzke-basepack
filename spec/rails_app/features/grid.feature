@@ -17,18 +17,6 @@ Feature: Grid panel
 #   Then I should see columns in order: "Title", "Digitized", "Exemplars"
 
 @javascript
-Scenario: I must see total records value
-  Given the following books exist:
-  | title               |
-  | Journey to Ixtlan   |
-  | Lolita              |
-  | Getting Things Done |
-  | Magus               |
-
-  When I go to the BookGridWithPaging test page
-  Then I should see "of 2" within paging toolbar
-
-@javascript
 Scenario: Grid with overridden columns
   Given an author exists with first_name: "Vladimir", last_name: "Nabokov"
   And a book exists with title: "Lolita", author: that author

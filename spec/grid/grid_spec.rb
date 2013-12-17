@@ -48,4 +48,11 @@ feature Netzke::Basepack::Grid do
     end
     run_mocha_spec 'grid/selection', component: 'Grid::Crud'
   end
+
+  it 'shows number of pages in the paging toolbar', js: true do
+    4.times do
+      FactoryGirl.create :book
+    end
+    run_mocha_spec 'grid/pagination'
+  end
 end
