@@ -50,9 +50,10 @@ feature Netzke::Basepack::Grid do
   end
 
   it 'shows number of pages in the paging toolbar', js: true do
-    4.times do
-      FactoryGirl.create :book
-    end
+    FactoryGirl.create :book, title: 'One'
+    FactoryGirl.create :book, title: 'Two'
+    FactoryGirl.create :book, title: 'Three'
+    FactoryGirl.create :book, title: 'Four'
     run_mocha_spec 'grid/pagination'
   end
 end
