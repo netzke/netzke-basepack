@@ -56,4 +56,10 @@ feature Netzke::Basepack::Grid do
     FactoryGirl.create :book, title: 'Four'
     run_mocha_spec 'grid/pagination'
   end
+
+  it 'shows inline data on initial load', js: true do
+    FactoryGirl.create :book, title: 'One'
+    FactoryGirl.create :book, title: 'Two'
+    run_mocha_spec 'grid/inline_data'
+  end
 end

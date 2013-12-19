@@ -5,8 +5,6 @@ describe ::Grid::Scoped do
   let(:grid) {::Grid::Scoped.new}
 
   before do
-    Author.delete_all
-
     @castaneda = FactoryGirl.create(:castaneda)
     @fowles = FactoryGirl.create(:fowles)
 
@@ -58,5 +56,10 @@ describe ::Grid::Scoped do
     res = grid.update([{"id" => @cb1.id, title: 'Foo', author_id: @fowles.id}])
     @cb1.reload
     @cb1.author.should == @castaneda
+  end
+
+  it 'only lists scoped records' do
+    grid = ::Grid::Scoped.new load_inline_data: true
+    grid.js_config[:inline_data][:total].should == 3
   end
 end
