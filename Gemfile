@@ -11,8 +11,6 @@ gemspec
 
 gem 'carrierwave'
 
-gem 'protected_attributes'
-
 group :test do
   gem 'rspec'
   gem 'factory_girl'

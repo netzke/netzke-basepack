@@ -1,0 +1,2 @@
+module EmbeddedComponentsHelper
+end
