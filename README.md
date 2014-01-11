@@ -1,4 +1,4 @@
-# Netzke Basepack [![Gem Version](https://badge.fury.io/rb/netzke-basepack.png)](http://badge.fury.io/rb/netzke-basepack) [![Build Status](https://travis-ci.org/netzke/netzke-basepack.png?branch=master)](https://travis-ci.org/netzke/netzke-basepack) [![Code Climate](https://codeclimate.com/github/netzke/netzke-basepack.png)](https://codeclimate.com/github/netzke/netzke-basepack)
+# Netzke Basepack [![Gem Version](https://badge.fury.io/rb/netzke-basepack.png)](http://badge.fury.io/rb/netzke-basepack) [![Build Status](https://travis-ci.org/netzke/netzke-basepack.png?branch=0-9)](https://travis-ci.org/netzke/netzke-basepack) [![Code Climate](https://codeclimate.com/github/netzke/netzke-basepack.png)](https://codeclimate.com/github/netzke/netzke-basepack)
 
 [RDocs](http://rdoc.info/github/netzke/netzke-basepack)
 
