@@ -1,8 +1,10 @@
-# Netzke Basepack [![Gem Version](https://badge.fury.io/rb/netzke-basepack.png)](http://badge.fury.io/rb/netzke-basepack) [![Build Status](https://travis-ci.org/netzke/netzke-basepack.png?branch=master)](https://travis-ci.org/netzke/netzke-basepack) [![Code Climate](https://codeclimate.com/github/netzke/netzke-basepack.png)](https://codeclimate.com/github/netzke/netzke-basepack)
+# Netzke Basepack [![Build Status](https://travis-ci.org/netzke/netzke-basepack.png?branch=master)](https://travis-ci.org/netzke/netzke-basepack) [![Code Climate](https://codeclimate.com/github/netzke/netzke-basepack.png)](https://codeclimate.com/github/netzke/netzke-basepack)
 
 [RDocs](http://rdoc.info/github/netzke/netzke-basepack)
 
 A pack of pre-built [Netzke](http://netzke.org) components that can be used as building blocks for your webapps.
+
+*The latest released version is [![Gem Version](https://badge.fury.io/rb/netzke-basepack.png)](http://badge.fury.io/rb/netzke-basepack). Check [version.rb](https://github.com/netzke/netzke-core/blob/master/lib/netzke/core/version.rb) for the version under development. For other versions, check corresponding [branches](https://github.com/netzke/netzke-core/branches).*
 
 ## Included components
 
