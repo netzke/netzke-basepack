@@ -50,7 +50,7 @@ module Netzke::Basepack::DataAdapters
       # addressing the n+1 query problem
       columns.each do |c|
         assoc, method = c[:name].split('__')
-        relation = relation.includes(assoc.to_sym).references(assoc.to_sym) if method
+        relation = relation.includes(assoc.to_sym) if method
       end
 
       # apply sorting if needed
@@ -84,7 +84,7 @@ module Netzke::Basepack::DataAdapters
           relation.order("#{@model_class.table_name}.#{assoc} #{dir}")
         else
           assoc = @model_class.reflect_on_association(assoc.to_sym)
-          relation.includes(assoc.name).references(assoc.klass.table_name.to_sym).order("#{assoc.klass.table_name}.#{method} #{dir}")
+          relation.includes(assoc.name).order("#{assoc.klass.table_name}.#{method} #{dir}")
         end
       end
 
@@ -98,7 +98,7 @@ module Netzke::Basepack::DataAdapters
       # addressing the n+1 query problem
       columns.each do |c|
         assoc, method = c[:name].split('__')
-        relation = relation.includes(assoc.to_sym).references(assoc.to_sym) if method
+        relation = relation.includes(assoc.to_sym) if method
       end
 
       relation.count
@@ -128,7 +128,7 @@ module Netzke::Basepack::DataAdapters
       if assoc
         # Options for an asssociation attribute
 
-        relation = assoc.klass.all
+        relation = assoc.klass.scoped
         relation = relation.extend_with(attr[:scope]) if attr[:scope]
 
         if assoc.klass.column_names.include?(assoc_method)
@@ -140,7 +140,7 @@ module Netzke::Basepack::DataAdapters
         else
           query.downcase!
           # an expensive search!
-          relation.to_a.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value.to_s.downcase.include?(query) }
+          relation.all.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value.to_s.downcase.include?(query) }
         end
 
       else
@@ -304,7 +304,7 @@ module Netzke::Basepack::DataAdapters
 
     # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
     def get_relation(params = {})
-      relation = @model_class.all
+      relation = @model_class.scoped
 
       query = params[:query]
 
