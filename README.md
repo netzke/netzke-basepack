@@ -24,7 +24,7 @@ enhancing any grid with live search functionality
 ## Requirements
 
 * Ruby ~> 1.9.2
-* Rails ~> 4.0.0
+* Rails ~> 3.2.0
 * Ext JS ~> 4.2.0
 
 ## Installation
