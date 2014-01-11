@@ -8,5 +8,4 @@ class BooksBoundToAuthor < Netzke::Basepack::Grid
     c.strong_default_attrs = {:author_id => Author.first.id}
     super
   end
-
 end

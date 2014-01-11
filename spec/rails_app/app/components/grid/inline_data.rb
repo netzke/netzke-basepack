@@ -1,4 +1,4 @@
-class GridWithInlineData < Netzke::Basepack::Grid
+class Grid::InlineData < Netzke::Basepack::Grid
   def configure(c)
     super
     c.model = "Book"
