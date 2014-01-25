@@ -64,3 +64,11 @@ describe 'Grid filter functionality', ->
       enableColumnFilter "exemplars", {gt: 6}, ->
         expect(grid("Books").getStore().getCount()).to.eql 1
         done()
+
+  it 'filters by boolean', (done) ->
+    wait ->
+      enableColumnFilter "digitized", false, ->
+        expect(grid("Books").getStore().getCount()).to.eql 1
+        enableColumnFilter "digitized", true, ->
+          expect(grid("Books").getStore().getCount()).to.eql 2
+          done()
