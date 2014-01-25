@@ -21,8 +21,5 @@ end
 
 group :test, :development do
   gem 'pry-rails'
-
-# for local testing
-  gem 'netzke-testing', path: '~/code/netzke/netzke-testing'
-  # gem 'netzke-testing'
+  gem 'netzke-testing'
 end
