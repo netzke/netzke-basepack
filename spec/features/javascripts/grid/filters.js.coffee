@@ -37,7 +37,7 @@ window.clearAllColumnFilters = ->
   , 500
 
 describe 'Grid filter functionality', ->
-  afterEach (done) ->
+  beforeEach (done) ->
     clearAllColumnFilters ->
       done()
 
@@ -51,6 +51,16 @@ describe 'Grid filter functionality', ->
     wait ->
       enableColumnFilter "author__first_name", "d", ->
         expect(grid("Books").getStore().getCount()).to.eql 2
-        enableColumnFilter "author__first_name", "carl", ->
-          expect(grid("Books").getStore().getCount()).to.eql 1
-          done()
+        done()
+
+  it 'filters by datetime', (done) ->
+    wait ->
+      enableColumnFilter "last_read_at", {on: new Date "2011/04/25"}, ->
+        expect(grid("Books").getStore().getCount()).to.eql 1
+        done()
+
+  it 'filters by integer', (done) ->
+    wait ->
+      enableColumnFilter "exemplars", {gt: 6}, ->
+        expect(grid("Books").getStore().getCount()).to.eql 1
+        done()
