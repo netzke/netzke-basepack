@@ -5,8 +5,6 @@ gemspec
 # unreleased version of netzke-core
 # gem 'netzke-core', github: 'netzke/netzke-core'
 
-# for local testing
-# gem 'netzke-testing', path: '~/code/netzke/netzke-testing'
 # gem 'netzke-core', path: '~/code/netzke/netzke-core'
 
 gem 'carrierwave'
@@ -23,5 +21,8 @@ end
 
 group :test, :development do
   gem 'pry-rails'
-  gem 'netzke-testing'
+
+# for local testing
+  gem 'netzke-testing', path: '~/code/netzke/netzke-testing'
+  # gem 'netzke-testing'
 end

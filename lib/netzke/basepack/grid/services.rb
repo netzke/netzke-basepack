@@ -69,7 +69,7 @@ module Netzke
           params[:filters] = normalize_filters(params[:filters]) if params[:filters]
           params[:query] = normalize_query(params[:query]) if params[:query].present?
           if config[:enable_pagination]
-            params[:limit] = config[:rows_per_page] 
+            params[:limit] = config[:rows_per_page]
           else
             params.delete(:limit)
           end
