@@ -53,4 +53,18 @@ describe Netzke::Basepack::Grid do
     res = grid.read filters: [{"type"=>"integer", "comparison"=>"eq", "value"=>"6", "field"=>"exemplars"}]
     res[:total].should == 0
   end
+
+  it 'filters by custom filter column' do
+    res = grid.read filters: [{"type"=>"string", "value"=>"read", "field"=>"title_or_notes"}]
+    res[:total].should == 2
+
+    res = grid.read filters: [{"type"=>"string", "value"=>"o", "field"=>"title_or_notes"}]
+    res[:total].should == 3
+
+    res = grid.read filters: [{"type"=>"string", "value"=>"ro", "field"=>"title_or_notes"}]
+    res[:total].should == 1
+
+    res = grid.read filters: [{"type"=>"string", "value"=>"ix", "field"=>"title_or_notes"}]
+    res[:total].should == 1
+  end
 end
