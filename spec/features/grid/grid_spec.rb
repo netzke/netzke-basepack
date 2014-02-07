@@ -62,4 +62,9 @@ feature Netzke::Basepack::Grid do
     FactoryGirl.create :book, title: 'Two'
     run_mocha_spec 'grid/inline_data'
   end
+
+  it 'handles models with custom primary key properly', js: true do
+    FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
+    run_mocha_spec 'grid/custom_primary_key'
+  end
 end
