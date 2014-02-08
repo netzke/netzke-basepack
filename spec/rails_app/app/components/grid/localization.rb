@@ -3,6 +3,6 @@ class Grid::Localization < Netzke::Basepack::Grid
     super
     c.model = "Book"
     c.title = I18n.t "books"
-    c.columns = [:author__name, :title]
+    c.columns = [:author__name, :exemplars]
   end
 end
