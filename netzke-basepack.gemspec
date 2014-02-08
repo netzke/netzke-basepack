@@ -2,7 +2,7 @@ require "./lib/netzke/basepack/version"
 
 Gem::Specification.new do |s|
   s.name        = "netzke-basepack"
-  s.version     = Netzke::Basepack::Version::STRING
+  s.version     = Netzke::Basepack::VERSION
   s.author      = "Max Gorin"
   s.email       = "gorinme@gmail.com"
   s.homepage    = "http://netzke.org"

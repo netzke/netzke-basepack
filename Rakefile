@@ -3,7 +3,7 @@ require "bundler/gem_tasks"
 require "./lib/netzke/basepack/version"
 
 YARD::Rake::YardocTask.new do |t|
-  t.options = ['--title', "Netzke Basepack #{Netzke::Basepack::Version::STRING}"]
+  t.options = ['--title', "Netzke Basepack #{Netzke::Basepack::VERSION}"]
 end
 
 namespace :yard do
