@@ -7,6 +7,6 @@ describe "Basepack I18n" do
     I18n.locale = :es
     columns = grid.final_columns.map(&:text)
 
-    columns.should == %w|Id Autor Título|
+    columns.should == %w|Id Autor Ejemplares|
   end
 end
