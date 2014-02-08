@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.test_files    = Dir["{test}/**/*"]
   s.require_paths = ["lib"]
 
-  s.add_dependency 'netzke-core', '~> 0.10.0.rc1'
+  s.add_dependency 'netzke-core', '0.10.0.rc2'
 
   s.add_development_dependency 'rails', '~> 4.0.0'
   s.add_development_dependency 'sqlite3'
