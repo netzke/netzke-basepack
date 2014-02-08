@@ -1,12 +1,5 @@
 module Netzke
   module Basepack
-    module Version
-      MAJOR = 0
-      MINOR = 9
-      PATCH = 0
-      PRE   = 'rc1'
-
-      STRING = [MAJOR, MINOR, PATCH, PRE].compact.join('.')
-    end
+    VERSION = "0.9.0"
   end
 end
