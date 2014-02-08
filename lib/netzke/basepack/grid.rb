@@ -375,15 +375,7 @@ module Netzke
       delegates_to_dsl :model
 
       def configure(c)
-        # Defaults. The nil? checks are needed because these can be already set in a subclass
-        c.enable_edit_in_form = self.class.edit_in_form_available if c.enable_edit_in_form.nil?
-        c.enable_edit_inline = self.class.edit_inline_available if c.enable_edit_inline.nil?
-        c.enable_extended_search = self.class.advanced_search_available if c.enable_extended_search.nil?
-        c.enable_column_filters = self.class.column_filters_available if c.enable_column_filters.nil?
-        c.enable_pagination = true if c.enable_pagination.nil?
-        c.rows_per_page = 30 if c.rows_per_page.nil?
-        c.tools = %w{ refresh } if c.tools.nil?
-
+        set_defaults(c)
         super
       end
 
@@ -522,7 +514,25 @@ module Netzke
         c.fields = attributes_for_search
       end
 
-    protected
+      protected
+
+      # Override from Base. Ensures the model is provided.
+      def validate_config(c)
+        raise ArgumentError, "Grid requires a model" if c.model.nil?
+      end
+
+      private
+
+      def set_defaults(c)
+        # The nil? checks are needed because these can be already set in a subclass
+        c.enable_edit_in_form = self.class.edit_in_form_available if c.enable_edit_in_form.nil?
+        c.enable_edit_inline = self.class.edit_inline_available if c.enable_edit_inline.nil?
+        c.enable_extended_search = self.class.advanced_search_available if c.enable_extended_search.nil?
+        c.enable_column_filters = self.class.column_filters_available if c.enable_column_filters.nil?
+        c.enable_pagination = true if c.enable_pagination.nil?
+        c.rows_per_page = 30 if c.rows_per_page.nil?
+        c.tools = %w{ refresh } if c.tools.nil?
+      end
 
       def preconfigure_record_window(c)
         c.klass = RecordFormWindow
