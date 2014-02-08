@@ -1,4 +1,4 @@
-# 0.9.0 - WIP
+# 0.9.0 - 2014-02-08
 * new
   * GridLiveSearch plugin - implements flexible "live" search on any grid
   * Implement multi-sorting support in grids
