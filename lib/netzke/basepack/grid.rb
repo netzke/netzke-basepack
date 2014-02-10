@@ -237,19 +237,44 @@ module Netzke
     #
     #     {name: "author__first_name", scope: ->(relation){relation.where(popular: true)}
     #
-    # == Add/edit forms
+    # == Add/Edit/Search forms
+    #
+    # Add/Edit/Multi-edit/Search forms are each wrapped in a separate +Basepack::Window+-descending component (called
+    # +RecordFormWindow+ for the add/edit forms, and +SearchWindow+ for the search form), and can be overridden
+    # individually as any other child component.
+    #
+    # === Overriding windows
+    #
+    # Override the following direct child components to change the looks of the pop-up windows: +:add_window+,
+    # +:edit_window+, +:multi_edit_window+, and +:search_window+. For example, to override the title of the Add form,
+    # do:
+    #
+    #     component :add_window do |c|
+    #       super c
+    #       c.title = "Adding new record"
+    #     end
+    #
+    # === Modifying forms
     #
     # The forms will by default display the fields that correspond to the configured columns, taking over meaningful
     # configuration options (e.g. +text+ will be converted into +fieldLabel+).
-    # You may override the default fields displayed in the forms by overriding the +default_fields_for_forms+ method,
-    # which should return an array understood by the +items+ config property of the +Form+. If you need to use a custom
-    # class instead of +Form+, you need to override the +preconfigure_record_window+ method:
+    # You may override the default fields displayed in the all add/edit forms by overriding the
+    # +default_fields_for_forms+ method, which should return an array understood by the +items+ config property of the
+    # +Form+. If you need to use a custom +Basepack::Form+-descending class instead of +Form+, you need to override the
+    # +preconfigure_record_window+ method:
     #
     #     def preconfigure_record_window(c)
     #       super
     #       c.form_config.klass = UserForm
     #     end
     #
+    # To individually override forms, you should override the wrapping window components, as shown in the previous
+    # session. E.g., to modify the set of fields in the Add form:
+    #
+    #     component :add_window do |c|
+    #       super c
+    #       c.form_config.items = [:title]
+    #     end
     #
     # == Actions
     # You can override Grid's actions to change their text, icons, and tooltips (see
@@ -521,6 +546,18 @@ module Netzke
         raise ArgumentError, "Grid requires a model" if c.model.nil?
       end
 
+      def preconfigure_record_window(c)
+        c.klass = RecordFormWindow
+
+        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
+          f.model = config[:model]
+          f.persistent_config = config[:persistent_config]
+          f.strong_default_attrs = config[:strong_default_attrs]
+          f.mode = config[:mode]
+          f.items = default_fields_for_forms
+        end
+      end
+
       private
 
       def set_defaults(c)
@@ -532,18 +569,6 @@ module Netzke
         c.enable_pagination = true if c.enable_pagination.nil?
         c.rows_per_page = 30 if c.rows_per_page.nil?
         c.tools = %w{ refresh } if c.tools.nil?
-      end
-
-      def preconfigure_record_window(c)
-        c.klass = RecordFormWindow
-
-        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
-          f.model = config[:model]
-          f.persistent_config = config[:persistent_config]
-          f.strong_default_attrs = config[:strong_default_attrs]
-          f.mode = config[:mode]
-          f.items = default_fields_for_forms
-        end
       end
 
       def self.server_side_config_options
