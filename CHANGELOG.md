@@ -1,4 +1,9 @@
-# 0.9.0 - WIP
+# 0.10.0 - WIP
+* Rails 4
+* See 0.9.0 release notes
+
+# 0.9.0 - 2014-02-08
+* Ext JS 4.2.0
 * new
   * GridLiveSearch plugin - implements flexible "live" search on any grid
   * Implement multi-sorting support in grids
