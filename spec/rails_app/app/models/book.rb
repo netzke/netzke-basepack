@@ -10,7 +10,7 @@ class Book < ActiveRecord::Base
   # prevent deleting books with title 'Untouchable'
   before_destroy :confirm_deletion
   def confirm_deletion
-    errors.add :base, "Can't delete this book." if title == "Untouchable"
+    errors.add :base, "Can't delete #{title}" if title == "Untouchable"
     errors.blank?
   end
 

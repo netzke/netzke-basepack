@@ -5,5 +5,5 @@ describe "Grid component with model that prevents deletion", ->
       click button 'Delete'
       click button 'Yes'
       wait ->
-        expectToSee somewhere "Can't delete this book"
+        expectToSee somewhere "Can't delete Untouchable"
         done()

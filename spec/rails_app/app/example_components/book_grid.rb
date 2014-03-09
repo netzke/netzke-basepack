@@ -11,6 +11,15 @@ class BookGrid < Netzke::Basepack::Grid
     c.editor = {min_chars: 1}
   end
 
+  js_configure do |c|
+    c.init_component = <<-JS
+      function() {
+        this.callParent();
+        this.getStore().on("remove", function(){ console.log('remove'); });
+      }
+    JS
+  end
+
   # crafting a static combobox column; TODO: include a prebuilt one in Basepack
   column :rating do |c|
     c.editor = {

@@ -17,19 +17,8 @@ module Netzke
             attempt_operation(:update, data, this)
           end
 
-          endpoint :server_delete do |ids, this|
-            if !config[:prohibit_delete]
-              destroyed_ids, errors = destroy(ids)
-
-              feedback = errors
-              if destroyed_ids.present?
-                feedback << I18n.t('netzke.basepack.grid.deleted_n_records', :count => destroyed_ids.size)
-                on_data_changed
-              end
-              this.netzke_feedback(feedback)
-            else
-              this.netzke_feedback I18n.t('netzke.basepack.grid.cannot_delete')
-            end
+          endpoint :server_delete do |data, this|
+            attempt_operation(:destroy, data, this)
           end
 
           endpoint :server_save_columns do |cols, this|

@@ -45,23 +45,27 @@ module Netzke
         end
 
         # Destroys records by ids
-        # Returns [destroyed_ids, errors]
+        # Returns hash with results per id, e.g.:
+        #
+        #   {
+        #     1: "ok",
+        #     2: "error: "This record could not be destroyed"
+        #   }
         def destroy(ids)
-          destroyed_ids = []
-          errors = []
+          out = {}
+
           ids.each {|id|
             record = data_adapter.find_record(id, scope: config[:scope])
             next if record.nil?
 
             if record.destroy
-              destroyed_ids << id
+              out[id] = "ok"
             else
-              record.errors.to_a.each do |msg|
-                errors << msg
-              end
+              out[id] = {error: record.errors.to_a.first}
             end
           }
-          [destroyed_ids, errors]
+
+          out
         end
 
         # Returns an array of records.
