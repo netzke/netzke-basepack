@@ -9,8 +9,6 @@ gemspec
 
 gem 'carrierwave'
 
-gem 'protected_attributes'
-
 # This partial duplication of gemspec is required for rails_app to run
 group :test do
   gem 'rspec'

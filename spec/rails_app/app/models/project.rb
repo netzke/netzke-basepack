@@ -1,3 +1,3 @@
 class Project < ActiveRecord::Base
-  attr_accessible :title
+  # attr_accessible :title
 end

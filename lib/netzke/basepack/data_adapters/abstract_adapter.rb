@@ -181,11 +181,6 @@ module Netzke::Basepack::DataAdapters
       record.errors.to_a
     end
 
-    # Whether an attribute is mass assignable. As second argument optionally takes the role.
-    def attribute_mass_assignable?(attr_name, role = :default)
-      true
-    end
-
     # Whether an attribute (by name) is an association one
     def association_attr?(attr_name)
       !!attr_name.to_s.index("__")

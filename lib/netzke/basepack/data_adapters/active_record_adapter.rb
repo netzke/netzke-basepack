@@ -255,7 +255,7 @@ module Netzke::Basepack::DataAdapters
 
       if a[:setter]
         a[:setter].call(r, v)
-      elsif r.respond_to?("#{a[:name]}=") && attribute_mass_assignable?(a[:name], role)
+      elsif r.respond_to?("#{a[:name]}=")
         r.send("#{a[:name]}=", v)
       elsif association_attr?(a)
         split = a[:name].to_s.split(/\.|__/)
@@ -283,7 +283,7 @@ module Netzke::Basepack::DataAdapters
 
                 # set the foreign key to the passed value
                 # not that if a negative value is passed, we reset the association (set it to nil)
-                r.send("#{assoc.foreign_key}=", v.to_i < 0 ? nil : v) if attribute_mass_assignable?(assoc.foreign_key, role)
+                r.send("#{assoc.foreign_key}=", v.to_i < 0 ? nil : v)
               end
             else
               logger.warn "Netzke: Association #{assoc} is not known for class #{@data_class}"
@@ -418,11 +418,6 @@ module Netzke::Basepack::DataAdapters
         logger.warn("Netzke: Illegal filter operator: #{op}")
         table
       end
-    end
-
-    # Whether an attribute is mass assignable. As second argument optionally takes the role.
-    def attribute_mass_assignable?(attr_name, role = :default)
-      @model_class.accessible_attributes(role).empty? ? !@model_class.protected_attributes(role).include?(attr_name.to_s) : @model_class.accessible_attributes(role).include?(attr_name.to_s)
     end
 
   private
