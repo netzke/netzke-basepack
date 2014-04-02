@@ -35,7 +35,7 @@ describe ::Grid::Scoped do
       @fb2.id
     ])
 
-    destroyed_ids.should == [@cb2.id, @cb3.id]
+    destroyed_ids.should == {@cb2.id => 'ok', @cb3.id => 'ok'}
   end
 
   it 'does not allow editing out-of-scope records' do
