@@ -69,7 +69,7 @@ module Netzke::Basepack::DataAdapters
       if params[:limit]
         relation.offset(params[:start]).limit(params[:limit])
       else
-        relation.all
+        relation
       end
     end
 
