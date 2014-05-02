@@ -105,7 +105,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def get_assoc_property_type assoc_name, prop_name
-      if prop_name && assoc = @model_class.reflect_on_association(assoc_name)
+      if prop_name && assoc = @model_class.reflect_on_association(assoc_name.to_sym)
         assoc_column = assoc.klass.columns_hash[prop_name.to_s]
         assoc_column.try(:type)
       end
@@ -269,15 +269,19 @@ module Netzke::Basepack::DataAdapters
           if split.size == 2
             # search for association and assign it to r
             assoc = @model_class.reflect_on_association(split.first.to_sym)
-            assoc_method = split.last
             if assoc
               if assoc.macro == :has_one
-                assoc_instance = r.send(assoc.name)
-                if assoc_instance
-                  assoc_instance.send("#{assoc_method}=", v)
-                  assoc_instance.save # what should we do when this fails?..
-                else
-                  # what should we do in this case?
+                if attribute_mass_assignable?(split.first, role) || attribute_mass_assignable?(assoc.foreign_key, role)
+                  #here we just set the new new relationship, we
+                  # do not change nested attributes here
+                  assoc_instance = begin
+                    assoc.klass.find(v)
+                  rescue ActiveRecord::RecordNotFound
+                    nil
+                  end
+                  r.send "#{assoc.name}=", assoc_instance
+                  #this is excess, at least for checked examples
+                  r.save
                 end
               else
 
