@@ -136,7 +136,7 @@ module Netzke::Basepack::DataAdapters
           assoc_arel_table = assoc.klass.arel_table
 
           relation = relation.where(assoc_arel_table[assoc_method].matches("%#{query}%"))  if query.present?
-          relation.all.map{ |r| [r.id, r.send(assoc_method)] }
+          relation.to_a.map{ |r| [r.id, r.send(assoc_method)] }
         else
           query.downcase!
           # an expensive search!
