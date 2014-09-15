@@ -305,7 +305,7 @@ module Netzke::Basepack::DataAdapters
 
     # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
     def get_relation(params = {})
-      relation = @model_class.all
+      relation = @model_class.scoped
 
       query = params[:query]
 
