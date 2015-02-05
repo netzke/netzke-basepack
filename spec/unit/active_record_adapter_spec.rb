@@ -13,10 +13,10 @@ describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
 
   it "should detect virtual attributes" do
     adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
-    adapter.virtual_attribute?({name: 'author__first_name'}).should be_false
-    adapter.virtual_attribute?({name: 'title'}).should be_false
-    adapter.virtual_attribute?({name: 'author__name'}).should be_true
-    adapter.virtual_attribute?({name: 'read_only_virtual_attr'}).should be_true
+    adapter.virtual_attribute?({name: 'author__first_name'}).should eql false
+    adapter.virtual_attribute?({name: 'title'}).should eql false
+    adapter.virtual_attribute?({name: 'author__name'}).should eql true
+    adapter.virtual_attribute?({name: 'read_only_virtual_attr'}).should eql true
   end
 
   describe '#record_value_for_attribute' do

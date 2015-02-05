@@ -6,10 +6,10 @@ module Netzke::Basepack
       adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
 
       c = AttrConfig.new(:id, adapter)
-      c.primary?.should be_true
+      c.primary?.should eql true
 
       c = AttrConfig.new(:title, adapter)
-      c.primary?.should be_false
+      c.primary?.should eql false
     end
 
     attr_read_only_checks = {

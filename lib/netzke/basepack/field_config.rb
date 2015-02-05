@@ -61,7 +61,8 @@ module Netzke
 
       def configure_date_field!
         self.submit_format = "Y-m-d"
-        self.format ||= I18n.t("date", scope: 'netzke.formats', default: "Y-m-d")
+        # DEBT: why is self.format not working?? ('too few arguments')
+        self[:format] ||= I18n.t("date", scope: 'netzke.formats', default: "Y-m-d")
       end
     end
   end

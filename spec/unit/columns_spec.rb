@@ -32,8 +32,8 @@ module Netzke::Basepack
         end
       end
       column = TheGrid.new.js_columns.detect{|c| c[:name] == 'in_abundance'}
-      column[:read_only].should be_true
-      column[:sortable].should be_false
+      column[:read_only].should eql true
+      column[:sortable].should eql false
     end
 
     it 'does not render excluded columns' do

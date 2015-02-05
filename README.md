@@ -29,8 +29,8 @@ enhancing any grid with live search functionality
 ## Requirements
 
 * Ruby ~> 1.9.2
-* Rails ~> 4.0.0
-* Ext JS ~> 4.2.0
+* Rails ~> 4.2.0
+* Ext JS = 4.2.1
 
 ## Installation
 
@@ -93,7 +93,7 @@ application.
 
 Help developing Netzke by submitting a pull request when you think others can benefit from it.
 
-If you feel particularily generous, you can donate a couple of bucks weekly at [GitTip](https://www.gittip.com/uptomax/).
+If you feel particularily generous, you can donate a couple of bucks weekly at [Gratipay](https://www.gittip.com/mxgrn/).
 
 ## Useful links
 * [Project website](http://netzke.org)
@@ -101,7 +101,7 @@ If you feel particularily generous, you can donate a couple of bucks weekly at [
 * [Twitter](http://twitter.com/netzke) - latest news about the framework
 
 ---
-Copyright (c) 2008-2014 [Max Gorin](https://twitter.com/mxgrn), released under the MIT license (see LICENSE).
+Copyright (c) 2008-2015 [Max Gorin](https://twitter.com/mxgrn), released under the MIT license (see LICENSE).
 
 **Note** that Ext JS is licensed [differently](http://www.sencha.com/products/extjs/license/), and you may need to
 purchase a commercial license in order to use it in your projects.

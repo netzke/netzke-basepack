@@ -6,10 +6,10 @@ module Netzke::Basepack
       adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
 
       c = ColumnConfig.new(:id, adapter)
-      c.primary?.should be_true
+      c.primary?.should eql true
 
       c = ColumnConfig.new(:title, adapter)
-      c.primary?.should be_false
+      c.primary?.should eql false
     end
 
     it "should not set default editor for read-only columns" do

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe "Grid search" do
-  let(:grid) {BookGrid.new}
+  let(:grid) {Grid::Crud.new}
 
   before do
     FactoryGirl.create :book, title: 'Zero', published_on: '2003-12-21', digitized: true, last_read_at: '2006-12-21T08:00:00'

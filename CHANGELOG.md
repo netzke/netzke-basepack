@@ -1,4 +1,5 @@
-# unreleased
+# 0.11.0 - 2015-02-05
+* Rails 4.2
 * A few fixes from AlexKovynev
 
 # 0.10.1 - 2014-06-04
