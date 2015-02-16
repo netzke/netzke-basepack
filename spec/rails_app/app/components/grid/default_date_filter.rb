@@ -7,6 +7,6 @@ class Grid::DefaultDateFilter < Netzke::Basepack::Grid
 
   def configure(c)
     super
-    c.default_filters = [{column: :last_read_at, value: {after: Date.parse("2011-01-01")}}]
+    c.default_filters = [{column: :last_read_at, value: {gt: Date.parse("2011-01-01")}}]
   end
 end

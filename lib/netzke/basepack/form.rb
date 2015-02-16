@@ -36,7 +36,7 @@ module Netzke
       js_configure do |c|
         c.extend = "Ext.form.Panel"
         c.mixin
-        c.require :comma_list_cbg, :n_radio_group, :readonly_mode
+        c.require :readonly_mode
       end
 
       delegates_to_dsl :model, :record_id

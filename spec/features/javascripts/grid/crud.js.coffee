@@ -7,6 +7,7 @@ describe 'Grid::Crud', ->
         click button 'Apply'
         wait ->
           wait ->
+            selectFirstRow()
             expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Damian']
             done()
 
@@ -20,12 +21,13 @@ describe 'Grid::Crud', ->
         click button 'Apply'
         wait ->
           wait ->
+            selectFirstRow()
             expect(rowDisplayValues()).to.eql ['Carlos Castaneda', 'Art of Dreaming']
             done()
 
-  it 'deletes records', (done) ->
+  it 'deletes single record', (done) ->
     wait ->
-      selectAllRows()
+      selectFirstRow()
       click button 'Delete'
       click button 'Yes'
       wait ->
@@ -43,6 +45,7 @@ describe 'Grid::Crud', ->
           click button 'Apply'
           wait ->
             wait ->
+              selectLastRow()
               expect(rowDisplayValues()).to.eql ['Carlos Castaneda', 'Art of Dreaming']
               selectFirstRow()
               expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Damian']
@@ -109,3 +112,12 @@ describe 'Grid::Crud', ->
             selectLastRow()
             expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Steppenwolf']
             done()
+
+  it 'deletes records', (done) ->
+    wait ->
+      selectAllRows()
+      click button 'Delete'
+      click button 'Yes'
+      wait ->
+        expect(grid().getStore().getCount()).to.eql(0)
+        done()

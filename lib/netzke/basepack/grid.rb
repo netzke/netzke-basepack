@@ -379,19 +379,6 @@ module Netzke
         ex = Netzke::Core.ext_path.join("examples")
 
         c.require :extensions
-
-        # Includes for column filters
-        if column_filters_available
-          [
-            "ux/grid/menu/ListMenu.js",
-            "ux/grid/menu/RangeMenu.js",
-            "ux/grid/FiltersFeature.js"
-          ].each{ |path| c.require(ex.join(path)) }
-
-          %w{Boolean Date List Numeric String}.unshift("").each do |f|
-            c.require(ex.join"ux/grid/filter/#{f}Filter.js")
-          end
-        end
       end
 
       # Allows children classes to simply do:

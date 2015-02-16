@@ -96,11 +96,10 @@ module Netzke
 
         def normalize_filters(filters)
           filters.map do |f|
-            { attr: f["field"], value: f["value"], operator: f["comparison"] }.tap do |norm|
+            { attr: f["property"], value: f["value"], operator: f["operator"] }.tap do |norm|
 
               # Ext JS filters send us date in the American format
-              if f["type"] == "date"
-                norm[:value].match(/^(\d\d)\/(\d\d)\/(\d\d\d\d)$/)
+              if f["value"].is_a?(String) && f["value"].match(/^(\d\d)\/(\d\d)\/(\d\d\d\d)$/)
                 norm[:value] = "#{$3}-#{$1}-#{$2}"
               end
 

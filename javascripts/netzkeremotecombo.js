@@ -24,14 +24,14 @@ Ext.define('Ext.netzke.ComboBox', {
         directFn: Netzke.providers[this.parentId].getComboboxOptions,
         reader: {
           type: 'array',
-          root: 'data'
+          rootProperty: 'data'
         }
       }
     });
 
-    store.on('beforeload', function(self, params) {
-      params.params.attr = this.name;
-    },this);
+    store.on('beforeload', function(self, op) {
+      op.setParams(Ext.apply(op.getParams(), {attr: this.name}));
+    }, this);
 
     // insert a selectable "blank line" which allows to remove the associated record
     if (this.blankLine) {
