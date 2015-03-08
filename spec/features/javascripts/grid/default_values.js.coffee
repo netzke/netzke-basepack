@@ -3,7 +3,7 @@ describe 'Grid::DefaultValues', ->
     click button 'Add'
     click button 'Apply'
     wait ->
-      selectLastRow()
+      selectFirstRow()
       expect(rowDisplayValues()).to.eql ['Lolita', 'Nabokov', '100', true]
       done()
 
