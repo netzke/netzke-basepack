@@ -1,3 +1,7 @@
+# 0.12.0 - WIP
+* ExtJS 5
+* New component: DynamicTabPanel
+
 # 0.11.0 - 2015-02-05
 * Rails 4.2
 * A few fixes from AlexKovynev

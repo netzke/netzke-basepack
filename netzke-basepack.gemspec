@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name        = "netzke-basepack"
   s.version     = Netzke::Basepack::VERSION
   s.author      = "Max Gorin"
-  s.email       = "gorinme@gmail.com"
+  s.email       = "max@goodbitlabs.com"
   s.homepage    = "http://netzke.org"
   s.summary     = "Pre-built Netzke components"
   s.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) and component extensions which can be used as building blocks for your RIA"
@@ -13,7 +13,7 @@ Gem::Specification.new do |s|
   s.test_files    = Dir["{test}/**/*"]
   s.require_paths = ["lib"]
 
-  s.add_dependency 'netzke-core', '~> 0.12.0.beta'
+  s.add_dependency 'netzke-core', '~> 0.12.0.rc1'
 
   s.add_development_dependency 'rails', '~> 4.2.0'
   s.add_development_dependency 'sqlite3'

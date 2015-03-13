@@ -1,7 +1,7 @@
-# Start xvfb in preparation for cucumber
+# Start xvfb in preparation for selenium-webdriver
 sh -e /etc/init.d/xvfb start
 
 # fetch extjs
-wget http://cdn.sencha.com/ext/gpl/ext-4.2.1-gpl.zip
-unzip -q ext-4.2.1-gpl.zip
-mv ext-4.2.1.* spec/rails_app/public/extjs
+wget http://cdn.sencha.com/ext/gpl/ext-5.1.0-gpl.zip
+unzip -q ext-5.1.0-gpl.zip
+mv ext-5.2.0.* spec/rails_app/public/extjs
