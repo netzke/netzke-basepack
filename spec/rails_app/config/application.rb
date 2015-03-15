@@ -9,7 +9,6 @@ Bundler.require(*Rails.groups)
 $LOAD_PATH.unshift(File.expand_path("../../../../lib", __FILE__))
 
 require 'netzke-basepack'
-require 'netzke-testing'
 
 module RailsApp
   class Application < Rails::Application
