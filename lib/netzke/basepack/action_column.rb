@@ -12,7 +12,7 @@ module Netzke
     #       end
     #
     #       def columns
-    #         super + [:basic_actions, :extra_actions]
+    #         super + [:actions]
     #       end
     #
     #       column :actions do |c|
@@ -38,20 +38,10 @@ module Netzke
     module ActionColumn
       extend ActiveSupport::Concern
 
-      included do |base|
-        js_configure do |c|
-          c.require :action_column
-        end
-      end
-
-      # This can be optimized in order to generate less json in the column getter
       def augment_column_config(c)
         if c[:type] == :action
-          c.xtype = :netzkeactioncolumn
-
-          c[:getter] = lambda do |r|
-            c.actions.map {|a| build_action_config(a)}.netzke_jsonify.to_json
-          end
+          c.xtype = :actioncolumn
+          c.items = c.actions.map {|a| build_action_config(a)}.netzke_jsonify
         end
 
         super
@@ -61,10 +51,21 @@ module Netzke
 
       def build_action_config(a)
         a = {name: a} if a.is_a?(Symbol)
+        a[:handler] ||= a[:name]
         a.tap do |a|
           a[:tooltip] ||= a[:name].to_s.humanize
           a[:icon] ||= a[:name].to_sym
-          a[:handler] ||= "on_#{a[:name]}"
+          a[:handler] = Netzke::Core::JsonLiteral.new <<-JS
+          function() {
+            var cmp = Ext.getCmp('#{js_id}'),
+                f = cmp.on#{a[:handler].to_s.camelize};
+            if (Ext.isFunction(f)) {
+              f.apply(cmp, arguments);
+            } else {
+              Netzke.warning("Undefined handler for action '#{a[:name]}'");
+            }
+          }
+          JS
 
           a[:icon] = "#{Netzke::Core.icons_uri}/#{a[:icon]}.png" if a[:icon].is_a?(Symbol)
         end

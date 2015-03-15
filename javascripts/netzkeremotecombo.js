@@ -8,20 +8,24 @@ Ext.define('Ext.netzke.ComboBox', {
   forceSelection: true,
 
   initComponent : function(){
-    var modelName = this.parentId + "_" + this.name;
+    var parent = this.netzkeParent || this.findParentBy(function(c) { return c.isNetzke; }),
+      modelName = parent.id + "_" + this.name;
 
     if (this.blankLine == undefined) this.blankLine = "---";
 
-    Ext.define(modelName, {
+    if (!Netzke.isModelDefined(modelName)) {
+      Ext.define(Netzke.modelName(modelName), {
         extend: 'Ext.data.Model',
         fields: ['value', 'text']
-    });
+      });
+    };
 
     var store = new Ext.data.Store({
-      model: modelName,
+      model: Netzke.modelName(modelName),
       proxy: {
         type: 'direct',
-        directFn: Netzke.providers[this.parentId].getComboboxOptions,
+        directFn: Netzke.providers[parent.id].getComboboxOptions,
+        extraParams: {configs: parent.buildParentClientConfigs()},
         reader: {
           type: 'array',
           rootProperty: 'data'
@@ -37,7 +41,7 @@ Ext.define('Ext.netzke.ComboBox', {
     if (this.blankLine) {
       store.on('load', function(self, params) {
         // append a selectable "empty line" which will allow remove the association
-        self.add(Ext.create(modelName, {value: -1, text: this.blankLine}));
+        self.add(Ext.create(Netzke.modelName(modelName), {value: -1, text: this.blankLine}));
       }, this);
     }
 
@@ -47,6 +51,5 @@ Ext.define('Ext.netzke.ComboBox', {
     this.store = store;
 
     this.callParent();
-  },
-
+  }
 });

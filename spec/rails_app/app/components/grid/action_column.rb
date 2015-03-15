@@ -17,13 +17,13 @@ module Grid
     # Just for illustation (no handlers assigned)
     column :extra_actions do |c|
       c.type = :action
-      c.actions = [:error, :information]
+      c.actions = [:information, :error]
     end
 
     js_configure do |c|
       c.on_delete_row = <<-JS
-        function(record){
-          this.getSelectionModel().select(record);
+        function(grid, rowIndex, colIndex){
+          this.getSelectionModel().select(rowIndex);
           this.onDel();
         }
       JS

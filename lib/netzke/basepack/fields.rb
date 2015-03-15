@@ -47,9 +47,6 @@ module Netzke
           @fields_from_items[c.name.to_sym] = c
 
           c.set_defaults!
-
-          # netzkeremotecombo requires our js_id
-          c.parent_id = self.js_id if c.xtype == :netzkeremotecombo
         end
       end
 

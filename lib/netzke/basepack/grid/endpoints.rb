@@ -31,6 +31,7 @@ module Netzke
           # +query+ - what's typed-in in the combobox
           # +id+ - selected record id
           endpoint :get_combobox_options do |params, this|
+            ::Rails.logger.debug "\n!!! params: #{params.inspect}\n"
             column = final_columns.detect{ |c| c[:name] == params[:attr] }
             this.data = data_adapter.combo_data(column, params[:query])
           end

@@ -26,3 +26,11 @@ Ext.override(Ext.view.BoundList, {
     this.callParent(arguments);
   },
 });
+
+Netzke.isModelDefined = function(name) {
+  return !!(Netzke.models || {})[name];
+};
+
+Netzke.modelName = function(name){
+  return "Netzke.models." + name;
+};
