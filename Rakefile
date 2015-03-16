@@ -19,7 +19,7 @@ end
 desc "Run all tests"
 task :test do
   system("cd spec/rails_app && RAILS_ENV=test rake db:migrate") &&
-  system("rspec spec") ||
+  system("bundle exec rspec spec") ||
   abort
 end
 

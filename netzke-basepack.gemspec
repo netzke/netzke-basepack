@@ -16,11 +16,5 @@ Gem::Specification.new do |s|
   s.add_dependency 'netzke-core', '~> 0.12.0'
   s.add_dependency 'netzke-testing', '~> 0.12.0'
 
-  s.add_development_dependency 'rails', '~> 4.2.0'
-  s.add_development_dependency 'sqlite3'
-  s.add_development_dependency 'yard'
-  s.add_development_dependency 'coffee-script'
-  s.add_development_dependency 'rspec-rails'
-
   s.required_rubygems_version = ">= 1.3.4"
 end

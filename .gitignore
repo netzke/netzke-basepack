@@ -4,7 +4,6 @@
 pkg
 doc
 *.gem
-icons
 .vimrc
 spec/rails_app/db/development_structure.sql
 spec/rails_app/public/extjs*

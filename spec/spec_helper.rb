@@ -11,23 +11,13 @@ require 'netzke/testing'
 
 # For JS tests change the cleaning strategy to truncation
 require 'support/database_cleaner'
+require 'capybara/rspec'
+require 'capybara/rails'
 
 RSpec.configure do |config|
-  require 'capybara/rspec'
-  require 'capybara/rails'
-
-  # config.include Helpers
   Netzke::Testing.rspec_init(config)
 
   FactoryGirl.find_definitions
-
-  # ## Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
 
   # If true, the base class of anonymous controllers will be inferred
   # automatically. This will be the default behavior in future versions of
