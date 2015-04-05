@@ -39,7 +39,9 @@ module Netzke::Basepack::DataAdapters
     end
 
     def attr_type(attr_name)
-      association_attr?(attr_name) ? :integer : (@model_class.columns_hash[attr_name.to_s].try(:type) || :string)
+      method, assoc = method_and_assoc(attr_name)
+      klass = assoc.nil? ? @model_class : assoc.klass
+      klass.columns_hash[method].try(:type) || :string
     end
 
     # Implementation for {AbstractAdapter#get_records}
@@ -113,17 +115,17 @@ module Netzke::Basepack::DataAdapters
 
     def virtual_attribute?(c)
       assoc_name, asso = c[:name].split('__')
-      assoc, assoc_method = assoc_and_assoc_method_for_attr(c[:name])
+      method, assoc = method_and_assoc(c[:name])
 
       if assoc
-        return !assoc.klass.column_names.include?(assoc_method)
+        return !assoc.klass.column_names.include?(method)
       else
         return !@model_class.column_names.include?(c[:name])
       end
     end
 
     def combo_data(attr, query = "")
-      assoc, assoc_method = assoc_and_assoc_method_for_attr(attr[:name])
+      method, assoc = method_and_assoc(attr[:name])
 
       if assoc
         # Options for an asssociation attribute
@@ -131,16 +133,16 @@ module Netzke::Basepack::DataAdapters
         relation = assoc.klass.all
         relation = relation.extend_with(attr[:scope]) if attr[:scope]
 
-        if assoc.klass.column_names.include?(assoc_method)
+        if assoc.klass.column_names.include?(method)
           # apply query
           assoc_arel_table = assoc.klass.arel_table
 
-          relation = relation.where(assoc_arel_table[assoc_method].matches("%#{query}%"))  if query.present?
-          relation.to_a.map{ |r| [r.id, r.send(assoc_method)] }
+          relation = relation.where(assoc_arel_table[method].matches("%#{query}%"))  if query.present?
+          relation.to_a.map{ |r| [r.id, r.send(method)] }
         else
           query.downcase!
           # an expensive search!
-          relation.to_a.map{ |r| [r.id, r.send(assoc_method)] }.select{ |id,value| value.to_s.downcase.include?(query) }
+          relation.to_a.map{ |r| [r.id, r.send(method)] }.select{ |id,value| value.to_s.downcase.include?(query) }
         end
 
       else
@@ -296,11 +298,12 @@ module Netzke::Basepack::DataAdapters
       end
     end
 
-    # Returns association and association method for a column
-    def assoc_and_assoc_method_for_attr(column_name)
-      assoc_name, assoc_method = column_name.split('__')
-      assoc = @model_class.reflect_on_association(assoc_name.to_sym) if assoc_method
-      [assoc, assoc_method]
+    # If association attribute is given, returns [method, association]
+    # Else returns [attr_name]
+    def method_and_assoc(attr_name)
+      assoc_name, method = attr_name.to_s.split('__')
+      assoc = @model_class.reflect_on_association(assoc_name.to_sym) if method
+      assoc.nil? ? [attr_name] : [method, assoc]
     end
 
     # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
@@ -353,16 +356,10 @@ module Netzke::Basepack::DataAdapters
       predicates = conditions.map do |q|
         q = HashWithIndifferentAccess.new(q)
 
-        assoc, method = q["attr"].split('__')
-        if method
-          assoc = @model_class.reflect_on_association(assoc.to_sym)
-          assoc_arel = assoc.klass.arel_table
-          attr = method
-          arel_table = Arel::Table.new(assoc.klass.table_name.to_sym)
-        else
-          attr = assoc
-          arel_table = @model_class.arel_table
-        end
+        attr = q[:attr]
+        method, assoc = method_and_assoc(attr)
+
+        arel_table = assoc ? Arel::Table.new(assoc.klass.table_name.to_sym) : @model_class.arel_table
 
         value = q["value"]
         op = q["operator"]
@@ -371,15 +368,15 @@ module Netzke::Basepack::DataAdapters
 
         case attr_type
         when :datetime
-          update_predecate_for_datetime(arel_table[attr], op, value.to_date)
+          update_predecate_for_datetime(arel_table[method], op, value.to_date)
         when :string, :text
-          update_predecate_for_string(arel_table[attr], op, value)
+          update_predecate_for_string(arel_table[method], op, value)
         when :boolean
-          update_predecate_for_boolean(arel_table[attr], op, value)
+          update_predecate_for_boolean(arel_table[method], op, value)
         when :date
-          update_predecate_for_rest(arel_table[attr], op, value.to_date)
+          update_predecate_for_rest(arel_table[method], op, value.to_date)
         else
-          update_predecate_for_rest(arel_table[attr], op, value)
+          update_predecate_for_rest(arel_table[method], op, value)
         end
       end
 

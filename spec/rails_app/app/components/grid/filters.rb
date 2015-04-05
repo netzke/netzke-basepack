@@ -1,7 +1,8 @@
 class Grid::Filters < Netzke::Basepack::Grid
   model 'Book'
+
   def columns
-    [ :title, :author__first_name, :exemplars, :notes, :last_read_at, :digitized,
+    [ :title, :author__first_name, :author__year, :exemplars, :notes, :last_read_at, :digitized,
       {
         name: :title_or_notes,
         getter: ->(foo) { 'dummy' },
