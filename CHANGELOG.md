@@ -1,6 +1,7 @@
 # 0.12.1 - WIP
 * Fix filtering by association when associtaion method is not string
-*
+* Fix decimal columns in advanced search form
+
 # 0.12.0 - 2015-03-18
 * ExtJS 5
 * New component: DynamicTabPanel
