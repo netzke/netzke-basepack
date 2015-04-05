@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    netzke-basepack (0.12.0)
+    netzke-basepack (0.12.1)
       netzke-core (~> 0.12.0)
       netzke-testing (~> 0.12.0)
 
