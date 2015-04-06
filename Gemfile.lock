@@ -47,7 +47,7 @@ GEM
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
-    byebug (4.0.2)
+    byebug (4.0.4)
       columnize (= 0.9.0)
     capybara (2.4.4)
       mime-types (>= 1.16)
@@ -85,7 +85,7 @@ GEM
     mini_portile (0.6.2)
     minitest (5.5.1)
     multi_json (1.11.0)
-    netzke-core (0.12.0)
+    netzke-core (0.12.1)
       execjs
       uglifier
     netzke-testing (0.12.1)
@@ -96,7 +96,7 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
-    pry-rails (0.3.3)
+    pry-rails (0.3.4)
       pry (>= 0.9.10)
     rack (1.6.0)
     rack-test (0.6.3)
