@@ -16,10 +16,9 @@ module Netzke
     mattr_accessor :icons_uri
 
     class << self
-
       # Called from netzke-basepack.rb
       def init
-        %w[netzkeremotecombo xdatetime basepack].each do |name|
+        %w[netzkeremotecombo xdatetime basepack columns].each do |name|
           Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/#{name}.js"
         end
 
@@ -35,6 +34,5 @@ module Netzke
         yield self
       end
     end
-
   end
 end

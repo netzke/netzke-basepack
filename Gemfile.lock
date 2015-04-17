@@ -44,6 +44,8 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.0)
+    awesome_nested_set (3.0.2)
+      activerecord (>= 4.0.0, < 5)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
     builder (3.2.2)
@@ -181,6 +183,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  awesome_nested_set
   byebug
   capybara
   database_cleaner

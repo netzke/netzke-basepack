@@ -225,6 +225,20 @@ module Netzke::Basepack::DataAdapters
       name.to_s.humanize
     end
 
+    # Return root record for tree-like data
+    def root
+      model_class.root
+    end
+
+    def record_children(r)
+      r.children
+    end
+
+    # Does record respond to given method?
+    def model_respond_to?(method)
+      @model_class.instance_methods.include?(method)
+    end
+
     # -- End of overridable methods
 
     # Abstract-adapter specifics

@@ -3,8 +3,7 @@ require 'netzke/basepack/column_config'
 
 module Netzke
   module Basepack
-    # {Ext.grid.Panel}[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.Panel] -based component with the following
-    # features:
+    # Ext.grid.Panel-based component with the following features:
     #
     # * automatic column configuration based on used ORM
     # * pagination
@@ -372,6 +371,8 @@ module Netzke
         c.mixin :advanced_search if advanced_search_available
         c.mixin :edit_in_form if edit_in_form_available
         c.mixin :remember_selection if remember_selection_available
+
+        c.mixins << "Netzke.mixins.Basepack.Columns"
 
         c.translate *%w[are_you_sure confirmation]
 

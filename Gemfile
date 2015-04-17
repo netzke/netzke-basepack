@@ -7,6 +7,8 @@ gem 'sqlite3'
 gem 'yard'
 gem 'rake'
 
+gem 'awesome_nested_set'
+
 group :test do
   gem 'rspec'
   gem 'rspec-rails'

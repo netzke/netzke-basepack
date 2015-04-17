@@ -1,5 +1,4 @@
-Ext.ns("Netzke.pre");
-Ext.ns("Netzke.pre.Basepack");
+Ext.ns("Netzke.mixins.Basepack");
 Ext.ns("Ext.ux.grid");
 
 Ext.util.Format.mask = function(v){
