@@ -67,4 +67,10 @@ feature Netzke::Basepack::Grid do
     FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
     run_mocha_spec 'grid/custom_primary_key'
   end
+
+  it 'renders association values properly', js: true do
+    author = FactoryGirl.create(:castaneda, prize_count: 0)
+    book = FactoryGirl.create(:book, author_id: author.id)
+    run_mocha_spec 'grid/associations'
+  end
 end

@@ -4,6 +4,7 @@ class CreateTables < ActiveRecord::Migration
       t.string :first_name
       t.string :last_name
       t.integer :year
+      t.integer :prize_count
 
       t.timestamps null: false
     end

@@ -17,8 +17,9 @@ ActiveRecord::Schema.define(version: 20150318033533) do
     t.string   "first_name"
     t.string   "last_name"
     t.integer  "year"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.integer  "prize_count"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
   create_table "book_with_custom_primary_keys", id: false, force: :cascade do |t|
