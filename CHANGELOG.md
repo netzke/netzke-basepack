@@ -1,3 +1,6 @@
+# 0.11.1 - WIP
+* Fix filtering by association when associtaion method is not string
+
 # 0.11.0 - 2015-02-05
 * Rails 4.2
 * A few fixes from AlexKovynev

@@ -26,6 +26,8 @@ ActiveRecord::Schema.define(version: 20130105145239) do
   create_table "authors", force: :cascade do |t|
     t.string   "first_name"
     t.string   "last_name"
+    t.integer  "year"
+    t.integer  "prize_count"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
