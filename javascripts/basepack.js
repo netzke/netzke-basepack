@@ -34,3 +34,11 @@ Netzke.isModelDefined = function(name) {
 Netzke.modelName = function(name){
   return "Netzke.models." + name;
 };
+
+// Fix 2-digit precision in the numeric filter
+Ext.define('Ext.grid.filters.filter.Number', {
+  override: 'Ext.grid.filters.filter.Number',
+  getItemDefaults: function() {
+    return Ext.apply(this.itemDefaults, { decimalPrecision: 20 });
+  }
+});
