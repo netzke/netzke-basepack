@@ -9,24 +9,24 @@ module Netzke
       i18n_path = "netzke.basepack.search_panel.%s"
 
       ATTRIBUTE_OPERATORS_MAP = {
-        :integer => [
+        integer: [
           ["eq", I18n.t(i18n_path % 'equals')],
           ["gt", I18n.t(i18n_path % 'greater_than')],
           ["lt", I18n.t(i18n_path % 'less_than')]
         ],
-        :text => [
+        text: [
           ["contains", I18n.t(i18n_path % 'contains')] # same as matches => %string%
         ],
-        :string => [
+        string: [
           ["contains", I18n.t(i18n_path % 'contains')], # same as matches => %string%
           ["matches", I18n.t(i18n_path % 'matches')]
         ],
-        :boolean => [
+        boolean: [
           ["is_any", I18n.t(i18n_path % 'is_true')],
           ["is_true", I18n.t(i18n_path % 'is_true')],
           ["is_false", I18n.t(i18n_path % 'is_false')]
         ],
-        :date => [
+        date: [
           ["eq", I18n.t(i18n_path % 'date_equals')],
           ["gt", I18n.t(i18n_path % 'after')],
           ["lt", I18n.t(i18n_path % 'before')],
@@ -36,6 +36,7 @@ module Netzke
       }
 
       ATTRIBUTE_OPERATORS_MAP[:datetime] = ATTRIBUTE_OPERATORS_MAP[:date]
+      ATTRIBUTE_OPERATORS_MAP[:decimal] = ATTRIBUTE_OPERATORS_MAP[:integer]
 
       js_configure do |c|
         c.extend = "Ext.form.FormPanel"
