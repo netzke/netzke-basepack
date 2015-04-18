@@ -2,6 +2,7 @@
 * Fix filtering by association when associtaion method is integer
 * Fix decimal and float columns in extended search form
 * Fix showing 0-value in association shown by integer
+* Fix extended panel exceptions
 
 # 0.12.0 - 2015-03-18
 * ExtJS 5
