@@ -37,6 +37,7 @@ module Netzke
 
       ATTRIBUTE_OPERATORS_MAP[:datetime] = ATTRIBUTE_OPERATORS_MAP[:date]
       ATTRIBUTE_OPERATORS_MAP[:decimal] = ATTRIBUTE_OPERATORS_MAP[:integer]
+      ATTRIBUTE_OPERATORS_MAP[:float] = ATTRIBUTE_OPERATORS_MAP[:integer]
 
       js_configure do |c|
         c.extend = "Ext.form.FormPanel"

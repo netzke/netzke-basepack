@@ -1,6 +1,6 @@
 # 0.12.1 - WIP
 * Fix filtering by association when associtaion method is not string
-* Fix decimal columns in advanced search form
+* Fix decimal and float columns in extended search form
 * Fix showing 0-value in association shown by integer
 
 # 0.12.0 - 2015-03-18
