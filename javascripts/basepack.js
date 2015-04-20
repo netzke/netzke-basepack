@@ -39,6 +39,6 @@ Netzke.modelName = function(name){
 Ext.define('Ext.grid.filters.filter.Number', {
   override: 'Ext.grid.filters.filter.Number',
   getItemDefaults: function() {
-    return Ext.apply(this.itemDefaults, { decimalPrecision: 20 });
+    return Ext.apply(this.itemDefaults, { decimalPrecision: 10 });
   }
 });
