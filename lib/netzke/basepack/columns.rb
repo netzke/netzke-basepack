@@ -142,8 +142,6 @@ module Netzke
           {name: c.name, text: c.text, attr_type: c.attr_type}.tap do |a|
             if c[:assoc]
               a[:text].sub!("  ", " ")
-              a[:assoc] = true
-              a[:attr_type] = :string
             end
           end
         end

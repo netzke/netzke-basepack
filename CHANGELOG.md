@@ -1,5 +1,5 @@
 # 0.11.1 - WIP
-* Fix filtering by association when associtaion method is not string
+* Fix filtering by association when associtaion method is integer
 * Fix decimal and float columns in extended search form
 * Fix showing 0-value in association shown by integer
 

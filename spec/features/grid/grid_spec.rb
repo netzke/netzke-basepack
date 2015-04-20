@@ -3,7 +3,7 @@ feature Netzke::Basepack::Grid do
   it 'performs CRUD operations', js: true do
     FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
     FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
-    run_mocha_spec 'grid/crud', stop_on_error: true
+    run_mocha_spec 'grid/crud'
   end
 
   it 'creates records with default values', js: true do
