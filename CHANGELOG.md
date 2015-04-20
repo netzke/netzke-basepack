@@ -2,6 +2,7 @@
 * Fix filtering by association when associtaion method is integer
 * Fix decimal and float columns in extended search form
 * Fix showing 0-value in association shown by integer
+* Fix limited precision in numeric column filter
 
 # 0.11.0 - 2015-02-05
 * Rails 4.2

@@ -378,8 +378,6 @@ module Netzke
         # JavaScript includes
         ex = Netzke::Core.ext_path.join("examples")
 
-        c.require :extensions
-
         # Includes for column filters
         if column_filters_available
           [
@@ -392,6 +390,8 @@ module Netzke
             c.require(ex.join"ux/grid/filter/#{f}Filter.js")
           end
         end
+
+        c.require :extensions
       end
 
       # Allows children classes to simply do:
