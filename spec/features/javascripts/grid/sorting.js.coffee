@@ -5,21 +5,27 @@ describe 'Grid::Sorting', ->
       done()
 
   it 'sorts by regular column', (done) ->
-    wait ->
+    wait()
+    .then ->
       grid().getStore().sort('title')
-      wait ->
-        expect(valuesInColumn('title')).to.eql ['Damian', 'Foo', 'Journey', 'Magus']
-        grid().getStore().sort('title', 'desc')
-        wait ->
-          expect(valuesInColumn('title')).to.eql ['Magus', 'Journey', 'Foo', 'Damian']
-          done()
+      wait()
+    .then ->
+      expect(valuesInColumn('title')).to.eql ['Damian', 'Foo', 'Journey', 'Magus']
+      grid().getStore().sort('title', 'desc')
+      wait()
+    .then ->
+      expect(valuesInColumn('title')).to.eql ['Magus', 'Journey', 'Foo', 'Damian']
+      done()
 
   it 'sorts by association column', (done) ->
-    wait ->
+    wait()
+    .then ->
       grid().getStore().sort('author__last_name')
-      wait ->
-        expect(valuesInColumn('title')).to.eql ['Foo', 'Journey', 'Magus', 'Damian']
-        grid().getStore().sort('author__last_name', 'desc')
-        wait ->
-          expect(valuesInColumn('title')).to.eql ['Damian', 'Magus', 'Journey', 'Foo']
-          done()
+      wait()
+    .then ->
+      expect(valuesInColumn('title')).to.eql ['Foo', 'Journey', 'Magus', 'Damian']
+      grid().getStore().sort('author__last_name', 'desc')
+      wait()
+    .then ->
+      expect(valuesInColumn('title')).to.eql ['Damian', 'Magus', 'Journey', 'Foo']
+      done()

@@ -21,5 +21,5 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   # gem 'spring' # troubles...
   gem 'pry-rails'
-  gem 'netzke-testing', '~> 0.12.0'
+  gem 'netzke-testing', '~> 0.12.2'
 end

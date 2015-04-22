@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150318033533) do
+ActiveRecord::Schema.define(version: 20150414045121) do
 
   create_table "authors", force: :cascade do |t|
     t.string   "first_name"
@@ -44,5 +44,20 @@ ActiveRecord::Schema.define(version: 20150318033533) do
     t.datetime "created_at",                                           null: false
     t.datetime "updated_at",                                           null: false
   end
+
+  create_table "file_records", force: :cascade do |t|
+    t.boolean  "is_dir",     default: false
+    t.string   "name",                       null: false
+    t.integer  "size",       default: 0
+    t.integer  "parent_id"
+    t.integer  "lft",                        null: false
+    t.integer  "rgt",                        null: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "file_records", ["lft"], name: "index_file_records_on_lft"
+  add_index "file_records", ["parent_id"], name: "index_file_records_on_parent_id"
+  add_index "file_records", ["rgt"], name: "index_file_records_on_rgt"
 
 end
