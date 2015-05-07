@@ -36,6 +36,19 @@ module Netzke
     #   An array of columns to be displayed in the tree. See the "Columns" section in the `Netzke::Basepack::Grid`.
     #   Additionally, you probably will want to specify which column will have the tree nodes UI by providing the
     #   `xtype` config option set to `:treecolumn`.
+    #
+    # [root]
+    #
+    #   By default, the component will pick whatever record is returned by `TreeModel.root`, and use it as the root
+    #   record. However, sometimes the model table has multiple root records (which `parent_id` set to `nil`), and all
+    #   of them should be shown in the panel. To achive this, you can define the `root` config option,
+    #   which will serve as a virtual root record for those records. You may set it to `true`, or a hash of
+    #   attributes, e.g.:
+    #
+    #       c.root = {name: 'Root', size: 1000}
+    #
+    #   Note, that the root record can be hidden from the tree by specifying the `Ext.tree.Panel`'s `root_visible`
+    #   config option set to `false`, which is probably what you want when you have multiple root records.
     class Tree < Netzke::Base
       NODE_ATTRS = {
         boolean: %w[leaf checked expanded expandable qtip qtitle],
@@ -51,6 +64,8 @@ module Netzke
         c.extend = "Ext.tree.Panel"
         c.mixin
         c.mixins << "Netzke.mixins.Basepack.Columns"
+        c.mixins << "Netzke.mixins.Basepack.GridEventHandlers"
+        c.translate *%w[are_you_sure confirmation]
         c.require :extensions
       end
 
@@ -58,12 +73,21 @@ module Netzke
         super + [:model]
       end
 
+      def configure(c)
+        set_defaults(c)
+        super
+      end
+
       def columns
         add_node_interface_methods(super)
       end
 
       def get_records(params)
-        data_adapter.record_children(data_adapter.find_record(params[:id]))
+        if params[:id] == 'root'
+          data_adapter.find_root_records
+        else
+          data_adapter.find_record_children(data_adapter.find_record(params[:id]))
+        end
       end
 
       # Override Grid::Services#read so we send records as key-value JSON (instead of array)
@@ -79,7 +103,7 @@ module Netzke
         super
 
         c.title = c.title || self.class.js_config.properties[:title] || data_class.name.pluralize
-        # c.bbar = bbar
+        c.bbar = bbar
         # c.context_menu = context_menu
         c.columns = js_columns
         c.columns_order = columns_order
@@ -90,7 +114,80 @@ module Netzke
           populate_cols_with_filters(c)
         end
 
-        c.root = data_adapter.record_to_hash(data_adapter.root, final_columns(with_meta: true)).netzke_literalize_keys
+        c.root ||= data_adapter.record_to_hash(data_adapter.root, final_columns(with_meta: true)).netzke_literalize_keys
+      end
+
+      action :add do |a|
+        a.handler = "onAddRecord" # overriding naming conventions as Ext 4 grid has its own onAdd method
+        a.icon = :add
+      end
+
+      action :edit do |a|
+        # a.disabled = true
+        a.handler = :onEdit
+        a.icon = :table_edit
+      end
+
+      action :apply do |a|
+        a.disabled = config[:prohibit_update] && config[:prohibit_create]
+        a.icon = :tick
+      end
+
+      action :del do |a|
+        # a.disabled = true
+        a.icon = :table_row_delete
+      end
+
+      component :add_window do |c|
+        preconfigure_record_window(c)
+        c.title = "Add #{data_class.model_name.human}"
+        c.items = [:add_form]
+        c.form_config.record = data_class.new(columns_default_values)
+      end
+
+      component :edit_window do |c|
+        preconfigure_record_window(c)
+        c.title = "Edit #{data_class.model_name.human}"
+        c.items = [:edit_form]
+      end
+
+      component :multi_edit_window do |c|
+        preconfigure_record_window(c)
+        c.title = "Edit #{data_class.model_name.human.pluralize}"
+        c.items = [:multi_edit_form]
+      end
+
+      endpoint :add_window__add_form__netzke_submit do |params, this|
+        data = ActiveSupport::JSON.decode(params[:data])
+        data["parent_id"] = params["parent_id"]
+        this.merge!(component_instance(:add_window).
+                    component_instance(:add_form).
+                    submit(data, this))
+        on_data_changed if this.set_form_values.present?
+        this.delete(:set_form_values)
+      end
+
+      protected
+
+      def bbar
+        config.has_key?(:bbar) ? config[:bbar] : default_bbar
+      end
+
+      # Override to change the default bottom toolbar
+      def default_bbar
+        %i[add edit apply del]
+      end
+
+      def preconfigure_record_window(c)
+        c.klass = RecordFormWindow
+
+        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
+          f.model = config[:model]
+          f.persistent_config = config[:persistent_config]
+          f.strong_default_attrs = config[:strong_default_attrs]
+          f.mode = config[:mode]
+          f.items = default_fields_for_forms
+        end
       end
 
       private
@@ -109,6 +206,17 @@ module Netzke
           next unless data_adapter.model_respond_to?(a.to_sym)
           columns << {attr_type: type, name: a, meta: true}
         end
+      end
+
+      def set_defaults(c)
+        # The nil? checks are needed because these can be already set in a subclass
+        c.enable_edit_in_form = true if c.enable_edit_in_form.nil?
+        c.enable_edit_inline = true if c.enable_edit_inline.nil?
+        c.enable_extended_search = true if c.enable_extended_search.nil?
+        c.enable_column_filters = true if c.enable_column_filters.nil?
+        c.enable_pagination = true if c.enable_pagination.nil?
+        c.rows_per_page = 30 if c.rows_per_page.nil?
+        c.tools = %w{ refresh } if c.tools.nil?
       end
     end
   end

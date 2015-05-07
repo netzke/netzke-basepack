@@ -46,7 +46,7 @@ describe ::Grid::Scoped do
     @cb1.title.should == 'Foo'
 
     # not allowed
-    res = grid.update([{"id" => @fb1.id, "title" => 'Foo'}])
+    res = grid.update([{"id" => @fb1.id, title: 'Foo'}])
     res[@fb1.id][:error].should be_present
     @fb1.reload
     @fb1.title.should_not == 'Foo'

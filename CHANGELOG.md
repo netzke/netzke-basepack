@@ -1,4 +1,4 @@
-# 0.12.1 - WIP
+# 0.12.1 - 2015-05-31
 * New component: Tree
 * Fix filtering by association when associtaion method is integer
 * Fix decimal and float columns in extended search form

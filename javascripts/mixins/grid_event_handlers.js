@@ -1,6 +1,6 @@
-{
+Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
   // Handler for the 'add' button
-  onAddInline: function(){
+  onAddRecord: function(){
     if (this.enableEditInForm && !this.enableEditInline) {
       this.onAddInForm();
     } else {
@@ -18,12 +18,11 @@
   onDel: function() {
     Ext.Msg.confirm(this.i18n.confirmation, this.i18n.areYouSure, function(btn){
       if (btn == 'yes') {
-        var ids = [], records = [];
-        this.getSelectionModel().selected.each(function(r){
-          this.store.remove(r);
-        }, this);
-
-        this.store.sync();
+        var toDelete = this.getSelectionModel().getSelection();
+        store = this.getStore();
+        store.remove(toDelete);
+        store.removedNodes = toDelete; // HACK
+        store.sync();
       }
     }, this);
   },
@@ -86,5 +85,55 @@
     if (this.searchWindow) {
       this.searchWindow.destroy();
     }
+  },
+
+  onEditInForm: function(){
+    var selModel = this.getSelectionModel();
+    if (selModel.getCount() > 1) {
+      var recordId = selModel.selected.first().getId();
+      this.netzkeLoadComponent("multi_edit_window", {
+        params: {record_id: recordId},
+        callback: function(w){
+          w.show();
+          var form = w.items.first();
+          form.on('apply', function(){
+            var ids = [];
+            selModel.selected.each(function(r){
+              ids.push(r.getId());
+            });
+            if (!form.baseParams) form.baseParams = {};
+            form.baseParams.ids = Ext.encode(ids);
+          }, this);
+
+          w.on('close', function(){
+            if (w.closeRes === "ok") {
+              this.store.load();
+            }
+          }, this);
+        }, scope: this});
+    } else {
+      var recordId = selModel.selected.first().getId();
+      this.netzkeLoadComponent("edit_window", {
+        clientConfig: {record_id: recordId},
+        callback: function(w){
+          w.show();
+          w.on('close', function(){
+            if (w.closeRes === "ok") {
+              this.store.load();
+            }
+          }, this);
+        }, scope: this});
+    }
+  },
+
+  onAddInForm: function(){
+    this.netzkeLoadComponent("add_window", {callback: function(w){
+      w.show();
+      w.on('close', function(){
+        if (w.closeRes === "ok") {
+          this.store.load();
+        }
+      }, this);
+    }, scope: this});
   }
-}
+});

@@ -1,6 +1,24 @@
 en:
   netzke:
     basepack:
+      tree:
+        actions:
+          add:
+            text: Add
+          edit:
+            text: Edit
+          del:
+            text: Delete
+            tooltip: Delete
+          apply:
+            text: Apply
+          add_in_form:
+            text: Add in form
+          edit_in_form:
+            text: Edit in form
+          search:
+            text: Search
+
       grid:
         actions:
           add:

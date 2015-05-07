@@ -128,7 +128,9 @@ module Netzke
           attrs.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
 
           attrs.each_pair do |k,v|
-            data_adapter.set_record_value_for_attribute(record, final_columns_hash[k.to_sym].nil? ? {:name => k} : final_columns_hash[k.to_sym], v, config.role || :default)
+            attr = final_columns_hash[k.to_sym]
+            next if attr.nil?
+            data_adapter.set_record_value_for_attribute(record, attr, v)
           end
 
           if record.save

@@ -99,7 +99,6 @@ module Netzke
           if !config["prohibit_#{op}"]
             res = send(op, data)
             this.netzke_set_result res
-            ::Rails.logger.debug "\n!!! res: #{res.inspect}\n"
             res
           else
             this.netzke_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")

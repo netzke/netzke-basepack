@@ -18,7 +18,7 @@ module Netzke
     class << self
       # Called from netzke-basepack.rb
       def init
-        %w[netzkeremotecombo xdatetime basepack columns].each do |name|
+        %w[netzkeremotecombo xdatetime basepack columns mixins/grid_event_handlers].each do |name|
           Netzke::Core.ext_javascripts << "#{File.dirname(__FILE__)}/../../javascripts/#{name}.js"
         end
 

@@ -230,8 +230,12 @@ module Netzke::Basepack::DataAdapters
       model_class.root
     end
 
-    def record_children(r)
+    def find_record_children(r)
       r.children
+    end
+
+    def find_root_records
+      model_class.where(parent_id: nil)
     end
 
     # Does record respond to given method?

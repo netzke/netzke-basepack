@@ -1,4 +1,6 @@
 class FileRecord < ActiveRecord::Base
+  validates :name, presence: true
+
   acts_as_nested_set
 
   # Picked up by the tree node
@@ -9,6 +11,11 @@ class FileRecord < ActiveRecord::Base
   # To test snake_case column names
   def file_size
     size
+  end
+
+  # shown in the treecolumn
+  def node_label
+    name
   end
 
   # ... and more:
