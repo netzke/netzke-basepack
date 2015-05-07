@@ -38,8 +38,8 @@ module Netzke
     #   `xtype` config option set to `:treecolumn`.
     class Tree < Netzke::Base
       NODE_ATTRS = {
-        boolean: %i[leaf checked expanded expandable qtip qtitle],
-        string: %i[icon icon_cls href href_target qtip qtitle]
+        boolean: %w[leaf checked expanded expandable qtip qtitle],
+        string: %w[icon icon_cls href href_target qtip qtitle]
       }
 
       include Netzke::Basepack::Grid::Endpoints
@@ -106,8 +106,8 @@ module Netzke
 
       def add_node_interface_methods_by_type!(columns, attrs, type)
         attrs.each do |a|
-          next unless data_adapter.model_respond_to?(a)
-          columns << {attr_type: :boolean, name: a, meta: true}
+          next unless data_adapter.model_respond_to?(a.to_sym)
+          columns << {attr_type: type, name: a, meta: true}
         end
       end
     end
