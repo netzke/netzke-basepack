@@ -8,7 +8,7 @@ module Tree
 
       c.columns = [
         {name: :name, xtype: :treecolumn, flex: 1},
-        {name: :size, flex: 1}
+        {name: :file_size, flex: 1}
       ]
 
       # This would hide the root

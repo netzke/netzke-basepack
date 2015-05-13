@@ -70,7 +70,7 @@ module Netzke
       def read(params = {})
         {}.tap do |res|
           records = get_records(params)
-          res[:data] = records.map{|r| data_adapter.record_to_hash(r, final_columns(:with_meta => true))}
+          res[:data] = records.map{|r| data_adapter.record_to_hash(r, final_columns(:with_meta => true)).netzke_literalize_keys}
           res[:total] = count_records(params)  if config[:enable_pagination]
         end
       end
@@ -90,7 +90,7 @@ module Netzke
           populate_cols_with_filters(c)
         end
 
-        c.root = data_adapter.record_to_hash(data_adapter.root, final_columns(with_meta: true))
+        c.root = data_adapter.record_to_hash(data_adapter.root, final_columns(with_meta: true)).netzke_literalize_keys
       end
 
       private

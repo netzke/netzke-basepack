@@ -6,6 +6,11 @@ class FileRecord < ActiveRecord::Base
     !is_dir?
   end
 
+  # To test snake_case column names
+  def file_size
+    size
+  end
+
   # ... and more:
   # def expandable
   #   true

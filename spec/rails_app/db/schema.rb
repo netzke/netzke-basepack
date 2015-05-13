@@ -60,4 +60,18 @@ ActiveRecord::Schema.define(version: 20150414045121) do
   add_index "file_records", ["parent_id"], name: "index_file_records_on_parent_id"
   add_index "file_records", ["rgt"], name: "index_file_records_on_rgt"
 
+  create_table "roles", force: :cascade do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.integer  "role_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
 end

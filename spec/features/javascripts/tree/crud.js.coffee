@@ -10,5 +10,5 @@ describe 'Tree::Crud', ->
     .then ->
       expect(grid().getStore().getCount()).to.eql(4)
       selectLastRow()
-      expect(valuesInColumn('size')).to.eql [0, 100, 200, 0]
+      expect(valuesInColumn('file_size')).to.eql [0, 100, 200, 0]
       done()
