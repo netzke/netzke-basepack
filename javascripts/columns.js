@@ -20,7 +20,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
       this.netzkeNormalizeRenderer(c);
 
       // Build the field configuration for this column
-      var fieldConfig = {name: c.name, defaultValue: c.defaultValue, useNull: true}; // useNull is needed to not convert nils to 0 in associations!
+      var fieldConfig = {name: c.name, defaultValue: c.defaultValue, allowNull: true};
 
       if (c.name !== 'meta') fieldConfig.type = this.netzkeFieldTypeForAttrType(c.attrType); // field type (grid editors need this to function well)
 
