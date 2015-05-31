@@ -14,6 +14,7 @@ A pack of pre-built [Netzke](http://netzke.org) components that can be used as b
 Basepack includes the following components:
 
 * [Grid](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Grid) - a grid panel with a thick bag of features
+* [Tree](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Tree) - a tree panel with features similar to the Grid
 * [Form](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Form) - a form panel with automatic binding of fields
 * [TabPanel](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/TabPanel) - a tab panel with support for lazy loading of nested components
 * [Accordion](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Accordion) - an accordion panel with support for lazy loading of nested components
