@@ -1,3 +1,5 @@
+# 0.12.2 - WIP
+
 # 0.12.1 - 2015-05-31
 * New component: Tree
 * Fix filtering by association when associtaion method is integer
