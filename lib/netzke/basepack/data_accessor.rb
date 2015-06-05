@@ -20,8 +20,8 @@ module Netzke
         a.is_a?(Symbol) || a.is_a?(String) ? {:name => a.to_s} : a.merge(:name => a[:name].to_s)
       end
 
-      def association_attr?(name)
-        !!name.to_s.index("__")
+      def association_attr?(attr)
+        !!attr[:name].to_s.index("__")
       end
 
       # Model class

@@ -198,7 +198,7 @@ module Netzke
         data_adapter.attribute_names.include?(c[:name]) ||
         data_class.instance_methods.include?(c[:name].to_sym) ||
         data_class.instance_methods.include?(:"#{c[:name]}=") ||
-        association_attr?(c[:name])
+        association_attr?(c)
       end
 
       def exclude_from_forms?(c)

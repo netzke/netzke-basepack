@@ -182,8 +182,8 @@ module Netzke::Basepack::DataAdapters
     end
 
     # Whether an attribute (by name) is an association one
-    def association_attr?(attr_name)
-      !!attr_name.to_s.index("__")
+    def association_attr?(attr)
+      !!attr[:name].to_s.index("__")
     end
 
     # Transforms a record to an array of values according to the passed attributes
