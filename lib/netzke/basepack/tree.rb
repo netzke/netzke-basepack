@@ -175,7 +175,7 @@ module Netzke
 
       # Override to change the default bottom toolbar
       def default_bbar
-        %i[add edit apply del]
+        [:add, :edit, :apply, :del]
       end
 
       def preconfigure_record_window(c)

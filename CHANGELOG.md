@@ -1,5 +1,6 @@
 # 0.12.2 - WIP
 * Fix exception when nesting a grid with action column
+* Fix Tree for Ruby 1.9.3
 
 # 0.12.1 - 2015-05-31
 * New component: Tree
