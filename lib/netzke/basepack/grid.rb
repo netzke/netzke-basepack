@@ -396,7 +396,7 @@ module Netzke
         c.title = c.title || self.class.js_config.properties[:title] || data_class.name.pluralize
         c.bbar = bbar
         c.context_menu = context_menu
-        c.columns = js_columns
+        c.columns = {items: js_columns}
         c.columns_order = columns_order
         c.inline_data = read if c.load_inline_data
         c.pri = data_adapter.primary_key
@@ -408,7 +408,7 @@ module Netzke
       def populate_cols_with_filters(c)
         c.default_filters.each do |f|
 
-          c.columns.each do |col|
+          c.columns[:items].each do |col|
             if col[:name].to_sym == f[:column].to_sym
               if f[:value].is_a?(Hash)
                 val = {}

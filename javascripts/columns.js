@@ -15,7 +15,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     this.fields = [];
 
     // Run through columns and set up different configuration for each
-    Ext.each(this.columns, function(c, i){
+    Ext.each(this.columns.items, function(c, i){
 
       this.netzkeNormalizeRenderer(c);
 
@@ -88,7 +88,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     Ext.each(this.columnsOrder, function(c) {
       var mainColConfig;
 
-      Ext.each(this.columns, function(oc) {
+      Ext.each(this.columns.items, function(oc) {
         if (c.name === oc.name) {
           mainColConfig = Ext.apply({}, oc);
           return false;
@@ -99,10 +99,10 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     }, this);
 
     // We don't need original columns any longer
-    delete this.columns;
+    delete this.columns.items;
 
     // ... instead, define own column model
-    this.columns = colModelConfig;
+    this.columns.items = colModelConfig;
   },
 
   // Normalizes the renderer for a column.
