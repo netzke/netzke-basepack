@@ -1,4 +1,5 @@
 # 0.12.3 - WIP
+* Fix bug preventing primary key column from overriding in a specific case
 
 # 0.12.2 - 2015-06-06
 * Fix exception when nesting a grid with action column

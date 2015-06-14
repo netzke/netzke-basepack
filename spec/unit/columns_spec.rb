@@ -15,13 +15,33 @@ module Netzke::Basepack
     it "should allow overriding columns" do
       class TheGrid < Netzke::Basepack::Grid
         model "Book"
+
         column :title do |c|
           c.renderer = "uppercase"
+          c.hidden = true
         end
       end
 
       columns = TheGrid.new.js_columns
       columns.detect{|c| c[:name] == 'title'}[:renderer].should == 'uppercase'
+    end
+
+    it 'prepends primary key column automatically when columns are listed explicitely' do
+      class TheGrid < Netzke::Basepack::Grid
+        model "Book"
+
+        column :id do |c|
+          c.hidden = false
+        end
+
+        def configure(c)
+          super
+          c.columns = [:title]
+        end
+      end
+
+      columns = TheGrid.new.js_columns
+      columns.detect{|c| c[:name] == 'id'}[:hidden].should_not == true # not hidden by default in Ext JS grid
     end
 
     it 'makes virtual attributes not editable and not sortable by default' do

@@ -107,6 +107,7 @@ module Netzke
         primary_key = data_adapter.primary_key
         raise "Model #{data_adapter.model_class.name} does not have a primary column" if primary_key.blank?
         c = ColumnConfig.new(data_adapter.primary_key, data_adapter)
+        send(:"#{c.name}_column", c) if respond_to?(:"#{c.name}_column")
         augment_column_config(c)
         cols.insert(0, c)
       end
