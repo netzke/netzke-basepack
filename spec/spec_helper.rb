@@ -14,6 +14,10 @@ require 'support/database_cleaner'
 require 'capybara/rspec'
 require 'capybara/rails'
 
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(app, :browser => :chrome)
+end
+
 RSpec.configure do |config|
   Netzke::Testing.rspec_init(config)
 
