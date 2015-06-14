@@ -13,7 +13,7 @@ module Netzke::Basepack
     end
 
     it "should allow overriding columns" do
-      class TheGrid < Netzke::Basepack::Grid
+      class GridOne < Netzke::Basepack::Grid
         model "Book"
 
         column :title do |c|
@@ -22,12 +22,12 @@ module Netzke::Basepack
         end
       end
 
-      columns = TheGrid.new.js_columns
+      columns = GridOne.new.js_columns
       columns.detect{|c| c[:name] == 'title'}[:renderer].should == 'uppercase'
     end
 
     it 'prepends primary key column automatically when columns are listed explicitely' do
-      class TheGrid < Netzke::Basepack::Grid
+      class GridTwo < Netzke::Basepack::Grid
         model "Book"
 
         column :id do |c|
@@ -40,24 +40,24 @@ module Netzke::Basepack
         end
       end
 
-      columns = TheGrid.new.js_columns
+      columns = GridTwo.new.js_columns
       columns.detect{|c| c[:name] == 'id'}[:hidden].should_not == true # not hidden by default in Ext JS grid
     end
 
     it 'makes virtual attributes not editable and not sortable by default' do
-      class TheGrid < Netzke::Basepack::Grid
+      class GridThree < Netzke::Basepack::Grid
         model "Book"
         column :in_abundance do |c|
           c.getter = ->{ true }
         end
       end
-      column = TheGrid.new.js_columns.detect{|c| c[:name] == 'in_abundance'}
+      column = GridThree.new.js_columns.detect{|c| c[:name] == 'in_abundance'}
       column[:read_only].should eql true
       column[:sortable].should eql false
     end
 
     it 'does not render excluded columns' do
-      class TheGrid < Netzke::Basepack::Grid
+      class GridFour < Netzke::Basepack::Grid
         model "Book"
 
         column :exemplars do |c|
@@ -65,7 +65,7 @@ module Netzke::Basepack
         end
       end
 
-      TheGrid.new.js_columns.detect{|c| c[:name] == 'exemplars'}.should be_nil
+      GridFour.new.js_columns.detect{|c| c[:name] == 'exemplars'}.should be_nil
     end
   end
 end
