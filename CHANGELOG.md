@@ -1,4 +1,4 @@
-# 0.12.3 - WIP
+# 0.12.3 - 2015-06-16
 * Fix bug preventing primary key column from being overridden in a specific case
 * Fix grid freeze when `prohibit_read` is set to true
 
