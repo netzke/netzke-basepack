@@ -102,6 +102,7 @@ module Netzke
             res
           else
             this.netzke_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
+            this.netzke_set_result(data: [], total: 0)
           end
         end
       end
