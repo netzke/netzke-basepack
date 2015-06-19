@@ -105,7 +105,7 @@ module Netzke
         c.title = c.title || self.class.js_config.properties[:title] || data_class.name.pluralize
         c.bbar = bbar
         # c.context_menu = context_menu
-        c.columns = js_columns
+        c.columns = {items: js_columns}
         c.columns_order = columns_order
         c.inline_data = read if c.load_inline_data
         c.pri = data_adapter.primary_key
