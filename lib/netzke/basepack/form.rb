@@ -28,8 +28,8 @@ module Netzke
     class Form < Netzke::Base
       include self::Endpoints
       include self::Services
-      include Fields
-      include DataAccessor
+      include Netzke::Basepack::Fields
+      include Netzke::Basepack::DataAccessor
       include Netzke::Core::ConfigToDslDelegator
 
       js_configure do |c|

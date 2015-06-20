@@ -342,8 +342,8 @@ module Netzke
     class Grid < Netzke::Base
       include self::Endpoints
       include self::Services
-      include Columns
-      include DataAccessor
+      include Netzke::Basepack::Columns
+      include Netzke::Basepack::DataAccessor
       include Netzke::Core::ConfigToDslDelegator
 
       class_attribute :column_filters_available
