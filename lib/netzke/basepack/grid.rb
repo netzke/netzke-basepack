@@ -73,11 +73,6 @@ module Netzke
     #
     #   (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to +false+)
     #
-    # [load_inline_data]
-    #
-    #   (defaults to false) grid is being loaded along with its initial data; use with precaution, preferred method is
-    #   auto-loading of data in a separate server request (see +data_store+)
-    #
     # [data_store]
     #
     #   (defaults to empty Hash) extra configuration for the JS class's internal store (see
@@ -398,7 +393,6 @@ module Netzke
         c.context_menu = context_menu
         c.columns = {items: js_columns}
         c.columns_order = columns_order
-        c.inline_data = read if c.load_inline_data
         c.pri = data_adapter.primary_key
         if c.default_filters
           populate_cols_with_filters(c)

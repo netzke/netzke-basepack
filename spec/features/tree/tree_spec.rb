@@ -12,6 +12,6 @@ feature Netzke::Basepack::Tree do
   end
 
   it 'performs CRUD operations', js: true do
-    run_mocha_spec 'tree/crud', stop_on_error: true
+    run_mocha_spec 'tree/crud'
   end
 end

@@ -57,12 +57,6 @@ feature Netzke::Basepack::Grid do
     run_mocha_spec 'grid/pagination'
   end
 
-  it 'shows inline data on initial load', js: true do
-    FactoryGirl.create :book, title: 'One'
-    FactoryGirl.create :book, title: 'Two'
-    run_mocha_spec 'grid/inline_data'
-  end
-
   it 'handles models with custom primary key properly', js: true do
     FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
     run_mocha_spec 'grid/custom_primary_key'

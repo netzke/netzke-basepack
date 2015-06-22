@@ -107,7 +107,6 @@ module Netzke
         # c.context_menu = context_menu
         c.columns = {items: js_columns}
         c.columns_order = columns_order
-        c.inline_data = read if c.load_inline_data
         c.pri = data_adapter.primary_key
 
         if c.default_filters

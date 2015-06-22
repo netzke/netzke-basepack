@@ -60,6 +60,6 @@ describe ::Grid::Scoped do
 
   it 'only lists scoped records' do
     grid = ::Grid::Scoped.new load_inline_data: true
-    grid.js_config[:inline_data][:total].should == 3
+    grid.read[:data].size.should == 3
   end
 end

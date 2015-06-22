@@ -1,4 +1,5 @@
 # 0.12.4 - WIP
+* Remove (broken) `load_inline_data` option
 
 # 0.12.3 - 2015-06-16
 * Fix bug preventing primary key column from being overridden in a specific case
