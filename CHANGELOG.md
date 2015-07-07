@@ -1,6 +1,8 @@
+# 0.12.6 - WIP
+
 # 0.12.5 - 2015-07-07
 * Fix potential problems caused by changing window.id on deleting grid records
-*
+
 # 0.12.4 - 2015-06-22
 * Remove (broken) `load_inline_data` option
 
