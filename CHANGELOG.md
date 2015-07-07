@@ -1,5 +1,6 @@
-# 0.12.4 - WIP
+# 0.12.4 - 2015-07-07
 * Remove (broken) `load_inline_data` option
+* Fix potential problems caused by changing window.id on deleting grid records
 
 # 0.12.3 - 2015-06-16
 * Fix bug preventing primary key column from being overridden in a specific case
