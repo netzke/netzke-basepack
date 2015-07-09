@@ -1,4 +1,5 @@
 # 0.12.6 - WIP
+* Regression: show cell editor on adding/editing a record in grid
 
 # 0.12.5 - 2015-07-07
 * Fix potential problems caused by changing window.id on deleting grid records

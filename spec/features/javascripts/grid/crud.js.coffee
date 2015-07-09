@@ -140,3 +140,9 @@ describe 'Grid::Crud', ->
       wait ->
         expect(grid().getStore().getCount()).to.eql(0)
         done()
+
+  it 'triggers cell editing when adding a record', (done) ->
+    wait().then ->
+      click button 'Add'
+      expect(grid().getPlugin('celleditor').editing).to.eql true
+      done()

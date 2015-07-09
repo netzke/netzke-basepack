@@ -182,16 +182,11 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
 
   // Tries editing the first editable (i.e. not hidden, not read-only) sell
   netzkeTryStartEditing: function(r){
-    var editableIndex = 0;
-    Ext.each(this.initialConfig.columns, function(c){
-      // skip columns that cannot be edited
-      if (!(c.hidden == true || !c.editor || c.attrType == 'boolean')) {
-        return false;
-      }
-      editableIndex++;
+    var column = Ext.Array.findBy(this.columns, function(c){
+      return !(c.hidden || c.readOnly || c.attrType == 'boolean')
     });
 
-    if (editableIndex < this.initialConfig.columns.length) {this.getPlugin('celleditor').startEdit(r, this.columns[editableIndex]);}
+    if (column) {this.getPlugin('celleditor').startEdit(r, column);}
   },
 
   netzkeFilterTypeForAttrType: function(attrType){
