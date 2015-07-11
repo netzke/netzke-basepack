@@ -54,7 +54,7 @@ module Netzke
           has_primary_column = false
 
           columns.each do |c|
-            c = ColumnConfig.new(c, data_adapter)
+            c = Netzke::Basepack::ColumnConfig.new(c, data_adapter)
 
             # merge with column declaration
             send(:"#{c.name}_column", c) if respond_to?(:"#{c.name}_column")
@@ -106,7 +106,7 @@ module Netzke
       def insert_primary_column(cols)
         primary_key = data_adapter.primary_key
         raise "Model #{data_adapter.model_class.name} does not have a primary column" if primary_key.blank?
-        c = ColumnConfig.new(data_adapter.primary_key, data_adapter)
+        c = Netzke::Basepack::ColumnConfig.new(data_adapter.primary_key, data_adapter)
         send(:"#{c.name}_column", c) if respond_to?(:"#{c.name}_column")
         augment_column_config(c)
         cols.insert(0, c)

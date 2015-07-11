@@ -39,7 +39,7 @@ module Netzke
       end
 
       def extend_field(field)
-        FieldConfig.new(field, data_adapter).tap do |c|
+        Netzke::Basepack::FieldConfig.new(field, data_adapter).tap do |c|
 
           # not binding to a model attribute
           return c if c.no_binding
