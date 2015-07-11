@@ -1,3 +1,5 @@
+# 0.12.7 - WIP
+
 # 0.12.6 - 2015-07-11
 * Regression: show cell editor on adding/editing a record in grid
 * Fix occasional autoload-related problems
