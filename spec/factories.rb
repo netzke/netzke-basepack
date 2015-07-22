@@ -12,6 +12,11 @@ FactoryGirl.define do
       first_name 'John'
       last_name 'Fowles'
     end
+
+    factory :hesse do
+      first_name 'Herman'
+      last_name 'Hesse'
+    end
   end
 
   factory :book do

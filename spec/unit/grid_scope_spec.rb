@@ -7,6 +7,7 @@ describe ::Grid::Scoped do
   before do
     @castaneda = FactoryGirl.create(:castaneda)
     @fowles = FactoryGirl.create(:fowles)
+    @hesse = FactoryGirl.create(:hesse)
 
     @cb1 = FactoryGirl.create(:book, author: @castaneda)
     @cb2 = FactoryGirl.create(:book, author: @castaneda)
@@ -14,6 +15,8 @@ describe ::Grid::Scoped do
 
     @fb1 = FactoryGirl.create(:book, author: @fowles)
     @fb2 = FactoryGirl.create(:book, author: @fowles)
+
+    @hb1 = FactoryGirl.create(:book, author: @hesse)
   end
 
   it 'does not allow deleting out-of-scope records' do
@@ -53,9 +56,9 @@ describe ::Grid::Scoped do
   end
 
   it 'sets strongs attributes' do
-    res = grid.update([{"id" => @cb1.id, title: 'Foo', author_id: @fowles.id}])
-    @cb1.reload
-    @cb1.author.should == @castaneda
+    grid.update([{"id" => @hb1.id, title: 'Foo', author_id: @fowles.id}])
+    @hb1.reload
+    @hb1.author.should == @castaneda
   end
 
   it 'only lists scoped records' do
