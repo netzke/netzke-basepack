@@ -62,7 +62,7 @@ module Netzke
           @record = data_class.new if @record.nil?
 
           hsh.each_pair do |k,v|
-            data_adapter.set_record_value_for_attribute(@record, fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v, config.role || :default)
+            data_adapter.set_record_value_for_attribute(@record, fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v)
           end
 
           # did we have complete success?

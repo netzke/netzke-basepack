@@ -124,13 +124,16 @@ module Netzke
         end
 
         def update_record(record, attrs)
-          # merge with strong default attirbutes
-          attrs.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
-
           attrs.each_pair do |k,v|
             attr = final_columns_hash[k.to_sym]
             next if attr.nil?
             data_adapter.set_record_value_for_attribute(record, attr, v)
+          end
+
+          strong_attrs = config[:strong_default_attrs] || {}
+
+          strong_attrs.each_pair do |k,v|
+            data_adapter.set_record_value_for_attribute(record, {name: k.to_s}, v)
           end
 
           if record.save
@@ -139,7 +142,6 @@ module Netzke
             {error: record.errors.to_a}
           end
         end
-
       end
     end
   end

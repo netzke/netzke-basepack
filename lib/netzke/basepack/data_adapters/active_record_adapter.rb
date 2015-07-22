@@ -252,21 +252,23 @@ module Netzke::Basepack::DataAdapters
       v
     end
 
-    def set_record_value_for_attribute(r, a, v, role = :default)
-      v = v.to_time_in_current_zone if v.is_a?(Date) # convert Date to Time
-      unless a[:read_only]
-        if a[:setter]
-          a[:setter].call(r, v)
-        elsif r.respond_to?("#{a[:name]}=")
-          r.send("#{a[:name]}=", v)
-        elsif association_attr?(a)
-          split = a[:name].to_s.split(/\.|__/)
-          if a[:nested_attribute]
+    def set_record_value_for_attribute(record, attr, value)
+      ::Rails.logger.debug "\n!!! attr: #{attr.inspect}\n"
+      value = value.to_time_in_current_zone if value.is_a?(Date) # convert Date to Time
+      unless attr[:read_only]
+        if attr[:setter]
+          attr[:setter].call(record, value)
+        elsif record.respond_to?("#{attr[:name]}=")
+          ::Rails.logger.debug "\n!!! value: #{value.inspect}\n"
+          record.send("#{attr[:name]}=", value)
+        elsif association_attr?(attr)
+          split = attr[:name].to_s.split(/\.|__/)
+          if attr[:nested_attribute]
             # We want:
             #     set_value_for_attribute({:name => :assoc_1__assoc_2__method, :nested_attribute => true}, 100)
             # =>
-            #     r.assoc_1.assoc_2.method = 100
-            split.inject(r) { |r,m| m == split.last ? (r && r.send("#{m}=", v) && r.save) : r.send(m) }
+            #     record.assoc_1.assoc_2.method = 100
+            split.inject(record) { |r,m| m == split.last ? (r && r.send("#{m}=", v) && r.save) : r.send(m) }
           else
             if split.size == 2
               # search for association and assign it to r
@@ -274,9 +276,9 @@ module Netzke::Basepack::DataAdapters
               assoc_method = split.last
               if assoc
                 if assoc.macro == :has_one
-                  assoc_instance = r.send(assoc.name)
+                  assoc_instance = record.send(assoc.name)
                   if assoc_instance
-                    assoc_instance.send("#{assoc_method}=", v)
+                    assoc_instance.send("#{assoc_method}=", value)
                     assoc_instance.save # what should we do when this fails?..
                   else
                     # what should we do in this case?
@@ -285,13 +287,13 @@ module Netzke::Basepack::DataAdapters
 
                   # set the foreign key to the passed value
                   # not that if a negative value is passed, we reset the association (set it to nil)
-                  r.send("#{assoc.foreign_key}=", v.to_i < 0 ? nil : v)
+                  record.send("#{assoc.foreign_key}=", value.to_i < 0 ? nil : value)
                 end
               else
                 logger.warn "Netzke: Association #{assoc} is not known for class #{@data_class}"
               end
             else
-              logger.warn "Netzke: Wrong attribute name: #{a[:name]}"
+              logger.warn "Netzke: Wrong attribute name: #{attr[:name]}"
             end
           end
         end

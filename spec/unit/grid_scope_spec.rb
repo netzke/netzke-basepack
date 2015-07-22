@@ -55,10 +55,17 @@ describe ::Grid::Scoped do
     @fb1.title.should_not == 'Foo'
   end
 
-  it 'sets strongs attributes' do
-    grid.update([{"id" => @hb1.id, title: 'Foo', author_id: @fowles.id}])
-    @hb1.reload
-    @hb1.author.should == @castaneda
+  it 'sets strongs attributes on update' do
+    grid.update([{"id" => @cb1.id, title: 'New Title', notes: "Attempted"}])
+    @cb1.reload
+    @cb1.title.should == 'New Title'
+    @cb1.notes.should == 'Fixed'
+  end
+
+  it 'sets strongs attributes on create' do
+    grid.create([{title: 'Foo', author_id: @fowles.id}])
+    book = Book.last
+    book.author.should == @castaneda
   end
 
   it 'only lists scoped records' do

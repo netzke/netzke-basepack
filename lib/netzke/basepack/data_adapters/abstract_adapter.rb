@@ -217,7 +217,7 @@ module Netzke::Basepack::DataAdapters
 
     # Assigns new value to an (association) attribute in a given record
     # +role+ - role provided for mass assignment protection
-    def set_record_value_for_attribute(record, attr, value, role = :default)
+    def set_record_value_for_attribute(record, attr, value)
     end
 
     # Returns human attribute name
