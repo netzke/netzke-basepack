@@ -1,5 +1,6 @@
 # 0.12.7 - WIP
 # Fix the strong_default_attrs option support
+# Support column action's isDisabled option
 
 # 0.12.6 - 2015-07-11
 * Regression: show cell editor on adding/editing a record in grid

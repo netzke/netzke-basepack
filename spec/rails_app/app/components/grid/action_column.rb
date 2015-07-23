@@ -11,7 +11,7 @@ module Grid
 
     column :basic_actions do |c|
       c.type = :action
-      c.actions = [{name: :delete_row, tooltip: "Delete row", icon: :delete}]
+      c.actions = [{name: :delete_row, tooltip: "Delete row", icon: :delete, is_disabled: :every_third_row}]
     end
 
     # Just for illustation (no handlers assigned)
@@ -21,6 +21,11 @@ module Grid
     end
 
     js_configure do |c|
+      c.every_third_row = <<-JS
+        function(grid, rowIndex, colIndex, item, record){
+          return rowIndex % 3 == 1;
+        }
+      JS
       c.on_delete_row = <<-JS
         function(grid, rowIndex, colIndex){
           this.getSelectionModel().select(rowIndex);

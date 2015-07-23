@@ -58,7 +58,7 @@ module Netzke
           a[:handler] = Netzke::Core::JsonLiteral.new <<-JS
           function() {
             var cmp = Ext.getCmp('#{js_id}'),
-              f = cmp.on#{a[:handler].to_s.camelize};
+                f = cmp.on#{a[:handler].to_s.camelize};
             if (Ext.isFunction(f)) {
               f.apply(cmp, arguments);
             } else {
@@ -67,6 +67,12 @@ module Netzke
           }
           JS
 
+          a[:is_disabled] &&= Netzke::Core::JsonLiteral.new <<-JS
+          function() {
+            var cmp = Ext.getCmp('#{js_id}');
+            return cmp.#{a[:is_disabled].to_s.camelize(:lower)}.apply(cmp, arguments);
+          }
+          JS
           a[:icon] = "#{Netzke::Core.icons_uri}/#{a[:icon]}.png" if a[:icon].is_a?(Symbol)
         end
       end
