@@ -14,7 +14,7 @@ module Tree
         {name: :file_size, flex: 1, attr_type: :integer}
       ]
 
-      # Show all FileRecord records with panel_id of 'nil' as top-level records
+      # Show all FileRecord records with parent_id of 'nil' as top-level records
       c.root = true
 
       # This hides the root
