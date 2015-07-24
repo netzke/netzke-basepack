@@ -1,5 +1,4 @@
 module Tree
-  # Currently only R from CRUD is implemented
   class Crud < Netzke::Basepack::Tree
     def configure(c)
       super

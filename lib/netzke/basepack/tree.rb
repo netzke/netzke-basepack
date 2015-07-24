@@ -2,7 +2,9 @@ module Netzke
   module Basepack
     # Ext.tree.Panel-based component with the following features:
     #
-    # * CRUD operations (only R is implemented atm)
+    # * CRUD operations
+    # * Persistence of node expand/collapse state
+    # * (TODO) Node reordering by DnD
     #
     # == Simple example
     #
@@ -11,7 +13,7 @@ module Netzke
     #         super
     #         c.model = "FileRecord"
     #         c.columns = [
-    #           {name: :name, xtype: :treecolumn},
+    #           {name: :name, xtype: :treecolumn}, # this column will show tree nodes
     #           :size
     #         ]
     #       end
@@ -40,7 +42,7 @@ module Netzke
     # [root]
     #
     #   By default, the component will pick whatever record is returned by `TreeModel.root`, and use it as the root
-    #   record. However, sometimes the model table has multiple root records (which `parent_id` set to `nil`), and all
+    #   record. However, sometimes the model table has multiple root records (whith `parent_id` set to `nil`), and all
     #   of them should be shown in the panel. To achive this, you can define the `root` config option,
     #   which will serve as a virtual root record for those records. You may set it to `true`, or a hash of
     #   attributes, e.g.:
@@ -49,6 +51,10 @@ module Netzke
     #
     #   Note, that the root record can be hidden from the tree by specifying the `Ext.tree.Panel`'s `root_visible`
     #   config option set to `false`, which is probably what you want when you have multiple root records.
+    #
+    # == Persisting nodes' expand/collapse state
+    #
+    # If the model includes the `expanded` DB field, the expand/collapse state will get stored in the DB.
     class Tree < Netzke::Base
       NODE_ATTRS = {
         boolean: %w[leaf checked expanded expandable qtip qtitle],
@@ -164,6 +170,14 @@ module Netzke
                     submit(data, this))
         on_data_changed if this.set_form_values.present?
         this.delete(:set_form_values)
+      end
+
+      endpoint :server_update_node_state do |params, this|
+        node = data_adapter.find_record(params[:id])
+        if node.respond_to?(:expanded)
+          node.expanded = params[:expanded]
+          data_adapter.save_record(node)
+        end
       end
 
       protected

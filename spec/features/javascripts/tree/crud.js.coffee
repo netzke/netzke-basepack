@@ -49,7 +49,7 @@ describe 'Tree::Crud', ->
       click button 'OK'
       wait()
     .then ->
-      expect(valuesInColumn('name')).to.eql ['file1', 'file2', 'dir3', 'file3']
+      expect(valuesInColumn('name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'New dir name', 'file111', 'New file', 'file3']
       done()
 
   it 'deletes single record', (done) ->
@@ -61,5 +61,5 @@ describe 'Tree::Crud', ->
     .then ->
       wait()
     .then ->
-      expect(valuesInColumn('name')).to.eql ['file2', 'dir3', 'file3']
+      expect(valuesInColumn('name')).to.eql ['file2', 'dir3', 'file11', 'New dir name', 'file111', 'New file', 'file3']
       done()

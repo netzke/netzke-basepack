@@ -14,4 +14,8 @@ feature Netzke::Basepack::Tree do
   it 'performs CRUD operations', js: true do
     run_mocha_spec 'tree/crud'
   end
+
+  it 'stores expand/collapse node state', js: true do
+    run_mocha_spec 'tree/node_state'
+  end
 end

@@ -2,6 +2,7 @@ class CreateFileRecords < ActiveRecord::Migration
   def change
     create_table :file_records do |t|
       t.boolean :is_dir, default: false
+      t.boolean :expanded, default: false
       t.string :name, null: false
       t.integer :size, default: 0
       t.references :parent, index: true, null: true
