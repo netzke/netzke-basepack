@@ -9,7 +9,7 @@ module Tree
         {name: :node_label, xtype: :treecolumn, flex: 1, read_only: true},
         {name: :name, flex: 1},
         {name: :size, flex: 1},
-        {name: :is_dir, flex: 1, attr_type: :boolean, read_only: false},
+        {name: :leaf, flex: 1, attr_type: :boolean, read_only: false},
         {name: :file_size, flex: 1, attr_type: :integer}
       ]
 

@@ -3,11 +3,6 @@ class FileRecord < ActiveRecord::Base
 
   acts_as_nested_set
 
-  # Picked up by the tree node
-  def leaf
-    !is_dir?
-  end
-
   # To test snake_case column names
   def file_size
     size
@@ -16,6 +11,16 @@ class FileRecord < ActiveRecord::Base
   # shown in the treecolumn
   def node_label
     name
+  end
+
+  def build_tree_data
+    attributes.tap do |attrs|
+      if children.count > 0
+        attrs[:children] = children.map do |child|
+          child.build_tree_data
+        end
+      end
+    end
   end
 
   # ... and more:

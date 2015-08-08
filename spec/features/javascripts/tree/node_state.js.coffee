@@ -10,8 +10,12 @@ describe 'Tree::Crud', ->
       expandNode()
       wait()
     .then ->
+      selectLastRow()
+      expandNode()
+      wait()
+    .then ->
       click tool 'refresh'
       wait()
     .then ->
-      expect(valuesInColumn('name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12']
+      expect(valuesInColumn('name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12', 'file111']
       done()
