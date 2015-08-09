@@ -7,7 +7,7 @@ describe 'Grid::Getters', ->
       selectFirstRow()
       expect(rowDisplayValues()).to.eql ['Carlos Castaneda (10)', 'The Teachings of Don Juan(1968-01-01)', 'The Teachings of Don Juan, published 1968-01-01']
       selectLastRow()
-      expect(rowDisplayValues()).to.eql ['Carlos Castaneda (10)', 'The Teachings of Don Juan(1968-01-01)', 'Journey to Ixtlan']
+      expect(rowDisplayValues()).to.eql ['Carlos Castaneda (10)', 'The Teachings of Don Juan(1968-01-01)', 'Journey to Ixtlan, published 1970-01-01']
       done()
 
 
