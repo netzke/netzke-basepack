@@ -121,10 +121,15 @@ module Netzke
     #
     # [getter]
     #
-    #   A lambda that receives a record as a parameter, and is expected to return a string that will be sent to the cell
+    #   A lambda that receives a record/relation as a parameter, and is expected to return a string that will be sent to the cell
     #   (can be HTML code), e.g.:
     #
     #     getter: ->(r){ [r.first_name, r.last_name].join }
+    #
+    #   In case of relation used in relation, passes the last relation field to lambda, e.g.:
+    #
+    #     name: author__books__first_name, getter: ->(r){ r.title }
+    #     # r = author.books.first
     #
     # [setter]
     #
