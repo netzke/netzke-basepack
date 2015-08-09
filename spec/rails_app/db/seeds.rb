@@ -8,13 +8,13 @@
 
 FileRecord.delete_all
 
-root = FileRecord.create(name: 'root', is_dir: true)
+root = FileRecord.create(name: 'root', leaf: false)
 
 file1 = FileRecord.create(name: 'file1', parent: root, size: 100)
 file2 = FileRecord.create(name: 'file2', parent: root, size: 200)
-dir3 = FileRecord.create(name: 'dir3', is_dir: true, parent: root)
+dir3 = FileRecord.create(name: 'dir3', leaf: false, parent: root)
 
 file11 = FileRecord.create(name: 'file11', parent: dir3, size: 1100)
-dir12 = FileRecord.create(name: 'dir12', is_dir: true, parent: dir3)
+dir12 = FileRecord.create(name: 'dir12', leaf: false, parent: dir3)
 
 file111 = FileRecord.create(name: 'file111', parent: dir12, size: 11100)

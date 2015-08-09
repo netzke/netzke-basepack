@@ -100,9 +100,21 @@ module Netzke
       def read(params = {})
         {}.tap do |res|
           records = get_records(params)
-          res[:data] = records.map{|r| data_adapter.record_to_hash(r, final_columns(:with_meta => true)).netzke_literalize_keys}
+          res[:children] = records.map{|r| node_to_hash(r, final_columns(with_meta: true)).netzke_literalize_keys.symbolize_keys}
           res[:total] = count_records(params)  if config[:enable_pagination]
         end
+      end
+
+      def node_to_hash(record, columns)
+        data_adapter.record_to_hash(record, columns).tap do |hash|
+          if is_node_expanded?(record) && record.children.count > 0
+            hash[:children] = record.children.map {|child| node_to_hash(child, columns).netzke_literalize_keys.symbolize_keys}
+          end
+        end
+      end
+
+      def is_node_expanded?(record)
+        record.respond_to?(:expanded) && record.expanded?
       end
 
       def js_configure(c)

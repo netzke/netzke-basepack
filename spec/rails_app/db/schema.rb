@@ -46,10 +46,10 @@ ActiveRecord::Schema.define(version: 20150414045121) do
   end
 
   create_table "file_records", force: :cascade do |t|
-    t.boolean  "is_dir",     default: false
-    t.boolean  "expanded",   default: false
     t.string   "name",                       null: false
     t.integer  "size",       default: 0
+    t.boolean  "leaf",       default: true
+    t.boolean  "expanded",   default: false
     t.integer  "parent_id"
     t.integer  "lft",                        null: false
     t.integer  "rgt",                        null: false
