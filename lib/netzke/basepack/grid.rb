@@ -128,7 +128,7 @@ module Netzke
     #
     #   In case of relation used in relation, passes the last record to lambda, e.g.:
     #
-    #     name: author__books__first_name, getter: ->(r){ r.title }
+    #     name: author__books__first__name, getter: ->(r){ r.title }
     #     # r == author.books.first
     #
     # [setter]
