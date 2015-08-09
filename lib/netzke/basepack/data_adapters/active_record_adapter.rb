@@ -220,17 +220,17 @@ module Netzke::Basepack::DataAdapters
     end
 
     def record_value_for_attribute(r, a, through_association = false)
-      v = if a[:getter]
-        a[:getter].call(r)
-      elsif r.respond_to?("#{a[:name]}")
-        r.send("#{a[:name]}")
-      elsif association_attr?(a)
+      v = if association_attr?(a)
         split = a[:name].to_s.split(/\.|__/)
         assoc = @model_class.reflect_on_association(split.first.to_sym)
         if through_association
-          split.inject(r) do |r,m| # Do we *really* need to descend deeper than 1 level?
+          split.inject(r) do |r, m| # Do we *really* need to descend deeper than 1 level?
             return nil if r.nil?
-            if r.respond_to?(m)
+
+            # On the last iteration call the getter block
+            if a[:getter] && split.last.equal?(m)
+              a[:getter].call(r)
+            elsif r.respond_to?(m)
               r.send(m)
             else
               logger.warn "Netzke: Wrong attribute name: #{a[:name]}" unless r.nil?
@@ -240,6 +240,11 @@ module Netzke::Basepack::DataAdapters
         else
           r.send("#{assoc.options[:foreign_key] || assoc.name.to_s.foreign_key}")
         end
+      elsif a[:getter]
+        a[:getter].call(r)
+      elsif r.respond_to?("#{a[:name]}")
+        r.send("#{a[:name]}")
+
       # the composite_primary_keys gem produces [Key1,Key2...] and [Value1,Value2...]
       # on primary_key and id requests. Basepack::AttrConfig converts the keys-array to an String.
       elsif primary_key.try(:to_s) == a[:name]
