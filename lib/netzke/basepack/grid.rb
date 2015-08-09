@@ -126,6 +126,11 @@ module Netzke
     #
     #     getter: ->(r){ [r.first_name, r.last_name].join }
     #
+    #   In case of relation used in relation, passes the last record to lambda, e.g.:
+    #
+    #     name: author__books__first_name, getter: ->(r){ r.title }
+    #     # r == author.books.first
+    #
     # [setter]
     #
     #   A lambda that receives a record as first parameter, and the value passed from the cell as the second parameter,
