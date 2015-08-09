@@ -1,4 +1,4 @@
-# 0.12.7 - WIP
+# 0.12.7 - 2015-08-09
 * Fix the strong_default_attrs option support
 * Support column action's isDisabled option
 * Store tree nodes expand/collapse state
