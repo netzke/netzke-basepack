@@ -163,6 +163,13 @@ module Netzke
     #
     #     columns => [{ name: "complete_user_name", filter_with: lambda{|rel, value, op| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) } }, ...]
     #
+    # [filter_association_with]
+    #
+    #   A lambda that receives the relation and the value to filter. This allows flexible handling of live search on association field input.
+    #   Uses getter if it is specified. Example:
+    #
+    #     columns => [{ name: "author__name", filter_association_with: lambda{|rel, value| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) } }, ...]
+    #
     # [format]
     #
     #   The format to display data in case of date and datetime columns, e.g. 'Y-m-d g:i:s'.
