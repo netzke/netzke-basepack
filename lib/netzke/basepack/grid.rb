@@ -553,7 +553,9 @@ module Netzke
         c.enable_column_filters = self.class.column_filters_available if c.enable_column_filters.nil?
         c.enable_pagination = true if c.enable_pagination.nil?
         c.rows_per_page = 30 if c.rows_per_page.nil?
-        c.tools = %w{ refresh } if c.tools.nil?
+        if c.tools.nil?
+          c.tools = [{ type: :refresh, handler: f(:on_refresh) }]
+        end
       end
 
       def self.server_side_config_options
