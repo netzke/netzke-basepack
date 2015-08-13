@@ -26,12 +26,22 @@ Ext.override(Ext.view.BoundList, {
   },
 });
 
-Netzke.isModelDefined = function(name) {
-  return !!(Netzke.models || {})[name];
+// TODO: refactor to drop checking the argument type
+Netzke.isModelDefined = function(cmp) {
+  if (Ext.isString(cmp)) {
+    return !!(Netzke.models || {})[cmp];
+  } else {
+    return !!((Netzke.models || {})[cmp.model] || {})[cmp.id];
+  }
 };
 
-Netzke.modelName = function(name){
-  return "Netzke.models." + name;
+// TODO: refactor to drop checking the argument type
+Netzke.modelName = function(cmp){
+  if (Ext.isString(cmp)) {
+    return "Netzke.models." + cmp;
+  } else {
+    return "Netzke.models." + cmp.model + "." + cmp.id;
+  }
 };
 
 // Fix 2-digit precision in the numeric filter

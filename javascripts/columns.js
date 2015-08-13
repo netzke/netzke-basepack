@@ -1,8 +1,8 @@
 /* Shared column-related functionality, used in Tree and Grid */
 Ext.define("Netzke.mixins.Basepack.Columns", {
   netzkeBuildModel: function(modelClass) {
-    if (!Netzke.isModelDefined(this.id)) {
-      Ext.define(Netzke.modelName(this.id), {
+    if (!Netzke.isModelDefined(this)) {
+      Ext.define(Netzke.modelName(this), {
         extend: modelClass,
         idProperty: this.pri, // Primary key
         fields: this.fields
