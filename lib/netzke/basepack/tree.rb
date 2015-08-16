@@ -174,7 +174,7 @@ module Netzke
         c.items = [:multi_edit_form]
       end
 
-      endpoint :add_window__add_form__netzke_submit do |params, this|
+      endpoint :add_window__add_form__netzke_submit do |params|
         data = ActiveSupport::JSON.decode(params[:data])
         data["parent_id"] = params["parent_id"]
         this.merge!(component_instance(:add_window).
@@ -184,7 +184,7 @@ module Netzke
         this.delete(:set_form_values)
       end
 
-      endpoint :server_update_node_state do |params, this|
+      endpoint :server_update_node_state do |params|
         node = data_adapter.find_record(params[:id])
         if node.respond_to?(:expanded)
           node.expanded = params[:expanded]

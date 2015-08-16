@@ -24,8 +24,7 @@ Ext.define('Ext.netzke.ComboBox', {
       model: Netzke.modelName(modelName),
       proxy: {
         type: 'direct',
-        directFn: Netzke.providers[parent.id].getComboboxOptions,
-        extraParams: {configs: parent.buildParentClientConfigs()},
+        directFn: parent.netzkeGetDirectFunction("getComboboxOptions"),
         reader: {
           type: 'array',
           rootProperty: 'data'

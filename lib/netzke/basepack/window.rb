@@ -26,11 +26,11 @@ module Netzke
         c.maximized = state[:maximized] if state[:maximized]
       end
 
-      endpoint :set_size_and_position do |params, this|
+      endpoint :set_size_and_position do |params|
         [:x, :y, :width, :height].each {|p| state[p] = params[p].to_i}
       end
 
-      endpoint :set_maximized do |maximized,this|
+      endpoint :set_maximized do |maximized|
         maximized ? state[:maximized] = true : state.delete(:maximized)
       end
     end

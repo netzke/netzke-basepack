@@ -35,7 +35,7 @@ class WindowComponentLoader < Netzke::Base
     JS
   end
 
-  endpoint :server_reset_session do |params,this|
+  endpoint :server_reset_session do
     component_instance(:some_window).state.clear
   end
 end

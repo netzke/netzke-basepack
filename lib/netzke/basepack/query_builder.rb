@@ -45,7 +45,7 @@ module Netzke
         c.bbar = (config[:bbar] || []) + [:clear_all, :reset, "->", I18n.t('netzke.basepack.query_builder.presets'), :preset_selector, :save_preset, :delete_preset ]
       end
 
-      endpoint :save_preset do |params, this|
+      endpoint :save_preset do |params|
         saved_searches = state[:presets] || []
         existing = saved_searches.detect{ |s| s["name"] == params[:name] }
         query = ActiveSupport::JSON.decode(params[:query])
@@ -58,7 +58,7 @@ module Netzke
         this.netzke_feedback(I18n.t('netzke.basepack.query_builder.preset_saved'))
       end
 
-      endpoint :delete_preset do |params, this|
+      endpoint :delete_preset do |params|
         saved_searches = state[:presets]
         saved_searches.delete_if{ |s| s["name"] == params[:name] }
         state[:presets] = saved_searches

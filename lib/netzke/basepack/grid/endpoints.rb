@@ -5,23 +5,23 @@ module Netzke
         extend ActiveSupport::Concern
 
         included do
-          endpoint :server_read do |data, this|
+          endpoint :server_read do |data|
             attempt_operation(:read, data, this)
           end
 
-          endpoint :server_create do |data, this|
+          endpoint :server_create do |data|
             attempt_operation(:create, data, this)
           end
 
-          endpoint :server_update do |data, this|
+          endpoint :server_update do |data|
             attempt_operation(:update, data, this)
           end
 
-          endpoint :server_delete do |data, this|
+          endpoint :server_delete do |data|
             attempt_operation(:destroy, data, this)
           end
 
-          endpoint :server_save_columns do |cols, this|
+          endpoint :server_save_columns do |cols|
             state[:columns_order] = cols
           end
 
@@ -30,18 +30,18 @@ module Netzke
           # +attr+ - column's name
           # +query+ - what's typed-in in the combobox
           # +id+ - selected record id
-          endpoint :get_combobox_options do |params, this|
+          endpoint :get_combobox_options do |params|
             column = final_columns.detect{ |c| c[:name] == params[:attr] }
             this.data = data_adapter.combo_data(column, params[:query])
           end
 
-          endpoint :move_rows do |params, this|
+          endpoint :move_rows do |params|
             data_adapter.move_records(params)
           end
 
           # Process the submit of multi-editing form ourselves
           # TODO: refactor to let the form handle the validations
-          endpoint :multi_edit_window__multi_edit_form__netzke_submit do |params, this|
+          endpoint :multi_edit_window__multi_edit_form__netzke_submit do |params|
             ids = ActiveSupport::JSON.decode(params.delete(:ids))
             data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
 
@@ -56,27 +56,29 @@ module Netzke
 
             if errors.empty?
               on_data_changed
-              this.netzke_set_result("ok")
+              # this.netzke_set_result("ok")
               this.on_submit_success
+              "ok"
+            else
+              this.netzke_feedback(errors)
+              "failure"
             end
-
-            this.netzke_feedback(errors)
           end
 
           # The following two look a bit hackish, but serve to invoke on_data_changed when a form gets successfully
           # submitted
-          endpoint :add_window__add_form__netzke_submit do |params, this|
+          endpoint :add_window__add_form__netzke_submit do |params|
             this.merge!(component_instance(:add_window).
                         component_instance(:add_form).
-                        invoke_endpoint(:netzke_submit, params))
+                        invoke_endpoint(:netzke_submit, [params]))
             on_data_changed if this.set_form_values.present?
             this.delete(:set_form_values)
           end
 
-          endpoint :edit_window__edit_form__netzke_submit do |params, this|
+          endpoint :edit_window__edit_form__netzke_submit do |params|
             this.merge!(component_instance(:edit_window).
                         component_instance(:edit_form).
-                        invoke_endpoint(:netzke_submit, params))
+                        invoke_endpoint(:netzke_submit, [params]))
             on_data_changed if this.set_form_values.present?
             this.delete(:set_form_values)
           end
@@ -97,12 +99,10 @@ module Netzke
             data = dataHash
           end
           if !config["prohibit_#{op}"]
-            res = send(op, data)
-            this.netzke_set_result res
-            res
+            send(op, data)
           else
             this.netzke_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
-            this.netzke_set_result(data: [], total: 0)
+            { data: [], total: 0 }
           end
         end
       end

@@ -6,7 +6,7 @@ module Netzke
 
         included do
           # Called when the form gets submitted (e.g. by pressing the Apply button)
-          endpoint :netzke_submit do |params, this|
+          endpoint :netzke_submit do |params|
             data = ActiveSupport::JSON.decode(params[:data])
             submit(data, this)
           end
@@ -14,7 +14,7 @@ module Netzke
           # Can be called when the form needs to load a record with given ID. E.g.:
           #
           #     someForm.netzkeLoad({id: 100});
-          endpoint :netzke_load do |params, this|
+          endpoint :netzke_load do |params|
             @record = data_class && data_adapter.find_record(params[:id])
             this.set_form_values js_record_data
           end
@@ -24,7 +24,8 @@ module Netzke
           # +attr+ - column's name
           # +query+ - what's typed-in in the combobox
           # +id+ - selected record id
-          endpoint :get_combobox_options do |params, this|
+          endpoint :get_combobox_options do |params|
+            ::Rails.logger.debug "\n!!! params: #{params.inspect}\n"
             attr = fields[params[:attr].to_sym]
             this.data = data_adapter.combo_data(attr, params[:query])
           end

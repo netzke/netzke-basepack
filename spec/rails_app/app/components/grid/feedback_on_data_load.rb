@@ -6,9 +6,9 @@ module Grid
       c.model = 'Book'
     end
 
-    endpoint :server_read do |params,this|
-      super(params,this)
+    endpoint :server_read do |params|
       this.netzke_feedback "Data loaded!"
+      super params
     end
   end
 end

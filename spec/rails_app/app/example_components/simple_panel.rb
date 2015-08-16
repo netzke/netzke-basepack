@@ -19,7 +19,7 @@ class SimplePanel < Netzke::Base
     super << :update_text
   end
 
-  endpoint :update_html_from_server do |params, this|
+  endpoint :update_html_from_server do |params|
     this.set_title(config[:update_text] || "HTML received from server")
   end
 end

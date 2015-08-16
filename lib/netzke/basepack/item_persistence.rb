@@ -11,16 +11,16 @@ module Netzke
         end
 
         # Added endpoints
-        endpoint :region_resized do |params, this|
+        endpoint :region_resized do |params|
           state[:"#{params[:item]}_width"] = params[:width].to_i if params[:width]
           state[:"#{params[:item]}_height"] = params[:height].to_i if params[:height]
         end
 
-        endpoint :region_collapsed do |params, this|
+        endpoint :region_collapsed do |params|
           state[:"#{params[:item]}_collapsed"] = true
         end
 
-        endpoint :region_expanded do |params, this|
+        endpoint :region_expanded do |params|
           state[:"#{params[:item]}_collapsed"] = false
         end
       end

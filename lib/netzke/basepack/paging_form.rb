@@ -34,7 +34,7 @@ module Netzke
         c.total_records = total_records
       end
 
-      endpoint :get_data do |params, this|
+      endpoint :get_data do |params|
         @record = data_adapter.get_records(params).first
         record_hash = @record && js_record_data
         this.merge!(:records => record_hash && [record_hash] || [], :total => total_records(params))
