@@ -52,6 +52,10 @@ module Netzke
     #   Note, that the root record can be hidden from the tree by specifying the `Ext.tree.Panel`'s `root_visible`
     #   config option set to `false`, which is probably what you want when you have multiple root records.
     #
+    # [drag_drop]
+    #
+    #   (defaults to false) use drag and drop in the tree.
+    #
     # == Persisting nodes' expand/collapse state
     #
     # If the model includes the `expanded` DB field, the expand/collapse state will get stored in the DB.
@@ -192,6 +196,13 @@ module Netzke
         end
       end
 
+      endpoint :server_update_parent_id do |records|
+        records.each do |record|
+          r = data_adapter.find_record(record[:id])
+          update_record(r, record)
+        end
+      end
+
       protected
 
       def bbar
@@ -213,6 +224,15 @@ module Netzke
           f.mode = config[:mode]
           f.items = default_fields_for_forms
         end
+      end
+
+      def update_record(record, attrs)
+        if config.drag_drop && attrs['parentId']
+          parent_id = attrs['parentId'] == 'root' ? nil : attrs['parentId']
+          data_adapter.set_record_value_for_attribute(record, { name: 'parent_id' }, parent_id)
+        end
+
+        super
       end
 
       private
