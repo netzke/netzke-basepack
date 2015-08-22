@@ -3,7 +3,7 @@ module Netzke
     # A tab panel that can load components dynamically by their class name. Components can be loaded in the current or new tab.
     # For example:
     #
-    #     this.netzkeLoadComponentByClass('BookGrid', {newTab: true, clientConfig: {read_only: true}});
+    #     this.netzkeLoadComponentByClass('BookGrid', {newTab: true, serverConfig: {read_only: true}});
     #
     class DynamicTabPanel < Netzke::Base
       js_configure do |c|
@@ -15,7 +15,7 @@ module Netzke
       # `client_config`
       component :child do |c|
         # c.client_config <== is accessible here
-        c.klass = (c.client_config[:klass] || "Netzke::Core::Panel").constantize
+        c.class_name = c.client_config[:class_name] || "Netzke::Core::Panel"
       end
     end
   end

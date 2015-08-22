@@ -1,10 +1,10 @@
 {
   onLoadInCurrentTab: function(){
-    this.netzkeLoadComponentByClass('Grid::Crud', {clientConfig: {counter: this.getCounter()}});
+    this.netzkeLoadComponentByClass('Grid::Crud', {serverConfig: {counter: this.getCounter()}});
   },
 
   onLoadInNewTab: function(){
-    this.netzkeLoadComponentByClass('Netzke::Core::Panel', {newTab: true, clientConfig: {counter: this.getCounter()}});
+    this.netzkeLoadComponentByClass('Netzke::Core::Panel', { newTab: true, serverConfig: {counter: this.getCounter()} });
   },
 
   // private

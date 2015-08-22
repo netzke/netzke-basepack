@@ -265,13 +265,11 @@ module Netzke::Basepack::DataAdapters
     end
 
     def set_record_value_for_attribute(record, attr, value)
-      ::Rails.logger.debug "\n!!! attr: #{attr.inspect}\n"
       value = value.to_time_in_current_zone if value.is_a?(Date) # convert Date to Time
       unless attr[:read_only]
         if attr[:setter]
           attr[:setter].call(record, value)
         elsif record.respond_to?("#{attr[:name]}=")
-          ::Rails.logger.debug "\n!!! value: #{value.inspect}\n"
           record.send("#{attr[:name]}=", value)
         elsif association_attr?(attr)
           split = attr[:name].to_s.split(/\.|__/)

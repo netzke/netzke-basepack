@@ -373,7 +373,6 @@ module Netzke
         c.extend = "Ext.grid.Panel"
         c.mixin :grid
         c.mixin :advanced_search if advanced_search_available
-        c.mixin :edit_in_form if edit_in_form_available
         c.mixin :remember_selection if remember_selection_available
 
         c.mixins << "Netzke.mixins.Basepack.Columns"
