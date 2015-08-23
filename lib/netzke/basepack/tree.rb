@@ -111,7 +111,7 @@ module Netzke
 
       def node_to_hash(record, columns)
         data_adapter.record_to_hash(record, columns).tap do |hash|
-          if is_node_expanded?(record) && record.children.count > 0
+          if is_node_expanded?(record)
             hash[:children] = record.children.map {|child| node_to_hash(child, columns).netzke_literalize_keys.symbolize_keys}
           end
         end
