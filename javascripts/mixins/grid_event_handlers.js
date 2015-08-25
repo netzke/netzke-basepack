@@ -5,7 +5,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
       this.onAddInForm();
     } else {
       // Note: default values are taken from the model's field's defaultValue property
-      var r = Ext.create(Netzke.modelName(this), {});
+      var r = Ext.create(this.store.getModel(), {});
 
       r.isNew = true; // to distinguish new records
 

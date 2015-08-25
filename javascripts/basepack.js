@@ -26,24 +26,6 @@ Ext.override(Ext.view.BoundList, {
   },
 });
 
-// TODO: refactor to drop checking the argument type
-Netzke.isModelDefined = function(cmp) {
-  if (Ext.isString(cmp)) {
-    return !!(Netzke.models || {})[cmp];
-  } else {
-    return !!((Netzke.models || {})[cmp.model] || {})[cmp.id];
-  }
-};
-
-// TODO: refactor to drop checking the argument type
-Netzke.modelName = function(cmp){
-  if (Ext.isString(cmp)) {
-    return "Netzke.models." + cmp;
-  } else {
-    return "Netzke.models." + cmp.model + "." + cmp.id;
-  }
-};
-
 // Fix 2-digit precision in the numeric filter
 Ext.define('Ext.grid.filters.filter.Number', {
   override: 'Ext.grid.filters.filter.Number',
