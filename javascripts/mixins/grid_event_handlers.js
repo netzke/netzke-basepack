@@ -36,7 +36,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
   onRefresh: function() {
     if (this.fireEvent('refresh', this) !== false) {
-      this.store.load();
+      this.store.reload();
     }
   },
 
@@ -106,7 +106,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
           w.on('close', function(){
             if (w.closeRes === "ok") {
-              this.store.load();
+              this.store.reload();
             }
           }, this);
         }});
@@ -118,7 +118,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
           w.show();
           w.on('close', function(){
             if (w.closeRes === "ok") {
-              this.store.load();
+              this.store.reload();
             }
           }, this);
         }});
@@ -131,7 +131,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
         w.show();
         w.on('close', function(){
           if (w.closeRes === "ok") {
-            this.store.load();
+            this.store.reload();
           }
         }, this);
       }
