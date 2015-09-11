@@ -46,7 +46,7 @@ ActiveRecord::Schema.define(version: 20150414045121) do
   end
 
   create_table "file_records", force: :cascade do |t|
-    t.string   "name",                       null: false
+    t.string   "file_name",                  null: false
     t.integer  "size",       default: 0
     t.boolean  "leaf",       default: true
     t.boolean  "expanded",   default: false
