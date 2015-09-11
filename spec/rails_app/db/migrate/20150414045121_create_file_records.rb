@@ -1,7 +1,7 @@
 class CreateFileRecords < ActiveRecord::Migration
   def change
     create_table :file_records do |t|
-      t.string :name, null: false
+      t.string :file_name, null: false
       t.integer :size, default: 0
 
       t.boolean :leaf, default: true

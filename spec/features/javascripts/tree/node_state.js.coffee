@@ -5,7 +5,7 @@ window.expandNode = ->
 describe 'Tree::Crud', ->
   it 'remembers expand/collapse node state', (done) ->
     wait().then ->
-      expect(valuesInColumn('name')).to.eql ['file1', 'file2', 'dir3']
+      expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3']
       selectLastRow()
       expandNode()
       wait()
@@ -17,5 +17,5 @@ describe 'Tree::Crud', ->
       click tool 'refresh'
       wait()
     .then ->
-      expect(valuesInColumn('name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12', 'file111']
+      expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12', 'file111']
       done()
