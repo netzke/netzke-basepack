@@ -1,3 +1,6 @@
+# 0.12.8 - 2015-09-11
+* Fix regression in Tree that would (again) prevent snake_cased columns from being displayed
+
 # 0.12.7 - 2015-08-09
 * Fix the strong_default_attrs option support
 * Support column action's isDisabled option
