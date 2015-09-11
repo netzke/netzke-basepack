@@ -22,6 +22,6 @@ group :development, :test do
   gem 'web-console', '~> 2.0'
   # gem 'spring' # troubles...
   gem 'pry-rails'
-  gem 'netzke-core', github: 'netzke/netzke-core', branch: 'master'
-  gem 'netzke-testing', github: 'netzke/netzke-testing', branch: 'master'
+  gem 'netzke-core', github: 'netzke/netzke-core', branch: '0-12'
+  gem 'netzke-testing', github: 'netzke/netzke-testing', branch: '0-12'
 end
