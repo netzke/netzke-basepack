@@ -14,7 +14,6 @@ module Netzke
       # Override this method if you need more control on what components can/cannot be loaded, or in order to access
       # `client_config`
       component :child do |c|
-        # c.client_config <== is accessible here
         c.class_name = c.client_config[:class_name] || "Netzke::Core::Panel"
       end
     end

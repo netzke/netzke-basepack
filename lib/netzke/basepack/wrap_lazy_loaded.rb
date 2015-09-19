@@ -8,7 +8,7 @@ module Netzke
       def js_configure(cfg)
         super
         cfg.items = cfg.items.each_with_index.map do |item,i|
-          c = components[item[:netzke_component]].try(:merge, item)
+          c = component_config(item[:netzke_component]).try(:merge, item)
 
           # when a nested component with lazy loading is detected, it gets replaced with a 'fit' panel,
           # into which later the component itself is dynamically loaded on request.
