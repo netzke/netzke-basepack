@@ -347,11 +347,10 @@ module Netzke::Basepack::DataAdapters
       if params[:filters]
         and_query = params[:filters]
         and_query.each do |q|
-          if prok = q.delete(:proc)
-            relation = prok.call(relation, q[:value], q[:operator])
-            and_query.delete(q)
-          end
+          relation = q[:proc].call(relation, q[:value], q[:operator]) if q[:proc]
         end
+
+        and_query.delete_if{|q| q[:proc] }
 
         # apply other, non-Proc filters
         relation = relation.where(predicates_for_and_conditions(and_query))
