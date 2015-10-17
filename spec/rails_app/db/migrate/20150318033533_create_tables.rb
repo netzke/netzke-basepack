@@ -31,5 +31,9 @@ class CreateTables < ActiveRecord::Migration
 
       t.timestamps null: false
     end
+
+    create_table :users do |t|
+      t.string :name
+    end
   end
 end

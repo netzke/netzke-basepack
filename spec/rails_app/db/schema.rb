@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150414045121) do
+ActiveRecord::Schema.define(version: 20151017172056) do
 
   create_table "authors", force: :cascade do |t|
     t.string   "first_name"
@@ -60,5 +60,19 @@ ActiveRecord::Schema.define(version: 20150414045121) do
   add_index "file_records", ["lft"], name: "index_file_records_on_lft"
   add_index "file_records", ["parent_id"], name: "index_file_records_on_parent_id"
   add_index "file_records", ["rgt"], name: "index_file_records_on_rgt"
+
+  create_table "rents", force: :cascade do |t|
+    t.integer  "user_id"
+    t.integer  "book_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "rents", ["book_id"], name: "index_rents_on_book_id"
+  add_index "rents", ["user_id"], name: "index_rents_on_user_id"
+
+  create_table "users", force: :cascade do |t|
+    t.string "name"
+  end
 
 end
