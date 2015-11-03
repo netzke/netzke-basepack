@@ -1,3 +1,5 @@
+* Implement `scope` option for `Tree`
+
 # 0.12.8 - 2015-09-11
 * Fix regression in Tree that would (again) prevent snake_cased columns from being displayed
 

@@ -225,17 +225,19 @@ module Netzke::Basepack::DataAdapters
       name.to_s.humanize
     end
 
-    # Return root record for tree-like data
+    # Returns root record for tree-like data
     def root
       model_class.root
     end
 
-    def find_record_children(r)
-      r.children
+    # Children records for given record in the tree; extra scope (lambda/proc) is optional
+    def find_record_children(r, scope = nil)
+      r.children.extend_with(scope)
     end
 
-    def find_root_records
-      model_class.where(parent_id: nil)
+    # All root records in the tree
+    def find_root_records(scope)
+      model_class.where(parent_id: nil).extend_with(scope)
     end
 
     # Does record respond to given method?

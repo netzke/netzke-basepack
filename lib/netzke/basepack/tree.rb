@@ -52,6 +52,22 @@ module Netzke
     #   Note, that the root record can be hidden from the tree by specifying the `Ext.tree.Panel`'s `root_visible`
     #   config option set to `false`, which is probably what you want when you have multiple root records.
     #
+    # [scope]
+    #
+    #   Specifies how the records should be scoped.
+    #
+    #   When it's a symbol, it's used as a scope name.
+    #   When it's a string, it's a SQL statement (passed directly to +where+).
+    #   When it's a hash, it's a conditions hash (passed directly to +where+).
+    #   When it's an array, it's expanded into an SQL statement with arguments (passed directly to +where+), e.g.:
+    #
+    #     scope: ["id > ?", 100])
+    #
+    #   When it's a Proc, it gets the current relation passed as the only parameter and is expected to return a
+    #   relation, e.g.:
+    #
+    #     scope: ->(relation) { relation.where(user_id: 100) }
+    #
     # == Persisting nodes' expand/collapse state
     #
     # If the model includes the `expanded` DB field, the expand/collapse state will get stored in the DB.
@@ -90,9 +106,9 @@ module Netzke
 
       def get_records(params)
         if params[:id] == 'root'
-          data_adapter.find_root_records
+          data_adapter.find_root_records(config[:scope])
         else
-          data_adapter.find_record_children(data_adapter.find_record(params[:id]))
+          data_adapter.find_record_children(data_adapter.find_record(params[:id]), config[:scope])
         end
       end
 
@@ -108,7 +124,7 @@ module Netzke
       def node_to_hash(record, columns)
         data_adapter.record_to_hash(record, columns).tap do |hash|
           if is_node_expanded?(record)
-            hash["children"] = record.children.map {|child| node_to_hash(child, columns).netzke_literalize_keys}
+            hash["children"] = record.children.extend_with(config.scope).map {|child| node_to_hash(child, columns).netzke_literalize_keys}
           end
         end
       end
@@ -243,6 +259,11 @@ module Netzke
         c.rows_per_page = 30 if c.rows_per_page.nil?
         c.tools = %w{ refresh } if c.tools.nil?
       end
+
+      def self.server_side_config_options
+        super + [:scope]
+      end
+
     end
   end
 end

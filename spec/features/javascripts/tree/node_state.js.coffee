@@ -2,7 +2,7 @@ window.expandNode = ->
   node = grid().getSelectionModel().getSelection()[0]
   node.expand()
 
-describe 'Tree::Crud', ->
+describe 'Tree::NodeState', ->
   it 'remembers expand/collapse node state', (done) ->
     wait().then ->
       expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3']

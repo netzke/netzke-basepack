@@ -15,8 +15,10 @@ module Netzke
             self.where(scope)
           when Proc  # receives a relation, must return a relation
             scope.call(self)
+          when nil
+            self
           else
-            raise ArgumentError, "Wrong parameter type for ActiveRecord::Relation#extend_with"
+            raise ArgumentError, "Wrong parameter type for ActiveRecord::Relation#extend_with (#{scope.class.name})"
           end
         end
       end

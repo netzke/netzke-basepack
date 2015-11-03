@@ -29,13 +29,19 @@ module Netzke
     #
     # [scope]
     #
-    #   Specifies how the data should be filtered.
+    #   Specifies how the records should be scoped.
+    #
     #   When it's a symbol, it's used as a scope name.
     #   When it's a string, it's a SQL statement (passed directly to +where+).
     #   When it's a hash, it's a conditions hash (passed directly to +where+).
     #   When it's an array, it's expanded into an SQL statement with arguments (passed directly to +where+), e.g.:
     #
     #     scope: ["id > ?", 100])
+    #
+    #   When it's a Proc, it gets the current relation passed as the only parameter and is expected to return a
+    #   relation, e.g.:
+    #
+    #     scope: ->(relation) { relation.where(user_id: 100) }
     #
     # [role]
     #
