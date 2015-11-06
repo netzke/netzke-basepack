@@ -70,13 +70,12 @@ module Netzke
       include Netzke::Basepack::Columns
       include Netzke::Basepack::DataAccessor
 
-      js_configure do |c|
+      client_class do |c|
         c.extend = "Ext.tree.Panel"
-        c.mixin
+        c.require :extensions
         c.mixins << "Netzke.mixins.Basepack.Columns"
         c.mixins << "Netzke.mixins.Basepack.GridEventHandlers"
         c.translate *%w[are_you_sure confirmation]
-        c.require :extensions
       end
 
       def self.server_side_config_options
@@ -121,10 +120,10 @@ module Netzke
         record.respond_to?(:expanded) && record.expanded?
       end
 
-      def js_configure(c)
+      def configure_client(c)
         super
 
-        c.title = c.title || self.class.js_config.properties[:title] || data_class.name.pluralize
+        c.title = c.title || self.class.client_class_config.properties[:title] || data_class.name.pluralize
         c.bbar = bbar
         # c.context_menu = context_menu
         c.columns = {items: js_columns}

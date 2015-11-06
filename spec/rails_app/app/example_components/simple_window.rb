@@ -1,5 +1,5 @@
 class SimpleWindow < Netzke::Basepack::Window
-  js_configure do |c|
+  client_class do |c|
     c.title = "My simple window"
   end
 

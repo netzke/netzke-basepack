@@ -19,7 +19,7 @@ class WindowComponentLoader < Netzke::Base
     c.bbar = [:load_window, :reset_session]
   end
 
-  js_configure do |c|
+  client_class do |c|
     c.on_load_window = <<-JS
       function(params){
         this.netzkeLoadComponent("some_window", {callback: function(w){

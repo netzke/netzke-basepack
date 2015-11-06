@@ -14,7 +14,7 @@ class BookGridLoader < Netzke::Base
   action :load_one
   action :load_two
 
-  js_configure do |c|
+  client_class do |c|
     c.layout = :fit
 
     c.on_load_one = <<-JS

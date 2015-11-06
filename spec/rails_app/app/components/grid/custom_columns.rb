@@ -44,7 +44,7 @@ class Grid::CustomColumns < Netzke::Basepack::Grid
     super + [:extra_column]
   end
 
-  js_configure do |c|
+  client_class do |c|
     c.my_renderer = <<-JS
       function(value){
         return value ? "*" + value + "*" : "";

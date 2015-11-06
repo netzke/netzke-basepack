@@ -32,15 +32,14 @@ module Netzke
       include Netzke::Basepack::DataAccessor
       include Netzke::Core::ConfigToDslDelegator
 
-      js_configure do |c|
+      client_class do |c|
         c.extend = "Ext.form.Panel"
-        c.mixin
         c.require :readonly_mode
       end
 
       delegates_to_dsl :model, :record_id
 
-      def js_configure(c)
+      def configure_client(c)
         super
 
         configure_locked(c)
@@ -75,7 +74,7 @@ module Netzke
       end
 
       def configure_bbar(c)
-        c[:bbar] = ["->", :apply] if c[:bbar].nil? && !c[:read_only]
+        c[:bbar] = ["->", :apply]
       end
 
       def configure_apply_on_return(c)
@@ -83,7 +82,7 @@ module Netzke
       end
 
       # Extra JavaScripts and stylesheets
-      css_configure do |c|
+      client_styles do |c|
         c.require :readonly_mode
       end
 

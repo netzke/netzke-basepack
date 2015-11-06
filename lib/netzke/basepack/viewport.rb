@@ -1,7 +1,7 @@
 module Netzke
   module Basepack
     class Viewport < Netzke::Base
-      js_configure do |c|
+      client_class do |c|
         c.extend = "Ext.container.Viewport"
       end
 

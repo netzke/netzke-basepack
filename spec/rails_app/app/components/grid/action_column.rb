@@ -20,7 +20,7 @@ module Grid
       c.actions = [:information, :error]
     end
 
-    js_configure do |c|
+    client_class do |c|
       c.every_third_row = <<-JS
         function(grid, rowIndex, colIndex, item, record){
           return rowIndex % 3 == 1;

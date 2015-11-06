@@ -16,6 +16,7 @@ module Netzke
         def inherited(klass)
           klass.class_attribute :declared_columns
           klass.declared_columns = []
+          super
         end
 
         # Adds/overrides a column config, e.g.:

@@ -17,7 +17,7 @@ class Grid::CustomRenderers < Netzke::Basepack::Grid
     super
   end
 
-  js_configure do |c|
+  client_class do |c|
     c.my_renderer = <<-JS
       function(value){
         return value ? "*" + value + "*" : "";

@@ -5,7 +5,7 @@ module Netzke
     # Used, for instance, in TabPanel and Accordion to dynamically load components on expanding a panel or clicking
     # a tab.
     module WrapLazyLoaded
-      def js_configure(cfg)
+      def configure_client(cfg)
         super
         cfg.items = cfg.items.each_with_index.map do |item,i|
           c = component_config(item[:netzke_component]).try(:merge, item)

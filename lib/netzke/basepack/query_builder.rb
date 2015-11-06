@@ -3,11 +3,10 @@ module Netzke
     # Search query builder used in Grid's advanced search.
     # Based on Ext.tab.Panel. A new tab is created for each OR condition. Each tab contains an instance of SearchPanel which is used to build AND conditions.
     class QueryBuilder < Netzke::Base
-      js_configure do |c|
+      client_class do |c|
         c.extend = "Ext.tab.Panel"
         c.active_tab = 0
         c.translate :overwrite_confirm, :overwrite_confirm_title, :delete_confirm, :delete_confirm_title
-        c.mixin
       end
 
       component :search_panel do |c|
@@ -39,7 +38,7 @@ module Netzke
         a.icon = :accept
       end
 
-      def js_configure(c)
+      def configure_client(c)
         super
         c.preset_store = state[:presets].blank? ? [[[], ""]] : state[:presets].map{ |s| [s["query"], s["name"]] }
         c.bbar = (config[:bbar] || []) + [:clear_all, :reset, "->", I18n.t('netzke.basepack.query_builder.presets'), :preset_selector, :save_preset, :delete_preset ]

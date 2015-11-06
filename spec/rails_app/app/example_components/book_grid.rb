@@ -11,7 +11,7 @@ class BookGrid < Netzke::Basepack::Grid
     c.editor = {min_chars: 1}
   end
 
-  js_configure do |c|
+  client_class do |c|
     c.init_component = <<-JS
       function() {
         this.callParent();

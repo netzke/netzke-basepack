@@ -1,6 +1,6 @@
 # Warning: this component participates in i18n.feature, careful with adding new fields!
 class AuthorForm < Netzke::Basepack::Form
-  js_configure do |c|
+  client_class do |c|
     c.title = Author.model_name.human
   end
 

@@ -39,16 +39,15 @@ module Netzke
       ATTRIBUTE_OPERATORS_MAP[:decimal] = ATTRIBUTE_OPERATORS_MAP[:integer]
       ATTRIBUTE_OPERATORS_MAP[:float] = ATTRIBUTE_OPERATORS_MAP[:integer]
 
-      js_configure do |c|
+      client_class do |c|
         c.extend = "Ext.form.FormPanel"
         c.padding = 5
         c.auto_scroll = true
         c.require :condition_field
-        c.mixin
         c.attribute_operators_map = ATTRIBUTE_OPERATORS_MAP
       end
 
-      def js_configure(c)
+      def configure_client(c)
         super
         c.attrs = config[:fields]
         c.preset_query = (config[:load_last_preset] ? last_preset.try(:fetch, "query") : config[:query]) || []

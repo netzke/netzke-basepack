@@ -1,8 +1,4 @@
 class SomeDynamicTabPanel < Netzke::Basepack::DynamicTabPanel
-  js_configure do |c|
-    c.mixin
-  end
-
   action :load_in_current_tab
   action :load_in_new_tab
 

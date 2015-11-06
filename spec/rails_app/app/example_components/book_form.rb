@@ -30,7 +30,7 @@ class BookForm < Netzke::Basepack::Form
     ]
   end
 
-  js_configure do |c|
+  client_class do |c|
     c.on_submit_success = <<-JS
       function(){
         this.callParent();

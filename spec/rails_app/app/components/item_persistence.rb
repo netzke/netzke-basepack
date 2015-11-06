@@ -1,7 +1,7 @@
 class ItemPersistence < Netzke::Base
   include Netzke::Basepack::ItemPersistence
 
-  js_configure do |c|
+  client_class do |c|
     c.layout = :border
   end
 

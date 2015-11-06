@@ -6,9 +6,8 @@ module Netzke
     #     this.netzkeLoadComponentByClass('BookGrid', {newTab: true, serverConfig: {read_only: true}});
     #
     class DynamicTabPanel < Netzke::Base
-      js_configure do |c|
+      client_class do |c|
         c.extend = "Ext.tab.Panel"
-        c.mixin
       end
 
       # Override this method if you need more control on what components can/cannot be loaded, or in order to access

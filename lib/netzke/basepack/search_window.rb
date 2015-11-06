@@ -5,7 +5,7 @@ module Netzke
       action :search
       action :cancel
 
-      js_configure do |c|
+      client_class do |c|
         c.width = "50%"
         c.auto_height = true
         c.close_action = "hide"

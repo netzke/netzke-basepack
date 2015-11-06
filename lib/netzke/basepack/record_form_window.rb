@@ -20,7 +20,7 @@ module Netzke
         c.multi_edit = true
       end
 
-      js_configure do |c|
+      client_class do |c|
         c.button_align = :right
         c.width = '80%'
         c.auto_height = true

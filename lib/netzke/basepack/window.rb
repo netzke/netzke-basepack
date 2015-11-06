@@ -15,12 +15,11 @@ module Netzke
     #       component :users
     #     end
     class Window < Netzke::Base
-      js_configure do |c|
+      client_class do |c|
         c.extend = "Ext.window.Window"
-        c.mixin
       end
 
-      def js_configure(c)
+      def configure_client(c)
         super
         [:x, :y, :width, :height].each { |p| c[p] = state[p].to_i if state[p] }
         c.maximized = state[:maximized] if state[:maximized]

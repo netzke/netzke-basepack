@@ -19,16 +19,12 @@ module Netzke
     # == ToDo
     # * Update the number of records after form submit
     class PagingForm < Form
-      js_configure do |c|
-        c.mixin
-      end
-
       # override
       def record
         @record ||= data_adapter.first
       end
 
-      def js_configure(c)
+      def configure_client(c)
         super
         # Pass total records amount and the first record to the JS constructor
         c.total_records = total_records

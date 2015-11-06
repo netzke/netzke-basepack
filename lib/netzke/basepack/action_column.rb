@@ -25,7 +25,7 @@ module Netzke
     #         ]
     #       end
     #
-    #       js_configure do |c|
+    #       client_class do |c|
     #         # handler for column action 'delete_row'
     #         c.on_delete_row = <<-JS
     #           function(record){

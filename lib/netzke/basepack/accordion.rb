@@ -22,7 +22,7 @@ module Netzke
 
       include WrapLazyLoaded
 
-      js_configure do |c|
+      client_class do |c|
         c.layout = :accordion
 
         c.init_component = <<-JS

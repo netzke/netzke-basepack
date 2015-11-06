@@ -1,7 +1,7 @@
 class SimplePanel < Netzke::Base
   action :update_html
 
-  js_configure do |c|
+  client_class do |c|
     c.title = "SimplePanel"
     c.on_update_html = <<-JS
       function(){
