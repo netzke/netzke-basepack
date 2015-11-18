@@ -1,5 +1,9 @@
 module Grid
-  class InTabs < Netzke::Basepack::TabPanel
+  class InTabs < Netzke::Base
+    client_class do |c|
+      c.extend = "Ext.tab.Panel"
+    end
+
     component :grid_one do |c|
       c.klass = BookGrid
       c.title = 'One'
@@ -7,7 +11,6 @@ module Grid
 
     component :grid_two do |c|
       c.klass = BookGrid
-      c.eager_loading = true
       c.title = 'Two'
     end
 
