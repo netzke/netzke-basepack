@@ -423,8 +423,8 @@ module Netzke::Basepack::DataAdapters
       assoc, method = column[:name].split('__')
 
       # if a sorting scope is set, call the scope with the given direction
-      if column.has_key?(:sorting_scope)
-        relation.send(column[:sorting_scope].to_sym, dir.to_sym)
+      if column[:sorting_scope].is_a?(Proc)
+        column[:sorting_scope].call(relation, dir.to_sym)
       else
         if method.nil?
           relation.order("#{@model_class.table_name}.#{assoc} #{dir}")

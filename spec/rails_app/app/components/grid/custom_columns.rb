@@ -11,7 +11,7 @@ class Grid::CustomColumns < Netzke::Basepack::Grid
 
   column :author__name do |c|
     c.flex = 1
-    c.sorting_scope = :sorted_by_author_name
+    c.sorting_scope = ->(relation, dir) { relation.joins(:author).order("authors.first_name #{dir}, authors.last_name #{dir}") }
     c.text = "Author"
   end
 

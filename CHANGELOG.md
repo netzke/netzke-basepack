@@ -1,3 +1,4 @@
+* All scope-related configs (e.g. for Grid and grid columns) now only accept a Proc object.
 * Remove `Netzke::Basepack::TapPanel` and `Netzke::Basepack::Accordion`. The only purpose for them was dynamic loading
     of child components, which isn't worth the effort.
 

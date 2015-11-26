@@ -148,28 +148,22 @@ module Netzke
     #
     # [sorting_scope]
     #
-    #   The name of the scope used for sorting the column. This can be useful for virtual columns for example. The scope
-    #   will get one parameter specifying the direction (:asc or :desc). Example:
+    #   A Proc object used for sorting by the column. This can be useful for sorting by a virtual column. The Proc
+    #   object will get the relation as the first parameter, and the sorting direction as the second. Example:
     #
-    #     columns => [{ name: "complete_user_name", sorting_scope: :sort_user_by_full_name }, ...]
-    #
-    #     class User < ActiveRecord::Base
-    #       scope :sort_user_by_full_name, ->(dir){
-    #         order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}")
-    #       }
-    #     end
+    #     columns => [{ name: "complete_user_name", sorting_scope: ->(rel, dir){ order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}") }, ...]
     #
     # [filter_with]
     #
-    #   A lambda that receives the relation, the value to filter by and the operator. This allows for more flexible
+    #   A Proc object that receives the relation, the value to filter by and the operator. This allows for more flexible
     #   handling of basic filters and enables filtering of virtual columns. Example:
     #
     #     columns => [{ name: "complete_user_name", filter_with: lambda{|rel, value, op| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) } }, ...]
     #
     # [filter_association_with]
     #
-    #   A lambda that receives the relation and the value to filter. This allows flexible handling of live search on association field input.
-    #   Uses getter if it is specified. Example:
+    #   A Proc object that receives the relation and the value to filter by. This allows flexible handling of live search on association field input.
+    #   Example:
     #
     #     columns => [{ name: "author__name", filter_association_with: lambda{|rel, value| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) } }, ...]
     #
