@@ -20,22 +20,25 @@ module Netzke
     #
     # [model]
     #
-    #   Name of the ActiveRecord model that provides data to this Grid, e.g. "User"
+    #   Name of the ActiveRecord model that provides data to this Grid, e.g. "User". Required.
     #
     # [columns]
     #
     #   An array of columns to be displayed in the grid; each column may be represented by a symbol (representing the
-    #   model's attribute name), or a hash (when extra configuration is needed). See the "Columns" section below.
+    #   model's attribute name), or a hash (when extra configuration is needed - see the "Columns" section below).
+    #   Defaults to the model's attributes.
     #
     # [scope]
     #
-    #   Specifies how the data should be filtered.
-    #   When it's a symbol, it's used as a scope name.
-    #   When it's a string, it's a SQL statement (passed directly to +where+).
-    #   When it's a hash, it's a conditions hash (passed directly to +where+).
-    #   When it's an array, it's expanded into an SQL statement with arguments (passed directly to +where+), e.g.:
+    #   A Proc object used to scope out grid data. Receives the current relation as a parameter and must return the modified relation. For example:
     #
-    #     scope: ["id > ?", 100])
+    #      class Books < Netzke::Basepack::Grid
+    #        def configure(c)
+    #          c.model = "Book"
+    #          super
+    #          c.scope = ->(r) { r.where(author_id: 1) }
+    #        end
+    #      end
     #
     # [role]
     #

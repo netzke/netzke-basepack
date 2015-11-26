@@ -46,51 +46,13 @@ module Netzke::Basepack::DataAdapters
 
     # Implementation for {AbstractAdapter#get_records}
     def get_records(params, columns=[])
-      # build initial relation based on passed params
       relation = get_relation(params)
 
-      # addressing the n+1 query problem
-      columns.each do |c|
-        assoc, method = c[:name].split('__')
-        relation = relation.includes(assoc.to_sym).references(assoc.to_sym) if method
-      end
+      relation = fix_nplus1_problem(relation, columns)
 
-      # apply sorting if needed
-      if params[:sorters]
-        sorters = Array.new(params[:sorters])
-        sorters.each do |sorter|
-          sorter["direction"] ||= 'ASC'
-          dir = sorter["direction"].downcase
-          column = columns.detect { |c| c[:name] == sorter["property"] }
-          column ||= {name: sorter["property"]} # stub column, as we may want to sort by a column that's not in the grid
-          relation = apply_sorting(relation, column, dir)
-        end
-      end
+      relation = apply_sorting(relation, columns, params[:sorters])
 
-      #page = params[:limit] ? params[:start].to_i/params[:limit].to_i + 1 : 1
-      if params[:limit]
-        relation.offset(params[:start]).limit(params[:limit])
-      else
-        relation
-      end
-    end
-
-    def apply_sorting(relation, column, dir)
-      assoc, method = column[:name].split('__')
-
-      # if a sorting scope is set, call the scope with the given direction
-      if column.has_key?(:sorting_scope)
-        relation = relation.send(column[:sorting_scope].to_sym, dir.to_sym)
-      else
-        relation = if method.nil?
-          relation.order("#{@model_class.table_name}.#{assoc} #{dir}")
-        else
-          assoc = @model_class.reflect_on_association(assoc.to_sym)
-          relation.includes(assoc.name).references(assoc.klass.table_name.to_sym).order("#{assoc.klass.table_name}.#{method} #{dir}")
-        end
-      end
-
-      relation
+      relation = apply_offset(relation, params)
     end
 
     def count_records(params, columns=[])
@@ -131,7 +93,7 @@ module Netzke::Basepack::DataAdapters
         # Options for an asssociation attribute
 
         relation = assoc.klass.all
-        relation = relation.extend_with(attr[:scope]) if attr[:scope]
+        relation = relation.attr[:scope].call(relation) if attr[:scope].is_a?(Proc)
 
         if attr[:filter_association_with]
           relation = attr[:filter_association_with].call(relation, query).to_a
@@ -179,8 +141,10 @@ module Netzke::Basepack::DataAdapters
     # Respects the following options:
     # * scope - will only return a record if it falls into the provided scope
     def find_record(id, options = {})
-      scope = options[:scope] || {}
-      @model_class.where(primary_key => id).extend_with(scope).first
+      # scope = options[:scope] || {}
+      relation = @model_class.where(primary_key => id)
+      relation = options[:scope].call(relation) if options[:scope].is_a?(Proc)
+      relation.first
     end
 
     # Build a hash of foreign keys and the associated model
@@ -356,7 +320,7 @@ module Netzke::Basepack::DataAdapters
         relation = relation.where(predicates_for_and_conditions(and_query))
       end
 
-      relation = relation.extend_with(params[:scope]) if params[:scope]
+      relation = params[:scope].call(relation) if params[:scope].is_a?(Proc)
 
       @relation = relation
     end
@@ -429,7 +393,54 @@ module Netzke::Basepack::DataAdapters
       end
     end
 
-  private
+    protected
+
+    # Addresses the n+1 query problem
+    # Returns updated relation
+    def fix_nplus1_problem(relation, columns)
+      columns.reduce(relation) do |rel, c|
+        assoc, method = c[:name].split('__')
+        method ? rel.includes(assoc.to_sym).references(assoc.to_sym) : rel
+      end
+    end
+
+    def apply_sorting(relation, columns, sorters)
+      ::Rails.logger.debug "\n!!! sorters: #{sorters.inspect}\n"
+      return relation if sorters.blank?
+
+      sorters = Array.new(sorters)
+
+      sorters.reduce(relation) do |rel, sorter|
+        sorter["direction"] ||= 'ASC'
+        dir = sorter["direction"].downcase
+        column = columns.detect { |c| c[:name] == sorter["property"] }
+        column ||= {name: sorter["property"]} # stub column, as we may want to sort by a column that's not in the grid
+        apply_column_sorting(rel, column, dir)
+      end
+    end
+
+    def apply_column_sorting(relation, column, dir)
+      assoc, method = column[:name].split('__')
+
+      # if a sorting scope is set, call the scope with the given direction
+      if column.has_key?(:sorting_scope)
+        relation.send(column[:sorting_scope].to_sym, dir.to_sym)
+      else
+        if method.nil?
+          relation.order("#{@model_class.table_name}.#{assoc} #{dir}")
+        else
+          assoc = @model_class.reflect_on_association(assoc.to_sym)
+          relation.includes(assoc.name).references(assoc.klass.table_name.to_sym).order("#{assoc.klass.table_name}.#{method} #{dir}")
+        end
+      end
+    end
+
+    def apply_offset(relation, params)
+      return relation if params[:limit].blank?
+      relation.offset(params[:start]).limit(params[:limit])
+    end
+
+    private
 
     def logger
       Netzke::Base.logger

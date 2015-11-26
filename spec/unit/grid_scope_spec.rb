@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe ::Grid::Scoped do
+describe "Grid scope option" do
   # Grid with books scoped out to the first existing author (@castaneda in this case)
   let(:grid) {::Grid::Scoped.new}
 
@@ -9,7 +9,7 @@ describe ::Grid::Scoped do
     @fowles = FactoryGirl.create(:fowles)
     @hesse = FactoryGirl.create(:hesse)
 
-    @cb1 = FactoryGirl.create(:book, author: @castaneda)
+    @cb1 = FactoryGirl.create(:book, author: @castaneda, title: 'Journey to Ixtlan')
     @cb2 = FactoryGirl.create(:book, author: @castaneda)
     @cb3 = FactoryGirl.create(:book, author: @castaneda)
 
@@ -71,5 +71,10 @@ describe ::Grid::Scoped do
   it 'only lists scoped records' do
     grid = ::Grid::Scoped.new load_inline_data: true
     grid.read[:data].size.should == 3
+  end
+
+  it 'lists records from overridden scope' do
+    grid = ::Grid::ScopedExtended.new load_inline_data: true
+    grid.read[:data].size.should == 1
   end
 end
