@@ -17,11 +17,10 @@ module Netzke
             this.success = true # respond to classic form submission with {success: true}
             this.on_submit_success # inform the Netzke endpoint caller about success
           else
-            # flash eventual errors
-            data_adapter.errors_array(@record).each do |error|
-              flash :error => error
+            errors = data_adapter.errors_array(@record).map do |error|
+              {level: :error, msg: error}
             end
-            this.netzke_feedback(@flash)
+            this.netzke_feedback(errors)
             this.apply_form_errors(build_form_errors(record))
           end
         end
