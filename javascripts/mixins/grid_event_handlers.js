@@ -1,7 +1,7 @@
 Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
   // Handler for the 'add' button
   onAddRecord: function(){
-    if (this.enableEditInForm && !this.enableEditInline) {
+    if (!this.editInline) {
       this.onAddInForm();
     } else {
       // Note: default values are taken from the model's field's defaultValue property
@@ -69,11 +69,12 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
     Netzke.warning('Server exception occured. Override loadExceptionHandler, or catch globally by listenning to exception event of Netzke.directProvider');
   },
 
-  // Inline editing of 1 row
   onEdit: function(){
-    var row = this.getSelectionModel().selected.first();
-    if (row){
-      this.netzkeTryStartEditing(row);
+    var selection = this.getSelectionModel().getSelection();
+    if (selection.length == 1) {
+      this.doEdit(selection[0]);
+    } else {
+      this.doMultiEdit(selection);
     }
   },
 
@@ -84,44 +85,6 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
     // Destroy the search window (here's the problem: we are not supposed to know it exists)
     if (this.searchWindow) {
       this.searchWindow.destroy();
-    }
-  },
-
-  onEditInForm: function(){
-    var selModel = this.getSelectionModel();
-    if (selModel.getCount() > 1) {
-      var recordId = selModel.selected.first().getId();
-      this.netzkeLoadComponent("multi_edit_window", {
-        callback: function(w){
-          var form = w.items.first();
-          // +apply+ is called by wrapping window on OK click
-          form.on('apply', function(){
-            var ids = [];
-            selModel.selected.each(function(r){
-              ids.push(r.getId());
-            });
-            if (!form.baseParams) form.baseParams = {};
-            form.baseParams.ids = Ext.encode(ids);
-          }, this);
-
-          w.on('close', function(){
-            if (w.closeRes === "ok") {
-              this.store.load();
-            }
-          }, this);
-        }});
-    } else {
-      var recordId = selModel.selected.first().getId();
-      this.netzkeLoadComponent("edit_window", {
-        serverConfig: {record_id: recordId},
-        callback: function(w){
-          w.show();
-          w.on('close', function(){
-            if (w.closeRes === "ok") {
-              this.store.load();
-            }
-          }, this);
-        }});
     }
   },
 
@@ -136,5 +99,57 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
         }, this);
       }
     });
-  }
+  },
+
+  // Edit single record
+  doEdit: function(record){
+    if (this.editInline) {
+      this.doEditInline(record);
+    } else {
+      this.doEditInForm(record);
+    }
+  },
+
+  // Edit multiple records via form
+  doMultiEdit: function(records){
+    this.netzkeLoadComponent("multi_edit_window", {
+      callback: function(w){
+        var form = w.items.first();
+        // +apply+ is called by wrapping window on OK click
+        form.on('apply', function(){
+          var ids = [];
+          records.each(function(r){
+            ids.push(r.getId());
+          });
+          if (!form.baseParams) form.baseParams = {};
+          form.baseParams.ids = Ext.encode(ids);
+        }, this);
+
+        w.on('close', function(){
+          if (w.closeRes === "ok") {
+            this.store.load();
+          }
+        }, this);
+      }
+    });
+  },
+
+  // Edit record inline
+  doEditInline: function(record){
+    this.netzkeTryStartEditing(record);
+  },
+
+  // Single record editing
+  doEditInForm: function(record){
+    this.netzkeLoadComponent("edit_window", {
+      serverConfig: {record_id: record.id},
+      callback: function(w){
+        w.show();
+        w.on('close', function(){
+          if (w.closeRes === "ok") {
+            this.store.load();
+          }
+        }, this);
+      }});
+  },
 });

@@ -52,13 +52,9 @@ module Netzke
     #
     #   (defaults to true) enable filters in column's context menu
     #
-    # [enable_edit_in_form]
+    # [edit_inline]
     #
-    #   (defaults to true) provide buttons into the toolbar that activate editing/adding records via a form
-    #
-    # [enable_extended_search]
-    #
-    #   (defaults to true) provide a button into the toolbar that shows configurable search form
+    #   Whether record editing should happen inline (as opposed to using a form). Defaults to false.
     #
     # [enable_context_menu]
     #
@@ -284,32 +280,23 @@ module Netzke
     #
     # [add]
     #
-    #   Inline adding of a record
+    #   Add record
     #
     # [del]
     #
-    #   Deletion of records
+    #   Delete record(s)
     #
     # [edit]
     #
-    #   Inline editing of a record
+    #   Edit record(s)
     #
     # [apply]
     #
     #   Applying inline changes
     #
-    # [add_in_form]
-    #
-    #   Adding a record in a form
-    #
-    # [edit_in_form]
-    #
-    #   (multi-record) editing in a forrm
-    #
     # [search]
     #
     #   Advanced searching
-    #
     #
     # == Class-level configuration
     #
@@ -448,19 +435,18 @@ module Netzke
 
       # Override to change the default bottom toolbar
       def default_bbar
-        res = config[:enable_edit_inline] || config[:enable_edit_in_form] ? %w{ add edit }.map(&:to_sym) : []
-        res << :apply if config[:enable_edit_inline]
+        res = %w{ add edit }.map(&:to_sym)
+        res << :apply if config[:edit_inline]
         res << :del
-        res << "-" << :add_in_form << :edit_in_form if config[:enable_edit_inline] && config[:enable_edit_in_form]
-        res << "-" << :search if config[:enable_extended_search]
+        res << "-" << :search
         res
       end
 
       # Override to change the default context menu
       def default_context_menu
-        res = config[:enable_edit_inline] || config[:enable_edit_in_form] ? [:edit] : []
+        res = config[:edit_inline] || config[:edit_in_form] ? [:edit] : []
         res << :del if !config[:read_only]
-        res << "-" << :edit_in_form if config[:enable_edit_in_form] && config[:enable_edit_inline]
+        res << "-" << :edit_in_form if config[:edit_in_form] && config[:edit_inline]
         res
       end
 
@@ -472,7 +458,6 @@ module Netzke
 
       action :edit do |a|
         a.disabled = true
-        a.handler = config[:enable_edit_inline] ? "onEdit" : "onEditInForm"
         a.icon = :table_edit
       end
 
@@ -531,6 +516,8 @@ module Netzke
       # Override from Base. Ensures the model is provided.
       def validate_config(c)
         raise ArgumentError, "Grid requires a model" if c.model.nil?
+        c.edit_in_form = true if c.edit_in_form.nil?
+        super
       end
 
       def preconfigure_record_window(c)
@@ -549,9 +536,8 @@ module Netzke
 
       def set_defaults(c)
         # The nil? checks are needed because these can be already set in a subclass
-        c.enable_edit_in_form = self.class.edit_in_form_available if c.enable_edit_in_form.nil?
-        c.enable_edit_inline = self.class.edit_inline_available if c.enable_edit_inline.nil?
-        c.enable_extended_search = self.class.advanced_search_available if c.enable_extended_search.nil?
+        # c.enable_edit_in_form = self.class.edit_in_form_available if c.enable_edit_in_form.nil?
+        # c.enable_edit_inline = self.class.edit_inline_available if c.enable_edit_inline.nil?
         c.enable_column_filters = self.class.column_filters_available if c.enable_column_filters.nil?
         c.enable_pagination = true if c.enable_pagination.nil?
         c.rows_per_page = 30 if c.rows_per_page.nil?

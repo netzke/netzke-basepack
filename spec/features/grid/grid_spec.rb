@@ -6,9 +6,20 @@ feature Netzke::Basepack::Grid do
     run_mocha_spec 'grid/crud'
   end
 
+  it 'performs CRUD operations inline', js: true do
+    FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
+    FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
+    run_mocha_spec 'grid/crud_inline'
+  end
+
   it 'creates records with default values', js: true do
     FactoryGirl.create :author, first_name: 'Vladimir', last_name: 'Nabokov'
     run_mocha_spec 'grid/default_values'
+  end
+
+  it 'creates records with default values inline', js: true do
+    FactoryGirl.create :author, first_name: 'Vladimir', last_name: 'Nabokov'
+    run_mocha_spec 'grid/default_values_inline'
   end
 
   it 'allows setting initial sorting on multiple columns', js: true do

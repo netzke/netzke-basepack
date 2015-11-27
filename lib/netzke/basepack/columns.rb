@@ -86,7 +86,7 @@ module Netzke
         final_columns(with_meta: true).map do |c|
           # we are removing the editor on this last step, so that the editor config is still being passed from the
           # column config to the form editor; refactor!
-          c.delete(:editor) if !config.enable_edit_inline
+          c.delete(:editor) if !config.edit_inline
           c
         end
       end
