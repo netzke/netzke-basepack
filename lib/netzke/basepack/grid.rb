@@ -48,10 +48,6 @@ module Netzke
     #
     #   (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. +role_id: 1+
     #
-    # [enable_column_filters]
-    #
-    #   (defaults to true) enable filters in column's context menu
-    #
     # [edit_inline]
     #
     #   Whether record editing should happen inline (as opposed to using a form). Defaults to false.
@@ -297,39 +293,6 @@ module Netzke
     # [search]
     #
     #   Advanced searching
-    #
-    # == Class-level configuration
-    #
-    # Configuration on this level is effective during the life-time of the application. One place for setting these
-    # options is initializers:
-    #
-    #    Netzke::Basepack::Grid.setup do |c|
-    #      c.edit_in_form_available = false
-    #      c.advanced_search_available = false
-    #      c.column_filters_available = false
-    #      c.remember_selection_available = false
-    #    end
-    #
-    # Most of these options influence the amount of JavaScript code that is generated for this component's class, in the
-    # way that the less functionality is enabled, the less code is generated.
-    #
-    # The following class configuration options are available:
-    #
-    # [column_filters_available]
-    #
-    #   (defaults to true) include code for the filters in the column's context menu
-    #
-    # [edit_in_form_available]
-    #
-    #   (defaults to true) include code for (multi-record) editing and adding records through a form
-    #
-    # [advanced_search_available]
-    #
-    #   (defaults to true) include code for extended configurable search
-    #
-    # [remember_selection_available]
-    #
-    #   (defaults to true) include code for re-selecting records after grid reload
     class Grid < Netzke::Base
       include self::Endpoints
       include self::Services
@@ -337,26 +300,11 @@ module Netzke
       include Netzke::Basepack::DataAccessor
       include Netzke::Core::ConfigToDslDelegator
 
-      class_attribute :column_filters_available
-      self.column_filters_available = true
-
-      class_attribute :advanced_search_available
-      self.advanced_search_available = true
-
-      class_attribute :edit_in_form_available
-      self.edit_in_form_available = true
-
-      class_attribute :edit_inline_available
-      self.edit_inline_available = true
-
-      class_attribute :remember_selection_available
-      self.remember_selection_available = true
-
       # JavaScript class configuration
       client_class do |c|
         c.extend = "Ext.grid.Panel"
-        c.mixin :advanced_search if advanced_search_available
-        c.mixin :remember_selection if remember_selection_available
+        c.mixin :advanced_search
+        c.mixin :remember_selection
 
         c.mixins << "Netzke.mixins.Basepack.Columns"
         c.mixins << "Netzke.mixins.Basepack.GridEventHandlers"
@@ -536,9 +484,6 @@ module Netzke
 
       def set_defaults(c)
         # The nil? checks are needed because these can be already set in a subclass
-        # c.enable_edit_in_form = self.class.edit_in_form_available if c.enable_edit_in_form.nil?
-        # c.enable_edit_inline = self.class.edit_inline_available if c.enable_edit_inline.nil?
-        c.enable_column_filters = self.class.column_filters_available if c.enable_column_filters.nil?
         c.enable_pagination = true if c.enable_pagination.nil?
         c.rows_per_page = 30 if c.rows_per_page.nil?
         if c.tools.nil?

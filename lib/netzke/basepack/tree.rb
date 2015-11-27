@@ -254,9 +254,6 @@ module Netzke
 
       def set_defaults(c)
         # The nil? checks are needed because these can be already set in a subclass
-        c.enable_edit_in_form = true if c.enable_edit_in_form.nil?
-        c.enable_edit_inline = true if c.enable_edit_inline.nil?
-        c.enable_column_filters = true if c.enable_column_filters.nil?
         c.enable_pagination = true if c.enable_pagination.nil?
         c.rows_per_page = 30 if c.rows_per_page.nil?
         if c.tools.nil?
