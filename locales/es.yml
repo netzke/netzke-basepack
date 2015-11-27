@@ -12,10 +12,6 @@ es:
             tooltip: Eliminar
           apply:
             text: Aplicar
-          add_in_form:
-            text: Agregar en formulario
-          edit_in_form:
-            text: Editar en formulario
           search:
             text: Buscar
 

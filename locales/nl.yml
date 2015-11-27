@@ -12,10 +12,6 @@ nl:
             tooltip: Verwijderen
           apply:
             text: Toepassen
-          add_in_form:
-            text: Toevoegen in formulier
-          edit_in_form:
-            text: Wijzigen in formulier
           search:
             text: Zoeken
 

@@ -392,9 +392,8 @@ module Netzke
 
       # Override to change the default context menu
       def default_context_menu
-        res = config[:edit_inline] || config[:edit_in_form] ? [:edit] : []
+        res = [:edit]
         res << :del if !config[:read_only]
-        res << "-" << :edit_in_form if config[:edit_in_form] && config[:edit_inline]
         res
       end
 
@@ -417,16 +416,6 @@ module Netzke
       action :apply do |a|
         a.disabled = config[:prohibit_update] && config[:prohibit_create]
         a.icon = :tick
-      end
-
-      action :add_in_form do |a|
-        a.disabled = config[:prohibit_create]
-        a.icon = :application_form_add
-      end
-
-      action :edit_in_form do |a|
-        a.disabled = true
-        a.icon = :application_form_edit
       end
 
       action :search do |a|
@@ -464,7 +453,6 @@ module Netzke
       # Override from Base. Ensures the model is provided.
       def validate_config(c)
         raise ArgumentError, "Grid requires a model" if c.model.nil?
-        c.edit_in_form = true if c.edit_in_form.nil?
         super
       end
 

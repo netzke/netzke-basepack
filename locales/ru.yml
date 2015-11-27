@@ -12,10 +12,6 @@ ru:
             tooltip: Удалить
           apply:
             text: Сохранить
-          add_in_form:
-            text: Добавить в окне
-          edit_in_form:
-            text: Редактировать в окне
           search:
             text: Искать
 

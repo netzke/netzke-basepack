@@ -15,12 +15,6 @@ de:
           apply:
             text: Anwenden
             tooltip: Anwenden
-          add_in_form:
-            text: extern Hinzufügen
-            tooltip: extern Hinzufügen
-          edit_in_form:
-            text: extern Bearbeiten
-            tooltip: extern Bearbeiten
           search:
             text: Suche
             tooltip: Suche

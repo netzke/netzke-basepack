@@ -12,10 +12,6 @@ ru:
             tooltip: Видалити
           apply:
             text: Зберегти
-          add_in_form:
-            text: Додати у вікні
-          edit_in_form:
-            text: Редагувати у вікні
           search:
             text: Пошук
 
