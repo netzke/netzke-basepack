@@ -19,10 +19,20 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
     Ext.Msg.confirm(this.i18n.confirmation, this.i18n.areYouSure, function(btn){
       if (btn == 'yes') {
         var toDelete = this.getSelectionModel().getSelection();
-        store = this.getStore();
-        store.remove(toDelete);
-        store.removedNodes = toDelete; // HACK
-        store.sync();
+        this.serverDelete(toDelete.map(function(r) { return r.id; }), function(res){
+          var errors = [];
+          for (var id in res) {
+            var error;
+            if (error = res[id].error) {
+              errors.push(error);
+            }
+          }
+
+          if (errors.length > 0) {
+            this.netzkeFeedback([errors]);
+          }
+        });
+        this.netzkeReloadStore();
       }
     }, this);
   },
@@ -36,7 +46,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
   onRefresh: function() {
     if (this.fireEvent('refresh', this) !== false) {
-      this.store.reload();
+      this.netzkeReloadStore();
     }
   },
 
@@ -94,7 +104,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
         w.show();
         w.on('close', function(){
           if (w.closeRes === "ok") {
-            this.store.reload();
+            this.netzkeReloadStore();
           }
         }, this);
       }
@@ -152,4 +162,13 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
         }, this);
       }});
   },
+
+  netzkeReloadStore: function(){
+    var store = this.getStore();
+    if (store.lastOptions) {
+      store.reload();
+    } else {
+      store.load();
+    }
+  }
 });

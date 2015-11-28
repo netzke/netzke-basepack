@@ -2,16 +2,17 @@ module Netzke
   module Basepack
     # Ext.grid.Panel-based component with the following features:
     #
-    # * automatic column configuration based on used ORM
+    # * automatic default column configuration (overridable via config)
+    # * infinite scrolling (enabled by default)
     # * pagination
     # * multi-line CRUD operations
     # * (multe-record) editing and adding records through a form
     # * one-to-many association support
     # * server-side sorting
-    # * filtering
-    # * complex query search with preset management
-    # * persistent column resizing, moving and hiding
+    # * server-side filtering
     # * permissions
+    # * persistent column resizing, moving and hiding
+    # * complex query search with preset management
     # * virtual attribute support
     #
     # == Instance configuration
@@ -49,8 +50,9 @@ module Netzke
     #   (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. +role_id: 1+
     #
     # [edit_inline]
-    #
-    #   Whether record editing should happen inline (as opposed to using a form). Defaults to false.
+    #   TODO: rename to inline_edit
+    #   Whether record editing should happen inline (as opposed to using a form). When set to +true+, automatically sets
+    #   +paging+ to +true+. Defaults to +false+.
     #
     # [enable_context_menu]
     #
@@ -60,25 +62,28 @@ module Netzke
     #
     #   An array of actions (e.g. [:edit, "-", :del] - see the Actions section) or +false+ to disable the context menu
     #
-    # [enable_pagination]
+    # [paging]
     #
-    #   (defaults to true) enable pagination
+    #   Set to +true+ to use pagination instead of infinite scrolling. Is automatically set to
+    #   +true+ if +edit_inline+ is +true+. Defaults to +false+.
     #
-    # [rows_per_page]
+    # [store_config]
     #
-    #   (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to +false+)
+    #   Extra configuration for the JS class's internal store (Ext.data.ProxyStore), which will override Netzke's defaults. For example, to
+    #   modify amount of records per page (defaults to 25), do:
     #
-    # [data_store]
+    #     def configure(c)
+    #       c.paging = true
+    #       c.store_config = {page_size: 100}
+    #       super
+    #     end
     #
-    #   (defaults to empty Hash) extra configuration for the JS class's internal store (see
-    #   {Ext.data.Store}[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.data.Store] ). For example, to disable auto
-    #   loading of data, do:
+    #   Another example, enable (multi) sorting initially:
     #
-    #     data_store: {auto_load: false}
-    #
-    #   To enable (multi) sorting, do:
-    #
-    #     data_store: {sorters: [:title, {property: :author__first_name, direction: :DESC}]}
+    #     def configure(c)
+    #       c.store_config = {sorters: [:title, {property: :author__first_name, direction: :DESC}]}
+    #       super
+    #     end
     #
     # [prohibit_create]
     #
@@ -320,12 +325,8 @@ module Netzke
       # Allows children classes to simply do:
       #
       #     model "User"
+      # TODO: get rid of it for less entropy
       delegates_to_dsl :model
-
-      def configure(c)
-        set_defaults(c)
-        super
-      end
 
       def configure_client(c)
         super
@@ -341,6 +342,7 @@ module Netzke
         end
       end
 
+      # FIXME: move to Columns
       def populate_cols_with_filters(c)
         c.default_filters.each do |f|
 
@@ -364,13 +366,6 @@ module Netzke
           end
         end
         c.default_filters = nil
-      end
-
-      def config
-        @config ||= ActiveSupport::OrderedOptions.new.tap do |c|
-          # extend with data_store convenient config object
-          c.data_store = ActiveSupport::OrderedOptions.new
-        end
       end
 
       def bbar
@@ -450,9 +445,12 @@ module Netzke
 
       protected
 
-      # Override from Base. Ensures the model is provided.
       def validate_config(c)
         raise ArgumentError, "Grid requires a model" if c.model.nil?
+        c.paging = true if c.edit_inline
+        if c.tools.nil?
+          c.tools = [{ type: :refresh, handler: f(:on_refresh) }]
+        end
         super
       end
 
@@ -470,19 +468,9 @@ module Netzke
 
       private
 
-      def set_defaults(c)
-        # The nil? checks are needed because these can be already set in a subclass
-        c.enable_pagination = true if c.enable_pagination.nil?
-        c.rows_per_page = 30 if c.rows_per_page.nil?
-        if c.tools.nil?
-          c.tools = [{ type: :refresh, handler: f(:on_refresh) }]
-        end
-      end
-
       def self.server_side_config_options
         super + [:scope]
       end
-
     end
   end
 end

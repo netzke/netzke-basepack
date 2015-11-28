@@ -9,5 +9,4 @@ feature Netzke::Basepack::Grid do
   it 'uses various getters', js: true do
     run_mocha_spec 'grid/getters'
   end
-
 end

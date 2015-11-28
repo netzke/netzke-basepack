@@ -1,9 +1,15 @@
 require 'spec_helper'
-feature Netzke::Basepack::Grid do
-  it 'performs CRUD operations', js: true do
+feature Netzke::Basepack::Grid, js: true do
+  it 'performs CRUD operations for default (buffered) grid', js: true do
     FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
     FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
     run_mocha_spec 'grid/crud'
+  end
+
+  it 'performs CRUD operations for paging grid', js: true do
+    FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
+    FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
+    run_mocha_spec 'grid/crud_paging'
   end
 
   it 'performs CRUD operations inline', js: true do
@@ -77,5 +83,13 @@ feature Netzke::Basepack::Grid do
     author = FactoryGirl.create(:castaneda, prize_count: 0)
     book = FactoryGirl.create(:book, author_id: author.id)
     run_mocha_spec 'grid/associations'
+  end
+
+  it 'loads data when scrolled' do
+    data = 600.times.with_index.map do |i| # twice the buffer size
+      { first_name: "First name #{i}" }
+    end
+    Author.create(data)
+    run_mocha_spec 'grid/buffered'
   end
 end

@@ -405,7 +405,6 @@ module Netzke::Basepack::DataAdapters
     end
 
     def apply_sorting(relation, columns, sorters)
-      ::Rails.logger.debug "\n!!! sorters: #{sorters.inspect}\n"
       return relation if sorters.blank?
 
       sorters = Array.new(sorters)
