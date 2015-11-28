@@ -303,8 +303,8 @@ module Netzke
       # JavaScript class configuration
       client_class do |c|
         c.extend = "Ext.grid.Panel"
-        c.mixin :advanced_search
-        c.mixin :remember_selection
+        c.include :advanced_search
+        c.include :remember_selection
 
         c.mixins << "Netzke.mixins.Basepack.Columns"
         c.mixins << "Netzke.mixins.Basepack.GridEventHandlers"
