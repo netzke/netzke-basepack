@@ -1,7 +1,6 @@
 module Netzke
   module Basepack
     # Takes care of grid column configuration, as well as the grid's default form fields
-    # TODO: refactor using Netzke::Core::DslSupport
     module Columns
       extend ActiveSupport::Concern
 
