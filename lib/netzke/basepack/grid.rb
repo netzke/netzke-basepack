@@ -381,7 +381,6 @@ module Netzke
         res = %w{ add edit }.map(&:to_sym)
         res << :apply if config[:edit_inline]
         res << :del
-        res << "-" << :search
         res
       end
 
