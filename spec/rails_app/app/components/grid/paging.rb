@@ -1,4 +1,4 @@
-class Grid::Pagination < Netzke::Basepack::Grid
+class Grid::Paging < Netzke::Basepack::Grid
   def configure(c)
     c.model = 'Book'
     c.paging = true

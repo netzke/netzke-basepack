@@ -71,7 +71,7 @@ feature Netzke::Basepack::Grid, js: true do
     FactoryGirl.create :book, title: 'Two'
     FactoryGirl.create :book, title: 'Three'
     FactoryGirl.create :book, title: 'Four'
-    run_mocha_spec 'grid/pagination'
+    run_mocha_spec 'grid/paging'
   end
 
   it 'handles models with custom primary key properly', js: true do
