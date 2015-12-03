@@ -31,9 +31,37 @@ describe 'Grid::CrudInline', ->
       expect(rowDisplayValues()).to.eql ['Carlos Castaneda', 'Art of Dreaming']
       done()
 
-  it 'deletes single record', (done) ->
+  it 'simultaneously updates two records via form', (done) ->
     wait().then ->
+      addRecord title: 'Damian'
+      completeEditing()
+      click button 'Apply'
+      wait()
+    .then ->
+      selectAllRows()
+      click button 'Edit'
+      wait()
+    .then ->
+      fill textfield('title'), with: 'Steppenwolf'
+      expandCombo 'author__name'
+      wait()
+    .then ->
+      select 'Herman Hesse', in: combobox 'author__name'
+      click button 'OK'
+      wait()
+    .then ->
+      wait()
+    .then ->
+      expect(grid().getStore().getCount()).to.eql(2)
       selectFirstRow()
+      expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Steppenwolf']
+      selectLastRow()
+      expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Steppenwolf']
+      done()
+
+  it 'deletes all records', (done) ->
+    wait().then ->
+      selectAllRows()
       click button 'Delete'
       click button 'Yes'
       wait()

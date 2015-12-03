@@ -128,7 +128,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
         // +apply+ is called by wrapping window on OK click
         form.on('apply', function(){
           var ids = [];
-          records.each(function(r){
+          Ext.each(records, function(r){
             ids.push(r.getId());
           });
           if (!form.baseParams) form.baseParams = {};

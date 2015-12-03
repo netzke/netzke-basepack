@@ -36,10 +36,19 @@ describe 'Grid::CrudPaging', ->
       expect(grid('Books').getStore().getCount()).to.eql rowCount
       done()
 
-  it 'simultaneously updates all records via form', (done) ->
-    selectAllRows()
-    click button 'Edit'
+  it 'simultaneously updates two records via form', (done) ->
     wait().then ->
+      click button 'Add'
+      wait()
+    .then ->
+      fill textfield('title'), with: 'Damian'
+      click button 'OK'
+      wait()
+    .then ->
+      selectAllRows()
+      click button 'Edit'
+      wait()
+    .then ->
       fill textfield('title'), with: 'Steppenwolf'
       expandCombo 'author__name'
       wait()

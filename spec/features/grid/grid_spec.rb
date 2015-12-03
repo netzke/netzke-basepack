@@ -1,21 +1,26 @@
 require 'spec_helper'
 feature Netzke::Basepack::Grid, js: true do
-  it 'performs CRUD operations for default (buffered) grid', js: true do
-    FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
-    FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
-    run_mocha_spec 'grid/crud'
-  end
+  describe "CRUD" do
+    before do
+      FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
+      FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
+    end
 
-  it 'performs CRUD operations for paging grid', js: true do
-    FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
-    FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
-    run_mocha_spec 'grid/crud_paging'
-  end
+    it 'performs CRUD operations for default (buffered) grid', js: true do
+      run_mocha_spec 'grid/crud'
+    end
 
-  it 'performs CRUD operations inline', js: true do
-    FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
-    FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
-    run_mocha_spec 'grid/crud_inline'
+    it 'performs CRUD operations for paging grid', js: true do
+      run_mocha_spec 'grid/crud_paging'
+    end
+
+    it 'performs CRUD operations inline', js: true do
+      run_mocha_spec 'grid/crud_inline'
+    end
+
+    it 'preforms multiediting on form with various columns', js: true do
+      run_mocha_spec 'grid/multiline_edit'
+    end
   end
 
   it 'creates records with default values', js: true do

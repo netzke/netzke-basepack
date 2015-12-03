@@ -37,7 +37,7 @@ Ext.define('Ext.ux.form.field.DateTime', {
      * The default is 'H:i:s'
      */
     timeFormat: 'H:i:s',
-    timeSubmitFormat: 'H:i:s',    
+    timeSubmitFormat: 'H:i:s',
 //    /**
 //     * @cfg {String} dateTimeFormat
 //     * The format used when submitting the combined value.
@@ -83,7 +83,7 @@ Ext.define('Ext.ux.form.field.DateTime', {
             flex:1,
             isFormField:false, //exclude from field query's
             submitValue:false,
-            submitFormat: me.dateSubmitFormat,            
+            submitFormat: me.dateSubmitFormat,
             readOnly: me.readOnly
         }, me.dateConfig));
         me.items.push(me.dateField);
@@ -166,14 +166,11 @@ Ext.define('Ext.ux.form.field.DateTime', {
     },
 
     getSubmitValue: function(){
-//        var value = this.getValue();
-//        return value ? Ext.Date.format(value, this.dateTimeFormat) : null;
-
         var me = this
             ,format = me.getFormat()
             ,value = me.getValue();
 
-        return value ? Ext.Date.format(value, format) : null;
+        return value ? Ext.Date.format(value, format) : "";
     },
 
     setValue: function(value){
