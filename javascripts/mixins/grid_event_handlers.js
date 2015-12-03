@@ -137,7 +137,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
         w.on('close', function(){
           if (w.closeRes === "ok") {
-            this.store.load();
+            this.netzkeReloadStore();
           }
         }, this);
       }
@@ -157,7 +157,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
         w.show();
         w.on('close', function(){
           if (w.closeRes === "ok") {
-            this.store.load();
+            this.netzkeReloadStore();
           }
         }, this);
       }});
@@ -165,10 +165,10 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
   netzkeReloadStore: function(){
     var store = this.getStore();
-    if (store.lastOptions) {
-      store.reload();
-    } else {
+
+    // HACK to work around buffered store's buggy reload()
+    if (!store.lastRequestStart) {
       store.load();
-    }
+    } else store.reload();
   }
 });
