@@ -79,6 +79,10 @@ module Netzke
     #
     #   (defaults to 30) number of rows per page (ignored when +enable_pagination+ is set to +false+)
     #
+    # [disable_dirty_page_warning]
+    #
+    #   (defaults to false) do not warn the user about dirty records on the page when changing the page
+    #
     # [data_store]
     #
     #   (defaults to empty Hash) extra configuration for the JS class's internal store (see
@@ -373,7 +377,7 @@ module Netzke
         c.mixins << "Netzke.mixins.Basepack.Columns"
         c.mixins << "Netzke.mixins.Basepack.GridEventHandlers"
 
-        c.translate *%w[are_you_sure confirmation]
+        c.translate *%w[are_you_sure confirmation proceed_with_unapplied_changes]
 
         # JavaScript includes
         ex = Netzke::Core.ext_path.join("examples")

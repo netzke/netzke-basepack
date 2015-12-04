@@ -47,6 +47,7 @@ en:
 
         confirmation: Confirmation
         are_you_sure: Are you sure?
+        proceed_with_unapplied_changes: You will lose uncommitted changes - do you want to proceed?
 
       record_form_window:
         actions:

@@ -49,12 +49,13 @@ feature Netzke::Basepack::Grid do
     run_mocha_spec 'grid/selection', component: 'Grid::Crud'
   end
 
-  it 'shows number of pages in the paging toolbar', js: true do
+  it 'allows changing page on paging grid', js: true do
     FactoryGirl.create :book, title: 'One'
     FactoryGirl.create :book, title: 'Two'
     FactoryGirl.create :book, title: 'Three'
     FactoryGirl.create :book, title: 'Four'
     run_mocha_spec 'grid/pagination'
+    run_mocha_spec 'grid/pagination_with_disabled_dirty_warning'
   end
 
   it 'handles models with custom primary key properly', js: true do
