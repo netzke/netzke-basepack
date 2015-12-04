@@ -83,6 +83,10 @@ module Netzke
     #       super
     #     end
     #
+    # [disable_dirty_page_warning]
+    #
+    #   Do not warn the user about dirty records on the page when changing the page. Defaults to +false+.
+    #
     # [prohibit_create]
     #
     #   when set to +true+ prevents user from adding data
