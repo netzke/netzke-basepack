@@ -71,7 +71,7 @@ feature Netzke::Basepack::Grid, js: true do
     run_mocha_spec 'grid/selection', component: 'Grid::Crud'
   end
 
-  it 'shows number of pages in the paging toolbar', js: true do
+  it 'allows changing page on paging grid', js: true do
     FactoryGirl.create :book, title: 'One'
     FactoryGirl.create :book, title: 'Two'
     FactoryGirl.create :book, title: 'Three'

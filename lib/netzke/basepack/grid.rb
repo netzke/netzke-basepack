@@ -314,7 +314,7 @@ module Netzke
         c.mixins << "Netzke.mixins.Basepack.Columns"
         c.mixins << "Netzke.mixins.Basepack.GridEventHandlers"
 
-        c.translate *%w[are_you_sure confirmation]
+        c.translate *%w[are_you_sure confirmation proceed_with_unapplied_changes]
 
         # JavaScript includes
         ex = Netzke::Core.ext_path.join("examples")
