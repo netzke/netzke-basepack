@@ -17,6 +17,12 @@ require 'capybara/rails'
 RSpec.configure do |config|
   Netzke::Testing.rspec_init(config)
 
+  Capybara.register_driver :selenium_chrome do |app|
+    Capybara::Selenium::Driver.new(app, :browser => :chrome)
+  end
+
+  Capybara.javascript_driver = :selenium_chrome
+
   FactoryGirl.find_definitions
 
   # If true, the base class of anonymous controllers will be inferred
