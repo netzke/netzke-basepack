@@ -1,6 +1,6 @@
+# 0.12.9 - 2015-12-06
 * Grid: warn the user at an attempt to change the page when there are unapplied changes;
   disable the warning by setting `disable_dirty_page_warning` to `true`.
-
 * Implement `scope` option for `Tree`
 
 # 0.12.8 - 2015-09-11
