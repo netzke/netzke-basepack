@@ -1,13 +1,21 @@
 language: ruby
+
 rvm:
   - 1.9.3
-  - 2.2.0
+  - 2.2.3
+
+before_install:
+  - gem install bundler
+
 before_script:
   - chmod 777 ./config/before-travis.sh
   - ./config/before-travis.sh
+
 script:
   - export DISPLAY=:99.0
   - bundle exec rake
+
 branches:
   only:
     - master
+    - 0-12
