@@ -7,7 +7,7 @@ module Grid
     end
 
     endpoint :read do |params|
-      this.nz_feedback "Data loaded!"
+      client.nz_feedback "Data loaded!"
       super params
     end
   end

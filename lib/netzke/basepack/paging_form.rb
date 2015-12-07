@@ -33,7 +33,7 @@ module Netzke
       endpoint :get_data do |params|
         @record = data_adapter.get_records(params).first
         record_hash = @record && js_record_data
-        this.merge!(:records => record_hash && [record_hash] || [], :total => total_records(params))
+        client.merge!(:records => record_hash && [record_hash] || [], :total => total_records(params))
       end
 
       action :search do |a|

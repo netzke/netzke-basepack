@@ -15,6 +15,6 @@ class Form::NoModel < Netzke::Basepack::Form
 
   endpoint :submit do |params|
     data = ActiveSupport::JSON.decode(params[:data])
-    this.nz_feedback data.each_pair.map{ |k,v| "#{k.humanize}: #{v}" }.join("<br/>")
+    client.nz_feedback data.each_pair.map{ |k,v| "#{k.humanize}: #{v}" }.join("<br/>")
   end
 end

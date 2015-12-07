@@ -6,19 +6,19 @@ module Netzke
 
         included do
           endpoint :read do |data|
-            attempt_operation(:read, data, this)
+            attempt_operation(:read, data, client)
           end
 
           endpoint :create do |data|
-            attempt_operation(:create, data, this)
+            attempt_operation(:create, data, client)
           end
 
           endpoint :update do |data|
-            attempt_operation(:update, data, this)
+            attempt_operation(:update, data, client)
           end
 
           endpoint :destroy do |data|
-            attempt_operation(:destroy, data, this)
+            attempt_operation(:destroy, data, client)
           end
 
           endpoint :save_columns do |cols|
@@ -32,7 +32,7 @@ module Netzke
           # +id+ - selected record id
           endpoint :get_combobox_options do |params|
             column = final_columns.detect{ |c| c[:name] == params[:attr] }
-            this.data = data_adapter.combo_data(column, params[:query])
+            client.data = data_adapter.combo_data(column, params[:query])
           end
 
           endpoint :move_rows do |params|
@@ -47,7 +47,7 @@ module Netzke
 
             data.map!{|el| el.delete_if{ |k,v| v.is_a?(String) && v.blank? }} # only interested in set values
 
-            res = attempt_operation(:update, data, this)
+            res = attempt_operation(:update, data, client)
 
             errors = []
             res.each do |id, out|
@@ -56,10 +56,10 @@ module Netzke
 
             if errors.empty?
               on_data_changed
-              this.on_submit_success
+              client.on_submit_success
               "ok"
             else
-              this.nz_feedback(errors)
+              client.nz_feedback(errors)
               "failure"
             end
           end
@@ -67,25 +67,25 @@ module Netzke
           # The following two look a bit hackish, but serve to invoke on_data_changed when a form gets successfully
           # submitted
           endpoint :add_window__add_form__submit do |params|
-            this.merge!(component_instance(:add_window).
+            client.merge!(component_instance(:add_window).
                         component_instance(:add_form).
                         invoke_endpoint(:submit, [params]))
-            on_data_changed if this.set_form_values.present?
-            this.delete(:set_form_values)
+            on_data_changed if client.set_form_values.present?
+            client.delete(:set_form_values)
           end
 
           endpoint :edit_window__edit_form__submit do |params|
-            this.merge!(component_instance(:edit_window).
+            client.merge!(component_instance(:edit_window).
                         component_instance(:edit_form).
                         invoke_endpoint(:submit, [params]))
-            on_data_changed if this.set_form_values.present?
-            this.delete(:set_form_values)
+            on_data_changed if client.set_form_values.present?
+            client.delete(:set_form_values)
           end
         end
 
         # Operations:
         #   create, read, update, delete
-        def attempt_operation(op, data, this)
+        def attempt_operation(op, data, client)
           # if data is ActionController::Parameters and a scope is in the component config
           # then ran this in an ActiveModel::ForbiddenAttributesError (rails 4 strong parameters)
           # solution: in this case convert ActionController::Parameters to a Hash
@@ -100,7 +100,7 @@ module Netzke
           if !config["prohibit_#{op}"]
             send(op, data)
           else
-            this.nz_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
+            client.nz_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
             { data: [], total: 0 }
           end
         end

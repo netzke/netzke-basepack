@@ -4,7 +4,7 @@ module Netzke
       module Services
         extend ActiveSupport::Concern
 
-        def submit(data, this)
+        def submit(data, client)
           # File uploads are in raw params instead of "data" hash, so, mix them in into "data"
           controller.params.each_pair do |k,v|
             data[k] = v if v.is_a?(ActionDispatch::Http::UploadedFile)
@@ -13,15 +13,15 @@ module Netzke
           success = create_or_update_record(data)
 
           if success
-            this.set_form_values(js_record_data)
-            this.success = true # respond to classic form submission with {success: true}
-            this.on_submit_success # inform the Netzke endpoint caller about success
+            client.set_form_values(js_record_data)
+            client.success = true # respond to classic form submission with {success: true}
+            client.on_submit_success # inform the Netzke endpoint caller about success
           else
             errors = data_adapter.errors_array(@record).map do |error|
               {level: :error, msg: error}
             end
-            this.nz_feedback(errors)
-            this.apply_form_errors(build_form_errors(record))
+            client.nz_feedback(errors)
+            client.apply_form_errors(build_form_errors(record))
           end
         end
 

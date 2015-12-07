@@ -180,11 +180,11 @@ module Netzke
       endpoint :add_window__add_form__submit do |params|
         data = ActiveSupport::JSON.decode(params[:data])
         data["parent_id"] = params["parent_id"]
-        this.merge!(component_instance(:add_window).
+        client.merge!(component_instance(:add_window).
                     component_instance(:add_form).
-                    submit(data, this))
-        on_data_changed if this.set_form_values.present?
-        this.delete(:set_form_values)
+                    submit(data, client))
+        on_data_changed if client.set_form_values.present?
+        client.delete(:set_form_values)
       end
 
       endpoint :update_node_state do |params|
