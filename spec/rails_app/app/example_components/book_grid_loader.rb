@@ -19,13 +19,13 @@ class BookGridLoader < Netzke::Base
 
     c.on_load_one = <<-JS
       function(){
-        this.netzkeLoadComponent('book_grid_one');
+        this.nzLoadComponent('book_grid_one');
       }
     JS
 
     c.on_load_two = <<-JS
       function(){
-        this.netzkeLoadComponent('book_grid_two');
+        this.nzLoadComponent('book_grid_two');
       }
     JS
   end

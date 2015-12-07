@@ -34,7 +34,7 @@ class BookForm < Netzke::Basepack::Form
     c.on_submit_success = <<-JS
       function(){
         this.callParent();
-        this.netzkeFeedback('Suc'+'cess!');
+        this.nzFeedback('Suc'+'cess!');
       }
     JS
   end

@@ -6,15 +6,16 @@ module Netzke
 
         included do
           # Called when the form gets submitted (e.g. by pressing the Apply button)
-          endpoint :netzke_submit do |params|
+          endpoint :server_submit do |params|
+            ::Rails.logger.debug "\n!!! params: #{params.inspect}\n"
             data = ActiveSupport::JSON.decode(params[:data])
             submit(data, this)
           end
 
           # Can be called when the form needs to load a record with given ID. E.g.:
           #
-          #     someForm.netzkeLoad({id: 100});
-          endpoint :netzke_load do |params|
+          #     someForm.serverLoad({id: 100});
+          endpoint :server_load do |params|
             @record = data_class && data_adapter.find_record(params[:id])
             this.set_form_values js_record_data
           end

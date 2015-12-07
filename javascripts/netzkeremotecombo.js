@@ -8,7 +8,7 @@ Ext.define('Ext.netzke.ComboBox', {
   forceSelection: true,
 
   initComponent : function(){
-    var parent = this.netzkeParent || this.findParentBy(function(c) { return c.isNetzke; });
+    var parent = this.nzParent || this.findParentBy(function(c) { return c.isNetzke; });
 
     if (this.blankLine == undefined) this.blankLine = "---";
 
@@ -16,8 +16,8 @@ Ext.define('Ext.netzke.ComboBox', {
       fields: ['value', 'text'],
       proxy: {
         type: 'direct',
-        directFn: parent.netzkeGetDirectFunction("getComboboxOptions"),
-        extraParams: {configs: parent.netzkeBuildParentConfigs()},
+        directFn: parent.nzGetDirectFunction("getComboboxOptions"),
+        extraParams: {configs: parent.nzBuildParentConfigs()},
         reader: {
           type: 'array',
           rootProperty: 'data'

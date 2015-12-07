@@ -20,7 +20,7 @@ module Netzke
             errors = data_adapter.errors_array(@record).map do |error|
               {level: :error, msg: error}
             end
-            this.netzke_feedback(errors)
+            this.nz_feedback(errors)
             this.apply_form_errors(build_form_errors(record))
           end
         end

@@ -54,14 +54,14 @@ module Netzke
           saved_searches << {"name" => params[:name], "query" => query}
         end
         state[:presets] = saved_searches
-        this.netzke_feedback(I18n.t('netzke.basepack.query_builder.preset_saved'))
+        this.nz_feedback(I18n.t('netzke.basepack.query_builder.preset_saved'))
       end
 
       endpoint :delete_preset do |params|
         saved_searches = state[:presets]
         saved_searches.delete_if{ |s| s["name"] == params[:name] }
         state[:presets] = saved_searches
-        this.netzke_feedback(I18n.t('netzke.basepack.query_builder.preset_deleted'))
+        this.nz_feedback(I18n.t('netzke.basepack.query_builder.preset_deleted'))
       end
     end
   end

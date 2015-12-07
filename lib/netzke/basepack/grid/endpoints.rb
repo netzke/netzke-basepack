@@ -56,11 +56,10 @@ module Netzke
 
             if errors.empty?
               on_data_changed
-              # this.netzke_set_result("ok")
               this.on_submit_success
               "ok"
             else
-              this.netzke_feedback(errors)
+              this.nz_feedback(errors)
               "failure"
             end
           end
@@ -101,7 +100,7 @@ module Netzke
           if !config["prohibit_#{op}"]
             send(op, data)
           else
-            this.netzke_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
+            this.nz_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
             { data: [], total: 0 }
           end
         end

@@ -1,17 +1,17 @@
 /* Shared column-related functionality, used in Tree and Grid */
 Ext.define("Netzke.mixins.Basepack.Columns", {
-  netzkeProcessColumns: function() {
+  nzProcessColumns: function() {
     this.fields = [];
 
     // Run through columns and set up different configuration for each
     Ext.each(this.columns.items, function(c, i){
 
-      this.netzkeNormalizeRenderer(c);
+      this.nzNormalizeRenderer(c);
 
       // Build the field configuration for this column
       var fieldConfig = {name: c.name, defaultValue: c.defaultValue, allowNull: true};
 
-      if (c.name !== 'meta') fieldConfig.type = this.netzkeFieldTypeForAttrType(c.attrType); // field type (grid editors need this to function well)
+      if (c.name !== 'meta') fieldConfig.type = this.nzFieldTypeForAttrType(c.attrType); // field type (grid editors need this to function well)
 
       if (c.attrType == 'datetime') {
         fieldConfig.dateFormat = 'Y-m-d H:i:s'; // set the format in which we receive datetime from the server (so that the model can parse it)
@@ -49,16 +49,16 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
         if (c.editor) c.editor = Ext.apply({ name: c.name }, c.editor);
 
         // Renderer for association column
-        this.netzkeNormalizeAssociationRenderer(c);
+        this.nzNormalizeAssociationRenderer(c);
       }
 
       if (c.editor) {
-        Ext.applyIf(c.editor, {selectOnFocus: true, netzkeParent: this});
+        Ext.applyIf(c.editor, {selectOnFocus: true, nzParent: this});
       }
 
       // Setting the default filter type
       if (c.filterable != false && !c.filter) {
-        c.filter = {type: this.netzkeFilterTypeForAttrType(c.attrType)};
+        c.filter = {type: this.nzFilterTypeForAttrType(c.attrType)};
       }
 
       // setting dataIndex
@@ -109,7 +109,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
   // * "myRenderer" (if this.myRenderer is a function)
   // * ["Some.scope.Format.customRenderer", 10, 20, 30] (if Some.scope.Format.customRenderer is a function)
   // * "function(v){ return 'Value: ' + v; }"
-  netzkeNormalizeRenderer: function(c) {
+  nzNormalizeRenderer: function(c) {
     if (!c.renderer) return;
 
     var name, args = [];
@@ -137,8 +137,8 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
   Set a renderer that displayes association values instead of association record ID.
   The association values are passed in the meta-column under associationValues hash.
   */
-  netzkeNormalizeAssociationRenderer: function(c) {
-    var passedRenderer = c.renderer, // renderer we got from netzkeNormalizeRenderer
+  nzNormalizeAssociationRenderer: function(c) {
+    var passedRenderer = c.renderer, // renderer we got from nzNormalizeRenderer
         metaData, assocValue;
     c.scope = this;
     c.renderer = function(value, a, r, ri, ci, store, view){
@@ -160,7 +160,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     };
   },
 
-  netzkeSaveColumns: function(){
+  nzSaveColumns: function(){
     var cols = [];
     this.getView().getHeaderCt().items.each(function(c){
       cols.push({name: c.name, width: c.width, hidden: c.hidden});
@@ -170,7 +170,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
   },
 
   // Tries editing the first editable (i.e. not hidden, not read-only) sell
-  netzkeTryStartEditing: function(r){
+  nzTryStartEditing: function(r){
     var column = Ext.Array.findBy(this.columns, function(c){
       return !(c.hidden || c.readOnly || c.attrType == 'boolean')
     });
@@ -178,7 +178,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     if (column) {this.getPlugin('celleditor').startEdit(r, column);}
   },
 
-  netzkeFilterTypeForAttrType: function(attrType){
+  nzFilterTypeForAttrType: function(attrType){
     var map = {
       integer   : 'number',
       decimal   : 'number',
@@ -192,7 +192,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     return map[attrType] || 'string';
   },
 
-  netzkeFieldTypeForAttrType: function(attrType){
+  nzFieldTypeForAttrType: function(attrType){
     var map = {
       integer   : 'int',
       decimal   : 'float',

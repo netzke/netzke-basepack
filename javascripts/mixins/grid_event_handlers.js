@@ -11,7 +11,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
       this.getStore().add(r);
 
-      this.netzkeTryStartEditing(r);
+      this.nzTryStartEditing(r);
     }
   },
 
@@ -29,10 +29,10 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
           }
 
           if (errors.length > 0) {
-            this.netzkeFeedback([errors]);
+            this.nzFeedback([errors]);
           }
         });
-        this.netzkeReloadStore();
+        this.nzReloadStore();
       }
     }, this);
   },
@@ -46,7 +46,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
   onRefresh: function() {
     if (this.fireEvent('refresh', this) !== false) {
-      this.netzkeReloadStore();
+      this.nzReloadStore();
     }
   },
 
@@ -99,12 +99,12 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
   },
 
   onAddInForm: function(){
-    this.netzkeLoadComponent("add_window", {
+    this.nzLoadComponent("add_window", {
       callback: function(w) {
         w.show();
         w.on('close', function(){
           if (w.closeRes === "ok") {
-            this.netzkeReloadStore();
+            this.nzReloadStore();
           }
         }, this);
       }
@@ -122,7 +122,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
   // Edit multiple records via form
   doMultiEdit: function(records){
-    this.netzkeLoadComponent("multi_edit_window", {
+    this.nzLoadComponent("multi_edit_window", {
       callback: function(w){
         var form = w.items.first();
         // +apply+ is called by wrapping window on OK click
@@ -137,7 +137,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
         w.on('close', function(){
           if (w.closeRes === "ok") {
-            this.netzkeReloadStore();
+            this.nzReloadStore();
           }
         }, this);
       }
@@ -146,24 +146,24 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
 
   // Edit record inline
   doEditInline: function(record){
-    this.netzkeTryStartEditing(record);
+    this.nzTryStartEditing(record);
   },
 
   // Single record editing
   doEditInForm: function(record){
-    this.netzkeLoadComponent("edit_window", {
+    this.nzLoadComponent("edit_window", {
       serverConfig: {record_id: record.id},
       callback: function(w){
         w.show();
         w.on('close', function(){
           if (w.closeRes === "ok") {
-            this.netzkeReloadStore();
+            this.nzReloadStore();
           }
         }, this);
       }});
   },
 
-  netzkeReloadStore: function(){
+  nzReloadStore: function(){
     var store = this.getStore();
 
     // HACK to work around buffered store's buggy reload()

@@ -19,9 +19,9 @@ module Netzke
     # == Endpoints
     # Form implements the following endpoints:
     #
-    # * +netzke_load+ - loads a record with a given id from the server, e.g.:
+    # * +server_load+ - loads a record with a given id from the server, e.g.:
     #
-    #     someForm.netzkeLoad({id: 100});
+    #     someForm.serverLoad({id: 100});
     #
     # * +netzke_submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling onApply)
     # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
