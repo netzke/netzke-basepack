@@ -4,10 +4,8 @@ module Netzke
       class EventsPlugin < Netzke::Plugin
         client_class do |c|
           c.init = <<-JS
-            function(){
-              this.callParent(arguments);
-
-              this.cmp.on('afterlayout', function(){
+            function(cmp){
+              cmp.on('afterlayout', function(){
 
                 // scope of the parent panel
                 this.items.each(function(item, index, length){
@@ -37,7 +35,7 @@ module Netzke
 
                 }, this);
 
-              }, this.cmp, {single: true});
+              }, cmp, {single: true});
             }
           JS
         end
