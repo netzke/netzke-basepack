@@ -41,7 +41,7 @@ module Netzke
 
           # Process the submit of multi-editing form ourselves
           # TODO: refactor to let the form handle the validations
-          endpoint :multi_edit_window__multi_edit_form__netzke_submit do |params|
+          endpoint :multi_edit_window__multi_edit_form__server_submit do |params|
             ids = ActiveSupport::JSON.decode(params.delete(:ids))
             data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
 
@@ -66,18 +66,18 @@ module Netzke
 
           # The following two look a bit hackish, but serve to invoke on_data_changed when a form gets successfully
           # submitted
-          endpoint :add_window__add_form__netzke_submit do |params|
+          endpoint :add_window__add_form__server_submit do |params|
             this.merge!(component_instance(:add_window).
                         component_instance(:add_form).
-                        invoke_endpoint(:netzke_submit, [params]))
+                        invoke_endpoint(:server_submit, [params]))
             on_data_changed if this.set_form_values.present?
             this.delete(:set_form_values)
           end
 
-          endpoint :edit_window__edit_form__netzke_submit do |params|
+          endpoint :edit_window__edit_form__server_submit do |params|
             this.merge!(component_instance(:edit_window).
                         component_instance(:edit_form).
-                        invoke_endpoint(:netzke_submit, [params]))
+                        invoke_endpoint(:server_submit, [params]))
             on_data_changed if this.set_form_values.present?
             this.delete(:set_form_values)
           end

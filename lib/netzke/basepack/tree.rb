@@ -177,7 +177,7 @@ module Netzke
         c.items = [:multi_edit_form]
       end
 
-      endpoint :add_window__add_form__netzke_submit do |params|
+      endpoint :add_window__add_form__server_submit do |params|
         data = ActiveSupport::JSON.decode(params[:data])
         data["parent_id"] = params["parent_id"]
         this.merge!(component_instance(:add_window).

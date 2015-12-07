@@ -1,3 +1,8 @@
+### Form
+
+*   `netzkeSubmit` and `netzkeLoad` endpoints have been renamed to `serverSubmit` and `serverLoad` respectively; keep
+    this in mind also when if you override them in your app.
+
 ### Grid
 
 *   By default, Grid now handles large number of records by using a buffered store (allows for "infinite scrolling").

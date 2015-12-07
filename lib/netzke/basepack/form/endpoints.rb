@@ -7,7 +7,6 @@ module Netzke
         included do
           # Called when the form gets submitted (e.g. by pressing the Apply button)
           endpoint :server_submit do |params|
-            ::Rails.logger.debug "\n!!! params: #{params.inspect}\n"
             data = ActiveSupport::JSON.decode(params[:data])
             submit(data, this)
           end
