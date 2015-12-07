@@ -18,21 +18,21 @@ module Netzke
 
                     if ((panel.region == 'west' || panel.region == 'east') && panel.oldSize.width != w) {
                       params.width = w;
-                      this.regionResized(params);
+                      this.server.regionResized(params);
                     } else if (panel.region == 'north' || panel.region == 'south' && panel.oldSize.height != h){
                       params.height = h;
-                      this.regionResized(params);
+                      this.server.regionResized(params);
                     }
 
                     panel.oldSize = panel.getSize();
                   }, this);
 
                   item.on('collapse', function(panel){
-                    this.regionCollapsed({item: panel.itemId});
+                    this.server.regionCollapsed({item: panel.itemId});
                   }, this);
 
                   item.on('expand', function(panel){
-                    this.regionExpanded({item: panel.itemId});
+                    this.server.regionExpanded({item: panel.itemId});
                   }, this);
 
                 }, this);

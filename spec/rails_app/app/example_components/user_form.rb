@@ -20,7 +20,7 @@ class UserForm < Netzke::Basepack::Form
   end
 
   # Uncomment for visual mask testing
-  # def server_submit_endpoint(params)
+  # def submit_endpoint(params)
   #   sleep 2
   #   super
   # end

@@ -1,9 +1,10 @@
 ### Form
 
-*   `netzkeSubmit` and `netzkeLoad` endpoints have been renamed to `serverSubmit` and `serverLoad` respectively; keep
-    this in mind also when if you override them in your app.
+*   The `netzkeSubmit` and `netzkeLoad` endpoints have been renamed to `submit` and `load` respectively; keep
+    this in mind if you override them in your app.
 
 ### Grid
+*   The endpoints dropped their prefix `server`; additionally, `serverDelete` has become `destroy`; keep this in mind if you override endpoints in your app.
 
 *   By default, Grid now handles large number of records by using a buffered store (allows for "infinite scrolling").
     Set `paging` to `true` if you want pagination instead.

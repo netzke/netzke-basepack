@@ -19,7 +19,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
     Ext.Msg.confirm(this.i18n.confirmation, this.i18n.areYouSure, function(btn){
       if (btn == 'yes') {
         var toDelete = this.getSelectionModel().getSelection();
-        this.serverDelete(toDelete.map(function(r) { return r.id; }), function(res){
+        this.server.destroy(toDelete.map(function(r) { return r.id; }), function(res){
           var errors = [];
           for (var id in res) {
             var error;
@@ -71,7 +71,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
     // collect records ids
     Ext.each(records, function(r){ids.push(r.id)});
     // call Grid's API
-    this.moveRows({ids: Ext.encode(ids), new_index: newIndex});
+    this.server.moveRows({ids: Ext.encode(ids), new_index: newIndex});
   },
 
   /* Exception handler. TODO: will responses with status 200 land here? */

@@ -166,7 +166,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
       cols.push({name: c.name, width: c.width, hidden: c.hidden});
     });
 
-    this.serverSaveColumns(cols);
+    this.server.saveColumns(cols);
   },
 
   // Tries editing the first editable (i.e. not hidden, not read-only) sell

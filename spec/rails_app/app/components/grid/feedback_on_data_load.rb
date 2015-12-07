@@ -6,7 +6,7 @@ module Grid
       c.model = 'Book'
     end
 
-    endpoint :server_read do |params|
+    endpoint :read do |params|
       this.nz_feedback "Data loaded!"
       super params
     end

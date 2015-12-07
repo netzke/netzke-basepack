@@ -30,12 +30,12 @@ class WindowComponentLoader < Netzke::Base
 
     c.on_reset_session = <<-JS
       function(params){
-        this.serverResetSession();
+        this.server.resetSession();
       }
     JS
   end
 
-  endpoint :server_reset_session do
+  endpoint :reset_session do
     component_instance(:some_window).state.clear
   end
 end
