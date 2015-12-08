@@ -42,14 +42,14 @@ module Netzke
 
       def configure(c)
         super
-        c.items = [:search_panel]
+        c.items = [:query_builder]
         c.title = I18n.t('netzke.basepack.search_window.title')
         c.persistence = false
         c.prevent_header = true
         c.buttons = [:search, :cancel]
       end
 
-      component :search_panel do |c|
+      component :query_builder do |c|
         c.klass = QueryBuilder
         c.model = config[:model]
         c.fields = config[:fields]

@@ -3,8 +3,7 @@ module Netzke
     # Ext.grid.Panel-based component with the following features:
     #
     # * automatic default column configuration (overridable via config)
-    # * infinite scrolling (enabled by default)
-    # * pagination
+    # * infinite scrolling or pagination
     # * multi-line CRUD operations
     # * (multe-record) editing and adding records through a form
     # * one-to-many association support
@@ -13,7 +12,6 @@ module Netzke
     # * permissions
     # * persistent column resizing, moving and hiding
     # * complex query search with preset management
-    # * virtual attribute support
     #
     # == Instance configuration
     #
@@ -381,6 +379,7 @@ module Netzke
         res = %w{ add edit }.map(&:to_sym)
         res << :apply if config[:edit_inline]
         res << :del
+        res << "-" << :search
         res
       end
 

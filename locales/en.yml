@@ -103,10 +103,10 @@ en:
             text: Reset
             tooltip: Reset condition values
           save_preset:
-            text: Save preset
+            text: Save
             tooltip: Save preset
           delete_preset:
-            text: Delete preset
+            text: Delete
             tooltip: Delete preset
           apply:
             text: Apply

@@ -9,13 +9,12 @@ module Netzke
         c.translate :overwrite_confirm, :overwrite_confirm_title, :delete_confirm, :delete_confirm_title
       end
 
-      component :search_panel do |c|
+      component :search_panel, eager_load: true do |c|
         c.klass = SearchPanel
         c.model = config[:model]
         c.fields = config[:fields]
         c.preset_query = config[:query]
         c.auto_scroll = config[:auto_scroll]
-        c.eager_loading = true
       end
 
       action :clear_all do |a|
