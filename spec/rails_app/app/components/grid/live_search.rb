@@ -8,6 +8,10 @@ class Grid::LiveSearch < Netzke::Basepack::Grid
     c.filter_with = ->(rel, value, op){ rel.where("authors.first_name like ? or authors.last_name like ?", "%#{value}%", "%#{value}%")}
   end
 
+  column :title do |c|
+    c.flex = 1
+  end
+
   def configure(c)
     super
     c.model = "Book"

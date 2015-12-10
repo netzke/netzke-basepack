@@ -4,7 +4,7 @@ module Netzke
     # attribute, and assign the search operator. The grid will be updated on changing those fields, to reflect the
     # query.
     #
-    # See Grid::LiveSearch in spec/rails_app for a usage example.
+    # See `Grid::LiveSearch` in spec/rails_app for a usage example.
     #
     # == Configuration:
     #

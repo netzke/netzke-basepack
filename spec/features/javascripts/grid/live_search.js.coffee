@@ -7,11 +7,11 @@ describe 'LiveSearch grid plugin', ->
       searchField.setValue('of')
       wait 50
     .then ->
-      expect(gridStore.getCount()).to.eql(2)
+      expect(valuesInColumn('title')).to.eql ['The Art of Dreaming', 'Way of Warrior']
       searchField.setValue('war')
       wait 50
     .then ->
-      expect(gridStore.getCount()).to.eql(1)
+      expect(valuesInColumn('title')).to.eql ['Way of Warrior']
       searchField.setValue('')
       done()
 
@@ -23,11 +23,11 @@ describe 'LiveSearch grid plugin', ->
       searchField.setValue('castaneda')
       wait 50
     .then ->
-      expect(gridStore.getCount()).to.eql(3)
+      expect(valuesInColumn('title')).to.eql ['Journey to Ixtlan', 'The Art of Dreaming', 'Way of Warrior']
       searchField.setValue('herman')
       wait 50
     .then ->
-      expect(gridStore.getCount()).to.eql(1)
+      expect(valuesInColumn('title')).to.eql ['Damian']
       searchField.setValue('')
       done()
 
@@ -39,10 +39,10 @@ describe 'LiveSearch grid plugin', ->
       searchField.setValue('of')
       wait 50
     .then ->
-      expect(gridStore.getCount()).to.eql(2)
+      expect(valuesInColumn('title')).to.eql ['The Art of Dreaming', 'Way of Warrior']
       searchField.setValue('war')
       wait 50
     .then ->
-      expect(gridStore.getCount()).to.eql(1)
+      expect(valuesInColumn('title')).to.eql ['Way of Warrior']
       searchField.setValue('')
       done()
