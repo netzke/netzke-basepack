@@ -18,7 +18,7 @@ module Netzke::Basepack::DataAdapters
       []
     end
 
-    # Returns a list of model attribute hashes, each containing `name`, `attr_type` and `default_value` (if set in the schema).
+    # Returns a list of model attribute names.
     # For association columns the name can have the double-underscore format, e.g.: `author__first_name`.
     # These attributes will be used by grids and forms to display default columns/fields.
     def model_attributes

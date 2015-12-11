@@ -5,8 +5,8 @@ describe "Basepack I18n" do
 
   it 'localizes Grid column headers' do
     I18n.locale = :es
-    columns = grid.final_columns.map(&:text)
+    columns = grid.non_meta_columns.map(&:text)
 
-    columns.should == %w|Id Autor Ejemplares|
+    expect(columns).to eql %w|Id Autor Ejemplares|
   end
 end

@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Netzke::Basepack::Form do
   describe "without bottombar" do
-    it "should not include bbar in client config" do
+    it "does not include bbar in client config" do
       class NoBbarForm < Netzke::Basepack::Form
         def configure(c)
           super

@@ -15,7 +15,7 @@ module Netzke
           #
           #     someForm.server.load({id: 100});
           endpoint :load do |params|
-            @record = data_class && data_adapter.find_record(params[:id])
+            @record = model_class && model_adapter.find_record(params[:id])
             client.set_form_values js_record_data
           end
 
@@ -26,7 +26,7 @@ module Netzke
           # +id+ - selected record id
           endpoint :get_combobox_options do |params|
             attr = fields[params[:attr].to_sym]
-            client.data = data_adapter.combo_data(attr, params[:query])
+            client.data = model_adapter.combo_data(attr, params[:query])
           end
         end
       end

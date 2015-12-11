@@ -38,43 +38,43 @@ describe "Grid scope option" do
       @fb2.id
     ])
 
-    destroyed_ids.should == {@cb2.id => 'ok', @cb3.id => 'ok'}
+    expect(destroyed_ids).to eql(@cb2.id => 'ok', @cb3.id => 'ok')
   end
 
   it 'does not allow editing out-of-scope records' do
     # allowed
     res = grid.update([{"id" => @cb1.id, title: 'Foo'}])
-    res[@cb1.id][:error].should be_blank
+    expect(res[@cb1.id][:error]).to be_blank
     @cb1.reload
-    @cb1.title.should == 'Foo'
+    expect(@cb1.title).to eql 'Foo'
 
     # not allowed
     res = grid.update([{"id" => @fb1.id, title: 'Foo'}])
-    res[@fb1.id][:error].should be_present
+    expect(res[@fb1.id][:error]).to be_present
     @fb1.reload
-    @fb1.title.should_not == 'Foo'
+    expect(@fb1.title).to_not eql 'Foo'
   end
 
   it 'sets strongs attributes on update' do
     grid.update([{"id" => @cb1.id, title: 'New Title', notes: "Attempted"}])
     @cb1.reload
-    @cb1.title.should == 'New Title'
-    @cb1.notes.should == 'Fixed'
+    expect(@cb1.title).to eql 'New Title'
+    expect(@cb1.notes).to eql 'Fixed'
   end
 
   it 'sets strongs attributes on create' do
     grid.create([{title: 'Foo', author_id: @fowles.id}])
     book = Book.last
-    book.author.should == @castaneda
+    expect(book.author).to eql @castaneda
   end
 
   it 'only lists scoped records' do
     grid = ::Grid::Scoped.new load_inline_data: true
-    grid.read[:data].size.should == 3
+    expect(grid.read[:data].size).to eql 3
   end
 
   it 'lists records from overridden scope' do
     grid = ::Grid::ScopedExtended.new load_inline_data: true
-    grid.read[:data].size.should == 1
+    expect(grid.read[:data].size).to eql 1
   end
 end

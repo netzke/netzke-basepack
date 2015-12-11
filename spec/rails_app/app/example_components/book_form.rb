@@ -1,6 +1,32 @@
-# Warning: this component participates in i18n.feature, careful with adding new fields!
 class BookForm < Netzke::Basepack::Form
   include Extras::BookPresentation
+
+  attribute :author__last_name do |c|
+    c.xtype = :displayfield
+  end
+
+  attribute :rating do |c|
+    c.xtype = :combo
+    c.store = [[1, "Good"], [2, "Average"], [3, "Poor"]]
+  end
+
+  attribute :author__updated_at do |c|
+    c.read_only = true
+  end
+
+  attribute :author__first_name do |c|
+    c.setter = author_first_name_setter
+    c.scope = ->(r) {r.limit(10)}
+  end
+
+  attribute :in_abundance do |c|
+    c.xtype = :displayfield
+    c.getter = in_abundance_getter
+  end
+
+  attribute :last_read_at do |c|
+    c.excluded = true
+  end
 
   def configure(c)
     c.record = Book.first
@@ -8,19 +34,18 @@ class BookForm < Netzke::Basepack::Form
     super
 
     c.model = "Book"
-    c.title Book.model_name.human
     c.items = [
       :title,
-      {:name => :author__first_name, :setter => author_first_name_setter, scope: ->(r) {r.limit(10)}},
+      :author__first_name,
       :author__name,
-      {:name => :author__last_name, :xtype => :displayfield},
-      {:name => :rating, :xtype => :combo, :store => [[1, "Good"], [2, "Average"], [3, "Poor"]]},
-      {:name => :author__updated_at, :read_only => true},
+      :author__last_name,
+      :rating,
+      :author__updated_at,
       :digitized,
       :exemplars,
-      {:name => :in_abundance, :getter => in_abundance_getter, :xtype => :displayfield},
-      {:name => :updated_at},
-      :last_read_at,
+      :in_abundance,
+      {name: :updated_at},
+      :last_read_at, # excluded
       :published_on
 
       # WIP: commalistcbg is kind of broken, giving an Ext error
@@ -28,14 +53,5 @@ class BookForm < Netzke::Basepack::Form
       # WIP: waithing on nradiogroup
       # {:name => :rating, :xtype => :nradiogroup, :options => [[1, "Good"], [2, "Average"], [3, "Poor"]]}
     ]
-  end
-
-  client_class do |c|
-    c.on_submit_success = <<-JS
-      function(){
-        this.callParent();
-        this.nzFeedback('Suc'+'cess!');
-      }
-    JS
   end
 end

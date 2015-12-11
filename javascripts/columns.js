@@ -11,9 +11,9 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
       // Build the field configuration for this column
       var fieldConfig = {name: c.name, defaultValue: c.defaultValue, allowNull: true};
 
-      if (c.name !== 'meta') fieldConfig.type = this.nzFieldTypeForAttrType(c.attrType); // field type (grid editors need this to function well)
+      if (!c.meta) fieldConfig.type = this.nzFieldTypeForAttrType(c.type); // field type (grid editors need this to function well)
 
-      if (c.attrType == 'datetime') {
+      if (c.type == 'datetime') {
         fieldConfig.dateFormat = 'Y-m-d H:i:s'; // set the format in which we receive datetime from the server (so that the model can parse it)
 
         // While for 'date' columns the renderer is set up automatically (through using column's xtype), there's no appropriate xtype for our custom datetime column.
@@ -25,22 +25,19 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
         }
       };
 
-      if (c.attrType == 'date') {
-        // If no dateFormat given for date attrType, Timezone translation can subtract zone offset from 00:00:00 causing previous day.
+      if (c.type == 'date') {
+        // If no dateFormat given for date type, Timezone translation can subtract zone offset from 00:00:00 causing previous day.
         fieldConfig.dateFormat = 'Y-m-d';
       };
-
-      // because checkcolumn doesn't care about editor (not) being set, we need to explicitely set readOnly here
-      if (c.xtype == 'checkcolumn' && !c.editor) {
-        c.readOnly = true;
-      }
 
       this.fields.push(fieldConfig);
 
       // We will not use meta columns as actual columns (not even hidden) - only to create the records
-      if (c.meta) {
-        this.metaColumn = c;
-        return;
+      if (c.meta) return;
+
+      // because checkcolumn doesn't care about editor (not) being set, we need to explicitely set readOnly here
+      if (c.xtype == 'checkcolumn' && !c.editor) {
+        c.readOnly = true;
       }
 
       // Set rendeder for association columns (the one displaying associations by the specified method instead of id)
@@ -58,7 +55,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
 
       // Setting the default filter type
       if (c.filterable != false && !c.filter) {
-        c.filter = {type: this.nzFilterTypeForAttrType(c.attrType)};
+        c.filter = {type: this.nzFilterTypeForAttrType(c.type)};
       }
 
       // setting dataIndex
@@ -90,7 +87,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     // We don't need original columns any longer
     delete this.columns.items;
 
-    // ... instead, define own column model
+    // ... instead, use own column model
     this.columns.items = colModelConfig;
   },
 
@@ -139,7 +136,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
   */
   nzNormalizeAssociationRenderer: function(c) {
     var passedRenderer = c.renderer, // renderer we got from nzNormalizeRenderer
-        metaData, assocValue;
+        assocValue;
     c.scope = this;
     c.renderer = function(value, a, r, ri, ci, store, view){
       var column = view.headerCt.items.getAt(ci),
@@ -149,8 +146,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
 
       if (recordFromStore) {
         renderedValue = recordFromStore.get('text');
-      } else if (metaData = r.get('meta')) {
-        assocValue = metaData.associationValues[c.name];
+      } else if ((assocValue = (r.get('association_values') || {})[c.name]) !== undefined) {
         renderedValue = (assocValue == undefined) ? c.emptyText : assocValue;
       } else {
         renderedValue = value;
@@ -172,13 +168,13 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
   // Tries editing the first editable (i.e. not hidden, not read-only) sell
   nzTryStartEditing: function(r){
     var column = Ext.Array.findBy(this.columns, function(c){
-      return !(c.hidden || c.readOnly || c.attrType == 'boolean')
+      return !(c.hidden || c.readOnly || c.type == 'boolean')
     });
 
     if (column) {this.getPlugin('celleditor').startEdit(r, column);}
   },
 
-  nzFilterTypeForAttrType: function(attrType){
+  nzFilterTypeForAttrType: function(type){
     var map = {
       integer   : 'number',
       decimal   : 'number',
@@ -189,10 +185,10 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
       text      : 'string',
       'boolean' : 'boolean'
     };
-    return map[attrType] || 'string';
+    return map[type] || 'string';
   },
 
-  nzFieldTypeForAttrType: function(attrType){
+  nzFieldTypeForAttrType: function(type){
     var map = {
       integer   : 'int',
       decimal   : 'float',
@@ -203,6 +199,6 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
       text      : 'string',
       'boolean' : 'boolean'
     };
-    return map[attrType] || 'string';
+    return map[type] || 'string';
   }
 });

@@ -68,6 +68,7 @@ module Netzke
       include Netzke::Basepack::Grid::Endpoints
       include Netzke::Basepack::Grid::Services
       include Netzke::Basepack::Columns
+      include Netzke::Basepack::Attributes
       include Netzke::Basepack::DataAccessor
 
       client_class do |c|
@@ -93,9 +94,9 @@ module Netzke
 
       def get_records(params)
         if params[:id] == 'root'
-          data_adapter.find_root_records
+          model_adapter.find_root_records
         else
-          data_adapter.find_record_children(data_adapter.find_record(params[:id]))
+          model_adapter.find_record_children(model_adapter.find_record(params[:id]))
         end
       end
 
@@ -103,13 +104,13 @@ module Netzke
       def read(params = {})
         {}.tap do |res|
           records = get_records(params)
-          res["children"] = records.map{|r| node_to_hash(r, final_columns(with_meta: true)).netzke_literalize_keys}
+          res["children"] = records.map{|r| node_to_hash(r, final_columns).netzke_literalize_keys}
           res["total"] = count_records(params)  if config[:enable_pagination]
         end
       end
 
       def node_to_hash(record, columns)
-        data_adapter.record_to_hash(record, columns).tap do |hash|
+        model_adapter.record_to_hash(record, columns).tap do |hash|
           if is_node_expanded?(record)
             hash["children"] = record.children.map {|child| node_to_hash(child, columns).netzke_literalize_keys}
           end
@@ -123,18 +124,18 @@ module Netzke
       def configure_client(c)
         super
 
-        c.title = c.title || self.class.client_class_config.properties[:title] || data_class.name.pluralize
+        c.title = c.title || self.class.client_class_config.properties[:title] || model_class.name.pluralize
         c.bbar = bbar
         # c.context_menu = context_menu
         c.columns = {items: js_columns}
         c.columns_order = columns_order
-        c.pri = data_adapter.primary_key
+        c.pri = model_adapter.primary_key
 
         if c.default_filters
           populate_cols_with_filters(c)
         end
 
-        c.root ||= data_adapter.record_to_hash(data_adapter.root, final_columns(with_meta: true)).netzke_literalize_keys
+        c.root ||= model_adapter.record_to_hash(model_adapter.root, final_columns).netzke_literalize_keys
       end
 
       action :add do |a|
@@ -159,21 +160,21 @@ module Netzke
       end
 
       component :add_window do |c|
-        preconfigure_record_window(c)
-        c.title = "Add #{data_class.model_name.human}"
+        configure_form_window(c)
+        c.title = "Add #{model_class.model_name.human}"
         c.items = [:add_form]
-        c.form_config.record = data_class.new(columns_default_values)
+        c.form_config.record = model_class.new(columns_default_values)
       end
 
       component :edit_window do |c|
-        preconfigure_record_window(c)
-        c.title = "Edit #{data_class.model_name.human}"
+        configure_form_window(c)
+        c.title = "Edit #{model_class.model_name.human}"
         c.items = [:edit_form]
       end
 
       component :multi_edit_window do |c|
-        preconfigure_record_window(c)
-        c.title = "Edit #{data_class.model_name.human.pluralize}"
+        configure_form_window(c)
+        c.title = "Edit #{model_class.model_name.human.pluralize}"
         c.items = [:multi_edit_form]
       end
 
@@ -188,16 +189,16 @@ module Netzke
       end
 
       endpoint :update_node_state do |params|
-        node = data_adapter.find_record(params[:id])
+        node = model_adapter.find_record(params[:id])
         if node.respond_to?(:expanded)
           node.expanded = params[:expanded]
-          data_adapter.save_record(node)
+          model_adapter.save_record(node)
         end
       end
 
       endpoint :update_parent_id do |records|
         records.each do |record|
-          r = data_adapter.find_record(record[:id])
+          r = model_adapter.find_record(record[:id])
           update_record(r, record)
         end
       end
@@ -213,22 +214,22 @@ module Netzke
         [:add, :edit, :apply, :del]
       end
 
-      def preconfigure_record_window(c)
+      def configure_form_window(c)
         c.klass = RecordFormWindow
 
         c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
           f.model = config[:model]
           f.persistent_config = config[:persistent_config]
-          f.strong_default_attrs = config[:strong_default_attrs]
+          f.strong_values = config[:strong_values]
           f.mode = config[:mode]
-          f.items = default_fields_for_forms
+          f.items = default_form_items
         end
       end
 
       def update_record(record, attrs)
         if config.drag_drop && attrs['parentId']
           parent_id = attrs['parentId'] == 'root' ? nil : attrs['parentId']
-          data_adapter.set_record_value_for_attribute(record, { name: 'parent_id' }, parent_id)
+          model_adapter.set_record_value_for_attribute(record, { name: 'parent_id' }, parent_id)
         end
 
         super
@@ -247,8 +248,8 @@ module Netzke
 
       def add_node_interface_methods_by_type!(columns, attrs, type)
         attrs.each do |a|
-          next unless data_adapter.model_respond_to?(a.to_sym)
-          columns << {attr_type: type, name: a, meta: true}
+          next unless model_adapter.model_respond_to?(a.to_sym)
+          columns << {type: type, name: a, meta: true}
         end
       end
 

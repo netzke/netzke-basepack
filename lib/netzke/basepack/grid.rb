@@ -2,8 +2,8 @@ module Netzke
   module Basepack
     # Ext.grid.Panel-based component with the following features:
     #
-    # * automatic default column configuration (overridable via config)
     # * infinite scrolling or pagination
+    # * automatic default attribute configuration (overridable via config)
     # * multi-line CRUD operations
     # * (multe-record) editing and adding records through a form
     # * one-to-many association support
@@ -13,23 +13,72 @@ module Netzke
     # * persistent column resizing, moving and hiding
     # * complex query search with preset management
     #
-    # == Instance configuration
+    # == Configuration
     #
     # The following config options are supported:
     #
     # [model]
     #
-    #   Name of the ActiveRecord model that provides data to this Grid, e.g. "User". Required.
+    #   Name of the ActiveRecord model that provides data to this Grid (e.g. "User") or the model's class (e.g. User).
+    #   Required.
     #
     # [columns]
     #
-    #   An array of columns to be displayed in the grid; each column may be represented by a symbol (representing the
-    #   model's attribute name), or a hash (when extra configuration is needed - see the "Columns" section below).
-    #   Defaults to the model's attributes.
+    #   Explicit list of columns to be displayed in the grid; each column may be represented by a symbol (attribute name),
+    #   or a hash, which contains the +name+ key pointing to the attribute name and additional configuration keys (see
+    #   the "Configuring attributes" section below). For example:
+    #
+    #      class Users < Netzke::Basepack::Grid
+    #        def configure(c)
+    #          super
+    #          c.model = User
+    #          c.columns = [
+    #            :first_name,
+    #            :last_name,
+    #            { name: :salary, with: 50 }
+    #          ]
+    #        end
+    #      end
+    #
+    #   Defaults to model attribute list.
+    #
+    #   Note, that you can also individually override column configs (e.g. setting a column's width) by using the
+    #   +column+ DSL method (see +Basepack::Columns+), and override attributes (e.g. making an attribute read-only) by
+    #   using the +attribute+ DSL method (see +Basepack::Attributes+).
+    #
+    # [form_items]
+    #
+    #   Array of form items. This may define arbitrary form layout. An item that represents a specific attribute, should
+    #   be specified as either a symbol (attribute name), or a hash containing the +name+ key pointing to the attribute
+    #   name, as well as additional configuration keys.
+    #
+    #      class Users < Netzke::Basepack::Grid
+    #        def configure(c)
+    #          super
+    #          c.model = User
+    #          c.form_items = [
+    #            {
+    #              xtype: 'fieldset', title: 'Name', items: [:first_name, :last_name]
+    #            },
+    #            { name: :salary, disabled: true }
+    #          ]
+    #        end
+    #      end
+    #
+    #   Defaults to model attribute list.
+    #
+    # [attribute_overrides]
+    #
+    #   Hash of per-attribute configurations. This allows overriding attributes configs that will be reflected by both
+    #   corresponding grid column and form field.
+    #
+    #   Using this option may be convenient when building composite components containing multiple grids. From inside a
+    #   given grid class it's easier to use the +attribute+ DSL method (see "Configuring attributes").
     #
     # [scope]
     #
-    #   A Proc object used to scope out grid data. Receives the current relation as a parameter and must return the modified relation. For example:
+    #   A Proc object used to scope out grid data. Receives the current relation as a parameter and must return the
+    #   modified relation. For example:
     #
     #      class Books < Netzke::Basepack::Grid
     #        def configure(c)
@@ -39,26 +88,17 @@ module Netzke
     #        end
     #      end
     #
-    # [role]
+    # [strong_values]
     #
-    #   Role for ActiveModel mass-assignment security
-    #
-    # [strong_default_attrs]
-    #
-    #   (defaults to {}) a hash of attributes to be merged atop of every created/updated record, e.g. +role_id: 1+
+    #   A hash of attributes to be merged atop of every created/updated record, e.g. +role_id: 1+
     #
     # [edit_inline]
-    #   TODO: rename to inline_edit
     #   Whether record editing should happen inline (as opposed to using a form). When set to +true+, automatically sets
     #   +paging+ to +true+. Defaults to +false+.
     #
-    # [enable_context_menu]
-    #
-    #   (defaults to true) enable rows context menu
-    #
     # [context_menu]
     #
-    #   An array of actions (e.g. [:edit, "-", :del] - see the Actions section) or +false+ to disable the context menu
+    #   An array of actions (e.g. [:edit, "-", :del] - see the Actions section) or +false+ to disable the context menu.
     #
     # [paging]
     #
@@ -67,8 +107,8 @@ module Netzke
     #
     # [store_config]
     #
-    #   Extra configuration for the JS class's internal store (Ext.data.ProxyStore), which will override Netzke's defaults. For example, to
-    #   modify amount of records per page (defaults to 25), do:
+    #   Extra configuration for the JS class's internal store (Ext.data.ProxyStore), which will override Netzke's
+    #   defaults. For example, to modify amount of records per page (defaults to 25), do:
     #
     #     def configure(c)
     #       c.paging = true
@@ -87,6 +127,7 @@ module Netzke
     #
     #   Do not warn the user about dirty records on the page when changing the page. Defaults to +false+.
     #
+    # TODO: consolidate these
     # [prohibit_create]
     #
     #   when set to +true+ prevents user from adding data
@@ -103,120 +144,46 @@ module Netzke
     #
     #   when set to +true+ prevents user from deleting data
     #
-    # == Columns
+    # == Configuring attributes (columns and form fields)
     #
-    # Columns are configured by passing an array to the +columns+ option. Each element in the array is either the name
-    # of model's (virtual) attribute (in which case the configuration will be fully automatic), or a hash that may
-    # contain the following configuration options as keys:
+    # === Overriding individual attributes
     #
-    # [name]
+    # To override configuration for a specific attribute, you may either use the +attribute_overrides+ configuration
+    # option (see above), or the +attribute+ DSL method, for example:
     #
-    #   (required) name of the column, that may correspond to the model's (virtual) attribute
+    #      class Books < Netzke::Basepack::Grid
+    #        attribute :price do |c|
+    #          c.read_only = true
+    #        end
     #
-    # [read_only]
+    #        def configure(c)
+    #          c.model = Book
+    #          super
+    #        end
+    #      end
     #
-    #   A boolean that defines if the cells in the column should be editable
+    # This will make the 'price' column (as well as corresponding form field) read-only.
     #
-    # [filterable]
+    # The same DSL method may be used for defining virtual attributes. For details, refer to +Basepack::Attributes+.
     #
-    #   Set to false to disable filtering on this column
+    # === Overriding individual column settings
     #
-    # [getter]
+    # To override configuration for a column (like making the column hidden or specyfing its initial width), either add
+    # the +column_config+ key to the +attribute_overrides+ (see above), or use the +column+ DSL method, for example:
     #
-    #   A lambda that receives a record as a parameter, and is expected to return a string that will be sent to the cell
-    #   (can be HTML code), e.g.:
+    #       column :full_name do |c|
+    #         c.width = 200
+    #       end
     #
-    #     getter: ->(r){ [r.first_name, r.last_name].join }
+    # For details, refer to +Basepack::Columns+.
     #
-    #   In case of relation used in relation, passes the last record to lambda, e.g.:
+    # === Specifying column list
     #
-    #     name: author__books__first__name, getter: ->(r){ r.title }
-    #     # r == author.books.first
-    #
-    # [setter]
-    #
-    #   A lambda that receives a record as first parameter, and the value passed from the cell as the second parameter,
-    #   and is expected to modify the record accordingly, e.g.:
-    #
-    #     setter: ->(r,v){ r.first_name, r.last_name = v.split(" ") }
-    #
-    # [scope]
-    #
-    #   The scope for one-to-many association column. Same syntax applies as for scoping out records for the grid
-    #   itself. See "One-to-many association support" for details.
-    #
-    # [sorting_scope]
-    #
-    #   A Proc object used for sorting by the column. This can be useful for sorting by a virtual column. The Proc
-    #   object will get the relation as the first parameter, and the sorting direction as the second. Example:
-    #
-    #     columns => [{ name: "complete_user_name", sorting_scope: ->(rel, dir){ order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}") }, ...]
-    #
-    # [filter_with]
-    #
-    #   A Proc object that receives the relation, the value to filter by and the operator. This allows for more flexible
-    #   handling of basic filters and enables filtering of virtual columns. Example:
-    #
-    #     columns => [{ name: "complete_user_name", filter_with: lambda{|rel, value, op| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) } }, ...]
-    #
-    # [filter_association_with]
-    #
-    #   A Proc object that receives the relation and the value to filter by. This allows flexible handling of live search on association field input.
-    #   Example:
-    #
-    #     columns => [{ name: "author__name", filter_association_with: lambda{|rel, value| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) } }, ...]
-    #
-    # [format]
-    #
-    #   The format to display data in case of date and datetime columns, e.g. 'Y-m-d g:i:s'.
-    #
-    # [excluded]
-    #
-    #   When true, this column will not be used in the grid (not even in the hidden mode)
-    #
-    # [meta]
-    #
-    #   When set to +true+, the data for this column will be available in the grid store, but the column won't be shown
-    #   (as if +excluded+ were set to +true+).
-    #
-    # [blank_line]
-    #
-    #   The blank line for one-to-many association columns, defaults to "---". Set to false to exclude completely.
-    #
-    # [editor]
-    #
-    #   A hash that will override the automatic editor configuration. For example, for one-to-many association column
-    #   you may set it to +{min_chars: 1}+, which will be passed to the combobox and make it query its remote data after
-    #   entering 1 character (instead of default 4).
-    #
-    # Besides these options, a column can receive any meaningful config option understood by
-    # Ext.grid.column.Column[http://docs.sencha.com/ext-js/4-1/#!/api/Ext.grid.column.Column] (e.g. +hidden+)
-    #
-    # === Customizing columns by extending Grid
-    #
-    # Grid itself always uses the columns provided in the `columns` config option. But this behavior can be changed by
-    # overriding the `columns` method, which follows the same semantics as the `columns` config option. This can be
-    # used, for example, for extending the list of columns provided in the config:
+    # To explicitely specify columns in the grid, use the +columns+ config option, or override +Grid#columns+:
     #
     #     def columns
     #       super + [:extra_column]
     #     end
-    #
-    # === Configuring default filters on grid columns
-    #
-    # Default Filters can either be configured on the grid itself
-    #
-    #     def configure(c)
-    #       super
-    #       c.default_filters = [{name: "Mark"}, {age: {gt: 10}}]
-    #     end
-    #
-    # or as a component configuration
-    #
-    #      component :tasks |c|
-    #        c.klass = TaskGrid
-    #        c.default_filters = [{due_date: {before: Time.now}}]
-    #      end
     #
     # == One-to-many association support
     #
@@ -234,13 +201,12 @@ module Netzke
     #
     # In order to scope out the records displayed in the drop-down box, the +scope+ column option can be used, e.g.:
     #
-    #     {name: "author__first_name", scope: ->(relation){relation.where(popular: true)}
+    #     {name: "author__first_name", scope: ->(relation){relation.where(popular: true).limit(10)}
     #
-    # == Add/Edit/Search forms
+    # == Add/Edit forms
     #
-    # Add/Edit/Multi-edit/Search forms are each wrapped in a separate +Basepack::Window+-descending component (called
-    # +RecordFormWindow+ for the add/edit forms, and +SearchWindow+ for the search form), and can be overridden
-    # individually as any other child component.
+    # Add/Edit forms are each wrapped in a separate +Basepack::Window+-descending component (called +RecordFormWindow+
+    # for the add/edit forms, and can be overridden individually as any other child component.
     #
     # === Overriding windows
     #
@@ -251,6 +217,7 @@ module Netzke
     #     component :add_window do |c|
     #       super c
     #       c.title = "Adding new record"
+    #       c.width = "90%"
     #     end
     #
     # === Modifying forms
@@ -258,11 +225,11 @@ module Netzke
     # The forms will by default display the fields that correspond to the configured columns, taking over meaningful
     # configuration options (e.g. +text+ will be converted into +fieldLabel+).
     # You may override the default fields displayed in the all add/edit forms by overriding the
-    # +default_fields_for_forms+ method, which should return an array understood by the +items+ config property of the
+    # +default_form_items+ method, which should return an array understood by the +items+ config property of the
     # +Form+. If you need to use a custom +Basepack::Form+-descending class instead of +Form+, you need to override the
-    # +preconfigure_record_window+ method:
+    # +configure_form_window+ method:
     #
-    #     def preconfigure_record_window(c)
+    #     def configure_form_window(c)
     #       super
     #       c.form_config.klass = UserForm
     #     end
@@ -299,10 +266,11 @@ module Netzke
     #
     # [search]
     #
-    #   Advanced searching
+    #   Advanced search
     class Grid < Netzke::Base
       include self::Endpoints
       include self::Services
+      include Netzke::Basepack::Attributes
       include Netzke::Basepack::Columns
       include Netzke::Basepack::DataAccessor
 
@@ -326,41 +294,15 @@ module Netzke
       def configure_client(c)
         super
 
-        c.title = c.title || self.class.client_class_config.properties[:title] || data_class.name.pluralize
+        c.title = c.title || self.class.client_class_config.properties[:title] || model_class.name.pluralize
         c.bbar = bbar
         c.context_menu = context_menu
         c.columns = {items: js_columns}
         c.columns_order = columns_order
-        c.pri = data_adapter.primary_key
+        c.pri = model_adapter.primary_key
         if c.default_filters
           populate_cols_with_filters(c)
         end
-      end
-
-      # FIXME: move to Columns
-      def populate_cols_with_filters(c)
-        c.default_filters.each do |f|
-
-          c.columns[:items].each do |col|
-            if col[:name].to_sym == f[:column].to_sym
-              if f[:value].is_a?(Hash)
-                val = {}
-                f[:value].each do |k,v|
-                  val[k] = (v.is_a?(Time) || v.is_a?(Date) || v.is_a?(ActiveSupport::TimeWithZone)) ? Netzke::Core::JsonLiteral.new("new Date('#{v.strftime("%m/%d/%Y")}')") : v
-                end
-              else
-                val = f[:value]
-              end
-              new_filter = {value: val, active: true}
-              if col[:filter]
-                col[:filter].merge! new_filter
-              else
-                col[:filter] = new_filter
-              end
-            end
-          end
-        end
-        c.default_filters = nil
       end
 
       def bbar
@@ -414,31 +356,38 @@ module Netzke
       end
 
       component :add_window do |c|
-        preconfigure_record_window(c)
-        c.title = "Add #{data_class.model_name.human}"
+        configure_form_window(c)
+        c.title = "Add #{model_class.model_name.human}"
         c.items = [:add_form]
-        c.form_config.record = data_class.new(columns_default_values)
+        c.form_config.record = model_class.new(columns_default_values)
       end
 
       component :edit_window do |c|
-        preconfigure_record_window(c)
-        c.title = "Edit #{data_class.model_name.human}"
+        configure_form_window(c)
+        c.title = "Edit #{model_class.model_name.human}"
         c.items = [:edit_form]
       end
 
       component :multi_edit_window do |c|
-        preconfigure_record_window(c)
-        c.title = "Edit #{data_class.model_name.human.pluralize}"
+        configure_form_window(c)
+        c.title = "Edit #{model_class.model_name.human.pluralize}"
         c.items = [:multi_edit_form]
       end
 
-      component :search_window do |c|
-        c.klass = SearchWindow
-        c.model = config.model
-        c.fields = attributes_for_search
+      def configure_form_window(c)
+        c.klass = RecordFormWindow
+        c.form_config = ActiveSupport::OrderedOptions.new
+        configure_form(c.form_config)
       end
 
-      protected
+      def configure_form(c)
+        shared_config = config.to_h.slice(:model, :mode, :persistent_config, :strong_values)
+        c.merge!(shared_config)
+        c.attribute_overrides = attribute_overrides
+        c.items = form_items
+      end
+
+      private
 
       def validate_config(c)
         raise ArgumentError, "Grid requires a model" if c.model.nil?
@@ -448,20 +397,6 @@ module Netzke
         end
         super
       end
-
-      def preconfigure_record_window(c)
-        c.klass = RecordFormWindow
-
-        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
-          f.model = config[:model]
-          f.persistent_config = config[:persistent_config]
-          f.strong_default_attrs = config[:strong_default_attrs]
-          f.mode = config[:mode]
-          f.items = default_fields_for_forms
-        end
-      end
-
-      private
 
       def self.server_side_config_options
         super + [:scope]

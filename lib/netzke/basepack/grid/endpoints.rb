@@ -31,12 +31,12 @@ module Netzke
           # +query+ - what's typed-in in the combobox
           # +id+ - selected record id
           endpoint :get_combobox_options do |params|
-            column = final_columns.detect{ |c| c[:name] == params[:attr] }
-            client.data = data_adapter.combo_data(column, params[:query])
+            column = non_meta_columns.detect{ |c| c[:name] == params[:attr] }
+            client.data = model_adapter.combo_data(column, params[:query])
           end
 
           endpoint :move_rows do |params|
-            data_adapter.move_records(params)
+            model_adapter.move_records(params)
           end
 
           # Process the submit of multi-editing form ourselves

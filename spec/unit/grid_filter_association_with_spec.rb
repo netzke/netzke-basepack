@@ -10,16 +10,15 @@ describe Netzke::Basepack::Grid do
   end
 
   it 'filters by custom field' do
-    result = grid.data_adapter.combo_data(columns[0], '1920')
+    result = grid.model_adapter.combo_data(columns[0], '1920')
     expect(result.size).to eq 2
 
-    result = grid.data_adapter.combo_data(columns[0], '1850')
+    result = grid.model_adapter.combo_data(columns[0], '1850')
     expect(result.size).to eq 3
   end
 
   it 'uses getters to display results' do
-    result = grid.data_adapter.combo_data(columns[0], '1926')
+    result = grid.model_adapter.combo_data(columns[0], '1926')
     expect(result.first.last).to eq 'Maria Castaneda'
   end
-
 end

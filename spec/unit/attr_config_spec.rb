@@ -2,14 +2,14 @@ require 'spec_helper'
 
 module Netzke::Basepack
   describe AttrConfig do
-    it "should implement primary?" do
+    it "implements primary?" do
       adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
 
       c = AttrConfig.new(:id, adapter)
-      c.primary?.should eql true
+      expect(c.primary?).to eql true
 
       c = AttrConfig.new(:title, adapter)
-      c.primary?.should eql false
+      expect(c.primary?).to eql false
     end
 
     attr_read_only_checks = {
@@ -21,12 +21,12 @@ module Netzke::Basepack
     }
 
     attr_read_only_checks.each_pair do |attr,value|
-      it "should set default read_only for Book attribute #{attr} to #{value}" do
+      it "sets default read_only for Book attribute #{attr} to #{value}" do
         adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
 
         c = AttrConfig.new(attr, adapter)
-        c.set_defaults!
-        c.read_only.should == value
+        c.set_defaults
+        expect(c.read_only).to eql value
       end
     end
   end

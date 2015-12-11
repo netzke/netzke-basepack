@@ -17,7 +17,7 @@ module Netzke
             client.success = true # respond to classic form submission with {success: true}
             client.on_submit_success # inform the Netzke endpoint caller about success
           else
-            errors = data_adapter.errors_array(@record).map do |error|
+            errors = model_adapter.errors_array(@record).map do |error|
               {level: :error, msg: error}
             end
             client.nz_feedback(errors)
@@ -34,7 +34,7 @@ module Netzke
         # Builds the form errors
         def build_form_errors(record)
           form_errors = {}
-          foreign_keys = data_adapter.hash_fk_model
+          foreign_keys = model_adapter.hash_fk_model
           record.errors.to_hash.map{|field, error|
             # some ORM return an array for error
             error = error.join ', ' if error.kind_of? Array
@@ -53,22 +53,22 @@ module Netzke
 
         # Creates/updates a record from hash
         def create_or_update_record(hsh)
-          hsh.merge!(config[:strong_default_attrs]) if config[:strong_default_attrs]
+          hsh.merge!(config[:strong_values]) if config[:strong_values]
 
           # only pick the record specified in the params if it was not provided in the configuration
-          @record ||= data_adapter.find_record hsh.delete(data_class.primary_key.to_s)
+          @record ||= model_adapter.find_record hsh.delete(model_class.primary_key.to_s)
 
-          #data_class.find(:first, :conditions => {data_class.primary_key => hsh.delete(data_class.primary_key)})
+          #model_class.find(:first, :conditions => model_class.primary_key => hsh.delete(model_class.primary_key)})
           success = true
 
-          @record = data_class.new if @record.nil?
+          @record = model_class.new if @record.nil?
 
           hsh.each_pair do |k,v|
-            data_adapter.set_record_value_for_attribute(@record, fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v)
+            model_adapter.set_record_value_for_attribute(@record, fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v)
           end
 
           # did we have complete success?
-          success && data_adapter.save_record(@record)
+          success && model_adapter.save_record(@record)
         end
       end
     end

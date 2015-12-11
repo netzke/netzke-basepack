@@ -55,8 +55,8 @@ module Netzke
 
       def attributes
         config[:fields].map do |f|
-          f[:attr_type] ||= :string
-          {name: f[:name], field_label: f[:field_label], attr_type: f[:attr_type]}
+          f[:type] ||= :string
+          {name: f[:name], field_label: f[:field_label], type: f[:type]}
         end
       end
 

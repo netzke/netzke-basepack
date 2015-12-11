@@ -3,16 +3,11 @@ require 'spec_helper'
 module Netzke::Basepack
   describe Columns do
     it "provides correct list of default fields for forms" do
-      fields = ::Grid::CustomColumns.new.send :default_fields_for_forms
-      fields.map{|f| f[:name]}.should == %w[id author__first_name author__last_name author__name title digitized rating exemplars updated_at]
+      fields = ::Grid::CustomColumns.new.send :default_form_items
+      expect(fields).to eql %w[id author__first_name author__last_name author__name title digitized rating exemplars updated_at extra_column].map(&:to_sym)
     end
 
-    it "provides correct read_only configs for default fields for forms" do
-      fields = ::Grid::CustomColumns.new.send :default_fields_for_forms
-      fields.map{|f| f[:read_only]}.should == [true, true, true, false, false, false, false, false, false]
-    end
-
-    it "should allow overriding columns" do
+    it "allows overriding columns" do
       class GridOne < Netzke::Basepack::Grid
         def configure(c)
           super
@@ -26,7 +21,7 @@ module Netzke::Basepack
       end
 
       columns = GridOne.new.js_columns
-      columns.detect{|c| c[:name] == 'title'}[:renderer].should == 'uppercase'
+      expect(columns.detect{|c| c[:name] == 'title'}[:renderer]).to eql 'uppercase'
     end
 
     it 'prepends primary key column automatically when columns are listed explicitely' do
@@ -43,7 +38,7 @@ module Netzke::Basepack
       end
 
       columns = GridTwo.new.js_columns
-      columns.detect{|c| c[:name] == 'id'}[:hidden].should_not == true # not hidden by default in Ext JS grid
+      expect(columns.detect{|c| c[:name] == 'id'}[:hidden]).to_not eql true # not hidden by default in Ext JS grid
     end
 
     it 'makes virtual attributes not editable and not sortable by default' do
@@ -51,6 +46,7 @@ module Netzke::Basepack
         def configure(c)
           super
           c.model = Book
+          c.columns = [:in_abundance]
         end
 
         column :in_abundance do |c|
@@ -58,8 +54,8 @@ module Netzke::Basepack
         end
       end
       column = GridThree.new.js_columns.detect{|c| c[:name] == 'in_abundance'}
-      column[:read_only].should eql true
-      column[:sortable].should eql false
+      expect(column[:read_only]).to eql true
+      expect(column[:sortable]).to eql false
     end
 
     it 'does not render excluded columns' do
@@ -74,7 +70,7 @@ module Netzke::Basepack
         end
       end
 
-      GridFour.new.js_columns.detect{|c| c[:name] == 'exemplars'}.should be_nil
+      expect(GridFour.new.js_columns.detect{|c| c[:name] == 'exemplars'}).to be_nil
     end
   end
 end

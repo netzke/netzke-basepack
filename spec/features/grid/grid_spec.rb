@@ -98,4 +98,10 @@ feature Netzke::Basepack::Grid, js: true do
     Author.create(data)
     run_mocha_spec 'grid/buffered'
   end
+
+  it 'provides meta attribute accessible via the store' do
+    FactoryGirl.create :book, exemplars: 1000
+    FactoryGirl.create :book, exemplars: 2000
+    run_mocha_spec 'grid/meta_column'
+  end
 end

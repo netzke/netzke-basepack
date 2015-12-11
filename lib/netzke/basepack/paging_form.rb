@@ -21,7 +21,7 @@ module Netzke
     class PagingForm < Form
       # override
       def record
-        @record ||= data_adapter.first
+        @record ||= model_adapter.first
       end
 
       def configure_client(c)
@@ -31,7 +31,7 @@ module Netzke
       end
 
       endpoint :get_data do |params|
-        @record = data_adapter.get_records(params).first
+        @record = model_adapter.get_records(params).first
         record_hash = @record && js_record_data
         client.merge!(:records => record_hash && [record_hash] || [], :total => total_records(params))
       end
@@ -55,7 +55,7 @@ module Netzke
     protected
 
       def total_records(params = {})
-        @total_records ||= data_adapter.count_records(params, [])
+        @total_records ||= model_adapter.count_records(params, [])
       end
     end
   end

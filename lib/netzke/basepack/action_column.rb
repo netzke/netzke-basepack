@@ -39,12 +39,11 @@ module Netzke
       extend ActiveSupport::Concern
 
       def augment_column_config(c)
-        if c[:type] == :action
+        super
+        if c.type == :action
           c.xtype = :actioncolumn
           c.items = c.actions.map {|a| build_action_config(a)}.netzke_jsonify
         end
-
-        super
       end
 
     private

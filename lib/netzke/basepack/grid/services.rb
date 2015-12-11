@@ -7,7 +7,7 @@ module Netzke
         def read(params = {})
           {}.tap do |res|
             records = get_records(params)
-            res[:data] = records.map{|r| data_adapter.record_to_array(r, final_columns(:with_meta => true))}
+            res[:data] = records.map{|r| model_adapter.record_to_array(r, final_columns)}
             res[:total] = count_records(params)
           end
         end
@@ -21,7 +21,7 @@ module Netzke
         def create(data)
           data.inject({}) do |out, attrs|
             id = attrs.delete('internal_id')
-            record = data_adapter.new_record
+            record = model_adapter.new_record
             out.merge(id => update_record(record, attrs))
           end
         end
@@ -38,8 +38,8 @@ module Netzke
         #   }
         def update(data)
           data.inject({}) do |out, attrs|
-            id = attrs.delete(data_adapter.primary_key)
-            record = data_adapter.find_record(id, scope: config.scope)
+            id = attrs.delete(model_adapter.primary_key)
+            record = model_adapter.find_record(id, scope: config.scope)
             record.nil? ? out.merge(id => {error: "Not allowed to edit record #{id}"}) : out.merge(id => update_record(record, attrs))
           end
         end
@@ -55,7 +55,7 @@ module Netzke
           out = {}
 
           ids.each {|id|
-            record = data_adapter.find_record(id, scope: config[:scope])
+            record = model_adapter.find_record(id, scope: config[:scope])
             next if record.nil?
 
             if record.destroy
@@ -74,13 +74,13 @@ module Netzke
           params[:query] = normalize_query(params[:query]) if params[:query].present?
           params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
-          data_adapter.get_records(params, final_columns)
+          model_adapter.get_records(params, final_columns)
         end
 
         def count_records(params)
           params[:scope] = config[:scope] # note, params[:scope] becomes ActiveSupport::HashWithIndifferentAccess
 
-          data_adapter.count_records(params, final_columns)
+          model_adapter.count_records(params, final_columns)
         end
 
         # Override this method to react on each operation that caused changing of data
@@ -122,17 +122,17 @@ module Netzke
           attrs.each_pair do |k,v|
             attr = final_columns_hash[k.to_sym]
             next if attr.nil?
-            data_adapter.set_record_value_for_attribute(record, attr, v)
+            model_adapter.set_record_value_for_attribute(record, attr, v)
           end
 
-          strong_attrs = config[:strong_default_attrs] || {}
+          strong_attrs = config[:strong_values] || {}
 
           strong_attrs.each_pair do |k,v|
-            data_adapter.set_record_value_for_attribute(record, {name: k.to_s}, v)
+            model_adapter.set_record_value_for_attribute(record, {name: k.to_s}, v)
           end
 
           if record.save
-            {record: data_adapter.record_to_array(record, final_columns(:with_meta => true))}
+            {record: model_adapter.record_to_array(record, final_columns)}
           else
             {error: record.errors.to_a}
           end

@@ -6,25 +6,27 @@ module Netzke
 
       # Items with normalized fields (i.e. containing all the necessary attributes needed by Ext.form.Form to render a field)
       def items
-        prepend_primary_key(config.items) || data_adapter.model_attributes
+        prepend_primary_key(config.items) || model_adapter.model_attributes
       end
 
       # Hash of fully configured fields, that are referenced in the items. E.g.:
-      #   { :role__name => {:xtype => 'netzkeremotecombo', :disabled => true, :value => "admin"},
-      #     :created_at => {:xtype => 'datetime', :disabled => true, :value => "2010-10-10 10:10"}
+      #   {
+      #     role__name: {xtype: 'netzkeremotecombo', disabled: true, value: "admin"},
+      #     created_at: {xtype: 'datetime', disabled: true, value: "2010-10-10 10:10"}
       #   }
       def fields
         @_fields ||= fields_from_items.tap do |flds|
           # add primary key field if not present
-          primary_key = data_adapter.primary_key
+          primary_key = model_adapter.primary_key
           flds[primary_key.to_sym] ||= {name: primary_key}
         end
       end
 
       # Hash of normalized field configs extracted from :items, e.g.:
       #
-      #     { :role__name => {:xtype => "netzkeremotecombo"},
-      #       :password => {:xtype => "passwordfield"}
+      #     {
+      #       role__name: {xtype: "netzkeremotecombo"},
+      #       password: {xtype: "passwordfield"}
       #     }
       def fields_from_items
         @fields_from_items || (normalize_config || true) && @fields_from_items
@@ -39,14 +41,18 @@ module Netzke
       end
 
       def extend_field(field)
-        Netzke::Basepack::FieldConfig.new(field, data_adapter).tap do |c|
-
+        Netzke::Basepack::FieldConfig.new(field, model_adapter).tap do |c|
           # not binding to a model attribute
-          return c if c.no_binding
+          return c if c.bind == false
+
+          # merge in attribute
+          c.merge_attribute(attribute_overrides[c.name.to_sym] || {})
+
+          return nil if c.excluded
 
           @fields_from_items[c.name.to_sym] = c
 
-          c.set_defaults!
+          c.set_defaults
         end
       end
 
@@ -54,13 +60,13 @@ module Netzke
 
       def prepend_primary_key(items)
         items && items.tap do |items|
-          items.insert(0, data_adapter.primary_key.to_sym) if !includes_primary_key?(items)
+          items.insert(0, model_adapter.primary_key.to_sym) if !includes_primary_key?(items)
         end
       end
 
       def includes_primary_key?(items)
         !!items.detect do |item|
-          (item.is_a?(Hash) ? item[:name] : item.to_s) == data_adapter.primary_key
+          (item.is_a?(Hash) ? item[:name] : item.to_s) == model_adapter.primary_key
         end
       end
 

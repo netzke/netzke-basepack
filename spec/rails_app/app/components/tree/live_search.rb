@@ -1,3 +1,4 @@
+# WIP (broken)
 class Tree::LiveSearch < Netzke::Basepack::Tree
   plugin :grid_live_search do |c|
     c.klass = Netzke::Basepack::GridLiveSearch
@@ -13,8 +14,8 @@ class Tree::LiveSearch < Netzke::Basepack::Tree
       {name: :node_label, xtype: :treecolumn, flex: 1, read_only: true},
       {name: :name, flex: 1},
       {name: :size, flex: 1},
-      {name: :leaf, flex: 1, attr_type: :boolean, read_only: false},
-      {name: :file_size, flex: 1, attr_type: :integer}
+      {name: :leaf, flex: 1, type: :boolean, read_only: false},
+      {name: :file_size, flex: 1, type: :integer}
     ]
 
     # Show all FileRecord records with parent_id of 'nil' as top-level records

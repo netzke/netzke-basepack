@@ -3,7 +3,7 @@ class BooksBoundToAuthor < Netzke::Basepack::Grid
   def configure(c)
     c.model = Book
     c.scope = {:author_id => Author.first.id}
-    c.strong_default_attrs = {:author_id => Author.first.id}
+    c.strong_values = {:author_id => Author.first.id}
     super
   end
 end

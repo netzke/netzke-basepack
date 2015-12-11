@@ -14,7 +14,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def model_attributes
-      @_model_attributes ||= attribute_names.map do |column_name|
+      @model_attributes ||= attribute_names.map do |column_name|
         # If it's named as foreign key of some association, then it's an association column
         assoc = @model_class.reflect_on_all_associations.detect { |a| a.foreign_key == column_name }
 
@@ -264,7 +264,7 @@ module Netzke::Basepack::DataAdapters
                   record.send("#{assoc.foreign_key}=", value.to_i < 0 ? nil : value)
                 end
               else
-                logger.warn "Netzke: Association #{assoc} is not known for class #{@data_class}"
+                logger.warn "Netzke: Association #{assoc} is not known for class #{@model_class}"
               end
             else
               logger.warn "Netzke: Wrong attribute name: #{attr[:name]}"

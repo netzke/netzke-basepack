@@ -1,41 +1,54 @@
 class Grid::CustomColumns < Netzke::Basepack::Grid
-  column :author__first_name do |c|
-    c.renderer = :my_renderer
+  attribute :author__first_name do |c|
+    c.column_config = {renderer: :my_renderer}
+    c.field_config = {excluded: true}
+  end
+
+  attribute :author__last_name do |c|
+    c.column_config = {renderer: :uppercase}
     c.read_only = true
   end
 
-  column :author__last_name do |c|
-    c.renderer = :uppercase
-    c.read_only = true
+  attribute :author__name do |c|
+    c.column_config = {
+      sorting_scope: -> (relation, dir) do
+        relation.joins(:author).order("authors.first_name #{dir}, authors.last_name #{dir}")
+      end,
+      flex: 1
+    }
+
+    c.label = "Author"
   end
 
-  column :author__name do |c|
-    c.flex = 1
-    c.sorting_scope = ->(relation, dir) { relation.joins(:author).order("authors.first_name #{dir}, authors.last_name #{dir}") }
-    c.text = "Author"
+  attribute :title do |c|
+    c.column_config = {flex: 1}
   end
 
-  column :title do |c|
-    c.flex = 1
-  end
-
-  column :extra_column do |c|
-    c.text = "Extra"
-  end
-
-  column :rating do |c|
-    c.editor = {
+  attribute :rating do |c|
+    editor = {
       :trigger_action => :all,
       :xtype => :combo,
       :store => [[1, "Good"], [2, "Average"], [3, "Poor"]]
     }
 
-    c.renderer = "function(v){return ['', 'Good', 'Average', 'Poor'][v];}"
+    c.column_config = {
+      renderer: "function(v){return ['', 'Good', 'Average', 'Poor'][v];}",
+      editor: editor
+    }
+
+    c.field_config = editor
+  end
+
+  attribute :extra_column do |c|
+    c.label = 'Extra stuff'
   end
 
   def configure(c)
     c.model = "Book"
-    c.columns = [ :author__first_name, :author__last_name, :author__name, :title, :digitized, :rating, :exemplars, :updated_at ]
+
+    c.columns = [
+      :author__first_name, :author__last_name, :author__name, :title, :digitized, :rating, :exemplars, :updated_at
+    ]
     super
   end
 

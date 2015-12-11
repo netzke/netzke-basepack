@@ -1,8 +1,13 @@
 module Netzke
   module Basepack
-    # Ext.form.Panel-based component
+    # Ext.form.Panel-based component with the following features
     #
-    # == Netzke-specific config options
+    # * automatic default attribute configuration (overridable via config)
+    # * model validations
+    # * dynamic loading of form data
+    # * lockable mode
+    #
+    # == Configuration
     #
     # * +model+ - name of the ActiveRecord model that provides data to this Grid.
     # * +record+ - record to be displayd in the form. Takes precedence over +:record_id+
@@ -10,11 +15,15 @@ module Netzke
     # * +items+ - the layout of the fields as an array. See "Layout configuration".
     # * +mode+ - render mode, accepted options:
     # * +lockable+ - makes the form panel load initially in "display mode", then lets "unlock" it, change the values, and "lock" it again, while updating the values on the server
-    # * +updateMask+ - +Ext.LoadMask+ config options for the mask shown while the form is submitting its values
+    #
+    # == Configuring attributes
+    #
+    # === Overriding individual attributes
+    # Use the +attribute+ DSL method to override configuration for a specific attribute. See +Basepack::Attributes+.
     #
     # === Layout configuration
     #
-    # The layout of the form is configured by supplying the +item+ config option, same way it would be configured in Ext (thus allowing for complex form layouts). Form will expand fields by looking at their names (unless +no_binding+ set to +true+ is specified for a specific field).
+    # The layout of the form is configured by supplying the +item+ config option, same way it would be configured in Ext (thus allowing for complex form layouts). Form will expand fields by looking at their names (unless +bind+ is set to +false+ for a specific field).
     #
     # == Endpoints
     # Form implements the following endpoints:
@@ -28,6 +37,7 @@ module Netzke
     class Form < Netzke::Base
       include self::Endpoints
       include self::Services
+      include Netzke::Basepack::Attributes
       include Netzke::Basepack::Fields
       include Netzke::Basepack::DataAccessor
 
@@ -43,8 +53,8 @@ module Netzke
         configure_bbar(c)
         configure_apply_on_return(c)
 
-        if data_adapter
-          c.pri = data_adapter.primary_key
+        if model_adapter
+          c.pri = model_adapter.primary_key
         end
 
         if !c.multi_edit
@@ -85,11 +95,11 @@ module Netzke
 
       # A hash of record data including the meta field
       def js_record_data
-        data_adapter.record_to_hash(record, fields.values).merge(:meta => meta_field).netzke_literalize_keys
+        model_adapter.record_to_hash(record, fields.values).merge(:meta => meta_field).netzke_literalize_keys
       end
 
       def record
-        @record ||= config[:record] || config[:record_id] && data_adapter.find_record(config[:record_id])
+        @record ||= config[:record] || config[:record_id] && model_adapter.find_record(config[:record_id])
       end
 
     protected
@@ -119,7 +129,7 @@ module Netzke
         end
 
         fields_that_need_associated_values.each_pair.inject({}) do |r,(k,v)|
-          r.merge(k => data_adapter.record_value_for_attribute(record, fields_that_need_associated_values[k], true))
+          r.merge(k => model_adapter.record_value_for_attribute(record, fields_that_need_associated_values[k], true))
         end
       end
     end

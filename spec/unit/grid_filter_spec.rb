@@ -15,72 +15,72 @@ describe Netzke::Basepack::Grid do
 
   it 'filters by text' do
     res = grid.read filters: [{"type" => 'string', "property" => 'notes', "value" => 'read'}]
-    res[:total].should == 2
+    expect(res[:total]).to eql 2
   end
 
   it 'filters by associated record text' do
     res = grid.read filters: [{"type" => 'string', "property" => "author__first_name", "value" => "d"}]
-    res[:total].should == 2
+    expect(res[:total]).to eql 2
 
     res = grid.read filters: [{"type" => 'string', "property" => "author__first_name", "value" => "carl"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
   end
 
   it 'filters by associated record integer' do
     res = grid.read filters: [{"type" => 'integer', "property" => "author__year", "value" => 1899, "operator" => "eq"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
 
     res = grid.read filters: [{"type" => 'integer', "operator" => "gt", "property" => "author__year", "value" => 1900}]
-    res[:total].should == 2
+    expect(res[:total]).to eql 2
   end
 
   it 'filters by datetime' do
     res = grid.read filters: [{"type"=>"date", "operator"=>"eq", "value"=>"04/25/2011", "property"=>"last_read_at"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
 
     res = grid.read filters: [{"type"=>"date", "operator"=>"gt", "value"=>"04/25/2011", "property"=>"last_read_at"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
 
     res = grid.read filters: [{"type"=>"date", "operator"=>"lt", "value"=>"12/24/2010", "property"=>"last_read_at"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
 
     res = grid.read filters: [{"type"=>"date", "operator"=>"gt", "value"=>"12/23/2010", "property"=>"last_read_at"}]
-    res[:total].should == 2
+    expect(res[:total]).to eql 2
 
     res = grid.read filters: [{"type"=>"date", "operator"=>"lt", "value"=>"04/26/2011", "property"=>"last_read_at"}, {"type"=>"date", "operator"=>"gt", "value"=>"12/23/2010", "property"=>"last_read_at"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
   end
 
   it 'filters by integer' do
     res = grid.read filters: [{"type"=>"integer", "operator"=>"gt", "value"=>"6", "property"=>"exemplars"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
 
     res = grid.read filters: [{"type"=>"integer", "operator"=>"eq", "value"=>"5", "property"=>"exemplars"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
 
     res = grid.read filters: [{"type"=>"integer", "operator"=>"eq", "value"=>"6", "property"=>"exemplars"}]
-    res[:total].should == 0
+    expect(res[:total]).to eql 0
   end
 
   it 'filters by custom filter column' do
     res = grid.read filters: [{"type"=>"string", "value"=>"read", "property"=>"title_or_notes"}]
-    res[:total].should == 2
+    expect(res[:total]).to eql 2
 
     res = grid.read filters: [{"type"=>"string", "value"=>"o", "property"=>"title_or_notes"}]
-    res[:total].should == 3
+    expect(res[:total]).to eql 3
 
     res = grid.read filters: [{"type"=>"string", "value"=>"ro", "property"=>"title_or_notes"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
 
     res = grid.read filters: [{"type"=>"string", "value"=>"ix", "property"=>"title_or_notes"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
   end
 
   it 'filters by boolean' do
     res = grid.read filters: [{"type"=>"boolean", "value"=>true, "property"=>"digitized"}]
-    res[:total].should == 2
+    expect(res[:total]).to eql 2
 
     res = grid.read filters: [{"type"=>"boolean", "value"=>false, "property"=>"digitized"}]
-    res[:total].should == 1
+    expect(res[:total]).to eql 1
   end
 end
