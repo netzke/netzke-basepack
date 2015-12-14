@@ -2,7 +2,10 @@
 class BookGridWithVirtualAttributes < Netzke::Basepack::Grid
   include Extras::BookPresentation
 
-  model "Book"
+  def configure(c)
+    super
+    c.model = Book
+  end
 
   def columns
     custom_fields

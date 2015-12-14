@@ -1,5 +1,8 @@
 class Grid::Filters < Netzke::Basepack::Grid
-  model 'Book'
+  def configure(c)
+    super
+    c.model = Book
+  end
 
   def columns
     [ :title, :author__first_name, :author__year, :exemplars, :notes, :last_read_at, :digitized, :price,

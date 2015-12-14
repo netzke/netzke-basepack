@@ -305,7 +305,6 @@ module Netzke
       include self::Services
       include Netzke::Basepack::Columns
       include Netzke::Basepack::DataAccessor
-      include Netzke::Core::ConfigToDslDelegator
 
       # JavaScript class configuration
       client_class do |c|
@@ -323,12 +322,6 @@ module Netzke
 
         c.require :extensions
       end
-
-      # Allows children classes to simply do:
-      #
-      #     model "User"
-      # TODO: get rid of it for less entropy
-      delegates_to_dsl :model
 
       def configure_client(c)
         super

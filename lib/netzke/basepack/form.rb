@@ -30,14 +30,11 @@ module Netzke
       include self::Services
       include Netzke::Basepack::Fields
       include Netzke::Basepack::DataAccessor
-      include Netzke::Core::ConfigToDslDelegator
 
       client_class do |c|
         c.extend = "Ext.form.Panel"
         c.require :readonly_mode
       end
-
-      delegates_to_dsl :model, :record_id
 
       def configure_client(c)
         super

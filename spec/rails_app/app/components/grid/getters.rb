@@ -1,5 +1,8 @@
 class Grid::Getters < Netzke::Basepack::Grid
-  model 'Book'
+  def configure(c)
+    super
+    c.model = Book
+  end
 
   def columns
     [

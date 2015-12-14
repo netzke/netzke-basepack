@@ -1,5 +1,8 @@
 class Grid::FilterAssociationWith < Netzke::Basepack::Grid
-  model 'Book'
+  def configure(c)
+    super
+    c.model = Book
+  end
 
   def columns
     [
