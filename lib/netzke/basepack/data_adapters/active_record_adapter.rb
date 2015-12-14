@@ -93,7 +93,7 @@ module Netzke::Basepack::DataAdapters
         # Options for an asssociation attribute
 
         relation = assoc.klass.all
-        relation = relation.attr[:scope].call(relation) if attr[:scope].is_a?(Proc)
+        relation = attr[:scope].call(relation) if attr[:scope].is_a?(Proc)
 
         if attr[:filter_association_with]
           relation = attr[:filter_association_with].call(relation, query).to_a

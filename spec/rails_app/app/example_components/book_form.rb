@@ -11,7 +11,7 @@ class BookForm < Netzke::Basepack::Form
     c.title Book.model_name.human
     c.items = [
       :title,
-      {:name => :author__first_name, :setter => author_first_name_setter},
+      {:name => :author__first_name, :setter => author_first_name_setter, scope: ->(r) {r.limit(10)}},
       :author__name,
       {:name => :author__last_name, :xtype => :displayfield},
       {:name => :rating, :xtype => :combo, :store => [[1, "Good"], [2, "Average"], [3, "Poor"]]},

@@ -26,4 +26,18 @@ describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
       adapter.record_value_for_attribute(book, {name: 'author__id'}, true).should be_nil
     end
   end
+
+  describe "#combo_data" do
+    it "returns scoped compo data if association scope is set" do
+      3.times {FactoryGirl.create(:author)}
+      adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
+
+      attr = {
+        name: "author__first_name",
+        scope: ->(r) {r.limit(2)}
+      }
+
+      expect(adapter.combo_data(attr).size).to eql 2
+    end
+  end
 end
