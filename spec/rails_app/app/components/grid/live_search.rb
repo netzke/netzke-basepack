@@ -5,7 +5,7 @@ class Grid::LiveSearch < Netzke::Basepack::Grid
   end
 
   column :author__name do |c|
-    c.filter_with = ->(rel, value, op){ rel.where("authors.first_name like ? or authors.last_name like ?", "%#{value}%", "%#{value}%")}
+    c.filter_with = lambda {|rel, value, op| rel.where("authors.first_name like ? or authors.last_name like ?", "%#{value}%", "%#{value}%")}
   end
 
   column :title do |c|

@@ -50,7 +50,7 @@ module Netzke::Basepack
         end
 
         column :in_abundance do |c|
-          c.getter = ->{ true }
+          c.getter = lambda { true }
         end
       end
       column = GridThree.new.js_columns.detect{|c| c[:name] == 'in_abundance'}

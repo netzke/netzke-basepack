@@ -84,7 +84,7 @@ module Netzke
     #        def configure(c)
     #          c.model = "Book"
     #          super
-    #          c.scope = ->(r) { r.where(author_id: 1) }
+    #          c.scope = lambda {|r| r.where(author_id: 1) }
     #        end
     #      end
     #
@@ -201,7 +201,7 @@ module Netzke
     #
     # In order to scope out the records displayed in the drop-down box, the +scope+ column option can be used, e.g.:
     #
-    #     {name: "author__first_name", scope: ->(relation){relation.where(popular: true).limit(10)}
+    #     {name: "author__first_name", scope: lambda {|relation| relation.where(popular: true).limit(10)}
     #
     # == Add/Edit forms
     #
@@ -381,7 +381,10 @@ module Netzke
       end
 
       def configure_form(c)
-        shared_config = config.to_h.slice(:model, :mode, :persistent_config, :strong_values)
+        shared_config = %w(model mode persistent_config strong_values).reduce({}) do |r, m|
+          r.merge!(m.to_sym => config.send(m))
+        end
+
         c.merge!(shared_config)
         c.attribute_overrides = attribute_overrides
         c.items = form_items

@@ -54,11 +54,11 @@ module Netzke
     #   A lambda that receives a record as a parameter, and is expected to return the value used in the grid cell or
     #   form field, e.g.:
     #
-    #     getter: ->(r){ [r.first_name, r.last_name].join }
+    #     getter: lambda {|r| [r.first_name, r.last_name].join }
     #
     #   In case of relation used in relation, passes the last record to lambda, e.g.:
     #
-    #     name: author__books__first__name, getter: ->(r){ r.title }
+    #     name: author__books__first__name, getter: lambda {|r| r.title }
     #     r #=> author.books.first
     #
     # [setter]
@@ -66,7 +66,7 @@ module Netzke
     #   A lambda that receives a record as first parameter, and the value passed from the cell/field as the second parameter,
     #   and is expected to modify the record accordingly, e.g.:
     #
-    #     setter: ->(r,v){ r.first_name, r.last_name = v.split(" ") }
+    #     setter: lambda {|r,v| r.first_name, r.last_name = v.split(" ") }
     #
     # [scope]
     #
@@ -77,7 +77,7 @@ module Netzke
     #   A Proc object that receives the relation and the value to filter by. Example:
     #
     #     column :author__name do |c|
-    #       c.filter_association_with = ->(rel, value){rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) }
+    #       c.filter_association_with = lambda {|rel, value| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) }
     #     end
     #
     # [format]
@@ -165,6 +165,7 @@ module Netzke
             assoc_name, assoc_method = c[:name].split '__'
             assoc_class = model_adapter.class_for(assoc_name)
             assoc_data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(assoc_class).new(assoc_class)
+            ::Rails.logger.debug "\n!!! assoc_data_adapter.class: #{assoc_data_adapter.class.inspect}\n"
             assoc_instance = assoc_data_adapter.find_record c[:default_value]
             values[c[:name]] = assoc_instance.send(assoc_method)
           end

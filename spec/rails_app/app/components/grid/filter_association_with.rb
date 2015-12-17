@@ -6,7 +6,7 @@ class Grid::FilterAssociationWith < Netzke::Basepack::Grid
 
   def columns
     [
-        { name: :author__custom_name, text: 'Author', getter: ->(r){ "#{r.first_name} #{r.last_name}" }, filter_association_with: ->(r, v){ r.where('year > ?', v)} },
+        { name: :author__custom_name, text: 'Author', getter: lambda {|r| "#{r.first_name} #{r.last_name}" }, filter_association_with: lambda {|r, v| r.where('year > ?', v)} },
         { name: :title, text: 'title'},
     ]
   end

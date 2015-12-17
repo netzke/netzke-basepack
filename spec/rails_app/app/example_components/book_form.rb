@@ -16,7 +16,7 @@ class BookForm < Netzke::Basepack::Form
 
   attribute :author__first_name do |c|
     c.setter = author_first_name_setter
-    c.scope = ->(r) {r.limit(10)}
+    c.scope = lambda {|r| r.limit(10)}
   end
 
   attribute :in_abundance do |c|

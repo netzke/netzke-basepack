@@ -34,7 +34,7 @@ describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
 
       attr = {
         name: "author__first_name",
-        scope: ->(r) {r.limit(2)}
+        scope: lambda {|r| r.limit(2)}
       }
 
       expect(adapter.combo_data(attr).size).to eql 2

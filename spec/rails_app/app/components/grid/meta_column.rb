@@ -1,7 +1,7 @@
 class Grid::MetaColumn < Netzke::Basepack::Grid
   column :meta_attribute do |c|
     c.meta = true
-    c.getter = ->(r) { "Exemplars: #{r.exemplars}" }
+    c.getter = lambda {|r| "Exemplars: #{r.exemplars}" }
   end
 
   action :show_first, :show_second

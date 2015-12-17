@@ -8,7 +8,7 @@ module Netzke
     #   A Proc object used for sorting by the column. This can be useful for sorting by a virtual column. The Proc
     #   object will get the relation as the first parameter, and the sorting direction as the second. Example:
     #
-    #     columns => [{ name: "complete_user_name", sorting_scope: ->(rel, dir){ order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}") }, ...]
+    #     columns => [{ name: "complete_user_name", sorting_scope: lambda {|rel, dir| order("users.first_name #{dir.to_s}, users.last_name #{dir.to_s}") }, ...]
     #
     # [filter_with]
     #
