@@ -104,4 +104,11 @@ feature Netzke::Basepack::Grid, js: true do
     FactoryGirl.create :book, exemplars: 2000
     run_mocha_spec 'grid/meta_column'
   end
+
+  # This doesn't test actual fil upload, due to that selenium cannot attach_file to Ext JS file upload field, but it at
+  # least protects a grid with file upload from some errors; file upload has to be tested manually for now :(
+  it 'allows uploading attachments via form' do
+    run_mocha_spec 'grid/file_upload'
+    expect(Illustration.last.title).to eql "Painting"
+  end
 end

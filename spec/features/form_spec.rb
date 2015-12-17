@@ -1,5 +1,5 @@
 require 'spec_helper'
-feature Netzke::Basepack::Form do
+feature Netzke::Basepack::Form, js: true do
   it 'creates a record', js: true do
     hesse = FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
 
@@ -40,5 +40,12 @@ feature Netzke::Basepack::Form do
     run_mocha_spec 'form/datetime', component: Form::Create
     expect(Book.first.published_on).to eql '2005-01-23'.to_date
     expect(Book.first.last_read_at.to_s).to eql '2005-01-23 11:12:13 UTC'
+  end
+
+  # This doesn't test actual fil upload, due to that selenium cannot attach_file to Ext JS file upload field, but it at
+  # least protects a form with file upload from some errors; file upload has to be tested manually for now :(
+  it 'allows uploading attachments via form' do
+    run_mocha_spec 'form/file_upload'
+    expect(Illustration.last.title).to eql "Picture"
   end
 end

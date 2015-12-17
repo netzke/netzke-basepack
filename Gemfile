@@ -8,6 +8,7 @@ gem 'yard'
 gem 'rake'
 
 gem 'awesome_nested_set'
+gem 'carrierwave'
 
 group :test do
   gem 'rspec'

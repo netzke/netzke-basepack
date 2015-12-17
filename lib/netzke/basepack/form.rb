@@ -9,12 +9,28 @@ module Netzke
     #
     # == Configuration
     #
-    # * +model+ - name of the ActiveRecord model that provides data to this Grid.
-    # * +record+ - record to be displayd in the form. Takes precedence over +:record_id+
-    # * +record_id+ - id of the record to be displayd in the form. Also see +:record+
-    # * +items+ - the layout of the fields as an array. See "Layout configuration".
-    # * +mode+ - render mode, accepted options:
-    # * +lockable+ - makes the form panel load initially in "display mode", then lets "unlock" it, change the values, and "lock" it again, while updating the values on the server
+    # [model]
+    #
+    #   Name of the ActiveRecord model that provides data to this Grid (e.g. "User") or the model's class (e.g. User).
+    #   Model is optional if you provide custom implementation of the endpoints.
+    #
+    # [record_id]
+    #
+    # Id of the record to be displayd in the form. Also see +:record+
+    #
+    # [record]
+    #
+    #   Record to be displayd in the form. Takes precedence over +:record_id+
+    #
+    # [items]
+    #
+    #   The layout of the fields as an array. See "Layout configuration".
+    #
+    # [mode]
+    #
+    #   Render mode, accepted options:
+    #
+    #   * +lockable+ - makes the form panel load initially in "display mode", then lets "unlock" it, change the values, and "lock" it again, while updating the values on the server
     #
     # == Configuring attributes
     #
@@ -102,7 +118,7 @@ module Netzke
         @record ||= config[:record] || config[:record_id] && model_adapter.find_record(config[:record_id])
       end
 
-    protected
+      protected
 
       def normalize_config
         config.items = items

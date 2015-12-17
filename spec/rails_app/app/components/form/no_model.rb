@@ -1,6 +1,6 @@
 class Form::NoModel < Netzke::Basepack::Form
-  def configure(c)
-    c.items = [
+  def items
+    [
       :text_field,
       {:name => :number_field, :type => :integer},
       {:name => :boolean_field, :type => :boolean, :input_value => true},
@@ -9,8 +9,6 @@ class Form::NoModel < Netzke::Basepack::Form
       {:name => :combobox_field, :xtype => :combo, :store => [[1, "One"], [2, "Two"], [3, "Three"]]},
       {:name => :time_field, :type => :time },
     ]
-
-    super
   end
 
   endpoint :submit do |params|
