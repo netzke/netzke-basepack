@@ -1,6 +1,5 @@
 require 'spec_helper'
-feature Netzke::Basepack::GridLiveSearch, js: true do
-
+feature Netzke::Basepack::Grid, js: true do
   before do
     hesse = FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
     castaneda = FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
@@ -11,7 +10,7 @@ feature Netzke::Basepack::GridLiveSearch, js: true do
     FactoryGirl.create(:book, title: 'Damian', notes: 'Damian', author: hesse)
   end
 
-  it 'performs search by different fields' do
-    run_mocha_spec 'grid/live_search'
+  it 'performs search via form' do
+    run_mocha_spec 'grid/search'
   end
 end

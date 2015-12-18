@@ -148,6 +148,17 @@ module Netzke
         non_meta_columns.select{|c| include_in_forms?(c)}.map{|c| c.name.to_sym}
       end
 
+      # ATM the same attributes are used as in forms
+      def attributes_for_search
+        non_meta_columns.map do |c|
+          {name: c.name, text: c.text, type: c.type}.tap do |a|
+            if c[:assoc]
+              a[:text].sub!("  ", " ")
+            end
+          end
+        end
+      end
+
       # Form items that will be used by the Add/Edit forms. May be useful overriding it.
       def form_items
         config.form_items || default_form_items

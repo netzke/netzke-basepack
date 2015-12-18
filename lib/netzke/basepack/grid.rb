@@ -374,6 +374,12 @@ module Netzke
         c.items = [:multi_edit_form]
       end
 
+      component :search_window do |c|
+        c.klass = SearchWindow
+        c.model = config.model
+        c.fields = attributes_for_search
+      end
+
       def configure_form_window(c)
         c.klass = RecordFormWindow
         c.form_config = ActiveSupport::OrderedOptions.new

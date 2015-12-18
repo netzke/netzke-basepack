@@ -37,6 +37,7 @@ describe 'Grid filter functionality', ->
         enableColumnFilter "price_or_exemplars", 5, ->
           expect(grid("Books").getStore().getCount()).to.eql 1
           done()
+
   # Do not ask me why filter.setValue(), when called on the TriFilter, does not send filter params to the server.
   # What's left to do? Test manually.
   # it 'filters by float', (done) ->
