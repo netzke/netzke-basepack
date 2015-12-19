@@ -59,7 +59,7 @@ module Netzke
               client.on_submit_success
               "ok"
             else
-              client.nz_feedback(errors)
+              client.netzke_feedback(errors)
               "failure"
             end
           end
@@ -100,7 +100,7 @@ module Netzke
           if !config["prohibit_#{op}"]
             send(op, data)
           else
-            client.nz_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
+            client.netzke_feedback I18n.t("netzke.basepack.grid.cannot_#{op}")
             { data: [], total: 0 }
           end
         end

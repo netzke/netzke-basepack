@@ -1,17 +1,17 @@
 /* Shared column-related functionality, used in Tree and Grid */
 Ext.define("Netzke.mixins.Basepack.Columns", {
-  nzProcessColumns: function() {
+  netzkeProcessColumns: function() {
     this.fields = [];
 
     // Run through columns and set up different configuration for each
     Ext.each(this.columns.items, function(c, i){
 
-      this.nzNormalizeRenderer(c);
+      this.netzkeNormalizeRenderer(c);
 
       // Build the field configuration for this column
       var fieldConfig = {name: c.name, defaultValue: c.defaultValue, allowNull: true};
 
-      if (!c.meta) fieldConfig.type = this.nzFieldTypeForAttrType(c.type); // field type (grid editors need this to function well)
+      if (!c.meta) fieldConfig.type = this.netzkeFieldTypeForAttrType(c.type); // field type (grid editors need this to function well)
 
       if (c.type == 'datetime') {
         fieldConfig.dateFormat = 'Y-m-d H:i:s'; // set the format in which we receive datetime from the server (so that the model can parse it)
@@ -46,16 +46,16 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
         if (c.editor) c.editor = Ext.apply({ name: c.name }, c.editor);
 
         // Renderer for association column
-        this.nzNormalizeAssociationRenderer(c);
+        this.netzkeNormalizeAssociationRenderer(c);
       }
 
       if (c.editor) {
-        Ext.applyIf(c.editor, {selectOnFocus: true, nzParent: this});
+        Ext.applyIf(c.editor, {selectOnFocus: true, netzkeParent: this});
       }
 
       // Setting the default filter type
       if (c.filterable != false && !c.filter) {
-        c.filter = {type: this.nzFilterTypeForAttrType(c.type)};
+        c.filter = {type: this.netzkeFilterTypeForAttrType(c.type)};
       }
 
       // setting dataIndex
@@ -106,7 +106,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
   // * "myRenderer" (if this.myRenderer is a function)
   // * ["Some.scope.Format.customRenderer", 10, 20, 30] (if Some.scope.Format.customRenderer is a function)
   // * "function(v){ return 'Value: ' + v; }"
-  nzNormalizeRenderer: function(c) {
+  netzkeNormalizeRenderer: function(c) {
     if (!c.renderer) return;
 
     var name, args = [];
@@ -134,8 +134,8 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
   Set a renderer that displayes association values instead of association record ID.
   The association values are passed in the meta-column under associationValues hash.
   */
-  nzNormalizeAssociationRenderer: function(c) {
-    var passedRenderer = c.renderer, // renderer we got from nzNormalizeRenderer
+  netzkeNormalizeAssociationRenderer: function(c) {
+    var passedRenderer = c.renderer, // renderer we got from netzkeNormalizeRenderer
         assocValue;
     c.scope = this;
     c.renderer = function(value, a, r, ri, ci, store, view){
@@ -156,7 +156,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     };
   },
 
-  nzSaveColumns: function(){
+  netzkeSaveColumns: function(){
     var cols = [];
     this.getView().getHeaderCt().items.each(function(c){
       cols.push({name: c.name, width: c.width, hidden: c.hidden});
@@ -166,7 +166,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
   },
 
   // Tries editing the first editable (i.e. not hidden, not read-only) sell
-  nzTryStartEditing: function(r){
+  netzkeTryStartEditing: function(r){
     var column = Ext.Array.findBy(this.columns, function(c){
       return !(c.hidden || c.readOnly || c.type == 'boolean')
     });
@@ -174,7 +174,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     if (column) {this.getPlugin('celleditor').startEdit(r, column);}
   },
 
-  nzFilterTypeForAttrType: function(type){
+  netzkeFilterTypeForAttrType: function(type){
     var map = {
       integer   : 'number',
       decimal   : 'number',
@@ -188,7 +188,7 @@ Ext.define("Netzke.mixins.Basepack.Columns", {
     return map[type] || 'string';
   },
 
-  nzFieldTypeForAttrType: function(type){
+  netzkeFieldTypeForAttrType: function(type){
     var map = {
       integer   : 'int',
       decimal   : 'float',
