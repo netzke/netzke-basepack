@@ -271,6 +271,8 @@ module Netzke
       include Netzke::Basepack::Grid::Configuration
       include Netzke::Basepack::Grid::Endpoints
       include Netzke::Basepack::Grid::Services
+      include Netzke::Basepack::Grid::Actions
+      include Netzke::Basepack::Grid::Components
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::Columns
       include Netzke::Basepack::DataAccessor
@@ -302,72 +304,6 @@ module Netzke
         if c.default_filters
           populate_columns_with_filters(c)
         end
-      end
-
-      action :add do |a|
-        a.disabled = config[:prohibit_create]
-        a.icon = :add
-      end
-
-      action :edit do |a|
-        a.disabled = true
-        a.icon = :table_edit
-      end
-
-      action :del do |a|
-        a.disabled = true
-        a.icon = :table_row_delete
-      end
-
-      action :apply do |a|
-        a.disabled = config[:prohibit_update] && config[:prohibit_create]
-        a.icon = :tick
-      end
-
-      action :search do |a|
-        a.enable_toggle = true
-        a.icon = :find
-      end
-
-      component :add_window do |c|
-        configure_form_window(c)
-        c.title = "Add #{model_class.model_name.human}"
-        c.items = [:add_form]
-        c.form_config.record = model_class.new(columns_default_values)
-      end
-
-      component :edit_window do |c|
-        configure_form_window(c)
-        c.title = "Edit #{model_class.model_name.human}"
-        c.items = [:edit_form]
-      end
-
-      component :multi_edit_window do |c|
-        configure_form_window(c)
-        c.title = "Edit #{model_class.model_name.human.pluralize}"
-        c.items = [:multi_edit_form]
-      end
-
-      component :search_window do |c|
-        c.klass = SearchWindow
-        c.model = config.model
-        c.fields = attributes_for_search
-      end
-
-      def configure_form_window(c)
-        c.klass = RecordFormWindow
-        c.form_config = ActiveSupport::OrderedOptions.new
-        configure_form(c.form_config)
-      end
-
-      def configure_form(c)
-        shared_config = %w(model mode persistent_config strong_values).reduce({}) do |r, m|
-          r.merge!(m.to_sym => config.send(m))
-        end
-
-        c.merge!(shared_config)
-        c.attribute_overrides = attribute_overrides
-        c.items = form_items
       end
 
       private
