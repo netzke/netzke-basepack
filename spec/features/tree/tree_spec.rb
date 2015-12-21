@@ -1,5 +1,5 @@
 require 'spec_helper'
-feature Netzke::Basepack::Tree do
+feature Netzke::Basepack::Tree, js: true do
   before do
     @file1 = FileRecord.create(file_name: 'file1', size: 100)
     @file2 = FileRecord.create(file_name: 'file2', size: 200)
@@ -11,15 +11,19 @@ feature Netzke::Basepack::Tree do
     @file111 = FileRecord.create(file_name: 'file111', parent: @dir12, size: 11100)
   end
 
-  it 'performs CRUD operations', js: true do
+  it 'performs CRUD operations' do
     run_mocha_spec 'tree/crud'
   end
 
-  it 'stores expand/collapse node state', js: true do
+  it 'performs CRUD operations inline' do
+    run_mocha_spec 'tree/crud_inline'
+  end
+
+  it 'stores expand/collapse node state' do
     run_mocha_spec 'tree/node_state'
   end
 
-  it 'allows to drag and drop nodes', js: true do
+  it 'allows to drag and drop nodes' do
     expect(@file1.parent_id).to be nil
     visit '/netzke/components/Tree::DragDrop'
     loop { page.execute_script("return Netzke.ajaxIsLoading();") ? sleep(0.1) : break }

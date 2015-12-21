@@ -14,22 +14,6 @@ describe 'Tree::Crud', ->
       expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12']
       done()
 
-  it 'updates single record inline', (done) ->
-    wait().then ->
-      selectLastRow()
-      updateRecord file_name: 'New dir name'
-    .then ->
-      completeEditing()
-      expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'New dir name']
-      click button 'Apply'
-      wait()
-    .then ->
-      wait()
-    .then ->
-      selectFirstRow()
-      expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'New dir name']
-      done()
-
   it 'creates child node', (done) ->
     selectLastRow()
     click button "Add"
@@ -38,7 +22,7 @@ describe 'Tree::Crud', ->
       click button 'OK'
       wait()
     .then ->
-      expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'New dir name', 'file111', 'New file']
+      expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12', 'file111', 'New file']
       done()
 
   it 'creates top-level node', (done) ->
@@ -49,7 +33,7 @@ describe 'Tree::Crud', ->
       click button 'OK'
       wait()
     .then ->
-      expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'New dir name', 'file111', 'New file', 'file3']
+      expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12', 'file111', 'New file', 'file3']
       done()
 
   it 'deletes single record', (done) ->
@@ -61,5 +45,5 @@ describe 'Tree::Crud', ->
     .then ->
       wait()
     .then ->
-      expect(valuesInColumn('file_name')).to.eql ['file2', 'dir3', 'file11', 'New dir name', 'file111', 'New file', 'file3']
+      expect(valuesInColumn('file_name')).to.eql ['file2', 'dir3', 'file11', 'dir12', 'file111', 'New file', 'file3']
       done()
