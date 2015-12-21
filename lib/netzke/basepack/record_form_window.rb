@@ -32,13 +32,13 @@ module Netzke
           }
         JS
 
-        c.on_ok = <<-JS
+        c.handle_ok = <<-JS
           function(params){
-            this.items.first().onApply();
+            this.items.first().handleApply();
           }
         JS
 
-        c.on_cancel = <<-JS
+        c.handle_cancel = <<-JS
           function(params){
             this.close();
           }

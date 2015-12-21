@@ -57,7 +57,7 @@ module Netzke
           a[:handler] = Netzke::Core::JsonLiteral.new <<-JS
           function() {
             var cmp = Ext.getCmp('#{js_id}'),
-                f = cmp.on#{a[:handler].to_s.camelize};
+                f = cmp.handle#{a[:handler].to_s.camelize};
             if (Ext.isFunction(f)) {
               f.apply(cmp, arguments);
             } else {

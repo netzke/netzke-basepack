@@ -48,7 +48,7 @@ module Netzke
     #
     #     someForm.server.load({id: 100});
     #
-    # * +submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling onApply)
+    # * +submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling handleApply)
     # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
     class Form < Netzke::Base
       include self::Endpoints
@@ -66,8 +66,6 @@ module Netzke
         super
 
         configure_locked(c)
-        configure_bbar(c)
-        configure_apply_on_return(c)
 
         if model_adapter
           c.pri = model_adapter.primary_key
@@ -96,14 +94,6 @@ module Netzke
         c[:locked] = c[:locked].nil? ? (c[:mode] == :lockable) : c[:locked]
       end
 
-      def configure_bbar(c)
-        c[:bbar] = ["->", :apply] if c[:bbar].nil? && !c[:read_only]
-      end
-
-      def configure_apply_on_return(c)
-        c[:apply_on_return] = c[:apply_on_return].nil? ? true : !!c[:apply_on_return]
-      end
-
       # Extra JavaScripts and stylesheets
       client_styles do |c|
         c.require :readonly_mode
@@ -118,7 +108,24 @@ module Netzke
         @record ||= config[:record] || config[:record_id] && model_adapter.find_record(config[:record_id])
       end
 
-      protected
+      def bbar
+        config.has_key?(:bbar) ? config[:bbar] : default_bbar
+      end
+
+      def default_bbar
+        [].tap do |bbar|
+          unless config.read_only
+            bbar << "->" << :apply
+          end
+        end
+      end
+
+      private
+
+      def validate_config(c)
+        c.bbar = bbar
+        super
+      end
 
       def normalize_config
         config.items = items

@@ -268,8 +268,9 @@ module Netzke
     #
     #   Advanced search
     class Grid < Netzke::Base
-      include self::Endpoints
-      include self::Services
+      include Netzke::Basepack::Grid::Endpoints
+      include Netzke::Basepack::Grid::Services
+      include Netzke::Basepack::Grid::Config
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::Columns
       include Netzke::Basepack::DataAccessor
@@ -295,8 +296,6 @@ module Netzke
         super
 
         c.title = c.title || self.class.client_class_config.properties[:title] || model_class.name.pluralize
-        c.bbar = bbar
-        c.context_menu = context_menu
         c.columns = {items: js_columns}
         c.columns_order = columns_order
         c.pri = model_adapter.primary_key
@@ -305,33 +304,8 @@ module Netzke
         end
       end
 
-      def bbar
-        config.has_key?(:bbar) ? config[:bbar] : default_bbar
-      end
-
-      def context_menu
-        config.has_key?(:context_menu) ? config[:context_menu] : default_context_menu
-      end
-
-      # Override to change the default bottom toolbar
-      def default_bbar
-        res = %w{ add edit }.map(&:to_sym)
-        res << :apply if config[:edit_inline]
-        res << :del
-        res << "-" << :search
-        res
-      end
-
-      # Override to change the default context menu
-      def default_context_menu
-        res = [:edit]
-        res << :del if !config[:read_only]
-        res
-      end
-
       action :add do |a|
         a.disabled = config[:prohibit_create]
-        a.handler = "onAddRecord" # overriding naming conventions as Ext 4 grid has its own onAdd method
         a.icon = :add
       end
 
@@ -397,15 +371,6 @@ module Netzke
       end
 
       private
-
-      def validate_config(c)
-        raise ArgumentError, "Grid requires a model" if c.model.nil?
-        c.paging = true if c.edit_inline
-        if c.tools.nil?
-          c.tools = [{ type: :refresh, handler: f(:on_refresh) }]
-        end
-        super
-      end
 
       def self.server_side_config_options
         super + [:scope]

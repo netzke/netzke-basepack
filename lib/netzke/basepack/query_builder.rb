@@ -37,10 +37,14 @@ module Netzke
         a.icon = :accept
       end
 
+      def configure(c)
+        super
+        c.bbar = (c.bbar || []) + [:clear_all, :reset, "->", I18n.t('netzke.basepack.query_builder.presets'), :preset_selector, :save_preset, :delete_preset ]
+      end
+
       def configure_client(c)
         super
         c.preset_store = state[:presets].blank? ? [[[], ""]] : state[:presets].map{ |s| [s["query"], s["name"]] }
-        c.bbar = (config[:bbar] || []) + [:clear_all, :reset, "->", I18n.t('netzke.basepack.query_builder.presets'), :preset_selector, :save_preset, :delete_preset ]
       end
 
       endpoint :save_preset do |params|

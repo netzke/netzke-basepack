@@ -67,6 +67,7 @@ module Netzke
 
       include Netzke::Basepack::Grid::Endpoints
       include Netzke::Basepack::Grid::Services
+      include Netzke::Basepack::Grid::Config
       include Netzke::Basepack::Columns
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::DataAccessor
@@ -125,7 +126,6 @@ module Netzke
         super
 
         c.title = c.title || self.class.client_class_config.properties[:title] || model_class.name.pluralize
-        c.bbar = bbar
         # c.context_menu = context_menu
         c.columns = {items: js_columns}
         c.columns_order = columns_order
@@ -139,13 +139,10 @@ module Netzke
       end
 
       action :add do |a|
-        a.handler = "onAddRecord" # overriding naming conventions as Ext 4 grid has its own onAdd method
         a.icon = :add
       end
 
       action :edit do |a|
-        # a.disabled = true
-        a.handler = :onEdit
         a.icon = :table_edit
       end
 
@@ -205,15 +202,6 @@ module Netzke
 
       protected
 
-      def bbar
-        config.has_key?(:bbar) ? config[:bbar] : default_bbar
-      end
-
-      # Override to change the default bottom toolbar
-      def default_bbar
-        [:add, :edit, :apply, :del]
-      end
-
       def configure_form_window(c)
         c.klass = RecordFormWindow
 
@@ -233,6 +221,10 @@ module Netzke
         end
 
         super
+      end
+
+      def default_bbar
+        [:add, :edit, :apply, :del]
       end
 
       private
@@ -257,9 +249,6 @@ module Netzke
         # The nil? checks are needed because these can be already set in a subclass
         c.enable_pagination = true if c.enable_pagination.nil?
         c.rows_per_page = 30 if c.rows_per_page.nil?
-        if c.tools.nil?
-          c.tools = [{ type: :refresh, handler: f(:on_refresh) }]
-        end
       end
     end
   end

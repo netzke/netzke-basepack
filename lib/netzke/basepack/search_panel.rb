@@ -63,7 +63,6 @@ module Netzke
       def last_preset
         (state[:presets] || []).last
       end
-
     end
   end
 end

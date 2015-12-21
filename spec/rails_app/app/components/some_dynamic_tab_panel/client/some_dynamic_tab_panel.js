@@ -1,9 +1,9 @@
 {
-  onLoadInCurrentTab: function(){
+  handleLoadInCurrentTab: function(){
     this.netzkeLoadComponentByClass('Grid::Crud', {serverConfig: {counter: this.getCounter()}});
   },
 
-  onLoadInNewTab: function(){
+  handleLoadInNewTab: function(){
     this.netzkeLoadComponentByClass('Netzke::Core::Panel', { newTab: true, serverConfig: {counter: this.getCounter()} });
   },
 
