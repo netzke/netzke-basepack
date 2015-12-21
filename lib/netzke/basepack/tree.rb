@@ -65,9 +65,9 @@ module Netzke
         string: %w[icon icon_cls href href_target qtip qtitle]
       }
 
+      include Netzke::Basepack::Grid::Configuration
       include Netzke::Basepack::Grid::Endpoints
       include Netzke::Basepack::Grid::Services
-      include Netzke::Basepack::Grid::Config
       include Netzke::Basepack::Columns
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::DataAccessor

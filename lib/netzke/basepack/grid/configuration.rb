@@ -1,7 +1,7 @@
 module Netzke
   module Basepack
     class Grid < Netzke::Base
-      module Config
+      module Configuration # WTF: naming it Config causes troubles in 1.9.3
         def bbar
           config.has_key?(:bbar) ? config[:bbar] : default_bbar
         end
