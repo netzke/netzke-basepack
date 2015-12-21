@@ -11,7 +11,7 @@ module Netzke
             unless config.read_only
               bbar << :add << :edit
               bbar << :apply if config.edit_inline
-              bbar << :del
+              bbar << :delete
             end
             bbar << :search
           end
@@ -25,7 +25,7 @@ module Netzke
         def default_context_menu
           [].tap do |menu|
             unless config.read_only
-              menu << :edit << :del
+              menu << :edit << :delete
             end
           end
         end

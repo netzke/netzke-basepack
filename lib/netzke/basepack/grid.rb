@@ -98,7 +98,7 @@ module Netzke
     #
     # [context_menu]
     #
-    #   An array of actions (e.g. [:edit, "-", :del] - see the Actions section) or +false+ to disable the context menu.
+    #   An array of actions (e.g. [:edit, "-", :delete] - see the Actions section) or +false+ to disable the context menu.
     #
     # [paging]
     #
@@ -252,7 +252,7 @@ module Netzke
     #
     #   Add record
     #
-    # [del]
+    # [delete]
     #
     #   Delete record(s)
     #

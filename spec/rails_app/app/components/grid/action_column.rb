@@ -29,7 +29,7 @@ module Grid
       c.handle_delete_row = <<-JS
         function(grid, rowIndex, colIndex){
           this.getSelectionModel().select(rowIndex);
-          this.handleDel();
+          this.handleDelete();
         }
       JS
     end

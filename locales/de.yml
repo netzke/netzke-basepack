@@ -9,7 +9,7 @@ de:
           edit:
             text: Bearbeiten
             tooltip: Bearbeiten
-          del:
+          delete:
             text: Löschen
             tooltip: Löschen
           apply:

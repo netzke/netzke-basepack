@@ -7,7 +7,7 @@ en:
             text: Add
           edit:
             text: Edit
-          del:
+          delete:
             text: Delete
             tooltip: Delete
           apply:
@@ -21,7 +21,7 @@ en:
             text: Add
           edit:
             text: Edit
-          del:
+          delete:
             text: Delete
             tooltip: Delete
           apply:

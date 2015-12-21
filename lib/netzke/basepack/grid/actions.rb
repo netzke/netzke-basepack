@@ -15,7 +15,7 @@ module Netzke
             a.icon = :table_edit
           end
 
-          action :del do |a|
+          action :delete do |a|
             a.disabled = true
             a.icon = :table_row_delete
           end

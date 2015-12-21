@@ -15,7 +15,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
     }
   },
 
-  handleDel: function() {
+  handleDelete: function() {
     Ext.Msg.confirm(this.i18n.confirmation, this.i18n.areYouSure, function(btn){
       if (btn == 'yes') {
         var toDelete = this.getSelectionModel().getSelection();
@@ -179,7 +179,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
    */
   netzkeSetActionEvents: function(){
     this.getSelectionModel().on('selectionchange', function(selModel, selected){
-      if (this.actions.del) this.actions.del.setDisabled(selected.length == 0);
+      if (this.actions.delete) this.actions.delete.setDisabled(selected.length == 0);
       if (this.actions.edit) {
         var disabled = false;
         Ext.each(selected, function(r){

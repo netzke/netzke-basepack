@@ -7,7 +7,7 @@ es:
             text: Agregar
           edit:
             text: Editar
-          del:
+          delete:
             text: Eliminar
             tooltip: Eliminar
           apply:

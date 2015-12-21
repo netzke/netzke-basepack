@@ -7,7 +7,7 @@ nl:
             text: Toevoegen
           edit:
             text: Wijzigen
-          del:
+          delete:
             text: Verwijderen
             tooltip: Verwijderen
           apply:
