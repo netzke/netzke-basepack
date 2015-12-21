@@ -1,4 +1,4 @@
-class Grid::Localization < Netzke::Basepack::Grid
+class Grid::Localization < Netzke::Grid::Base
   def configure(c)
     super
     c.model = "Book"

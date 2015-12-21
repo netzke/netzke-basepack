@@ -1,5 +1,5 @@
 # WIP (broken)
-class Tree::LiveSearch < Netzke::Basepack::Tree
+class Tree::LiveSearch < Netzke::Tree::Base
   plugin :grid_live_search do |c|
     c.klass = Netzke::Basepack::GridLiveSearch
     c.delay = 100 # our tests require immediate update

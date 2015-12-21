@@ -3,7 +3,7 @@ module Netzke
     # A Form with paging toolbar. Allows browsing and editing records one-by-one.
     #
     # == Configuration
-    # Besides +Netzke::Basepack::Form+ config options, accepts:
+    # Besides +Netzke::Form::Base+ config options, accepts:
     # * +scope+ - specifies how the data should be filtered.
     #   When it's a symbol, it's used as a scope name.
     #   When it's a string, it's a SQL statement (passed directly to +ActiveRecord::Relation#where+).

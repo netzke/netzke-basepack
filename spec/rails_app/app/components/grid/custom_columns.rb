@@ -1,4 +1,4 @@
-class Grid::CustomColumns < Netzke::Basepack::Grid
+class Grid::CustomColumns < Netzke::Grid::Base
   attribute :author__first_name do |c|
     c.column_config = {renderer: :my_renderer}
     c.field_config = {excluded: true}

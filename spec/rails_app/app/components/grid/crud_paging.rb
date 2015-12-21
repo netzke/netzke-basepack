@@ -1,4 +1,4 @@
-class Grid::CrudPaging < Netzke::Basepack::Grid
+class Grid::CrudPaging < Netzke::Grid::Base
   def configure(c)
     super
     c.model = 'Book'

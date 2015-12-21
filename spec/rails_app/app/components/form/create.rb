@@ -1,4 +1,4 @@
-class Form::Create < Netzke::Basepack::Form
+class Form::Create < Netzke::Form::Base
   def configure(c)
     super
     c.model = "Book"

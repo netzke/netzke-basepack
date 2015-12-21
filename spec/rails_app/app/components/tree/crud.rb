@@ -1,5 +1,5 @@
 module Tree
-  class Crud < Netzke::Basepack::Tree
+  class Crud < Netzke::Tree::Base
     def configure(c)
       super
 

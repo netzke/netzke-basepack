@@ -1,12 +1,12 @@
 class BookGridLoader < Netzke::Base
   component :book_grid_one do |c|
-    c.klass = Netzke::Basepack::Grid
+    c.klass = Netzke::Grid::Base
     c.model = "Book"
     c.title = "One"
   end
 
   component :book_grid_two do |c|
-    c.klass = Netzke::Basepack::Grid
+    c.klass = Netzke::Grid::Base
     c.model = "Book"
     c.title = "Two"
   end

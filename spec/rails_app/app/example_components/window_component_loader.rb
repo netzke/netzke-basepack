@@ -1,8 +1,7 @@
 class WindowComponentLoader < Netzke::Base
-
   component :some_window do |c|
     c.persistence = true
-    c.klass = Netzke::Basepack::Window
+    c.klass = Netzke::Window::Base
     c.title = "Some Window Component"
     c.width = 300
     c.height = 200

@@ -1,4 +1,4 @@
-class BookGridWithCustomForms < Netzke::Basepack::Grid
+class BookGridWithCustomForms < Netzke::Grid::Base
   def configure(c)
     super
     c.model = "Book"

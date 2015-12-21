@@ -1,5 +1,5 @@
 require 'spec_helper'
-feature Netzke::Basepack::Grid, js: true do
+feature Netzke::Grid::Base, js: true do
   before do
     nabokov = FactoryGirl.create(:author, first_name: 'Vladimir', last_name: 'Nabokov')
     FactoryGirl.create(:book, author: nabokov, title: "Lolita", exemplars: 5, digitized: false, notes: 'To read', last_read_at: "2010-12-23", price: 1.1234)

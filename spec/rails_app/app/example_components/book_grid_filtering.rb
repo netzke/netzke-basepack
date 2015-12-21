@@ -1,4 +1,4 @@
-class BookGridFiltering < Netzke::Basepack::Grid
+class BookGridFiltering < Netzke::Grid::Base
   def configure(c)
     super
     c.model = Book

@@ -1,4 +1,4 @@
-class Form::NoModel < Netzke::Basepack::Form
+class Form::NoModel < Netzke::Form::Base
   def items
     [
       :text_field,

@@ -1,5 +1,5 @@
 require 'spec_helper'
-feature Netzke::Basepack::Form, js: true do
+feature Netzke::Form::Base, js: true do
   it 'creates a record', js: true do
     hesse = FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
 

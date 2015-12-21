@@ -1,4 +1,4 @@
-class Grid::MetaColumn < Netzke::Basepack::Grid
+class Grid::MetaColumn < Netzke::Grid::Base
   column :meta_attribute do |c|
     c.meta = true
     c.getter = lambda {|r| "Exemplars: #{r.exemplars}" }

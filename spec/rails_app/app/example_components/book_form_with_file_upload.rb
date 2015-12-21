@@ -1,4 +1,4 @@
-class BookFormWithFileUpload < Netzke::Basepack::Form
+class BookFormWithFileUpload < Netzke::Form::Base
   def configure(c)
     super
     c.model = "Book"

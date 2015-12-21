@@ -1,4 +1,4 @@
-class Grid::Getters < Netzke::Basepack::Grid
+class Grid::Getters < Netzke::Grid::Base
   def configure(c)
     super
     c.model = Book

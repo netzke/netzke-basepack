@@ -1,4 +1,4 @@
-class Grid::FileUpload < Netzke::Basepack::Grid
+class Grid::FileUpload < Netzke::Grid::Base
   attribute :image do |c|
     c.getter = lambda {|r| %Q(<a href='#{r.image.url}'>Download</a>) if r.image.url}
   end

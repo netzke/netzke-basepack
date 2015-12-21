@@ -1,4 +1,4 @@
-class UserGridWithCustomizedFormFields < Netzke::Basepack::Grid
+class UserGridWithCustomizedFormFields < Netzke::Grid::Base
   def configure(c)
     super
     c.title = "Users"

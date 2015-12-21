@@ -1,4 +1,4 @@
-class BookGridWithExcludedColumns < Netzke::Basepack::Grid
+class BookGridWithExcludedColumns < Netzke::Grid::Base
   def configure(c)
     super
     c.model = Book

@@ -1,4 +1,4 @@
-class Grid::VirtualAttributes < Netzke::Basepack::Grid
+class Grid::VirtualAttributes < Netzke::Grid::Base
   attribute :borrowed do |c|
     c.type = :integer
     c.setter = lambda {|record, value| record.notes = "Borrowed to: #{value}" }

@@ -1,5 +1,5 @@
 require 'spec_helper'
-feature Netzke::Basepack::Tree, js: true do
+feature Netzke::Tree::Base, js: true do
   before do
     @file1 = FileRecord.create(file_name: 'file1', size: 100)
     @file2 = FileRecord.create(file_name: 'file2', size: 200)

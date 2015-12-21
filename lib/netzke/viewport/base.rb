@@ -1,6 +1,6 @@
 module Netzke
-  module Basepack
-    class Viewport < Netzke::Base
+  module Viewport
+    class Base < Netzke::Base
       client_class do |c|
         c.extend = "Ext.container.Viewport"
       end

@@ -1,4 +1,4 @@
-class SimpleWindow < Netzke::Basepack::Window
+class SimpleWindow < Netzke::Window::Base
   client_class do |c|
     c.title = "My simple window"
   end

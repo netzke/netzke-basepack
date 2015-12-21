@@ -1,4 +1,4 @@
-class Form::FileUpload < Netzke::Basepack::Form
+class Form::FileUpload < Netzke::Form::Base
   attribute :image do |c|
     c.xtype = "fileuploadfield"
     c.id = "foobar"

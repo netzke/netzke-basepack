@@ -1,4 +1,4 @@
-class Grid::LockingColumn < Netzke::Basepack::Grid
+class Grid::LockingColumn < Netzke::Grid::Base
   def configure(c)
     super
     c.model = 'Book'

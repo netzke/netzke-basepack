@@ -1,4 +1,4 @@
-class Form::Edit < Netzke::Basepack::Form
+class Form::Edit < Netzke::Form::Base
   def configure(c)
     super
     c.model = "Book"

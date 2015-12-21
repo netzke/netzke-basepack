@@ -1,5 +1,5 @@
 module Netzke
-  module Basepack
+  module Grid
     # Ext.grid.Panel-based component with the following features:
     #
     # * infinite scrolling or pagination
@@ -28,7 +28,7 @@ module Netzke
     #   or a hash, which contains the +name+ key pointing to the attribute name and additional configuration keys (see
     #   the "Configuring attributes" section below). For example:
     #
-    #      class Users < Netzke::Basepack::Grid
+    #      class Users < Netzke::Grid::Base
     #        def configure(c)
     #          super
     #          c.model = User
@@ -151,7 +151,7 @@ module Netzke
     # To override configuration for a specific attribute, you may either use the +attribute_overrides+ configuration
     # option (see above), or the +attribute+ DSL method, for example:
     #
-    #      class Books < Netzke::Basepack::Grid
+    #      class Books < Netzke::Grid::Base
     #        attribute :price do |c|
     #          c.read_only = true
     #        end
@@ -205,7 +205,7 @@ module Netzke
     #
     # == Add/Edit forms
     #
-    # Add/Edit forms are each wrapped in a separate +Basepack::Window+-descending component (called +RecordFormWindow+
+    # Add/Edit forms are each wrapped in a separate +Window::Base+-descending component (called +RecordFormWindow+
     # for the add/edit forms, and can be overridden individually as any other child component.
     #
     # === Overriding windows
@@ -226,7 +226,7 @@ module Netzke
     # configuration options (e.g. +text+ will be converted into +fieldLabel+).
     # You may override the default fields displayed in the all add/edit forms by overriding the
     # +default_form_items+ method, which should return an array understood by the +items+ config property of the
-    # +Form+. If you need to use a custom +Basepack::Form+-descending class instead of +Form+, you need to override the
+    # +Form+. If you need to use a custom +Form::Base+-descending class instead of +Form+, you need to override the
     # +configure_form_window+ method:
     #
     #     def configure_form_window(c)
@@ -267,12 +267,12 @@ module Netzke
     # [search]
     #
     #   Advanced search
-    class Grid < Netzke::Base
-      include Netzke::Basepack::Grid::Configuration
-      include Netzke::Basepack::Grid::Endpoints
-      include Netzke::Basepack::Grid::Services
-      include Netzke::Basepack::Grid::Actions
-      include Netzke::Basepack::Grid::Components
+    class Base < Netzke::Base
+      include Netzke::Grid::Configuration
+      include Netzke::Grid::Endpoints
+      include Netzke::Grid::Services
+      include Netzke::Grid::Actions
+      include Netzke::Grid::Components
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::Columns
       include Netzke::Basepack::DataAccessor

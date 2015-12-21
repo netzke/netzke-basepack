@@ -1,4 +1,4 @@
-class BookGridDateDefaultFiltering < Netzke::Basepack::Grid
+class BookGridDateDefaultFiltering < Netzke::Grid::Base
   def columns
     [ :title, :author__first_name, :exemplars, :notes, :last_read_at, :digitized ]
   end

@@ -1,10 +1,10 @@
 module Netzke
-  module Basepack
+  module Window
     # Ext.window.Window-based component. With +persistence+ option set to +true+, it will remember it's size, position, and maximized state.
     #
     # Example:
     #
-    #     class MyWindow < Netke::Basepack::Window
+    #     class MyWindow < Netke::Window::Base
     #       def configure
     #         super
     #         c.width = 800
@@ -14,7 +14,7 @@ module Netzke
     #
     #       component :users
     #     end
-    class Window < Netzke::Base
+    class Base < Netzke::Base
       client_class do |c|
         c.extend = "Ext.window.Window"
       end

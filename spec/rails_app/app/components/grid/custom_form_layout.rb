@@ -1,4 +1,4 @@
-class Grid::CustomFormLayout < Netzke::Basepack::Grid
+class Grid::CustomFormLayout < Netzke::Grid::Base
   attribute :exemplars do |c|
     c.read_only = true
   end

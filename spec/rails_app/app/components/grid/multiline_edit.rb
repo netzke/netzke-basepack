@@ -1,4 +1,4 @@
-class Grid::MultilineEdit < Netzke::Basepack::Grid
+class Grid::MultilineEdit < Netzke::Grid::Base
   def configure(c)
     super
     c.model = "Book"

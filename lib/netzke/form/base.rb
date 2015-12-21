@@ -1,5 +1,5 @@
 module Netzke
-  module Basepack
+  module Form
     # Ext.form.Panel-based component with the following features
     #
     # * automatic default attribute configuration (overridable via config)
@@ -50,9 +50,9 @@ module Netzke
     #
     # * +submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling handleApply)
     # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
-    class Form < Netzke::Base
-      include self::Endpoints
-      include self::Services
+    class Base < Netzke::Base
+      include Netzke::Form::Endpoints
+      include Netzke::Form::Services
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::Fields
       include Netzke::Basepack::DataAccessor

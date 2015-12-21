@@ -8,7 +8,7 @@ module Netzke::Basepack
     end
 
     it "allows overriding columns" do
-      class GridOne < Netzke::Basepack::Grid
+      class GridOne < Netzke::Grid::Base
         def configure(c)
           super
           c.model = Book
@@ -25,7 +25,7 @@ module Netzke::Basepack
     end
 
     it 'prepends primary key column automatically when columns are listed explicitely' do
-      class GridTwo < Netzke::Basepack::Grid
+      class GridTwo < Netzke::Grid::Base
         column :id do |c|
           c.hidden = false
         end
@@ -42,7 +42,7 @@ module Netzke::Basepack
     end
 
     it 'makes virtual attributes not editable and not sortable by default' do
-      class GridThree < Netzke::Basepack::Grid
+      class GridThree < Netzke::Grid::Base
         def configure(c)
           super
           c.model = Book
@@ -59,7 +59,7 @@ module Netzke::Basepack
     end
 
     it 'does not render excluded columns' do
-      class GridFour < Netzke::Basepack::Grid
+      class GridFour < Netzke::Grid::Base
         def configure(c)
           super
           c.model = Book

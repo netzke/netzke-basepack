@@ -1,4 +1,4 @@
-class Grid::Search < Netzke::Basepack::Grid
+class Grid::Search < Netzke::Grid::Base
   def configure(c)
     super
     c.model = 'Book'

@@ -1,6 +1,6 @@
 module Netzke
   module Basepack
-    # Takes care of automatic field configuration in {Basepack::Form}
+    # Takes care of automatic field configuration in {Form::Base}
     class FieldConfig < AttrConfig
       def merge_attribute(attr)
         self.merge!(attr)

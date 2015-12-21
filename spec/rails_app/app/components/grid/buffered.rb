@@ -1,4 +1,4 @@
-class Grid::Buffered < Netzke::Basepack::Grid
+class Grid::Buffered < Netzke::Grid::Base
   def configure(c)
     super
     c.model = 'Author'

@@ -3,7 +3,7 @@ module Netzke
     # An extension for {Grid} that allows specifying (multiple) action columns.
     # Example:
     #
-    #     class Books < Netzke::Basepack::Grid
+    #     class Books < Netzke::Grid::Base
     #       include Netzke::Basepack::ActionColumn
     #
     #       def configure(c)

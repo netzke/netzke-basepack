@@ -1,5 +1,5 @@
 module Netzke
-  module Basepack
+  module Tree
     # Ext.tree.Panel-based component with the following features:
     #
     # * CRUD operations
@@ -8,7 +8,7 @@ module Netzke
     #
     # == Simple example
     #
-    #     class Files < Netzke::Basepack::Tree
+    #     class Files < Netzke::Tree::Base
     #       def configure(c)
     #         super
     #         c.model = "FileRecord"
@@ -35,7 +35,7 @@ module Netzke
     #
     # [columns]
     #
-    #   An array of columns to be displayed in the tree. See the "Columns" section in the `Netzke::Basepack::Grid`.
+    #   An array of columns to be displayed in the tree. See the "Columns" section in the `Netzke::Grid::Base`.
     #   Additionally, you probably will want to specify which column will have the tree nodes UI by providing the
     #   `xtype` config option set to `:treecolumn`.
     #
@@ -59,21 +59,21 @@ module Netzke
     # == Persisting nodes' expand/collapse state
     #
     # If the model includes the `expanded` DB field, the expand/collapse state will get stored in the DB.
-    class Tree < Netzke::Base
+    class Base < Netzke::Base
       NODE_ATTRS = {
         boolean: %w[leaf checked expanded expandable qtip qtitle],
         string: %w[icon icon_cls href href_target qtip qtitle]
       }
 
-      include Netzke::Basepack::Grid::Configuration
-      include Netzke::Basepack::Grid::Endpoints
-      include Netzke::Basepack::Grid::Services
-      include Netzke::Basepack::Grid::Actions
-      include Netzke::Basepack::Grid::Components
+      include Netzke::Grid::Configuration
+      include Netzke::Grid::Endpoints
+      include Netzke::Grid::Services
+      include Netzke::Grid::Actions
+      include Netzke::Grid::Components
       include Netzke::Basepack::Columns
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::DataAccessor
-      include Netzke::Basepack::Tree::Endpoints
+      include Netzke::Tree::Endpoints
 
       client_class do |c|
         c.extend = "Ext.tree.Panel"

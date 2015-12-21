@@ -1,8 +1,8 @@
 require 'spec_helper'
-describe Netzke::Basepack::Grid do
+describe Netzke::Grid::Base do
   describe "#configure_form_window" do
     it "passes shared config to the form" do
-      class GridTestOne < Netzke::Basepack::Grid
+      class GridTestOne < Netzke::Grid::Base
         def configure(c)
           super
           c.model = "Book"
@@ -16,7 +16,7 @@ describe Netzke::Basepack::Grid do
     end
 
     it "passes attribute configs down to its forms" do
-      class GridTestTwo < Netzke::Basepack::Grid
+      class GridTestTwo < Netzke::Grid::Base
         attribute :title do |c|
           c.read_only = true
         end

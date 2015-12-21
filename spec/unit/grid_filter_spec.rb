@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe Netzke::Basepack::Grid do
+describe Netzke::Grid::Base do
   let(:grid) {Grid::Filters.new}
 
   before do

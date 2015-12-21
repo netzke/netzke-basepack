@@ -1,4 +1,4 @@
-describe 'Netzke::Basepack::Form', ->
+describe 'Netzke::Form::Base', ->
   it 'edits a record', (done) ->
     expandCombo 'author__name'
     wait ->

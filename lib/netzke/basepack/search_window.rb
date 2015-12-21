@@ -1,6 +1,6 @@
 module Netzke
   module Basepack
-    class SearchWindow < Netzke::Basepack::Window
+    class SearchWindow < Netzke::Window::Base
 
       action :search
       action :cancel

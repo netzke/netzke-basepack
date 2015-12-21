@@ -1,4 +1,4 @@
-class BookGridWithExtraFeedback < Netzke::Basepack::Grid
+class BookGridWithExtraFeedback < Netzke::Grid::Base
   def configure(c)
     super
     c.model = Book

@@ -1,4 +1,4 @@
-class Grid::InlineEditing < Netzke::Basepack::Grid
+class Grid::InlineEditing < Netzke::Grid::Base
   def configure(c)
     super
     c.model = 'Author'

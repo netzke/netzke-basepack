@@ -1,6 +1,6 @@
 module Netzke
   module Basepack
-    # Takes care of automatic column configuration in {Basepack::Grid}
+    # Takes care of automatic column configuration in {Grid::Base}
     class ColumnConfig < AttrConfig
       # These config options can be ommitted from config, as they are assumed by default at the JS side
       COMMON_DEFAULTS = {

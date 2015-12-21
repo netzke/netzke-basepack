@@ -1,4 +1,4 @@
-class Grid::DefaultStringFilter < Netzke::Basepack::Grid
+class Grid::DefaultStringFilter < Netzke::Grid::Base
   def columns
     [ :title, :author__first_name, :exemplars, :notes, :last_read_at, :digitized ]
   end

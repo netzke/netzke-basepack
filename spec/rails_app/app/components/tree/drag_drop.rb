@@ -1,5 +1,5 @@
 module Tree
-  class DragDrop < Netzke::Basepack::Tree
+  class DragDrop < Netzke::Tree::Base
     def configure(c)
       super
 

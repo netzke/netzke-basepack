@@ -1,5 +1,5 @@
 require 'spec_helper'
-feature Netzke::Basepack::Grid do
+feature Netzke::Grid::Base do
   before do
     frisch = FactoryGirl.create(:author, first_name: 'Max', last_name: 'Frisch')
     FactoryGirl.create(:book, author: frisch, title: "Biedermann und die Brandstifter", exemplars: 5, digitized: false, notes: 'To read', last_read_at: "2010-12-23")

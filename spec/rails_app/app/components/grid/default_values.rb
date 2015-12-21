@@ -1,4 +1,4 @@
-class Grid::DefaultValues < Netzke::Basepack::Grid
+class Grid::DefaultValues < Netzke::Grid::Base
   def configure(c)
     c.model = "Book"
     c.title = "Books"

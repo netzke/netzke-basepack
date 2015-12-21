@@ -1,4 +1,4 @@
-class Grid::FilterAssociationWith < Netzke::Basepack::Grid
+class Grid::FilterAssociationWith < Netzke::Grid::Base
   def configure(c)
     super
     c.model = Book

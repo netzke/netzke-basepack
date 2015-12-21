@@ -1,4 +1,4 @@
-class Grid::LiveSearch < Netzke::Basepack::Grid
+class Grid::LiveSearch < Netzke::Grid::Base
   plugin :grid_live_search do |c|
     c.klass = Netzke::Basepack::GridLiveSearch
     c.delay = 1 # our tests require immediate update

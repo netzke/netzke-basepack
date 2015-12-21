@@ -40,7 +40,7 @@
 *   `enable_extended_search` option is gone.
 
 ### Misc
-
+*   Base classes of main componens have been renamed from `Netzke::Basepack::{Grid|Form|Tree|Window|Viewport}` to `Netzke::{Grid|Form|Tree|Window|Viewport}::Base`.
 *   Remove `Netzke::Basepack::TapPanel` and `Netzke::Basepack::Accordion`. The only purpose for them was dynamic loading
     of child components, which didn't prove that useful.
 

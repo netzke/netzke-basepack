@@ -8,7 +8,7 @@ module Netzke
     #
     # For example, to make the address attribute read-only:
     #
-    #      class Users < Netzke::Basepack::Grid
+    #      class Users < Netzke::Grid::Base
     #        def configure(c)
     #          super
     #          c.model = User

@@ -1,4 +1,4 @@
-class Grid::Scoped < Netzke::Basepack::Grid
+class Grid::Scoped < Netzke::Grid::Base
   def configure(c)
     c.model = "Book"
     super

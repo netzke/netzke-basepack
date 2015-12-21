@@ -1,5 +1,5 @@
 module Grid
-  class ProhibitRead < Netzke::Basepack::Grid
+  class ProhibitRead < Netzke::Grid::Base
     def configure(c)
       super
       c.model = 'Book'

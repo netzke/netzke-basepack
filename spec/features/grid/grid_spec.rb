@@ -1,5 +1,5 @@
 require 'spec_helper'
-feature Netzke::Basepack::Grid, js: true do
+feature Netzke::Grid::Base, js: true do
   describe "CRUD" do
     before do
       FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')

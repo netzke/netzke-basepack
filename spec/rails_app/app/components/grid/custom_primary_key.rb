@@ -1,4 +1,4 @@
-class Grid::CustomPrimaryKey < Netzke::Basepack::Grid
+class Grid::CustomPrimaryKey < Netzke::Grid::Base
   def configure(c)
     c.title = "Books (model with custom primary key)"
     c.model = "BookWithCustomPrimaryKey"

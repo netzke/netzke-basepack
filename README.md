@@ -48,7 +48,7 @@ For the "edge" stuff, instruct bundler to get the gem straight from GitHub:
 Embed a basepack component into a view as any other Netzke component, e.g.:
 
 ```erb
-<%= netzke :books, class_name: 'Netzke::Basepack::Grid', model: 'Book' %>
+<%= netzke :books, class_name: 'Netzke::Grid::Base', model: 'Book' %>
 ```
 
 For more examples, see http://netzke-demo.herokuapp.com ([source code](https://github.com/netzke/netzke-demo)), and look

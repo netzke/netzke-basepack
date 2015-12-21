@@ -1,5 +1,5 @@
 module Grid
-  class ActionColumn < Netzke::Basepack::Grid
+  class ActionColumn < Netzke::Grid::Base
     include Netzke::Basepack::ActionColumn
 
     def configure(c)

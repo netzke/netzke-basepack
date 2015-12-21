@@ -1,6 +1,6 @@
 module Netzke
   module Basepack
-    class RecordFormWindow < Netzke::Basepack::Window
+    class RecordFormWindow < Netzke::Window::Base
       def configure(c)
         super
         c.fbar = [:ok, :cancel]
@@ -56,7 +56,7 @@ module Netzke
       end
 
       def preconfigure_form(c)
-        c.klass = Form
+        c.klass = Netzke::Form::Base
         c.border = true
         c.bbar = false
         c.prevent_header = true

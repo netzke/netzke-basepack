@@ -1,4 +1,4 @@
-class BookForm < Netzke::Basepack::Form
+class BookForm < Netzke::Form::Base
   include Extras::BookPresentation
 
   attribute :author__last_name do |c|

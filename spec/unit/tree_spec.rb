@@ -1,5 +1,5 @@
 require 'spec_helper'
-describe Netzke::Basepack::Tree do
+describe Netzke::Tree::Base do
   let(:tree) { Tree::Crud.new }
 
   before do

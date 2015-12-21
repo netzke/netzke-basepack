@@ -48,7 +48,7 @@ module Netzke::Basepack::DataAdapters
     # [start]
     #   page number in pagination
     # [scope]
-    #   the scope as described in Netzke::Basepack::Grid
+    #   the scope as described in Netzke::Grid::Base
     # [filters]
     #   an array of hashes representing a filter query, where the hashes have the following keys:
     #   [attr]
@@ -75,7 +75,7 @@ module Netzke::Basepack::DataAdapters
     #
     # `params` is a hash that contains the following keys:
     #
-    # * :scope - the scope as described in Netzke::Basepack::Grid
+    # * :scope - the scope as described in Netzke::Grid::Base
     # * :filter - Ext filters
     #
     # The `columns` parameter may be used to use joins to address the n+1 query problem, and receives an array of column configurations

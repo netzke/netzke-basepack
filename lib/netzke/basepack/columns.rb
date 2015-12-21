@@ -1,7 +1,7 @@
 module Netzke
   module Basepack
     # Takes care of grid column configuration, as well as the grid's default form fields
-    # +Basepack::Grid+ extends common Ext JS column options with the following ones:
+    # +Grid::Base+ extends common Ext JS column options with the following ones:
     #
     # [sorting_scope]
     #

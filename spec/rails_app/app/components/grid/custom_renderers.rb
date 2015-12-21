@@ -1,4 +1,4 @@
-class Grid::CustomRenderers < Netzke::Basepack::Grid
+class Grid::CustomRenderers < Netzke::Grid::Base
   column :author__first_name do |c|
     c.renderer = :uppercase
   end
