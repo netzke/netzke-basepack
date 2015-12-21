@@ -170,5 +170,23 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
     if (!store.lastRequestStart) {
       store.load();
     } else store.reload();
-  }
+  },
+
+  /**
+   * Process selectionchange event to enable/disable actions
+   * @method netzkeSetActionEvents
+   * @private
+   */
+  netzkeSetActionEvents: function(){
+    this.getSelectionModel().on('selectionchange', function(selModel, selected){
+      if (this.actions.del) this.actions.del.setDisabled(selected.length == 0);
+      if (this.actions.edit) {
+        var disabled = false;
+        Ext.each(selected, function(r){
+          if (r.isNew) { disabled = true; return false; }
+        });
+        this.actions.edit.setDisabled(selected.length == 0 || disabled);
+      }
+    }, this);
+  },
 });

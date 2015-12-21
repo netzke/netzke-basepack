@@ -68,6 +68,8 @@ module Netzke
       include Netzke::Basepack::Grid::Configuration
       include Netzke::Basepack::Grid::Endpoints
       include Netzke::Basepack::Grid::Services
+      include Netzke::Basepack::Grid::Actions
+      include Netzke::Basepack::Grid::Components
       include Netzke::Basepack::Columns
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::DataAccessor
@@ -138,43 +140,6 @@ module Netzke
         c.root ||= model_adapter.record_to_hash(model_adapter.root, final_columns).netzke_literalize_keys
       end
 
-      action :add do |a|
-        a.icon = :add
-      end
-
-      action :edit do |a|
-        a.icon = :table_edit
-      end
-
-      action :apply do |a|
-        a.disabled = config[:prohibit_update] && config[:prohibit_create]
-        a.icon = :tick
-      end
-
-      action :del do |a|
-        # a.disabled = true
-        a.icon = :table_row_delete
-      end
-
-      component :add_window do |c|
-        configure_form_window(c)
-        c.title = "Add #{model_class.model_name.human}"
-        c.items = [:add_form]
-        c.form_config.record = model_class.new(columns_default_values)
-      end
-
-      component :edit_window do |c|
-        configure_form_window(c)
-        c.title = "Edit #{model_class.model_name.human}"
-        c.items = [:edit_form]
-      end
-
-      component :multi_edit_window do |c|
-        configure_form_window(c)
-        c.title = "Edit #{model_class.model_name.human.pluralize}"
-        c.items = [:multi_edit_form]
-      end
-
       endpoint :add_window__add_form__submit do |params|
         data = ActiveSupport::JSON.decode(params[:data])
         data["parent_id"] = params["parent_id"]
@@ -200,19 +165,7 @@ module Netzke
         end
       end
 
-      protected
-
-      def configure_form_window(c)
-        c.klass = RecordFormWindow
-
-        c.form_config = ActiveSupport::OrderedOptions.new.tap do |f|
-          f.model = config[:model]
-          f.persistent_config = config[:persistent_config]
-          f.strong_values = config[:strong_values]
-          f.mode = config[:mode]
-          f.items = default_form_items
-        end
-      end
+      private
 
       def update_record(record, attrs)
         if config.drag_drop && attrs['parentId']
@@ -226,8 +179,6 @@ module Netzke
       def default_bbar
         [:add, :edit, :apply, :del]
       end
-
-      private
 
       # Adds attributes known to Ext.data.NodeInterface as meta columns (only those our model responds to)
       def add_node_interface_methods(columns)
