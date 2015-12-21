@@ -80,23 +80,23 @@ module Netzke
           has_primary_column = false
 
           columns.each do |c|
-            c = Netzke::Basepack::ColumnConfig.new(c, model_adapter)
-
-            # merge attribute
-            c.merge_attribute(attribute_overrides[c.name.to_sym]) if attribute_overrides.has_key?(c.name.to_sym)
-
-            augment_column_config(c)
-
+            c = build_column_config(c)
             next if c.excluded
 
-            # detect primary key column
             has_primary_column ||= c.primary?
-
             cols << c
           end
 
           insert_primary_column(cols) unless has_primary_column
           append_association_values_column(cols)
+        end
+      end
+
+      def build_column_config(c)
+        Netzke::Basepack::ColumnConfig.new(c, model_adapter).tap do |c|
+          attribute_config = attribute_overrides[c.name.to_sym]
+          c.merge_attribute(attribute_config) if attribute_config
+          augment_column_config(c)
         end
       end
 
@@ -145,7 +145,7 @@ module Netzke
 
       # Default form items (non-normalized) that will be displayed in the Add/Edit forms
       def default_form_items
-        non_meta_columns.select{|c| include_in_forms?(c)}.map{|c| c.name.to_sym}
+        non_meta_columns.map{|c| c.name.to_sym}
       end
 
       # ATM the same attributes are used as in forms
@@ -166,28 +166,32 @@ module Netzke
 
       private
 
-      def populate_cols_with_filters(c)
-        c.default_filters.each do |f|
-          c.columns[:items].each do |col|
-            if col[:name].to_sym == f[:column].to_sym
-              if f[:value].is_a?(Hash)
-                val = {}
-                f[:value].each do |k,v|
-                  val[k] = (v.is_a?(Time) || v.is_a?(Date) || v.is_a?(ActiveSupport::TimeWithZone)) ? Netzke::Core::JsonLiteral.new("new Date('#{v.strftime("%m/%d/%Y")}')") : v
-                end
-              else
-                val = f[:value]
-              end
-              new_filter = {value: val, active: true}
-              if col[:filter]
-                col[:filter].merge! new_filter
-              else
-                col[:filter] = new_filter
-              end
+      def populate_columns_with_filters(c)
+        c.default_filters.each do |filter|
+          c.columns[:items].each do |column|
+            if column[:name].to_sym == filter[:column].to_sym
+              extend_column_with_filter(column, filter)
             end
           end
         end
-        c.default_filters = nil
+        c.delete(:default_filters)
+      end
+
+      def extend_column_with_filter(column, filter)
+        if filter[:value].is_a?(Hash)
+          val = {}
+          filter[:value].each do |k,v|
+            val[k] = (v.is_a?(Time) || v.is_a?(Date) || v.is_a?(ActiveSupport::TimeWithZone)) ? Netzke::Core::JsonLiteral.new("new Date('#{v.strftime("%m/%d/%Y")}')") : v
+          end
+        else
+          val = filter[:value]
+        end
+        new_filter = {value: val, active: true}
+        if column[:filter]
+          column[:filter].merge! new_filter
+        else
+          column[:filter] = new_filter
+        end
       end
 
       # Extends passed column config with DSL declaration for this column
@@ -233,16 +237,6 @@ module Netzke
         init_column_names = initial_columns_order.map{ |c| c[:name].to_s }.sort
         stored_column_names = (state[:columns_order] || initial_columns_order).map{ |c| c[:name].to_s }.sort
         init_column_names != stored_column_names
-      end
-
-      def include_in_forms?(c)
-        c.getter.present? ||
-        c.setter.present? ||
-        model_adapter.attribute_names.include?(c[:name]) ||
-        model_class.instance_methods.include?(c[:name].to_sym) ||
-        model_class.instance_methods.include?(:"#{c[:name]}=") ||
-        attribute_overrides[c.name.to_sym] ||
-        association_attr?(c)
       end
 
       def columns_default_values

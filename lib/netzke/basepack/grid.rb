@@ -300,7 +300,7 @@ module Netzke
         c.columns_order = columns_order
         c.pri = model_adapter.primary_key
         if c.default_filters
-          populate_cols_with_filters(c)
+          populate_columns_with_filters(c)
         end
       end
 
