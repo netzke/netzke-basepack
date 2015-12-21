@@ -82,6 +82,10 @@ module Netzke
         c.translate *%w[are_you_sure confirmation]
       end
 
+      action :search do |c|
+        c.excluded = true
+      end
+
       def self.server_side_config_options
         super + [:model]
       end
@@ -174,10 +178,6 @@ module Netzke
         end
 
         super
-      end
-
-      def default_bbar
-        [:add, :edit, :apply, :del]
       end
 
       # Adds attributes known to Ext.data.NodeInterface as meta columns (only those our model responds to)

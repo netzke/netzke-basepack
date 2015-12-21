@@ -13,7 +13,7 @@ module Netzke
               bbar << :apply if config.edit_inline
               bbar << :del
             end
-            bbar << "-" << :search
+            bbar << :search
           end
         end
 
