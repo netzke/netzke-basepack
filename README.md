@@ -5,6 +5,7 @@
 A pack of pre-built [Netzke](http://netzke.org) components that can be used as building blocks for your webapps.
 
 *Notes on versioning:*
+
 * [![Gem Version](https://badge.fury.io/rb/netzke-basepack.png)](http://badge.fury.io/rb/netzke-basepack) is the latest *released* version
 * for the version under development (master), check [version.rb](https://github.com/netzke/netzke-core/blob/master/lib/netzke/core/version.rb)
 * for other versions, check corresponding [branches](https://github.com/netzke/netzke-core/branches)
@@ -13,17 +14,16 @@ A pack of pre-built [Netzke](http://netzke.org) components that can be used as b
 
 Basepack includes the following components:
 
-* [Grid](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Grid) - a grid panel with a thick bag of features
-* [Tree](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Tree) - a tree panel with features similar to the Grid
-* [Form](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Form) - a form panel with automatic binding of fields
-* [TabPanel](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/TabPanel) - a tab panel with support for lazy loading of nested components
-* [Accordion](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Accordion) - an accordion panel with support for lazy loading of nested components
-* [Window](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Window) - a window which stores its size, position, and maximized state
+* [Grid](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Grid/Base) - a grid panel with a thick bag of features
+* [Tree](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Tree/Base) - a tree panel with features similar to the Grid
+* [Form](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Form/Base) - a form panel with automatic binding of fields
+* [Window](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Window/Base) - a window which stores its size, position, and maximized state
+* [Viewport](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Viewport/Base) - a full-window component usually used as one-page application base
 
 Besides, Basepack implements:
 
 * persistence of region sizes and collapsed states of an arbitrary component that uses
-[border layout](http://docs.sencha.com/ext-js/4-1/#!/api/Ext.layout.container.Border) (see [ItemPersistence](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/ItemPersistence))
+Ext's border layout (see [ItemPersistence](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/ItemPersistence))
 * [GridLiveSearch](http://rdoc.info/github/netzke/netzke-basepack/Netzke/Basepack/GridLiveSearch) - a plugin that allows
 enhancing any grid with live search functionality
 
@@ -51,8 +51,9 @@ Embed a basepack component into a view as any other Netzke component, e.g.:
 <%= netzke :books, class_name: 'Netzke::Grid::Base', model: 'Book' %>
 ```
 
-For more examples, see http://netzke-demo.herokuapp.com ([source code](https://github.com/netzke/netzke-demo)), and look
-into `spec/rails_app`.
+This will give you a grid with all the many features, configured to use your `Book` model.
+
+For detailed examples with code see http://demo.netzke.org
 
 ## Running tests
 
@@ -72,7 +73,7 @@ To run all the tests (from the gem's root):
 
     $ rake
 
-*Sourcing Ext JS files from Sencha CDN is broken in Basepack at the moment*.
+*Sourcing Ext JS files from Sencha CDN is not possible with Basepack at the moment*.
 
 ## Using ORM other than ActiveRecord
 
@@ -94,11 +95,11 @@ application.
 
 Help developing Netzke by submitting a pull request when you think others can benefit from it.
 
-If you feel particularily generous, you can donate a couple of bucks weekly at [Gratipay](https://www.gittip.com/mxgrn/).
+If you feel particularily generous, you can donate a couple of bucks weekly at [Gratipay](https://gratipay.com/~mxgrn/).
 
 ## Useful links
 * [Project website](http://netzke.org)
-* [Live-demo](http://netzke-demo.herokuapp.com)
+* [Live demo](http://demo.netzke.org)
 * [Twitter](http://twitter.com/netzke) - latest news about the framework
 
 ---
