@@ -73,6 +73,7 @@ module Netzke
       include Netzke::Basepack::Columns
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::DataAccessor
+      include Netzke::Basepack::Tree::Endpoints
 
       client_class do |c|
         c.extend = "Ext.tree.Panel"
@@ -90,15 +91,11 @@ module Netzke
         super + [:model]
       end
 
-      def configure(c)
-        set_defaults(c)
-        super
-      end
-
       def columns
         add_node_interface_methods(super)
       end
 
+      # Overrides Grid::Services#get_records
       def get_records(params)
         if params[:id] == 'root'
           model_adapter.find_root_records
@@ -107,7 +104,7 @@ module Netzke
         end
       end
 
-      # Override Grid::Services#read so we send records as key-value JSON (instead of array)
+      # Overrides Grid::Services#read so we send records as key-value JSON (instead of array)
       def read(params = {})
         {}.tap do |res|
           records = get_records(params)
@@ -128,45 +125,11 @@ module Netzke
         record.respond_to?(:expanded) && record.expanded?
       end
 
+      # Overrides `Grid::Configuration#configure_client`
       def configure_client(c)
         super
 
-        c.title = c.title || self.class.client_class_config.properties[:title] || model_class.name.pluralize
-        # c.context_menu = context_menu
-        c.columns = {items: js_columns}
-        c.columns_order = columns_order
-        c.pri = model_adapter.primary_key
-
-        if c.default_filters
-          populate_cols_with_filters(c)
-        end
-
         c.root ||= model_adapter.record_to_hash(model_adapter.root, final_columns).netzke_literalize_keys
-      end
-
-      endpoint :add_window__add_form__submit do |params|
-        data = ActiveSupport::JSON.decode(params[:data])
-        data["parent_id"] = params["parent_id"]
-        client.merge!(component_instance(:add_window).
-                    component_instance(:add_form).
-                    submit(data, client))
-        on_data_changed if client.set_form_values.present?
-        client.delete(:set_form_values)
-      end
-
-      endpoint :update_node_state do |params|
-        node = model_adapter.find_record(params[:id])
-        if node.respond_to?(:expanded)
-          node.expanded = params[:expanded]
-          model_adapter.save_record(node)
-        end
-      end
-
-      endpoint :update_parent_id do |records|
-        records.each do |record|
-          r = model_adapter.find_record(record[:id])
-          update_record(r, record)
-        end
       end
 
       private
@@ -194,12 +157,6 @@ module Netzke
           next unless model_adapter.model_respond_to?(a.to_sym)
           columns << {type: type, name: a, meta: true}
         end
-      end
-
-      def set_defaults(c)
-        # The nil? checks are needed because these can be already set in a subclass
-        c.enable_pagination = true if c.enable_pagination.nil?
-        c.rows_per_page = 30 if c.rows_per_page.nil?
       end
     end
   end

@@ -294,18 +294,6 @@ module Netzke
         c.require :extensions
       end
 
-      def configure_client(c)
-        super
-
-        c.title = c.title || self.class.client_class_config.properties[:title] || model_class.name.pluralize
-        c.columns = {items: js_columns}
-        c.columns_order = columns_order
-        c.pri = model_adapter.primary_key
-        if c.default_filters
-          populate_columns_with_filters(c)
-        end
-      end
-
       private
 
       def self.server_side_config_options
