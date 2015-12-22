@@ -13,6 +13,8 @@ module Netzke
     # * persistent column resizing, moving and hiding
     # * complex query search with preset management
     #
+    # *Client-side code is documented [here](http://api.netzke.org/client/classes/Netzke.Grid.Base.html)*
+    #
     # == Configuration
     #
     # The following config options are supported:

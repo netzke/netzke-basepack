@@ -1,12 +1,5 @@
 /**
- * @class Ext.ux.form.field.DateTime
- * @extends Ext.form.FieldContainer
- * @version 0.2 (July 20th, 2011)
- * @author atian25 (http://www.sencha.com/forum/member.php?51682-atian25)
- * @author ontho (http://www.sencha.com/forum/member.php?285806-ontho)
- * @author jakob.ketterl (http://www.sencha.com/forum/member.php?25102-jakob.ketterl)
- * @link http://www.sencha.com/forum/showthread.php?134345-Ext.ux.form.field.DateTime
- * from http://www.sencha.com/forum/showthread.php?134345-Ext.ux.form.field.DateTime&p=863449&viewfull=1#post863449
+ * From http://www.sencha.com/forum/showthread.php?134345-Ext.ux.form.field.DateTime&p=863449&viewfull=1#post863449
  */
 Ext.define('Ext.ux.form.field.DateTime', {
     extend:'Ext.form.FieldContainer',

@@ -103,4 +103,4 @@ If you feel particularily generous, you can donate a couple of bucks weekly at [
 * [Twitter](http://twitter.com/netzke) - latest news about the framework
 
 ---
-Copyright (c) 2009-2015 [Good Bit Labs Limited](http://goodbitlabs.com/), released under the GPLv3 license
+Copyright (c) 2009-2015 [Good Bit Labs](http://goodbitlabs.com/), released under the GPLv3 license
