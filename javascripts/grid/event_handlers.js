@@ -205,4 +205,14 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
       this.doEditInForm(record);
     }
   },
+
+  handleColumnAction: function(self, i, j, options){
+    var handlerName = "handle" + options.passedHandler;
+    var f = this[handlerName];
+    if (Ext.isFunction(f)) {
+      f.apply(this, arguments);
+    } else {
+      Netzke.warning("Undefined handler '"+handlerName+"'");
+    }
+  },
 });

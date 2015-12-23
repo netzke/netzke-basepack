@@ -54,24 +54,8 @@ module Netzke
         a.tap do |a|
           a[:tooltip] ||= a[:name].to_s.humanize
           a[:icon] ||= a[:name].to_sym
-          a[:handler] = Netzke::Core::JsonLiteral.new <<-JS
-          function() {
-            var cmp = Ext.getCmp('#{js_id}'),
-                f = cmp.handle#{a[:handler].to_s.camelize};
-            if (Ext.isFunction(f)) {
-              f.apply(cmp, arguments);
-            } else {
-              Netzke.warning("Undefined handler for action '#{a[:name]}'");
-            }
-          }
-          JS
-
-          a[:is_disabled] &&= Netzke::Core::JsonLiteral.new <<-JS
-          function() {
-            var cmp = Ext.getCmp('#{js_id}');
-            return cmp.#{a[:is_disabled].to_s.camelize(:lower)}.apply(cmp, arguments);
-          }
-          JS
+          a[:passed_handler] = a[:handler].to_s.camelize
+          a[:handler] = f(:handle_column_action)
           a[:icon] = "#{Netzke::Core.icons_uri}/#{a[:icon]}.png" if a[:icon].is_a?(Symbol)
         end
       end

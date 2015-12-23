@@ -11,7 +11,7 @@ module Grid
 
     column :basic_actions do |c|
       c.type = :action
-      c.actions = [{name: :delete_row, tooltip: "Delete row", icon: :delete, is_disabled: :every_third_row}]
+      c.actions = [{name: :delete_row, tooltip: "Delete row", icon: :delete, is_disabled: f(:every_third_row)}]
     end
 
     # Just for illustation (no handlers assigned)
