@@ -10,6 +10,7 @@
     this in mind if you override them in your app.
 
 ### Grid
+*   The `data_store` config option has been renamed to `store_config`
 *   Permissions configuration got consolidated to single `permissions` config option.
 
 *   Buttons previously disabled due to permissions are now not added to the bottom bar alltogether.
