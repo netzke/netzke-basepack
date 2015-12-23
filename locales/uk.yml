@@ -1,7 +1,22 @@
-ru:
+uk:
   netzke:
-    basepack:
-      grid:
+    form:
+      base:
+        actions:
+          edit:
+            text: Редагувати
+            tooltip: Редагувати
+          cancel:
+            text: Скасувати
+            tooltip: Скасувати редагування
+          apply:
+            text: Застосувати
+            tooltip: Застосувати зміни
+
+    grid:
+      base:
+        confirmation: Підтвердження
+        are_you_sure: Ви впевнені?
         actions:
           add:
             text: Додати
@@ -15,12 +30,23 @@ ru:
           search:
             text: Пошук
 
-        deleted_n_records:
-         one: "1 запис видалено"
-         other: "Записів видалено: %{count}"
-        cannot_delete: "У вас недостатньо прав для видалення"
-        confirmation: Підтвердження
-        are_you_sure: Ви впевнені?
+    tree:
+      base:
+        actions:
+          add:
+            text: Додати
+          edit:
+            text: Редагувати
+          delete:
+            text: Видалити
+            tooltip: Видалити
+          apply:
+            text: Зберегти
+          search:
+            text: Пошук
+
+    basepack:
+      cannot_delete: "У вас недостатньо прав для видалення"
 
       record_form_window:
         actions:
@@ -36,18 +62,6 @@ ru:
             text: Пошук
           cancel:
             text: Скасувати
-
-      form:
-        actions:
-          edit:
-            text: Редагувати
-            tooltip: Редагувати
-          cancel:
-            text: Скасувати
-            tooltip: Скасувати редагування
-          apply:
-            text: Застосувати
-            tooltip: Застосувати зміни
 
       search_panel:
         presets: Шаблони

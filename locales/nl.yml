@@ -1,7 +1,22 @@
 nl:
   netzke:
-    basepack:
-      grid:
+    form:
+      base:
+        actions:
+          edit:
+            text: Wijzigen
+            tooltip: Wijzigen
+          cancel:
+            text: Annuleren
+            tooltip: Wijzigen annuleren
+          apply:
+            text: Toepassen
+            tooltip: Wijzigingen toepassen
+
+    grid:
+      base:
+        confirmation: Bevestiging
+        are_you_sure: Weet je het zeker?
         actions:
           add:
             text: Toevoegen
@@ -15,12 +30,23 @@ nl:
           search:
             text: Zoeken
 
-        deleted_n_records:
-         one: "1 object verwijderd"
-         other: "%{count} objecten verwijderd"
-        cannot_delete: "Je hebt geen toestemming om data te verwijderen"
-        confirmation: Bevestiging
-        are_you_sure: Weet je het zeker?
+    tree:
+      base:
+        actions:
+          add:
+            text: Toevoegen
+          edit:
+            text: Wijzigen
+          delete:
+            text: Verwijderen
+            tooltip: Verwijderen
+          apply:
+            text: Toepassen
+          search:
+            text: Zoeken
+
+    basepack:
+      cannot_delete: "Je hebt geen toestemming om data te verwijderen"
 
       record_form_window:
         actions:
@@ -36,18 +62,6 @@ nl:
             text: Zoeken
           cancel:
             text: Annuleren
-
-      form:
-        actions:
-          edit:
-            text: Wijzigen
-            tooltip: Wijzigen
-          cancel:
-            text: Annuleren
-            tooltip: Wijzigen annuleren
-          apply:
-            text: Toepassen
-            tooltip: Wijzigingen toepassen
 
       search_panel:
         presets: Standaardwaarden

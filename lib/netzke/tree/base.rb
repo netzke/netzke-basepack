@@ -88,8 +88,15 @@ module Netzke
         c.excluded = true
       end
 
-      def self.server_side_config_options
-        super + [:model]
+      class << self
+        def server_side_config_options
+          super + [:model]
+        end
+
+        # Borrow translations from the grid for now
+        def i18n_id
+          "netzke.grid.base"
+        end
       end
 
       def columns

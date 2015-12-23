@@ -1,7 +1,20 @@
 es:
   netzke:
-    basepack:
-      grid:
+    form:
+      base:
+        actions:
+          edit:
+            text: Editar
+            tooltip: Editar
+          cancel:
+            text: Cancelar
+            tooltip: Cancelar edición
+          apply:
+            text: Aplicar
+            tooltip: Aplicar los cambios
+
+    grid:
+      base:
         actions:
           add:
             text: Agregar
@@ -15,12 +28,25 @@ es:
           search:
             text: Buscar
 
-        deleted_n_records:
-         one: "Se ha eliminado 1 registro"
-         other: "Se han eliminado %{count} registro(s)"
-        cannot_delete: "Usted no tiene permiso para borrar los datos"
-        confirmation: Confirmación
-        are_you_sure: ¿Está seguro?
+    tree:
+      base:
+        actions:
+          add:
+            text: Agregar
+          edit:
+            text: Editar
+          delete:
+            text: Eliminar
+            tooltip: Eliminar
+          apply:
+            text: Aplicar
+          search:
+            text: Buscar
+
+    basepack:
+      cannot_delete: "Usted no tiene permiso para borrar los datos"
+      confirmation: Confirmación
+      are_you_sure: ¿Está seguro?
 
       record_form_window:
         actions:
@@ -36,18 +62,6 @@ es:
             text: Buscar
           cancel:
             text: Cancelar
-
-      form:
-        actions:
-          edit:
-            text: Editar
-            tooltip: Editar
-          cancel:
-            text: Cancelar
-            tooltip: Cancelar edición
-          apply:
-            text: Aplicar
-            tooltip: Aplicar los cambios
 
       search_panel:
         presets: Búsquedas anteriores

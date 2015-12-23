@@ -8,8 +8,9 @@ module Netzke
   module Basepack
     class Engine < ::Rails::Engine
 
-      %w[en de ru es].each do |lang|
-        I18n.load_path << File.dirname(__FILE__) + "/../locales/#{lang}.yml"
+      # load Basepack locale files
+      Dir[File.dirname(__FILE__) + "/../locales/*.yml"].each do |file|
+        I18n.load_path << file
       end
 
       # Make components and modules auto-loadable

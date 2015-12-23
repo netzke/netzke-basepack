@@ -1,7 +1,7 @@
 en:
   netzke:
-    basepack:
-      tree:
+    tree:
+      base:
         actions:
           add:
             text: Add
@@ -9,37 +9,46 @@ en:
             text: Edit
           delete:
             text: Delete
-            tooltip: Delete
           apply:
             text: Apply
           search:
             text: Search
 
-      grid:
-        actions:
-          add:
-            text: Add
-          edit:
-            text: Edit
-          delete:
-            text: Delete
-            tooltip: Delete
-          apply:
-            text: Apply
-          search:
-            text: Search
-
-        deleted_n_records:
-         one: "Deleted 1 record"
-         other: "Deleted %{count} records"
-        cannot_create: "You don't have permissions to create data"
-        cannot_read: "You don't have permissions to read data"
-        cannot_update: "You don't have permissions to update data"
-        cannot_delete: "You don't have permissions to delete data"
-
+    grid:
+      base:
         confirmation: Confirmation
         are_you_sure: Are you sure?
         proceed_with_unapplied_changes: You will lose uncommitted changes - do you want to proceed?
+        actions:
+          add:
+            text: Add
+          edit:
+            text: Edit
+          delete:
+            text: Delete
+          apply:
+            text: Apply
+          search:
+            text: Search
+
+      form:
+        base:
+          actions:
+            edit:
+              text: Edit
+              tooltip: Edit
+            cancel:
+              text: Cancel
+              tooltip: Cancel editing
+            apply:
+              text: Apply
+              tooltip: Apply changes
+
+    basepack:
+      cannot_create: "You don't have permissions to create data"
+      cannot_read: "You don't have permissions to read data"
+      cannot_update: "You don't have permissions to update data"
+      cannot_delete: "You don't have permissions to delete data"
 
       record_form_window:
         actions:
@@ -55,18 +64,6 @@ en:
             text: Search
           cancel:
             text: Cancel
-
-      form:
-        actions:
-          edit:
-            text: Edit
-            tooltip: Edit
-          cancel:
-            text: Cancel
-            tooltip: Cancel editing
-          apply:
-            text: Apply
-            tooltip: Apply changes
 
       search_panel:
         presets: Presets
