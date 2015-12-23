@@ -1,3 +1,4 @@
+# Encoding: utf-8
 require 'spec_helper'
 describe Netzke::Grid::Permissions do
   context "in read-only mode" do
