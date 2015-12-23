@@ -12,7 +12,7 @@ module Netzke
         success = create_or_update_record(data)
 
         if success
-          client.set_form_values(js_record_data)
+          client.netzke_set_form_values(js_record_data)
           client.success = true # respond to classic form submission with {success: true}
           client.handle_submit_success # inform the Netzke endpoint caller about success
         else
@@ -20,7 +20,7 @@ module Netzke
             {level: :error, msg: error}
           end
           client.netzke_feedback(errors)
-          client.apply_form_errors(build_form_errors(record))
+          client.netzke_apply_form_errors(build_form_errors(record))
         end
       end
 

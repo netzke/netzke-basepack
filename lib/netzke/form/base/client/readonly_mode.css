@@ -2,13 +2,3 @@ input.readonly, textarea.readonly {
   background-color: #f5f5f5;
   background-image: none;
 }
-
-/*input.readonly, textarea.readonly {
-  border: 0 solid #fff;
-  background-image: none;
-}
-
-label.readonly {
-  font-weight: bold;
-}
-*/

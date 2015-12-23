@@ -69,16 +69,16 @@ module Netzke
           client.merge!(component_instance(:add_window).
                       component_instance(:add_form).
                       invoke_endpoint(:submit, [params]))
-          on_data_changed if client.set_form_values.present?
-          client.delete(:set_form_values)
+          on_data_changed if client.netzke_set_form_values.present?
+          client.delete(:netzke_set_form_values)
         end
 
         endpoint :edit_window__edit_form__submit do |params|
           client.merge!(component_instance(:edit_window).
                       component_instance(:edit_form).
                       invoke_endpoint(:submit, [params]))
-          on_data_changed if client.set_form_values.present?
-          client.delete(:set_form_values)
+          on_data_changed if client.netzke_set_form_values.present?
+          client.delete(:netzke_set_form_values)
         end
       end
 

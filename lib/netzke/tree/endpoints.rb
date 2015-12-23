@@ -10,8 +10,8 @@ module Netzke
           client.merge!(component_instance(:add_window).
                       component_instance(:add_form).
                       submit(data, client))
-          on_data_changed if client.set_form_values.present?
-          client.delete(:set_form_values)
+          on_data_changed if client.netzke_set_form_values.present?
+          client.delete(:netzke_set_form_values)
         end
 
         endpoint :update_node_state do |params|
