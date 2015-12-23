@@ -7,12 +7,11 @@ module Netzke
 
       def default_bbar
         [].tap do |bbar|
-          unless config.read_only
-            bbar << :add << :edit
-            bbar << :apply if config.edit_inline
-            bbar << :delete
-          end
-          bbar << :search
+          bbar << :add if has_add_action?
+          bbar << :edit if has_edit_action?
+          bbar << :apply if has_apply_action?
+          bbar << :delete if has_delete_action?
+          bbar << :search if has_search_action?
         end
       end
 
@@ -23,9 +22,8 @@ module Netzke
       # Override to change the default context menu
       def default_context_menu
         [].tap do |menu|
-          unless config.read_only
-            menu << :edit << :delete
-          end
+          menu << :edit if has_edit_action?
+          menu << :delete if has_delete_action?
         end
       end
 

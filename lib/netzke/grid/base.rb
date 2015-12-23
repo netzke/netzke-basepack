@@ -129,22 +129,12 @@ module Netzke
     #
     #   Do not warn the user about dirty records on the page when changing the page. Defaults to +false+.
     #
-    # TODO: consolidate these
-    # [prohibit_create]
+    # [permissions]
     #
-    #   when set to +true+ prevents user from adding data
+    #   Hash that can have a combination of the following boolean keys: +create+, +read+, +update+, +delete+ that
+    #   set corresponding permissions on the grid. For example, to disable deleting records:
     #
-    # [prohibit_update]
-    #
-    #   when set to +true+ prevents user from editing data
-    #
-    # [prohibit_read]
-    #
-    #   when set to +true+ prevents user from reading data
-    #
-    # [prohibit_delete]
-    #
-    #   when set to +true+ prevents user from deleting data
+    #       c.permissions = {delete: false}
     #
     # == Configuring attributes (columns and form fields)
     #
@@ -210,7 +200,7 @@ module Netzke
     # Add/Edit forms are each wrapped in a separate +Window::Base+-descending component (called +RecordFormWindow+
     # for the add/edit forms, and can be overridden individually as any other child component.
     #
-    # === Overriding windows
+    # === Overriding form windows
     #
     # Override the following direct child components to change the looks of the pop-up windows: +:add_window+,
     # +:edit_window+, +:multi_edit_window+, and +:search_window+. For example, to override the title of the Add form,
@@ -245,6 +235,7 @@ module Netzke
     #     end
     #
     # == Actions
+    #
     # You can override Grid's actions to change their text, icons, and tooltips (see
     # http://rdoc.info/github/netzke/netzke-core/Netzke/Core/Actions).
     #
@@ -264,17 +255,18 @@ module Netzke
     #
     # [apply]
     #
-    #   Applying inline changes
+    #   Applying inline changes (after inline adding/editing of record)
     #
     # [search]
     #
-    #   Advanced search
+    #   Show advanced search query builder
     class Base < Netzke::Base
       include Netzke::Grid::Configuration
       include Netzke::Grid::Endpoints
       include Netzke::Grid::Services
       include Netzke::Grid::Actions
       include Netzke::Grid::Components
+      include Netzke::Grid::Permissions
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::Columns
       include Netzke::Basepack::DataAccessor
@@ -285,8 +277,8 @@ module Netzke
         c.include :advanced_search
         c.include :remember_selection
 
-        c.mixins << "Netzke.mixins.Basepack.Columns"
-        c.mixins << "Netzke.mixins.Basepack.GridEventHandlers"
+        c.mixins << "Netzke.Basepack.Grid.Columns"
+        c.mixins << "Netzke.Basepack.Grid.EventHandlers"
 
         c.translate *%w[are_you_sure confirmation proceed_with_unapplied_changes]
 

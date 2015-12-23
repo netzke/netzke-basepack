@@ -1,5 +1,5 @@
 /* Shared column-related functionality, used in Tree and Grid */
-Ext.define("Netzke.mixins.Basepack.Columns", {
+Ext.define("Netzke.Basepack.Grid.Columns", {
   netzkeProcessColumns: function() {
     this.fields = [];
 

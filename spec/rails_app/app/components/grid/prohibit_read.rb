@@ -3,7 +3,7 @@ module Grid
     def configure(c)
       super
       c.model = 'Book'
-      c.prohibit_read = true
+      c.permissions = {read: false}
     end
   end
 end

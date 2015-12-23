@@ -5,22 +5,20 @@ module Netzke
 
       included do
         action :add do |a|
-          a.disabled = config[:prohibit_create]
           a.icon = :add
         end
 
         action :edit do |a|
-          a.disabled = true
+          a.disabled = true # initial
           a.icon = :table_edit
         end
 
         action :delete do |a|
-          a.disabled = true
+          a.disabled = true # initial
           a.icon = :table_row_delete
         end
 
         action :apply do |a|
-          a.disabled = config[:prohibit_update] && config[:prohibit_create]
           a.icon = :tick
         end
 
@@ -28,6 +26,26 @@ module Netzke
           a.enable_toggle = true
           a.icon = :find
         end
+      end
+
+      def has_add_action?
+        allowed_to?(:create)
+      end
+
+      def has_edit_action?
+        allowed_to?(:update)
+      end
+
+      def has_apply_action?
+        config.edit_inline && (allowed_to?(:create) || allowed_to?(:update))
+      end
+
+      def has_delete_action?
+        allowed_to?(:delete)
+      end
+
+      def has_search_action?
+        true
       end
     end
   end

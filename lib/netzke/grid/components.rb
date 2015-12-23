@@ -10,18 +10,21 @@ module Netzke
           c.title = "Add #{model_class.model_name.human}"
           c.items = [:add_form]
           c.form_config.record = model_class.new(columns_default_values)
+          c.excluded = !allowed_to?(:create)
         end
 
         component :edit_window do |c|
           configure_form_window(c)
           c.title = "Edit #{model_class.model_name.human}"
           c.items = [:edit_form]
+          c.excluded = !allowed_to?(:update)
         end
 
         component :multi_edit_window do |c|
           configure_form_window(c)
           c.title = "Edit #{model_class.model_name.human.pluralize}"
           c.items = [:multi_edit_form]
+          c.excluded = !allowed_to?(:update)
         end
 
         component :search_window do |c|

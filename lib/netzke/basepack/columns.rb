@@ -121,16 +121,13 @@ module Netzke
       end
 
       def append_association_values_column(cols)
-        cols << {}.tap do |c|
-          c.merge!(
-            :name => "association_values",
-            :meta => true,
-            :getter => lambda do |r|
-              model_adapter.assoc_values(r, final_columns_hash).netzke_literalize_keys
-            end
-          )
+        cols << Netzke::Basepack::AttrConfig.new("association_values", model_adapter).tap do |c|
+          c.meta = true
+          c.getter = lambda do |r|
+            model_adapter.assoc_values(r, final_columns_hash).netzke_literalize_keys
+          end
           defaults = association_value_defaults(cols).netzke_literalize_keys
-          c[:default_value] = defaults if defaults.present?
+          c.default_value = defaults if defaults.present?
         end
       end
 

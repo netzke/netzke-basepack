@@ -70,6 +70,7 @@ module Netzke
       include Netzke::Grid::Services
       include Netzke::Grid::Actions
       include Netzke::Grid::Components
+      include Netzke::Grid::Permissions
       include Netzke::Basepack::Columns
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::DataAccessor
@@ -78,8 +79,8 @@ module Netzke
       client_class do |c|
         c.extend = "Ext.tree.Panel"
         c.require :extensions
-        c.mixins << "Netzke.mixins.Basepack.Columns"
-        c.mixins << "Netzke.mixins.Basepack.GridEventHandlers"
+        c.mixins << "Netzke.Basepack.Grid.Columns"
+        c.mixins << "Netzke.Basepack.Grid.EventHandlers"
         c.translate *%w[are_you_sure confirmation]
       end
 

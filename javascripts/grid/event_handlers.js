@@ -1,4 +1,8 @@
-Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
+/**
+ * Event handlers for grid-like components, gets mixed into `Netzke.Grid.Base` and `Netzke.Tree.Base`
+ * @class Netzke.Basepack.Grid.EventHandlers
+ */
+Ext.define("Netzke.Basepack.Grid.EventHandlers", {
   // Handler for the 'add' button
   handleAdd: function(){
     if (!this.editInline) {
@@ -173,7 +177,7 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
   },
 
   /**
-   * Process selectionchange event to enable/disable actions
+   * Process selectionchange event to enable/disable actions.
    * @method netzkeSetActionEvents
    * @private
    */
@@ -188,5 +192,17 @@ Ext.define("Netzke.mixins.Basepack.GridEventHandlers", {
         this.actions.edit.setDisabled(selected.length == 0 || disabled);
       }
     }, this);
+  },
+
+  /**
+   * Loads edit form if editing in form is possible.
+   * @method netzkeHandleItemdblclick
+   */
+  netzkeHandleItemdblclick: function(view, record){
+    if (this.editInline) return;
+
+    if (this.permissions.update !== false) {
+      this.doEditInForm(record);
+    }
   },
 });

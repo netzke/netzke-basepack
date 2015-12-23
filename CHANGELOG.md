@@ -10,6 +10,10 @@
     this in mind if you override them in your app.
 
 ### Grid
+*   Permissions configuration got consolidated to single `permissions` config option.
+
+*   Buttons previously disabled due to permissions are now not added to the bottom bar alltogether.
+
 *   The `del` action has been renamed to `delete`.
 
 *   Columns configuration (by using the `Grid.column` DSL method, or the `columns` configuration option) no longer has effect on corresponding form fields. Use the new `attribute` DSL method or the `attribute_overrides` config option (see above) to set the common configuration option for both column and form field.
