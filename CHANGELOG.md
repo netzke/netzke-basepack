@@ -10,7 +10,10 @@
     this in mind if you override them in your app.
 
 ### Grid
-*   The `data_store` config option has been renamed to `store_config`
+*   The `default_fields_for_forms` method has been renamed to `default_form_items`.
+
+*   The `data_store` config option has been renamed to `store_config`.
+
 *   Permissions configuration got consolidated to single `permissions` config option.
 
 *   Buttons previously disabled due to permissions are now not added to the bottom bar alltogether.
