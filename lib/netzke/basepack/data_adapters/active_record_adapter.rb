@@ -320,7 +320,11 @@ module Netzke::Basepack::DataAdapters
         relation = relation.where(predicates_for_and_conditions(and_query))
       end
 
-      relation = params[:scope].call(relation) if params[:scope].is_a?(Proc)
+      if params[:scope].is_a?(Proc)
+        relation = params[:scope].call(relation)
+      else
+        raise ArgumentError, "Expected scope to be a Proc, got #{params[:scope].class}" unless params[:scope].nil?
+      end
 
       @relation = relation
     end
