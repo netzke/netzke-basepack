@@ -10,6 +10,8 @@
     this in mind if you override them in your app.
 
 ### Grid
+*   `preconfigure_record_window` has been renamed to `configure_form_window`
+
 *   The `default_fields_for_forms` method has been renamed to `default_form_items`.
 
 *   The `data_store` config option has been renamed to `store_config`.
@@ -46,6 +48,10 @@
 *   `enable_edit_in_form`, `enable_edit_inline`, `enable_pagination` options are gone.
 
 *   `enable_extended_search` option is gone.
+
+#### Added
+
+*   Override new `configure_form` method to specify extra configuration to the forms
 
 ### Misc
 *   Base classes of main componens have been renamed from `Netzke::Basepack::{Grid|Form|Tree|Window|Viewport}` to `Netzke::{Grid|Form|Tree|Window|Viewport}::Base`.
