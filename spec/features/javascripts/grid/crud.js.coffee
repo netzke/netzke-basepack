@@ -36,6 +36,14 @@ describe 'Grid::Crud', ->
       expect(grid('Books').getStore().getCount()).to.eql rowCount
       done()
 
+  it 'shows record edit form on record dblclick', (done) ->
+    selectLastRow()
+    dblclickRow()
+    wait().then ->
+      expectToSee header "Edit Book"
+      click button 'Cancel'
+      done()
+
   it 'simultaneously updates two records via form', (done) ->
     wait().then ->
       click button 'Add'
@@ -70,6 +78,6 @@ describe 'Grid::Crud', ->
       selectAllRows()
       click button 'Delete'
       click button 'Yes'
-      wait ->
+      wait().then ->
         expect(grid().getStore().getCount()).to.eql(0)
         done()

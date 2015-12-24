@@ -201,7 +201,7 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
   netzkeHandleItemdblclick: function(view, record){
     if (this.editInline) return;
 
-    if (this.permissions.update !== false) {
+    if ((this.permissions || {}).update !== false) {
       this.doEditInForm(record);
     }
   },
