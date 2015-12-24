@@ -24,7 +24,7 @@ module Netzke
 
         action :search do |a|
           a.enable_toggle = true
-          a.icon = :find
+          a.icon = :magnifier
         end
       end
 
