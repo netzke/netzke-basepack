@@ -7,7 +7,7 @@ module Grid
     end
 
     endpoint :read do |params|
-      client.netzke_feedback "Data loaded!"
+      client.netzke_notify "Data loaded!"
       super params
     end
   end

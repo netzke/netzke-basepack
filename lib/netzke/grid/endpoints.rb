@@ -58,7 +58,7 @@ module Netzke
             client.handle_submit_success
             "ok"
           else
-            client.netzke_feedback(errors)
+            client.netzke_notify(errors)
             "failure"
           end
         end
@@ -102,7 +102,7 @@ module Netzke
         if allowed_to?(op)
           send(op, data)
         else
-          client.netzke_feedback I18n.t("netzke.basepack.cannot_#{op}")
+          client.netzke_notify I18n.t("netzke.basepack.cannot_#{op}")
           # { data: [], total: 0 }
           {}
         end

@@ -19,7 +19,7 @@ module Netzke
           errors = model_adapter.errors_array(@record).map do |error|
             {level: :error, msg: error}
           end
-          client.netzke_feedback(errors)
+          client.netzke_display_form_errors(errors)
           client.netzke_apply_form_errors(build_form_errors(record))
         end
       end

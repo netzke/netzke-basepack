@@ -7,6 +7,6 @@ class BookGridWithExtraFeedback < Netzke::Grid::Base
 
   # Override the get_data endpoint
   def get_data_endpoint(params)
-    super.merge(:netzke_feedback => "Data loaded!")
+    super.merge(:netzke_notify => "Data loaded!")
   end
 end

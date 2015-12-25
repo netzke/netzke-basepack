@@ -33,7 +33,7 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
           }
 
           if (errors.length > 0) {
-            this.netzkeFeedback([errors]);
+            this.netzkeNotify(errors);
           }
         });
         this.netzkeReloadStore();
