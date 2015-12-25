@@ -87,18 +87,6 @@ module Netzke
       # @param [Array] Workload of operation data
       # @param [Netzke::Core::EndpointResponse] Object collecting response to the client
       def attempt_operation(op, data, client)
-        # TODO still needed?
-        # if data is ActionController::Parameters and a scope is in the component config
-        # then ran this in an ActiveModel::ForbiddenAttributesError (rails 4 strong parameters)
-        # solution: in this case convert ActionController::Parameters to a Hash
-        if data.is_a? ActionController::Parameters
-          dataHash = {}
-          data.each do |k,v|
-            #preserve keys as symbol
-            dataHash[k.to_sym] = v
-          end
-          data = dataHash
-        end
         if allowed_to?(op)
           send(op, data)
         else
