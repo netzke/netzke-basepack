@@ -26,14 +26,14 @@ module Netzke
           }
         JS
 
-        c.handle_search = <<-JS
+        c.netzke_on_search = <<-JS
           function(){
             this.closeRes = 'search';
             this.hide();
           }
         JS
 
-        c.handle_cancel = <<-JS
+        c.netzke_on_cancel = <<-JS
           function(){
             this.hide();
           }

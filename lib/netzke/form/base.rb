@@ -48,7 +48,7 @@ module Netzke
     #
     #     someForm.server.load({id: 100});
     #
-    # * +submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling handleApply)
+    # * +submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling netzkeOnApply)
     # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
     class Base < Netzke::Base
       include Netzke::Form::Endpoints

@@ -4,9 +4,9 @@
  */
 Ext.define("Netzke.Basepack.Grid.EventHandlers", {
   // Handler for the 'add' button
-  handleAdd: function(){
+  netzkeOnAdd: function(){
     if (!this.editInline) {
-      this.handleAddInForm();
+      this.netzkeOnAddInForm();
     } else {
       // Note: default values are taken from the model's field's defaultValue property
       var r = Ext.create(this.store.getModel(), {});
@@ -19,7 +19,7 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
     }
   },
 
-  handleDelete: function() {
+  netzkeOnDelete: function() {
     Ext.Msg.confirm(this.i18n.confirmation, this.i18n.areYouSure, function(btn){
       if (btn == 'yes') {
         var toDelete = this.getSelectionModel().getSelection();
@@ -41,14 +41,14 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
     }, this);
   },
 
-  handleApply: function(){
+  netzkeOnApply: function(){
     this.getStore().sync();
   },
 
   // Handlers for tools
   //
 
-  handleRefreshTool: function() {
+  netzkeOnRefreshTool: function() {
     if (this.fireEvent('netzkerefresh', this) !== false) {
       this.netzkeReloadStore();
     }
@@ -57,7 +57,7 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
   // Event handlers
   //
 
-  handleItemContextMenu: function(grid, record, item, rowIndex, e){
+  netzkeOnItemContextMenu: function(grid, record, item, rowIndex, e){
     e.stopEvent();
     var coords = e.getXY();
 
@@ -70,7 +70,7 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
     menu.showAt(coords);
   },
 
-  handleAfterRowMove: function(dt, oldIndex, newIndex, records){
+  netzkeOnAfterRowMove: function(dt, oldIndex, newIndex, records){
     var ids = [];
     // collect records ids
     Ext.each(records, function(r){ids.push(r.id)});
@@ -83,7 +83,7 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
     Netzke.warning('Server exception occured. Override loadExceptionHandler, or catch globally by listenning to exception event of Netzke.directProvider');
   },
 
-  handleEdit: function(){
+  netzkeOnEdit: function(){
     var selection = this.getSelectionModel().getSelection();
     if (selection.length == 1) {
       this.doEdit(selection[0]);
@@ -93,7 +93,7 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
   },
 
   // Not a very clean approach to clean-up. The problem is that this way the advanced search functionality stops being really pluggable. With Ext JS 4 find the way to make it truely so.
-  handleDestroy: function(){
+  netzkeOnDestroy: function(){
     this.callParent();
 
     // Destroy the search window (here's the problem: we are not supposed to know it exists)
@@ -102,7 +102,7 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
     }
   },
 
-  handleAddInForm: function(){
+  netzkeOnAddInForm: function(){
     this.netzkeLoadComponent("add_window", {
       callback: function(w) {
         w.show();
@@ -206,8 +206,8 @@ Ext.define("Netzke.Basepack.Grid.EventHandlers", {
     }
   },
 
-  handleColumnAction: function(self, i, j, options){
-    var handlerName = "handle" + options.passedHandler;
+  netzkeOnColumnAction: function(self, i, j, options){
+    var handlerName = "netzkeOn" + options.passedHandler;
     var f = this[handlerName];
     if (Ext.isFunction(f)) {
       f.apply(this, arguments);

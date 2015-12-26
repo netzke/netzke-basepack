@@ -55,7 +55,7 @@ module Netzke
 
           if errors.empty?
             on_data_changed
-            client.handle_submit_success
+            client.netzke_on_submit_success
             "ok"
           else
             client.netzke_notify(errors)

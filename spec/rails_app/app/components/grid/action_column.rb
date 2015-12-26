@@ -26,10 +26,10 @@ module Grid
           return rowIndex % 3 == 1;
         }
       JS
-      c.handle_delete_row = <<-JS
+      c.netzke_on_delete_row = <<-JS
         function(grid, rowIndex, colIndex){
           this.getSelectionModel().select(rowIndex);
-          this.handleDelete();
+          this.netzkeOnDelete();
         }
       JS
     end

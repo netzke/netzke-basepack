@@ -32,7 +32,7 @@ module Netzke
       end
 
       def default_tools
-        [{ type: :refresh, handler: f(:handle_refresh_tool) }]
+        [{ type: :refresh, handler: f(:netzke_on_refresh_tool) }]
       end
 
       def configure_client(c)

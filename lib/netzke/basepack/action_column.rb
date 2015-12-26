@@ -55,7 +55,7 @@ module Netzke
           a[:tooltip] ||= a[:name].to_s.humanize
           a[:icon] ||= a[:name].to_sym
           a[:passed_handler] = a[:handler].to_s.camelize
-          a[:handler] = f(:handle_column_action)
+          a[:handler] = f(:netzke_on_column_action)
           a[:icon] = "#{Netzke::Core.icons_uri}/#{a[:icon]}.png" if a[:icon].is_a?(Symbol)
         end
       end

@@ -14,7 +14,7 @@ module Netzke
         if success
           client.netzke_set_form_values(js_record_data)
           client.success = true # respond to classic form submission with {success: true}
-          client.handle_submit_success # inform the Netzke endpoint caller about success
+          client.netzke_on_submit_success # inform the Netzke endpoint caller about success
         else
           errors = model_adapter.errors_array(@record).map do |error|
             {level: :error, msg: error}
