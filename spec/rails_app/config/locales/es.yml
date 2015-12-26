@@ -5,15 +5,16 @@ es:
       book: Libro
     attributes:
       book:
-        author__name: "Autor"
-        author__first_name: "Nombre del autor"
-        author__last_name: "Apellido del autor"
-        author__created_at: "Autor creado en"
-        author__updated_at: "Autor actualizado en"
-        in_abundance: "En abundancia"
-        title: "Título"
-        exemplars: "Ejemplares"
-        digitized: "Digitalizado"
-        notes: "Notas"
-        created_at: "Creado en"
-        updated_at: "Actualizado en"
+        author: Autor
+        author__name: Autor
+        author__first_name: Nombre del autor
+        author__last_name: Apellido del autor
+        author__created_at: Autor creado en
+        author__updated_at: Autor actualizado en
+        in_abundance: En abundancia
+        title: Título
+        exemplars: Ejemplares
+        digitized: Digitalizado
+        notes: Notas
+        created_at: Creado en
+        updated_at: Actualizado en

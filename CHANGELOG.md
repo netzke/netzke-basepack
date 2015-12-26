@@ -10,6 +10,9 @@
     this in mind if you override them in your app.
 
 ### Grid
+*   Column/field label for association no longer includes association method name by default. For example, for
+    `author__name` attribute it'll now be "Author", not "Author  name".
+
 *   `preconfigure_record_window` has been renamed to `configure_form_window`
 
 *   The `default_fields_for_forms` method has been renamed to `default_form_items`.

@@ -31,7 +31,7 @@ module Netzke
 
         self.virtual = @model_adapter.virtual_attribute?(self)
 
-        self.text ||= label || @model_adapter.human_attribute_name(name)
+        self.text ||= label || default_label
 
         set_editor
 

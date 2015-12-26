@@ -203,7 +203,7 @@ module Netzke
       #
       # augment it with additional configuration params, e.g.:
       #
-      #   {:name=>"author__name", :type=>:string, :editor=>{:xtype=>:netzkeremotecombo}, :assoc=>true, :virtual=>true, :header=>"Author  name", :sortable=>false, :filterable=>false}
+      #   {:name=>"author__name", :type=>:string, :editor=>{:xtype=>:netzkeremotecombo}, :assoc=>true, :virtual=>true, :header=>"Author", :sortable=>false, :filterable=>false}
       #
       # It may be handy to override it.
       def augment_column_config(c)

@@ -30,6 +30,14 @@ module Netzke
 
     private
 
+      def default_label
+        if association?
+          @model_adapter.human_attribute_name(name.split("__").first)
+        else
+          @model_adapter.human_attribute_name(name)
+        end
+      end
+
       def responded_to_by_model?
         # if no model class is provided, assume the attribute is being responded to
         @model_adapter.model_class.nil? ||

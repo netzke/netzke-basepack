@@ -19,7 +19,7 @@ module Netzke
 
         set_xtype if xtype.nil?
 
-        self.field_label ||= @model_adapter.human_attribute_name(name).gsub(/\s+/, " ")
+        self.field_label ||= default_label
 
         self.hidden = true if hidden.nil? && primary?
         self.hide_label = hidden if hide_label.nil?

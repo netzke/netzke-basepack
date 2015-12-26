@@ -34,10 +34,6 @@ module Netzke::Basepack::DataAdapters
       @model_class.column_names
     end
 
-    def human_attribute_name(attr_name)
-      @model_class.human_attribute_name(attr_name)
-    end
-
     def attr_type(attr_name)
       method, assoc = method_and_assoc(attr_name)
       klass = assoc.nil? ? @model_class : assoc.klass
