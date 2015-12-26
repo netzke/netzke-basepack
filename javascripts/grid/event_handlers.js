@@ -1,8 +1,8 @@
 /**
  * Event handlers for grid-like components, gets mixed into `Netzke.Grid.Base` and `Netzke.Tree.Base`
- * @class Netzke.Basepack.Grid.EventHandlers
+ * @class Netzke.Grid.EventHandlers
  */
-Ext.define("Netzke.Basepack.Grid.EventHandlers", {
+Ext.define("Netzke.Grid.EventHandlers", {
   // Handler for the 'add' button
   netzkeOnAdd: function(){
     if (!this.editInline) {

@@ -79,8 +79,8 @@ module Netzke
       client_class do |c|
         c.extend = "Ext.tree.Panel"
         c.require :extensions
-        c.mixins << "Netzke.Basepack.Grid.Columns"
-        c.mixins << "Netzke.Basepack.Grid.EventHandlers"
+        c.mixins << "Netzke.Grid.Columns"
+        c.mixins << "Netzke.Grid.EventHandlers"
         c.translate *%w[are_you_sure confirmation]
       end
 

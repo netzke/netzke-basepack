@@ -1,5 +1,5 @@
 /* Shared column-related functionality, used in Tree and Grid */
-Ext.define("Netzke.Basepack.Grid.Columns", {
+Ext.define("Netzke.Grid.Columns", {
   netzkeProcessColumns: function() {
     this.fields = [];
 

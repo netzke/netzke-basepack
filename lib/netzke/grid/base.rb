@@ -277,8 +277,8 @@ module Netzke
         c.include :advanced_search
         c.include :remember_selection
 
-        c.mixins << "Netzke.Basepack.Grid.Columns"
-        c.mixins << "Netzke.Basepack.Grid.EventHandlers"
+        c.mixins << "Netzke.Grid.Columns"
+        c.mixins << "Netzke.Grid.EventHandlers"
 
         c.translate *%w[are_you_sure confirmation proceed_with_unapplied_changes]
 
