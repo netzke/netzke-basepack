@@ -9,6 +9,8 @@ module Netzke
 
         self.merge!(delete(:field_config)) if self.has_key?(:field_config)
 
+        self.merge!(editor_config) if self.has_key?(:editor_config)
+
         self.delete(:column_config) if self.has_key?(:column_config)
       end
 

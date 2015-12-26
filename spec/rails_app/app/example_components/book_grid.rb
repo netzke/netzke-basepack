@@ -2,14 +2,8 @@ class BookGrid < Netzke::Grid::Base
   def configure(c)
     c.model = "Book"
     c.title = I18n.t('books', :default => "Books")
-    # c.edit_inline = true
     super
   end
-
-  # column :author__name do |c|
-  #   c.sorting_scope = :sorted_by_author_name
-  #   c.editor = {min_chars: 1}
-  # end
 
   # crafting a static combobox column; TODO: include a prebuilt one in Basepack
   # column :rating do |c|
@@ -18,7 +12,6 @@ class BookGrid < Netzke::Grid::Base
   #     :xtype => :combo,
   #     :store => [[0, "---"], [1, "Good"], [2, "Average"], [3, "Poor"]]
   #   }
-
   #   c.renderer = "function(v){return ['', 'Good', 'Average', 'Poor'][v];}"
   # end
 end

@@ -26,14 +26,6 @@ Ext.define("Netzke.Grid.Columns", {
 
     if (c.type == 'datetime') {
       fieldConfig.dateFormat = 'Y-m-d H:i:s'; // set the format in which we receive datetime from the server (so that the model can parse it)
-
-      // While for 'date' columns the renderer is set up automatically (through using column's xtype), there's no appropriate xtype for our custom datetime column.
-      // Thus, we need to set the renderer manually.
-      // NOTE: for Ext there's no distinction b/w date and datetime; date fields can include time.
-      if (!c.renderer) {
-        // format in which the data will be rendered; if c.format is nil, Ext.Date.defaultFormat extended with time will be used
-        c.renderer = Ext.util.Format.dateRenderer(c.format || Ext.Date.defaultFormat + " H:i:s");
-      }
     };
 
     if (c.type == 'date') {
@@ -45,28 +37,34 @@ Ext.define("Netzke.Grid.Columns", {
   },
 
   netzkeExtendColumnConfig: function(c){
-    // because checkcolumn doesn't care about editor (not) being set, we need to explicitely set readOnly here
-    // if (c.xtype == 'checkcolumn' && !c.editor) {
-    //   c.readOnly = true;
-    // }
-
     // Set rendeder for association columns (the one displaying associations by the specified method instead of id)
     if (c.assoc) {
       // Editor for association column
-      if (c.editor) c.editor = Ext.apply({ name: c.name }, c.editor);
+      if (c.editor) c.editor = Ext.apply({ name: c.name, netzkeParent: this }, c.editor);
 
       // Renderer for association column
       this.netzkeNormalizeAssociationRenderer(c);
     }
 
+    // extend editor with editorConfig passed from the server
     if (c.editor) {
-      Ext.applyIf(c.editor, {selectOnFocus: true, netzkeParent: this});
+      Ext.apply(c.editor, (c.editorConfig || {}), {selectOnFocus: true});
     }
 
     // Setting the default filter type
     if (c.filterable != false && !c.filter) {
       c.filter = {type: this.netzkeFilterTypeForAttrType(c.type)};
     }
+
+    if (c.type == 'datetime') {
+      // While for 'date' columns the renderer is set up automatically (through using column's xtype), there's no appropriate xtype for our custom datetime column.
+      // Thus, we need to set the renderer manually.
+      // NOTE: for Ext there's no distinction b/w date and datetime; date fields can include time.
+      if (!c.renderer) {
+        // format in which the data will be rendered; if c.format is nil, Ext.Date.defaultFormat extended with time will be used
+        c.renderer = Ext.util.Format.dateRenderer(c.format || Ext.Date.defaultFormat + " H:i:s");
+      }
+    };
 
     // setting dataIndex
     c.dataIndex = c.name;

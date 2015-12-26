@@ -93,14 +93,28 @@ module Netzke
     #   When set to +true+, the data for this column will be available in the grid store, but the actual column won't be
     #   created (as if +excluded+ were set to +true+).
     #
-    # [blank_line]
-    #
-    #   The blank line for one-to-many association columns, defaults to "---". Set to false to exclude completely.
-    #
     # [type]
     #
     #   When adding a virtual attribute to the grid, it may be useful to specify its type, so the column editor (and the
     #   form field) are configured properly.
+    #
+    # [editor_config]
+    #
+    #   Additional configuration for column editor and form field (which are usually represented by the same Ext field
+    #   component). Any common Ext config option like `min_chars` and `format` are accepted. Besides, Netzke extends it
+    #   with some extras:
+    #
+    #   [blank_line]
+    #
+    #     The blank line for one-to-many association columns, defaults to "---". Set to false to exclude completely.
+    #
+    #   [date_format]
+    #
+    #     In case of datetime type, the format date must be entered in the editor.
+    #
+    #   [time_format]
+    #
+    #     In case of datetime type, the format time must be entered in the editor.
     #
     # == Specifying column or form field configs
     #
