@@ -113,8 +113,6 @@ module Netzke
 
       def set_width
         self.width = case type
-        when :boolean
-          50
         when :datetime
           150
         else
