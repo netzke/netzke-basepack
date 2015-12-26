@@ -14,10 +14,10 @@ module Netzke::Basepack
 
     attr_read_only_checks = {
       id: true,
-      title: false,
-      author__first_name: false,
+      title: nil,
+      author__first_name: nil,
       read_only_virtual_attr: true,
-      assignable_virtual_attr: false
+      assignable_virtual_attr: nil
     }
 
     attr_read_only_checks.each_pair do |attr,value|

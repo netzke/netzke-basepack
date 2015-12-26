@@ -26,6 +26,7 @@ module Netzke
         self.read_only = primary? ||
           !responded_to_by_model? &&
           !association?
+        self.delete(:read_only) if read_only == false
       end
 
     private

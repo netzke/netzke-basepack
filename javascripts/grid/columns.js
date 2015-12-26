@@ -4,67 +4,72 @@ Ext.define("Netzke.Grid.Columns", {
     this.fields = [];
 
     // Run through columns and set up different configuration for each
-    Ext.each(this.columns.items, function(c, i){
-
+    Ext.each(this.columns.items, function(c){
       this.netzkeNormalizeRenderer(c);
-
-      // Build the field configuration for this column
-      var fieldConfig = {name: c.name, defaultValue: c.defaultValue, allowNull: true};
-
-      if (!c.meta) fieldConfig.type = this.netzkeFieldTypeForAttrType(c.type); // field type (grid editors need this to function well)
-
-      if (c.type == 'datetime') {
-        fieldConfig.dateFormat = 'Y-m-d H:i:s'; // set the format in which we receive datetime from the server (so that the model can parse it)
-
-        // While for 'date' columns the renderer is set up automatically (through using column's xtype), there's no appropriate xtype for our custom datetime column.
-        // Thus, we need to set the renderer manually.
-        // NOTE: for Ext there's no distinction b/w date and datetime; date fields can include time.
-        if (!c.renderer) {
-          // format in which the data will be rendered; if c.format is nil, Ext.Date.defaultFormat extended with time will be used
-          c.renderer = Ext.util.Format.dateRenderer(c.format || Ext.Date.defaultFormat + " H:i:s");
-        }
-      };
-
-      if (c.type == 'date') {
-        // If no dateFormat given for date type, Timezone translation can subtract zone offset from 00:00:00 causing previous day.
-        fieldConfig.dateFormat = 'Y-m-d';
-      };
-
-      this.fields.push(fieldConfig);
+      this.fields.push(this.netzkeExtractFieldConfig(c));
 
       // We will not use meta columns as actual columns (not even hidden) - only to create the records
-      if (c.meta) return;
-
-      // because checkcolumn doesn't care about editor (not) being set, we need to explicitely set readOnly here
-      if (c.xtype == 'checkcolumn' && !c.editor) {
-        c.readOnly = true;
+      if (!c.meta) {
+        this.netzkeExtendColumnConfig(c);
       }
-
-      // Set rendeder for association columns (the one displaying associations by the specified method instead of id)
-      if (c.assoc) {
-        // Editor for association column
-        if (c.editor) c.editor = Ext.apply({ name: c.name }, c.editor);
-
-        // Renderer for association column
-        this.netzkeNormalizeAssociationRenderer(c);
-      }
-
-      if (c.editor) {
-        Ext.applyIf(c.editor, {selectOnFocus: true, netzkeParent: this});
-      }
-
-      // Setting the default filter type
-      if (c.filterable != false && !c.filter) {
-        c.filter = {type: this.netzkeFilterTypeForAttrType(c.type)};
-      }
-
-      // setting dataIndex
-      c.dataIndex = c.name;
-
     }, this);
 
     // Now reorder columns as specified in this.columnsOrder
     this.orderColumns();
+  },
+
+  netzkeExtractFieldConfig: function(c){
+    // Build the field configuration for this column
+    var fieldConfig = {name: c.name, defaultValue: c.defaultValue, allowNull: true};
+
+    if (!c.meta) fieldConfig.type = this.netzkeFieldTypeForAttrType(c.type); // field type (grid editors need this to function well)
+
+    if (c.type == 'datetime') {
+      fieldConfig.dateFormat = 'Y-m-d H:i:s'; // set the format in which we receive datetime from the server (so that the model can parse it)
+
+      // While for 'date' columns the renderer is set up automatically (through using column's xtype), there's no appropriate xtype for our custom datetime column.
+      // Thus, we need to set the renderer manually.
+      // NOTE: for Ext there's no distinction b/w date and datetime; date fields can include time.
+      if (!c.renderer) {
+        // format in which the data will be rendered; if c.format is nil, Ext.Date.defaultFormat extended with time will be used
+        c.renderer = Ext.util.Format.dateRenderer(c.format || Ext.Date.defaultFormat + " H:i:s");
+      }
+    };
+
+    if (c.type == 'date') {
+      // If no dateFormat given for date type, Timezone translation can subtract zone offset from 00:00:00 causing previous day.
+      fieldConfig.dateFormat = 'Y-m-d';
+    };
+
+    return fieldConfig;
+  },
+
+  netzkeExtendColumnConfig: function(c){
+    // because checkcolumn doesn't care about editor (not) being set, we need to explicitely set readOnly here
+    // if (c.xtype == 'checkcolumn' && !c.editor) {
+    //   c.readOnly = true;
+    // }
+
+    // Set rendeder for association columns (the one displaying associations by the specified method instead of id)
+    if (c.assoc) {
+      // Editor for association column
+      if (c.editor) c.editor = Ext.apply({ name: c.name }, c.editor);
+
+      // Renderer for association column
+      this.netzkeNormalizeAssociationRenderer(c);
+    }
+
+    if (c.editor) {
+      Ext.applyIf(c.editor, {selectOnFocus: true, netzkeParent: this});
+    }
+
+    // Setting the default filter type
+    if (c.filterable != false && !c.filter) {
+      c.filter = {type: this.netzkeFilterTypeForAttrType(c.type)};
+    }
+
+    // setting dataIndex
+    c.dataIndex = c.name;
   },
 
   // Build column model config with columns in the correct order; columns out of order go to the end.

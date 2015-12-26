@@ -2,7 +2,7 @@ class BookGrid < Netzke::Grid::Base
   def configure(c)
     c.model = "Book"
     c.title = I18n.t('books', :default => "Books")
-
+    # c.edit_inline = true
     super
   end
 
