@@ -15,6 +15,10 @@ de:
 
     grid:
       base:
+        add_record: "%{model} hinzufügen"
+        edit_record: "%{model} bearbeiten"
+        edit_records: "%{models} bearbeiten"
+
         confirmation: Bestätigung
         are_you_sure: Bist du sicher?
         actions:

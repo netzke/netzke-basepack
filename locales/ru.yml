@@ -15,6 +15,10 @@ ru:
 
     grid:
       base:
+        add_record: "Добавить %{model}"
+        edit_record: "Редактировать %{model}"
+        edit_records: "Редактировать %{models}"
+
         confirmation: Подтверждение
         are_you_sure: Вы уверены?
         actions:

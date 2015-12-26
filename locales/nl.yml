@@ -15,6 +15,10 @@ nl:
 
     grid:
       base:
+        add_record: "%{model} toevoegen"
+        edit_record: "%{model} wijzigen"
+        edit_records: "%{models} wijzigen"
+
         confirmation: Bevestiging
         are_you_sure: Weet je het zeker?
         actions:

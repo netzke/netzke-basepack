@@ -15,6 +15,10 @@ uk:
 
     grid:
       base:
+        add_record: "Додати %{model}"
+        edit_record: "Редагувати %{model}"
+        edit_records: "Редагувати %{models}"
+
         confirmation: Підтвердження
         are_you_sure: Ви впевнені?
         actions:

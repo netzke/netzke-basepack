@@ -30,6 +30,10 @@ es:
 
     tree:
       base:
+        add_record: "Agregar %{model}"
+        edit_record: "Editar %{model}"
+        edit_records: "Editar %{models}"
+
         actions:
           add:
             text: Agregar

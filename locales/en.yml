@@ -16,6 +16,10 @@ en:
 
     grid:
       base:
+        add_record: "Add %{model}"
+        edit_record: "Edit %{model}"
+        edit_records: "Edit %{models}"
+
         confirmation: Confirmation
         are_you_sure: Are you sure?
         proceed_with_unapplied_changes: You will lose uncommitted changes - do you want to proceed?
