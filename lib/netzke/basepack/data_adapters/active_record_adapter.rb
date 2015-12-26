@@ -413,6 +413,8 @@ module Netzke::Basepack::DataAdapters
 
       sorters = Array.new(sorters)
 
+      relation = relation.reorder("") # reset eventual default_scope ordering
+
       sorters.reduce(relation) do |rel, sorter|
         sorter["direction"] ||= 'ASC'
         dir = sorter["direction"].downcase
