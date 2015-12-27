@@ -20,10 +20,10 @@ module Netzke
           c.excluded = !allowed_to?(:update)
         end
 
-        component :multi_edit_window do |c|
+        component :multiedit_window do |c|
           configure_form_window(c)
           c.title = I18n.t('netzke.grid.base.edit_records', models: model_class.model_name.human.pluralize)
-          c.items = [:multi_edit_form]
+          c.items = [:multiedit_form]
           c.excluded = !allowed_to?(:update)
         end
 

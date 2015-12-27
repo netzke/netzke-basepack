@@ -56,6 +56,10 @@
 
 *   Override new `configure_form` method to specify extra configuration to the forms
 
+#### Bugfixes
+
+*   Multiediting of reconds now works properly with boolean fields (a tristate selector was implemented).
+
 ### Misc
 *   Base classes of main componens have been renamed from `Netzke::Basepack::{Grid|Form|Tree|Window|Viewport}` to `Netzke::{Grid|Form|Tree|Window|Viewport}::Base`.
 *   Remove `Netzke::Basepack::TapPanel` and `Netzke::Basepack::Accordion`. The only purpose for them was dynamic loading

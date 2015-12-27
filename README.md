@@ -67,7 +67,7 @@ good source of concise, focused examples. After starting the application, access
 
     http://localhost:3000/netzke/components/{name of the component's class}
 
-For example [http://localhost:3000/netzke/components/BookGrid](http://localhost:3000/netzke/components/BookGrid)
+For example [http://localhost:3000/netzke/components/Grid::Books](http://localhost:3000/netzke/components/Grid::Books)
 
 To run all the tests (from the gem's root):
 

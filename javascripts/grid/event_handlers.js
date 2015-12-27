@@ -126,7 +126,7 @@ Ext.define("Netzke.Grid.EventHandlers", {
 
   // Edit multiple records via form
   doMultiEdit: function(records){
-    this.netzkeLoadComponent("multi_edit_window", {
+    this.netzkeLoadComponent("multiedit_window", {
       callback: function(w){
         var form = w.items.first();
         // +apply+ is called by wrapping window on OK click

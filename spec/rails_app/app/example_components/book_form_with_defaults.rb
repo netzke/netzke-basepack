@@ -3,5 +3,6 @@ class BookFormWithDefaults < Netzke::Form::Base
     c.record = Book.first
     super
     c.model = "Book"
+    c.multiedit = true
   end
 end

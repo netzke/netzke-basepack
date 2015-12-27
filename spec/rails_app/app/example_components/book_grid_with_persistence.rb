@@ -1,4 +1,4 @@
-class BookGridWithPersistence < BookGrid
+class BookGridWithPersistence < Grid::Books
   column :author__name do |c|
     c.excluded = true
   end

@@ -29,3 +29,13 @@ left: -24px;
 .x-statusbar .x-status-busy {
     padding-left: 25px !important;
 }
+
+.x-menu-item.nz-tristate-selected {
+  background-color: #E6E6E6;
+}
+
+.nz-btn-tristate {
+  margin-right: 5px;
+  border: 1px solid #d8d8d8;
+  padding-bottom: 0px;
+}

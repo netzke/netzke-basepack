@@ -71,10 +71,10 @@ module Netzke
           c.pri = model_adapter.primary_key
         end
 
-        if !c.multi_edit
+        if !c.multiedit
           c.record = js_record_data if record
         else
-          c.record_id = c.record = nil if c.multi_edit # never set record_id in multi-edit mode
+          c.record_id = c.record = nil if c.multiedit # never set record_id in multi-edit mode
         end
       end
 
@@ -118,6 +118,10 @@ module Netzke
             bbar << "->" << :apply
           end
         end
+      end
+
+      def multiedit?
+        !!config.multiedit
       end
 
       private

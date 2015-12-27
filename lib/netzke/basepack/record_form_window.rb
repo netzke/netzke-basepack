@@ -15,9 +15,9 @@ module Netzke
         c.record_id = config.client_config[:record_id]
       end
 
-      component :multi_edit_form do |c|
+      component :multiedit_form do |c|
         preconfigure_form(c)
-        c.multi_edit = true
+        c.multiedit = true
       end
 
       client_class do |c|

@@ -53,6 +53,10 @@ module Netzke
           @fields_from_items[c.name.to_sym] = c
 
           c.set_defaults
+
+          if c.type == :boolean && multiedit?
+            c.xtype = 'netzketristate' if c.type == :boolean
+          end
         end
       end
 

@@ -23,6 +23,22 @@ feature Netzke::Grid::Base, js: true do
     end
   end
 
+  describe 'multiedit' do
+    before do
+      FactoryGirl.create :book, title: 'A', digitized: true
+      FactoryGirl.create :book, title: 'B', digitized: false
+    end
+
+    it "preserves boolean column if not set" do
+      run_mocha_spec 'grid/multiedit', component: Grid::Books
+      expect(Book.first.title).to eql "C"
+      expect(Book.last.title).to eql "C"
+
+      expect(Book.first.digitized).to eql true
+      expect(Book.last.digitized).to eql false
+    end
+  end
+
   it 'creates records with default values', js: true do
     FactoryGirl.create :author, first_name: 'Vladimir', last_name: 'Nabokov'
     run_mocha_spec 'grid/default_values'
@@ -49,7 +65,7 @@ feature Netzke::Grid::Base, js: true do
 
   it 'shows proper error when model prevents deleting a record', js: true do
     FactoryGirl.create :book, title: 'Untouchable'
-    run_mocha_spec 'grid/untouchable_record', component: 'BookGrid'
+    run_mocha_spec 'grid/untouchable_record', component: 'Grid::Books'
   end
 
   it 'loads data properly being 2 instances in tabs', js: true do

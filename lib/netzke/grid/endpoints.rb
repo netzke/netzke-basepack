@@ -40,11 +40,11 @@ module Netzke
 
         # Process the submit of multi-editing form ourselves
         # TODO: refactor to let the form handle the validations
-        endpoint :multi_edit_window__multi_edit_form__submit do |params|
+        endpoint :multiedit_window__multiedit_form__submit do |params|
           ids = ActiveSupport::JSON.decode(params.delete(:ids))
           data = ids.collect{ |id| ActiveSupport::JSON.decode(params[:data]).merge("id" => id) }
 
-          data.map!{|el| el.delete_if{ |k,v| v.is_a?(String) && v.blank? }} # only interested in set values
+          data.map!{|el| el.select {|k,v| v.present? }} # only interested in set values
 
           res = attempt_operation(:update, data, client)
 
@@ -91,7 +91,6 @@ module Netzke
           send(op, data)
         else
           client.netzke_notify I18n.t("netzke.basepack.cannot_#{op}")
-          # { data: [], total: 0 }
           {}
         end
       end

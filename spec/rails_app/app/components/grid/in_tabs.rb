@@ -5,12 +5,12 @@ module Grid
     end
 
     component :grid_one do |c|
-      c.klass = BookGrid
+      c.klass = Grid::Books
       c.title = 'One'
     end
 
     component :grid_two do |c|
-      c.klass = BookGrid
+      c.klass = Grid::Books
       c.title = 'Two'
     end
 

@@ -203,7 +203,7 @@ module Netzke
     # === Overriding form windows
     #
     # Override the following direct child components to change the looks of the pop-up windows: +:add_window+,
-    # +:edit_window+, +:multi_edit_window+, and +:search_window+. For example, to override the title of the Add form,
+    # +:edit_window+, +:multiedit_window+, and +:search_window+. For example, to override the title of the Add form,
     # do:
     #
     #     component :add_window do |c|
