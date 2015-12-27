@@ -7,6 +7,8 @@ module Netzke
     # * dynamic loading of form data
     # * lockable mode
     #
+    # Client-side methods are documented [here](http://api.netzke.org/client/classes/Netzke.Form.Base.html).
+    #
     # == Configuration
     #
     # [model]

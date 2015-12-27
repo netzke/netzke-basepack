@@ -4,7 +4,9 @@ module Netzke
     #
     # * CRUD operations
     # * Persistence of node expand/collapse state
-    # * (TODO) Node reordering by DnD
+    # * Node reordering by DnD
+    #
+    # Client-side methods are documented [here](http://api.netzke.org/client/classes/Netzke.Tree.Base.html).
     #
     # == Simple example
     #

@@ -1,15 +1,29 @@
+### Components changed/renamed
+
+*   Base classes of main componens have been renamed from `Netzke::Basepack::{Grid|Form|Tree|Window|Viewport}` to `Netzke::{Grid|Form|Tree|Window|Viewport}::Base`.
+
+*   `Netzke::Basepack::TapPanel` and `Netzke::Basepack::Accordion` have been removed. The only purpose for them was dynamic loading of child components, which didn't prove that useful.
+
 ### Form, Grid, Tree
-*   New `attribute` DSL method and accompanying `attribute_overrides` config option allow reconfiguring the way specific model attributes are presented by both the grid and the form. The `column` DSL method has been left for configuring what's specific for a column.
 
-*   `strong_default_attrs` config option has been renamed to `strong_values`
+#### Breaking changes
 
-*   `attr_type` config option for columns/fields has been renamed to `type`
+*   `strong_default_attrs` config option has been renamed to `strong_values`.
+
+*   `attr_type` config option for columns/fields has been renamed to `type`.
+
+*   The new `attribute` DSL method and the accompanying `attribute_overrides` config option allow reconfiguring the way specific model attributes are presented by both the grid and the form. The `column` DSL method has been left for configuring what's specific for a column. For details, see [Netzke::Basepack::Attributes](http://www.rubydoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Attributes).
 
 ### Form
-*   The `netzkeSubmit` and `netzkeLoad` endpoints have been renamed to `submit` and `load` respectively; keep
-    this in mind if you override them in your app.
+
+#### Breaking changes
+
+*   The `netzkeSubmit` and `netzkeLoad` endpoints have been renamed to `submit` and `load` respectively; keep this in mind if you override them in your app.
 
 ### Grid
+
+#### Breaking changes
+
 *   Column/field label for association no longer includes association method name by default. For example, for
     `author__name` attribute it'll now be "Author", not "Author  name".
 
@@ -19,9 +33,7 @@
 
 *   The `data_store` config option has been renamed to `store_config`.
 
-*   Permissions configuration got consolidated to single `permissions` config option.
-
-*   Buttons previously disabled due to permissions are now not added to the bottom bar alltogether.
+*   Permissions configuration got consolidated into single `permissions` config option. See [Netzke::Grid::Base](http://www.rubydoc.info/github/netzke/netzke-basepack/Netzke/Grid/Base)
 
 *   The `del` action has been renamed to `delete`.
 
@@ -30,19 +42,7 @@
 *   Virtual columns declared with the `column` DSL method are no longer automatically appended to the end of the column
     list; use the `columns` config option or override the `Grid#columns` method to explicitely list them.
 
-*   Warn the user at an attempt to change the page when there are unapplied changes; disable the warning by
-    setting `disable_dirty_page_warning` to `true`.
-
 *   The endpoints dropped their prefix `server`; additionally, `serverDelete` has become `destroy`; keep this in mind if you override endpoints in your app.
-
-*   By default, Grid now handles large number of records by using a buffered store (allows for "infinite scrolling").
-    Set `paging` to `true` if you want pagination instead.
-
-*   By default, Grid now uses form to add/edit records. Set `edit_inline` to true to use inline editing when possible
-    (implicitly sets `paging` to `true`).
-
-*   The toolbar was reduced to 'add', 'edit', 'delete', and 'search' buttons by default. Additionally, the 'apply'
-    button is added when `edit_inline` is set to `true`.
 
 *   All scope-related configs (including those of the columns) now only accept a Proc object.
 
@@ -52,17 +52,24 @@
 
 *   `enable_extended_search` option is gone.
 
+#### Non-breaking changes
+
+*   By default, Grid now uses form to add/edit records. Set `edit_inline` to true to use inline editing when possible (implicitly sets `paging` to `true`).
+
+*   By default, Grid now handles large number of records by using a buffered store (allows for "infinite scrolling"). Set `paging` to `true` if you want pagination instead.
+
+*   The toolbar was reduced to 'add', 'edit', 'delete', and 'search' buttons by default. Additionally, the 'apply' button is added when `edit_inline` is set to `true`.
+
+*   Buttons previously disabled due to permissions are now not added to the bottom bar alltogether.
+
 #### Added
 
 *   Override new `configure_form` method to specify extra configuration to the forms
 
+*   Warn the user at an attempt to change the page when there are unapplied changes; disable the warning by setting `disable_dirty_page_warning` to `true`.
+
 #### Bugfixes
 
 *   Multiediting of reconds now works properly with boolean fields (a tristate selector was implemented).
-
-### Misc
-*   Base classes of main componens have been renamed from `Netzke::Basepack::{Grid|Form|Tree|Window|Viewport}` to `Netzke::{Grid|Form|Tree|Window|Viewport}::Base`.
-*   Remove `Netzke::Basepack::TapPanel` and `Netzke::Basepack::Accordion`. The only purpose for them was dynamic loading
-    of child components, which didn't prove that useful.
 
 Please check [0-12](https://github.com/netzke/netzke-basepack/blob/0-12/CHANGELOG.md) for previous changes.

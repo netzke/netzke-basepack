@@ -98,6 +98,22 @@ module Netzke
     #   When adding a virtual attribute to the grid, it may be useful to specify its type, so the column editor (and the
     #   form field) are configured properly.
     #
+    # [column_config]
+    #
+    #   Configuration specific for the corresponding grid column. For example:
+    #
+    #        attribute :address do |c|
+    #          c.column_config = { width: 200 }
+    #        end
+    #
+    # [field_config]
+    #
+    #   Configuration for the corresponding form field. For example:
+    #
+    #        attribute :address do |c|
+    #          c.field_config = { xtype: :displayfield }
+    #        end
+    #
     # [editor_config]
     #
     #   Additional configuration for column editor and form field (which are usually represented by the same Ext field
@@ -115,16 +131,6 @@ module Netzke
     #   [time_format]
     #
     #     In case of datetime type, the format time must be entered in the editor.
-    #
-    # == Specifying column or form field configs
-    #
-    # Sometimes it's handy to specify grid/form-specific config options for a given attribute. For that, set the
-    # +column_config+ and +field_config+ keys. For example:
-    #
-    #        attribute :address do |c|
-    #          c.column_config = { width: 200 }
-    #          c.field_config = { xtype: :displayfield }
-    #        end
     module Attributes
       extend ActiveSupport::Concern
 
