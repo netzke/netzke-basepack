@@ -5,15 +5,15 @@ module Netzke
     # * infinite scrolling or pagination
     # * automatic default attribute configuration (overridable via config)
     # * multi-line CRUD operations
-    # * (multe-record) editing and adding records through a form
+    # * adding/editing records via a form
+    # * editing multiple records simultaneously
     # * one-to-many association support
-    # * server-side sorting
-    # * server-side filtering
+    # * server-side sorting and filtering
     # * permissions
-    # * persistent column resizing, moving and hiding
+    # * persistent column resizing, moving and toggling
     # * complex query search with preset management
     #
-    # Client-side methods are documented [here](http://api.netzke.org/client/classes/Netzke.Grid.Base.html).
+    # Client-side methods are documented here: http://api.netzke.org/client/classes/Netzke.Grid.Base.html.
     #
     # == Configuration
     #

@@ -6,7 +6,7 @@ module Netzke
     # * Persistence of node expand/collapse state
     # * Node reordering by DnD
     #
-    # Client-side methods are documented [here](http://api.netzke.org/client/classes/Netzke.Tree.Base.html).
+    # Client-side methods are documented here: http://api.netzke.org/client/classes/Netzke.Tree.Base.html.
     #
     # == Simple example
     #
@@ -56,7 +56,7 @@ module Netzke
     #
     # [drag_drop]
     #
-    #   (defaults to false) use drag and drop in the tree.
+    #   Enables drag and drop in the tree.
     #
     # == Persisting nodes' expand/collapse state
     #
