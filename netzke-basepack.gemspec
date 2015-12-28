@@ -13,8 +13,8 @@ Gem::Specification.new do |s|
   s.test_files    = Dir["{test}/**/*"]
   s.require_paths = ["lib"]
 
-  s.add_dependency 'netzke-core', '1.0.0.0.alpha'
-  s.add_dependency 'netzke-testing', '1.0.0.0.alpha'
+  s.add_dependency 'netzke-core', '1.0.0.0.pre'
+  s.add_dependency 'netzke-testing', '1.0.0.0.pre'
 
   s.required_rubygems_version = ">= 1.3.4"
 end
