@@ -55,12 +55,12 @@ module Netzke
         hsh.merge!(config[:strong_values]) if config[:strong_values]
 
         # only pick the record specified in the params if it was not provided in the configuration
-        @record ||= model_adapter.find_record hsh.delete(model_class.primary_key.to_s)
+        @record ||= model_adapter.find_record hsh.delete(model.primary_key.to_s)
 
-        #model_class.find(:first, :conditions => model_class.primary_key => hsh.delete(model_class.primary_key)})
+        #model.find(:first, :conditions => model.primary_key => hsh.delete(model.primary_key)})
         success = true
 
-        @record = model_class.new if @record.nil?
+        @record = model.new if @record.nil?
 
         hsh.each_pair do |k,v|
           model_adapter.set_record_value_for_attribute(@record, fields[k.to_sym].nil? ? {:name => k} : fields[k.to_sym], v)

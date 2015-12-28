@@ -41,10 +41,10 @@ module Netzke
 
       def responded_to_by_model?
         # if no model class is provided, assume the attribute is being responded to
-        @model_adapter.model_class.nil? ||
+        @model_adapter.model.nil? ||
           !setter.nil? ||
-          @model_adapter.model_class.instance_methods.include?(:"#{name}=") ||
-          @model_adapter.model_class.attribute_names.include?(name)
+          @model_adapter.model.instance_methods.include?(:"#{name}=") ||
+          @model_adapter.model.attribute_names.include?(name)
       end
     end
   end

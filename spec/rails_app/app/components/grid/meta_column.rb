@@ -6,10 +6,12 @@ class Grid::MetaColumn < Netzke::Grid::Base
 
   action :show_first, :show_second
 
-  def configure(c)
-    super
-    c.model = Book
-    c.columns = [:title, :meta_attribute]
+  def model
+    Book
+  end
+
+  def columns
+    [:title, :meta_attribute]
   end
 
   def bbar

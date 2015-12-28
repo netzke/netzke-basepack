@@ -1,22 +1,22 @@
 module Netzke::Basepack::DataAdapters
   # Implementation of {Netzke::Basepack::DataAdapters::AbstractAdapter}
   class ActiveRecordAdapter < AbstractAdapter
-    def self.for_class?(model_class)
-      model_class && model_class <= ActiveRecord::Base
+    def self.for_class?(model)
+      model && model <= ActiveRecord::Base
     end
 
     def new_record(params = {})
-      @model_class.new(params)
+      @model.new(params)
     end
 
     def primary_key
-      @model_class.primary_key.to_s
+      @model.primary_key.to_s
     end
 
     def model_attributes
       @model_attributes ||= attribute_names.map do |column_name|
         # If it's named as foreign key of some association, then it's an association column
-        assoc = @model_class.reflect_on_all_associations.detect { |a| a.foreign_key == column_name }
+        assoc = @model.reflect_on_all_associations.detect { |a| a.foreign_key == column_name }
 
         if assoc && !assoc.options[:polymorphic]
           candidates = %w{name title label} << assoc.klass.primary_key
@@ -26,17 +26,17 @@ module Netzke::Basepack::DataAdapters
           column_name.to_sym
         end
         # auto set up the default value from the column settings
-        # c[:default_value] = @model_class.columns_hash[column_name].default if @model_class.columns_hash[column_name].default
+        # c[:default_value] = @model.columns_hash[column_name].default if @model.columns_hash[column_name].default
       end
     end
 
     def attribute_names
-      @model_class.column_names
+      @model.column_names
     end
 
     def attr_type(attr_name)
       method, assoc = method_and_assoc(attr_name)
-      klass = assoc.nil? ? @model_class : assoc.klass
+      klass = assoc.nil? ? @model : assoc.klass
       klass.columns_hash[method].try(:type) || :string
     end
 
@@ -65,7 +65,7 @@ module Netzke::Basepack::DataAdapters
     end
 
     def get_assoc_property_type assoc_name, prop_name
-      if prop_name && assoc = @model_class.reflect_on_association(assoc_name)
+      if prop_name && assoc = @model.reflect_on_association(assoc_name)
         assoc_column = assoc.klass.columns_hash[prop_name.to_s]
         assoc_column.try(:type)
       end
@@ -78,7 +78,7 @@ module Netzke::Basepack::DataAdapters
       if assoc
         return !assoc.klass.column_names.include?(method)
       else
-        return !@model_class.column_names.include?(c[:name])
+        return !@model.column_names.include?(c[:name])
       end
     end
 
@@ -116,21 +116,21 @@ module Netzke::Basepack::DataAdapters
     end
 
     def distinct_combo_values(attr, query)
-      records = query.empty? ? @model_class.find_by_sql("select distinct #{attr[:name]} from #{@model_class.table_name}") : @model_class.find_by_sql("select distinct #{attr[:name]} from #{@model_class.table_name} where #{attr[:name]} like '#{query}%'")
+      records = query.empty? ? @model.find_by_sql("select distinct #{attr[:name]} from #{@model.table_name}") : @model.find_by_sql("select distinct #{attr[:name]} from #{@model.table_name} where #{attr[:name]} like '#{query}%'")
       records.map{|r| [r.send(attr[:name]), r.send(attr[:name])]}
     end
 
     def foreign_key_for assoc_name
-      @model_class.reflect_on_association(assoc_name.to_sym).foreign_key
+      @model.reflect_on_association(assoc_name.to_sym).foreign_key
     end
 
     # Returns the model class for association columns
     def class_for assoc_name
-      @model_class.reflect_on_association(assoc_name.to_sym).klass
+      @model.reflect_on_association(assoc_name.to_sym).klass
     end
 
     def destroy(ids)
-      @model_class.destroy(ids)
+      @model.destroy(ids)
     end
 
     # Returns a record by id.
@@ -138,7 +138,7 @@ module Netzke::Basepack::DataAdapters
     # * scope - will only return a record if it falls into the provided scope
     def find_record(id, options = {})
       # scope = options[:scope] || {}
-      relation = @model_class.where(primary_key => id)
+      relation = @model.where(primary_key => id)
       relation = options[:scope].call(relation) if options[:scope].is_a?(Proc)
       relation.first
     end
@@ -146,7 +146,7 @@ module Netzke::Basepack::DataAdapters
     # Build a hash of foreign keys and the associated model
     def hash_fk_model
       foreign_keys = {}
-      @model_class.reflect_on_all_associations(:belongs_to).map{ |r|
+      @model.reflect_on_all_associations(:belongs_to).map{ |r|
         foreign_keys[r.association_foreign_key.to_sym] = r.name
       }
       foreign_keys
@@ -154,10 +154,10 @@ module Netzke::Basepack::DataAdapters
 
     # FIXME
     def move_records(params)
-      if defined?(ActsAsList) && @model_class.ancestors.include?(ActsAsList::InstanceMethods)
+      if defined?(ActsAsList) && @model.ancestors.include?(ActsAsList::InstanceMethods)
         ids = JSON.parse(params[:ids]).reverse
         ids.each_with_index do |id, i|
-          r = @model_class.find(id)
+          r = @model.find(id)
           r.insert_at(params[:new_index].to_i + i + 1)
         end
         on_data_changed # copypaste nonsense
@@ -183,13 +183,13 @@ module Netzke::Basepack::DataAdapters
     end
 
     def human_attribute_name(name)
-      @model_class.human_attribute_name(name)
+      @model.human_attribute_name(name)
     end
 
     def record_value_for_attribute(r, a, through_association = false)
       v = if association_attr?(a)
         split = a[:name].to_s.split(/\.|__/)
-        assoc = @model_class.reflect_on_association(split.first.to_sym)
+        assoc = @model.reflect_on_association(split.first.to_sym)
         if through_association
           split.inject(r) do |r, m| # Do we *really* need to descend deeper than 1 level?
             return nil if r.nil?
@@ -242,7 +242,7 @@ module Netzke::Basepack::DataAdapters
           else
             if split.size == 2
               # search for association and assign it to r
-              assoc = @model_class.reflect_on_association(split.first.to_sym)
+              assoc = @model.reflect_on_association(split.first.to_sym)
               assoc_method = split.last
               if assoc
                 if assoc.macro == :has_one
@@ -260,7 +260,7 @@ module Netzke::Basepack::DataAdapters
                   record.send("#{assoc.foreign_key}=", value.to_i < 0 ? nil : value)
                 end
               else
-                logger.warn "Netzke: Association #{assoc} is not known for class #{@model_class}"
+                logger.warn "Netzke: Association #{assoc} is not known for class #{@model}"
               end
             else
               logger.warn "Netzke: Wrong attribute name: #{attr[:name]}"
@@ -274,13 +274,13 @@ module Netzke::Basepack::DataAdapters
     # Else returns [attr_name]
     def method_and_assoc(attr_name)
       assoc_name, method = attr_name.to_s.split('__')
-      assoc = @model_class.reflect_on_association(assoc_name.to_sym) if method
+      assoc = @model.reflect_on_association(assoc_name.to_sym) if method
       assoc.nil? ? [attr_name] : [method, assoc]
     end
 
     # An ActiveRecord::Relation instance encapsulating all the necessary conditions.
     def get_relation(params = {})
-      relation = @model_class.all
+      relation = @model.all
 
       query = params[:query]
 
@@ -334,7 +334,7 @@ module Netzke::Basepack::DataAdapters
         attr = q[:attr]
         method, assoc = method_and_assoc(attr)
 
-        arel_table = assoc ? Arel::Table.new(assoc.klass.table_name.to_sym) : @model_class.arel_table
+        arel_table = assoc ? Arel::Table.new(assoc.klass.table_name.to_sym) : @model.arel_table
 
         value = q["value"]
         op = q["operator"]
@@ -428,9 +428,9 @@ module Netzke::Basepack::DataAdapters
         column[:sorting_scope].call(relation, dir.to_sym)
       else
         if method.nil?
-          relation.order("#{@model_class.table_name}.#{assoc} #{dir}")
+          relation.order("#{@model.table_name}.#{assoc} #{dir}")
         else
-          assoc = @model_class.reflect_on_association(assoc.to_sym)
+          assoc = @model.reflect_on_association(assoc.to_sym)
           relation.includes(assoc.name).references(assoc.klass.table_name.to_sym).order("#{assoc.klass.table_name}.#{method} #{dir}")
         end
       end

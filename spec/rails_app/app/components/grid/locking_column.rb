@@ -1,7 +1,6 @@
 class Grid::LockingColumn < Netzke::Grid::Base
-  def configure(c)
-    super
-    c.model = 'Book'
+  def model
+    Book
   end
 
   column :title do |c|

@@ -1,6 +1,20 @@
 module Netzke
   module Grid
+    # Overridable methods related to configuration of Grid. For example, to add a custom action to the end of the grid's
+    # bbar, you can do:
+    #
+    #     def bbar
+    #       super + [:my_action]
+    #     end
     module Configuration # WTF: naming it Config causes troubles in 1.9.3
+      extend ActiveSupport::Concern
+
+      module ClassMethods
+        def server_side_config_options
+          super + [:scope]
+        end
+      end
+
       def bbar
         config.has_key?(:bbar) ? config[:bbar] : default_bbar
       end
@@ -19,7 +33,6 @@ module Netzke
         config.has_key?(:context_menu) ? config.context_menu : default_context_menu
       end
 
-      # Override to change the default context menu
       def default_context_menu
         [].tap do |menu|
           menu << :edit if has_edit_action?
@@ -37,8 +50,7 @@ module Netzke
 
       def configure_client(c)
         super
-
-        c.title = c.title || self.class.client_class_config.properties[:title] || model_class.name.pluralize
+        c.title ||= model.name.pluralize
         c.columns = {items: js_columns}
         c.columns_order = columns_order
         c.pri = model_adapter.primary_key
@@ -47,10 +59,8 @@ module Netzke
         end
       end
 
-      private
-
       def validate_config(c)
-        raise ArgumentError, "Grid requires a model" if c.model.nil?
+        raise ArgumentError, "Grid requires a model" if model.nil?
         c.paging = true if c.edit_inline
         c.tools = tools
         c.bbar = bbar

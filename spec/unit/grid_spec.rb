@@ -12,7 +12,7 @@ describe Netzke::Grid::Base do
       config = ActiveSupport::OrderedOptions.new
       GridTestOne.new.configure_form_window(config)
 
-      expect(config.form_config.model).to eql "Book"
+      expect(config.form_config.model).to eql Book
     end
 
     it "passes attribute configs down to its forms" do
@@ -29,7 +29,7 @@ describe Netzke::Grid::Base do
 
       form = GridTestTwo.new.component_instance(:add_window).component_instance(:add_form)
 
-      expect(form.fields[:title][:read_only]).to be_truthy
+      expect(form.fields[:title][:read_only]).to eql true
     end
   end
 end

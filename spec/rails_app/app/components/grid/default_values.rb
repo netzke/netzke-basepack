@@ -1,8 +1,10 @@
 class Grid::DefaultValues < Netzke::Grid::Base
-  def configure(c)
-    c.model = "Book"
-    c.title = "Books"
-    super
+  def model
+    Book
+  end
+
+  def columns
+    [ :title, :author__last_name, :exemplars, :digitized ]
   end
 
   column :title do |c|
@@ -19,9 +21,5 @@ class Grid::DefaultValues < Netzke::Grid::Base
 
   column :digitized do |c|
     c.default_value = true
-  end
-
-  def columns
-    [ :title, :author__last_name, :exemplars, :digitized ]
   end
 end

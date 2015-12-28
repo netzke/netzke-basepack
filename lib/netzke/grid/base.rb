@@ -267,11 +267,11 @@ module Netzke
       include Netzke::Grid::Actions
       include Netzke::Grid::Components
       include Netzke::Grid::Permissions
+      include Netzke::Grid::Client
       include Netzke::Basepack::Attributes
       include Netzke::Basepack::Columns
       include Netzke::Basepack::DataAccessor
 
-      # JavaScript class configuration
       client_class do |c|
         c.extend = "Ext.grid.Panel"
         c.include :advanced_search
@@ -280,18 +280,9 @@ module Netzke
         c.mixins << "Netzke.Grid.Columns"
         c.mixins << "Netzke.Grid.EventHandlers"
 
-        c.translate *%w[are_you_sure confirmation proceed_with_unapplied_changes]
-
-        # JavaScript includes
-        ex = Netzke::Core.ext_path.join("examples")
+        c.translate :are_you_sure, :confirmation, :proceed_with_unapplied_changes
 
         c.require :extensions
-      end
-
-      private
-
-      def self.server_side_config_options
-        super + [:scope]
       end
     end
   end

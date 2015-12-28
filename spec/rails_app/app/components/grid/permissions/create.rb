@@ -4,7 +4,7 @@ module Grid
       def configure(c)
         super
         c.model = Book
-        c.permissions = { create: false }
+        c.permissions = {create: false}
       end
     end
   end

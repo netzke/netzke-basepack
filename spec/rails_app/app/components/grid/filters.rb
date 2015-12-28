@@ -1,7 +1,6 @@
 class Grid::Filters < Netzke::Grid::Base
-  def configure(c)
-    super
-    c.model = Book
+  def model
+    Book
   end
 
   def columns

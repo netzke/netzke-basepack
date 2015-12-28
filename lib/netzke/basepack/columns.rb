@@ -133,7 +133,7 @@ module Netzke
 
       def insert_primary_column(cols)
         primary_key = model_adapter.primary_key
-        raise "Model #{model_adapter.model_class.name} does not have a primary column" if primary_key.blank?
+        raise "Model #{model_adapter.model.name} does not have a primary column" if primary_key.blank?
         c = Netzke::Basepack::ColumnConfig.new(model_adapter.primary_key, model_adapter)
         c.merge_attribute(attribute_overrides[c.name.to_sym]) if attribute_overrides.has_key?(c.name.to_sym)
         augment_column_config(c)

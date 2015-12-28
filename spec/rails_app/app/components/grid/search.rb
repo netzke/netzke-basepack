@@ -1,8 +1,9 @@
 class Grid::Search < Netzke::Grid::Base
-  def configure(c)
-    super
-    c.model = 'Book'
+  def model
+    Book
+  end
 
-    c.columns = [:author__last_name, :title, :exemplars]
+  def columns
+    [:author__last_name, :title, :exemplars]
   end
 end

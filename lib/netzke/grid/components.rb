@@ -7,22 +7,22 @@ module Netzke
       included do
         component :add_window do |c|
           configure_form_window(c)
-          c.title = I18n.t('netzke.grid.base.add_record', model: model_class.model_name.human)
+          c.title = I18n.t('netzke.grid.base.add_record', model: model.model_name.human)
           c.items = [:add_form]
-          c.form_config.record = model_class.new(columns_default_values)
+          c.form_config.record = model.new(columns_default_values)
           c.excluded = !allowed_to?(:create)
         end
 
         component :edit_window do |c|
           configure_form_window(c)
-          c.title = I18n.t('netzke.grid.base.edit_record', model: model_class.model_name.human)
+          c.title = I18n.t('netzke.grid.base.edit_record', model: model.model_name.human)
           c.items = [:edit_form]
           c.excluded = !allowed_to?(:update)
         end
 
         component :multiedit_window do |c|
           configure_form_window(c)
-          c.title = I18n.t('netzke.grid.base.edit_records', models: model_class.model_name.human.pluralize)
+          c.title = I18n.t('netzke.grid.base.edit_records', models: model.model_name.human.pluralize)
           c.items = [:multiedit_form]
           c.excluded = !allowed_to?(:update)
         end
@@ -41,10 +41,11 @@ module Netzke
       end
 
       def configure_form(c)
-        shared_config = %w(model mode persistent_config strong_values).reduce({}) do |r, m|
+        shared_config = %w(mode persistent_config strong_values).reduce({}) do |r, m|
           r.merge!(m.to_sym => config.send(m))
         end
 
+        c.model = model
         c.merge!(shared_config)
         c.attribute_overrides = attribute_overrides
         c.items = form_items

@@ -11,10 +11,12 @@ class Grid::CustomRenderers < Netzke::Grid::Base
     c.renderer = :my_renderer
   end
 
-  def configure(c)
-    c.model = "Book"
-    c.columns = [ :author__first_name, :author__last_name, :title]
-    super
+  def model
+    Book
+  end
+
+  def columns
+    [:author__first_name, :author__last_name, :title]
   end
 
   client_class do |c|

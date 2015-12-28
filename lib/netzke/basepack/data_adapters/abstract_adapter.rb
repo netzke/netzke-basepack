@@ -1,7 +1,7 @@
 module Netzke::Basepack::DataAdapters
   # A concrete adapter should implement all the public instance methods of this adapter in order to support all the functionality of Basepack components.
   class AbstractAdapter
-    attr_accessor :model_class
+    attr_accessor :model
 
     # Returns primary key name of the model
     def primary_key
@@ -227,7 +227,7 @@ module Netzke::Basepack::DataAdapters
 
     # Return root record for tree-like data
     def root
-      model_class.root
+      model.root
     end
 
     def find_record_children(r)
@@ -235,12 +235,12 @@ module Netzke::Basepack::DataAdapters
     end
 
     def find_root_records
-      model_class.where(parent_id: nil)
+      model.where(parent_id: nil)
     end
 
     # Does record respond to given method?
     def model_respond_to?(method)
-      @model_class.instance_methods.include?(method)
+      @model.instance_methods.include?(method)
     end
 
     # -- End of overridable methods
@@ -259,12 +259,12 @@ module Netzke::Basepack::DataAdapters
       @subclasses << subclass
     end
 
-    def self.adapter_class(model_class)
-      @subclasses.detect { |subclass| subclass.for_class?(model_class) } || AbstractAdapter
+    def self.adapter_class(model)
+      @subclasses.detect { |subclass| subclass.for_class?(model) } || AbstractAdapter
     end
 
-    def initialize(model_class)
-      @model_class = model_class
+    def initialize(model)
+      @model = model
     end
   end
 end

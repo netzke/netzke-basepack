@@ -1,6 +1,5 @@
 class Grid::Books < Netzke::Grid::Base
-  def configure(c)
-    super
-    c.model = Book
+  def model
+    Book
   end
 end

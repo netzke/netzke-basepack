@@ -3,9 +3,8 @@ class Grid::FileUpload < Netzke::Grid::Base
     c.getter = lambda {|r| %Q(<a href='#{r.image.url}'>Download</a>) if r.image.url}
   end
 
-  def configure(c)
-    super
-    c.model = Illustration
+  def model
+    Illustration
   end
 
   def configure_form(c)

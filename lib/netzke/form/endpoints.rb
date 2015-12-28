@@ -14,7 +14,7 @@ module Netzke
         #
         #     someForm.server.load({id: 100});
         endpoint :load do |params|
-          @record = model_class && model_adapter.find_record(params[:id])
+          @record = model && model_adapter.find_record(params[:id])
           client.netzke_set_form_values js_record_data
         end
 
