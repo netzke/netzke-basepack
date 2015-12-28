@@ -1,6 +1,4 @@
-/**
- * From http://www.sencha.com/forum/showthread.php?134345-Ext.ux.form.field.DateTime&p=863449&viewfull=1#post863449
- */
+// From http://www.sencha.com/forum/showthread.php?134345-Ext.ux.form.field.DateTime&p=863449&viewfull=1#post863449
 Ext.define('Ext.ux.form.field.DateTime', {
     extend:'Ext.form.FieldContainer',
     mixins:{
@@ -15,52 +13,35 @@ Ext.define('Ext.ux.form.field.DateTime', {
     layout: 'hbox',
     readOnly: false,
 
-    /**
-     * @cfg {String} dateFormat
+    /*
      * Convenience config for specifying the format of the date portion.
      * This value is overridden if format is specified in the dateConfig.
      * The default is 'Y-m-d'
      */
     dateFormat: 'Y-m-d',
     dateSubmitFormat: 'Y-m-d',
-    /**
-     * @cfg {String} timeFormat
+    /*
      * Convenience config for specifying the format of the time portion.
      * This value is overridden if format is specified in the timeConfig.
      * The default is 'H:i:s'
      */
     timeFormat: 'H:i:s',
     timeSubmitFormat: 'H:i:s',
-//    /**
-//     * @cfg {String} dateTimeFormat
-//     * The format used when submitting the combined value.
-//     * Defaults to 'Y-m-d H:i:s'
-//     */
-//    dateTimeFormat: 'Y-m-d H:i:s',
-    /**
+    /*
      * @cfg {Object} dateConfig
      * Additional config options for the date field.
      */
     dateConfig:{},
-    /**
+    /*
      * @cfg {Object} timeConfig
      * Additional config options for the time field.
      */
     timeConfig:{},
 
-
     // properties
 
     dateValue: null, // Holds the actual date
-    /**
-     * @property dateField
-     * @type Ext.form.field.Date
-     */
     dateField: null,
-    /**
-     * @property timeField
-     * @type Ext.form.field.Time
-     */
     timeField: null,
 
     initComponent: function(){
