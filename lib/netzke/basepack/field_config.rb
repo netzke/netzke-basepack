@@ -55,7 +55,9 @@ module Netzke
       end
 
       def xtype_for_type(type)
-        { integer:    :numberfield,
+        {
+          integer:    :numberfield,
+          decimal:    :numberfield,
           boolean:    :checkboxfield,
           date:       :datefield,
           datetime:   :xdatetime,

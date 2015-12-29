@@ -103,6 +103,7 @@ module Netzke
       def type_to_editor_xtype_map
         {
           integer: :numberfield,
+          decimal: :numberfield,
           boolean: :checkbox,
           date: :datefield,
           datetime: :xdatetime,

@@ -68,6 +68,8 @@
 
 *   Warn the user at an attempt to change the page when there are unapplied changes; disable the warning by setting `disable_dirty_page_warning` to `true`.
 
+*   Proper support for decimal datatype
+
 #### Bugfixes
 
 *   Multiediting of reconds now works properly with boolean fields (a tristate selector was implemented).
