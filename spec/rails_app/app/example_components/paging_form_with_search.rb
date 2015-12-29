@@ -26,7 +26,7 @@ class PagingFormWithSearch < Netzke::Basepack::BorderLayoutPanel
     }
   end
 
-  js_method :init_component, <<-JS
+  js_method :init_component, l(<<-JS)
     function(){
       this.callParent();
 

@@ -27,7 +27,7 @@ module Netzke
     #
     #       client_class do |c|
     #         # handler for column action 'delete_row'
-    #         c.on_delete_row = <<-JS
+    #         c.on_delete_row = l(<<-JS)
     #           function(record){
     #             this.getSelectionModel().select(record);
     #             this.onDel();

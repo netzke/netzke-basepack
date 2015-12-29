@@ -10,7 +10,7 @@ module Netzke
         c.auto_height = true
         c.close_action = "hide"
         c.modal = true
-        c.init_component = <<-JS
+        c.init_component = l(<<-JS)
           function(){
             this.callParent();
 
@@ -20,20 +20,20 @@ module Netzke
           }
         JS
 
-        c.get_query = <<-JS
+        c.get_query = l(<<-JS)
           function(){
             return this.items.first().getQuery();
           }
         JS
 
-        c.netzke_on_search = <<-JS
+        c.netzke_on_search = l(<<-JS)
           function(){
             this.closeRes = 'search';
             this.hide();
           }
         JS
 
-        c.netzke_on_cancel = <<-JS
+        c.netzke_on_cancel = l(<<-JS)
           function(){
             this.hide();
           }

@@ -1,12 +1,12 @@
 class SomeBorderLayout < Netzke::Basepack::BorderLayoutPanel
   client_class do |c|
-    c.on_update_west_region = <<-JS
+    c.on_update_west_region = l(<<-JS)
       function(){
         this.child('component[name="user_grid"]').body.update('Updated West Region Content');
       }
     JS
 
-    c.on_update_center_region = <<-JS
+    c.on_update_center_region = l(<<-JS)
       function(){
         this.child('component[name="role_grid"]').body.update('Updated Center Region Content');
       }

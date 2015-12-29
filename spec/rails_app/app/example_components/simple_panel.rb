@@ -3,7 +3,7 @@ class SimplePanel < Netzke::Base
 
   client_class do |c|
     c.title = "SimplePanel"
-    c.on_update_html = <<-JS
+    c.on_update_html = l(<<-JS)
       function(){
         this.updateHtmlFromServer();
       }

@@ -19,7 +19,7 @@ class WindowComponentLoader < Netzke::Base
   end
 
   client_class do |c|
-    c.netzke_on_load_window = <<-JS
+    c.netzke_on_load_window = l(<<-JS)
       function(params){
         this.netzkeLoadComponent("some_window", {callback: function(w){
           w.show();
@@ -27,7 +27,7 @@ class WindowComponentLoader < Netzke::Base
       }
     JS
 
-    c.netzke_on_reset_session = <<-JS
+    c.netzke_on_reset_session = l(<<-JS)
       function(params){
         this.server.resetSession();
       }

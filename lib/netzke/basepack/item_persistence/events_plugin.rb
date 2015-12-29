@@ -3,7 +3,7 @@ module Netzke
     module ItemPersistence
       class EventsPlugin < Netzke::Plugin
         client_class do |c|
-          c.init = <<-JS
+          c.init = l(<<-JS)
             function(cmp){
               cmp.on('afterlayout', function(){
 

@@ -25,20 +25,20 @@ module Netzke
         c.width = '80%'
         c.auto_height = true
         c.modal = true
-        c.init_component = <<-JS
+        c.init_component = l(<<-JS)
           function(params){
             this.callParent();
             this.items.first().on("submitsuccess", function(){ this.closeRes = "ok"; this.close(); }, this);
           }
         JS
 
-        c.netzke_on_ok = <<-JS
+        c.netzke_on_ok = l(<<-JS)
           function(params){
             this.items.first().netzkeOnApply();
           }
         JS
 
-        c.netzke_on_cancel = <<-JS
+        c.netzke_on_cancel = l(<<-JS)
           function(params){
             this.close();
           }

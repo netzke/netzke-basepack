@@ -17,13 +17,13 @@ class BookGridLoader < Netzke::Base
   client_class do |c|
     c.layout = :fit
 
-    c.on_load_one = <<-JS
+    c.on_load_one = l(<<-JS)
       function(){
         this.netzkeLoadComponent('book_grid_one');
       }
     JS
 
-    c.on_load_two = <<-JS
+    c.on_load_two = l(<<-JS)
       function(){
         this.netzkeLoadComponent('book_grid_two');
       }

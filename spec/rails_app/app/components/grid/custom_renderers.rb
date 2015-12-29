@@ -20,7 +20,7 @@ class Grid::CustomRenderers < Netzke::Grid::Base
   end
 
   client_class do |c|
-    c.my_renderer = <<-JS
+    c.my_renderer = l(<<-JS)
       function(value){
         return value ? "*" + value + "*" : "";
       }

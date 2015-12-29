@@ -21,12 +21,12 @@ module Grid
     end
 
     client_class do |c|
-      c.every_third_row = <<-JS
+      c.every_third_row = l(<<-JS)
         function(grid, rowIndex, colIndex, item, record){
           return rowIndex % 3 == 1;
         }
       JS
-      c.netzke_on_delete_row = <<-JS
+      c.netzke_on_delete_row = l(<<-JS)
         function(grid, rowIndex, colIndex){
           this.getSelectionModel().select(rowIndex);
           this.netzkeOnDelete();

@@ -14,7 +14,7 @@ module Helpers
   def wait_for_javascript
     start = Time.now
     loop do
-      done = page.execute_script(<<-JS)
+      done = page.execute_script(l(<<-JS))
       return Netzke.mochaDone;
       JS
 
@@ -29,7 +29,7 @@ module Helpers
   end
 
   def assert_mocha_results
-    result = page.execute_script(<<-JS)
+    result = page.execute_script(l(<<-JS))
       return Netzke.mochaRunner.stats;
     JS
 
