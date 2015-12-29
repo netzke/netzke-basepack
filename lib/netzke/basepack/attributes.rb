@@ -185,7 +185,6 @@ module Netzke
             assoc_name, assoc_method = c[:name].split '__'
             assoc_class = model_adapter.class_for(assoc_name)
             assoc_data_adapter = Netzke::Basepack::DataAdapters::AbstractAdapter.adapter_class(assoc_class).new(assoc_class)
-            ::Rails.logger.debug "\n!!! assoc_data_adapter.class: #{assoc_data_adapter.class.inspect}\n"
             assoc_instance = assoc_data_adapter.find_record c[:default_value]
             values[c[:name]] = assoc_instance.send(assoc_method)
           end
