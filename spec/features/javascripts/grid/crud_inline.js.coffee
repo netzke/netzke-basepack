@@ -1,5 +1,5 @@
 describe 'Grid::CrudInline', ->
-  it 'creates single record inline', (done) ->
+  it 'creates single record inline', ->
     wait().then ->
       addRecord title: 'Damian'
       selectAssociation 'author__name', 'Herman Hesse'
@@ -12,9 +12,8 @@ describe 'Grid::CrudInline', ->
     .then ->
       selectFirstRow()
       expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Damian']
-      done()
 
-  it 'updates single record inline', (done) ->
+  it 'updates single record inline', ->
     wait().then ->
       selectFirstRow()
       updateRecord title: 'Art of Dreaming'
@@ -29,9 +28,8 @@ describe 'Grid::CrudInline', ->
     .then ->
       selectFirstRow()
       expect(rowDisplayValues()).to.eql ['Carlos Castaneda', 'Art of Dreaming']
-      done()
 
-  it 'simultaneously updates two records via form', (done) ->
+  it 'simultaneously updates two records via form', ->
     wait().then ->
       addRecord title: 'Damian'
       completeEditing()
@@ -57,9 +55,8 @@ describe 'Grid::CrudInline', ->
       expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Steppenwolf']
       selectLastRow()
       expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Steppenwolf']
-      done()
 
-  it 'deletes all records', (done) ->
+  it 'deletes all records', ->
     wait().then ->
       selectAllRows()
       click button 'Delete'
@@ -67,9 +64,8 @@ describe 'Grid::CrudInline', ->
       wait()
     .then ->
       expect(grid().getStore().getCount()).to.eql(0)
-      done()
 
-  it 'creates multiple records inline', (done) ->
+  it 'creates multiple records inline', ->
     wait().then ->
       addRecord title: 'Damian'
       selectAssociation 'author__name', 'Herman Hesse'
@@ -80,16 +76,16 @@ describe 'Grid::CrudInline', ->
     .then ->
       completeEditing()
       click button 'Apply'
-      wait ->
+      wait()
     .then ->
       wait ->
-        selectLastRow()
-        expect(rowDisplayValues()).to.eql ['Carlos Castaneda', 'Art of Dreaming']
-        selectFirstRow()
-        expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Damian']
-        done()
+    .then ->
+      selectLastRow()
+      expect(rowDisplayValues()).to.eql ['Carlos Castaneda', 'Art of Dreaming']
+      selectFirstRow()
+      expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Damian']
 
-  it 'gives a validation error when trying to add an invalid record', (done) ->
+  it 'gives a validation error when trying to add an invalid record', ->
     wait().then ->
       addRecord exemplars: 3 # title is missing
       click button 'Apply'
@@ -99,12 +95,11 @@ describe 'Grid::CrudInline', ->
       expect(grid('Books').getStore().getModifiedRecords().length).to.eql(1)
       editLastRow {title: 'Foo'}
       click button 'Apply'
-      wait ->
-        expect(grid('Books').getStore().getModifiedRecords().length).to.eql(0)
-        done()
+      wait()
+    .then ->
+      expect(grid('Books').getStore().getModifiedRecords().length).to.eql(0)
 
-  it 'triggers cell editing when adding a record', (done) ->
+  it 'triggers cell editing when adding a record', ->
     wait().then ->
       click button 'Add'
       expect(grid().getPlugin('celleditor').editing).to.eql true
-      done()

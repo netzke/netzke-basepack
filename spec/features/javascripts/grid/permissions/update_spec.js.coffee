@@ -1,5 +1,5 @@
 describe 'Grid::Permissions::Update component', ->
-  it 'does not load edit form on double click', (done) ->
+  it 'does not load edit form on double click', ->
     wait().then ->
       click button 'Add'
       wait()
@@ -13,4 +13,3 @@ describe 'Grid::Permissions::Update component', ->
       wait()
     .then ->
       expectToNotSee header "Edit Book"
-      done()

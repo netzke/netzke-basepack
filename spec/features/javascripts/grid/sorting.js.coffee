@@ -4,7 +4,7 @@ describe 'Grid::Sorting', ->
       expect(valuesInColumn('title')).to.eql ['Foo', 'Damian', 'Magus', 'Journey']
       done()
 
-  it 'sorts by regular column', (done) ->
+  it 'sorts by regular column', ->
     wait()
     .then ->
       grid().getStore().sort('title')
@@ -15,9 +15,8 @@ describe 'Grid::Sorting', ->
       wait()
     .then ->
       expect(valuesInColumn('title')).to.eql ['Magus', 'Journey', 'Foo', 'Damian']
-      done()
 
-  it 'sorts by association column', (done) ->
+  it 'sorts by association column', ->
     wait()
     .then ->
       grid().getStore().sort('author__last_name')
@@ -28,4 +27,3 @@ describe 'Grid::Sorting', ->
       wait()
     .then ->
       expect(valuesInColumn('title')).to.eql ['Damian', 'Magus', 'Journey', 'Foo']
-      done()

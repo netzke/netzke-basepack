@@ -1,5 +1,5 @@
 describe 'Grid::CustomPrimaryKey', ->
-  it 'creates single record inline', (done) ->
+  it 'creates single record inline', ->
     wait()
     .then ->
       addRecord title: 'Damian'
@@ -13,4 +13,3 @@ describe 'Grid::CustomPrimaryKey', ->
     .then ->
       selectLastRow()
       expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Damian']
-      done()

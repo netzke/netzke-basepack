@@ -1,5 +1,5 @@
 describe "Grid::Books component", ->
-  it "edits title for multiple records", (done) ->
+  it "edits title for multiple records", ->
     wait().then ->
       selectAllRows()
       click button 'Edit'
@@ -8,5 +8,3 @@ describe "Grid::Books component", ->
       fill textfield('title'), with: 'C'
       click button 'OK'
       wait()
-    .then ->
-      done()

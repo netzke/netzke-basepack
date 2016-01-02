@@ -1,5 +1,5 @@
 describe 'Grid::Search', ->
-  it 'searches by plain attribute', (done) ->
+  it 'searches by plain attribute', ->
     wait()
     .then ->
       click button 'Search'
@@ -25,9 +25,8 @@ describe 'Grid::Search', ->
       wait()
     .then ->
       expect(grid().getStore().getCount()).to.eql 0
-      done()
 
-  it 'searches by association attribute', (done) ->
+  it 'searches by association attribute', ->
     wait().then ->
       click button 'Search'
       click button 'Clear'
@@ -47,4 +46,3 @@ describe 'Grid::Search', ->
       wait()
     .then ->
       expect(grid().getStore().getCount()).to.eql 3
-      done()

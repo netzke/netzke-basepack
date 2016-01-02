@@ -3,7 +3,7 @@ window.expandNode = ->
   node.expand()
 
 describe 'Tree::Crud', ->
-  it 'loads node children', (done) ->
+  it 'loads node children', ->
     wait().then ->
       expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3']
       selectLastRow()
@@ -12,9 +12,8 @@ describe 'Tree::Crud', ->
     .then ->
       expect(grid().getStore().getCount()).to.eql(5)
       expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12']
-      done()
 
-  it 'creates child node', (done) ->
+  it 'creates child node', ->
     selectLastRow()
     click button "Add"
     wait().then ->
@@ -23,9 +22,8 @@ describe 'Tree::Crud', ->
       wait()
     .then ->
       expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12', 'file111', 'New file']
-      done()
 
-  it 'creates top-level node', (done) ->
+  it 'creates top-level node', ->
     grid().getSelectionModel().deselectAll()
     click button "Add"
     wait().then ->
@@ -34,9 +32,8 @@ describe 'Tree::Crud', ->
       wait()
     .then ->
       expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'dir3', 'file11', 'dir12', 'file111', 'New file', 'file3']
-      done()
 
-  it 'deletes single record', (done) ->
+  it 'deletes single record', ->
     wait().then ->
       selectFirstRow()
       click button 'Delete'
@@ -46,4 +43,3 @@ describe 'Tree::Crud', ->
       wait()
     .then ->
       expect(valuesInColumn('file_name')).to.eql ['file2', 'dir3', 'file11', 'dir12', 'file111', 'New file', 'file3']
-      done()

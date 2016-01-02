@@ -1,5 +1,5 @@
 describe 'Grid::CrudPaging', ->
-  it 'creates single record via form', (done) ->
+  it 'creates single record via form', ->
     wait().then ->
       click button 'Add'
       wait()
@@ -14,9 +14,8 @@ describe 'Grid::CrudPaging', ->
     .then ->
       selectLastRow()
       expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Damian']
-      done()
 
-  it 'updates record via form', (done) ->
+  it 'updates record via form', ->
     rowCount = grid('Books').getStore().getCount()
     selectLastRow()
     click button 'Edit'
@@ -34,9 +33,8 @@ describe 'Grid::CrudPaging', ->
       selectLastRow()
       expect(rowDisplayValues()).to.eql ['Carlos Castaneda', 'Art of Dreaming']
       expect(grid('Books').getStore().getCount()).to.eql rowCount
-      done()
 
-  it 'simultaneously updates two records via form', (done) ->
+  it 'simultaneously updates two records via form', ->
     wait().then ->
       click button 'Add'
       wait()
@@ -63,13 +61,11 @@ describe 'Grid::CrudPaging', ->
       expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Steppenwolf']
       selectLastRow()
       expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Steppenwolf']
-      done()
 
-  it 'deletes records', (done) ->
+  it 'deletes records', ->
     wait().then ->
       selectAllRows()
       click button 'Delete'
       click button 'Yes'
       wait ->
         expect(grid().getStore().getCount()).to.eql(0)
-        done()

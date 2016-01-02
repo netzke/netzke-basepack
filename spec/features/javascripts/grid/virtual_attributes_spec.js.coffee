@@ -1,5 +1,5 @@
 describe 'Grid::VirtualAttributes component', ->
-  it 'deletes a record when delete column action is clicked', (done) ->
+  it 'deletes a record when delete column action is clicked', ->
     wait().then ->
       addRecord title: 'Damian', borrowed: 10
       click button 'Apply'
@@ -7,4 +7,3 @@ describe 'Grid::VirtualAttributes component', ->
     .then ->
       selectLastRow()
       expect(rowDisplayValues()).to.eql ['Damian', '10', 'Borrowed to: 10']
-      done()

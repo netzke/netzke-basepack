@@ -1,5 +1,5 @@
 describe 'Grid::DefaultValues', ->
-  it 'adds record via form', (done) ->
+  it 'adds record via form', ->
     wait().then ->
       click button 'Add'
       wait()
@@ -9,4 +9,3 @@ describe 'Grid::DefaultValues', ->
     .then ->
       selectLastRow()
       expect(rowDisplayValues()).to.eql ['Lolita', 'Nabokov', '100', true]
-      done()

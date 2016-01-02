@@ -1,5 +1,5 @@
 describe 'Tree::CrudInline', ->
-  it 'updates single record inline', (done) ->
+  it 'updates single record inline', ->
     wait().then ->
       selectLastRow()
       updateRecord file_name: 'New dir name'
@@ -11,4 +11,3 @@ describe 'Tree::CrudInline', ->
       wait()
     .then ->
       expect(valuesInColumn('file_name')).to.eql ['file1', 'file2', 'New dir name']
-      done()

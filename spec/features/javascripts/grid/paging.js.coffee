@@ -8,7 +8,7 @@ describe 'Grid::Paging component', ->
         expect(valuesInColumn('title')).to.eql ['Three', 'Four']
         done()
 
-  it 'discards uncommitted changes on page change when user is ok with that', (done) ->
+  it 'discards uncommitted changes on page change when user is ok with that', ->
     wait().then ->
       selectFirstRow()
       updateRecord title: 'New title'
@@ -26,4 +26,3 @@ describe 'Grid::Paging component', ->
       wait()
     .then ->
       expect(valuesInColumn('title')).to.eql ['One', 'Two']
-      done()

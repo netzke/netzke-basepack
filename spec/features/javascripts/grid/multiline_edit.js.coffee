@@ -1,5 +1,5 @@
 describe 'Grid::MultilineEdit', ->
-  it 'simultaneously updates two records via form', (done) ->
+  it 'simultaneously updates two records via form', ->
     wait().then ->
       addRecord title: 'Damian'
       addRecord title: 'Steppenwolf'
@@ -23,4 +23,3 @@ describe 'Grid::MultilineEdit', ->
     .then ->
       expect(valuesInColumn('author__name')).to.eql ['Herman Hesse', 'Herman Hesse']
       expect(valuesInColumn('title')).to.eql ['Steppenwolf', 'Steppenwolf']
-      done()

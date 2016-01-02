@@ -1,5 +1,5 @@
 describe 'LiveSearch grid plugin', ->
-  it 'searches by title', (done) ->
+  it 'searches by title', ->
     gridStore = grid("Books").getStore()
     searchField = Ext.ComponentQuery.query('field[attr="title"]')[0]
 
@@ -13,9 +13,8 @@ describe 'LiveSearch grid plugin', ->
     .then ->
       expect(valuesInColumn('title')).to.eql ['Way of Warrior']
       searchField.setValue('')
-      done()
 
-  it 'searches by author full name', (done) ->
+  it 'searches by author full name', ->
     searchField = Ext.ComponentQuery.query('field[attr="author__name"]')[0]
     gridStore = grid("Books").getStore()
 
@@ -29,9 +28,8 @@ describe 'LiveSearch grid plugin', ->
     .then ->
       expect(valuesInColumn('title')).to.eql ['Damian']
       searchField.setValue('')
-      done()
 
-  it 'searches by column which is not shown', (done) ->
+  it 'searches by column which is not shown', ->
     searchField = Ext.ComponentQuery.query('field[attr="notes"]')[0]
     gridStore = grid("Books").getStore()
 
@@ -45,4 +43,3 @@ describe 'LiveSearch grid plugin', ->
     .then ->
       expect(valuesInColumn('title')).to.eql ['Way of Warrior']
       searchField.setValue('')
-      done()

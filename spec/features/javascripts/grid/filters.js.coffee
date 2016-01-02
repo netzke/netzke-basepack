@@ -30,6 +30,7 @@ describe 'Grid filter functionality', ->
       enableColumnFilter "notes", "read", ->
         expect(grid("Books").getStore().getCount()).to.eql 2
         done()
+
   it 'filters by title_or_notes and price_or_exemplars', (done) ->
     wait ->
       grid().filters.clearFilters()

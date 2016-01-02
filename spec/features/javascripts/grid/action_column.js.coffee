@@ -1,5 +1,5 @@
 describe 'Grid::ActionColumn component', ->
-  it 'deletes a record when delete column action is clicked', (done) ->
+  it 'deletes a record when delete column action is clicked', ->
     wait().then ->
       expect(grid('Books').getStore().getCount()).to.eql 1
       click icon 'Delete row'
@@ -7,4 +7,3 @@ describe 'Grid::ActionColumn component', ->
       wait()
     .then ->
       expect(grid('Books').getStore().getCount()).to.eql 0
-      done()

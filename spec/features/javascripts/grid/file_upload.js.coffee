@@ -1,5 +1,5 @@
 describe 'Grid::FileUpload', ->
-  it 'creates record', (done) ->
+  it 'creates record', ->
     wait().then ->
       click button 'Add'
       wait()
@@ -7,5 +7,3 @@ describe 'Grid::FileUpload', ->
       fill textfield('title'), with: 'Painting'
       click button 'OK'
       wait()
-    .then ->
-      done()
