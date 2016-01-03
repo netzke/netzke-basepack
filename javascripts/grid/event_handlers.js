@@ -92,16 +92,6 @@ Ext.define("Netzke.Grid.EventHandlers", {
     }
   },
 
-  // Not a very clean approach to clean-up. The problem is that this way the advanced search functionality stops being really pluggable. With Ext JS 4 find the way to make it truely so.
-  netzkeOnDestroy: function(){
-    this.callParent();
-
-    // Destroy the search window (here's the problem: we are not supposed to know it exists)
-    if (this.searchWindow) {
-      this.searchWindow.destroy();
-    }
-  },
-
   netzkeOnAddInForm: function(){
     this.netzkeLoadComponent("add_window", {
       callback: function(w) {
@@ -167,6 +157,10 @@ Ext.define("Netzke.Grid.EventHandlers", {
       }});
   },
 
+  /**
+   * Reloads store
+   * @method netzkeReloadStore
+   */
   netzkeReloadStore: function(){
     var store = this.getStore();
 
@@ -177,7 +171,7 @@ Ext.define("Netzke.Grid.EventHandlers", {
   },
 
   /**
-   * Process selectionchange event to enable/disable actions.
+   * Processes selectionchange event to enable/disable actions.
    * @method netzkeSetActionEvents
    * @private
    */

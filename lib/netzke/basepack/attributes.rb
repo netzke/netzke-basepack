@@ -76,7 +76,7 @@ module Netzke
     #
     #   A Proc object that receives the relation and the value to filter by. Example:
     #
-    #     column :author__name do |c|
+    #     attribute :author__name do |c|
     #       c.filter_association_with = lambda {|rel, value| rel.where("first_name like ? or last_name like ?", "%#{value}%", "%#{value}%" ) }
     #     end
     #
