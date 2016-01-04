@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.email       = "max@goodbitlabs.com"
   s.homepage    = "http://netzke.org"
   s.summary     = "Pre-built Netzke components"
-  s.description = "A set of feature-rich extendible Netzke components (such as Form, Grid, Window, TabPanel, etc) and component extensions which can be used as building blocks for your RIA"
+  s.description = "A set of feature-rich extendible Netzke components (such as Grid, Tree, Form, Window) and component extensions which can be used as building blocks for your apps"
 
   s.files         = Dir["{javascripts,lib,locales,stylesheets}/**/*", "[A-Z]*", "init.rb"] - ["Gemfile.lock", "spec/rails_app/public/extjs"]
   s.test_files    = Dir["{test}/**/*"]

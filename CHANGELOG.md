@@ -1,12 +1,14 @@
-### Components changed/renamed
+# v1.0.0.0 - 2016-01-04
+
+## Components changed/renamed
 
 *   Base classes of main componens have been renamed from `Netzke::Basepack::{Grid|Form|Tree|Window|Viewport}` to `Netzke::{Grid|Form|Tree|Window|Viewport}::Base`.
 
-*   `Netzke::Basepack::TapPanel` and `Netzke::Basepack::Accordion` have been removed. The only purpose for them was dynamic loading of child components, which didn't prove that useful.
+*   `Netzke::Basepack::TabPanel` and `Netzke::Basepack::Accordion` have been removed. The only purpose for them was dynamic loading of child components, which didn't prove that useful.
 
-### Form, Grid, Tree
+## Form, Grid, Tree
 
-#### Breaking changes
+### Breaking changes
 
 *   `strong_default_attrs` config option has been renamed to `strong_values`.
 
@@ -14,15 +16,15 @@
 
 *   The new `attribute` DSL method and the accompanying `attribute_overrides` config option allow reconfiguring the way specific model attributes are presented by both the grid and the form. The `column` DSL method has been left for configuring what's specific for a column. For details, see [Netzke::Basepack::Attributes](http://www.rubydoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Attributes).
 
-### Form
+## Form
 
-#### Breaking changes
+### Breaking changes
 
 *   The `netzkeSubmit` and `netzkeLoad` endpoints have been renamed to `submit` and `load` respectively; keep this in mind if you override them in your app.
 
-### Grid
+## Grid
 
-#### Breaking changes
+### Breaking changes
 
 *   Column/field label for association no longer includes association method name by default. For example, for
     `author__name` attribute it'll now be "Author", not "Author  name".
@@ -46,13 +48,13 @@
 
 *   All scope-related configs (including those of the columns) now only accept a Proc or a Hash.
 
-*   Class-level configuration is gone (its sole purpose was to allow reducing the amount of generated JS code - not worth it).
+*   Class-level component configuration is gone (its sole purpose was to allow reducing the amount of generated JS code - not worth it).
 
 *   `enable_edit_in_form`, `enable_edit_inline`, `enable_pagination` options are gone.
 
 *   `enable_extended_search` option is gone.
 
-#### Non-breaking changes
+### New and improved
 
 *   By default, Grid now uses form to add/edit records. Set `edit_inline` to true to use inline editing when possible (implicitly sets `paging` to `true`).
 
@@ -62,15 +64,11 @@
 
 *   Buttons previously disabled due to permissions are now not added to the bottom bar alltogether.
 
-#### Added
-
 *   Override new `configure_form` method to specify extra configuration to the forms
 
 *   Warn the user at an attempt to change the page when there are unapplied changes; disable the warning by setting `disable_dirty_page_warning` to `true`.
 
-*   Proper support for decimal datatype
-
-#### Bugfixes
+*   Proper support for decimal datatype was added
 
 *   Multiediting of reconds now works properly with boolean fields (a tristate selector was implemented).
 
