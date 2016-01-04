@@ -84,7 +84,7 @@ module Netzke
 
       # Attempts a given operation on the data. Checks permissions first.
       # @param [Symbol] Operation: :create, :read, :update, or :delete
-      # @param [Array] Workload of operation data
+      # @param [Array|Hash] Workload of operation data
       # @param [Netzke::Core::EndpointResponse] Object collecting response to the client
       def attempt_operation(op, data, client)
         if allowed_to?(op)

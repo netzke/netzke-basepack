@@ -89,7 +89,8 @@ module Netzke::Basepack::DataAdapters
         # Options for an asssociation attribute
 
         relation = assoc.klass.all
-        relation = attr[:scope].call(relation) if attr[:scope].is_a?(Proc)
+
+        relation = extend_relation_with_scope(relation, attr[:scope])
 
         if attr[:filter_association_with]
           relation = attr[:filter_association_with].call(relation, query).to_a
@@ -316,11 +317,7 @@ module Netzke::Basepack::DataAdapters
         relation = relation.where(predicates_for_and_conditions(and_query))
       end
 
-      if params[:scope].is_a?(Proc)
-        relation = params[:scope].call(relation)
-      else
-        raise ArgumentError, "Expected scope to be a Proc, got #{params[:scope].class}" unless params[:scope].nil?
-      end
+      relation = extend_relation_with_scope(relation, params[:scope])
 
       @relation = relation
     end
@@ -442,6 +439,19 @@ module Netzke::Basepack::DataAdapters
     end
 
     private
+
+    def extend_relation_with_scope(relation, scope)
+      case scope
+      when Proc
+        scope.call(relation)
+      when Hash
+        relation.where(scope)
+      when NilClass
+        relation
+      else
+        raise ArgumentError, "Expected scope to be a Proc or a Hash, got #{scope.class}"
+      end
+    end
 
     def logger
       Netzke::Base.logger

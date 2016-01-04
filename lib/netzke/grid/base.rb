@@ -79,14 +79,24 @@ module Netzke
     #
     # [scope]
     #
-    #   A Proc object used to scope out grid data. Receives the current relation as a parameter and must return the
-    #   modified relation. For example:
+    #   A Proc or a Hash used to scope out grid data. The Proc will receive the current relation as a parameter and must
+    #   return the modified relation. For example:
     #
     #      class Books < Netzke::Basepack::Grid
     #        def configure(c)
-    #          c.model = "Book"
     #          super
+    #          c.model = Book
     #          c.scope = lambda {|r| r.where(author_id: 1) }
+    #        end
+    #      end
+    #
+    #   Hash is being accepted for conivience, it will be directly passed to `where`. So the above can be rewritten as:
+    #
+    #      class Books < Netzke::Basepack::Grid
+    #        def configure(c)
+    #          super
+    #          c.model = Book
+    #          c.scope = {author_id: 1}
     #        end
     #      end
     #

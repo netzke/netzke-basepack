@@ -44,7 +44,7 @@
 
 *   The endpoints dropped their prefix `server`; additionally, `serverDelete` has become `destroy`; keep this in mind if you override endpoints in your app.
 
-*   All scope-related configs (including those of the columns) now only accept a Proc object.
+*   All scope-related configs (including those of the columns) now only accept a Proc or a Hash.
 
 *   Class-level configuration is gone (its sole purpose was to allow reducing the amount of generated JS code - not worth it).
 

@@ -40,4 +40,34 @@ describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
       expect(adapter.combo_data(attr).size).to eql 2
     end
   end
+
+  describe "#get_records" do
+    it "makes use of Proc scope" do
+      FactoryGirl.create(:author, first_name: "Kate")
+      FactoryGirl.create(:author, first_name: "Kate")
+      FactoryGirl.create(:author, first_name: "Jane")
+
+      adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Author)
+
+      params = {
+        scope: lambda {|rel| rel.where(first_name: "Kate")}
+      }
+
+      expect(adapter.get_records(params).size).to eql 2
+    end
+
+    it "makes use of Hash scope" do
+      FactoryGirl.create(:author, first_name: "Kate")
+      FactoryGirl.create(:author, first_name: "Kate")
+      FactoryGirl.create(:author, first_name: "Jane")
+
+      adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Author)
+
+      params = {
+        scope: {first_name: "Kate"}
+      }
+
+      expect(adapter.get_records(params).size).to eql 2
+    end
+  end
 end

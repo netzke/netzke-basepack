@@ -127,4 +127,11 @@ feature Netzke::Grid::Base, js: true do
     run_mocha_spec 'grid/file_upload'
     expect(Illustration.last.title).to eql "Painting"
   end
+
+  it 'scopes data in grid with hash' do
+    FactoryGirl.create :book, title: 'One'
+    FactoryGirl.create :book, title: 'One'
+    FactoryGirl.create :book, title: 'Two'
+    run_mocha_spec 'grid/scoped_with_hash'
+  end
 end

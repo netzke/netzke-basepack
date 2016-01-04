@@ -70,7 +70,7 @@ module Netzke
     #
     # [scope]
     #
-    #   The scope for association attribute. Same syntax applies as for scoping out records for the grid.
+    #   A Proc or a Hash used to scope out one-to-many association options. Same syntax applies as for scoping out records in the grid.
     #
     # [filter_association_with]
     #

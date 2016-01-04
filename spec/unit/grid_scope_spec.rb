@@ -62,7 +62,7 @@ describe "Grid scope option" do
     expect(@cb1.notes).to eql 'Fixed'
   end
 
-  it 'sets strongs attributes on create' do
+  it 'sets strongs values on create' do
     grid.create([{title: 'Foo', author_id: @fowles.id}])
     book = Book.last
     expect(book.author).to eql @castaneda

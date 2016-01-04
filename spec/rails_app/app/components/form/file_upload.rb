@@ -25,7 +25,7 @@ class Form::FileUpload < Netzke::Form::Base
   end
 
   endpoint :submit do |params|
-    client.set_title(client_config.title)
+    client.set_title(client_config[:title])
     super params
   end
 end
