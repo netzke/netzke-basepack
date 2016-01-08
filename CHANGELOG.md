@@ -16,6 +16,10 @@
 
 *   The new `attribute` DSL method and the accompanying `attribute_overrides` config option allow reconfiguring the way specific model attributes are presented by both the grid and the form. The `column` DSL method has been left for configuring what's specific for a column. For details, see [Netzke::Basepack::Attributes](http://www.rubydoc.info/github/netzke/netzke-basepack/Netzke/Basepack/Attributes).
 
+*   `data_adapter` method has been renamed to `model_adapter`
+
+*   `model_class` method in `AbstractAdapter` has been renamed to `model`
+
 ## Form
 
 ### Breaking changes
