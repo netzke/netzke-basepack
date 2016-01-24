@@ -58,6 +58,26 @@
 
 *   `enable_extended_search` option is gone.
 
+### I18n
+
+*   Before to localize association attribute it was needed to specify the attribute in the doubre-underscore notation,
+    for example:
+
+
+        es:
+          activerecord:
+            attributes:
+              book:
+                author__name: Autor
+
+    Now it should be cut down to the association name:
+
+        es:
+          activerecord:
+            attributes:
+              book:
+                author: Autor
+
 ### New and improved
 
 *   By default, Grid now uses form to add/edit records. Set `edit_inline` to true to use inline editing when possible (implicitly sets `paging` to `true`).
