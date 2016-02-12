@@ -87,7 +87,7 @@ describe 'Grid::CrudInline', ->
 
   it 'gives a validation error when trying to update a record with invalid value', ->
     wait().then ->
-      updateRecord title: ''
+      editLastRow title: ''
       click button 'Apply'
       wait()
     .then ->
