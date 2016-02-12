@@ -85,6 +85,20 @@ describe 'Grid::CrudInline', ->
       selectFirstRow()
       expect(rowDisplayValues()).to.eql ['Herman Hesse', 'Damian']
 
+  it 'gives a validation error when trying to update a record with invalid value', ->
+    wait().then ->
+      updateRecord title: ''
+      click button 'Apply'
+      wait()
+    .then ->
+      expectToSee anywhere "Title can't be blank"
+      expect(grid('Books').getStore().getModifiedRecords().length).to.eql(1)
+      editLastRow {title: 'Foo'}
+      click button 'Apply'
+      wait()
+    .then ->
+      expect(grid('Books').getStore().getModifiedRecords().length).to.eql(0)
+
   it 'gives a validation error when trying to add an invalid record', ->
     wait().then ->
       addRecord exemplars: 3 # title is missing
