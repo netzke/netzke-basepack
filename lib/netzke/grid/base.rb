@@ -54,7 +54,7 @@ module Netzke
     #   be specified as either a symbol (attribute name), or a hash containing the +name+ key pointing to the attribute
     #   name, as well as additional configuration keys.
     #
-    #      class Users < Netzke::Basepack::Grid
+    #      class Users < Netzke::Grid::Base
     #        def configure(c)
     #          super
     #          c.model = User
@@ -82,7 +82,7 @@ module Netzke
     #   A Proc or a Hash used to scope out grid data. The Proc will receive the current relation as a parameter and must
     #   return the modified relation. For example:
     #
-    #      class Books < Netzke::Basepack::Grid
+    #      class Books < Netzke::Grid::Base
     #        def configure(c)
     #          super
     #          c.model = Book
@@ -92,7 +92,7 @@ module Netzke
     #
     #   Hash is being accepted for conivience, it will be directly passed to `where`. So the above can be rewritten as:
     #
-    #      class Books < Netzke::Basepack::Grid
+    #      class Books < Netzke::Grid::Base
     #        def configure(c)
     #          super
     #          c.model = Book
