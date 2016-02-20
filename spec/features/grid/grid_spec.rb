@@ -115,6 +115,14 @@ feature Netzke::Grid::Base, js: true do
     run_mocha_spec 'grid/buffered'
   end
 
+  it 'can load data at once' do
+    data = 33.times.with_index.map do |i|
+      { first_name: "First name #{i}" }
+    end
+    Author.create(data)
+    run_mocha_spec 'grid/with_summary'
+  end
+
   it 'provides meta attribute accessible via the store' do
     FactoryGirl.create :book, exemplars: 1000
     FactoryGirl.create :book, exemplars: 2000

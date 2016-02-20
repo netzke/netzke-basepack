@@ -62,6 +62,7 @@ module Netzke
       def validate_config(c)
         raise ArgumentError, "Grid requires a model" if model.nil?
         c.paging = true if c.edit_inline
+        c.infinite_scrolling = true if c.infinite_scrolling.nil? && !c.paging
         c.tools = tools
         c.bbar = bbar
         c.context_menu = context_menu

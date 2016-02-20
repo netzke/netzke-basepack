@@ -1,3 +1,6 @@
+*   Grid: added `infinite_scrolling` option. Set it to false if you want the grid to not use neither buffered store, nor
+    pagination (and thus load the complete dataset at once).
+
 # v1.0.0.0 - 2016-01-04
 
 ## Components changed/renamed

@@ -105,6 +105,7 @@ module Netzke
     #   A hash of attributes to be merged atop of every created/updated record, e.g. +role_id: 1+
     #
     # [edit_inline]
+    #
     #   Whether record editing should happen inline (as opposed to using a form). When set to +true+, automatically sets
     #   +paging+ to +true+. Defaults to +false+.
     #
@@ -116,6 +117,11 @@ module Netzke
     #
     #   Set to +true+ to use pagination instead of infinite scrolling. Is automatically set to
     #   +true+ if +edit_inline+ is +true+. Defaults to +false+.
+    #
+    # [infinite_scrolling]
+    #
+    #   Set to +false+ to disable infinite scrolling. Given +paging+ is +false+, will make the grid load the complete
+    #   dataset at once. Defaults to +true+.
     #
     # [store_config]
     #
