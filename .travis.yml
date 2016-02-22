@@ -13,6 +13,7 @@ before_script:
 
 script:
   - export DISPLAY=:99.0
+  - export LC_CTYPE=en_US.UTF-8
   - bundle exec rake
 
 branches:
