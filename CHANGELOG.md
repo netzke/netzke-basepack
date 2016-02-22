@@ -1,4 +1,12 @@
-*   Grid: added `infinite_scrolling` option. Set it to false if you want the grid to not use neither buffered store, nor
+### Breaking changes
+
+*   Grid, Tree: use the `attributes` config option if you need to configure what attributes are shown in both the grid
+    and its forms. The `columns` config option now only takes effect on grid, and it doesn't modify the layout of its
+    forms.
+
+### New and mproved
+
+*   Grid: added `infinite_scrolling` config option. Set it to false if you want the grid to not use neither buffered store, nor
     pagination (and thus load the complete dataset at once).
 
 *   Tree: fixed date and datetime columns in some browsers.

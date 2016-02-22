@@ -4,7 +4,7 @@ module Netzke::Basepack
   describe Columns do
     it "provides correct list of default fields for forms" do
       fields = ::Grid::CustomColumns.new.send :default_form_items
-      expect(fields).to eql %w[id author__first_name author__last_name author__name title digitized rating exemplars updated_at extra_column].map(&:to_sym)
+      expect(fields).to eql %w[author__first_name author__last_name author__name title digitized rating exemplars updated_at extra_column].map(&:to_sym)
     end
 
     it "allows overriding columns" do

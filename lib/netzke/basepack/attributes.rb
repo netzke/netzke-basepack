@@ -43,6 +43,20 @@ module Netzke
     #        component :roles
     #      end
     #
+    # Another way to override attributes is by overriding the +augment_attribute_config+ method:
+    #
+    #      class Users < Netzke::Grid::Base
+    #        def configure(c)
+    #          super
+    #          c.model = User
+    #        end
+    #
+    #        def augment_attribute_config(c)
+    #          super
+    #          c.read_only = true if [:address, :salary].include?(c.name)
+    #        end
+    #      end
+    #
     # The following attribute config options are available:
     #
     # [read_only]
@@ -156,11 +170,17 @@ module Netzke
         end
       end
 
+      # Returns the list of (non-normalized) attributes to be used.
+      # Can be overridden.
+      def attributes
+        config.attributes || model_adapter.model_attributes
+      end
+
       def attribute_overrides
         return @attribute_overrides if @attribute_overrides
 
-        declared = self.class.declared_attribute_names.reduce({}) do |res, name|
-          c = AttributeConfig.new(name)
+        declared = (attributes | self.class.declared_attribute_names).reduce({}) do |res, name|
+          c = Netzke::Basepack::AttrConfig.new(name, model_adapter)
           augment_attribute_config(c)
           res.merge!(name => c)
         end
@@ -168,8 +188,17 @@ module Netzke
         @attribute_overrides = (config.attribute_overrides || {}).deep_merge(declared)
       end
 
+      # Extends passed column config with DSL declaration for this column
+      def apply_attribute_dsl(c)
+        method_name = ATTRIBUTE_METHOD_NAME % c.name
+        send(method_name, c) if respond_to?(method_name)
+      end
+
+      # Receives a +Netzke::Basepack::AttrConfig+ with minimum attribute configuration and extends it according to the
+      # attribute's type. May be overridden.
       def augment_attribute_config(c)
-        send(ATTRIBUTE_METHOD_NAME % c.name, c)
+        apply_attribute_dsl(c)
+        c.set_defaults
       end
 
       def association_attr?(attr)

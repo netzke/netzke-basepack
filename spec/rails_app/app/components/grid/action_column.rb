@@ -7,6 +7,7 @@ module Grid
       super
 
       c.columns = [:title, :basic_actions, :extra_actions]
+      c.form_items = [:title]
     end
 
     column :basic_actions do |c|

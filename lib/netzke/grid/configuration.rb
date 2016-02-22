@@ -66,6 +66,7 @@ module Netzke
         c.tools = tools
         c.bbar = bbar
         c.context_menu = context_menu
+
         super
       end
     end

@@ -12,6 +12,8 @@ module Tree
         {name: :leaf, flex: 1, type: :boolean, read_only: false},
       ]
 
+      c.form_items = [:file_name, :size, :leaf]
+
       # Show all FileRecord records with parent_id of 'nil' as top-level records
       c.root = true
 

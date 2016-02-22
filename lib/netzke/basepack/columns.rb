@@ -71,7 +71,7 @@ module Netzke
       # Returns the list of (non-normalized) columns to be used. By default returns the list of model column names and declared columns.
       # Can be overridden.
       def columns
-        config.columns || model_adapter.model_attributes
+        config.columns || attributes
       end
 
       # An array of complete columns configs ready to be passed to the JS side.
@@ -79,8 +79,8 @@ module Netzke
         @final_columns ||= [].tap do |cols|
           has_primary_column = false
 
-          columns.each do |c|
-            c = build_column_config(c)
+          columns.each do |name|
+            c = build_column_config(name)
             next if c.excluded
 
             has_primary_column ||= c.primary?
@@ -92,8 +92,8 @@ module Netzke
         end
       end
 
-      def build_column_config(c)
-        Netzke::Basepack::ColumnConfig.new(c, model_adapter).tap do |c|
+      def build_column_config(name)
+        Netzke::Basepack::ColumnConfig.new(name, model_adapter).tap do |c|
           attribute_config = attribute_overrides[c.name.to_sym]
           c.merge_attribute(attribute_config) if attribute_config
           augment_column_config(c)
@@ -142,7 +142,7 @@ module Netzke
 
       # Default form items (non-normalized) that will be displayed in the Add/Edit forms
       def default_form_items
-        non_meta_columns.map{|c| c.name.to_sym}
+        attributes
       end
 
       # ATM the same attributes are used as in forms
@@ -156,7 +156,7 @@ module Netzke
         end
       end
 
-      # Form items that will be used by the Add/Edit forms. May be useful overriding it.
+      # Form items that will be used by the Add/Edit forms. May be overridden.
       def form_items
         config.form_items || default_form_items
       end
@@ -197,15 +197,8 @@ module Netzke
         send(method_name, c) if respond_to?(method_name)
       end
 
-      # Based on initial column config, e.g.:
-      #
-      #   {:name=>"author__name", :type=>:string}
-      #
-      # augment it with additional configuration params, e.g.:
-      #
-      #   {:name=>"author__name", :type=>:string, :editor=>{:xtype=>:netzkeremotecombo}, :assoc=>true, :virtual=>true, :header=>"Author", :sortable=>false, :filterable=>false}
-      #
-      # It may be handy to override it.
+      # Receives a +Netzke::Basepack::ColumnConfig+ with minimum column configuration and extends it according to the
+      # attribute's type. May be overridden.
       def augment_column_config(c)
         apply_column_dsl(c)
         c.set_defaults

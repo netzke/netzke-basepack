@@ -24,35 +24,55 @@ module Netzke
     #   Name of the ActiveRecord model that provides data to this Grid (e.g. "User") or the model's class (e.g. User).
     #   Required.
     #
-    # [columns]
+    # [attributes]
     #
-    #   Explicit list of columns to be displayed in the grid; each column may be represented by a symbol (attribute name),
-    #   or a hash, which contains the +name+ key pointing to the attribute name and additional configuration keys (see
-    #   the "Configuring attributes" section below). For example:
+    #   Explicit list of attributes to be displayed in the grid and its forms; each attribute may be represented by a
+    #   symbol (attribute name), or a hash, which contains the +name+ key pointing to the attribute name and additional
+    #   configuration keys (see the "Configuring attributes" section below). For example:
     #
     #      class Users < Netzke::Grid::Base
     #        def configure(c)
     #          super
     #          c.model = User
-    #          c.columns = [
+    #          c.attributes = [
     #            :first_name,
     #            :last_name,
-    #            { name: :salary, with: 50 }
+    #            { name: :salary, read_only: true }
     #          ]
     #        end
     #      end
     #
     #   Defaults to model attribute list.
     #
+    #   Note, that you can also individually override attribute configs, see +Basepack::Attributes+.
+    #
+    # [columns]
+    #
+    #   Array of columns to be displayed in the grid. This overrides the +attributes+ config option. For example:
+    #
+    #      class Users < Netzke::Grid::Base
+    #        def configure(c)
+    #          super
+    #          c.model = User
+    #          c.attributes = [
+    #            :first_name,
+    #            :last_name,
+    #            { name: :salary, width: 50 }
+    #          ]
+    #        end
+    #      end
+    #
     #   Note, that you can also individually override column configs (e.g. setting a column's width) by using the
-    #   +column+ DSL method (see +Basepack::Columns+), and override attributes (e.g. making an attribute read-only) by
-    #   using the +attribute+ DSL method (see +Basepack::Attributes+).
+    #   +column+ DSL method (see +Basepack::Columns+).
+    #
+    #   Defaults to attribute names listed with the +attributes+ config option.
     #
     # [form_items]
     #
-    #   Array of form items. This may define arbitrary form layout. An item that represents a specific attribute, should
-    #   be specified as either a symbol (attribute name), or a hash containing the +name+ key pointing to the attribute
-    #   name, as well as additional configuration keys.
+    #   Array of items to be displayed in the grid's forms. This overrides the +attributes+ config option and may define
+    #   arbitrary form layout. An item that represents a specific attribute, should be specified as either a symbol
+    #   (attribute name), or a hash containing the +name+ key pointing to the attribute name, as well as additional
+    #   configuration keys.
     #
     #      class Users < Netzke::Grid::Base
     #        def configure(c)
@@ -67,7 +87,7 @@ module Netzke
     #        end
     #      end
     #
-    #   Defaults to model attribute list.
+    #   Defaults to attribute names listed with the +attributes+ config option.
     #
     # [attribute_overrides]
     #
