@@ -37,7 +37,7 @@ module Netzke
       end
 
       def has_apply_action?
-        config.edit_inline && (allowed_to?(:create) || allowed_to?(:update))
+        config.editing == :inline && (allowed_to?(:create) || allowed_to?(:update))
       end
 
       def has_delete_action?

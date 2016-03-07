@@ -124,24 +124,21 @@ module Netzke
     #
     #   A hash of attributes to be merged atop of every created/updated record, e.g. +role_id: 1+
     #
-    # [edit_inline]
-    #
-    #   Whether record editing should happen inline (as opposed to using a form). When set to +true+, automatically sets
-    #   +paging+ to +true+. Defaults to +false+.
-    #
     # [context_menu]
     #
     #   An array of actions (e.g. [:edit, "-", :delete] - see the Actions section) or +false+ to disable the context menu.
     #
     # [paging]
     #
-    #   Set to +true+ to use pagination instead of infinite scrolling. Is automatically set to
-    #   +true+ if +edit_inline+ is +true+. Defaults to +false+.
+    #   Type of pagination to use:
     #
-    # [infinite_scrolling]
+    #   * :buffered (default) - implements "infinite scrolling" with help of the Ext's buffered store
+    #   * :pagination - uses the paging toolbar
+    #   * :none - loads all data at once
     #
-    #   Set to +false+ to disable infinite scrolling. Given +paging+ is +false+, will make the grid load the complete
-    #   dataset at once. Defaults to +true+.
+    # [editing]
+    #
+    #   TODO
     #
     # [store_config]
     #

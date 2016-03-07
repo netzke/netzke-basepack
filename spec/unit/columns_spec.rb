@@ -72,5 +72,28 @@ module Netzke::Basepack
 
       expect(GridFour.new.js_columns.detect{|c| c[:name] == 'exemplars'}).to be_nil
     end
+
+    it 'provides editor to editable column' do
+      class GridFive < Netzke::Grid::Base
+        def configure(c)
+          super
+          c.model = Book
+          c.editing = :inline
+        end
+      end
+
+      expect(GridFive.new.js_columns.detect{|c| c[:name] == 'title'}[:editor]).to_not be_nil
+    end
+
+    it 'does not provide editor to any column by default' do
+      class GridSix < Netzke::Grid::Base
+        def configure(c)
+          super
+          c.model = Book
+        end
+      end
+
+      expect(GridSix.new.js_columns.any?{|c| c[:editor]}).to be_falsy
+    end
   end
 end

@@ -2,7 +2,7 @@ module Tree
   class CrudInline < Crud
     def configure(c)
       super
-      c.edit_inline = true
+      c.editing = :inline
     end
   end
 end

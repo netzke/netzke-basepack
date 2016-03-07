@@ -4,6 +4,6 @@ class Grid::Crud < Netzke::Grid::Base
     c.model = 'Book'
     c.attributes = [:author__name, :title] # do not modify
     c.persistence = true
-    c.store_config = {:sorters => {property: :id}}
+    c.store_config = {sorters: {property: :id}}
   end
 end

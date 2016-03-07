@@ -4,7 +4,7 @@ class Grid::CustomPrimaryKey < Netzke::Grid::Base
     c.model = "BookWithCustomPrimaryKey"
     c.columns = [:author__name, :title]
     c.paging = true
-    c.edit_inline = true
+    c.editing = :inline
     super
   end
 end

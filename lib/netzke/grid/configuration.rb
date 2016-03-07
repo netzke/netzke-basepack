@@ -59,10 +59,23 @@ module Netzke
         end
       end
 
+      def can_edit_inline?
+        Array(config.editing).include?(:inline)
+      end
+
       def validate_config(c)
         raise ArgumentError, "Grid requires a model" if model.nil?
-        c.paging = true if c.edit_inline
-        c.infinite_scrolling = true if c.infinite_scrolling.nil? && !c.paging
+
+        c.editing = :in_form if c.editing.nil?
+
+        if c.paging.nil?
+          c.paging = c.editing == :inline ? :pagination : :buffered
+        end
+
+        if c.paging == :buffered && c.editing == :inline
+          raise ArgumentError, "Buffered grid cannot have inline editing"
+        end
+
         c.tools = tools
         c.bbar = bbar
         c.context_menu = context_menu

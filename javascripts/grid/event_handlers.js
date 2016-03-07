@@ -5,7 +5,7 @@
 Ext.define("Netzke.Grid.EventHandlers", {
   // Handler for the 'add' button
   netzkeOnAdd: function(){
-    if (!this.editInline) {
+    if (this.editing == 'in_form') {
       this.netzkeOnAddInForm();
     } else {
       // Note: default values are taken from the model's field's defaultValue property
@@ -107,7 +107,7 @@ Ext.define("Netzke.Grid.EventHandlers", {
 
   // Edit single record
   doEdit: function(record){
-    if (this.editInline) {
+    if (this.editing == 'inline') {
       this.doEditInline(record);
     } else {
       this.doEditInForm(record);
@@ -193,7 +193,7 @@ Ext.define("Netzke.Grid.EventHandlers", {
    * @method netzkeHandleItemdblclick
    */
   netzkeHandleItemdblclick: function(view, record){
-    if (this.editInline) return;
+    if (this.editing == 'inline') return;
 
     if ((this.permissions || {}).update !== false) {
       this.doEditInForm(record);

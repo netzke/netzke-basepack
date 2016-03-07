@@ -13,6 +13,6 @@ class Grid::VirtualAttributes < Netzke::Grid::Base
     super
     c.model = Book
     c.columns = [:title, :borrowed, :notes]
-    c.edit_inline = true
+    c.editing = :inline
   end
 end

@@ -8,7 +8,7 @@ class Grid::WithSummary < Netzke::Grid::Base
     super
     c.model = 'Author'
     c.columns = [:name]
-    c.infinite_scrolling = false
+    c.paging = :none
     c.features = [{ ftype: 'summary', dock: :bottom }]
   end
 end

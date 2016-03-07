@@ -6,6 +6,6 @@ class GridWithInFormEditingOnly < Netzke::Grid::Base
   def configure(c)
     super
     c.model = 'Book'
-    c.edit_inline = false
+    c.editing = :inline
   end
 end

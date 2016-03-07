@@ -4,10 +4,11 @@
     and its forms. The `columns` config option now only takes effect on grid, and it doesn't modify the layout of its
     forms.
 
+*   `edit_inline` config option is gone (see the new `editing` option)
+
 ### New and mproved
 
-*   Grid: added `infinite_scrolling` config option. Set it to false if you want the grid to not use neither buffered store, nor
-    pagination (and thus load the complete dataset at once).
+*   Grid: new `paging` and `editing` options allow for more flexible combinations of different editing and paging modes.
 
 *   Tree: fixed date and datetime columns in some browsers.
 

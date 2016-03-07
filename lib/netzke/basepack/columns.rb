@@ -112,11 +112,10 @@ module Netzke
 
       # Columns that have to be used by the JS side of the grid
       def js_columns
-        final_columns.map do |c|
+        final_columns.each do |c|
           # we are removing the editor on this last step, so that the editor config is still being passed from the
           # column config to the form editor; refactor!
-          c.delete(:editor) unless config.edit_inline
-          c
+          c.delete(:editor) unless can_edit_inline?
         end
       end
 
