@@ -54,6 +54,29 @@ module Netzke
     #   Note, that the root record can be hidden from the tree by specifying the `Ext.tree.Panel`'s `root_visible`
     #   config option set to `false`, which is probably what you want when you have multiple root records.
     #
+    # [scope]
+    #
+    #   A Proc or a Hash used to scope out grid data. The Proc will receive the current relation as a parameter and must
+    #   return the modified relation. For example:
+    #
+    #      class Books < Netzke::Grid::Base
+    #        def configure(c)
+    #          super
+    #          c.model = Book
+    #          c.scope = lambda {|r| r.where(author_id: 1) }
+    #        end
+    #      end
+    #
+    #   Hash is being accepted for conivience, it will be directly passed to `where`. So the above can be rewritten as:
+    #
+    #      class Books < Netzke::Grid::Base
+    #        def configure(c)
+    #          super
+    #          c.model = Book
+    #          c.scope = {author_id: 1}
+    #        end
+    #      end
+    #
     # [drag_drop]
     #
     #   Enables drag and drop in the tree.
@@ -108,9 +131,9 @@ module Netzke
       # Overrides Grid::Services#get_records
       def get_records(params)
         if params[:id] == 'root'
-          model_adapter.find_root_records
+          model_adapter.find_root_records(config[:scope])
         else
-          model_adapter.find_record_children(model_adapter.find_record(params[:id]))
+          model_adapter.find_record_children(model_adapter.find_record(params[:id]), config[:scope])
         end
       end
 
@@ -126,7 +149,7 @@ module Netzke
       def node_to_hash(record, columns)
         model_adapter.record_to_hash(record, columns).tap do |hash|
           if is_node_expanded?(record)
-            hash["children"] = record.children.map {|child| node_to_hash(child, columns).netzke_literalize_keys}
+            hash["children"] = model_adapter.find_record_children(record, config[:scope]).map {|child| node_to_hash(child, columns).netzke_literalize_keys}
           end
         end
       end

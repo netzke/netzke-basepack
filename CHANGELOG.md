@@ -12,9 +12,11 @@
 
 *   Tree: fixed date and datetime columns in some browsers.
 
-*   Grid: fix showing validation errors on inline update
+*   Grid: fix showing validation errors on inline update.
 
     *Mike (firemind)*
+
+*   Tree: implement `scope` config option for Tree.
 
 # v1.0.0.0 - 2016-01-04
 
