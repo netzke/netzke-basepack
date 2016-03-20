@@ -32,7 +32,7 @@ describe 'Grid::Search', ->
       click button 'Clear'
       wait()
     .then ->
-      select 'Author', in: combobox('undefined_attr')
+      select 'Author last name', in: combobox('undefined_attr')
       wait()
     .then ->
       fill textfield('author__last_name_value'), with: 'es'

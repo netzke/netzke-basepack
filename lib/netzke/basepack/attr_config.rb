@@ -32,11 +32,7 @@ module Netzke
     private
 
       def default_label
-        if association?
-          @model_adapter.human_attribute_name(name.split("__").first)
-        else
-          @model_adapter.human_attribute_name(name)
-        end
+        @model_adapter.human_attribute_name(name)
       end
 
       def responded_to_by_model?

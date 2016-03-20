@@ -6,6 +6,9 @@
 
 *   `edit_inline` config option is gone (see the new `editing` option)
 
+*   Provide full association name using the double-underscore notation in locales (e.g. `author__name` instead of just
+    `author`). This reverts the change introduced in 1.0.0.0.
+
 ### New and mproved
 
 *   Grid: new `paging` and `editing` options allow for more flexible combinations of different editing and paging modes.
