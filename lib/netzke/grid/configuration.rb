@@ -22,7 +22,9 @@ module Netzke
       def default_bbar
         [].tap do |bbar|
           bbar << :add if has_add_action?
+          bbar << :add_in_form if has_add_in_form_action?
           bbar << :edit if has_edit_action?
+          bbar << :edit_in_form if has_edit_in_form_action?
           bbar << :apply if has_apply_action?
           bbar << :delete if has_delete_action?
           bbar << :search if has_search_action?
@@ -59,20 +61,19 @@ module Netzke
         end
       end
 
-      def can_edit_inline?
-        Array(config.editing).include?(:inline)
-      end
-
       def validate_config(c)
         raise ArgumentError, "Grid requires a model" if model.nil?
 
         c.editing = :in_form if c.editing.nil?
 
+        c.edits_in_form = [:both, :in_form].include?(c.editing)
+        c.edits_inline = [:both, :inline].include?(c.editing)
+
         if c.paging.nil?
-          c.paging = c.editing == :inline ? :pagination : :buffered
+          c.paging = c.edits_inline ? :pagination : :buffered
         end
 
-        if c.paging == :buffered && c.editing == :inline
+        if c.paging == :buffered && c.edits_inline
           raise ArgumentError, "Buffered grid cannot have inline editing"
         end
 

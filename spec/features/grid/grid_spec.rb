@@ -6,20 +6,25 @@ feature Netzke::Grid::Base, js: true do
       FactoryGirl.create(:author, first_name: 'Carlos', last_name: 'Castaneda')
     end
 
-    it 'performs CRUD operations for default (buffered) grid', js: true do
+    it 'performs CRUD operations for default (buffered) grid' do
       run_mocha_spec 'grid/crud'
     end
 
-    it 'performs CRUD operations for paging grid', js: true do
+    it 'performs CRUD operations for paging grid' do
       run_mocha_spec 'grid/crud_paging'
     end
 
-    it 'performs CRUD operations inline', js: true do
+    it 'performs CRUD operations inline' do
       run_mocha_spec 'grid/crud_inline'
     end
 
-    it 'preforms multiediting on form with various columns', js: true do
+    it 'preforms multiediting on form with various columns' do
       run_mocha_spec 'grid/multiline_edit'
+    end
+
+    it 'performs CRUD operations on grid with both edit modes' do
+      run_mocha_spec 'grid/crud_inline', component: Grid::BothEditModes
+      run_mocha_spec 'grid/form_operations', component: Grid::BothEditModes
     end
   end
 

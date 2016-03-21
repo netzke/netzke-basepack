@@ -174,7 +174,7 @@ Ext.define("Netzke.Grid.Columns", {
       return !(c.hidden || c.readOnly || c.type == 'boolean')
     });
 
-    if (column) {this.getPlugin('celleditor').startEdit(r, column);}
+    if (column) { this.getPlugin('celleditor').startEdit(r, column); }
   },
 
   netzkeFilterTypeForAttrType: function(type){

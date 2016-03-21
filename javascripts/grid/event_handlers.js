@@ -92,6 +92,15 @@ Ext.define("Netzke.Grid.EventHandlers", {
     }
   },
 
+  netzkeOnEditInForm: function(){
+    var selection = this.getSelectionModel().getSelection();
+    if (selection.length == 1) {
+      this.doEditInForm(selection[0]);
+    } else {
+      this.doMultiEdit(selection);
+    }
+  },
+
   netzkeOnAddInForm: function(){
     this.netzkeLoadComponent("add_window", {
       callback: function(w) {
@@ -105,9 +114,9 @@ Ext.define("Netzke.Grid.EventHandlers", {
     });
   },
 
-  // Edit single record
+  // Edit single record using default mode
   doEdit: function(record){
-    if (this.editing == 'inline') {
+    if (this.editsInline) {
       this.doEditInline(record);
     } else {
       this.doEditInForm(record);
@@ -178,12 +187,17 @@ Ext.define("Netzke.Grid.EventHandlers", {
   netzkeSetActionEvents: function(){
     this.getSelectionModel().on('selectionchange', function(selModel, selected){
       if (this.actions.delete) this.actions.delete.setDisabled(selected.length == 0);
+
       if (this.actions.edit) {
         var disabled = false;
         Ext.each(selected, function(r){
           if (r.isNew) { disabled = true; return false; }
         });
         this.actions.edit.setDisabled(selected.length == 0 || disabled);
+      }
+
+      if (this.actions.editInForm) {
+        this.actions.editInForm.setDisabled(selected.length == 0);
       }
     }, this);
   },
@@ -193,7 +207,7 @@ Ext.define("Netzke.Grid.EventHandlers", {
    * @method netzkeHandleItemdblclick
    */
   netzkeHandleItemdblclick: function(view, record){
-    if (this.editing == 'inline') return;
+    if (this.editsInline) return; // inline editing is handled elsewhere
 
     if ((this.permissions || {}).update !== false) {
       this.doEditInForm(record);

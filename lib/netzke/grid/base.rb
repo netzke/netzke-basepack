@@ -138,7 +138,14 @@ module Netzke
     #
     # [editing]
     #
-    #   TODO
+    #   Grid editing mode:
+    #
+    #   * :in_form (default) - all add/edit operations are performed via a form
+    #   * :inline - all add/edit operations are performed inline, with exception of multi-line editing, which is done
+    #   via a form. Note: 1) this option is not compatible with `paging` set to :buffered, 2) if no `paging` option is
+    #   set, setting this option will automatically set that to :pagination.
+    #   * :both - same as :inline, but there are 2 more actions added to the toolbar: "Add in form" and "Edit in form",
+    #   which will use a form.
     #
     # [store_config]
     #
