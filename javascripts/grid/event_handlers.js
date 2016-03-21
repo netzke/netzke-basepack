@@ -223,4 +223,17 @@ Ext.define("Netzke.Grid.EventHandlers", {
       Netzke.warning("Undefined handler '"+handlerName+"'");
     }
   },
+
+  netzkeHandleBeforeEdit: function(_, field){
+    return this.netzkePermitInlineEdit(field.record);
+  },
+
+  /**
+   * Whether given record can be edited
+   * @method netzkePermitInlineEdit
+   * @return {Boolean}
+   */
+  netzkePermitInlineEdit: function(record) {
+    return this.netzkePermits('update') || !!record.isNew;
+  }
 });

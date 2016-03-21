@@ -11,6 +11,6 @@ feature Netzke::Grid::Base, js: true do
   end
 
   it 'performs search via form' do
-    run_mocha_spec 'grid/search', pause_on_error: true
+    run_mocha_spec 'grid/search'
   end
 end

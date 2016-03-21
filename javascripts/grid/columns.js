@@ -174,7 +174,10 @@ Ext.define("Netzke.Grid.Columns", {
       return !(c.hidden || c.readOnly || c.type == 'boolean')
     });
 
-    if (column) { this.getPlugin('celleditor').startEdit(r, column); }
+    if (column) {
+      this.getPlugin('celleditor').startEdit(r, column);
+      var a = this.getPlugin('celleditor').editing;
+    }
   },
 
   netzkeFilterTypeForAttrType: function(type){
@@ -203,5 +206,10 @@ Ext.define("Netzke.Grid.Columns", {
       'boolean' : 'boolean'
     };
     return map[type] || 'string';
+  },
+
+  netzkePermits: function(operation) {
+    var permissions = this.permissions || {};
+    return permissions[operation] != false;
   }
 });
