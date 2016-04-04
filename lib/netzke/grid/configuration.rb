@@ -20,15 +20,7 @@ module Netzke
       end
 
       def default_bbar
-        [].tap do |bbar|
-          bbar << :add if has_add_action?
-          bbar << :add_in_form if has_add_in_form_action?
-          bbar << :edit if has_edit_action?
-          bbar << :edit_in_form if has_edit_in_form_action?
-          bbar << :apply if has_apply_action?
-          bbar << :delete if has_delete_action?
-          bbar << :search if has_search_action?
-        end
+        [:add, :add_in_form, :edit, :edit_in_form, :apply, :delete, :search]
       end
 
       def context_menu

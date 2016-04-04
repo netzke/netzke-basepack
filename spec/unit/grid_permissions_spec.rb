@@ -21,9 +21,13 @@ describe Netzke::Grid::Permissions do
       end
     end
 
-    describe "#bbar" do
+    describe "actions" do
       it "does not show data changing actions on bbar" do
-        expect(grid.bbar).to eql [:search]
+        expect(grid.has_add_action?).to eql false
+        expect(grid.has_edit_action?).to eql false
+        expect(grid.has_delete_action?).to eql false
+        expect(grid.has_apply_action?).to eql false
+        expect(grid.has_search_action?).to eql true
       end
     end
 

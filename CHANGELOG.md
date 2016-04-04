@@ -4,7 +4,7 @@
     and its forms. The `columns` config option now only takes effect on grid, and it doesn't modify the layout of its
     forms.
 
-*   `edit_inline` config option is gone (see the new `editing` option)
+*   `edit_inline` config option is gone (see the new `editing` option).
 
 *   Provide full association name using the double-underscore notation in locales (e.g. `author__name` instead of just
     `author`). This reverts the change introduced in 1.0.0.0.
@@ -21,9 +21,11 @@
 
 *   Tree: implement `scope` config option for Tree.
 
-*   Fix bug that allowed editing grids in inline mode by dblclicking the rows
+*   Fix bug that allowed editing grids in inline mode by dblclicking the rows.
 
-*   Fix bug that allowed toggling checkbox in grids with prohibited update
+*   Fix bug that allowed toggling checkbox in grids with prohibited update.
+
+*   Explicitly speficying grid actions will no longer display the buttons, whose actions are not permitted.
 
 # v1.0.0.0 - 2016-01-04
 
