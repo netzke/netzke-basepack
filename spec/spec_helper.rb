@@ -29,4 +29,6 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  config.example_status_persistence_file_path = 'tmp/examples.txt'
 end

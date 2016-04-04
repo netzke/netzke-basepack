@@ -11,5 +11,6 @@ spec/rails_app/public/uploads/
 spec/rails_app/db/*.sqlite3
 spec/rails_app/tmp
 tags
+tmp
 Gemfile.lock
 .ruby-version
