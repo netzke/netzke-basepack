@@ -59,6 +59,12 @@ module Netzke
     #
     # The following attribute config options are available:
     #
+    # [label]
+    #
+    #   Field label and/or column title used for this attribute. Defaults to
+    #   `ActiveRecord::Base.human_attribute_name(attribute)`, which means that this value will be localized according to
+    #   Rails conventions.
+    #
     # [read_only]
     #
     #   A boolean that defines whether the attribute should be editable via grid/form.
