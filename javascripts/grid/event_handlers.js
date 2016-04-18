@@ -234,6 +234,6 @@ Ext.define("Netzke.Grid.EventHandlers", {
    * @return {Boolean}
    */
   netzkePermitInlineEdit: function(record) {
-    return this.netzkePermits('update') || !!record.isNew;
+    return this.editsInline && (this.netzkePermits('update') || !!record.isNew);
   }
 });
