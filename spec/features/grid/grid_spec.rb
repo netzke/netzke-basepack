@@ -147,4 +147,10 @@ feature Netzke::Grid::Base, js: true do
     FactoryGirl.create :book, title: 'Two'
     run_mocha_spec 'grid/scoped_with_hash'
   end
+
+  it 'shows author value in the association cell' do
+    author = FactoryGirl.create(:author, first_name: 'Herman', last_name: 'Hesse')
+    FactoryGirl.create :book, author: author
+    run_mocha_spec 'grid/check_author_cell_on_edit', component: Grid::CrudInline
+  end
 end
