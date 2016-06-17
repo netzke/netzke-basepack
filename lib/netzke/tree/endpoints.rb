@@ -6,7 +6,9 @@ module Netzke
       included do
         endpoint :add_window__add_form__submit do |params|
           data = ActiveSupport::JSON.decode(params[:data])
-          data["parent_id"] = params["parent_id"]
+          # FIXME: Commenting this out temporarily for SeeItsendIt
+          # Review this quickly as this patch shouldn't be part of pull request
+          #data["parent_id"] = params["parent_id"] unless params.keys.select{|k| k.include? 'parent__'}
           client.merge!(component_instance(:add_window).
                       component_instance(:add_form).
                       submit(data, client))
