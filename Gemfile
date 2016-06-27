@@ -7,7 +7,7 @@ gem 'sqlite3'
 gem 'yard'
 gem 'rake'
 
-gem 'awesome_nested_set'
+gem 'awesome_nested_set', '~>3.0.0'
 gem 'carrierwave'
 
 group :test do
