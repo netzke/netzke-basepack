@@ -348,7 +348,11 @@ module Netzke::Basepack::DataAdapters
         when :date
           update_predecate_for_rest(arel_table[method], op, value.to_date)
         else
-          update_predecate_for_rest(arel_table[method], op, value)
+          if value == 'home_depot_retail_price'
+             Arel::Nodes:: SqlLiteral.new(method + ' < home_depot_retail_price')   		
+          else
+            update_predecate_for_rest(arel_table[method], op, value)
+          end
         end
       end
 
