@@ -54,7 +54,7 @@ module Netzke
     #        def configure(c)
     #          super
     #          c.model = User
-    #          c.attributes = [
+    #          c.columns = [
     #            :first_name,
     #            :last_name,
     #            { name: :salary, width: 50 }

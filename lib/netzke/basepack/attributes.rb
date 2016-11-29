@@ -118,6 +118,10 @@ module Netzke
     #   When adding a virtual attribute to the grid, it may be useful to specify its type, so the column editor (and the
     #   form field) are configured properly.
     #
+    # [escape_html]
+    #
+    #   When +true+, the value will be HTML-escaped before sending it to the browser. Defaults to +nil+.
+    #
     # [column_config]
     #
     #   Configuration specific for the corresponding grid column. For example:

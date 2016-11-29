@@ -97,18 +97,18 @@ module Netzke::Basepack::DataAdapters
           if attr[:getter]
             relation.map{ |r| [r.id, attr[:getter].call(r)] }
           else
-            relation.map{ |r| [r.id, r.send(method)] }
+            relation.map{ |r| [r.id, combo_record_value(r, method)] }
           end
         elsif assoc.klass.column_names.include?(method)
           # apply query
           assoc_arel_table = assoc.klass.arel_table
 
           relation = relation.where(assoc_arel_table[method].matches("%#{query}%"))  if query.present?
-          relation.to_a.map{ |r| [r.id, r.send(method)] }
+          relation.to_a.map{ |r| [r.id, combo_record_value(r, method)] }
         else
           query.downcase!
           # an expensive search!
-          relation.to_a.map{ |r| [r.id, r.send(method)] }.select{ |id,value| value.to_s.downcase.include?(query) }
+          relation.to_a.map{ |r| [r.id, combo_record_value(r, method)] }.select{ |id,value| value.to_s.downcase.include?(query) }
         end
 
       else
@@ -221,6 +221,8 @@ module Netzke::Basepack::DataAdapters
 
       # a work-around for to_json not taking the current timezone into account when serializing ActiveSupport::TimeWithZone
       v = v.to_datetime.to_s(:db) if [ActiveSupport::TimeWithZone].include?(v.class)
+
+      v = CGI::escapeHTML(v) if v.is_a?(String)
 
       v
     end
@@ -439,6 +441,12 @@ module Netzke::Basepack::DataAdapters
     end
 
     private
+
+    def combo_record_value(r, method)
+      v = r.send(method)
+      v = CGI::escapeHTML(v) if v.is_a?(String)
+      v
+    end
 
     def extend_relation_with_scope(relation, scope)
       case scope

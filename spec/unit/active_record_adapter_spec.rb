@@ -25,6 +25,12 @@ describe Netzke::Basepack::DataAdapters::ActiveRecordAdapter do
       book = Book.create(title: 'Foo')
       expect(adapter.record_value_for_attribute(book, {name: 'author__id'}, true)).to be_nil
     end
+
+    it "returns html-escaped value if escape_html option is true" do
+      adapter = Netzke::Basepack::DataAdapters::ActiveRecordAdapter.new(Book)
+      book = Book.create(title: '<b>Foo</b>')
+      expect(adapter.record_value_for_attribute(book, {name: 'title'})).to eql "&lt;b&gt;Foo&lt;/b&gt;"
+    end
   end
 
   describe "#combo_data" do
