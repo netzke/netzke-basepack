@@ -11,6 +11,7 @@ require 'netzke/testing'
 
 # For JS tests change the cleaning strategy to truncation
 require 'support/database_cleaner'
+require File.expand_path(File.dirname(__FILE__) + '/capybara_config')
 require 'capybara/rspec'
 require 'capybara/rails'
 
