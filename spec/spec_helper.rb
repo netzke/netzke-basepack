@@ -14,8 +14,11 @@ require 'support/database_cleaner'
 require File.expand_path(File.dirname(__FILE__) + '/capybara_config')
 require 'capybara/rspec'
 require 'capybara/rails'
+require File.expand_path(File.dirname(__FILE__) + '/support/helpers')
 
 RSpec.configure do |config|
+  config.include Helpers
+
   Netzke::Testing.rspec_init(config)
 
   FactoryGirl.find_definitions

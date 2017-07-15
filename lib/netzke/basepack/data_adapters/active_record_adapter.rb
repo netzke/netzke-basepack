@@ -445,7 +445,7 @@ module Netzke::Basepack::DataAdapters
       when Proc
         scope.call(relation)
       when Hash
-        relation.where(scope)
+        relation.where(Netzke::Support.permit_hash_params(scope))
       when NilClass
         relation
       else

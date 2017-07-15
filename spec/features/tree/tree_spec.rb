@@ -26,22 +26,20 @@ feature Netzke::Tree::Base, js: true do
   it 'allows to drag and drop nodes' do
     expect(@file1.parent_id).to be nil
     visit '/netzke/components/Tree::DragDrop'
-    loop { page.execute_script("return Netzke.ajaxIsLoading();") ? sleep(0.1) : break }
+    wait_for_ajax
 
     file1_element = first('div.x-grid-cell-inner', text: /\Afile1\z/ )
     dir3_element = first('div.x-grid-cell-inner', text: 'dir3')
     file1_element.drag_to(dir3_element)
-    loop { page.execute_script("return Netzke.ajaxIsLoading();") ? sleep(0.1) : break }
+    wait_for_ajax
 
-    @file1.reload
-    expect(@file1.parent_id).to eq @dir3.id
+    expect(@file1.reload.parent_id).to eq @dir3.id
 
     file1_element = first('div.x-grid-cell-inner', text: /\Afile1\z/)
     file2_element =  first('div.x-grid-cell-inner', text: 'file2')
     file1_element.drag_to(file2_element)
-    loop { page.execute_script("return Netzke.ajaxIsLoading();") ? sleep(0.1) : break }
+    wait_for_ajax
 
-    @file1.reload
-    expect(@file1.parent_id).to be nil
+    expect(@file1.reload.parent_id).to be nil
   end
 end

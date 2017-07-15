@@ -41,4 +41,13 @@ module Helpers
     pending = result["pending"].to_i
     puts "WARNING: #{pending} pending Mocha #{'spec'.pluralize(pending)}" if pending > 0
   end
+
+  def wait_for_ajax(timeout = 5)
+    started_at = Time.now
+    loop do
+      sleep(0.1)
+      break unless page.execute_script("return Netzke.ajaxIsLoading();")
+      break if Time.now - started_at > timeout
+    end
+  end
 end
