@@ -2,7 +2,10 @@ language: ruby
 
 rvm:
   - 1.9.3
-  - 2.2.3
+  - 2.3.1
+
+addons:
+  chrome: stable
 
 before_install:
   - gem install bundler
@@ -19,4 +22,5 @@ script:
 branches:
   only:
     - master
-    - 0-12
+    - 6-5-0
+
