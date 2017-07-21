@@ -16,7 +16,7 @@ group :test do
   gem 'factory_girl'
   gem 'capybara'
   gem 'capybara-selenium'
-  gem 'selenium-webdriver'
+  gem 'selenium-webdriver', '~> 3.4.4'
   gem 'chromedriver-helper'
   gem 'database_cleaner'
 end
