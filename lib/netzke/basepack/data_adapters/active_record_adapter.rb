@@ -326,7 +326,7 @@ module Netzke::Basepack::DataAdapters
       return nil if conditions.empty?
 
       predicates = conditions.map do |q|
-        q = HashWithIndifferentAccess.new(q)
+        q = HashWithIndifferentAccess.new(Netzke::Support.permit_hash_params(q))
 
         attr = q[:attr]
         method, assoc = method_and_assoc(attr)
