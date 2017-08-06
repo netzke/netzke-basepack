@@ -2,12 +2,12 @@ source 'http://rubygems.org'
 
 gemspec
 
-gem 'rails', '~>4.2.0'
+gem 'rails', '~>5.1.0'
 gem 'sqlite3'
 gem 'yard'
 gem 'rake'
 
-gem 'awesome_nested_set', '~>3.0.0'
+gem 'awesome_nested_set'
 gem 'carrierwave'
 
 group :test do
