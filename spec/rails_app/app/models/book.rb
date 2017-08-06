@@ -15,7 +15,11 @@ class Book < ActiveRecord::Base
   protected
 
   def confirm_deletion
-    errors.add :base, "Can't delete #{title}" if title == "Untouchable"
+    if title == "Untouchable"
+      errors.add :base, "Can't delete #{title}"
+      throw :abort
+    end
+
     errors.blank?
   end
 end

@@ -446,10 +446,12 @@ module Netzke::Basepack::DataAdapters
         scope.call(relation)
       when Hash
         relation.where(Netzke::Support.permit_hash_params(scope))
+      when ActionController::Parameters
+        relation.where(Netzke::Support.permit_hash_params(scope))
       when NilClass
         relation
       else
-        raise ArgumentError, "Expected scope to be a Proc or a Hash, got #{scope.class}"
+        raise ArgumentError, "Expected scope to be a Proc, ActionController::Parameters or a Hash, got #{scope.class}"
       end
     end
 
