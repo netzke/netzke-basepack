@@ -26,9 +26,8 @@ group :development do
 end
 
 group :development, :test do
-  # gem 'spring' # troubles...
   gem 'pry-rails'
-  gem 'netzke-core', github: 'thepry/netzke-core', branch: 'ext-js-6-0-0'
-  gem 'netzke-testing', github: 'thepry/netzke-testing', branch: 'ext-6-rails-5'
+  gem 'netzke-core', git: 'https://github.com/netzke/netzke-core', branch: '6-5-0'
+  gem 'netzke-testing', git: 'https://github.com/netzke/netzke-testing', branch: '6-5-0'
   gem 'faker'
 end
