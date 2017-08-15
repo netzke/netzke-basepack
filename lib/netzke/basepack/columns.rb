@@ -1,3 +1,5 @@
+require_relative './column_config'
+
 module Netzke
   module Basepack
     # Takes care of grid column configuration, as well as the grid's default form fields
