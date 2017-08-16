@@ -1,11 +1,3 @@
-require_relative 'actions'
-require_relative 'client'
-require_relative 'components'
-require_relative 'configuration'
-require_relative 'endpoints'
-require_relative 'permissions'
-require_relative 'services'
-
 module Netzke
   module Grid
     # Ext.grid.Panel-based component with the following features:
@@ -308,6 +300,15 @@ module Netzke
     # [search]
     #
     #   Show advanced search query builder
+
+    autoload :Actions, 'netzke/grid/actions'
+    autoload :Client, 'netzke/grid/client'
+    autoload :Components, 'netzke/grid/components'
+    autoload :Configuration, 'netzke/grid/configuration'
+    autoload :Endpoints, 'netzke/grid/endpoints'
+    autoload :Permissions, 'netzke/grid/permissions'
+    autoload :Services, 'netzke/grid/services'
+
     class Base < Netzke::Base
       include Netzke::Grid::Configuration
       include Netzke::Grid::Endpoints

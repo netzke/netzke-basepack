@@ -1,5 +1,3 @@
-require_relative '../form/base'
-
 module Netzke
   module Basepack
     # A Form with paging toolbar. Allows browsing and editing records one-by-one.

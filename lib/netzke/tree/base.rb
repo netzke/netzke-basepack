@@ -1,9 +1,3 @@
-require_relative '../basepack/attributes'
-require_relative '../basepack/columns'
-require_relative '../basepack/data_accessor'
-require_relative '../grid/base'
-require_relative 'endpoints'
-
 module Netzke
   module Tree
     # Ext.tree.Panel-based component with the following features:
@@ -90,6 +84,9 @@ module Netzke
     # == Persisting nodes' expand/collapse state
     #
     # If the model includes the `expanded` DB field, the expand/collapse state will get stored in the DB.
+
+    autoload :Endpoints, 'netzke/tree/endpoints'
+
     class Base < Netzke::Base
       NODE_ATTRS = {
         boolean: %w[leaf checked expanded expandable qtip qtitle],

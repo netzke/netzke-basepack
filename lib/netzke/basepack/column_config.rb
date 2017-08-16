@@ -1,5 +1,3 @@
-require_relative 'attr_config'
-
 module Netzke
   module Basepack
     # Takes care of automatic column configuration in {Grid::Base}

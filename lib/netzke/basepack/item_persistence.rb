@@ -2,6 +2,8 @@ module Netzke
   module Basepack
     # When mixed into a component with resizable layout (e.g. border layout), this module enables persistence for regions size and collapsed/expanded state.
     module ItemPersistence
+      autoload :EventsPlugin, 'netzke/basepack/item_persistence/events_plugin'
+
       extend ActiveSupport::Concern
 
       included do

@@ -1,9 +1,3 @@
-require_relative '../basepack/attributes'
-require_relative '../basepack/fields'
-require_relative '../basepack/data_accessor'
-require_relative 'endpoints'
-require_relative 'services'
-
 module Netzke
   module Form
     # Ext.form.Panel-based component with the following features
@@ -58,6 +52,10 @@ module Netzke
     #
     # * +submit+ - gets called when the form gets submitted (e.g. by pressing the Apply button, or by calling netzkeOnApply)
     # * +get_combobox_options+ - gets called when a 'remote' combobox field gets expanded
+
+    autoload :Endpoints, 'netzke/form/endpoints'
+    autoload :Services, 'netzke/form/services'
+
     class Base < Netzke::Base
       include Netzke::Form::Endpoints
       include Netzke::Form::Services

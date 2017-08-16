@@ -1,5 +1,3 @@
-require_relative '../window/base'
-
 module Netzke
   module Basepack
     class RecordFormWindow < Netzke::Window::Base
