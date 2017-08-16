@@ -7,7 +7,12 @@ if defined? ActiveRecord
   require 'netzke/basepack/data_adapters/active_record_adapter'
 end
 
-require 'netzke/basepack/item_persistence'
+Dir[File.dirname(__FILE__) + '/**/*.rb'].each do |file|
+  next if file.end_with? 'netzke/basepack/active_record.rb'
+  next if file.end_with? 'netzke/basepack/data_adapters/active_record_adapter.rb'
+
+  require file
+end
 
 module Netzke
   module Basepack

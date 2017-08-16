@@ -1,3 +1,11 @@
+require_relative 'actions'
+require_relative 'client'
+require_relative 'components'
+require_relative 'configuration'
+require_relative 'endpoints'
+require_relative 'permissions'
+require_relative 'services'
+
 module Netzke
   module Grid
     # Ext.grid.Panel-based component with the following features:

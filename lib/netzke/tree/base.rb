@@ -1,3 +1,9 @@
+require_relative '../basepack/attributes'
+require_relative '../basepack/columns'
+require_relative '../basepack/data_accessor'
+require_relative '../grid/base'
+require_relative 'endpoints'
+
 module Netzke
   module Tree
     # Ext.tree.Panel-based component with the following features:

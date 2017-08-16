@@ -1,3 +1,9 @@
+require_relative '../basepack/attributes'
+require_relative '../basepack/fields'
+require_relative '../basepack/data_accessor'
+require_relative 'endpoints'
+require_relative 'services'
+
 module Netzke
   module Form
     # Ext.form.Panel-based component with the following features

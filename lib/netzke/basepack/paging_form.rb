@@ -1,3 +1,5 @@
+require_relative '../form/base'
+
 module Netzke
   module Basepack
     # A Form with paging toolbar. Allows browsing and editing records one-by-one.
@@ -18,7 +20,7 @@ module Netzke
     #
     # == ToDo
     # * Update the number of records after form submit
-    class PagingForm < Form
+    class PagingForm < Form::Base
       # override
       def record
         @record ||= model_adapter.first
