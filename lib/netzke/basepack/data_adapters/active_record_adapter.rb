@@ -341,7 +341,7 @@ module Netzke::Basepack::DataAdapters
         case attr_type
         when :datetime
           update_predecate_for_datetime(arel_table[method], op, value.to_date)
-        when :string, :text
+        when :string, :text, :citext
           update_predecate_for_string(arel_table[method], op, value)
         when :boolean
           update_predecate_for_boolean(arel_table[method], op, value)
